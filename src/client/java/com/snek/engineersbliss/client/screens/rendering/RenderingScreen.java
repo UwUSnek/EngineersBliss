@@ -1,14 +1,21 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 
 
 
 public class RenderingScreen extends Screen {
+    public static final int BORDER_WIDTH = 10;
+    public static final int LIST_TOP = 32;
+
     private final Screen parent;
+    private EditBox searchField;
+    private BlockListWidget blockList;
 
 
     public RenderingScreen(Screen parent) {
@@ -19,13 +26,23 @@ public class RenderingScreen extends Screen {
 
     @Override
     protected void init() {
-        this.addRenderableWidget(new BlockListWidget(
-            this.minecraft,
-            this.width,
-            this.height - 64, // leave room for header/footer
-            32,               // y start
-            18                // item height
-        ));
+        int panelWidthCenter = this.width / 2 - BORDER_WIDTH * 2;
+        int panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
+
+        // Left sidebar
+        searchField = new EditBox(this.font, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, Component.literal("Search..."));
+        searchField.setResponder(searchString -> blockList.filter(searchString));
+        searchField.setX(0 + BORDER_WIDTH);
+        this.addRenderableWidget(searchField);
+
+        // Main list
+        blockList = new BlockListWidget(this.minecraft, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
+        blockList.setX(panelWidthSide + BORDER_WIDTH * 3);
+        this.addRenderableWidget(blockList);
+        blockList.filter("");
+
+        // Right sidebar
+        //TODO
     }
 
 
