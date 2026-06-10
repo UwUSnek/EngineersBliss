@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 
@@ -23,6 +24,7 @@ public class RenderFilterHandler {
             setEnabled(block, true);
             setIsolated(block, false);
         });
+        recalculate();
     }
 
     public static void  setEnabled(final Block block, final boolean  enabled) { enabledStates.put(block, enabled); }

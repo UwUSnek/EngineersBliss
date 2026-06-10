@@ -181,7 +181,6 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
                 //FIXME call from confirm button
                 RenderFilterHandler.recalculate();
                 minecraft.levelRenderer.allChanged();
-                BlockModelLighter.clearCache();
 
                 return true;
             }
@@ -190,7 +189,6 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
                 //FIXME call from confirm button
                 RenderFilterHandler.recalculate();
                 minecraft.levelRenderer.allChanged();
-                BlockModelLighter.clearCache();
 
                 return true;
             }
