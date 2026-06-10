@@ -13,6 +13,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        RenderFilterHandler.initMaps();
+        RenderFilterHandler.init();
     }
 }

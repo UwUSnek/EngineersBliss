@@ -8,18 +8,27 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.lighting.LevelLightEngine;
+import net.minecraft.world.level.lighting.LightEngine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
 
+import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
+import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheStorageAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.multiplayer.ClientChunkCache;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.BlockModelLighter;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.resources.Identifier;
@@ -180,7 +189,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
                 RenderFilterHandler.setEnabled(block, enableBox.selected());
                 //FIXME call from confirm button
                 RenderFilterHandler.recalculate();
-                minecraft.levelRenderer.allChanged();
+                RenderFilterHandler.refreshRendering();
 
                 return true;
             }
@@ -188,7 +197,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
                 RenderFilterHandler.setIsolated(block, enableBox.selected());
                 //FIXME call from confirm button
                 RenderFilterHandler.recalculate();
-                minecraft.levelRenderer.allChanged();
+                RenderFilterHandler.refreshRendering();
 
                 return true;
             }

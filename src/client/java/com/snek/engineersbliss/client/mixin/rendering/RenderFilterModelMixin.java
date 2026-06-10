@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin;
+package com.snek.engineersbliss.client.mixin.rendering;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 @Mixin(AltModelBlockRendererImpl.class)
-public class RenderFilterMixin {
+public class RenderFilterModelMixin {
 
     @ModifyVariable(
         method = "tesselateBlock",
@@ -28,7 +28,7 @@ public class RenderFilterMixin {
         argsOnly = true,
         remap = false
     )
-    private BlockAndTintGetter wrapLevel(BlockAndTintGetter level) {
+    public BlockAndTintGetter wrapLevel(BlockAndTintGetter level) {
         return new FilteredBlockAndTintGetter(level);
     }
 

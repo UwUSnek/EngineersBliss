@@ -3,8 +3,10 @@
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
-        "PauseScreenMixin",
-        "RenderFilterMixin"
+        "screens.PauseScreenMixin",
+
+        "rendering.RenderFilterModelMixin",
+        "rendering.RenderFilterLightMixin"
     ],
     "injectors": {
         "defaultRequire": 1

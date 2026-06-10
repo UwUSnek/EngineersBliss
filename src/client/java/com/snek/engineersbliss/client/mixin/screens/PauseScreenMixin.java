@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin;
+package com.snek.engineersbliss.client.mixin.screens;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +22,7 @@ public class PauseScreenMixin extends Screen {
     }
 
     @Inject(method = "init", at = @At("TAIL"))
-    private void addButton(CallbackInfo ci) {
+    public void addButton(CallbackInfo ci) {
         int buttonWidth = 100;
         int gap = 16;
 
