@@ -14,6 +14,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        RenderFilterHandler.init();
+        RenderFilterHandler.init(false);
     }
 }

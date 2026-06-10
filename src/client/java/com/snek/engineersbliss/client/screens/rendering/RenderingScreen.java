@@ -42,11 +42,27 @@ public class RenderingScreen extends Screen {
         final int halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
 
 
+
+
         // Left sidebar
+
         searchField = new EditBox(this.font, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, Component.literal("Search..."));
         searchField.setResponder(searchString -> blockList.filter(searchString));
-        searchField.setX(0 + BORDER_WIDTH);
+        searchField.setX(BORDER_WIDTH);
         this.addRenderableWidget(searchField);
+
+        Button targetButton = Button.builder(Component.literal("Target hidden blocks: " + (RenderFilterHandler.getTargetHiddenBlocks() ? "YES" : "NO")), b -> {
+            boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
+            RenderFilterHandler.setTargetHiddenBlocks(newState);
+            b.setMessage(Component.literal("Target hidden blocks: " + (newState ? "YES" : "NO")));
+            b.setFocused(false);
+            System.out.println("NEW STATE: " + newState);
+        }).size(panelWidthSide, buttonHeight).build();
+        targetButton.setX(BORDER_WIDTH);
+        targetButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT));
+        this.addRenderableWidget(targetButton);
+
+
 
 
         // Main list
@@ -54,6 +70,8 @@ public class RenderingScreen extends Screen {
         blockList.setX(panelWidthSide + BORDER_WIDTH * 2);
         this.addRenderableWidget(blockList);
         blockList.filter("");
+
+
 
 
         // Right sidebar
@@ -121,7 +139,7 @@ public class RenderingScreen extends Screen {
 
     public void resetFilters() {
         markChanged();
-        RenderFilterHandler.init();
+        RenderFilterHandler.init(RenderFilterHandler.getTargetHiddenBlocks());
         blockList.filter(searchField.getValue());
         apply();
     }

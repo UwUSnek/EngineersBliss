@@ -8,7 +8,9 @@
         "rendering.RenderFilterModelMixin",
         "rendering.RenderFilterLightMixin",
         "rendering.RenderFilterFluidMixin",
-        "rendering.RenderFilterBlockEntityMixin"
+        "rendering.RenderFilterBlockEntityMixin",
+
+        "rendering.CustomOutlinesMixin"
     ],
     "injectors": {
         "defaultRequire": 1

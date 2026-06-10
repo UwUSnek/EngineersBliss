@@ -28,7 +28,10 @@ public class RenderFilterHandler {
 
     private static final Map<Block, Boolean> enabledStates  = new HashMap<>();
     private static final Map<Block, Boolean> isolatedStates = new HashMap<>();
-    public static void init() {
+    private static boolean targetHiddenBlocks;
+
+    public static void init(final boolean defaultTargetHiddenBlocks) {
+        targetHiddenBlocks = defaultTargetHiddenBlocks;
         BuiltInRegistries.BLOCK.forEach(block -> {
             setEnabled(block, true);
             setIsolated(block, false);
@@ -38,8 +41,10 @@ public class RenderFilterHandler {
 
     public static void  setEnabled(final Block block, final boolean  enabled) { enabledStates.put(block, enabled); }
     public static void setIsolated(final Block block, final boolean isolated) { isolatedStates.put(block, isolated); }
+    public static void setTargetHiddenBlocks(final boolean newTargetHiddenBlocks) { targetHiddenBlocks = newTargetHiddenBlocks; }
     public static boolean  getEnabled(final Block block) { return enabledStates.get(block); }
     public static boolean getIsolated(final Block block) { return isolatedStates.get(block); }
+    public static boolean getTargetHiddenBlocks() { return targetHiddenBlocks; }
 
 
 
@@ -56,6 +61,7 @@ public class RenderFilterHandler {
             if(entry.getValue().booleanValue()) activeBlocks.add(entry.getKey());
         }
     }
+
 
 
 
@@ -102,7 +108,3 @@ public class RenderFilterHandler {
         }
     }
 }
-
-
-
-//FIXME handle block entities like chests
