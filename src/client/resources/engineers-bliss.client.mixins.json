@@ -6,7 +6,8 @@
         "screens.PauseScreenMixin",
 
         "rendering.RenderFilterModelMixin",
-        "rendering.RenderFilterLightMixin"
+        "rendering.RenderFilterLightMixin",
+        "rendering.RenderFilterFluidMixin"
     ],
     "injectors": {
         "defaultRequire": 1

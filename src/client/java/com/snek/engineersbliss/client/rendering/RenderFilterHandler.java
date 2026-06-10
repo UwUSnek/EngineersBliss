@@ -1,13 +1,10 @@
 package com.snek.engineersbliss.client.rendering;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -15,10 +12,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 
@@ -49,7 +44,7 @@ public class RenderFilterHandler {
 
 
 
-    private static final List<Block> activeBlocks = new ArrayList<>();
+    private static final List<Block> activeBlocks = new ArrayList<>(); //FIXME replace with hash something so lookup is quick
     public static List<Block> getActiveBlocks() { return activeBlocks; }
 
     public static void recalculate() {
@@ -111,6 +106,3 @@ public class RenderFilterHandler {
 
 
 //FIXME handle block entities like chests
-
-
-//FIXME handle liquids
