@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.rendering;
 
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.LightLayer;
@@ -35,8 +36,12 @@ public class FilteredBlockAndTintGetter implements BlockAndTintGetter {
     @Override
     public int getBrightness(LightLayer lightLayer, BlockPos pos) {
         BlockState state = delegate.getBlockState(pos);
-        if (!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
-            return 15;
+        if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
+            int max = 0;
+            for(Direction dir : Direction.values()) {
+                max = Math.max(max, delegate.getBrightness(lightLayer, pos.relative(dir)));
+            }
+            return max;
         }
         return delegate.getBrightness(lightLayer, pos);
     }
