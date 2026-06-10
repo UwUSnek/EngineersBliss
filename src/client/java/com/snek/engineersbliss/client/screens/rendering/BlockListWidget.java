@@ -9,13 +9,19 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.lighting.LevelLightEngine;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.block.BlockModelLighter;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.resources.Identifier;
 
 
@@ -28,9 +34,18 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
     BlockListWidget(Minecraft client, int width, int height, int top, int itemHeight) {
         super(client, width, height, top, itemHeight);
         this.rowItemHeight = itemHeight;
+
+        // Create list of all blocks
         allBlocks = new ArrayList<>();
-        BuiltInRegistries.BLOCK.forEach(allBlocks::add);
+        BuiltInRegistries.BLOCK.forEach(block -> {
+            if(block != Blocks.AIR) {
+                allBlocks.add(block);
+            }
+        });
     }
+
+
+
 
     //! Required for correct scrollbar hitbox position
     //! overriding getRowWidth breaks the default scrollBarX
@@ -41,6 +56,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
 	void clear() {
 		this.clearEntries();
+        setScrollAmount(0);
 	}
 
     void filter(String query) {
@@ -58,7 +74,6 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         //TODO          ID or Name contains "hi"
         //TODO          Any of the tags contains "uwu"
         clear();
-        setScrollAmount(0);
         for(Block block : allBlocks) {
             String name = block.getName().getString().toLowerCase();
             if(query.isEmpty() || name.contains(query)) {
@@ -66,6 +81,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
             }
         }
     }
+
 
     @Override
     public int addEntry(Entry entry) {
@@ -102,6 +118,11 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
 
 
+
+
+
+
+
     class Entry extends AbstractSelectionList.Entry<BlockListWidget.Entry> {
         private final Block block;
         private final Checkbox enableBox;
@@ -109,8 +130,8 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
         public Entry(Block block) {
             this.block = block;
-            this.enableBox  = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).build();
-            this.isolateBox = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).build();
+            this.enableBox  = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 
@@ -152,10 +173,27 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
             isolateBox.extractRenderState(graphics, mouseX, mouseY, tickDelta);
         }
 
+
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-            if (enableBox.mouseClicked(event, doubleClick)) return true;
-            if (isolateBox.mouseClicked(event, doubleClick)) return true;
+            if(enableBox.mouseClicked(event, doubleClick)) {
+                RenderFilterHandler.setEnabled(block, enableBox.selected());
+                //FIXME call from confirm button
+                RenderFilterHandler.recalculate();
+                minecraft.levelRenderer.allChanged();
+                BlockModelLighter.clearCache();
+
+                return true;
+            }
+            if(isolateBox.mouseClicked(event, doubleClick)) {
+                RenderFilterHandler.setIsolated(block, enableBox.selected());
+                //FIXME call from confirm button
+                RenderFilterHandler.recalculate();
+                minecraft.levelRenderer.allChanged();
+                BlockModelLighter.clearCache();
+
+                return true;
+            }
             return super.mouseClicked(event, doubleClick);
         }
     }
