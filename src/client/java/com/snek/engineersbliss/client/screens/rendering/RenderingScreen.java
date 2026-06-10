@@ -58,7 +58,7 @@ public class RenderingScreen extends Screen {
 
         // Right sidebar
 
-        Button resetButton = Button.builder(Component.literal("Reset filter"), b -> { resetFilter(); b.setFocused(false); }).size(panelWidthSide, buttonHeight).build();
+        Button resetButton = Button.builder(Component.literal("Reset filters"), b -> { resetFilters(); b.setFocused(false); }).size(panelWidthSide, buttonHeight).build();
         resetButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
         resetButton.setY(LIST_TOP);
         this.addRenderableWidget(resetButton);
@@ -119,7 +119,7 @@ public class RenderingScreen extends Screen {
 
 
 
-    public void resetFilter() {
+    public void resetFilters() {
         markChanged();
         RenderFilterHandler.init();
         blockList.filter(searchField.getValue());

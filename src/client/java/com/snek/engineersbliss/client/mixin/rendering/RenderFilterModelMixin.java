@@ -11,6 +11,7 @@ import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
 
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.impl.client.indigo.renderer.render.AltModelBlockRendererImpl;
+import net.fabricmc.fabric.impl.client.rendering.BlockEntityRendererRegistryImpl;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.core.BlockPos;
@@ -25,8 +26,7 @@ public class RenderFilterModelMixin {
     @ModifyVariable(
         method = "tesselateBlock",
         at = @At("HEAD"),
-        argsOnly = true,
-        remap = false
+        argsOnly = true
     )
     public BlockAndTintGetter wrapLevel(final BlockAndTintGetter level) {
         return new FilteredBlockAndTintGetter(level);
@@ -37,8 +37,7 @@ public class RenderFilterModelMixin {
     @Inject(
         method = "tesselateBlock",
         at = @At("HEAD"),
-        cancellable = true,
-        remap = false
+        cancellable = true
     )
     public void tesselateBlock(
         final QuadEmitter output,

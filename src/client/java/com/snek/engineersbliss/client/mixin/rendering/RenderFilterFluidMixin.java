@@ -28,8 +28,7 @@ public class RenderFilterFluidMixin {
     @Inject(
         method = "render",
         at = @At("HEAD"),
-        cancellable = true,
-        remap = false
+        cancellable = true
     )
 	private static void render(
         FluidRenderer fluidRenderer,
@@ -52,8 +51,7 @@ public class RenderFilterFluidMixin {
     @Inject(
         method = "renderDefault",
         at = @At("HEAD"),
-        cancellable = true,
-        remap = false
+        cancellable = true
     )
 	private static void renderDefault(
         FluidRenderer fluidRenderer,
@@ -75,8 +73,7 @@ public class RenderFilterFluidMixin {
     @Inject(
         method = "renderVanillaDefault",
         at = @At("HEAD"),
-        cancellable = true,
-        remap = false
+        cancellable = true
     )
 	private static void renderVanillaDefault(
         FluidRenderer fluidRenderer,
