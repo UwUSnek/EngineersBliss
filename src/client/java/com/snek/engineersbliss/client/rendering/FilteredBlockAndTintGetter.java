@@ -16,14 +16,14 @@ import net.minecraft.world.level.material.FluidState;
 public class FilteredBlockAndTintGetter implements BlockAndTintGetter {
     private final BlockAndTintGetter delegate;
 
-    public FilteredBlockAndTintGetter(BlockAndTintGetter delegate) {
+    public FilteredBlockAndTintGetter(final BlockAndTintGetter delegate) {
         this.delegate = delegate;
     }
 
 
     @Override
-    public BlockState getBlockState(BlockPos pos) {
-        BlockState state = delegate.getBlockState(pos);
+    public BlockState getBlockState(final BlockPos pos) {
+        final BlockState state = delegate.getBlockState(pos);
         if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
             return Blocks.AIR.defaultBlockState();
         }
@@ -34,10 +34,10 @@ public class FilteredBlockAndTintGetter implements BlockAndTintGetter {
 
 
     @Override public LevelLightEngine getLightEngine() { return delegate.getLightEngine(); }
-    @Override public int getBlockTint(BlockPos pos, ColorResolver resolver) { return delegate.getBlockTint(pos, resolver); }
+    @Override public int getBlockTint(final BlockPos pos, final ColorResolver resolver) { return delegate.getBlockTint(pos, resolver); }
     @Override public int getHeight() { return delegate.getHeight(); }
     @Override public int getMinY() { return delegate.getMinY(); }
-    @Override public BlockEntity getBlockEntity(BlockPos arg0) { return delegate.getBlockEntity(arg0); }
-    @Override public FluidState getFluidState(BlockPos pos) { return delegate.getFluidState(pos); }
+    @Override public BlockEntity getBlockEntity(final BlockPos arg0) { return delegate.getBlockEntity(arg0); }
+    @Override public FluidState getFluidState(final BlockPos pos) { return delegate.getFluidState(pos); }
     @Override public CardinalLighting cardinalLighting() { return delegate.cardinalLighting(); }
 }

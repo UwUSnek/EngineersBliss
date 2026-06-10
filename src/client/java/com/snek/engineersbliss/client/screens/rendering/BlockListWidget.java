@@ -38,10 +38,12 @@ import net.minecraft.resources.Identifier;
 
 final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry> {
     final int rowItemHeight;
-    private List<Block> allBlocks;
+    private final List<Block> allBlocks;
+    private final RenderingScreen screen;
 
-    BlockListWidget(Minecraft client, int width, int height, int top, int itemHeight) {
+    BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
         super(client, width, height, top, itemHeight);
+        this.screen = screen;
         this.rowItemHeight = itemHeight;
 
         // Create list of all blocks
@@ -68,7 +70,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         setScrollAmount(0);
 	}
 
-    void filter(String query) {
+    void filter(final String query) {
 
         //TODO select tags #
         //TODO find ids
@@ -83,39 +85,39 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         //TODO          ID or Name contains "hi"
         //TODO          Any of the tags contains "uwu"
         clear();
-        for(Block block : allBlocks) {
-            String name = block.getName().getString().toLowerCase();
+        for(final Block block : allBlocks) {
+            final String name = block.getName().getString().toLowerCase();
             if(query.isEmpty() || name.contains(query)) {
-                this.addEntry(new Entry(block));
+                this.addEntry(new Entry(block, screen));
             }
         }
     }
 
 
     @Override
-    public int addEntry(Entry entry) {
+    public int addEntry(final Entry entry) {
         return super.addEntry(entry);
     }
 
     @Override
-    public void updateWidgetNarration(NarrationElementOutput arg) {
+    public void updateWidgetNarration(final NarrationElementOutput arg) {
         // TODO seems to be possibly accessibility related
     }
 
     @Override
-    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
         // draw header above list
-        int headerY = this.getY() - 12;
-        int rowLeft = this.getRowLeft();
-        int rowWidth = this.getRowWidth();
+        final int headerY = this.getY() - 12;
+        final int rowLeft = this.getRowLeft();
+        final int rowWidth = this.getRowWidth();
         graphics.text(minecraft.font, Component.literal("Block"),   rowLeft, headerY, 0xFFAAAAAA);
         graphics.text(minecraft.font, Component.literal("Enable"),  rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
         graphics.text(minecraft.font, Component.literal("Isolate"), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
-        if (getHovered() != null) {
+        if(getHovered() != null) {
            setSelected(getHovered());
         }
     }
@@ -123,6 +125,16 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
     @Override
     public int getRowWidth() {
         return this.width - RenderingScreen.BORDER_WIDTH * 2;
+    }
+
+    // Flushes changes to persistent render settings
+    public void flushChanges() {
+        for(Entry e : children()) {
+            if(e.isChanged) {
+                RenderFilterHandler.setEnabled(e.block, e.enableBox.selected());
+                RenderFilterHandler.setIsolated(e.block, e.isolateBox.selected());
+            }
+        }
     }
 
 
@@ -136,18 +148,22 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         private final Block block;
         private final Checkbox enableBox;
         private final Checkbox isolateBox;
+        private final RenderingScreen screen;
+        private boolean isChanged = false;
 
-        public Entry(Block block) {
+
+        public Entry(final Block block, final RenderingScreen screen) {
             this.block = block;
+            this.screen = screen;
             this.enableBox  = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
             this.isolateBox = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 
         @Override
-        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            int rowWidth = BlockListWidget.this.getRowWidth();
-            int midY = this.getY() + BlockListWidget.this.rowItemHeight / 2;
+        public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+            final int rowWidth = BlockListWidget.this.getRowWidth();
+            final int midY = this.getY() + BlockListWidget.this.rowItemHeight / 2;
 
 
             // Block icon
@@ -155,7 +171,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
                 //TODO add "?" image for missing item forms
             }
             else {
-                ItemStack stack = new ItemStack(block);
+                final ItemStack stack = new ItemStack(block);
                 graphics.item(stack, this.getContentX(), midY - 8);
             }
 
@@ -171,7 +187,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
 
             // Checkboxes
-            int checkboxY = this.getY() + (BlockListWidget.this.rowItemHeight - 20) / 2;
+            final int checkboxY = this.getY() + (BlockListWidget.this.rowItemHeight - 20) / 2;
 
             enableBox.setX(this.getX() + rowWidth - 80);
             enableBox.setY(checkboxY);
@@ -186,19 +202,13 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
             if(enableBox.mouseClicked(event, doubleClick)) {
-                RenderFilterHandler.setEnabled(block, enableBox.selected());
-                //FIXME call from confirm button
-                RenderFilterHandler.recalculate();
-                RenderFilterHandler.refreshRendering();
-
+                isChanged = true;
+                screen.markChanged();
                 return true;
             }
             if(isolateBox.mouseClicked(event, doubleClick)) {
-                RenderFilterHandler.setIsolated(block, enableBox.selected());
-                //FIXME call from confirm button
-                RenderFilterHandler.recalculate();
-                RenderFilterHandler.refreshRendering();
-
+                isChanged = true;
+                screen.markChanged();
                 return true;
             }
             return super.mouseClicked(event, doubleClick);

@@ -17,14 +17,14 @@ import net.minecraft.network.chat.Component;
 
 @Mixin(PauseScreen.class)
 public class PauseScreenMixin extends Screen {
-    protected PauseScreenMixin(Component title) {
+    protected PauseScreenMixin(final Component title) {
         super(title);
     }
 
     @Inject(method = "init", at = @At("TAIL"))
-    public void addButton(CallbackInfo ci) {
-        int buttonWidth = 100;
-        int gap = 16;
+    public void addButton(final CallbackInfo ci) {
+        final int buttonWidth = 100;
+        final int gap = 16;
 
         // find the first vanilla button's Y
         this.children().stream()
@@ -32,8 +32,8 @@ public class PauseScreenMixin extends Screen {
             .map(w -> (Button) w)
             .findFirst()
             .ifPresent(first -> {
-                int vanillaX = first.getX();
-                int startY = first.getY();
+                final int vanillaX = first.getX();
+                final int startY = first.getY();
 
                 this.addRenderableWidget(Button.builder(
                     Component.literal("Rendering"),

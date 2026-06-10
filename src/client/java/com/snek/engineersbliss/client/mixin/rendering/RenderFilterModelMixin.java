@@ -28,7 +28,7 @@ public class RenderFilterModelMixin {
         argsOnly = true,
         remap = false
     )
-    public BlockAndTintGetter wrapLevel(BlockAndTintGetter level) {
+    public BlockAndTintGetter wrapLevel(final BlockAndTintGetter level) {
         return new FilteredBlockAndTintGetter(level);
     }
 
@@ -40,8 +40,16 @@ public class RenderFilterModelMixin {
         cancellable = true,
         remap = false
     )
-    public void tesselateBlock(QuadEmitter output, float x, float y, float z, BlockAndTintGetter level, BlockPos pos, BlockState blockState, BlockStateModel model, long seed, CallbackInfo ci) {
-        if (!RenderFilterHandler.getActiveBlocks().contains(blockState.getBlock())) {
+    public void tesselateBlock(
+        final QuadEmitter output,
+        final float x, final float y, final float z,
+        final BlockAndTintGetter level, final BlockPos pos,
+        final BlockState blockState,
+        final BlockStateModel model,
+        final long seed,
+        final CallbackInfo ci
+    ) {
+        if(!RenderFilterHandler.getActiveBlocks().contains(blockState.getBlock())) {
             ci.cancel();
         }
     }
