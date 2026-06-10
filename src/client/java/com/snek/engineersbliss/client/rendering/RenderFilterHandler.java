@@ -1,19 +1,24 @@
 package com.snek.engineersbliss.client.rendering;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 
@@ -62,28 +67,44 @@ public class RenderFilterHandler {
 
     public static void refreshRendering() {
 
-        // Force reload light on all loaded chunks
-        final ClientLevel level = Minecraft.getInstance().level;
+        // Mark all chunks for re-rendering (doesn't include light updates)
+        Minecraft.getInstance().levelRenderer.allChanged();
+    }
+
+
+
+
+    public static void recalculateLight() {
+
         final Minecraft minecraft = Minecraft.getInstance();
+        final ClientLevel level = minecraft.level;
+        if(level == null) return;
+
         final int viewDist = minecraft.options.renderDistance().get() + 1;
         final int camX = SectionPos.blockToSectionCoord(minecraft.player.blockPosition().getX());
         final int camZ = SectionPos.blockToSectionCoord(minecraft.player.blockPosition().getZ());
         final ClientChunkCache cache = level.getChunkSource();
         final LevelLightEngine lightEngine = cache.getLightEngine();
-        for(int cx = camX - viewDist; cx <= camX + viewDist; cx++) {
-            for(int cz = camZ - viewDist; cz <= camZ + viewDist; cz++) {
-                final LevelChunk chunk = cache.getChunk(cx, cz, ChunkStatus.FULL, false);
-                if(chunk == null) continue;
-                final ChunkPos pos = chunk.getPos();
-                lightEngine.setLightEnabled(pos, false);
-                lightEngine.setLightEnabled(pos, true);
-                lightEngine.propagateLightSources(pos);
+
+        for(int radius = 0; radius <= viewDist; radius++) {
+            for(int cx = camX - radius; cx <= camX + radius; cx++) {
+                for(int cz = camZ - radius; cz <= camZ + radius; cz++) {
+                    if(Math.abs(cx - camX) != radius && Math.abs(cz - camZ) != radius) continue;
+                    LevelChunk chunk = cache.getChunk(cx, cz, ChunkStatus.FULL, false);
+                    if(chunk == null) continue;
+                    for(int x = 0; x < 16; x++) {
+                        for(int z = 0; z < 16; z++) {
+                            final int worldX = chunk.getPos().getMinBlockX() + x;
+                            final int worldZ = chunk.getPos().getMinBlockZ() + z;
+                            for(int y = level.getMaxY() - 1; y >= level.getMinY(); y--) {
+                                lightEngine.checkBlock(new BlockPos(worldX, y, worldZ));
+                            }
+                            lightEngine.runLightUpdates();
+                        }
+                    }
+                }
             }
         }
-        lightEngine.runLightUpdates();
-
-        // Mark all chunks for re-rendering (doesn't include light updates)
-        Minecraft.getInstance().levelRenderer.allChanged();
     }
 }
 

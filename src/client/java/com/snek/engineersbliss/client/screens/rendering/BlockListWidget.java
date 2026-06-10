@@ -20,13 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
 
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheStorageAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.BlockModelLighter;

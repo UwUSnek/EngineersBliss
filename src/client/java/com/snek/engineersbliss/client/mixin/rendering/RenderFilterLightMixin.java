@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
 
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LightEngine;
 
@@ -18,7 +19,7 @@ public class RenderFilterLightMixin {
 
     @Inject(method = "getOpacity", at = @At("HEAD"), cancellable = true)
     public void getOpacity(final BlockState state, final CallbackInfoReturnable<Integer> cir) {
-        if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
+        if(state.getBlock() != Blocks.AIR && !RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
             cir.setReturnValue(0);
         }
     }

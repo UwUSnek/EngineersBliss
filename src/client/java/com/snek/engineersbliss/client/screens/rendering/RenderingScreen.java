@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.Component;
 
 public class RenderingScreen extends Screen {
     public static final int BORDER_WIDTH = 10;
+    public static final int BORDER_HEIGHT = 4;
     public static final int LIST_TOP = 32;
 
     private final Screen parent;
@@ -37,7 +39,7 @@ public class RenderingScreen extends Screen {
         final int panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
 
         final int buttonHeight = 20;
-        final int halfButtonWidth = panelWidthSide - BORDER_WIDTH / 2;
+        final int halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
 
 
         // Left sidebar
@@ -55,13 +57,25 @@ public class RenderingScreen extends Screen {
 
 
         // Right sidebar
-        Button applyButton = Button.builder(Component.literal("Apply"), b -> { apply(); }).size(halfButtonWidth, buttonHeight).build();
+
+        Button resetButton = Button.builder(Component.literal("Reset filter"), b -> { resetFilter(); b.setFocused(false); }).size(panelWidthSide, buttonHeight).build();
+        resetButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
+        resetButton.setY(LIST_TOP);
+        this.addRenderableWidget(resetButton);
+
+        Button lightButton = Button.builder(Component.literal("Recalculate light"), b -> { recalculateLight(); b.setFocused(false); }).size(panelWidthSide, buttonHeight).build();
+        lightButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
+        lightButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT));
+        this.addRenderableWidget(lightButton);
+
+        Button applyButton = Button.builder(Component.literal("Apply"), b -> { apply(); b.setFocused(false); }).size(halfButtonWidth, buttonHeight).build();
         applyButton.setX(panelWidthSide + panelWidthCenter + BORDER_WIDTH * 3);
-        applyButton.setY(LIST_TOP);
+        applyButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT) * 2);
         this.addRenderableWidget(applyButton);
+
         Button doneButton = Button.builder(Component.literal("Done"), b -> { done(); }).size(halfButtonWidth, buttonHeight).build();
         doneButton.setX(this.width - BORDER_WIDTH - halfButtonWidth);
-        doneButton.setY(LIST_TOP);
+        doneButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT) * 2);
         this.addRenderableWidget(doneButton);
     }
 
@@ -93,7 +107,7 @@ public class RenderingScreen extends Screen {
             blockList.flushChanges();
             RenderFilterHandler.recalculate();
             RenderFilterHandler.refreshRendering();
-            markChanged();
+            applied = true;
         }
     }
 
@@ -101,5 +115,19 @@ public class RenderingScreen extends Screen {
     public void done() {
         apply();
         onClose();
+    }
+
+
+
+    public void resetFilter() {
+        markChanged();
+        RenderFilterHandler.init();
+        blockList.filter(searchField.getValue());
+        apply();
+    }
+
+
+    public void recalculateLight() {
+        RenderFilterHandler.recalculateLight();
     }
 }
