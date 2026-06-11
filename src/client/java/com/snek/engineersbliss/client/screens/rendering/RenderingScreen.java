@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 
@@ -16,6 +15,13 @@ public class RenderingScreen extends Screen {
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 4;
     public static final int LIST_TOP = 32;
+
+
+    public static final int BUTTON_HEIGHT = 20;
+    private int panelWidthCenter;
+    private int panelWidthSide;
+    private int halfButtonWidth;
+
 
     private final Screen parent;
     private EditBox searchField;
@@ -35,12 +41,10 @@ public class RenderingScreen extends Screen {
 
     @Override
     protected void init() {
-        final int panelWidthCenter = this.width / 2;
-        final int panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
 
-        final int buttonHeight = 20;
-        final int halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
-
+        this.panelWidthCenter = this.width / 2;
+        this.panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
+        this.halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
 
 
 
@@ -57,9 +61,9 @@ public class RenderingScreen extends Screen {
             b.setMessage(Component.literal("Target hidden blocks: " + (newState ? "YES" : "NO")));
             b.setFocused(false);
             System.out.println("NEW STATE: " + newState);
-        }).size(panelWidthSide, buttonHeight).build();
+        }).size(panelWidthSide, BUTTON_HEIGHT).build();
         targetButton.setX(BORDER_WIDTH);
-        targetButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT));
+        targetButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
         this.addRenderableWidget(targetButton);
 
 
@@ -76,24 +80,24 @@ public class RenderingScreen extends Screen {
 
         // Right sidebar
 
-        Button resetButton = Button.builder(Component.literal("Reset filters"), b -> { resetFilters(); b.setFocused(false); }).size(panelWidthSide, buttonHeight).build();
+        Button resetButton = Button.builder(Component.literal("Reset filters"), b -> { resetFilters(); b.setFocused(false); }).size(panelWidthSide, BUTTON_HEIGHT).build();
         resetButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
         resetButton.setY(LIST_TOP);
         this.addRenderableWidget(resetButton);
 
-        Button lightButton = Button.builder(Component.literal("Recalculate light"), b -> { recalculateLight(); b.setFocused(false); }).size(panelWidthSide, buttonHeight).build();
+        Button lightButton = Button.builder(Component.literal("Recalculate light"), b -> { recalculateLight(); b.setFocused(false); }).size(panelWidthSide, BUTTON_HEIGHT).build();
         lightButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
-        lightButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT));
+        lightButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
         this.addRenderableWidget(lightButton);
 
-        Button applyButton = Button.builder(Component.literal("Apply"), b -> { apply(); b.setFocused(false); }).size(halfButtonWidth, buttonHeight).build();
+        Button applyButton = Button.builder(Component.literal("Apply"), b -> { apply(); b.setFocused(false); }).size(halfButtonWidth, BUTTON_HEIGHT).build();
         applyButton.setX(panelWidthSide + panelWidthCenter + BORDER_WIDTH * 3);
-        applyButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT) * 2);
+        applyButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2);
         this.addRenderableWidget(applyButton);
 
-        Button doneButton = Button.builder(Component.literal("Done"), b -> { done(); }).size(halfButtonWidth, buttonHeight).build();
+        Button doneButton = Button.builder(Component.literal("Done"), b -> { done(); }).size(halfButtonWidth, BUTTON_HEIGHT).build();
         doneButton.setX(this.width - BORDER_WIDTH - halfButtonWidth);
-        doneButton.setY(LIST_TOP + (buttonHeight + BORDER_HEIGHT) * 2);
+        doneButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2);
         this.addRenderableWidget(doneButton);
     }
 
@@ -104,6 +108,23 @@ public class RenderingScreen extends Screen {
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         super.extractRenderState(graphics, mouseX, mouseY, delta);
         graphics.centeredText(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
+
+
+        // Draw find syntax instructions
+        final String[] syntax_instructions = {
+            "#",  "Search block tag",
+            "&&", "Search multiple strings",
+            "||", "Search either of two strings"
+        };
+        graphics.text(this.font, syntax_instructions[0], BORDER_WIDTH,      this.height - this.font.lineHeight * 4, 0xFFAAAAAA);
+        graphics.text(this.font, syntax_instructions[2], BORDER_WIDTH,      this.height - this.font.lineHeight * 3, 0xFFAAAAAA);
+        graphics.text(this.font, syntax_instructions[4], BORDER_WIDTH,      this.height - this.font.lineHeight * 2, 0xFFAAAAAA);
+        graphics.text(this.font, syntax_instructions[1], BORDER_WIDTH + 16, this.height - this.font.lineHeight * 4, 0xFFAAAAAA);
+        graphics.text(this.font, syntax_instructions[3], BORDER_WIDTH + 16, this.height - this.font.lineHeight * 3, 0xFFAAAAAA);
+        graphics.text(this.font, syntax_instructions[5], BORDER_WIDTH + 16, this.height - this.font.lineHeight * 2, 0xFFAAAAAA);
+
+
+        // Draw search result informations
     }
 
 

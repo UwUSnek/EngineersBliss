@@ -71,7 +71,7 @@ public abstract class CustomOutlinesMixin {
                 if (state.isAir()) return null;
                 if (!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
                     excludedAlongRay.add(pos.immutable());
-                    return null; // keep going
+                    return null;
                 }
                 BlockHitResult newHit = state.getShape(minecraft.level, pos, CollisionContext.of(minecraft.player)).clip(start, end, pos);
                 return newHit != null ? newHit : BlockHitResult.miss(end, Direction.UP, pos);

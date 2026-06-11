@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheStorageAccessor;
@@ -88,7 +89,8 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         //TODO          ID or Name contains "hi"
         //TODO          Any of the tags contains "uwu"
         clear();
-        for(final Block block : allBlocks) {
+        // for(final Block block : allBlocks) {
+        for(final Block block : MinecraftUtils.calcLoadedBlockList()) {
             final String name = block.getName().getString().toLowerCase();
             if(query.isEmpty() || name.contains(query)) {
                 this.addEntry(new Entry(block, screen));

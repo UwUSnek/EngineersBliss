@@ -6,13 +6,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.lighting.LevelLightEngine;
@@ -107,4 +113,7 @@ public class RenderFilterHandler {
             }
         }
     }
+    //FIXME optimize light refresh
+    //FIXME optimize light refresh
+    //FIXME optimize light refresh
 }
