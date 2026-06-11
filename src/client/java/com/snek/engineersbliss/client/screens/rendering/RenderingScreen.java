@@ -124,16 +124,36 @@ public class RenderingScreen extends Screen {
             "&", "Search multiple strings",
             "|", "Search either of two strings"
         };
-        graphics.text(this.font, syntax_instructions[0], BORDER_WIDTH,      this.height - this.font.lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, syntax_instructions[2], BORDER_WIDTH,      this.height - this.font.lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, syntax_instructions[4], BORDER_WIDTH,      this.height - this.font.lineHeight * 2, 0xFFAAAAAA);
-        graphics.text(this.font, syntax_instructions[1], BORDER_WIDTH + 16, this.height - this.font.lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, syntax_instructions[3], BORDER_WIDTH + 16, this.height - this.font.lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, syntax_instructions[5], BORDER_WIDTH + 16, this.height - this.font.lineHeight * 2, 0xFFAAAAAA);
+
+        graphics.text(this.font, syntaxInstructions[0], BORDER_WIDTH,      lineBase - lineHeight * 5, 0xFFAAAAAA);
+        graphics.text(this.font, syntaxInstructions[2], BORDER_WIDTH,      lineBase - lineHeight * 4, 0xFFAAAAAA);
+        graphics.text(this.font, syntaxInstructions[4], BORDER_WIDTH,      lineBase - lineHeight * 3, 0xFFAAAAAA);
+        graphics.text(this.font, syntaxInstructions[6], BORDER_WIDTH,      lineBase - lineHeight * 2, 0xFFAAAAAA);
+
+        graphics.text(this.font, syntaxInstructions[1], BORDER_WIDTH + 16, lineBase - lineHeight * 5, 0xFFAAAAAA);
+        graphics.text(this.font, syntaxInstructions[3], BORDER_WIDTH + 16, lineBase - lineHeight * 4, 0xFFAAAAAA);
+        graphics.text(this.font, syntaxInstructions[5], BORDER_WIDTH + 16, lineBase - lineHeight * 3, 0xFFAAAAAA);
+        graphics.text(this.font, syntaxInstructions[7], BORDER_WIDTH + 16, lineBase - lineHeight * 2, 0xFFAAAAAA);
 
 
-        // Draw search result informations
+        // Draw render stats
+        final ClientLevel level = Minecraft.getInstance().level;
+        final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
+        final int rightTextX = this.width - panelWidthSide;
+        final String[] renderStats = {
+            "Loaded chunks: ", String.format("%,d", loadedChunkNum),
+            "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * 16 * 16))
+        };
+
+        graphics.text(this.font, renderStats[0], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
+        graphics.text(this.font, renderStats[2], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
+        final int rightTextPrefixWidth = Math.max(this.font.width(renderStats[0]), this.font.width(renderStats[2]));
+
+        graphics.text(this.font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
+        graphics.text(this.font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
     }
+
+
 
 
     @Override
