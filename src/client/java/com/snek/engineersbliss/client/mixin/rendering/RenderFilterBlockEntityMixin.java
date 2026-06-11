@@ -21,7 +21,7 @@ public interface RenderFilterBlockEntityMixin {
         at = @At(value = "HEAD"),
         cancellable = true
     )
-    private<T extends BlockEntity> void shouldRender(final T blockEntity, final Vec3 cameraPosition, CallbackInfoReturnable<Boolean> cir) {
+    private <T extends BlockEntity> void shouldRender(final T blockEntity, final Vec3 cameraPosition, final CallbackInfoReturnable<Boolean> cir) {
         if(!RenderFilterHandler.getActiveBlocks().contains(blockEntity.getBlockState().getBlock())) {
             cir.setReturnValue(false);
         }

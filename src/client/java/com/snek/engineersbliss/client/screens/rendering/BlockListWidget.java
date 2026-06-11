@@ -90,7 +90,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         //TODO          Any of the tags contains "uwu"
         clear();
         // for(final Block block : allBlocks) {
-        for(final Block block : MinecraftUtils.calcLoadedBlockList()) {
+        for(final Block block : MinecraftUtils.calcLoadedBlockList()) { //FIXME only refresh loaded blocks list after cache expires, like 10s, or link cache lifetime to UI lifetime
             final String name = block.getName().getString().toLowerCase();
             if(query.isEmpty() || name.contains(query)) {
                 this.addEntry(new Entry(block, screen));

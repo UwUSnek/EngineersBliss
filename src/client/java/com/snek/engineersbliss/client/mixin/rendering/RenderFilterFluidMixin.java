@@ -31,15 +31,15 @@ public class RenderFilterFluidMixin {
         cancellable = true
     )
 	private static void render(
-        FluidRenderer fluidRenderer,
-        FluidRenderHandler handler,
-        BlockAndTintGetter level,
-        BlockPos pos,
-        FluidRenderer.Output output,
-        BlockState blockState,
-        FluidState fluidState,
-        FluidRendering.DefaultRenderer defaultRenderer,
-        CallbackInfo ci
+        final FluidRenderer fluidRenderer,
+        final FluidRenderHandler handler,
+        final BlockAndTintGetter level,
+        final BlockPos pos,
+        final FluidRenderer.Output output,
+        final BlockState blockState,
+        final FluidState fluidState,
+        final FluidRendering.DefaultRenderer defaultRenderer,
+        final CallbackInfo ci
     ) {
         if(!RenderFilterHandler.getActiveBlocks().contains(blockState.getBlock())) {
             ci.cancel();
@@ -54,14 +54,14 @@ public class RenderFilterFluidMixin {
         cancellable = true
     )
 	private static void renderDefault(
-        FluidRenderer fluidRenderer,
-        FluidRenderHandler handler,
-        BlockAndTintGetter level,
-        BlockPos pos,
-        FluidRenderer.Output output,
-        BlockState blockState,
-        FluidState fluidState,
-        CallbackInfo ci
+        final FluidRenderer fluidRenderer,
+        final FluidRenderHandler handler,
+        final BlockAndTintGetter level,
+        final BlockPos pos,
+        final FluidRenderer.Output output,
+        final BlockState blockState,
+        final FluidState fluidState,
+        final CallbackInfo ci
     ) {
         if(!RenderFilterHandler.getActiveBlocks().contains(blockState.getBlock())) {
             ci.cancel();
@@ -76,13 +76,13 @@ public class RenderFilterFluidMixin {
         cancellable = true
     )
 	private static void renderVanillaDefault(
-        FluidRenderer fluidRenderer,
-        BlockAndTintGetter level,
-        BlockPos pos,
-        FluidRenderer.Output output,
-        BlockState blockState,
-        FluidState fluidState,
-        CallbackInfo ci
+        final FluidRenderer fluidRenderer,
+        final BlockAndTintGetter level,
+        final BlockPos pos,
+        final FluidRenderer.Output output,
+        final BlockState blockState,
+        final FluidState fluidState,
+        final CallbackInfo ci
     ) {
         if(!RenderFilterHandler.getActiveBlocks().contains(blockState.getBlock())) {
             ci.cancel();

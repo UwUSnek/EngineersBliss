@@ -10,7 +10,9 @@
         "rendering.RenderFilterFluidMixin",
         "rendering.RenderFilterBlockEntityMixin",
 
-        "rendering.CustomOutlinesMixin"
+        "rendering.CustomOutlinesMixin",
+
+        "interactions.InteractionFilterMixin"
     ],
     "injectors": {
         "defaultRequire": 1
