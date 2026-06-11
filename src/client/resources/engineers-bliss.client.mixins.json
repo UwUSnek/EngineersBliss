@@ -5,10 +5,8 @@
     "client": [
         "screens.PauseScreenMixin",
 
-        "rendering.RenderFilterModelMixin",
+        "rendering.RenderFilterBlockMixin",
         "rendering.RenderFilterLightMixin",
-        "rendering.RenderFilterFluidMixin",
-        "rendering.RenderFilterBlockEntityMixin",
 
         "rendering.CustomOutlinesMixin",
 

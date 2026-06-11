@@ -40,6 +40,11 @@ public class RenderingScreen extends Screen {
         this.parent = parent;
     }
 
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
 
 
 

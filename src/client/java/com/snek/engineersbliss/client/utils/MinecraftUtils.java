@@ -70,6 +70,7 @@ public class MinecraftUtils {
                 if(chunk != null) r.add(chunk);
             }
         }
+
         return r;
     }
 
