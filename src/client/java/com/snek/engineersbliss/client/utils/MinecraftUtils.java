@@ -25,22 +25,48 @@ public class MinecraftUtils {
 
 
     /**
+     * Calculates the amount of currently loaded chunks.
+     * ! Ideally, one would access the cache's storage and get the length of the chunk array directly,
+     * ! but the class is private and there is no easy way to access the instance and reflection breaks stuff.
+     * ! This is a bit slower but it gets the job done. Just don't spam it.
+     * @return The number of loaded chunks
+     */
+    public static int getLoadedChunkNumber() {
+        int r = 0;
+        final ClientLevel level = Minecraft.getInstance().level;
+        final ClientChunkCache cache = level.getChunkSource();
+
+        final int centerX = level.players().get(0).chunkPosition().x();
+        final int centerZ = level.players().get(0).chunkPosition().z();
+        final int radius = Minecraft.getInstance().options.renderDistance().get();
+
+        for(int x = centerX - radius; x <= centerX + radius; x++) {
+            for(int z = centerZ - radius; z <= centerZ + radius; z++) {
+                final LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
+                if(chunk != null) ++r;
+            }
+        }
+        return r;
+    }
+
+
+
+    /**
      * Creates a list containing the currently loaded chunks.
-     * @param cache The chunk cache instance
      * @return The list of loaded chunks
      */
     public static List<LevelChunk> getLoadedChunks() {
         final List<LevelChunk> r = new ArrayList<>();
-        ClientLevel level = Minecraft.getInstance().level;
+        final ClientLevel level = Minecraft.getInstance().level;
         final ClientChunkCache cache = level.getChunkSource();
 
-        int centerX = level.players().get(0).chunkPosition().x();
-        int centerZ = level.players().get(0).chunkPosition().z();
-        int radius = Minecraft.getInstance().options.renderDistance().get();
+        final int centerX = level.players().get(0).chunkPosition().x();
+        final int centerZ = level.players().get(0).chunkPosition().z();
+        final int radius = Minecraft.getInstance().options.renderDistance().get();
 
         for(int x = centerX - radius; x <= centerX + radius; x++) {
             for(int z = centerZ - radius; z <= centerZ + radius; z++) {
-                LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
+                final LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
                 if(chunk != null) r.add(chunk);
             }
         }
@@ -55,10 +81,10 @@ public class MinecraftUtils {
      * @return The list of blocks in loaded chunks
      */
     public static List<Block> calcLoadedBlockList() {
-        ClientLevel level = Minecraft.getInstance().level;
+        final ClientLevel level = Minecraft.getInstance().level;
         final Set<Block> r = new HashSet<>();
 
-        for(LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
+        for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
             final ChunkPos chunkPos = chunk.getPos();
 
             for(int x = chunkPos.getMinBlockX(); x < chunkPos.getMaxBlockX(); x++) {

@@ -36,13 +36,15 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.BlockModelLighter;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
 
 
 
 
 final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry> {
     final int rowItemHeight;
-    private final List<Block> allBlocks;
+    private final List<Block> allBlocks;    // All blocks in the game, vanilla order
+    private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
     private final RenderingScreen screen;
 
     BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
@@ -57,6 +59,9 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
                 allBlocks.add(block);
             }
         });
+
+        // Loaded blocks are only calculated when needed
+        loadedBlocks = new ArrayList<>();
     }
 
 
@@ -74,13 +79,52 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         setScrollAmount(0);
 	}
 
+
+
+
     void filter(final String query) {
 
-        //TODO select tags #
-        //TODO find ids
-        //TODO && and
-        //TODO || or
-        //FIXME remove all spaces before parsing
+        // Clean up the query string so its easier to parse
+        final String cleanQuery = query
+            .replaceAll("[^a-zA-Z0-9\\-_'&|#@:]", "")   // Remove special characters (but keep operators, path separators, prefixes and common special characters)
+            .replaceAll("\\s*([&|#@])\\s*", "$1")       // Remove spaces near operators and prefixes
+        ;
+
+
+        // Iterate over or groups first, so or operators naturally end up with lower priority
+        final List<Block> orResults = new ArrayList<>();
+        for(String orGroup : cleanQuery.split("\\|")) {
+
+            // Iterate over inner and groups, then add the results to the or results
+            final List<Block> andResults = new ArrayList<>(allBlocks);
+            for(String andGroup : orGroup.split("&")) {
+                andResults.removeIf(block -> {
+
+                    // Filter tags
+                    if(andGroup.startsWith("#")) {
+                        final String tagQuery = andGroup.substring(1).toLowerCase();
+                        return !block.builtInRegistryHolder().tags().anyMatch(tag -> tag.location().toString().toLowerCase().contains(tagQuery));
+                    }
+
+                    // Filter loaded blocks and recalculate list if needed
+                    if(andGroup.startsWith("@")) {
+                        if(loadedBlocks.isEmpty()) {
+                            loadedBlocks.addAll(MinecraftUtils.calcLoadedBlockList());
+                        }
+                        return !loadedBlocks.contains(block);
+                    }
+
+                    // Filter name and ID
+                    else {
+                        final String nameIdQuery = andGroup.toLowerCase();
+                        final String name = block.getName().getString().toLowerCase();
+                        final String id = BuiltInRegistries.BLOCK.getKey(block).toString().toLowerCase();
+                        return !name.contains(nameIdQuery) && !id.contains(nameIdQuery);
+                    }
+                });
+            }
+            orResults.addAll(andResults);
+        }
 
         //TODO add "Rendering: 12 blocks"
         //TODO add "Search result: 5232 blocks"
@@ -88,15 +132,15 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         //TODO add "searching for:
         //TODO          ID or Name contains "hi"
         //TODO          Any of the tags contains "uwu"
+
+        // Clear block list and load the filtered entries
         clear();
-        // for(final Block block : allBlocks) {
-        for(final Block block : MinecraftUtils.calcLoadedBlockList()) { //FIXME only refresh loaded blocks list after cache expires, like 10s, or link cache lifetime to UI lifetime
-            final String name = block.getName().getString().toLowerCase();
-            if(query.isEmpty() || name.contains(query)) {
-                this.addEntry(new Entry(block, screen));
-            }
+        for(final Block block : orResults) {
+            addEntry(new Entry(block, screen));
         }
     }
+
+
 
 
     @Override
@@ -220,3 +264,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         }
     }
 }
+
+//TODO add a grid that shows each item in a selection and in which container it was found
+//TODO each cell has a teleport option
+//TODO different stacks appear in different rows, hovering shows the item as if in a UI

@@ -1,11 +1,15 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientChunkCache;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 
 
@@ -106,15 +110,19 @@ public class RenderingScreen extends Screen {
 
     @Override
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+        final int lineBase = this.height;
+        final int lineHeight = this.font.lineHeight;
+
         super.extractRenderState(graphics, mouseX, mouseY, delta);
         graphics.centeredText(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
 
 
         // Draw find syntax instructions
-        final String[] syntax_instructions = {
-            "#",  "Search block tag",
-            "&&", "Search multiple strings",
-            "||", "Search either of two strings"
+        final String[] syntaxInstructions = {
+            "@", "Search blocks in loaded chunks",
+            "#", "Search block tag",
+            "&", "Search multiple strings",
+            "|", "Search either of two strings"
         };
         graphics.text(this.font, syntax_instructions[0], BORDER_WIDTH,      this.height - this.font.lineHeight * 4, 0xFFAAAAAA);
         graphics.text(this.font, syntax_instructions[2], BORDER_WIDTH,      this.height - this.font.lineHeight * 3, 0xFFAAAAAA);
