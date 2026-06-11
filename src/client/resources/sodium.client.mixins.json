@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "package": "com.snek.engineersbliss.client.mixin",
+    "compatibilityLevel": "JAVA_25",
+    "plugin": "com.snek.engineersbliss.plugins.SodiumMixinPlugin",
+    "client": [
+        "rendering.sodium.RenderFilterBlockSodiumMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "overwrites": {
+        "requireAnnotations": true
+    }
+}
