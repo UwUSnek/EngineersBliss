@@ -6,6 +6,8 @@ import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import net.caffeinemc.mods.sodium.client.world.LevelSlice;
+import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents.TagsLoaded;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -18,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 @Mixin(LevelSlice.class)
 public class RenderFilterBlockSodiumMixin {
+
     @Inject(
         method = "getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;",
         at = @At("RETURN"),
@@ -26,7 +29,22 @@ public class RenderFilterBlockSodiumMixin {
     )
     public void getBlockState(int blockX, int blockY, int blockZ, CallbackInfoReturnable<BlockState> cir) {
         BlockState state = cir.getReturnValue();
-        if(state != null && !RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
+        if(state == null) return;
+
+
+        //! Block vanilla and return if rendering is disabled
+        if(
+            !RenderFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty() ||
+            !RenderFilterHandler.getRenderBlockEntities() && state.hasBlockEntity()           ||
+            !RenderFilterHandler.getRenderBlocks()        && state.getFluidState().isEmpty() && !state.hasBlockEntity()
+        ) {
+            cir.setReturnValue(Blocks.AIR.defaultBlockState());
+            return;
+        }
+
+
+        // If rendering of the block category is enabled, check the individual filters
+        if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());
         }
     }

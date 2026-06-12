@@ -16,7 +16,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
     public void onInitializeClient() {
 
         // Initialize filter handler
-        RenderFilterHandler.init(false);
+        RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
 
 
         // Register scheduler

@@ -32,25 +32,56 @@ public class RenderFilterHandler {
 
 
 
+
     private static final Map<Block, Boolean> enabledStates  = new HashMap<>();
     private static final Map<Block, Boolean> isolatedStates = new HashMap<>();
     private static boolean targetHiddenBlocks;
-
-    public static void init(final boolean defaultTargetHiddenBlocks) {
-        targetHiddenBlocks = defaultTargetHiddenBlocks;
-        BuiltInRegistries.BLOCK.forEach(block -> {
-            setEnabled(block, true);
-            setIsolated(block, false);
-        });
-        recalculate();
-    }
-
     public static void  setEnabled(final Block block, final boolean  enabled) { enabledStates.put(block, enabled); }
     public static void setIsolated(final Block block, final boolean isolated) { isolatedStates.put(block, isolated); }
     public static void setTargetHiddenBlocks(final boolean newTargetHiddenBlocks) { targetHiddenBlocks = newTargetHiddenBlocks; }
     public static boolean  getEnabled(final Block block) { return enabledStates.get(block); }
     public static boolean getIsolated(final Block block) { return isolatedStates.get(block); }
     public static boolean getTargetHiddenBlocks() { return targetHiddenBlocks; }
+
+
+
+
+    private static boolean renderBlockOutlines;
+    private static boolean renderBlocks;
+    private static boolean renderBlockEntities;
+    private static boolean renderFluids;
+    public static void setRenderBlockOutlines(final boolean newRenderBlockOutlines) { renderBlockOutlines = newRenderBlockOutlines; }
+    public static void setRenderBlocks       (final boolean newRenderBlocks)        { renderBlocks        = newRenderBlocks;        }
+    public static void setRenderBlockEntities(final boolean newRenderBlockEntities) { renderBlockEntities = newRenderBlockEntities; }
+    public static void setRenderFluids       (final boolean newRenderFluids)        { renderFluids        = newRenderFluids;        }
+    public static boolean getRenderBlockOutlines() { return renderBlockOutlines; }
+    public static boolean getRenderBlocks       () { return renderBlocks;        }
+    public static boolean getRenderBlockEntities() { return renderBlockEntities; }
+    public static boolean getRenderFluids       () { return renderFluids;        }
+
+
+
+
+    // Init function. Must be called during the mod's initialization
+    public static void init(
+        final boolean defaultTargetHiddenBlocks,
+        final boolean defaultRenderBlockOutlines,
+        final boolean defaultRenderBlocks,
+        final boolean defaultRenderBlockEntities,
+        final boolean defaultRenderFluids
+    ) {
+        targetHiddenBlocks = defaultTargetHiddenBlocks;
+        renderBlockOutlines = defaultRenderBlockOutlines;
+        renderBlocks        = defaultRenderBlocks;
+        renderBlockEntities = defaultRenderBlockEntities;
+        renderFluids        = defaultRenderFluids;
+
+        BuiltInRegistries.BLOCK.forEach(block -> {
+            setEnabled(block, true);
+            setIsolated(block, false);
+        });
+        recalculate();
+    }
 
 
 

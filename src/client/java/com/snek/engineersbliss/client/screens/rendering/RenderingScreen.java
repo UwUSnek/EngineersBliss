@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
+import java.util.function.Consumer;
+
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
@@ -30,8 +32,16 @@ public class RenderingScreen extends Screen {
     private EditBox searchField;
     private BlockListWidget blockList;
 
+
+
+    private boolean changedRenderBlockOutlines = false; //! Initialized by the screen's init function, also changed by buttons
+    private boolean changedRenderBlocks        = false; //! Initialized by the screen's init function, also changed by buttons
+    private boolean changedRenderBlockEntities = false; //! Initialized by the screen's init function, also changed by buttons
+    private boolean changedRenderFluids        = false; //! Initialized by the screen's init function, also changed by buttons
     private boolean applied = false;
     public void markChanged() { applied = false; }
+
+
 
 
     public RenderingScreen(final Screen parent) {
@@ -42,6 +52,13 @@ public class RenderingScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+
+    private Button addButton(String label, Consumer<Button> action, int x, int y, int width) {
+        Button r = Button.builder(Component.literal(label), b -> { action.accept(b); b.setFocused(false); }).size(width, BUTTON_HEIGHT).pos(x, y).build();
+        this.addRenderableWidget(r);
+        return r;
     }
 
 
@@ -56,23 +73,16 @@ public class RenderingScreen extends Screen {
 
 
 
+
         // Left sidebar
 
         searchField = new EditBox(this.font, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, Component.literal("Search..."));
+        searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));
         searchField.setX(BORDER_WIDTH);
         this.addRenderableWidget(searchField);
 
-        Button targetButton = Button.builder(Component.literal("Target hidden blocks: " + (RenderFilterHandler.getTargetHiddenBlocks() ? "YES" : "NO")), b -> {
-            boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
-            RenderFilterHandler.setTargetHiddenBlocks(newState);
-            b.setMessage(Component.literal("Target hidden blocks: " + (newState ? "YES" : "NO")));
-            b.setFocused(false);
-            System.out.println("NEW STATE: " + newState);
-        }).size(panelWidthSide, BUTTON_HEIGHT).build();
-        targetButton.setX(BORDER_WIDTH);
-        targetButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
-        this.addRenderableWidget(targetButton);
+        addButton(getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()), this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
 
 
 
@@ -88,25 +98,19 @@ public class RenderingScreen extends Screen {
 
         // Right sidebar
 
-        Button resetButton = Button.builder(Component.literal("Reset filters"), b -> { resetFilters(); b.setFocused(false); }).size(panelWidthSide, BUTTON_HEIGHT).build();
-        resetButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
-        resetButton.setY(LIST_TOP);
-        this.addRenderableWidget(resetButton);
+        addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH,           LIST_TOP,                                       panelWidthSide);
+        addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH,           LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT),     panelWidthSide);
+        addButton("Apply",             this::apply,            panelWidthSide + panelWidthCenter + BORDER_WIDTH * 3, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, halfButtonWidth);
+        addButton("Done",              this::done,             this.width - BORDER_WIDTH - halfButtonWidth,          LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, halfButtonWidth);
 
-        Button lightButton = Button.builder(Component.literal("Recalculate light"), b -> { recalculateLight(); b.setFocused(false); }).size(panelWidthSide, BUTTON_HEIGHT).build();
-        lightButton.setX(this.width - panelWidthSide - BORDER_WIDTH);
-        lightButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
-        this.addRenderableWidget(lightButton);
-
-        Button applyButton = Button.builder(Component.literal("Apply"), b -> { apply(); b.setFocused(false); }).size(halfButtonWidth, BUTTON_HEIGHT).build();
-        applyButton.setX(panelWidthSide + panelWidthCenter + BORDER_WIDTH * 3);
-        applyButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2);
-        this.addRenderableWidget(applyButton);
-
-        Button doneButton = Button.builder(Component.literal("Done"), b -> { done(); }).size(halfButtonWidth, BUTTON_HEIGHT).build();
-        doneButton.setX(this.width - BORDER_WIDTH - halfButtonWidth);
-        doneButton.setY(LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2);
-        this.addRenderableWidget(doneButton);
+        changedRenderBlockOutlines = RenderFilterHandler.getRenderBlockOutlines();
+        changedRenderBlocks        = RenderFilterHandler.getRenderBlocks();
+        changedRenderBlockEntities = RenderFilterHandler.getRenderBlockEntities();
+        changedRenderFluids        = RenderFilterHandler.getRenderFluids();
+        addButton(getToggleText_renderBlockOutlines(changedRenderBlockOutlines), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
+        addButton(getToggleText_renderBlocks       (changedRenderBlocks),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
+        addButton(getToggleText_renderBlockEntities(changedRenderBlockEntities), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
+        addButton(getToggleText_renderFluids       (changedRenderFluids),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide);
     }
 
 
@@ -128,16 +132,10 @@ public class RenderingScreen extends Screen {
             "&", "Search multiple strings",
             "|", "Search either of two strings"
         };
-
-        graphics.text(this.font, syntaxInstructions[0], BORDER_WIDTH,      lineBase - lineHeight * 5, 0xFFAAAAAA);
-        graphics.text(this.font, syntaxInstructions[2], BORDER_WIDTH,      lineBase - lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, syntaxInstructions[4], BORDER_WIDTH,      lineBase - lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, syntaxInstructions[6], BORDER_WIDTH,      lineBase - lineHeight * 2, 0xFFAAAAAA);
-
-        graphics.text(this.font, syntaxInstructions[1], BORDER_WIDTH + 16, lineBase - lineHeight * 5, 0xFFAAAAAA);
-        graphics.text(this.font, syntaxInstructions[3], BORDER_WIDTH + 16, lineBase - lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, syntaxInstructions[5], BORDER_WIDTH + 16, lineBase - lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, syntaxInstructions[7], BORDER_WIDTH + 16, lineBase - lineHeight * 2, 0xFFAAAAAA);
+        for(int i = 0; i < syntaxInstructions.length / 2; i++) {
+            graphics.text(this.font, syntaxInstructions[i * 2],     BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, syntaxInstructions[i * 2 + 1], BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+        }
 
 
         // Draw render stats
@@ -182,32 +180,107 @@ public class RenderingScreen extends Screen {
     }
 
 
-    public void apply() {
+
+
+    public void apply(final Button b) {
         if(!applied) {
             blockList.flushChanges();
+            RenderFilterHandler.setRenderBlockOutlines(changedRenderBlockOutlines);
+            RenderFilterHandler.setRenderBlocks       (changedRenderBlocks);
+            RenderFilterHandler.setRenderBlockEntities(changedRenderBlockEntities);
+            RenderFilterHandler.setRenderFluids       (changedRenderFluids);
+
             RenderFilterHandler.recalculate();
             RenderFilterHandler.refreshRendering();
+
             applied = true;
         }
     }
 
 
-    public void done() {
-        apply();
+
+
+    public void done(final Button b) {
+        apply(b);
         onClose();
     }
 
-
-
-    public void resetFilters() {
+    public void resetFilters(final Button b) {
         markChanged();
-        RenderFilterHandler.init(RenderFilterHandler.getTargetHiddenBlocks());
+        RenderFilterHandler.init(
+            RenderFilterHandler.getTargetHiddenBlocks(),
+            RenderFilterHandler.getRenderBlockOutlines(),
+            RenderFilterHandler.getRenderBlocks(),
+            RenderFilterHandler.getRenderBlockEntities(),
+            RenderFilterHandler.getRenderFluids()
+        );
         blockList.filter(searchField.getValue());
-        apply();
+        apply(b);
     }
 
-
-    public void recalculateLight() {
+    public void recalculateLight(final Button b) {
         RenderFilterHandler.recalculateLight();
     }
+
+
+
+    public String getToggleText_targetHiddenBlocks(final boolean state) {
+        return "Target hidden blocks: " + (state ? "YES" : "NO");
+    }
+    public void toggleTargetHiddenBlocks(final Button b) {
+        boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
+        RenderFilterHandler.setTargetHiddenBlocks(newState);
+        b.setMessage(Component.literal(getToggleText_targetHiddenBlocks(newState)));
+    }
+
+
+    public String getToggleText_renderBlockOutlines(final boolean state) {
+        return "Render block outlines: " + (state ? "YES" : "NO");
+    }
+    public void toggleRenderBlockOutlines(final Button b) {
+        boolean newState = !changedRenderBlockOutlines;
+        changedRenderBlockOutlines = newState;
+        markChanged(); //! Flushed on application
+        b.setMessage(Component.literal(getToggleText_renderBlockOutlines(newState)));
+    }
+
+
+    public String getToggleText_renderBlocks(final boolean state) {
+        return "Render blocks: " + (state ? "YES" : "NO");
+    }
+    public void toggleRenderBlocks(final Button b) {
+        boolean newState = !changedRenderBlocks;
+        changedRenderBlocks = newState;
+        markChanged(); //! Flushed on application
+        b.setMessage(Component.literal(getToggleText_renderBlocks(newState)));
+    }
+
+
+    public String getToggleText_renderBlockEntities(final boolean state) {
+        return "Render block entities: " + (state ? "YES" : "NO");
+    }
+    public void toggleRenderBlockEntities(final Button b) {
+        boolean newState = !changedRenderBlockEntities;
+        changedRenderBlockEntities = newState;
+        markChanged(); //! Flushed on application
+        b.setMessage(Component.literal(getToggleText_renderBlockEntities(newState)));
+    }
+
+
+    public String getToggleText_renderFluids(final boolean state) {
+        return "Render fluids: " + (state ? "YES" : "NO");
+    }
+    public void toggleRenderFluids(final Button b) {
+        boolean newState = !changedRenderFluids;
+        changedRenderFluids = newState;
+        markChanged(); //! Flushed on application
+        b.setMessage(Component.literal(getToggleText_renderFluids(newState)));
+    }
 }
+
+
+
+
+//TODO add presets to the left
+//TODO save and load buttons on the right of the preset name (which is editable)
+//TODO storage them in the config folder of the client
