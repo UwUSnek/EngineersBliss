@@ -13,6 +13,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Block;
 
 
 
@@ -164,6 +165,15 @@ public class RenderingScreen extends Screen {
         graphics.text(this.font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
         graphics.text(this.font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
         graphics.text(this.font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
+
+
+
+
+        // Draw big preview
+        if(blockList.getHoveredEntry() != null) {
+            Block block = blockList.getHoveredEntry().getBlock();
+            BlockRenderer.renderBlockIcon(graphics, block, BORDER_WIDTH + panelWidthSide / 4, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, panelWidthSide / 2);
+        }
     }
 
 

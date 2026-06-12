@@ -84,15 +84,18 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 	}
 
 
+    // Public access for getHovered()
+    public Entry getHoveredEntry() {
+        return super.getHovered();
+    }
+
+
 
 
     public void filter(final String query) {
 
-        // Clean up the query string so its easier to parse
-        final String cleanQuery = query
-            .replaceAll("[^a-zA-Z0-9\\-_'&|#@:]", "")   // Remove special characters (but keep operators, path separators, prefixes and common special characters)
-            .replaceAll("\\s*([&|#@])\\s*", "$1")       // Remove spaces near operators and prefixes
-        ;
+        // Remove spaces near operators and prefixes
+        final String cleanQuery = query.replaceAll("\\s*([&|#@])\\s*", "$1");
 
 
         // Iterate over or groups first, so or operators naturally end up with lower priority
@@ -213,12 +216,14 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
 
-    class Entry extends AbstractSelectionList.Entry<BlockListWidget.Entry> {
+    public class Entry extends AbstractSelectionList.Entry<BlockListWidget.Entry> {
         private final Block block;
         private final Checkbox enableBox;
         private final Checkbox isolateBox;
         private final RenderingScreen screen;
         private boolean isChanged = false;
+
+        public Block getBlock() { return block; }
 
 
         public Entry(final Block block, final RenderingScreen screen) {

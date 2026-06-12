@@ -17,17 +17,39 @@ public class BlockRenderer {
 
     /**
      * Renders the icon of the specified block on the provided Graphics.
+     * The default size is 16px.
      * @param graphics The output Graphics
      * @param block The block to render
      * @param x The X position
      * @param y The Y position
      */
     public static void renderBlockIcon(GuiGraphicsExtractor graphics, Block block, int x, int y) {
+        renderBlockIcon(graphics, block, x, y, 16);
+    }
+
+
+
+
+    /**
+     * Renders the icon of the specified block on the provided Graphics.
+     * The default size is 16px.
+     * @param graphics The output Graphics
+     * @param block The block to render
+     * @param x The X position
+     * @param y The Y position
+     * @param size The size of the icon
+     */
+    public static void renderBlockIcon(GuiGraphicsExtractor graphics, Block block, int x, int y, int size) {
         if(block.asItem() == Items.AIR) {
             //TODO add "?" image for missing item forms
         }
         else {
-            graphics.item(new ItemStack(block), x, y);
+            float scale = size / 16f;
+            graphics.pose().pushMatrix();
+            graphics.pose().translate(x, y);
+            graphics.pose().scale(scale, scale);
+            graphics.item(new ItemStack(block), 0, 0);
+            graphics.pose().popMatrix();
         }
     }
 
