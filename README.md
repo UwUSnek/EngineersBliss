@@ -34,11 +34,11 @@ By UwU_Snek.
   - Count and find items within containers in a selected area
   - Easily replace item stacks remotely
 <br>
-<br>
-> NOTICE<br>
-Engineer's Bliss can be used without installing it on the server, but many features won't be available.<br>
-Furthermore, the mod modifies many aspects of the game in a way that would give the user unfair advantages in competitive gamemodes.
-Many public servers consider this a **bannable offense**. Use at your own risk.
+
+> **NOTICE**<br>
+> Engineer's Bliss can be used without installing it on the server, but many features won't be available.<br>
+> Furthermore, the mod modifies many aspects of the game in a way that would give the user unfair advantages in competitive gamemodes.<br>
+> Many public servers consider this a **bannable offense**. Use at your own risk.
 
 <br>
 
@@ -54,13 +54,14 @@ For anything else, you can DM me on Discord (uwu_snek).
 <br>
 This project is **Free Open Source Software** licensed under the **GNU General Public License version 3**.<br>
 You are free to copy, modify, and redistribute it, as long as you provide the source code under equivalent license terms. See [LICENSE](./LICENSE).
+
 <br>
-<br>
+
 > **IMPORTANT**<br>
-**Do not submit AI-generated code**.<br>
-A significant part of AI-generated pull requests are created to artificially inflate the author's GitHub contributions,
-and are often low-quality and not useful to the actual developers working on the project.<br>
-As such, AI-generated pull requests will be rejected and closed **without review**.
+> **Do not submit AI-generated code**.<br>
+> A significant part of AI-generated pull requests are created to artificially inflate the author's GitHub contributions,
+> and are often low-quality and not useful to the actual developers working on the project.<br>
+> As such, AI-generated pull requests will be rejected and closed **without review**.
 
 <br>
 
