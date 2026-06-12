@@ -3,10 +3,11 @@
     "id": "engineers-bliss",
     "version": "${version}",
     "name": "Engineer's Bliss",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "description": "A rendering and utility mod for Redstone engineers",
     "authors": [
         "UwU_Snek",
-        "UwU_Snek's cat, Cesare"
+        "Snek's cat Cesare",
+        "Snek's 83 cans of Monster"
     ],
     "contact": {
         "homepage": "https://fabricmc.net/",
