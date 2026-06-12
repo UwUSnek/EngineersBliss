@@ -88,15 +88,6 @@ public class RenderingScreen extends Screen {
 
 
 
-        // Main list
-        blockList = new BlockListWidget(this.minecraft, this, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
-        blockList.setX(panelWidthSide + BORDER_WIDTH * 2);
-        this.addRenderableWidget(blockList);
-        blockList.filter("");
-
-
-
-
         // Right sidebar
 
         addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH,           LIST_TOP,                                       panelWidthSide);
@@ -112,6 +103,16 @@ public class RenderingScreen extends Screen {
         addButton(getToggleText_renderBlocks       (changedRenderBlocks),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
         addButton(getToggleText_renderBlockEntities(changedRenderBlockEntities), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
         addButton(getToggleText_renderFluids       (changedRenderFluids),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide);
+
+
+
+
+        // Main list
+        //! This needs to be rendered last to let tooltips show on top of right side buttons
+        blockList = new BlockListWidget(this.minecraft, this, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
+        blockList.setX(panelWidthSide + BORDER_WIDTH * 2);
+        this.addRenderableWidget(blockList);
+        blockList.filter("");
     }
 
 
