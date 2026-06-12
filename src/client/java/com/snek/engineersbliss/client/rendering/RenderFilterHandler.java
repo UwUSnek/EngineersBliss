@@ -83,7 +83,7 @@ public class RenderFilterHandler {
 
     /**
      * Recalculates the light in all loaded chunks.
-     * This will freeze the game for a few ticks/seconds/minutes depending on machine specs.
+     * This will freeze the game for a few ticks/seconds/minutes depending on machine's specs.
      */
     public static void recalculateLight() {
         final Minecraft minecraft = Minecraft.getInstance();
@@ -111,11 +111,7 @@ public class RenderFilterHandler {
 
             for(int x = 0; x < 16; x++) {
                 for(int z = 0; z < 16; z++) {
-
-                    // // //! Clamp to 2048 to avoid light engine issues
-                    // // //! runLightUpdates must be called after changing no more than 2046 blocks
                     for(int y = maxY; y >= minY; y--) {
-                        // if(maxY - y >= 2048) break;
                         lightEngine.checkBlock(new BlockPos(baseX + x, y, baseZ + z));
                     }
                 }

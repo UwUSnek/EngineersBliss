@@ -17,14 +17,12 @@ import net.minecraft.world.level.lighting.LightEngine;
 @Mixin(LightEngine.class)
 public class RenderFilterLightMixin {
 
-    @Inject(
-        method = "getOpacity",
-        at = @At("HEAD"),
-        cancellable = true
-    )
+    @Inject(method = "getOpacity", at = @At("HEAD"), cancellable = true)
     public void getOpacity(final BlockState state, final CallbackInfoReturnable<Integer> cir) {
         if(state.getBlock() != Blocks.AIR && !RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
-            cir.setReturnValue(0);
+            cir.setReturnValue(1);
+            //! Light opacity 0 lets light propagate indefinitely
+            //! Light opacity 1 dampens light by 1 ech block travelled, like Air
         }
     }
 }

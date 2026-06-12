@@ -277,3 +277,8 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 //FIXME Fix heads and skulls appearing twice in the list (wall/floor variants)
 //FIXME Fix signs appearing twice in the list (wall/floor variants)
 //FIXME Fix hanging signs appearing twice in the list (wall/floor variants)
+
+
+//TODO add presets to the left
+//TODO save and load buttons on the right of the preset name (which is editable)
+//TODO storage them in the config folder of the client
