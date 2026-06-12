@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens.rendering;
+package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -22,12 +22,16 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
+import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheStorageAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -41,13 +45,13 @@ import net.minecraft.tags.TagKey;
 
 
 
-final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry> {
+public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry> {
     final int rowItemHeight;
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
     private final RenderingScreen screen;
 
-    BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
+    public BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
         super(client, width, height, top, itemHeight);
         this.screen = screen;
         this.rowItemHeight = itemHeight;
@@ -74,7 +78,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         return this.getX() + this.width - this.scrollbarWidth() - 2;
     }
 
-	void clear() {
+	public void clear() {
 		this.clearEntries();
         setScrollAmount(0);
 	}
@@ -82,7 +86,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
 
 
-    void filter(final String query) {
+    public void filter(final String query) {
 
         // Clean up the query string so its easier to parse
         final String cleanQuery = query
@@ -93,11 +97,11 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
         // Iterate over or groups first, so or operators naturally end up with lower priority
         final List<Block> orResults = new ArrayList<>();
-        for(String orGroup : cleanQuery.split("\\|")) {
+        for(final String orGroup : cleanQuery.split("\\|")) {
 
             // Iterate over inner and groups, then add the results to the or results
             final List<Block> andResults = new ArrayList<>(allBlocks);
-            for(String andGroup : orGroup.split("&")) {
+            for(final String andGroup : orGroup.split("&")) {
                 andResults.removeIf(block -> {
 
                     // Filter tags
@@ -153,6 +157,9 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         // TODO seems to be possibly accessibility related
     }
 
+
+
+
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
@@ -166,10 +173,23 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
         graphics.text(minecraft.font, Component.literal("Isolate"), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
-        if(getHovered() != null) {
-           setSelected(getHovered());
+        // Handle hover events and draw tooltips
+        final var hoveredEntry = getHovered();
+        if(hoveredEntry != null) {
+            setSelected(hoveredEntry);
+            final Block block = hoveredEntry.block;
+            final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
+            tooltipLines.add(0, new BlockTooltipComponent(block));
+            tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
+            block.builtInRegistryHolder().tags().forEach(tag ->
+                tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
+            );
+            graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
         }
     }
+
+
+
 
     @Override
     public int getRowWidth() {
@@ -178,7 +198,7 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 
     // Flushes changes to persistent render settings
     public void flushChanges() {
-        for(Entry e : children()) {
+        for(final Entry e : children()) {
             if(e.isChanged) {
                 RenderFilterHandler.setEnabled(e.block, e.enableBox.selected());
                 RenderFilterHandler.setIsolated(e.block, e.isolateBox.selected());
@@ -215,24 +235,9 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
             final int midY = this.getY() + BlockListWidget.this.rowItemHeight / 2;
 
 
-            // Block icon
-            if(block.asItem() == Items.AIR) {
-                //TODO add "?" image for missing item forms
-            }
-            else {
-                final ItemStack stack = new ItemStack(block);
-                graphics.item(stack, this.getContentX(), midY - 8);
-            }
-
-
-            // Block name
-            graphics.text(
-                BlockListWidget.this.minecraft.font,
-                block.getName(),
-                this.getContentX() + 20,
-                midY - 4,
-                0xFFFFFFFF
-            );
+            // Block icon and name
+            BlockRenderer.renderBlockIcon(graphics, block, this.getContentX(), midY - 8);
+            BlockRenderer.renderBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
 
 
             // Checkboxes
@@ -277,8 +282,3 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 //FIXME Fix heads and skulls appearing twice in the list (wall/floor variants)
 //FIXME Fix signs appearing twice in the list (wall/floor variants)
 //FIXME Fix hanging signs appearing twice in the list (wall/floor variants)
-
-
-//TODO add presets to the left
-//TODO save and load buttons on the right of the preset name (which is editable)
-//TODO storage them in the config folder of the client

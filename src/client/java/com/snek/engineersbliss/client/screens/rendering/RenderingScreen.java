@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 import java.util.function.Consumer;
 
 import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.Minecraft;
