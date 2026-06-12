@@ -1,20 +1,22 @@
 package com.snek.engineersbliss.client.rendering;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.scheduler.LoopTaskHandler;
+import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 
 
@@ -23,6 +25,10 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 public class RenderFilterHandler {
     private RenderFilterHandler() { }
 
+    private static int lightRecalcMax = 0;
+    private static int lightRecalcProgress = 0;
+    public static int getLightRecalcMax() { return lightRecalcMax; }
+    public static int getLightRecalcProgress() { return lightRecalcProgress; }
 
 
 
@@ -49,8 +55,8 @@ public class RenderFilterHandler {
 
 
 
-    private static final List<Block> activeBlocks = new ArrayList<>(); //FIXME replace with hash something so lookup is quick
-    public static List<Block> getActiveBlocks() { return activeBlocks; }
+    private static final Set<Block> activeBlocks = new HashSet<>();
+    public static Set<Block> getActiveBlocks() { return activeBlocks; }
 
     public static void recalculate() {
         activeBlocks.clear();
@@ -75,39 +81,48 @@ public class RenderFilterHandler {
 
 
 
+    /**
+     * Recalculates the light in all loaded chunks.
+     * This will freeze the game for a few ticks/seconds/minutes depending on machine specs.
+     */
     public static void recalculateLight() {
-
         final Minecraft minecraft = Minecraft.getInstance();
         final ClientLevel level = minecraft.level;
         if(level == null) return;
 
-        final int viewDist = minecraft.options.renderDistance().get() + 1;
-        final int camX = SectionPos.blockToSectionCoord(minecraft.player.blockPosition().getX());
-        final int camZ = SectionPos.blockToSectionCoord(minecraft.player.blockPosition().getZ());
-        final ClientChunkCache cache = level.getChunkSource();
-        final LevelLightEngine lightEngine = cache.getLightEngine();
+        final LevelLightEngine lightEngine = level.getChunkSource().getLightEngine();
+        final int minY = level.getMinY();
+        final int maxY = level.getMaxY();
+        final List<LevelChunk> chunks = MinecraftUtils.getLoadedChunks();
+        lightRecalcMax = chunks.size();
+        lightRecalcProgress = 0;
 
-        for(int radius = 0; radius <= viewDist; radius++) {
-            for(int cx = camX - radius; cx <= camX + radius; cx++) {
-                for(int cz = camZ - radius; cz <= camZ + radius; cz++) {
-                    if(Math.abs(cx - camX) != radius && Math.abs(cz - camZ) != radius) continue;
-                    final LevelChunk chunk = cache.getChunk(cx, cz, ChunkStatus.FULL, false);
-                    if(chunk == null) continue;
-                    for(int x = 0; x < 16; x++) {
-                        for(int z = 0; z < 16; z++) {
-                            final int worldX = chunk.getPos().getMinBlockX() + x;
-                            final int worldZ = chunk.getPos().getMinBlockZ() + z;
-                            for(int y = level.getMaxY() - 1; y >= level.getMinY(); y--) {
-                                lightEngine.checkBlock(new BlockPos(worldX, y, worldZ));
-                            }
-                            lightEngine.runLightUpdates();
-                        }
+        final int[] index = { 0 };
+        final LoopTaskHandler[] handle = { null };
+        handle[0] = Scheduler.loop(1, 1, () -> {
+            if(index[0] >= chunks.size()) {
+                handle[0].cancel();
+                return;
+            }
+
+            final LevelChunk chunk = chunks.get(index[0]++);
+            final int baseX = chunk.getPos().getMinBlockX();
+            final int baseZ = chunk.getPos().getMinBlockZ();
+
+            for(int x = 0; x < 16; x++) {
+                for(int z = 0; z < 16; z++) {
+
+                    // // //! Clamp to 2048 to avoid light engine issues
+                    // // //! runLightUpdates must be called after changing no more than 2046 blocks
+                    for(int y = maxY; y >= minY; y--) {
+                        // if(maxY - y >= 2048) break;
+                        lightEngine.checkBlock(new BlockPos(baseX + x, y, baseZ + z));
                     }
                 }
             }
-        }
+
+            lightEngine.runLightUpdates();
+            ++lightRecalcProgress;
+        });
     }
-    //FIXME optimize light refresh
-    //FIXME optimize light refresh
-    //FIXME optimize light refresh
 }

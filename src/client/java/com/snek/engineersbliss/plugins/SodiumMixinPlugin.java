@@ -8,6 +8,8 @@ import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
+import com.snek.engineersbliss.EngineerSBliss;
+
 import net.fabricmc.loader.api.FabricLoader;
 
 
@@ -16,7 +18,7 @@ import net.fabricmc.loader.api.FabricLoader;
 public class SodiumMixinPlugin implements IMixinConfigPlugin {
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+    public boolean shouldApplyMixin(final String targetClassName, final String mixinClassName) {
         if(mixinClassName.equals("com.snek.engineersbliss.client.mixin.rendering.sodium.RenderFilterBlockSodiumMixin")) {
             return FabricLoader.getInstance().isModLoaded("sodium");
         }
@@ -24,10 +26,14 @@ public class SodiumMixinPlugin implements IMixinConfigPlugin {
     }
 
 
-    @Override public void onLoad(String mixinPackage) { /* Empty */ }
+    @Override public void onLoad(final String mixinPackage) {
+        EngineerSBliss.LOGGER.info("Sodium detected. Using Sodium rendering filters");
+    }
+
+
     @Override public String getRefMapperConfig() { return null; }
-    @Override public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) { /* Empty */ }
+    @Override public void acceptTargets(final Set<String> myTargets, final Set<String> otherTargets) { /* Empty */ }
     @Override public List<String> getMixins() { return Collections.emptyList(); }
-    @Override public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) { /* Empty */ }
-    @Override public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) { /* Empty */ }
+    @Override public void preApply(final String targetClassName, final ClassNode targetClass, final String mixinClassName, final IMixinInfo mixinInfo) { /* Empty */ }
+    @Override public void postApply(final String targetClassName, final ClassNode targetClass, final String mixinClassName, final IMixinInfo mixinInfo) { /* Empty */ }
 }

@@ -31,3 +31,5 @@ public class RenderFilterBlockSodiumMixin {
         }
     }
 }
+
+//TODO add Iris compatibility. maybe shaders too?

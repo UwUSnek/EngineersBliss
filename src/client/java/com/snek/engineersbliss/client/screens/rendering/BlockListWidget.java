@@ -268,3 +268,12 @@ final class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry>
 //TODO add a grid that shows each item in a selection and in which container it was found
 //TODO each cell has a teleport option
 //TODO different stacks appear in different rows, hovering shows the item as if in a UI
+
+
+
+
+//FIXME ------------ specify the type of block and keep both of them in the list, so filtering logic doesn't break
+
+//FIXME Fix heads and skulls appearing twice in the list (wall/floor variants)
+//FIXME Fix signs appearing twice in the list (wall/floor variants)
+//FIXME Fix hanging signs appearing twice in the list (wall/floor variants)
