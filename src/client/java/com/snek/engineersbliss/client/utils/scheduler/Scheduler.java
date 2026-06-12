@@ -44,7 +44,7 @@ public final class Scheduler {
     public static void tick() {
 
         // For each task that has to be executed
-        while(taskQueue.peek().getTargetTick() <= tickNum) {
+        while(!taskQueue.isEmpty() && taskQueue.peek().getTargetTick() <= tickNum) {
 
             // Execute it
             final __base_TaskHandler handler = taskQueue.poll();
