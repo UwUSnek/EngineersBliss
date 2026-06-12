@@ -43,11 +43,12 @@ public class PauseScreenMixin extends Screen {
             .ifPresent(first -> {
                 final int x = first.getX() - buttonWidth - gap;
                 final int y = first.getY();
-                addButton("Rendering",        b -> this.minecraft.setScreen(new RenderingScreen(this)), x, y + BUTTON_SPACING * 0, buttonWidth);
-                addButton("Groups",           b -> {},                                                  x, y + BUTTON_SPACING * 1, buttonWidth);
-                addButton("Block Properties", b -> {},                                                  x, y + BUTTON_SPACING * 2, buttonWidth);
-                addButton("Muffler",          b -> {},                                                  x, y + BUTTON_SPACING * 3, buttonWidth);
-                addButton("Container tools",  b -> {},                                                  x, y + BUTTON_SPACING * 4, buttonWidth);
+                addButton("Rendering",   b -> this.minecraft.setScreen(new RenderingScreen(this)), x, y + BUTTON_SPACING * 0, buttonWidth);
+                addButton("Overlays",        b -> {},                                             x, y + BUTTON_SPACING * 1, buttonWidth);
+                addButton("Groups",           b -> {},                                             x, y + BUTTON_SPACING * 2, buttonWidth);
+                addButton("Block Properties", b -> {},                                             x, y + BUTTON_SPACING * 3, buttonWidth);
+                addButton("Muffler",          b -> {},                                             x, y + BUTTON_SPACING * 4, buttonWidth);
+                addButton("Container tools",  b -> {},                                             x, y + BUTTON_SPACING * 5, buttonWidth);
             })
         ;
     }
