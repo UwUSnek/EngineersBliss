@@ -1,12 +1,9 @@
 package com.snek.engineersbliss;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 
 
@@ -18,13 +15,7 @@ public class EngineerSBliss implements ModInitializer {
     @Override
     public void onInitialize() {
 
-
-        // Register scheduler
-        ServerTickEvents.END_SERVER_TICK.register(_server -> {
-            Scheduler.tick();
-        });
-
         // Log library loading
-        LOGGER.info("Engineer's Bliss loaded :3");
+        LOGGER.info("Engineer's Bliss server loaded :3");
     }
 }
