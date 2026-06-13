@@ -51,6 +51,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
     private final RenderingScreen screen;
 
+
     public BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
         super(client, width, height, top, itemHeight);
         this.screen = screen;
@@ -59,7 +60,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         // Create list of all blocks
         allBlocks = new ArrayList<>();
         BuiltInRegistries.BLOCK.forEach(block -> {
-            if(block != Blocks.AIR) {
+            if(block != Blocks.AIR && block != Blocks.CAVE_AIR && block != Blocks.VOID_AIR) {
                 allBlocks.add(block);
             }
         });

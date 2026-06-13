@@ -62,7 +62,10 @@ public class RenderFilterHandler {
 
 
 
-    // Init function. Must be called during the mod's initialization
+    /**
+     * Init function. Must be called during the mod's initialization.
+     * This function can be called again to reset the filter back to the default state.
+     */
     public static void init(
         final boolean defaultTargetHiddenBlocks,
         final boolean defaultRenderBlockOutlines,
@@ -76,6 +79,7 @@ public class RenderFilterHandler {
         renderBlockEntities = defaultRenderBlockEntities;
         renderFluids        = defaultRenderFluids;
 
+        //! This inclused the 3 air blocks but it doesn't really matter, they only ned to be hidden in the UI
         BuiltInRegistries.BLOCK.forEach(block -> {
             setEnabled(block, true);
             setIsolated(block, false);
