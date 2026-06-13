@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.rendering;
+package com.snek.engineersbliss.client.feature_handlers;
 
 import java.util.HashMap;
 import java.util.HashSet;

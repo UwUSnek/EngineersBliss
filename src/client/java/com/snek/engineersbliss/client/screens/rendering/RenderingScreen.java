@@ -1,8 +1,7 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
-import java.util.function.Consumer;
-
-import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
+import com.snek.engineersbliss.client.screens.__base_PauseScreen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
@@ -10,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
@@ -18,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 
 
 
-public class RenderingScreen extends Screen {
+public class RenderingScreen extends __base_PauseScreen {
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 4;
     public static final int LIST_TOP = 32;
@@ -30,7 +28,6 @@ public class RenderingScreen extends Screen {
     private int halfButtonWidth;
 
 
-    private final Screen parent;
     private EditBox searchField;
     private BlockListWidget blockList;
 
@@ -46,21 +43,8 @@ public class RenderingScreen extends Screen {
 
 
 
-    public RenderingScreen(final Screen parent) {
-        super(Component.literal(""));
-        this.parent = parent;
-    }
-
-    @Override
-    public boolean isPauseScreen() {
-        return false;
-    }
-
-
-    private Button addButton(String label, Consumer<Button> action, int x, int y, int width) {
-        Button r = Button.builder(Component.literal(label), b -> { action.accept(b); b.setFocused(false); }).size(width, BUTTON_HEIGHT).pos(x, y).build();
-        this.addRenderableWidget(r);
-        return r;
+    public RenderingScreen() {
+        super();
     }
 
 
@@ -172,23 +156,8 @@ public class RenderingScreen extends Screen {
         // Draw big preview
         if(blockList.getHoveredEntry() != null) {
             Block block = blockList.getHoveredEntry().getBlock();
-            BlockRenderer.renderBlockIcon(graphics, block, BORDER_WIDTH + panelWidthSide / 4, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, panelWidthSide / 2);
+            BlockRenderer.renderBlockSpriteSheet(graphics, block, BORDER_WIDTH + panelWidthSide / 4, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, panelWidthSide / 2);
         }
-    }
-
-
-
-
-    @Override
-    public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        //! No blurred background
-    }
-
-
-
-    @Override
-    public void onClose() {
-        this.minecraft.setScreen(null); // Close screen and go back to game
     }
 
 

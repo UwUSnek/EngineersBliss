@@ -6,10 +6,11 @@
   - ~~Custom block outlines~~
 
 - **Alternative textures**
-  - Unobstructive Slime Block texture
-  - Unobstructive Honey Block texture
-  - Unobstructive Mangrove Roots texture
-  - Minimal Redstone Dust texture
+  - Transparent Slime Block
+  - Transparent Honey Block
+  - Unobstructive Mangrove Roots
+  - Unobstructive Scaffolding
+  - Line Redstone Dust
 
 - **Overlays**:
   - Highlight the blocks moved by a piston

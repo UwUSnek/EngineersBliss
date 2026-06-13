@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.mixin.screens;
 
-import java.util.function.UnaryOperator;
+import java.util.function.Supplier;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -61,11 +61,11 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    private Button addButton(String label, UnaryOperator<Screen> screenFactory, int x, int y, int width) {
+    private Button addButton(String label, Supplier<Screen> screenFactory, int x, int y, int width) {
         Button btn = Button.builder(
             Component.literal(label),
                 b -> {
-                minecraft.setScreen(screenFactory.apply(this));
+                minecraft.setScreen(screenFactory.get());
                 b.setFocused(false);
             })
             .bounds(x, y, width, BUTTON_HEIGHT)

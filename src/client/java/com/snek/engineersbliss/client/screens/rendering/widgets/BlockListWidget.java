@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
+import com.snek.engineersbliss.client.screens.Layout;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -197,7 +198,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
     @Override
     public int getRowWidth() {
-        return this.width - RenderingScreen.BORDER_WIDTH * 2;
+        return this.width - Layout.BORDER_WIDTH * 2;
     }
 
     // Flushes changes to persistent render settings

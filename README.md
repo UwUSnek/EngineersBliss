@@ -20,7 +20,7 @@ By UwU_Snek.
   - Unobstructive Slime Block texture
   - Unobstructive Honey Block texture
   - Unobstructive Mangrove Roots texture
-  - Minimal Redstone Dust texture
+  - Line Redstone Dust texture
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Display the update order of redstone wire and rail circuits

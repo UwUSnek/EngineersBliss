@@ -1,7 +1,9 @@
 package com.snek.engineersbliss.client;
 
+import javax.imageio.spi.IIORegistry;
+
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -14,6 +16,13 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
+
+        // Register WebP ImageIO reader
+        IIORegistry.getDefaultInstance().registerServiceProvider(
+            new com.luciad.imageio.webp.WebPImageReaderSpi()
+        );
+
 
         // Initialize filter handler
         RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
