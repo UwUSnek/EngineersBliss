@@ -4,7 +4,12 @@
   - ~~Selectively hide blocks by type or rendering method~~
   - ~~Click through hidden blocks~~
   - ~~Custom block outlines~~
-  - Unobstructive Slime and Honey block textures
+
+- **Alternative textures**
+  - Unobstructive Slime Block texture
+  - Unobstructive Honey Block texture
+  - Unobstructive Mangrove Roots texture
+  - Minimal Redstone Dust texture
 
 - **Overlays**:
   - Highlight the blocks moved by a piston

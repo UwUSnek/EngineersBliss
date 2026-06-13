@@ -1,6 +1,8 @@
 package com.snek.engineersbliss.client.mixin.screens;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +33,7 @@ public class PauseScreenMixin extends Screen {
 
 
     @Inject(method = "init", at = @At("TAIL"))
-    public void addButton(final CallbackInfo ci) {
+    public void init(final CallbackInfo ci) {
         final int buttonWidth = 100;
         final int gap = 16;
 
@@ -41,21 +43,36 @@ public class PauseScreenMixin extends Screen {
             .map(w -> (Button) w)
             .findFirst()
             .ifPresent(first -> {
-                final int x = first.getX() - buttonWidth - gap;
+                final int x1 = first.getX() - buttonWidth - gap;
+                final int x2 = x1 - buttonWidth - gap;
                 final int y = first.getY();
-                addButton("Rendering",   b -> this.minecraft.setScreen(new RenderingScreen(this)), x, y + BUTTON_SPACING * 0, buttonWidth);
-                addButton("Overlays",        b -> {},                                             x, y + BUTTON_SPACING * 1, buttonWidth);
-                addButton("Groups",           b -> {},                                             x, y + BUTTON_SPACING * 2, buttonWidth);
-                addButton("Block Properties", b -> {},                                             x, y + BUTTON_SPACING * 3, buttonWidth);
-                addButton("Muffler",          b -> {},                                             x, y + BUTTON_SPACING * 4, buttonWidth);
-                addButton("Container tools",  b -> {},                                             x, y + BUTTON_SPACING * 5, buttonWidth);
+
+                addButton("Rendering",        RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth);
+                addButton("Overlays",         RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth);
+                addButton("Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth);
+                addButton("Alt textures",     RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth);
+
+                addButton("Block Properties", RenderingScreen::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
+                addButton("Muffler",          RenderingScreen::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
+                addButton("Container tools",  RenderingScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
+                addButton("Gameplay tweaks",  RenderingScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth);
             })
         ;
     }
 
 
-    private Button addButton(String label, Consumer<Button> action, int x, int y, int width) {
-        Button btn = Button.builder(Component.literal(label), b -> { action.accept(b); b.setFocused(false); }).bounds(x, y, width, BUTTON_HEIGHT).build();
+
+
+    private Button addButton(String label, UnaryOperator<Screen> screenFactory, int x, int y, int width) {
+        Button btn = Button.builder(
+            Component.literal(label),
+                b -> {
+                minecraft.setScreen(screenFactory.apply(this));
+                b.setFocused(false);
+            })
+            .bounds(x, y, width, BUTTON_HEIGHT)
+            .build()
+        ;
         return this.addRenderableWidget(btn);
     }
 }
