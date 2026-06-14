@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

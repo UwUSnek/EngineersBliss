@@ -23,6 +23,18 @@ public class MinecraftUtils {
 
 
 
+
+    /**
+     * Mark all chunks for re-rendering.
+     * This doesn't update lighting.
+     */
+    public static void refreshRendering() {
+        Minecraft.getInstance().levelRenderer.allChanged();
+    }
+
+
+
+
     /**
      * Calculates the amount of currently loaded chunks.
      * ! Ideally, one would access the cache's storage and get the length of the chunk array directly,
@@ -47,6 +59,7 @@ public class MinecraftUtils {
         }
         return r;
     }
+
 
 
 

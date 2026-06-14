@@ -89,7 +89,7 @@ public class AvifTextureReaderMixin {
                 Scheduler.run(() -> {
                     final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
                     final IntBuffer ibuf = MemoryUtil.memIntBuffer(image.getPointer(), w * h);
-                    for (int i = 0; i < pixels.length; i++) {
+                    for(int i = 0; i < pixels.length; i++) {
                         final int p = pixels[i];
                         ibuf.put(i, (p & 0xFF00FF00) | ((p & 0x00FF0000) >> 16) | ((p & 0x000000FF) << 16));
                     }

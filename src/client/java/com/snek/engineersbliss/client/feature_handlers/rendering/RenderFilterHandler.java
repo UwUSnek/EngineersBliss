@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers;
+package com.snek.engineersbliss.client.feature_handlers.rendering;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -101,16 +101,6 @@ public class RenderFilterHandler {
         if(activeBlocks.isEmpty()) for(final Entry<Block, Boolean> entry : enabledStates.entrySet()) {
             if(entry.getValue().booleanValue()) activeBlocks.add(entry.getKey());
         }
-    }
-
-
-
-
-
-    public static void refreshRendering() {
-
-        // Mark all chunks for re-rendering (doesn't include light updates)
-        Minecraft.getInstance().levelRenderer.allChanged();
     }
 
 

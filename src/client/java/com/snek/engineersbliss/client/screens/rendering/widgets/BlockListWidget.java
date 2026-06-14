@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.screens.Layout;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;

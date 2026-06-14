@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
-import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.screens.__base_PauseScreen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -11,18 +11,11 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.block.Block;
 
 
 
 
 public class RenderingScreen extends __base_PauseScreen {
-    public static final int BORDER_WIDTH = 10;
-    public static final int BORDER_HEIGHT = 4;
-    public static final int LIST_TOP = 32;
-
-
-    public static final int BUTTON_HEIGHT = 20;
     private int panelWidthCenter;
     private int panelWidthSide;
     private int halfButtonWidth;
@@ -163,7 +156,7 @@ public class RenderingScreen extends __base_PauseScreen {
             RenderFilterHandler.setRenderFluids       (changedRenderFluids);
 
             RenderFilterHandler.recalculate();
-            RenderFilterHandler.refreshRendering();
+            MinecraftUtils.refreshRendering();
 
             applied = true;
         }

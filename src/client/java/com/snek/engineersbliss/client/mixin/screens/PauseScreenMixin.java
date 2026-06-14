@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.gui.components.Button;
@@ -48,7 +49,7 @@ public class PauseScreenMixin extends Screen {
                 addButton("Rendering",        RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth);
                 addButton("Overlays",         RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth);
                 addButton("Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth);
-                addButton("Alt textures",     RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth);
+                addButton("Alt textures",     AltTexturesScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth);
 
                 addButton("Block Properties", RenderingScreen::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
                 addButton("Muffler",          RenderingScreen::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
