@@ -3,6 +3,9 @@
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
+        "misc.WebpTextureReaderMixin",
+        "misc.AvifTextureReaderMixin",
+
         "screens.PauseScreenMixin",
 
         "rendering.RenderFilterBlockMixin",

@@ -4,9 +4,12 @@ import javax.imageio.spi.IIORegistry;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.RenderFilterHandler;
+import com.snek.engineersbliss.client.mixin.misc.AvifTextureReaderMixin;
+import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 

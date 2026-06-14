@@ -189,7 +189,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
             block.builtInRegistryHolder().tags().forEach(tag ->
                 tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
             );
-            graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY, DefaultTooltipPositioner.INSTANCE, null);
+            graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
         }
     }
 
