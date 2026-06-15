@@ -16,11 +16,16 @@ import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PoweredRailBlock;
+import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.ScaffoldingBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.block.state.properties.RedstoneSide;
 
 
@@ -222,6 +227,19 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
             }
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)) {
                 stateOnlyIds.add("/" + state.getValue(RedStoneWireBlock.POWER));
+            }
+        }
+        else if(block instanceof BaseRailBlock rail) {
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)) {
+                final RailShape shape = state.getValue(rail.getShapeProperty());
+                if(shape.isSlope()) {
+                    keepVanilla = false;
+
+                    //! Shape names have the format "ascending_<direction>" so i use that directly by removing "ascending_" as that matches the json file names perfectly
+                    String railModelName = "/raised" + shape.getName().replace("ascending", "");
+                    if(block != Blocks.RAIL) railModelName += state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off";
+                    stateOnlyIds.add(railModelName);
+                }
             }
         }
         else {
