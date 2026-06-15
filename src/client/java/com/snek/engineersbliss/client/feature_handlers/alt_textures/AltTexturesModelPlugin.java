@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,12 +61,14 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
             if(!blocks.contains(block)) return model;
 
 
-            final String stateId = calcStateId(state);
+            final List<String> stateIds = calcStateIds(state);
             return new BlockStateModel.UnbakedRoot() {
                 @Override
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
                     model.resolveDependencies(resolver);
-                    resolver.markDependency(Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId));
+                    for(String stateId : stateIds) {
+                        resolver.markDependency(Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId));
+                    }
                 }
 
                 @Override
@@ -91,11 +94,12 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
             if(!blocks.contains(block)) return model;
 
 
-            final String stateId = calcStateId(state);
-            final Identifier customId = Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId);
-            final BlockStateModelPart part = new Variant(customId).bake(context.baker());
-            customModels.put(stateId, new SingleVariant(part));
-
+            // For each state ID (model part name) of the current blockstate, bake the model and store it locally
+            for(String stateId : calcStateIds(state)) {
+                final Identifier customId = Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId);
+                final BlockStateModelPart part = new Variant(customId).bake(context.baker());
+                customModels.put(stateId, new SingleVariant(part));
+            }
             return model;
         });
 
@@ -117,8 +121,10 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
                 @Override
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {
                     if(AltTexturesHandler.getFeature(block)) {
-                        final BlockStateModel custom = customModels.get(calcStateId(state));
-                        custom.collectParts(random, output);
+                        for(String stateId : calcStateIds(state)) {
+                            final BlockStateModel custom = customModels.get(stateId);
+                            custom.collectParts(random, output);
+                        }
                     }
                     else {
                         vanilla.collectParts(random, output);
@@ -146,20 +152,27 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
 
 
 
-    private static String calcStateId(BlockState state) {
+    private static List<String> calcStateIds(BlockState state) {
         final Block block = state.getBlock();
 
 
-        // Calculate custom state ID. This includes the trailing underscore
-        String stateOnlyId = "";
+        // Calculate custom state IDs. These include the trailing underscore but not the block's ID
+        List<String> stateOnlyIds = new ArrayList<>();
         if(block == Blocks.SCAFFOLDING) {
-            stateOnlyId = "_" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable");
+            stateOnlyIds.add("_" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable"));
+        }
+        else {
+            stateOnlyIds.add("");
         }
         //TODO redstone
 
 
         // Merge with block ID and return
         final String id = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        return id + stateOnlyId;
+        List<String> r = new ArrayList<>();
+        for(String stateOnlyId : stateOnlyIds) {
+            r.add(id + stateOnlyId);
+        }
+        return r;
     }
 }
