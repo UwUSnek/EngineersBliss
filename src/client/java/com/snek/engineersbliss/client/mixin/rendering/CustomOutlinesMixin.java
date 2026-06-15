@@ -67,27 +67,28 @@ public abstract class CustomOutlinesMixin {
         final double reach = minecraft.player.blockInteractionRange();
         final Vec3 end = start.add(look.scale(reach));
 
-        final BlockHitResult result = BlockGetter.traverseBlocks(start, end, null,
+
+        // Traverse blocks and save hidden blocks the ray passes through
+        //! Hit result is not stored anywhere as all relevant information is stored in the output block list
+        //! Both outline rendering and interaction handling use the block list and ignore the vanilla hit result
+        BlockGetter.traverseBlocks(start, end, null,
             (context, pos) -> {
                 final BlockState state = minecraft.level.getBlockState(pos);
                 final Block block = state.getBlock();
                 if(block == Blocks.AIR) return null;
-                customOutlineBlocks.add(pos.immutable());
-                if(!RenderFilterHandler.getActiveBlocks().contains(block)) {
-                    return null;
-                }
+
+                // Text ray hit, add to the list of outlines if it intersects the shape
                 final BlockHitResult newHit = state.getShape(minecraft.level, pos, CollisionContext.of(minecraft.player)).clip(start, end, pos);
-                return newHit != null ? newHit : BlockHitResult.miss(end, Direction.UP, pos);
+                if(newHit != null) {
+                    customOutlineBlocks.add(pos.immutable());
+                }
+
+                // If the block is hidden or the ray didn't intersect, return null (keep traversing). Otherwise return the hit result
+                if(!RenderFilterHandler.getActiveBlocks().contains(block) || newHit == null) return null;
+                else return newHit;
             },
             context -> BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end))
         );
-
-        if(result != null && result.getType() != HitResult.Type.MISS) {
-            minecraft.hitResult = result;
-        }
-        else {
-            minecraft.hitResult = BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end));
-        }
     }
 
 
@@ -127,7 +128,7 @@ public abstract class CustomOutlinesMixin {
                 this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.black(102), lineWidth);
             }
             else {
-                this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.color(0.3f, 0x888888), lineWidth * 1.25f);
+                this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.color(0.3f, 0x666666), lineWidth * 1.25f);
             }
         }
 
