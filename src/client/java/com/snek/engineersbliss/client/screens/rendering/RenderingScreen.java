@@ -25,6 +25,11 @@ public class RenderingScreen extends __base_PauseScreen {
     private BlockListWidget blockList;
 
 
+    Button renderBlockOutlinesButton = null;
+    Button renderBlocksButton = null;
+    Button renderBlockEntitiesButton = null;
+    Button renderFluidsButton = null;
+
 
     public RenderingScreen() {
         super();
@@ -46,6 +51,7 @@ public class RenderingScreen extends __base_PauseScreen {
         // Left sidebar
 
         searchField = new EditBox(this.font, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, Component.literal("Search..."));
+        searchField.setHint(Component.literal("Search..."));
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));
         searchField.setX(BORDER_WIDTH);
@@ -61,10 +67,10 @@ public class RenderingScreen extends __base_PauseScreen {
         addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP,                                   panelWidthSide);
         addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
 
-        addButton(getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide);
-        addButton(getToggleText_renderBlocks       (RenderFilterHandler.getRenderBlocks()),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
-        addButton(getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
-        addButton(getToggleText_renderFluids       (RenderFilterHandler.getRenderFluids()),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
+        renderBlockOutlinesButton = addButton(getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide);
+        renderBlocksButton        = addButton(getToggleText_renderBlocks       (RenderFilterHandler.getRenderBlocks()),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
+        renderBlockEntitiesButton = addButton(getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
+        renderFluidsButton        = addButton(getToggleText_renderFluids       (RenderFilterHandler.getRenderFluids()),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
 
 
 
@@ -129,10 +135,23 @@ public class RenderingScreen extends __base_PauseScreen {
     }
 
 
+
+
     public void resetFilters(final Button b) {
+
+        // Reset settings
         RenderFilterHandler.init(false, true, true, true, true);
         MinecraftUtils.refreshRendering();
+
+        // Respawn the entire screen to update buttons and checkboxes. Manually restore search query
+        final String searchQuery = searchField.getValue();
+        final RenderingScreen newScreen = new RenderingScreen();
+        minecraft.setScreen(newScreen);
+        newScreen.searchField.setValue(searchQuery);
     }
+
+
+
 
     public void recalculateLight(final Button b) {
         RenderFilterHandler.recalculateLight();

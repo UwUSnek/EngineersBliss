@@ -47,6 +47,8 @@ import net.minecraft.tags.TagKey;
 
 
 public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry> {
+    public static final int CHECKBOX_AREA_WIDTH = 40;
+
     final int rowItemHeight;
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
@@ -178,18 +180,22 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         graphics.text(minecraft.font, Component.literal("Isolate"), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
-        // Handle hover events and draw tooltips
+        // Handle hover events
         final var hoveredEntry = getHovered();
         if(hoveredEntry != null) {
             setSelected(hoveredEntry);
-            final Block block = hoveredEntry.block;
-            final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
-            tooltipLines.add(0, new BlockTooltipComponent(block));
-            tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
-            block.builtInRegistryHolder().tags().forEach(tag ->
-                tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
-            );
-            graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+
+            // If hovering on the left half of the entry, spawn block info tooltip
+            if(mouseX < hoveredEntry.getX() + getRowWidth() - CHECKBOX_AREA_WIDTH * 2) {
+                final Block block = hoveredEntry.block;
+                final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
+                tooltipLines.add(0, new BlockTooltipComponent(block));
+                tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
+                block.builtInRegistryHolder().tags().forEach(tag ->
+                    tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
+                );
+                graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+            }
         }
     }
 
@@ -238,11 +244,11 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
             // Checkboxes
             final int checkboxY = this.getY() + (BlockListWidget.this.rowItemHeight - 20) / 2;
 
-            enableBox.setX(this.getX() + rowWidth - 80);
+            enableBox.setX(this.getX() + rowWidth - CHECKBOX_AREA_WIDTH * 2 + (CHECKBOX_AREA_WIDTH - enableBox.getWidth()) / 2);
             enableBox.setY(checkboxY);
             enableBox.extractRenderState(graphics, mouseX, mouseY, tickDelta);
 
-            isolateBox.setX(this.getX() + rowWidth - 40);
+            isolateBox.setX(this.getX() + rowWidth - CHECKBOX_AREA_WIDTH + (CHECKBOX_AREA_WIDTH - isolateBox.getWidth()) / 2);
             isolateBox.setY(checkboxY);
             isolateBox.extractRenderState(graphics, mouseX, mouseY, tickDelta);
         }
