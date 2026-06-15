@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
@@ -132,22 +133,17 @@ public class MinecraftUtils {
 
     /**
      * Calculates the list of unique blocks present in the currently loaded chunks.
+     * This can sometimes return false positives due to how Minecraft handles block pelettes.
      * @return The list of blocks in loaded chunks
      */
     public static List<Block> calcLoadedBlockList() {
-        final ClientLevel level = Minecraft.getInstance().level;
         final Set<Block> r = new HashSet<>();
-
         for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
-            final ChunkPos chunkPos = chunk.getPos();
-
-            for(int x = chunkPos.getMinBlockX(); x < chunkPos.getMaxBlockX(); x++) {
-                for(int z = chunkPos.getMinBlockZ(); z < chunkPos.getMaxBlockZ(); z++) {
-                    for(int y = level.getMinY(); y < level.getMaxY(); y++) {
-                        final Block block = chunk.getBlockState(new BlockPos(x, y, z)).getBlock();
-                        if(block != Blocks.AIR) r.add(block);
-                    }
-                }
+            for(final LevelChunkSection section : chunk.getSections()) {
+                section.getStates().getAll(state -> {
+                    final Block block = state.getBlock();
+                    if(block != Blocks.AIR) r.add(block);
+                });
             }
         }
         return new ArrayList<>(r);
