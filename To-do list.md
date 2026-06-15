@@ -6,11 +6,11 @@
   - ~~Custom block outlines~~
 
 - **Alternative textures**
-  - Transparent Slime Block
-  - Transparent Honey Block
-  - Unobstructive Mangrove Roots
-  - Unobstructive Scaffolding
-  - Line Redstone Dust
+  - ~~Transparent Slime Block~~
+  - ~~Transparent Honey Block~~
+  - ~~Unobstructive Mangrove Roots~~
+  - ~~Unobstructive Scaffolding~~
+  - ~~Line Redstone Dust~~
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -29,6 +29,8 @@
   - Disable fluid flushing
   - Disable block gravity
   - Disable explosion block damage
+  - Custom reach distance
+  - Custom interaction radius (click multiple blocks at once)
   - Infinite item sources
   - Rate counter hoppers
 
