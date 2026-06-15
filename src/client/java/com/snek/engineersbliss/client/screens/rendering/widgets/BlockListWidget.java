@@ -265,7 +265,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
             if(isolateBox.mouseClicked(event, doubleClick)) {
                 RenderFilterHandler.setIsolated(block, isolateBox.selected());
                 RenderFilterHandler.recalculate();
-                MinecraftUtils.refreshSectionsContaining(block);
+                MinecraftUtils.refreshRendering();
                 return true;
             }
             return super.mouseClicked(event, doubleClick);
