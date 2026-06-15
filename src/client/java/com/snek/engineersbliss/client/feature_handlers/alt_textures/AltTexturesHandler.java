@@ -22,6 +22,7 @@ public class AltTexturesHandler {
         features.put(Blocks.MANGROVE_ROOTS, true);
         features.put(Blocks.SCAFFOLDING, true);
         features.put(Blocks.REDSTONE_WIRE, true);
+        features.put(Blocks.REDSTONE_WIRE, true);
     }
 
 

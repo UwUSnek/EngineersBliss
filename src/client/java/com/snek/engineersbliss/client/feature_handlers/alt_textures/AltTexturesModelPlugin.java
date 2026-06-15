@@ -18,8 +18,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.ScaffoldingBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RedstoneSide;
 
 
 
@@ -37,9 +39,8 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
         Blocks.SLIME_BLOCK,
         Blocks.HONEY_BLOCK,
         Blocks.MANGROVE_ROOTS,
-        Blocks.SCAFFOLDING
-
-        //TODO redstone wire
+        Blocks.SCAFFOLDING,
+        Blocks.REDSTONE_WIRE
 
         //TODO unify arrays with AltTexturesHandler
     );
@@ -161,10 +162,37 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
         if(block == Blocks.SCAFFOLDING) {
             stateOnlyIds.add("_" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable"));
         }
+        else if(block == Blocks.REDSTONE_WIRE) {
+            final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
+            final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
+            final RedstoneSide s = state.getValue(RedStoneWireBlock.SOUTH);
+            final RedstoneSide w = state.getValue(RedStoneWireBlock.WEST);
+
+            // Central dot and power level
+            if(
+                n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE ||
+                n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
+                e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
+                s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
+                w != RedstoneSide.NONE && n != RedstoneSide.NONE
+            ) stateOnlyIds.add("/dot");
+            stateOnlyIds.add("/" + state.getValue(RedStoneWireBlock.POWER));
+
+            // Side connections
+            if(n == RedstoneSide.SIDE) stateOnlyIds.add("/north_down");
+            if(e == RedstoneSide.SIDE) stateOnlyIds.add("/east_down");
+            if(s == RedstoneSide.SIDE) stateOnlyIds.add("/south_down");
+            if(w == RedstoneSide.SIDE) stateOnlyIds.add("/west_down");
+            if(n == RedstoneSide.UP) stateOnlyIds.add("/north_up");
+            if(e == RedstoneSide.UP) stateOnlyIds.add("/east_up");
+            if(s == RedstoneSide.UP) stateOnlyIds.add("/south_up");
+            if(w == RedstoneSide.UP) stateOnlyIds.add("/west_up");
+        }
         else {
             stateOnlyIds.add("");
         }
-        //TODO redstone
+
+
 
 
         // Merge with block ID and return
