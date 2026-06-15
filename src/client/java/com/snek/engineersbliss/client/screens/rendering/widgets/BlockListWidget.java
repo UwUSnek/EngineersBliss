@@ -201,16 +201,6 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         return this.width - Layout.BORDER_WIDTH * 2;
     }
 
-    // Flushes changes to persistent render settings
-    public void flushChanges() {
-        for(final Entry e : children()) {
-            if(e.isChanged) {
-                RenderFilterHandler.setEnabled(e.block, e.enableBox.selected());
-                RenderFilterHandler.setIsolated(e.block, e.isolateBox.selected());
-            }
-        }
-    }
-
 
 
 
@@ -223,8 +213,6 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         private final Checkbox enableBox;
         private final Checkbox isolateBox;
         private final RenderingScreen screen;
-        private boolean isChanged = false;
-
         public Block getBlock() { return block; }
 
 
@@ -263,13 +251,15 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
             if(enableBox.mouseClicked(event, doubleClick)) {
-                isChanged = true;
-                screen.markChanged();
+                RenderFilterHandler.setEnabled(block, enableBox.selected());
+                RenderFilterHandler.recalculate();
+                MinecraftUtils.refreshSectionsContaining(block);
                 return true;
             }
             if(isolateBox.mouseClicked(event, doubleClick)) {
-                isChanged = true;
-                screen.markChanged();
+                RenderFilterHandler.setIsolated(block, isolateBox.selected());
+                RenderFilterHandler.recalculate();
+                MinecraftUtils.refreshSectionsContaining(block);
                 return true;
             }
             return super.mouseClicked(event, doubleClick);

@@ -45,6 +45,8 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
     private static final Map<String, BlockStateModel> customModels = new ConcurrentHashMap<>();
 
 
+
+
     @Override
     public void initialize(final Context ctx) {
 

@@ -26,16 +26,6 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
 
-    private boolean changedRenderBlockOutlines = false; //! Initialized by the screen's init function, also changed by buttons
-    private boolean changedRenderBlocks        = false; //! Initialized by the screen's init function, also changed by buttons
-    private boolean changedRenderBlockEntities = false; //! Initialized by the screen's init function, also changed by buttons
-    private boolean changedRenderFluids        = false; //! Initialized by the screen's init function, also changed by buttons
-    private boolean applied = false;
-    public void markChanged() { applied = false; }
-
-
-
-
     public RenderingScreen() {
         super();
     }
@@ -68,19 +58,13 @@ public class RenderingScreen extends __base_PauseScreen {
 
         // Right sidebar
 
-        addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH,           LIST_TOP,                                       panelWidthSide);
-        addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH,           LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT),     panelWidthSide);
-        addButton("Apply",             this::apply,            panelWidthSide + panelWidthCenter + BORDER_WIDTH * 3, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, halfButtonWidth);
-        addButton("Done",              this::done,             this.width - BORDER_WIDTH - halfButtonWidth,          LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, halfButtonWidth);
+        addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP,                                   panelWidthSide);
+        addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
 
-        changedRenderBlockOutlines = RenderFilterHandler.getRenderBlockOutlines();
-        changedRenderBlocks        = RenderFilterHandler.getRenderBlocks();
-        changedRenderBlockEntities = RenderFilterHandler.getRenderBlockEntities();
-        changedRenderFluids        = RenderFilterHandler.getRenderFluids();
-        addButton(getToggleText_renderBlockOutlines(changedRenderBlockOutlines), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
-        addButton(getToggleText_renderBlocks       (changedRenderBlocks),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
-        addButton(getToggleText_renderBlockEntities(changedRenderBlockEntities), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
-        addButton(getToggleText_renderFluids       (changedRenderFluids),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide);
+        addButton(getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide);
+        addButton(getToggleText_renderBlocks       (RenderFilterHandler.getRenderBlocks()),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
+        addButton(getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
+        addButton(getToggleText_renderFluids       (RenderFilterHandler.getRenderFluids()),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
 
 
 
@@ -145,42 +129,9 @@ public class RenderingScreen extends __base_PauseScreen {
     }
 
 
-
-
-    public void apply(final Button b) {
-        if(!applied) {
-            blockList.flushChanges();
-            RenderFilterHandler.setRenderBlockOutlines(changedRenderBlockOutlines);
-            RenderFilterHandler.setRenderBlocks       (changedRenderBlocks);
-            RenderFilterHandler.setRenderBlockEntities(changedRenderBlockEntities);
-            RenderFilterHandler.setRenderFluids       (changedRenderFluids);
-
-            RenderFilterHandler.recalculate();
-            MinecraftUtils.refreshRendering();
-
-            applied = true;
-        }
-    }
-
-
-
-
-    public void done(final Button b) {
-        apply(b);
-        onClose();
-    }
-
     public void resetFilters(final Button b) {
-        markChanged();
-        RenderFilterHandler.init(
-            RenderFilterHandler.getTargetHiddenBlocks(),
-            RenderFilterHandler.getRenderBlockOutlines(),
-            RenderFilterHandler.getRenderBlocks(),
-            RenderFilterHandler.getRenderBlockEntities(),
-            RenderFilterHandler.getRenderFluids()
-        );
-        blockList.filter(searchField.getValue());
-        apply(b);
+        RenderFilterHandler.init(false, true, true, true, true);
+        MinecraftUtils.refreshRendering();
     }
 
     public void recalculateLight(final Button b) {
@@ -203,9 +154,10 @@ public class RenderingScreen extends __base_PauseScreen {
         return "Render block outlines: " + (state ? "YES" : "NO");
     }
     public void toggleRenderBlockOutlines(final Button b) {
-        boolean newState = !changedRenderBlockOutlines;
-        changedRenderBlockOutlines = newState;
-        markChanged(); //! Flushed on application
+        boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
+        RenderFilterHandler.setRenderBlockOutlines(newState);
+        RenderFilterHandler.recalculate();
+        MinecraftUtils.refreshRendering();
         b.setMessage(Component.literal(getToggleText_renderBlockOutlines(newState)));
     }
 
@@ -214,9 +166,10 @@ public class RenderingScreen extends __base_PauseScreen {
         return "Render blocks: " + (state ? "YES" : "NO");
     }
     public void toggleRenderBlocks(final Button b) {
-        boolean newState = !changedRenderBlocks;
-        changedRenderBlocks = newState;
-        markChanged(); //! Flushed on application
+        boolean newState = !RenderFilterHandler.getRenderBlocks();
+        RenderFilterHandler.setRenderBlocks(newState);
+        RenderFilterHandler.recalculate();
+        MinecraftUtils.refreshRendering();
         b.setMessage(Component.literal(getToggleText_renderBlocks(newState)));
     }
 
@@ -225,9 +178,10 @@ public class RenderingScreen extends __base_PauseScreen {
         return "Render block entities: " + (state ? "YES" : "NO");
     }
     public void toggleRenderBlockEntities(final Button b) {
-        boolean newState = !changedRenderBlockEntities;
-        changedRenderBlockEntities = newState;
-        markChanged(); //! Flushed on application
+        boolean newState = !RenderFilterHandler.getRenderBlockEntities();
+        RenderFilterHandler.setRenderBlockEntities(newState);
+        RenderFilterHandler.recalculate();
+        MinecraftUtils.refreshRendering();
         b.setMessage(Component.literal(getToggleText_renderBlockEntities(newState)));
     }
 
@@ -236,9 +190,10 @@ public class RenderingScreen extends __base_PauseScreen {
         return "Render fluids: " + (state ? "YES" : "NO");
     }
     public void toggleRenderFluids(final Button b) {
-        boolean newState = !changedRenderFluids;
-        changedRenderFluids = newState;
-        markChanged(); //! Flushed on application
+        boolean newState = !RenderFilterHandler.getRenderFluids();
+        RenderFilterHandler.setRenderFluids(newState);
+        RenderFilterHandler.recalculate();
+        MinecraftUtils.refreshRendering();
         b.setMessage(Component.literal(getToggleText_renderFluids(newState)));
     }
 }
