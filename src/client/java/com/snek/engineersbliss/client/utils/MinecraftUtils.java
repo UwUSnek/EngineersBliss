@@ -8,11 +8,13 @@ import java.util.Set;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 
 
@@ -25,11 +27,50 @@ public class MinecraftUtils {
 
 
     /**
-     * Mark all chunks for re-rendering.
+     * Mark all chunk sections containing the specified block for re-rendering.
+     * This doesn't update lighting.
+     * This can sometimes create false positives due to how Minecraft handles block pelettes.
+     * @param block The block to check for.
+     */
+    public static void refreshSectionsContaining(Block block) {
+        Minecraft minecraft = Minecraft.getInstance();
+        LevelRenderer renderer = minecraft.levelRenderer;
+        int minY = minecraft.level.getMinSectionY();
+        for(LevelChunk chunk : getLoadedChunks()) {
+            LevelChunkSection[] sections = chunk.getSections();
+            ChunkPos pos = chunk.getPos();
+
+            for(int i = 0; i < sections.length; i++) {
+                LevelChunkSection section = sections[i];
+                if(section == null || section.hasOnlyAir()) continue;
+                if(section.getStates().maybeHas(state -> state.is(block))) {
+                    renderer.setSectionDirty(pos.x(), minY + i, pos.z());
+                }
+            }
+        }
+    }
+
+
+
+
+    /**
+     * Mark all chunk sections for re-rendering.
      * This doesn't update lighting.
      */
     public static void refreshRendering() {
-        Minecraft.getInstance().levelRenderer.allChanged();
+        Minecraft minecraft = Minecraft.getInstance();
+        LevelRenderer renderer = minecraft.levelRenderer;
+        int minY = minecraft.level.getMinSectionY();
+        for(LevelChunk chunk : getLoadedChunks()) {
+            LevelChunkSection[] sections = chunk.getSections();
+            ChunkPos pos = chunk.getPos();
+
+            for(int i = 0; i < sections.length; i++) {
+                LevelChunkSection section = sections[i];
+                if(section == null || section.hasOnlyAir()) continue;
+                renderer.setSectionDirty(pos.x(), minY + i, pos.z());
+            }
+        }
     }
 
 

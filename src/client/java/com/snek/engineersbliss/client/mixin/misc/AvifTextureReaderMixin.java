@@ -1,9 +1,6 @@
 package com.snek.engineersbliss.client.mixin.misc;
 
-import com.github.gotson.nightmonkeys.heif.imageio.plugins.HeifImageReader;
-import com.github.gotson.nightmonkeys.heif.imageio.plugins.HeifImageReaderSpi;
 import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.minecraft.client.Minecraft;
@@ -16,11 +13,9 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import org.lwjgl.system.MemoryUtil;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import com.github.gotson.nightmonkeys.heif.imageio.plugins.HeifImageReader;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,9 +24,7 @@ import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 
@@ -48,10 +41,6 @@ public class AvifTextureReaderMixin {
     private AvifTextureReaderMixin() {}
 
 
-    // // A set containing the textures that are currently being loaded in asynchronously
-    // private static final Set<Identifier> loadingIn = ConcurrentHashMap.newKeySet();
-
-
 
 
     @Inject(method = "load", at = @At("HEAD"), cancellable = true)
@@ -59,7 +48,7 @@ public class AvifTextureReaderMixin {
         if(!id.getPath().endsWith(".avif")) return;
 
         NativeImage placeholder = new NativeImage(1, 1, false);
-        placeholder.setPixelABGR(0, 0, 0xFF_FF_00_FF);
+        placeholder.setPixelABGR(0, 0, 0x00_00_00_00);
         cir.setReturnValue(new TextureContents(placeholder, null));
 
         CompletableFuture.runAsync(() -> {

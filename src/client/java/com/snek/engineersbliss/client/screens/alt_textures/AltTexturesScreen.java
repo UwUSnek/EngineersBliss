@@ -58,6 +58,6 @@ public class AltTexturesScreen extends __base_PauseScreen {
         boolean newState = !AltTexturesHandler.getFeature(block);
         b.setMessage(Component.literal(getToggleText(block, newState)));
         AltTexturesHandler.setFeature(block, newState);
-        MinecraftUtils.refreshRendering();
+        MinecraftUtils.refreshSectionsContaining(block);
     }
 }
