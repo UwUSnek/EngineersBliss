@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.alt_textures;
 
+import java.util.Map;
+
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.screens.__base_PauseScreen;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -7,6 +9,8 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -20,11 +24,11 @@ public class AltTexturesScreen extends __base_PauseScreen {
 
     @Override
     protected void init() {
-        addButton(getToggleText_transparentSlimeBlock     (AltTexturesHandler.getTransparentSlimeBlock     ()), this::toggleTransparentSlimeBlock,      BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, 200);
-        addButton(getToggleText_transparentHoneyBlock     (AltTexturesHandler.getTransparentHoneyBlock     ()), this::toggleTransparentHoneyBlock,      BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, 200);
-        addButton(getToggleText_unobstructiveMangroveRoots(AltTexturesHandler.getUnobstructiveMangroveRoots()), this::toggleUnobstructiveMangroveRoots, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, 200);
-        addButton(getToggleText_unobstructiveScaffolding  (AltTexturesHandler.getUnobstructiveScaffolding  ()), this::toggleUnobstructiveScaffolding,   BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, 200);
-        addButton(getToggleText_lineRedstoneDust          (AltTexturesHandler.getLineRedstoneDust          ()), this::toggleLineRedstoneDust,           BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, 200);
+        addButton(getToggleText(Blocks.SLIME_BLOCK,    AltTexturesHandler.getFeature(Blocks.SLIME_BLOCK)),    b -> toggleFeature(Blocks.SLIME_BLOCK,    b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, 200);
+        addButton(getToggleText(Blocks.HONEY_BLOCK,    AltTexturesHandler.getFeature(Blocks.HONEY_BLOCK)),    b -> toggleFeature(Blocks.HONEY_BLOCK,    b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, 200);
+        addButton(getToggleText(Blocks.MANGROVE_ROOTS, AltTexturesHandler.getFeature(Blocks.MANGROVE_ROOTS)), b -> toggleFeature(Blocks.MANGROVE_ROOTS, b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, 200);
+        addButton(getToggleText(Blocks.SCAFFOLDING,    AltTexturesHandler.getFeature(Blocks.SCAFFOLDING)),    b -> toggleFeature(Blocks.SCAFFOLDING,    b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, 200);
+        addButton(getToggleText(Blocks.REDSTONE_WIRE,  AltTexturesHandler.getFeature(Blocks.REDSTONE_WIRE)),  b -> toggleFeature(Blocks.REDSTONE_WIRE,  b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, 200);
     }
 
 
@@ -38,58 +42,22 @@ public class AltTexturesScreen extends __base_PauseScreen {
 
 
 
-
-    public String getToggleText_transparentSlimeBlock(final boolean state) {
-        return "TransparentSlimeBlock" + (state ? "ON" : "OFF");
-    }
-    public void toggleTransparentSlimeBlock(final Button b) {
-        boolean newState = !AltTexturesHandler.getTransparentSlimeBlock();
-        b.setMessage(Component.literal(getToggleText_transparentSlimeBlock(newState)));
-        AltTexturesHandler.setTransparentSlimeBlock(newState);
-        MinecraftUtils.refreshRendering();
-    }
-
-
-    public String getToggleText_transparentHoneyBlock(final boolean state) {
-        return "TransparentHoneyBlock" + (state ? "ON" : "OFF");
-    }
-    public void toggleTransparentHoneyBlock(final Button b) {
-        boolean newState = !AltTexturesHandler.getTransparentHoneyBlock();
-        b.setMessage(Component.literal(getToggleText_transparentHoneyBlock(newState)));
-        AltTexturesHandler.setTransparentHoneyBlock(newState);
-        MinecraftUtils.refreshRendering();
+    private static final Map<Block, String> BUTTON_NAMES = Map.of(
+        Blocks.SLIME_BLOCK,    "Transparent Slime Block",
+        Blocks.HONEY_BLOCK,    "Transparent Honey Block",
+        Blocks.MANGROVE_ROOTS, "Unobstructive Mangrove Roots",
+        Blocks.SCAFFOLDING,    "Unobstructive Scaffolding",
+        Blocks.REDSTONE_WIRE,  "Line Redstone Dust"
+    );
+    public String getToggleText(final Block block, final boolean state) {
+        return BUTTON_NAMES.get(block) + ": " + (state ? "ON" : "OFF");
     }
 
 
-    public String getToggleText_unobstructiveMangroveRoots(final boolean state) {
-        return "UnobstructiveMangroveRoots" + (state ? "ON" : "OFF");
-    }
-    public void toggleUnobstructiveMangroveRoots(final Button b) {
-        boolean newState = !AltTexturesHandler.getUnobstructiveMangroveRoots();
-        b.setMessage(Component.literal(getToggleText_unobstructiveMangroveRoots(newState)));
-        AltTexturesHandler.setUnobstructiveMangroveRoots(newState);
-        MinecraftUtils.refreshRendering();
-    }
-
-
-    public String getToggleText_unobstructiveScaffolding(final boolean state) {
-        return "UnobstructiveScaffolding" + (state ? "ON" : "OFF");
-    }
-    public void toggleUnobstructiveScaffolding(final Button b) {
-        boolean newState = !AltTexturesHandler.getUnobstructiveScaffolding();
-        b.setMessage(Component.literal(getToggleText_unobstructiveScaffolding(newState)));
-        AltTexturesHandler.setUnobstructiveScaffolding(newState);
-        MinecraftUtils.refreshRendering();
-    }
-
-
-    public String getToggleText_lineRedstoneDust(final boolean state) {
-        return "LineRedstoneDust" + (state ? "ON" : "OFF");
-    }
-    public void toggleLineRedstoneDust(final Button b) {
-        boolean newState = !AltTexturesHandler.getLineRedstoneDust();
-        b.setMessage(Component.literal(getToggleText_lineRedstoneDust(newState)));
-        AltTexturesHandler.setLineRedstoneDust(newState);
+    public void toggleFeature(final Block block, final Button b) {
+        boolean newState = !AltTexturesHandler.getFeature(block);
+        b.setMessage(Component.literal(getToggleText(block, newState)));
+        AltTexturesHandler.setFeature(block, newState);
         MinecraftUtils.refreshRendering();
     }
 }

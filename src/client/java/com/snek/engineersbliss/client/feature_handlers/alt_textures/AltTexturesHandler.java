@@ -1,41 +1,35 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+
+
+
 
 public class AltTexturesHandler {
     private AltTexturesHandler() {}
 
 
-    private static boolean transparentSlimeBlock;
-    private static boolean transparentHoneyBlock;
-    private static boolean unobstructiveMangroveRoots;
-    private static boolean unobstructiveScaffolding;
-    private static boolean lineRedstoneDust;
+    private static Map<Block, Boolean> features = new HashMap<>();
 
 
-    public static void init(
-        final boolean defaultTransparentSlimeBlock,
-        final boolean defaultTransparentHoneyBlock,
-        final boolean defaultUnobstructiveMangroveRoots,
-        final boolean defaultUnobstructiveScaffolding,
-        final boolean defaultLineRedstoneDust
-    ){
-        transparentSlimeBlock      = defaultTransparentSlimeBlock;
-        transparentHoneyBlock      = defaultTransparentHoneyBlock;
-        unobstructiveMangroveRoots = defaultUnobstructiveMangroveRoots;
-        unobstructiveScaffolding   = defaultUnobstructiveScaffolding;
-        lineRedstoneDust           = defaultLineRedstoneDust;
+    public static void init(){
+        features.put(Blocks.SLIME_BLOCK, true);
+        features.put(Blocks.HONEY_BLOCK, true);
+        features.put(Blocks.MANGROVE_ROOTS, true);
+        features.put(Blocks.SCAFFOLDING, true);
+        features.put(Blocks.REDSTONE_WIRE, true);
     }
 
 
-    public static void setTransparentSlimeBlock     (boolean v) { transparentSlimeBlock      = v; }
-    public static void setTransparentHoneyBlock     (boolean v) { transparentHoneyBlock      = v; }
-    public static void setUnobstructiveMangroveRoots(boolean v) { unobstructiveMangroveRoots = v; }
-    public static void setUnobstructiveScaffolding  (boolean v) { unobstructiveScaffolding   = v; }
-    public static void setLineRedstoneDust          (boolean v) { lineRedstoneDust           = v; }
+    public static void setFeature(final Block block, boolean value) {
+        features.put(block, value);
+    }
 
-    public static boolean getTransparentSlimeBlock     () { return transparentSlimeBlock;      }
-    public static boolean getTransparentHoneyBlock     () { return transparentHoneyBlock;      }
-    public static boolean getUnobstructiveMangroveRoots() { return unobstructiveMangroveRoots; }
-    public static boolean getUnobstructiveScaffolding  () { return unobstructiveScaffolding;   }
-    public static boolean getLineRedstoneDust          () { return lineRedstoneDust;           }
+    public static boolean getFeature(final Block block) {
+        return features.get(block);
+    }
 }

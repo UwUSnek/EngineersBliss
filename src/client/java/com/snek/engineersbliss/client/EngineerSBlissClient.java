@@ -29,7 +29,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
         // Initialize handlers
         RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
-        AltTexturesHandler.init(true, true, true, true, true);
+        AltTexturesHandler.init();
         ModelLoadingPlugin.register(new AltTexturesModelPlugin());
 
 
