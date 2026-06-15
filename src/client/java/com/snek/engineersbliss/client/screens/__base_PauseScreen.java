@@ -2,10 +2,18 @@ package com.snek.engineersbliss.client.screens;
 
 import java.util.function.Consumer;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 
 
 
@@ -40,6 +48,10 @@ public abstract class __base_PauseScreen extends Screen {
         //! No blurred background
     }
 
+    @Override
+	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        //! No background
+    }
 
     @Override
     public void onClose() {

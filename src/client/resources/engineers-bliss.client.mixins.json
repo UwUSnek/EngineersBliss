@@ -3,6 +3,9 @@
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
+        "accessors.GameRendererAccessor",
+        "shaders.JuliaSetShaderMixin",
+
         "misc.WebpTextureReaderMixin",
         "misc.AvifTextureReaderMixin",
 
@@ -10,7 +13,6 @@
 
         "rendering.RenderFilterBlockMixin",
         "rendering.RenderFilterLightMixin",
-
         "rendering.CustomOutlinesMixin",
 
         "interactions.InteractionFilterMixin"
