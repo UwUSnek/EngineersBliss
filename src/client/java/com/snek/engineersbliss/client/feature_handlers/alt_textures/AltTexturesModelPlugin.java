@@ -35,15 +35,6 @@ import net.minecraft.world.level.block.state.properties.RedstoneSide;
  * It registers custom models and textures during startup and fetches the right ones based on config settings when resolving the block state's model.
  */
 public class AltTexturesModelPlugin implements ModelLoadingPlugin {
-    private static final List<Block> blocks = List.of(
-        Blocks.SLIME_BLOCK,
-        Blocks.HONEY_BLOCK,
-        Blocks.MANGROVE_ROOTS,
-        Blocks.SCAFFOLDING,
-        Blocks.REDSTONE_WIRE
-
-        //TODO unify arrays with AltTexturesHandler
-    );
     private static final Map<String, BlockStateModel> customModels = new ConcurrentHashMap<>();
 
 
@@ -59,10 +50,11 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
         ctx.modifyBlockModelOnLoad().register((model, context) -> {
             final BlockState state = context.state();
             final Block block = state.getBlock();
-            if(!blocks.contains(block)) return model;
+            if(!AltTextureFeature.hasFeature(block)) return model;
 
 
-            final List<String> stateIds = calcStateIds(state);
+            final List<String> stateIds = new ArrayList<>();
+            calcStateIds(state, stateIds, true);
             return new BlockStateModel.UnbakedRoot() {
                 @Override
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
@@ -92,11 +84,13 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
         ctx.modifyBlockModelBeforeBake().register((model, context) -> {
             final BlockState state = context.state();
             final Block block = state.getBlock();
-            if(!blocks.contains(block)) return model;
+            if(!AltTextureFeature.hasFeature(block)) return model;
 
 
             // For each state ID (model part name) of the current blockstate, bake the model and store it locally
-            for(String stateId : calcStateIds(state)) {
+            final List<String> stateIds = new ArrayList<>();
+            calcStateIds(state, stateIds, true);
+            for(String stateId : stateIds) {
                 final Identifier customId = Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId);
                 final BlockStateModelPart part = new Variant(customId).bake(context.baker());
                 customModels.put(stateId, new SingleVariant(part));
@@ -114,20 +108,28 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
         ctx.modifyBlockModelAfterBake().register((model, context) -> {
             final BlockState state = context.state();
             final Block block = state.getBlock();
-            if(!blocks.contains(block)) return model;
+            if(!AltTextureFeature.hasFeature(block)) return model;
 
 
             final BlockStateModel vanilla = model;
             return new BlockStateModel() {
                 @Override
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {
-                    if(AltTexturesHandler.getFeature(block)) {
-                        for(String stateId : calcStateIds(state)) {
+
+                    // If the block has active features
+                    List<String> stateIds = new ArrayList<>();
+                    final boolean keepVanilla = calcStateIds(state, stateIds, false);
+                    if(!stateIds.isEmpty()) {
+
+                        // Loop through the requested parts and merge them together
+                        for(String stateId : stateIds) {
                             final BlockStateModel custom = customModels.get(stateId);
                             custom.collectParts(random, output);
                         }
                     }
-                    else {
+
+                    // Add the vanilla parts if needed
+                    if(keepVanilla) {
                         vanilla.collectParts(random, output);
                     }
                 }
@@ -153,43 +155,77 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
 
 
 
-    private static List<String> calcStateIds(BlockState state) {
+    /**
+     * Calculates a list of model parts based on the provided blockstate and the currently active texture features
+     * @param state The blockstate to check.
+     * @param ret A container for the output list of parts. This must be an empty list.
+     * @param force True to assume all features are ON.
+     * @return true if the Vanilla model needs to be added to the parts, false otherwise.
+     */
+    private static boolean calcStateIds(BlockState state, final List<String> ret, boolean force) {
         final Block block = state.getBlock();
+        boolean keepVanilla = true;
 
 
         // Calculate custom state IDs. These include the trailing underscore but not the block's ID
         List<String> stateOnlyIds = new ArrayList<>();
-        if(block == Blocks.SCAFFOLDING) {
-            stateOnlyIds.add("_" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable"));
+        if(block == Blocks.SLIME_BLOCK) {
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK)) {
+                keepVanilla = false;
+                stateOnlyIds.add("");
+            }
+        }
+        else if(block == Blocks.HONEY_BLOCK) {
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK)) {
+                keepVanilla = false;
+                stateOnlyIds.add("");
+            }
+        }
+        else if(block == Blocks.MANGROVE_ROOTS) {
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS)) {
+                keepVanilla = false;
+                stateOnlyIds.add("");
+            }
+        }
+        else if(block == Blocks.SCAFFOLDING) {
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING)) {
+                keepVanilla = false;
+                stateOnlyIds.add("_" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable"));
+            }
         }
         else if(block == Blocks.REDSTONE_WIRE) {
-            final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
-            final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
-            final RedstoneSide s = state.getValue(RedStoneWireBlock.SOUTH);
-            final RedstoneSide w = state.getValue(RedStoneWireBlock.WEST);
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.LINE_REDSTONE_WIRE)) {
+                keepVanilla = false;
+                final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
+                final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
+                final RedstoneSide s = state.getValue(RedStoneWireBlock.SOUTH);
+                final RedstoneSide w = state.getValue(RedStoneWireBlock.WEST);
 
-            // Central dot and power level
-            if(
-                n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE ||
-                n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
-                e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
-                s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
-                w != RedstoneSide.NONE && n != RedstoneSide.NONE
-            ) stateOnlyIds.add("/dot");
-            stateOnlyIds.add("/" + state.getValue(RedStoneWireBlock.POWER));
+                // Central dot and power level
+                if(
+                    n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE ||
+                    n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
+                    e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
+                    s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
+                    w != RedstoneSide.NONE && n != RedstoneSide.NONE
+                ) stateOnlyIds.add("/dot");
 
-            // Side connections
-            if(n == RedstoneSide.SIDE) stateOnlyIds.add("/north_down");
-            if(e == RedstoneSide.SIDE) stateOnlyIds.add("/east_down");
-            if(s == RedstoneSide.SIDE) stateOnlyIds.add("/south_down");
-            if(w == RedstoneSide.SIDE) stateOnlyIds.add("/west_down");
-            if(n == RedstoneSide.UP) stateOnlyIds.add("/north_up");
-            if(e == RedstoneSide.UP) stateOnlyIds.add("/east_up");
-            if(s == RedstoneSide.UP) stateOnlyIds.add("/south_up");
-            if(w == RedstoneSide.UP) stateOnlyIds.add("/west_up");
+                // Side connections
+                if(n == RedstoneSide.SIDE) stateOnlyIds.add("/north_down");
+                if(e == RedstoneSide.SIDE) stateOnlyIds.add("/east_down");
+                if(s == RedstoneSide.SIDE) stateOnlyIds.add("/south_down");
+                if(w == RedstoneSide.SIDE) stateOnlyIds.add("/west_down");
+                if(n == RedstoneSide.UP) stateOnlyIds.add("/north_up");
+                if(e == RedstoneSide.UP) stateOnlyIds.add("/east_up");
+                if(s == RedstoneSide.UP) stateOnlyIds.add("/south_up");
+                if(w == RedstoneSide.UP) stateOnlyIds.add("/west_up");
+            }
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)) {
+                stateOnlyIds.add("/" + state.getValue(RedStoneWireBlock.POWER));
+            }
         }
         else {
-            stateOnlyIds.add("");
+            return true;
         }
 
 
@@ -197,10 +233,9 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
 
         // Merge with block ID and return
         final String id = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        List<String> r = new ArrayList<>();
         for(String stateOnlyId : stateOnlyIds) {
-            r.add(id + stateOnlyId);
+            ret.add(id + stateOnlyId);
         }
-        return r;
+        return keepVanilla;
     }
 }

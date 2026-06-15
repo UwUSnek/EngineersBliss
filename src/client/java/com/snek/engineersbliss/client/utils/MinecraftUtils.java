@@ -1,15 +1,16 @@
 package com.snek.engineersbliss.client.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -27,6 +28,32 @@ public class MinecraftUtils {
 
 
 
+
+
+    /**
+     * Mark all chunk sections containing the specified block for re-rendering.
+     * This doesn't update lighting.
+     * This can sometimes create false positives due to how Minecraft handles block pelettes.
+     * @param predicate The predicate that checks wheter a block triggers a section refresh. Return true to refresh, false to skip.
+     */
+    private static void refreshSectionsContaining(Predicate<BlockState> predicate) {
+        Minecraft minecraft = Minecraft.getInstance();
+        LevelRenderer renderer = minecraft.levelRenderer;
+        int minY = minecraft.level.getMinSectionY();
+        for(LevelChunk chunk : getLoadedChunks()) {
+            LevelChunkSection[] sections = chunk.getSections();
+            ChunkPos pos = chunk.getPos();
+            for(int i = 0; i < sections.length; i++) {
+                LevelChunkSection section = sections[i];
+                if(section == null || section.hasOnlyAir()) continue;
+                if(section.getStates().maybeHas(predicate)) {
+                    renderer.setSectionDirty(pos.x(), minY + i, pos.z());
+                }
+            }
+        }
+    }
+
+
     /**
      * Mark all chunk sections containing the specified block for re-rendering.
      * This doesn't update lighting.
@@ -34,21 +61,18 @@ public class MinecraftUtils {
      * @param block The block to check for.
      */
     public static void refreshSectionsContaining(Block block) {
-        Minecraft minecraft = Minecraft.getInstance();
-        LevelRenderer renderer = minecraft.levelRenderer;
-        int minY = minecraft.level.getMinSectionY();
-        for(LevelChunk chunk : getLoadedChunks()) {
-            LevelChunkSection[] sections = chunk.getSections();
-            ChunkPos pos = chunk.getPos();
+        refreshSectionsContaining(state -> state.is(block));
+    }
 
-            for(int i = 0; i < sections.length; i++) {
-                LevelChunkSection section = sections[i];
-                if(section == null || section.hasOnlyAir()) continue;
-                if(section.getStates().maybeHas(state -> state.is(block))) {
-                    renderer.setSectionDirty(pos.x(), minY + i, pos.z());
-                }
-            }
-        }
+
+    /**
+     * Mark all chunk sections containing the specified blocks for re-rendering.
+     * This doesn't update lighting.
+     * This can sometimes create false positives due to how Minecraft handles block pelettes.
+     * @param blocks The blocks to check for.
+     */
+    public static void refreshSectionsContaining(Collection<Block> blocks) {
+        refreshSectionsContaining(state -> blocks.contains(state.getBlock()));
     }
 
 
