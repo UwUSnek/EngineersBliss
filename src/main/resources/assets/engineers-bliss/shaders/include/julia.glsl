@@ -16,7 +16,6 @@ const float STAR_SPARSITY = 0.997;
 
 //! High powers escape very quickly. too many iterations make the animation flash, this reduces the number proportionally
 //! 120 is good for 2 lobes
-// const int MAX_ITER = int(120.0 / min(1.0, (LOBES - 1.0) / 2.0));
 const int MAX_ITER = int(120.0 / min(1.0, (LOBES - 1.0) / 2.0));
 
 
