@@ -1,0 +1,7 @@
+{
+    "parent": "engineers-bliss:block/redstone_wire/power_levels/signal_strength_parent",
+    "textures": {
+        "power": "engineers-bliss:block/power_levels/11",
+        "particle": "engineers-bliss:block/redstone_wire/minimal/dot"
+    }
+}

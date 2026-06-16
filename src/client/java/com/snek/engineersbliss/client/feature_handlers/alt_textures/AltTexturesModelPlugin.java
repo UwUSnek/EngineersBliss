@@ -19,8 +19,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PoweredRailBlock;
-import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.level.block.ScaffoldingBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -173,29 +171,29 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
 
 
         // Calculate custom state IDs. These include the trailing underscore but not the block's ID
-        List<String> stateOnlyIds = new ArrayList<>();
         if(block == Blocks.SLIME_BLOCK) {
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK)) {
                 keepVanilla = false;
-                stateOnlyIds.add("");
+                ret.add("slime_block/transparent/block");
             }
         }
         else if(block == Blocks.HONEY_BLOCK) {
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK)) {
                 keepVanilla = false;
-                stateOnlyIds.add("");
+                ret.add("honey_block/transparent/block");
             }
         }
         else if(block == Blocks.MANGROVE_ROOTS) {
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS)) {
                 keepVanilla = false;
-                stateOnlyIds.add("");
+                ret.add("mangrove_roots/unobstructive/block");
             }
         }
         else if(block == Blocks.SCAFFOLDING) {
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING)) {
                 keepVanilla = false;
-                stateOnlyIds.add("_" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable"));
+                final String stateName = state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable";
+                ret.add("scaffolding/unobstructive/" + stateName);
             }
         }
         else if(block == Blocks.REDSTONE_WIRE) {
@@ -213,20 +211,20 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
                     e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
                     s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
                     w != RedstoneSide.NONE && n != RedstoneSide.NONE
-                ) stateOnlyIds.add("/dot");
+                ) ret.add("redstone_wire/minimal/dot");
 
                 // Side connections
-                if(n == RedstoneSide.SIDE) stateOnlyIds.add("/north_down");
-                if(e == RedstoneSide.SIDE) stateOnlyIds.add("/east_down");
-                if(s == RedstoneSide.SIDE) stateOnlyIds.add("/south_down");
-                if(w == RedstoneSide.SIDE) stateOnlyIds.add("/west_down");
-                if(n == RedstoneSide.UP) stateOnlyIds.add("/north_up");
-                if(e == RedstoneSide.UP) stateOnlyIds.add("/east_up");
-                if(s == RedstoneSide.UP) stateOnlyIds.add("/south_up");
-                if(w == RedstoneSide.UP) stateOnlyIds.add("/west_up");
+                if(n == RedstoneSide.SIDE) ret.add("redstone_wire/minimal/north_down");
+                if(e == RedstoneSide.SIDE) ret.add("redstone_wire/minimal/east_down");
+                if(s == RedstoneSide.SIDE) ret.add("redstone_wire/minimal/south_down");
+                if(w == RedstoneSide.SIDE) ret.add("redstone_wire/minimal/west_down");
+                if(n == RedstoneSide.UP)   ret.add("redstone_wire/minimal/north_up");
+                if(e == RedstoneSide.UP)   ret.add("redstone_wire/minimal/east_up");
+                if(s == RedstoneSide.UP)   ret.add("redstone_wire/minimal/south_up");
+                if(w == RedstoneSide.UP)   ret.add("redstone_wire/minimal/west_up");
             }
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)) {
-                stateOnlyIds.add("/" + state.getValue(RedStoneWireBlock.POWER));
+                ret.add("redstone_wire/power_levels/" + state.getValue(RedStoneWireBlock.POWER));
             }
         }
         else if(block instanceof BaseRailBlock rail) {
@@ -236,10 +234,17 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
                     keepVanilla = false;
 
                     //! Shape names have the format "ascending_<direction>" so i use that directly by removing "ascending_" as that matches the json file names perfectly
-                    String railModelName = "/raised" + shape.getName().replace("ascending", "");
+                    final String id = BuiltInRegistries.BLOCK.getKey(block).getPath();
+                    String railModelName = "raised" + shape.getName().replace("ascending", "");
                     if(block != Blocks.RAIL) railModelName += state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off";
-                    stateOnlyIds.add(railModelName);
+                    ret.add("rails/consistent_sloped/" + id + "/" + railModelName);
                 }
+            }
+
+            //! Rail power level isn't stored by Minecraft so this needs custom power source lookup logic
+            if(force || AltTexturesHandler.getFeature(AltTextureFeature.RAIL_POWER_LEVELS)) {
+                //TODO read from mixin map
+                // ret.add("rails/power_levels/" + state.getValue(PoweredRailBlock.));
             }
         }
         else {
@@ -247,13 +252,6 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
         }
 
 
-
-
-        // Merge with block ID and return
-        final String id = BuiltInRegistries.BLOCK.getKey(block).getPath();
-        for(String stateOnlyId : stateOnlyIds) {
-            ret.add(id + stateOnlyId);
-        }
         return keepVanilla;
     }
 }

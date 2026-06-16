@@ -11,14 +11,16 @@ import net.minecraft.world.level.block.Blocks;
 
 
 public enum AltTextureFeature {
+    LINE_REDSTONE_WIRE          ("Minimal Redstone Wire",        List.of(Blocks.REDSTONE_WIRE)),
+    CONSISTENT_SLOPED_RAILS     ("Consistent sloped Rails",      List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)),
     TRANSPARENT_SLIME_BLOCK     ("Transparent Slime Blocks",     List.of(Blocks.SLIME_BLOCK)),
     TRANSPARENT_HONEY_BLOCK     ("Transparent Honey Blocks",     List.of(Blocks.HONEY_BLOCK)),
     UNOBSTRUCTIVE_MANGROVE_ROOTS("Unobstructive Mangrove Roots", List.of(Blocks.MANGROVE_ROOTS)),
     UNOBSTRUCTIVE_SCAFFOLDING   ("Unobstructive Scaffolding",    List.of(Blocks.SCAFFOLDING)),
-    LINE_REDSTONE_WIRE          ("Minimal Redstone Wire",        List.of(Blocks.REDSTONE_WIRE)),
+
     REDSTONE_WIRE_POWER_LEVELS  ("Redstone Wire power levels",   List.of(Blocks.REDSTONE_WIRE)),
-    COMPARATOR_POWER_LEVELS     ("Comparator power levels",      List.of(Blocks.COMPARATOR)), //TODO also add input power levels, including sides
-    CONSISTENT_SLOPED_RAILS     ("Consistent sloped Rails",      List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL));
+    RAIL_POWER_LEVELS           ("Rail power levels",            List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)),
+    COMPARATOR_POWER_LEVELS     ("Comparator power levels",      List.of(Blocks.COMPARATOR)); //TODO also add input power levels, including sides
 
 
     // Feature name and properties

@@ -46,7 +46,7 @@ public class MinecraftUtils {
             for(int i = 0; i < sections.length; i++) {
                 LevelChunkSection section = sections[i];
                 if(section == null || section.hasOnlyAir()) continue;
-                if(section.getStates().maybeHas(predicate)) {
+                if(section.maybeHas(predicate)) {
                     renderer.setSectionDirty(pos.x(), minY + i, pos.z());
                 }
             }

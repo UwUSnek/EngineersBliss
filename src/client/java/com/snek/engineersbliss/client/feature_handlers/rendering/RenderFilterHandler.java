@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.lighting.LevelLightEngine;
 
 
@@ -134,8 +135,8 @@ public class RenderFilterHandler {
             final int baseX = chunk.getPos().getMinBlockX();
             final int baseZ = chunk.getPos().getMinBlockZ();
 
-            for(int x = 0; x < 16; x++) {
-                for(int z = 0; z < 16; z++) {
+            for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
+                for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
                     for(int y = maxY; y >= minY; y--) {
                         lightEngine.checkBlock(new BlockPos(baseX + x, y, baseZ + z));
                     }

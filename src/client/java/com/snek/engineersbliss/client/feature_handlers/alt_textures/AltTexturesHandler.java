@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 

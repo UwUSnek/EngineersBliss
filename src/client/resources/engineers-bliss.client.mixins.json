@@ -3,13 +3,18 @@
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
+
         "accessors.GameRendererAccessor",
+        "accessors.PoweredRailBlockAccessor",
         "shaders.JuliaSetShaderMixin",
 
         "misc.WebpTextureReaderMixin",
         "misc.AvifTextureReaderMixin",
 
         "screens.PauseScreenMixin",
+
+        "alt_textures.PoweredRailLevelTrackerMixin",
+        "alt_textures.PoweredRailLevelPopulatorMixin",
 
         "rendering.RenderFilterBlockMixin",
         "rendering.RenderFilterLightMixin",

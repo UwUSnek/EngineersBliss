@@ -1,6 +1,0 @@
-{
-  "parent": "engineers-bliss:block/template_rail/raised_east",
-  "textures": {
-    "rail": "engineers-bliss:block/rails/detector_rail_off"
-  }
-}

@@ -14,6 +14,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
@@ -155,7 +156,7 @@ public class RenderingScreen extends __base_PauseScreen {
         final String[] renderStats = {
             "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
             "Loaded chunks: ", String.format("%,d", loadedChunkNum),
-            "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * 16 * 16))
+            "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
         };
 
         graphics.text(this.font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
