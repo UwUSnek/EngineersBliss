@@ -16,6 +16,7 @@ const float STAR_SPARSITY = 0.997;
 
 //! High powers escape very quickly. too many iterations make the animation flash, this reduces the number proportionally
 //! 120 is good for 2 lobes
+// const int MAX_ITER = int(120.0 / min(1.0, (LOBES - 1.0) / 2.0));
 const int MAX_ITER = int(120.0 / min(1.0, (LOBES - 1.0) / 2.0));
 
 
@@ -32,7 +33,7 @@ void main() {
 
     // 2x temporal blending
     //! Temporal blending blends unstable regions of the julia set so they don't make people's eyes explode
-    for(int frame = 0; frame < 8; frame++) {
+    for(int frame = 0; frame < 4; frame++) {
         float timeShift = frame * (1.0 / 1200000.0); //! Shift forward 1/1000th of a second per ""frame""
         float time = (GameTime + timeShift) * timeScale;
         float angle = time * rotSpeed;
@@ -108,5 +109,5 @@ void main() {
     }
 
     // fragColor = vec4(col / (4.0 * 2.0), 1.0);
-    fragColor = vec4(col / 8.0, 1.0);
+    fragColor = vec4(col / 4.0, 1.0);
 }
