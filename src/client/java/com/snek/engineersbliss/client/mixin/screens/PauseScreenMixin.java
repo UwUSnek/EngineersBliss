@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
+import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.gui.components.Button;
@@ -21,7 +22,8 @@ import net.minecraft.network.chat.Component;
 @Mixin(PauseScreen.class)
 public class PauseScreenMixin extends Screen {
     private static final int BUTTON_HEIGHT = 20;
-    private static final int BUTTON_SPACING = BUTTON_HEIGHT + 4;
+    private static final int BUTTON_MARGIN = 4;
+    private static final int BUTTON_SPACING = BUTTON_HEIGHT + BUTTON_MARGIN;
 
 
     protected PauseScreenMixin(final Component title) {
@@ -55,6 +57,8 @@ public class PauseScreenMixin extends Screen {
                 addButton("Muffler",          RenderingScreen::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
                 addButton("Container tools",  RenderingScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
                 addButton("Gameplay tweaks",  RenderingScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth);
+
+                addButton("??",               JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
             })
         ;
     }
