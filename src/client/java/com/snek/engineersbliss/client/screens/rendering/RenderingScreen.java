@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.screens.__base_PauseScreen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
@@ -9,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 
@@ -34,6 +37,40 @@ public class RenderingScreen extends __base_PauseScreen {
     public RenderingScreen() {
         super();
     }
+
+
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        if(!searchField.isFocused()) {
+            if(event.key() == InputConstants.KEY_O) {
+                toggleRenderBlockOutlines(renderBlockOutlinesButton);
+                return true;
+            }
+            if(event.key() == InputConstants.KEY_E) {
+                toggleRenderBlockEntities(renderBlockEntitiesButton);
+                return true;
+            }
+            if(event.key() == InputConstants.KEY_F) {
+                toggleRenderFluids(renderFluidsButton);
+                return true;
+            }
+            if(event.key() == InputConstants.KEY_B) {
+                toggleRenderBlocks(renderBlocksButton);
+                return true;
+            }
+        }
+        return super.keyPressed(event);
+    }
+
+
+    //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        searchField.setFocused(searchField.isHovered());
+        return super.mouseClicked(event, doubleClick);
+    }
+
+
 
 
 
@@ -90,6 +127,7 @@ public class RenderingScreen extends __base_PauseScreen {
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         final int lineBase = this.height;
         final int lineHeight = this.font.lineHeight;
+        if(tabPressed) return;
 
         super.extractRenderState(graphics, mouseX, mouseY, delta);
         graphics.centeredText(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
@@ -170,7 +208,7 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
     public String getToggleText_renderBlockOutlines(final boolean state) {
-        return "Render block outlines: " + (state ? "YES" : "NO");
+        return "[O] Render block outlines: " + (state ? "YES" : "NO");
     }
     public void toggleRenderBlockOutlines(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
@@ -182,7 +220,7 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
     public String getToggleText_renderBlocks(final boolean state) {
-        return "Render blocks: " + (state ? "YES" : "NO");
+        return "[B] Render blocks: " + (state ? "YES" : "NO");
     }
     public void toggleRenderBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlocks();
@@ -194,7 +232,7 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
     public String getToggleText_renderBlockEntities(final boolean state) {
-        return "Render block entities: " + (state ? "YES" : "NO");
+        return "[E] Render block entities: " + (state ? "YES" : "NO");
     }
     public void toggleRenderBlockEntities(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlockEntities();
@@ -206,7 +244,7 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
     public String getToggleText_renderFluids(final boolean state) {
-        return "Render fluids: " + (state ? "YES" : "NO");
+        return "[F] Render fluids: " + (state ? "YES" : "NO");
     }
     public void toggleRenderFluids(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderFluids();

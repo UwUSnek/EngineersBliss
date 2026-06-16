@@ -107,6 +107,7 @@ void main() {
         }
     }
 
-    // fragColor = vec4(col / (4.0 * 2.0), 1.0);
     fragColor = vec4(col / 4.0, 1.0);
+    // vec2 pos = texCoord + ((col.x + col.y + col.z) / 3) / 10;
+    // fragColor = texture(InSampler, pos);
 }

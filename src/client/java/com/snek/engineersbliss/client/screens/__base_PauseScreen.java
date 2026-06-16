@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.screens;
 
 import java.util.function.Consumer;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -11,6 +12,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
@@ -29,6 +31,33 @@ public abstract class __base_PauseScreen extends Screen {
     protected __base_PauseScreen() {
         super(Component.literal(""));
     }
+
+
+
+    protected boolean tabPressed = false;
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        if(event.key() == InputConstants.KEY_TAB) {
+            tabPressed = true;
+            return true;
+        }
+        else {
+            return super.keyPressed(event);
+        }
+    }
+    @Override
+    public boolean keyReleased(KeyEvent event) {
+        if(event.key() == InputConstants.KEY_TAB) {
+            tabPressed = false;
+            return true;
+        }
+        else {
+            return super.keyPressed(event);
+        }
+    }
+
+
+
 
     @Override
     public boolean isPauseScreen() {

@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.screens.alt_textures;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.screens.__base_PauseScreen;
@@ -7,6 +8,7 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 
 
@@ -18,6 +20,9 @@ public class AltTexturesScreen extends __base_PauseScreen {
     public AltTexturesScreen() {
         super();
     }
+
+
+
 
     @Override
     protected void init() {
@@ -34,8 +39,8 @@ public class AltTexturesScreen extends __base_PauseScreen {
 
     @Override
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+        if(tabPressed) return;
         super.extractRenderState(graphics, mouseX, mouseY, delta);
-        //TODO stuff
     }
 
 
