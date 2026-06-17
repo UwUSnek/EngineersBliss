@@ -10,12 +10,15 @@
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
   - ~~Unobstructive Scaffolding~~
-  - ~~Line Redstone Dust~~
+  - ~~Minimal Redstone Dust~~
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Display the update order of redstone wire and rail circuits
   - Display scheduled tick timers
+  - Show Redstone Wire power level
+  - Show Powered Rail and Activator Rail power levels
+  - Show Comparator power levels
   - Visualize the order in which pistons move blocks
   - Visualize the neighbor updates redstone components send when their state changes
   - Visualize Quasi-connectivity interactions

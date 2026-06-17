@@ -17,14 +17,18 @@ By UwU_Snek.
   - Click through hidden blocks
   - Custom block outlines
 - **Alternative textures**:
-  - Unobstructive Slime Block texture
-  - Unobstructive Honey Block texture
+  - Less opaque Slime Block texture
+  - Less opaque Honey Block texture
   - Unobstructive Mangrove Roots texture
-  - Line Redstone Dust texture
+  - Unobstructive Scaffolding texture
+  - Minimal Redstone Dust texture
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Display the update order of redstone wire and rail circuits
   - Display scheduled tick timers
+  - Show Redstone Wire power level
+  - Show Powered Rail and Activator Rail power levels
+  - Show Comparator power levels
   - Visualize the order in which pistons move blocks
   - Visualize the neighbor updates redstone components send when their state changes
   - Visualize Quasi-connectivity interactions

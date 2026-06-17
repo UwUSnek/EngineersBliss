@@ -223,9 +223,17 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
                 if(s == RedstoneSide.UP)   ret.add("redstone_wire/minimal/south_up");
                 if(w == RedstoneSide.UP)   ret.add("redstone_wire/minimal/west_up");
             }
-            if(force || AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)) {
-                ret.add("redstone_wire/power_levels/" + state.getValue(RedStoneWireBlock.POWER));
-            }
+
+
+
+            //FIXME move to overlays
+            //FIXME move to overlays
+            //FIXME move to overlays
+            //FIXME move to overlays
+            //FIXME move to overlays
+            // if(force || AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)) {
+            //     ret.add("redstone_wire/power_levels/" + state.getValue(RedStoneWireBlock.POWER));
+            // }
         }
         else if(block instanceof BaseRailBlock rail) {
             if(force || AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)) {
@@ -241,11 +249,15 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
                 }
             }
 
-            //! Rail power level isn't stored by Minecraft so this needs custom power source lookup logic
-            if(force || AltTexturesHandler.getFeature(AltTextureFeature.RAIL_POWER_LEVELS)) {
-                //TODO read from mixin map
-                // ret.add("rails/power_levels/" + state.getValue(PoweredRailBlock.));
-            }
+            //FIXME move to overlays
+            //FIXME move to overlays
+            //FIXME move to overlays
+            //FIXME move to overlays
+            //FIXME move to overlays
+            // //! Rail power level isn't stored by Minecraft so this needs custom power source lookup logic
+            // if(force || AltTexturesHandler.getFeature(AltTextureFeature.RAIL_POWER_LEVELS)) {
+            //     ret.add("rails/power_levels/" + AltTexturesHandler.getRailLevel());
+            // }
         }
         else {
             return true;
