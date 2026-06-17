@@ -7,7 +7,7 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHan
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.feature_handlers.overlays.renderers.RedstoneLevelRenderer;
+import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -38,7 +38,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
         ClientChunkEvents.CHUNK_LOAD.register(OverlaysHandler::onChunkLoad);
 
         // Register overlay renderers
-        RedstoneLevelRenderer.register();
+        OverlayRenderer.register();
 
 
         // Register scheduler

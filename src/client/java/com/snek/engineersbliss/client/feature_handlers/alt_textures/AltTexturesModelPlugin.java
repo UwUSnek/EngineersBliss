@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.snek.engineersbliss.EngineerSBliss;
+
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
@@ -63,7 +65,7 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
                     model.resolveDependencies(resolver);
                     for(String stateId : stateIds) {
-                        resolver.markDependency(Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId));
+                        resolver.markDependency(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + stateId));
                     }
                 }
 
@@ -94,7 +96,7 @@ public class AltTexturesModelPlugin implements ModelLoadingPlugin {
             final List<String> stateIds = new ArrayList<>();
             calcStateIds(state, stateIds, true);
             for(String stateId : stateIds) {
-                final Identifier customId = Identifier.fromNamespaceAndPath("engineers-bliss", "block/" + stateId);
+                final Identifier customId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + stateId);
                 final BlockStateModelPart part = new Variant(customId).bake(context.baker());
                 customModels.put(stateId, new SingleVariant(part));
             }
