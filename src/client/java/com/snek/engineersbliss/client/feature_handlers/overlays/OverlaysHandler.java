@@ -88,7 +88,6 @@ public class OverlaysHandler {
 
             // If it contains powered or activator rails
             if(!section.hasOnlyAir() && section.maybeHas(state -> state.getBlock() instanceof PoweredRailBlock)) {
-        System.out.println("POPULATED");
 
                 // For each block in the section
                 for(int x = 0; x < 16; x++) {
