@@ -70,7 +70,7 @@ public class OverlaysHandler {
 
 
 
-
+//FIXME make this a generic "world load populator" function instead of checking for rail levels only
     /**
      * Populates the map with data from newly loaded chunks.
      * Call this from CHUNK_LOAD event.

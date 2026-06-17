@@ -34,12 +34,6 @@ public class AltTexturesScreen extends __base_PauseScreen {
         // Misc //TODO add header
         addButton(getToggleText(AltTextureFeature.LINE_REDSTONE_WIRE,           AltTexturesHandler.getFeature(AltTextureFeature.LINE_REDSTONE_WIRE)),           b -> toggleFeature(AltTextureFeature.LINE_REDSTONE_WIRE,           b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.CONSISTENT_SLOPED_RAILS,      AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)),      b -> toggleFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-
-
-        //FIXME move to overlays
-        // addButton(getToggleText(AltTextureFeature.COMPARATOR_POWER_LEVELS,      AltTexturesHandler.getFeature(AltTextureFeature.COMPARATOR_POWER_LEVELS)),      b -> toggleFeature(AltTextureFeature.COMPARATOR_POWER_LEVELS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        // addButton(getToggleText(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS,   AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)),   b -> toggleFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        // addButton(getToggleText(AltTextureFeature.RAIL_POWER_LEVELS,            AltTexturesHandler.getFeature(AltTextureFeature.RAIL_POWER_LEVELS)),            b -> toggleFeature(AltTextureFeature.RAIL_POWER_LEVELS,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
     }
 
 

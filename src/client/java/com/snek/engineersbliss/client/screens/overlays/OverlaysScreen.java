@@ -24,6 +24,7 @@ public class OverlaysScreen extends __base_PauseScreen {
 
     @Override
     protected void init() {
+
         // Power levels  //TODO add header
         addButton(getToggleText(OverlayFeature.COMPARATOR_POWER_LEVELS,      OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_POWER_LEVELS)),      b -> toggleFeature(OverlayFeature.COMPARATOR_POWER_LEVELS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
         addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS)),   b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
