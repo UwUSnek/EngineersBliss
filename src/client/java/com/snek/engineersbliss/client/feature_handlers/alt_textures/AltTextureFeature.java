@@ -19,12 +19,6 @@ public enum AltTextureFeature {
     UNOBSTRUCTIVE_SCAFFOLDING   ("Unobstructive Scaffolding",    List.of(Blocks.SCAFFOLDING));
 
 
-    //FIXME move to overlays
-    // REDSTONE_WIRE_POWER_LEVELS  ("Redstone Wire power levels",   List.of(Blocks.REDSTONE_WIRE)),
-    // RAIL_POWER_LEVELS           ("Rail power levels",            List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)),
-    // COMPARATOR_POWER_LEVELS     ("Comparator power levels",      List.of(Blocks.COMPARATOR)); //TODO also add input power levels, including sides
-
-
     // Feature name and properties
     String name;
     List<Block> affectedBlocks;

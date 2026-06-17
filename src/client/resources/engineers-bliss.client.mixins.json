@@ -13,7 +13,7 @@
 
         "screens.PauseScreenMixin",
 
-        "alt_textures.PoweredRailLevelTrackerMixin",
+        "overlays.PoweredRailLevelTrackerMixin",
 
         "rendering.RenderFilterBlockMixin",
         "rendering.RenderFilterLightMixin",

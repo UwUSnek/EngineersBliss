@@ -6,6 +6,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -32,7 +33,8 @@ public class EngineerSBlissClient implements ClientModInitializer {
         RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
         AltTexturesHandler.init();
         ModelLoadingPlugin.register(new AltTexturesModelPlugin());
-        ClientChunkEvents.CHUNK_LOAD.register(AltTexturesHandler::onChunkLoad);
+        OverlaysHandler.init();
+        ClientChunkEvents.CHUNK_LOAD.register(OverlaysHandler::onChunkLoad);
 
 
         // Register scheduler

@@ -1,25 +1,16 @@
-package com.snek.engineersbliss.client.mixin.alt_textures;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.snek.engineersbliss.client.mixin.overlays;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.mixin.accessors.PoweredRailBlockAccessor;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PoweredRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
@@ -46,10 +37,10 @@ public class PoweredRailLevelTrackerMixin {
         // System.out.println("UPDATED");
         final boolean isPowered = cir.getReturnValue();
         if(!isPowered) {
-            AltTexturesHandler.depowerRail(pos);
+            OverlaysHandler.depowerRail(pos);
         }
         else {
-            AltTexturesHandler.addRailSource(pos, 9 - searchDepth);
+            OverlaysHandler.addRailSource(pos, 9 - searchDepth);
         }
     }
 }

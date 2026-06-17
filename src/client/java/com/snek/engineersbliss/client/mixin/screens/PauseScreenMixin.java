@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
+import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.gui.components.Button;
@@ -103,9 +104,9 @@ public class PauseScreenMixin extends Screen {
                 final int x2 = x1 - buttonWidth - gap;
                 final int y = first.getY();
 
-                renderingButton       = addButton("[R] Rendering",        RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth);
-                overlaysButton        = addButton("[O] Overlays",         RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth);
-                groupsButton          = addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth);
+                renderingButton       = addButton("[R] Rendering",        RenderingScreen  ::new, x1, y + BUTTON_SPACING * 0, buttonWidth);
+                overlaysButton        = addButton("[O] Overlays",         OverlaysScreen   ::new, x1, y + BUTTON_SPACING * 1, buttonWidth);
+                groupsButton          = addButton("[G] Groups",           RenderingScreen  ::new, x1, y + BUTTON_SPACING * 2, buttonWidth);
                 altTexturesButton     = addButton("[T] Alt textures",     AltTexturesScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth);
 
                 blockPropertiesButton = addButton("[P] Block Properties", RenderingScreen::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
