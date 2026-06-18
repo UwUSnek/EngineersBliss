@@ -14,6 +14,7 @@
         "screens.PauseScreenMixin",
 
         "overlays.PoweredRailLevelTrackerMixin",
+        "overlays.BlockstateChangeTrackerMixin",
 
         "rendering.RenderFilterBlockMixin",
         "rendering.RenderFilterLightMixin",

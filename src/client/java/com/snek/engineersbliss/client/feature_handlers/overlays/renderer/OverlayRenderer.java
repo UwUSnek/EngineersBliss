@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -55,41 +56,54 @@ public final class OverlayRenderer {
         Level level = client.level;
         if(level == null || client.player == null) return;
 
-        //FIXME actually calculate position and state
-        // For each chunk
-        for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
-            final ChunkPos chunkPos = chunk.getPos();
-            final int minX = chunkPos.getMinBlockX();
-            final int minZ = chunkPos.getMinBlockZ();
 
-            // For each chunk section
-            final var sections = chunk.getSections();
-            for(int i = 0; i < sections.length; ++i) {
-                final LevelChunkSection section = sections[i];
-                final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
+        // // For each chunk
+        // for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
+        //     final ChunkPos chunkPos = chunk.getPos();
+        //     final int minX = chunkPos.getMinBlockX();
+        //     final int minZ = chunkPos.getMinBlockZ();
 
-                // If the section contains blocks that have features
-                if(!section.hasOnlyAir() && section.maybeHas(state -> OverlayFeature.hasFeature(state.getBlock()))) {
+        //     // For each chunk section
+        //     final var sections = chunk.getSections();
+        //     for(int i = 0; i < sections.length; ++i) {
+        //         final LevelChunkSection section = sections[i];
+        //         final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
 
-                    // For each block in the section
-                    for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
-                        for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
-                            for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
-                                final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
-                                final BlockState state = section.getBlockState(x, y, z);
+        //         // If the section contains blocks that have features
+        //         if(!section.hasOnlyAir() && section.maybeHas(state -> OverlayFeature.hasFeature(state.getBlock()))) {
 
-                                // For each overlay provider whose block matches, render the overlay
+        //             // For each block in the section
+        //             for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
+        //                 for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
+        //                     for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+        //                         final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+        //                         final BlockState state = section.getBlockState(x, y, z);
+
+        // For each block with active features
+        for(var chunkFeatureMaskEntry : OverlaysHandler.getFeatureMask().entrySet()) {
+            final ChunkPos chunkPos = chunkFeatureMaskEntry.getKey();
+            final LevelChunk chunk = level.getChunk(chunkPos.x(), chunkPos.z());
+
+            // For each chunk that's currently visible or partially visible in the player's camera
+            //FIXME actually frustum cull chunks
+            for(var blockFeatureMaskEntry : chunkFeatureMaskEntry.getValue().entrySet()) {
+                                BlockPos pos = blockFeatureMaskEntry.getKey();
+                                final BlockState state = chunk.getBlockState(pos);
+
+                                // Render each overlay provider that should be rendered, one by one, using the computed values
                                 for(__base_OverlayProvider provider : providers) {
                                     if(provider instanceof TextureOverlayProvider p && p.shouldRender(state, pos)) {
 
-                                        // Get buffer source and texture
-                                        MultiBufferSource.BufferSource bufferSource = context.bufferSource();
+                                        // Get texture path
                                         final Identifier texturePath = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/" + p.calcTexturePath(state, pos));
 
-                                        // Create render data
+                                        // Retrieve render info and buffer source
+                                        MultiBufferSource.BufferSource bufferSource = context.bufferSource();
                                         RenderType renderType = RenderTypes.entityCutout(texturePath);
                                         //TODO use entityTranslucent for semitransparent textures
-                                        VertexConsumer consumer = bufferSource.getBuffer(renderType);
+                                        VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+
+                                        // Create pose stack
                                         PoseStack matrices = new PoseStack();
                                         matrices.pushPose();
 
@@ -106,21 +120,22 @@ public final class OverlayRenderer {
                                         int color = 0xFFFFFFFF;
 
                                         // Add vertices and set properties
-                                        consumer.addVertex(matrices.last().pose(), (float)x0, (float)_y, (float)z0).setUv(0f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                        consumer.addVertex(matrices.last().pose(), (float)x0, (float)_y, (float)z1).setUv(0f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                        consumer.addVertex(matrices.last().pose(), (float)x1, (float)_y, (float)z1).setUv(1f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                        consumer.addVertex(matrices.last().pose(), (float)x1, (float)_y, (float)z0).setUv(1f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                        vertexConsumer.addVertex(matrices.last().pose(), (float)x0, (float)_y, (float)z0).setUv(0f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                        vertexConsumer.addVertex(matrices.last().pose(), (float)x0, (float)_y, (float)z1).setUv(0f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                        vertexConsumer.addVertex(matrices.last().pose(), (float)x1, (float)_y, (float)z1).setUv(1f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                        vertexConsumer.addVertex(matrices.last().pose(), (float)x1, (float)_y, (float)z0).setUv(1f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
 
-                                        // Send render batch
+                                        // Reset pose
                                         matrices.popPose();
-                                        bufferSource.endBatch(renderType);
-                                        //TODO this might need to be ran at the very end of each rener type batch, instead of multiple times for single block
+
+                                        //! No endBatch call needed
+                                        //! Let the game handle that normally
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
+            //                 }
+            //             }
+            //         }
+            //     }
             }
             //TODO handle other types
         }

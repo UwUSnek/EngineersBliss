@@ -3,12 +3,19 @@ package com.snek.engineersbliss.client.feature_handlers.overlays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.snek.engineersbliss.client.mixin.accessors.PoweredRailBlockAccessor;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PoweredRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -21,20 +28,44 @@ public class OverlaysHandler {
     private OverlaysHandler() {}
 
 
+    // A map containing all available feature and their current state
     private static Map<OverlayFeature, Boolean> features = new EnumMap<>(OverlayFeature.class);
 
 
+    /**
+     * Initializes the overlay handler and registers any required event listener.
+     * This must be called in the mod's initializer function.
+     */
     public static void init(){
         for(OverlayFeature feature : OverlayFeature.values()) {
             features.put(feature, true);
         }
+
+        // Register listeners
+        ClientChunkEvents.CHUNK_LOAD  .register((level, chunk) -> onChunkLoad(chunk));
+        ClientChunkEvents.CHUNK_UNLOAD.register((level, chunk) -> onChunkUnload(chunk.getPos()));
+        ClientLevelEvents.AFTER_CLIENT_LEVEL_CHANGE.register((client, level) -> onLevelChange());
+        //! onFeatureToggle is called internally
+        //! onBlockChanged is called by a mixin that intercepts ClientLevel.setBlock
     }
 
 
+
+    /**
+     * Sets a new value for the specified feature.
+     * @param feature The feature.
+     * @param value The new value.
+     */
     public static void setFeature(final OverlayFeature feature, boolean value) {
         features.put(feature, value);
+        onFeatureToggle(feature);
     }
 
+    /***
+     * Fetches the current value of the specified feature.
+     * @param feature The feature.
+     * @return The current value.
+     */
     public static boolean getFeature(final OverlayFeature feature) {
         return features.get(feature);
     }
@@ -42,6 +73,201 @@ public class OverlaysHandler {
 
 
 
+
+
+
+    // A map containing all the states of all features on all currently visible blocks.
+    // The state of each feature is defined by value of its corresponding bit in the Long member.
+    private static final Map<ChunkPos, Map<BlockPos, Long>> featureMask = new ConcurrentHashMap<>();
+    public static Map<ChunkPos, Map<BlockPos, Long>> getFeatureMask() { return featureMask; }
+
+
+
+
+    /**
+     * Calculates the flags of the specified block based on the current settings, the block's state and its surroundings.
+     * @param level The level the block is in. //TODO remove if unused
+     * @param pos The position of the block.
+     * @param state The current blockstate of the block. Redundant but helps performance.
+     * @return A long value whose bits represent the features that are currently active on the block, or 0 if the block doesn't have any available feature.
+     */
+    public static long calcFeatureFlags(Level level, BlockPos pos, BlockState state) {
+        long r = 0;
+
+        Block block = state.getBlock();
+        for(OverlayFeature feature : OverlayFeature.values()) {
+            if(feature.affects(block) && getFeature(feature)) {
+                r |= feature.getFlagBit();
+            }
+        }
+        return r;
+    }
+    public static long updateFeatureFlags(long mask, long flag, boolean featureState) {
+        return featureState ? mask | flag : mask & ~flag;
+    }
+
+
+
+
+
+    /**
+     * Updates the runtime map. This must be called whenever a block is changed anywhere in the client's level.
+     * @param level The level.
+     * @param pos The position of the block.
+     * @param newState The new blockstate.
+     */
+    public static void onBlockChanged(ClientLevel level, BlockPos pos, BlockState newState) {
+        final ChunkPos chunkPos = new ChunkPos(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new ConcurrentHashMap<>()); //TODO check if concurrent hash map is actually needed
+
+        // Calculate new flags and put/remove the entry depending on the value
+        final long newFlags = calcFeatureFlags(level, pos, newState);
+        if(newFlags != 0) chunkFeatureMask.put(pos, newFlags);
+        else             chunkFeatureMask.remove(pos);
+    }
+
+
+
+
+    /**
+     * Updates the runtime map. This must be called whenever a chunk is loaded into the client's level.
+     * @param chunk The new chunk.
+     */
+    public static void onChunkLoad(LevelChunk chunk) {
+        final ChunkPos chunkPos = chunk.getPos();
+        final Level level = chunk.getLevel();
+        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new ConcurrentHashMap<>()); //TODO check if concurrent hash map is actually needed
+        final int minX = chunkPos.getMinBlockX();
+        final int minZ = chunkPos.getMinBlockZ();
+
+        // For each chunk section
+        final var sections = chunk.getSections();
+        for(int i = 0; i < sections.length; ++i) {
+            final LevelChunkSection section = sections[i];
+            final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
+
+            // If the section contains blocks with features
+            if(!section.hasOnlyAir() && section.maybeHas(state -> OverlayFeature.hasFeature(state.getBlock()))) {
+
+                // For each block in the section
+                for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
+                    for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
+                        for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+                            final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+                            final BlockState state = level.getBlockState(pos);
+                            final Block block = state.getBlock();
+
+                            //If the block has features
+                            if(OverlayFeature.hasFeature(block)) {
+
+                                // Calculate all flags and put them in the map if not empty
+                                final long newFlags = calcFeatureFlags(level, pos, state);
+                                if(newFlags != 0) chunkFeatureMask.put(pos, newFlags);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Updates the runtime map. This must be called whenever a chunk is unloaded from the client's level.
+     * @param pos The chunk position of the chunk that was unloaded.
+     */
+    public static void onChunkUnload(ChunkPos pos) {
+        featureMask.remove(pos);
+    }
+
+
+    /**
+     * Clears the runtime map. This must be called whenever the client changes level.
+     */
+    public static void onLevelChange() {
+        featureMask.clear();
+    }
+
+
+
+
+    /**
+     * Updates the feature mask of all chunks containing affected blocks. This must be called when a feature is toggled.
+     * @param feature The feature that was toggled.
+     */
+    public static void onFeatureToggle(OverlayFeature feature) {
+
+        // For each loaded chunk
+        for(LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
+            final ChunkPos chunkPos = chunk.getPos();
+            final Level level = chunk.getLevel();
+            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new ConcurrentHashMap<>()); //TODO check if concurrent hash map is actually needed
+            final int minX = chunkPos.getMinBlockX();
+            final int minZ = chunkPos.getMinBlockZ();
+
+            // For each chunk section
+            final var sections = chunk.getSections();
+            for(int i = 0; i < sections.length; ++i) {
+                final LevelChunkSection section = sections[i];
+                final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
+
+                // If the section contains an affected block
+                if(!section.hasOnlyAir() && section.maybeHas(state -> feature.affects(state.getBlock()))) {
+
+                    // For each block in the section
+                    for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
+                        for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
+                            for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+
+                                // Recalculate the state
+                                final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+                                chunkFeatureMask.compute(
+                                    pos,
+                                    (k, v) -> {
+
+                                        // Calculate new flags
+                                        final long newFlags = v == null ?
+                                            calcFeatureFlags(level, pos, level.getBlockState(pos)) :
+                                            updateFeatureFlags(v, feature.getFlagBit(), getFeature(feature))
+                                        ;
+
+                                        // put/remove the entry depending on the value
+                                        return newFlags != 0 ? newFlags : null;
+                                    }
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //TODO actually implement this stuff, maybe in a dedicated class?
+    //TODO actually implement this stuff, maybe in a dedicated class?
+    //TODO actually implement this stuff, maybe in a dedicated class?
+    //TODO actually implement this stuff, maybe in a dedicated class?
+    //TODO actually implement this stuff, maybe in a dedicated class?
+    //TODO actually implement this stuff, maybe in a dedicated class?
 
 
     // A map that stores the current power level of each powered and activator rail block in the currently loaded client level

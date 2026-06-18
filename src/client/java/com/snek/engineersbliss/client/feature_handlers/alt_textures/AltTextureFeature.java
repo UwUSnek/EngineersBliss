@@ -36,6 +36,7 @@ public enum AltTextureFeature {
 
     // List of blocks with features - used during block model registration
     private static final Set<Block> blocksWithFeatures = new HashSet<>();
+    public static Set<Block> getBlocksWithFeatures() { return blocksWithFeatures; }
     public static boolean hasFeature(final Block block) { return blocksWithFeatures.contains(block); }
     static {
         for(AltTextureFeature feature : values()) {
