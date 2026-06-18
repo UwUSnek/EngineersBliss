@@ -6,6 +6,8 @@
 
         "accessors.GameRendererAccessor",
         "accessors.PoweredRailBlockAccessor",
+        "accessors.LevelRendererAccessor",
+
         "shaders.JuliaSetShaderMixin",
 
         "misc.WebpTextureReaderMixin",

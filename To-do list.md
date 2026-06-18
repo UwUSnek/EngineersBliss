@@ -14,9 +14,10 @@
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
+  - Highlight unstable blockstates //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
   - Display the update order of redstone wire and rail circuits
   - Display scheduled tick timers
-  - Show Redstone Wire power level
+  - ~~Show Redstone Wire power level~~
   - Show Powered Rail and Activator Rail power levels
   - Show Comparator power levels
   - Visualize the order in which pistons move blocks

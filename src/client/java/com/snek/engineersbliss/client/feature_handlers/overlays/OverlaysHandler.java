@@ -3,7 +3,6 @@ package com.snek.engineersbliss.client.feature_handlers.overlays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.snek.engineersbliss.client.mixin.accessors.PoweredRailBlockAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -37,7 +36,7 @@ public class OverlaysHandler {
      * This must be called in the mod's initializer function.
      */
     public static void init(){
-        for(OverlayFeature feature : OverlayFeature.values()) {
+        for(final OverlayFeature feature : OverlayFeature.values()) {
             features.put(feature, true);
         }
 
@@ -56,7 +55,7 @@ public class OverlaysHandler {
      * @param feature The feature.
      * @param value The new value.
      */
-    public static void setFeature(final OverlayFeature feature, boolean value) {
+    public static void setFeature(final OverlayFeature feature, final boolean value) {
         features.put(feature, value);
         onFeatureToggle(feature);
     }
@@ -78,7 +77,9 @@ public class OverlaysHandler {
 
     // A map containing all the states of all features on all currently visible blocks.
     // The state of each feature is defined by value of its corresponding bit in the Long member.
-    private static final Map<ChunkPos, Map<BlockPos, Long>> featureMask = new ConcurrentHashMap<>();
+    //! Map is initially created with capacity 5000, while internal maps depend entirely on their contents.
+    //! Outer map stays allocated for the entire lifetime of the client to improve performance on level changes.
+    private static final Map<ChunkPos, Map<BlockPos, Long>> featureMask = HashMap.newHashMap(5000);
     public static Map<ChunkPos, Map<BlockPos, Long>> getFeatureMask() { return featureMask; }
 
 
@@ -91,18 +92,18 @@ public class OverlaysHandler {
      * @param state The current blockstate of the block. Redundant but helps performance.
      * @return A long value whose bits represent the features that are currently active on the block, or 0 if the block doesn't have any available feature.
      */
-    public static long calcFeatureFlags(Level level, BlockPos pos, BlockState state) {
+    public static long calcFeatureFlags(final Level level, final BlockPos pos, final BlockState state) {
         long r = 0;
 
-        Block block = state.getBlock();
-        for(OverlayFeature feature : OverlayFeature.values()) {
+        final Block block = state.getBlock();
+        for(final OverlayFeature feature : OverlayFeature.values()) {
             if(feature.affects(block) && getFeature(feature)) {
                 r |= feature.getFlagBit();
             }
         }
         return r;
     }
-    public static long updateFeatureFlags(long mask, long flag, boolean featureState) {
+    public static long updateFeatureFlags(final long mask, final long flag, final boolean featureState) {
         return featureState ? mask | flag : mask & ~flag;
     }
 
@@ -116,9 +117,9 @@ public class OverlaysHandler {
      * @param pos The position of the block.
      * @param newState The new blockstate.
      */
-    public static void onBlockChanged(ClientLevel level, BlockPos pos, BlockState newState) {
+    public static void onBlockChanged(final ClientLevel level, final BlockPos pos, final BlockState newState) {
         final ChunkPos chunkPos = new ChunkPos(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
-        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new ConcurrentHashMap<>()); //TODO check if concurrent hash map is actually needed
+        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>()); //TODO check if concurrent hash map is actually needed
 
         // Calculate new flags and put/remove the entry depending on the value
         final long newFlags = calcFeatureFlags(level, pos, newState);
@@ -133,10 +134,10 @@ public class OverlaysHandler {
      * Updates the runtime map. This must be called whenever a chunk is loaded into the client's level.
      * @param chunk The new chunk.
      */
-    public static void onChunkLoad(LevelChunk chunk) {
+    public static void onChunkLoad(final LevelChunk chunk) {
         final ChunkPos chunkPos = chunk.getPos();
         final Level level = chunk.getLevel();
-        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new ConcurrentHashMap<>()); //TODO check if concurrent hash map is actually needed
+        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>()); //TODO check if concurrent hash map is actually needed
         final int minX = chunkPos.getMinBlockX();
         final int minZ = chunkPos.getMinBlockZ();
 
@@ -176,7 +177,7 @@ public class OverlaysHandler {
      * Updates the runtime map. This must be called whenever a chunk is unloaded from the client's level.
      * @param pos The chunk position of the chunk that was unloaded.
      */
-    public static void onChunkUnload(ChunkPos pos) {
+    public static void onChunkUnload(final ChunkPos pos) {
         featureMask.remove(pos);
     }
 
@@ -195,13 +196,13 @@ public class OverlaysHandler {
      * Updates the feature mask of all chunks containing affected blocks. This must be called when a feature is toggled.
      * @param feature The feature that was toggled.
      */
-    public static void onFeatureToggle(OverlayFeature feature) {
+    public static void onFeatureToggle(final OverlayFeature feature) {
 
         // For each loaded chunk
-        for(LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
+        for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
             final ChunkPos chunkPos = chunk.getPos();
             final Level level = chunk.getLevel();
-            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new ConcurrentHashMap<>()); //TODO check if concurrent hash map is actually needed
+            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>()); //TODO check if concurrent hash map is actually needed
             final int minX = chunkPos.getMinBlockX();
             final int minZ = chunkPos.getMinBlockZ();
 
@@ -284,7 +285,7 @@ public class OverlaysHandler {
      * @param pos The position of the rail block to check.
      * @return The power level (0 to 9), or -1 if the block isn't a powerable rail or the value hasn't been cached yet.
      */
-    public static int getRailLevel(BlockPos pos) {
+    public static int getRailLevel(final BlockPos pos) {
         return powerLevelsCache.getOrDefault(pos, -1);
     }
     public static void depowerRail(final BlockPos pos) {
@@ -301,7 +302,7 @@ public class OverlaysHandler {
      * Populates the map with data from newly loaded chunks.
      * Call this from CHUNK_LOAD event.
      */
-    public static void onChunkLoad(ClientLevel level, LevelChunk chunk) {
+    public static void onChunkLoad(final ClientLevel level, final LevelChunk chunk) {
         final ChunkPos chunkPos = chunk.getPos();
         final int minX = chunkPos.getMinBlockX();
         final int minZ = chunkPos.getMinBlockZ();
@@ -321,9 +322,9 @@ public class OverlaysHandler {
                         for(int z = 0; z < 16; z++) {
 
                             // Force it to store its power level in the map by calling PoweredRailBlock.findPoweredRailSignal on it
-                            BlockState state = section.getBlockState(x, y, z);
-                            if(state.getBlock() instanceof PoweredRailBlock rail) {
-                                BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+                            final BlockState state = section.getBlockState(x, y, z);
+                            if(state.getBlock() instanceof final PoweredRailBlock rail) {
+                                final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
 
                                 //! PoweredRailBlock.findPoweredRailSignal needs to be called on the current block type as the check also tests for that.
                                 //! Boolean parameter defines the direction in which the checks move, so calling this twice is required (forwards and backwards)
