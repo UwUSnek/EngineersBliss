@@ -29,6 +29,7 @@ By UwU_Snek.
   - Show Redstone Wire power level
   - Show Powered Rail and Activator Rail power levels
   - Show Comparator power levels
+  - Show current fuel and item of Furnaces, Smokers and Blast Furnaces
   - Visualize the order in which pistons move blocks
   - Visualize the neighbor updates redstone components send when their state changes
   - Visualize Quasi-connectivity interactions
