@@ -18,6 +18,7 @@
 
         "overlays.PoweredRailLevelTrackerMixin",
         "overlays.BlockstateChangeTrackerMixin",
+        "overlays.ComparatorInputChangeTrackerMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",

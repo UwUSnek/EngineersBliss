@@ -13,6 +13,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -31,6 +33,16 @@ public class MinecraftUtils {
 
 
 
+
+
+    /**
+     * Calculates the ChunkPos of the chunk containing the block at the specified position.
+     * @param pos The position of the block.
+     * @return The chunk position of the chunk.
+     */
+    public static ChunkPos blockPosToChunk(BlockPos pos) {
+        return new ChunkPos(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+    }
 
 
 

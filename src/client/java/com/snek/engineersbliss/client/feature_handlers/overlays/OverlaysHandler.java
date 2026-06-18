@@ -1,11 +1,18 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.OverlayAttachedDataComparator;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.mixin.accessors.PoweredRailBlockAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.data_types.Pair;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
@@ -15,6 +22,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PoweredRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -76,11 +84,40 @@ public class OverlaysHandler {
 
 
     // A map containing all the states of all features on all currently visible blocks.
-    // The state of each feature is defined by value of its corresponding bit in the Long member.
     //! Map is initially created with capacity 5000, while internal maps depend entirely on their contents.
     //! Outer map stays allocated for the entire lifetime of the client to improve performance on level changes.
-    private static final Map<ChunkPos, Map<BlockPos, Long>> featureMask = HashMap.newHashMap(5000);
-    public static Map<ChunkPos, Map<BlockPos, Long>> getFeatureMask() { return featureMask; }
+    private static final Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> featureMask = HashMap.newHashMap(5000);
+    public static Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> getFeatureMask() { return featureMask; }
+
+
+    // A map that specified the proper attached data type for each Block
+    // This must be updated manually when new types of attached data are added
+    private static final Map<Block, Class<? extends __base_OverlayAttachedData>> attachedDataClasses = Map.of(
+        Blocks.COMPARATOR, OverlayAttachedDataComparator.class
+        // Blocks.COMPARATOR, OverlayAttachedDataComparator.class,
+    );
+
+    public static __base_OverlayAttachedData createAttachedData(final Level level, final BlockPos pos, final BlockState state) {
+        try {
+            final @Nullable var classType = attachedDataClasses.get(state.getBlock());
+            if(classType == null) return null;
+            return classType.getDeclaredConstructor(Level.class, BlockPos.class, BlockState.class).newInstance(level, pos, state);
+        }
+        catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void updateAttachedData(final BlockPos pos, __base_OverlayAttachedData newData) {
+        final var chunkFeatureMask = featureMask.get(MinecraftUtils.blockPosToChunk(pos));
+        if(chunkFeatureMask != null) {
+            final var pair = chunkFeatureMask.get(pos);
+            if(pair != null) {
+                pair.setSecond(newData);
+            }
+        }
+    }
 
 
 
@@ -117,14 +154,17 @@ public class OverlaysHandler {
      * @param pos The position of the block.
      * @param newState The new blockstate.
      */
-    public static void onBlockChanged(final ClientLevel level, final BlockPos pos, final BlockState newState) {
-        final ChunkPos chunkPos = new ChunkPos(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
-        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>()); //TODO check if concurrent hash map is actually needed
+    public static void onBlockChanged(final Level level, final BlockPos pos, final BlockState newState) {
+        final var chunkFeatureMask = featureMask.computeIfAbsent(MinecraftUtils.blockPosToChunk(pos), k -> new HashMap<>());
 
         // Calculate new flags and put/remove the entry depending on the value
         final long newFlags = calcFeatureFlags(level, pos, newState);
-        if(newFlags != 0) chunkFeatureMask.put(pos, newFlags);
-        else             chunkFeatureMask.remove(pos);
+        if(newFlags != 0) {
+            chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, newState)));
+        }
+        else {
+            chunkFeatureMask.remove(pos);
+        }
     }
 
 
@@ -137,7 +177,7 @@ public class OverlaysHandler {
     public static void onChunkLoad(final LevelChunk chunk) {
         final ChunkPos chunkPos = chunk.getPos();
         final Level level = chunk.getLevel();
-        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>()); //TODO check if concurrent hash map is actually needed
+        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
         final int minX = chunkPos.getMinBlockX();
         final int minZ = chunkPos.getMinBlockZ();
 
@@ -163,7 +203,9 @@ public class OverlaysHandler {
 
                                 // Calculate all flags and put them in the map if not empty
                                 final long newFlags = calcFeatureFlags(level, pos, state);
-                                if(newFlags != 0) chunkFeatureMask.put(pos, newFlags);
+                                if(newFlags != 0) {
+                                    chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, state)));
+                                }
                             }
                         }
                     }
@@ -202,7 +244,7 @@ public class OverlaysHandler {
         for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
             final ChunkPos chunkPos = chunk.getPos();
             final Level level = chunk.getLevel();
-            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>()); //TODO check if concurrent hash map is actually needed
+            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
             final int minX = chunkPos.getMinBlockX();
             final int minZ = chunkPos.getMinBlockZ();
 
@@ -222,6 +264,7 @@ public class OverlaysHandler {
 
                                 // Recalculate the state
                                 final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+                                final BlockState state = level.getBlockState(pos);
                                 chunkFeatureMask.compute(
                                     pos,
                                     (k, v) -> {
@@ -229,11 +272,11 @@ public class OverlaysHandler {
                                         // Calculate new flags
                                         final long newFlags = v == null ?
                                             calcFeatureFlags(level, pos, level.getBlockState(pos)) :
-                                            updateFeatureFlags(v, feature.getFlagBit(), getFeature(feature))
+                                            updateFeatureFlags(v.getFirst(), feature.getFlagBit(), getFeature(feature))
                                         ;
 
                                         // put/remove the entry depending on the value
-                                        return newFlags != 0 ? newFlags : null;
+                                        return newFlags != 0 ? Pair.from(newFlags, createAttachedData(level, pos, state)) : null;
                                     }
                                 );
                             }
@@ -243,6 +286,27 @@ public class OverlaysHandler {
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

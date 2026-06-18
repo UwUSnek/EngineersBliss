@@ -7,7 +7,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
@@ -37,11 +40,18 @@ public final class OverlayRenderer {
     private OverlayRenderer() {}
 
 
-    private static List<__base_OverlayProvider> providers = new ArrayList<>();
+    // A list constaining all overlay providers.
+    //! This needs to be updated manually as new providers are added.
+    private static List<__base_OverlayProvider> providers = List.of(
+        new RedstoneLevelOverlayProvider(),
+        new ComparatorLevelOverlayProvider()
+    );
 
 
+    /**
+     * Registers the rendering logic
+     */
     public static void register() {
-        providers.add(new RedstoneLevelOverlayProvider());
         LevelRenderEvents.COLLECT_SUBMITS.register(OverlayRenderer::draw);
     }
 
@@ -65,13 +75,14 @@ public final class OverlayRenderer {
                 for(final var blockFeatureMaskEntry : chunkFeatureMaskEntry.getValue().entrySet()) {
                     final BlockPos pos = blockFeatureMaskEntry.getKey();
                     final BlockState state = chunk.getBlockState(pos);
+                    final __base_OverlayAttachedData attachedData = blockFeatureMaskEntry.getValue().getSecond();
 
                     // Render each overlay provider that should be rendered, one by one, using the computed values
                     for(final __base_OverlayProvider provider : providers) {
-                        if(provider instanceof final TextureOverlayProvider p && p.shouldRender(state, pos)) {
+                        if(provider instanceof final TextureOverlayProvider p && p.shouldRender(state, pos, attachedData)) {
 
                             // Get texture path
-                            final Identifier texturePath = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/" + p.calcTexturePath(state, pos));
+                            final Identifier texturePath = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/" + p.calcTexturePath(state, pos, attachedData));
 
                             // Retrieve render info and buffer source
                             final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
@@ -85,10 +96,10 @@ public final class OverlayRenderer {
 
                             // Calculate vertex positions
                             final Vec3 cameraPos = context.levelState().cameraRenderState.pos;
-                            final double _y = pos.getY() - cameraPos.y + p.calcVerticalOffset(state, pos);
+                            final double _y = pos.getY() - cameraPos.y + p.calcVerticalOffset(state, pos, attachedData);
                             final double _x = pos.getX() - cameraPos.x + 0.5;
                             final double _z = pos.getZ() - cameraPos.z + 0.5;
-                            final double width = p.calcWidth(state, pos);
+                            final double width = p.calcWidth(state, pos, attachedData);
                             final double x0 = _x - width;
                             final double z0 = _z - width;
                             final double x1 = _x + width;

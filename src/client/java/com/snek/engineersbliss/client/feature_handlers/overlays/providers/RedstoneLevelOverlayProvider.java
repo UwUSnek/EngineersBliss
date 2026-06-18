@@ -1,6 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.TextureOverlayProvider;
+import org.jetbrains.annotations.Nullable;
+
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
@@ -14,22 +16,22 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
 
 
     @Override
-    public boolean shouldRender(BlockState state, BlockPos pos) {
+    public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return state.is(Blocks.REDSTONE_WIRE) && state.getValue(RedStoneWireBlock.POWER) > 0;
     }
 
     @Override
-    public String calcTexturePath(BlockState state, BlockPos pos) {
+    public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return "block/power_levels/" + state.getValue(RedStoneWireBlock.POWER).intValue() + ".png";
     }
 
     @Override
-    public double calcVerticalOffset(BlockState state, BlockPos pos) {
+    public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return 0.025;
     }
 
     @Override
-    public double calcWidth(BlockState state, BlockPos pos) {
+    public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return 0.15;
     }
 }

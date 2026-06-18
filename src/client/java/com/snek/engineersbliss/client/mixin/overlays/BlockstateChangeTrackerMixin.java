@@ -26,7 +26,7 @@ public class BlockstateChangeTrackerMixin {
         final int updateLimit,
         final CallbackInfoReturnable<Boolean> cir
     ) {
-        if(cir.getReturnValue()) {
+        if(cir.getReturnValue().booleanValue()) {
             OverlaysHandler.onBlockChanged((ClientLevel)(Object)this, pos, blockState);
         }
     }
