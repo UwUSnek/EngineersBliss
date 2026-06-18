@@ -33,9 +33,13 @@
   - Disable fluid flushing
   - Disable block gravity
   - Disable explosion block damage
+
   - Custom reach distance
-  - Insta kill mobs
   - Custom interaction radius (click multiple blocks at once)
+  - Insta kill mobs
+  - Phase through blocks
+  - Phase through entities
+  
   - Infinite item sources
   - Rate counter hoppers
 

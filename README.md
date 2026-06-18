@@ -41,8 +41,10 @@ By UwU_Snek.
   - Disable block gravity
   - Disable explosion block damage
   - Custom reach distance
-  - Insta kill mobs
   - Custom interaction radius (click multiple blocks at once)
+  - Insta kill mobs
+  - Phase through blocks
+  - Phase through entities
   - Infinite item sources
   - Rate counter hoppers
 - **Property lookup**:
@@ -74,7 +76,7 @@ Engineer's Bliss was built to fill the gaps existing mods leave behind.
 Because of this, it avoids implementing features that are already available in popular mods or aren't easily accessible.
 <br>
 <br>
-You can open a [GitHub](https://github.com/UwUSnek/EngineersBliss) issue to report bugs and submit suggestions. Pull requests are always welcome :3<br>
+You can open a [GitHub](https://github.com/UwUSnek/EngineersBliss) issue to report bugs and submit suggestions or ideas. Pull requests are always welcome :3<br>
 For anything else, you can DM me on Discord (uwu_snek).
 <br>
 <br>
