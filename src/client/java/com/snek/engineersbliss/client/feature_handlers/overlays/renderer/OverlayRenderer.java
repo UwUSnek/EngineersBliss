@@ -110,10 +110,13 @@ public final class OverlayRenderer {
                                         // Calculate vertex positions
                                         Vec3 cameraPos = context.levelState().cameraRenderState.pos;
                                         double _y = pos.getY() - cameraPos.y + p.calcVerticalOffset(state, pos);
-                                        double x0 = pos.getX() - cameraPos.x;
-                                        double z0 = pos.getZ() - cameraPos.z;
-                                        double x1 = x0 + 1.0;
-                                        double z1 = z0 + 1.0;
+                                        double _x = pos.getX() - cameraPos.x + 0.5;
+                                        double _z = pos.getZ() - cameraPos.z + 0.5;
+                                        double width = p.calcWidth(state, pos);
+                                        double x0 = _x - width;
+                                        double z0 = _z - width;
+                                        double x1 = _x + width;
+                                        double z1 = _z + width;
 
                                         // Calculate text light level and color
                                         int light = 0xF000F0;

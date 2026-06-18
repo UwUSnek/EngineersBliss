@@ -17,7 +17,7 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
 
     @Override
     public boolean shouldRender(BlockState state, BlockPos pos) {
-        return state.is(Blocks.REDSTONE_WIRE);
+        return state.is(Blocks.REDSTONE_WIRE) && state.getValue(RedStoneWireBlock.POWER) > 0;
     }
 
 
@@ -29,7 +29,13 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
 
     @Override
     public double calcVerticalOffset(BlockState state, BlockPos pos) {
-        return 0.005;
+        return 0.025;
+    }
+
+
+    @Override
+    public double calcWidth(BlockState state, BlockPos pos) {
+        return 0.15;
     }
 }
 

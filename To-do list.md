@@ -33,6 +33,7 @@
   - Disable block gravity
   - Disable explosion block damage
   - Custom reach distance
+  - Insta kill mobs
   - Custom interaction radius (click multiple blocks at once)
   - Infinite item sources
   - Rate counter hoppers

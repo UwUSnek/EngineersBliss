@@ -41,5 +41,14 @@ public interface TextureOverlayProvider extends __base_OverlayProvider {
     public double calcVerticalOffset(BlockState state, BlockPos pos);
 
 
+    /**
+     * Calculates the X and Z width of the texture, with 1 being a full block.
+     * @param state The blockstate of the block.
+     * @param pos The position of the block.
+     * @return The width of the texture.
+     */
+    public double calcWidth(BlockState state, BlockPos pos);
+
+
     //FIXME add rotation function
 }
