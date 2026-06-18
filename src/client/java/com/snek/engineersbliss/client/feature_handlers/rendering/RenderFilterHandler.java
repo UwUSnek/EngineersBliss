@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderersAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.scheduler.LoopTaskHandler;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
@@ -16,6 +17,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.lighting.LevelLightEngine;
@@ -63,6 +65,30 @@ public class RenderFilterHandler {
 
 
 
+
+    private static final Set<Block> blocksWithBlockEntityRendering = new HashSet<>();
+    private static void findBlocksWithBlockEntityRendering() {
+
+        // For each block, for each block entity type
+        BuiltInRegistries.BLOCK.forEach(block -> {
+            BuiltInRegistries.BLOCK_ENTITY_TYPE.forEach(blockEntityType -> {
+
+                // If the block has a block entity
+                //! isValid takes a blockstate but only checks the Block stored in it so we can just pass the default one
+                if(blockEntityType.isValid(block.defaultBlockState())) {
+
+                    // If the block entity has custom rendering
+                    if(BlockEntityRenderersAccessor.getProviders().containsKey(blockEntityType)) {
+                        blocksWithBlockEntityRendering.add(block);
+                    }
+                }
+            });
+        });
+    }
+
+
+
+
     /**
      * Init function. Must be called during the mod's initialization.
      * This function can be called again to reset the filter back to the default state.
@@ -74,6 +100,8 @@ public class RenderFilterHandler {
         final boolean defaultRenderBlockEntities,
         final boolean defaultRenderFluids
     ) {
+        findBlocksWithBlockEntityRendering();
+
         targetHiddenBlocks = defaultTargetHiddenBlocks;
         renderBlockOutlines = defaultRenderBlockOutlines;
         renderBlocks        = defaultRenderBlocks;
@@ -146,5 +174,32 @@ public class RenderFilterHandler {
             lightEngine.runLightUpdates();
             ++lightRecalcProgress;
         });
+    }
+
+
+
+
+    /**
+     * Checks if the specified block state should render, based on the current rendering filter settings.
+     * @param state The blockstate of the block to check.
+     * @return True if the block should render, false ot
+     */
+    public static boolean shouldBlockRender(final BlockState state) {
+        if(state == null) return false;
+
+
+        //Check category rendering. Return false if disabled
+        final boolean hasBlockEntityRendering = state.hasBlockEntity() && blocksWithBlockEntityRendering.contains(state.getBlock());
+        if(
+            !RenderFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty()  ||
+            !RenderFilterHandler.getRenderBlockEntities() && hasBlockEntityRendering           ||
+            !RenderFilterHandler.getRenderBlocks()        && state.getFluidState().isEmpty() && !hasBlockEntityRendering
+        ) {
+            return false;
+        }
+
+
+        // If rendering of the block category is enabled, check the individual filters
+        return RenderFilterHandler.getActiveBlocks().contains(state.getBlock());
     }
 }

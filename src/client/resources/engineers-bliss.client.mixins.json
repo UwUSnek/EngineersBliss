@@ -7,6 +7,7 @@
         "accessors.GameRendererAccessor",
         "accessors.PoweredRailBlockAccessor",
         "accessors.LevelRendererAccessor",
+        "accessors.BlockEntityRenderersAccessor",
 
         "shaders.JuliaSetShaderMixin",
 
@@ -18,7 +19,7 @@
         "overlays.PoweredRailLevelTrackerMixin",
         "overlays.BlockstateChangeTrackerMixin",
 
-        "rendering.RenderFilterBlockMixin",
+        "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
         "rendering.CustomOutlinesMixin",
 

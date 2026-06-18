@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin.rendering;
+package com.snek.engineersbliss.client.mixin.rendering.vanilla_indigo;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * ! Vanilla and Indigo pass through this. Other renderers need special mixins.
  */
 @Mixin(RenderSectionRegion.class)
-public class RenderFilterBlockMixin {
+public class RenderFilterBlockVanillaIndigoMixin {
 
 
     @Inject(
@@ -32,22 +32,8 @@ public class RenderFilterBlockMixin {
     )
     public void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
         BlockState state = cir.getReturnValue();
-        if(state == null) return;
 
-
-        //! Block vanilla and return if rendering is disabled
-        if(
-            !RenderFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty() ||
-            !RenderFilterHandler.getRenderBlockEntities() && state.hasBlockEntity()           ||
-            !RenderFilterHandler.getRenderBlocks()        && state.getFluidState().isEmpty() && !state.hasBlockEntity()
-        ) {
-            cir.setReturnValue(Blocks.AIR.defaultBlockState());
-            return;
-        }
-
-
-        // If rendering of the block category is enabled, check the individual filters
-        if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) {
+        if(!RenderFilterHandler.shouldBlockRender(state)) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());
         }
     }
