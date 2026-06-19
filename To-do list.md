@@ -35,6 +35,7 @@
   - Disable block gravity
   - Disable explosion block damage
 
+- **Creative mode tweaks**
   - Custom reach distance
   - Custom interaction radius (click multiple blocks at once)
   - Insta kill mobs
@@ -42,7 +43,8 @@
   - Phase through entities
   - Cycle container levels with a keybind (look at container, press tab, scroll with mouse wheel)
   - Teleport to the block you are looking at with a keybind
-  
+
+- **Utility blocks**
   - Infinite item sources
   - Rate counter hoppers
 

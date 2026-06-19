@@ -41,6 +41,7 @@ By UwU_Snek.
   - Disable fluid flushing
   - Disable block gravity
   - Disable explosion block damage
+- **Creative mode tweaks**
   - Custom reach distance
   - Custom interaction radius (click multiple blocks at once)
   - Insta kill mobs
@@ -48,6 +49,7 @@ By UwU_Snek.
   - Phase through entities
   - Cycle container levels with a keybind
   - Teleport to the block you are looking at with a keybind
+- **Utility blocks**
   - Infinite item sources
   - Rate counter hoppers
 - **Property lookup**:
