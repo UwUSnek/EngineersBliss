@@ -7,7 +7,6 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 
@@ -36,6 +35,11 @@ public final class ComparatorLevelOverlayProvider implements TextureOverlayProvi
     @Override
     public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return 0.15;
+    }
+
+    @Override
+    public TextureProviderDisplay getDisplay() {
+        return TextureProviderDisplay.Y_LOCKED;
     }
 }
 

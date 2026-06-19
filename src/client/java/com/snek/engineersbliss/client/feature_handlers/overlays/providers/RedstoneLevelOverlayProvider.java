@@ -34,5 +34,10 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
     public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return 0.15;
     }
+
+    @Override
+    public TextureProviderDisplay getDisplay() {
+        return TextureProviderDisplay.FIXED;
+    }
 }
 

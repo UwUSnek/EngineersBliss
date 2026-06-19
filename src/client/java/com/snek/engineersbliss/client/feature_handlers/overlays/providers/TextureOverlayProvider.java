@@ -50,5 +50,8 @@ public interface TextureOverlayProvider extends __base_OverlayProvider {
     public double calcWidth(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
 
 
+    public TextureProviderDisplay getDisplay();
+
+
     //FIXME add rotation function
 }

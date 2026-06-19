@@ -25,7 +25,6 @@ public class AttachedDataNetworkReceiver {
             Scheduler.run(() -> {
                 OverlaysHandler.updateAttachedData(payload.pos(), new OverlayAttachedDataComparator(payload.value()));
             });
-            // context.client().execute(() -> {
         });
     }
 }

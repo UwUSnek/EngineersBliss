@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 
 
@@ -22,12 +23,16 @@ import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 @Mixin(ComparatorBlockEntity.class)
 public class ComparatorInputChangeTrackerMixin {
 
+
     @Inject(method = "setOutputSignal", at = @At("RETURN"))
 	private void setOutputSignal(final int value, final CallbackInfo ci) {
         final ComparatorBlockEntity be = (ComparatorBlockEntity)(Object)this;
+        final Level level = be.getLevel();
+        if(level == null || level.isClientSide()) return;
+
 
         // Send update packet to all players that can see the block
-        for(ServerPlayer player : PlayerLookup.tracking((ServerLevel)be.getLevel(), be.getBlockPos())) {
+        for(ServerPlayer player : PlayerLookup.tracking((ServerLevel)level, be.getBlockPos())) {
 
             //! Only send packet to players with this mod installed
             if(ServerPlayNetworking.canSend(player, ComparatorUpdatePayload.TYPE)) {

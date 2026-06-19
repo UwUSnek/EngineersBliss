@@ -1,16 +1,19 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.renderer;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
@@ -80,6 +83,7 @@ public final class OverlayRenderer {
                     // Render each overlay provider that should be rendered, one by one, using the computed values
                     for(final __base_OverlayProvider provider : providers) {
                         if(provider instanceof final TextureOverlayProvider p && p.shouldRender(state, pos, attachedData)) {
+                            final TextureProviderDisplay display = p.getDisplay();
 
                             // Get texture path
                             final Identifier texturePath = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/" + p.calcTexturePath(state, pos, attachedData));
@@ -94,26 +98,42 @@ public final class OverlayRenderer {
                             final PoseStack matrices = new PoseStack();
                             matrices.pushPose();
 
-                            // Calculate vertex positions
+                            // Calculate center position and translate pose to it
                             final Vec3 cameraPos = context.levelState().cameraRenderState.pos;
                             final double _y = pos.getY() - cameraPos.y + p.calcVerticalOffset(state, pos, attachedData);
                             final double _x = pos.getX() - cameraPos.x + 0.5;
                             final double _z = pos.getZ() - cameraPos.z + 0.5;
-                            final double width = p.calcWidth(state, pos, attachedData);
-                            final double x0 = _x - width;
-                            final double z0 = _z - width;
-                            final double x1 = _x + width;
-                            final double z1 = _z + width;
+                            matrices.translate(_x, _y, _z);
+
+
+                            // Align to camera if needed
+                            if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
+                                final float camYaw = context.levelState().cameraRenderState.yRot;
+                                matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                            }
+
 
                             // Calculate text light level and color
                             final int light = 0xF000F0;
                             final int color = 0xFFFFFFFF;
 
+
                             // Add vertices and set properties
-                            vertexConsumer.addVertex(matrices.last().pose(), (float)x0, (float)_y, (float)z0).setUv(0f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                            vertexConsumer.addVertex(matrices.last().pose(), (float)x0, (float)_y, (float)z1).setUv(0f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                            vertexConsumer.addVertex(matrices.last().pose(), (float)x1, (float)_y, (float)z1).setUv(1f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                            vertexConsumer.addVertex(matrices.last().pose(), (float)x1, (float)_y, (float)z0).setUv(1f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                            final double width = p.calcWidth(state, pos, attachedData);
+                            final int overlay = OverlayTexture.NO_OVERLAY;
+                            final Matrix4f pose = matrices.last().pose();
+                            if(display == TextureProviderDisplay.CAMERA_LOCKED) {
+                                vertexConsumer.addVertex(pose, (float)-width,                  0, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                vertexConsumer.addVertex(pose, (float)-width, (float)(width * 2), 0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                vertexConsumer.addVertex(pose, (float)+width, (float)(width * 2), 0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                vertexConsumer.addVertex(pose, (float)+width,                  0, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                            }
+                            else if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
+                                vertexConsumer.addVertex(pose, (float)-width, 0, (float)-width).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                vertexConsumer.addVertex(pose, (float)-width, 0, (float)+width).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                vertexConsumer.addVertex(pose, (float)+width, 0, (float)+width).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                                vertexConsumer.addVertex(pose, (float)+width, 0, (float)-width).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                            }
 
                             // Reset pose
                             matrices.popPose();
