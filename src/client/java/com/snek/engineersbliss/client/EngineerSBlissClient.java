@@ -7,6 +7,7 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHan
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
@@ -35,10 +36,14 @@ public class EngineerSBlissClient implements ClientModInitializer {
         AltTexturesHandler.init();
         ModelLoadingPlugin.register(new AltTexturesModelPlugin());
         OverlaysHandler.init();
-        ClientChunkEvents.CHUNK_LOAD.register(OverlaysHandler::onChunkLoad);
+
 
         // Register overlay renderers
         OverlayRenderer.register();
+
+
+        // Register network receivers
+        AttachedDataNetworkReceiver.register();
 
 
         // Register scheduler

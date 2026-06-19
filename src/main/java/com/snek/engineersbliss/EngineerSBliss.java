@@ -1,9 +1,12 @@
 package com.snek.engineersbliss;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
 
 
 
@@ -14,6 +17,9 @@ public class EngineerSBliss implements ModInitializer {
 
     @Override
     public void onInitialize() {
+
+        // Register network payloads
+        PayloadTypeRegistry.clientboundPlay().register(ComparatorUpdatePayload.TYPE, ComparatorUpdatePayload.CODEC);
 
         // Log library loading
         LOGGER.info("Engineer's Bliss server loaded :3");

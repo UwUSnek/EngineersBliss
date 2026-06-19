@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.OverlayAttachedDataComparator;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
-import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.mixin.accessors.PoweredRailBlockAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.data_types.Pair;
@@ -18,7 +17,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -109,6 +107,11 @@ public class OverlaysHandler {
         }
     }
 
+    /**
+     * Updates the data attached to the specified block position, only if it exists in the global map.
+     * @param pos The position of the block.
+     * @param newData The new data to attach.
+     */
     public static void updateAttachedData(final BlockPos pos, __base_OverlayAttachedData newData) {
         final var chunkFeatureMask = featureMask.get(MinecraftUtils.blockPosToChunk(pos));
         if(chunkFeatureMask != null) {
@@ -155,6 +158,7 @@ public class OverlaysHandler {
      * @param newState The new blockstate.
      */
     public static void onBlockChanged(final Level level, final BlockPos pos, final BlockState newState) {
+        if(!level.isClientSide()) return;
         final var chunkFeatureMask = featureMask.computeIfAbsent(MinecraftUtils.blockPosToChunk(pos), k -> new HashMap<>());
 
         // Calculate new flags and put/remove the entry depending on the value

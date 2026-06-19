@@ -65,9 +65,13 @@ By UwU_Snek.
 <br>
 
 > **NOTICE**<br>
+>
 > Engineer's Bliss can be used without installing it on the server, but many features won't be available.<br>
-> Furthermore, the mod modifies many aspects of the game in a way that would give the user unfair advantages in competitive gamemodes.<br>
+> Vanilla clients can safely connect to servers with this mod installed, though none of its features will be available to them.<br>
+>
+> The mod modifies many aspects of the game in a way that would give the user unfair advantages in competitive gamemodes.<br>
 > Many public servers consider this a **bannable offense**. Use at your own risk.
+>
 
 <br>
 
@@ -87,6 +91,7 @@ You are free to copy, modify, and redistribute it, as long as you provide the so
 <br>
 
 > **IMPORTANT**<br>
+>
 > **Do not submit AI-generated code**.<br>
 > A significant part of AI-generated pull requests are created to artificially inflate the author's GitHub contributions,
 > and are often low-quality and not useful to the actual developers working on the project.<br>

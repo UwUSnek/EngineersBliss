@@ -7,6 +7,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 
@@ -17,11 +18,8 @@ public final class ComparatorLevelOverlayProvider implements TextureOverlayProvi
 
     @Override
     public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        if(state.is(Blocks.COMPARATOR)) {
-            final int powerLevel = attachedData == null ? 0 : ((OverlayAttachedDataComparator)attachedData).getOutputLevel();
-            return powerLevel > 0;
-        }
-        return false;
+        // return state.is(Blocks.COMPARATOR) && state.getValue(DiodeBlock.POWERED);
+        return state.is(Blocks.COMPARATOR);
     }
 
     @Override

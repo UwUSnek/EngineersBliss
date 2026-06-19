@@ -21,7 +21,6 @@ public class BlockstateChangeTrackerMixin {
 	private void setBlock(
         final BlockPos pos,
         final BlockState blockState,
-        // @UpdateFlags final int updateFlags,
         final int updateFlags,
         final int updateLimit,
         final CallbackInfoReturnable<Boolean> cir

@@ -3,7 +3,7 @@
 	"package": "com.snek.engineersbliss.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+		"overlay_data.ComparatorInputChangeTrackerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

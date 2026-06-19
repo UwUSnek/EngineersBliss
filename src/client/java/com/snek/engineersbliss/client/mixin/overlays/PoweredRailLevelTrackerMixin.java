@@ -34,7 +34,6 @@ public class PoweredRailLevelTrackerMixin {
         cancellable = false
     )
     private void findPoweredRailSignal(final Level level, final BlockPos pos, final BlockState state, final boolean forward, final int searchDepth, final CallbackInfoReturnable<Boolean> cir) {
-        // System.out.println("UPDATED");
         final boolean isPowered = cir.getReturnValue();
         if(!isPowered) {
             OverlaysHandler.depowerRail(pos);
@@ -44,3 +43,4 @@ public class PoweredRailLevelTrackerMixin {
         }
     }
 }
+//FIXME this might need to be on the server? idk

@@ -8,6 +8,8 @@
         "accessors.PoweredRailBlockAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",
+        "accessors.ComparatorBlockAccessor",
+        "accessors.DiodeBlockAccessor",
 
         "shaders.JuliaSetShaderMixin",
 
@@ -18,7 +20,6 @@
 
         "overlays.PoweredRailLevelTrackerMixin",
         "overlays.BlockstateChangeTrackerMixin",
-        "overlays.ComparatorInputChangeTrackerMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
