@@ -22,7 +22,7 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
 
     @Override
     public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return "block/power_levels/" + state.getValue(RedStoneWireBlock.POWER).intValue() + ".png";
+        return "overlays/power_levels/" + state.getValue(RedStoneWireBlock.POWER).intValue() + ".png";
     }
 
     @Override
@@ -32,12 +32,12 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
 
     @Override
     public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return 0.15;
+        return 0.25;
     }
 
     @Override
     public TextureProviderDisplay getDisplay() {
-        return TextureProviderDisplay.FIXED;
+        return TextureProviderDisplay.Y_LOCKED;
     }
 }
 

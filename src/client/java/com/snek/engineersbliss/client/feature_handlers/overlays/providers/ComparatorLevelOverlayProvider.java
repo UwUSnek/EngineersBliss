@@ -29,13 +29,13 @@ public final class ComparatorLevelOverlayProvider implements TextureOverlayProvi
         // ! Displaying the correct levels depend on server packets.
         final OverlayAttachedDataComparator data = (OverlayAttachedDataComparator)attachedData;
         if(data == null || data.getOutSignal() == -1) {
-            return "block/power_levels/unknown.png";
+            return "overlays/power_levels/unknown.png";
         }
 
         // Fetch proper data otherwise
         else {
             final String powerLevelStr = String.valueOf(data.getOutSignal());
-            return "block/power_levels/" + powerLevelStr + ".png";
+            return "overlays/power_levels/" + powerLevelStr + ".png";
         }
     }
 
@@ -48,7 +48,7 @@ public final class ComparatorLevelOverlayProvider implements TextureOverlayProvi
 
     @Override
     public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return 0.15;
+        return 0.25;
     }
 
 

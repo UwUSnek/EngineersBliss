@@ -47,6 +47,7 @@ By UwU_Snek.
   - Phase through blocks
   - Phase through entities
   - Cycle container levels with a keybind
+  - Teleport to the block you are looking at with a keybind
   - Infinite item sources
   - Rate counter hoppers
 - **Property lookup**:
