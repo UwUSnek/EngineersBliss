@@ -12,7 +12,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public record ComparatorUpdatePayload(BlockPos pos, int value) implements CustomPacketPayload {
+public record ComparatorUpdatePayload(BlockPos pos, int back, int side, int out) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<ComparatorUpdatePayload> TYPE =
         new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "comparator_update"))
     ;
@@ -20,7 +20,9 @@ public record ComparatorUpdatePayload(BlockPos pos, int value) implements Custom
     public static final StreamCodec<RegistryFriendlyByteBuf, ComparatorUpdatePayload> CODEC =
         StreamCodec.composite(
             BlockPos.STREAM_CODEC, ComparatorUpdatePayload::pos,
-            ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::value,
+            ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::back,
+            ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::side,
+            ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::out,
             ComparatorUpdatePayload::new
         );
 

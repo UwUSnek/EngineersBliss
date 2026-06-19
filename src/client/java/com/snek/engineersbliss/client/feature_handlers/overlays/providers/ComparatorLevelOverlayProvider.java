@@ -17,25 +17,40 @@ public final class ComparatorLevelOverlayProvider implements TextureOverlayProvi
 
     @Override
     public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        // return state.is(Blocks.COMPARATOR) && state.getValue(DiodeBlock.POWERED);
         return state.is(Blocks.COMPARATOR);
     }
 
+
     @Override
     public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        final String powerLevelStr = attachedData == null ? "unknown" : String.valueOf(((OverlayAttachedDataComparator)attachedData).getOutputLevel());
-        return "block/power_levels/" + powerLevelStr + ".png";
+
+        // Return unknown level sprite if server doesn't have the mod installed
+        // ! Data constructor sets the output signal to -1 if the server doesn't have the mod installed.
+        // ! Displaying the correct levels depend on server packets.
+        final OverlayAttachedDataComparator data = (OverlayAttachedDataComparator)attachedData;
+        if(data == null || data.getOutSignal() == -1) {
+            return "block/power_levels/unknown.png";
+        }
+
+        // Fetch proper data otherwise
+        else {
+            final String powerLevelStr = String.valueOf(data.getOutSignal());
+            return "block/power_levels/" + powerLevelStr + ".png";
+        }
     }
+
 
     @Override
     public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return (1f / 16 * 2) + 0.025;
+        return PIXEL_HEIGHT * 2 + 0.025;
     }
+
 
     @Override
     public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return 0.15;
     }
+
 
     @Override
     public TextureProviderDisplay getDisplay() {

@@ -9,6 +9,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesM
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
+import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -23,6 +24,10 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
+
+        // Initialize utility classes
+        NetworkUtils.init();
 
 
         // Register WebP ImageIO reader

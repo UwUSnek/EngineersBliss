@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.attached_data;
 
-import com.snek.engineersbliss.client.mixin.accessors.ComparatorBlockAccessor;
-import com.snek.engineersbliss.client.mixin.accessors.DiodeBlockAccessor;
+import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.mixin.accessors.ComparatorBlockAccessor;
+import com.snek.engineersbliss.mixin.accessors.DiodeBlockAccessor;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -13,22 +14,47 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 public class OverlayAttachedDataComparator extends __base_OverlayAttachedData {
-    private final int outputLevel;
-    public int getOutputLevel() { return outputLevel; }
+    private final int back;
+    private final int side;
+    private final int out;
+    public int getBackSignal() { return back; }
+    public int getSideSignal() { return side; }
+    public int getOutSignal () { return out;  }
 
 
-    // Used by overlay handler when blocks are changed or chunks load in
+    /**
+     * Used by overlay handler when blocks are changed or chunks load in
+     * ! This is mostly to avoid flashing values before the client can sync with the server.
+     * ! Not computing values would work too but this looks prettier.
+     * ! This also handles server compatibility checks: output is set to -1 if server doesn't have the mod installed.
+     * @param level The level instance.
+     * @param pos The position of the block.
+     * @param state The blockstate of the block.
+     */
     public OverlayAttachedDataComparator(final Level level, final BlockPos pos, final BlockState state) {
-        final int inputSignal  = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeGetInputSignal       (level, pos, state);
-        final int sideSignal   = ((DiodeBlockAccessor)(DiodeBlock)Blocks.COMPARATOR).invokeGetAlternateSignal   (level, pos, state);
-        final int outputSignal = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeCalculateOutputSignal(level, pos, state);
-        this.outputLevel = outputSignal;
-        //TODO display other stuff
+        if(!NetworkUtils.serverHasMod()) {
+            this.back = -1;
+            this.side = 0;
+            this.out = 0;
+        }
+        else {
+            this.back = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeGetInputSignal       (level, pos, state);
+            this.side = ((DiodeBlockAccessor)(DiodeBlock)Blocks.COMPARATOR).invokeGetAlternateSignal   (level, pos, state);
+            this.out  = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeCalculateOutputSignal(level, pos, state);
+        }
     }
 
 
-    // Used by network receiver to update existing entries
-    public OverlayAttachedDataComparator(final int outputLevel) {
-        this.outputLevel = outputLevel;
+    /**
+     * Used by network receiver to update existing entries.
+     * ! This is never called if the server doesn't have the mod installed.
+     * @param back The input signal.
+     * @param side The side input signal.
+     * @param out The output signal.
+     */
+    public OverlayAttachedDataComparator(final int back, final int side, final int out) {
+        this.back = back;
+        this.side = side;
+        this.out  = out ;
     }
 }

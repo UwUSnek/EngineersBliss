@@ -8,8 +8,6 @@
         "accessors.PoweredRailBlockAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",
-        "accessors.ComparatorBlockAccessor",
-        "accessors.DiodeBlockAccessor",
 
         "shaders.JuliaSetShaderMixin",
 
