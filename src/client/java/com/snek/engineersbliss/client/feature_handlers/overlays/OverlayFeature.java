@@ -19,7 +19,7 @@ public enum OverlayFeature {
     //TODO implement these as text
     //TODO implement these as text
     //TODO implement these as text
-    REDSTONE_WIRE_LOGIC_SNIPPET     ("Redstone Wire logic snippet",      List.of(Blocks.COMPARATOR)), //TODO also add input power levels, including sides
+    REDSTONE_WIRE_LOGIC_SNIPPET     ("Redstone Wire logic snippet",      List.of(Blocks.REDSTONE_WIRE)), //TODO also add input power levels, including sides
     COMPARATOR_LOGIC_SNIPPET     ("Comparator logic snippet",      List.of(Blocks.COMPARATOR)); //TODO also add input power levels, including sides
 
 

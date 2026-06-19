@@ -46,6 +46,7 @@ By UwU_Snek.
   - Insta kill mobs
   - Phase through blocks
   - Phase through entities
+  - Cycle container levels with a keybind
   - Infinite item sources
   - Rate counter hoppers
 - **Property lookup**:

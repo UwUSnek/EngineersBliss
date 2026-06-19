@@ -40,6 +40,7 @@
   - Insta kill mobs
   - Phase through blocks
   - Phase through entities
+  - Cycle container levels with a keybind (look at container, press tab, scroll with mouse wheel)
   
   - Infinite item sources
   - Rate counter hoppers

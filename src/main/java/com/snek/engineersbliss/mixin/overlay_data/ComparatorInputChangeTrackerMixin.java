@@ -22,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.DiodeBlock;
-import net.minecraft.world.level.block.entity.ComparatorBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 
@@ -44,10 +43,11 @@ public class ComparatorInputChangeTrackerMixin {
 	private void refreshOutputState(final Level level, final BlockPos pos, final BlockState state, final CallbackInfo ci) {
         if(level == null || level.isClientSide()) return;
 
-        // Calculate new signals, return if they are identical to the last ones
+        // Calculate new signals, return if inputs are identical to the last ones
         final int[] last = lastSignals.get(pos);
-        final int back = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeGetInputSignal       (level, pos, state); if(last != null && last[0] != back) return;
-        final int side = ((DiodeBlockAccessor)(DiodeBlock)Blocks.COMPARATOR).invokeGetAlternateSignal   (level, pos, state); if(last != null && last[1] != side) return;
+        final int back = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeGetInputSignal       (level, pos, state);
+        final int side = ((DiodeBlockAccessor)(DiodeBlock)Blocks.COMPARATOR).invokeGetAlternateSignal   (level, pos, state);
+        if(last != null && last[0] == back && last[1] == side) return;
         final int out  = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeCalculateOutputSignal(level, pos, state);
         lastSignals.put(pos, new int[]{ back, side, out });
 
