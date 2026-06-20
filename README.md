@@ -40,6 +40,7 @@ By UwU_Snek.
   - Name and color groups
   - Copy and move groups around or across worlds
 - **Gameplay tweaks**:
+  - Disable redstone wire particles
   - Disable fluid flushing
   - Disable block gravity
   - Disable explosion block damage
