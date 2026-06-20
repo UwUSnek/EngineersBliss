@@ -9,7 +9,6 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesH
 
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.RailShape;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 public abstract class __base_RailPartProvider extends __base_PartProvider {
     protected abstract String getRailTypeName();
+    private static final List<RailShape> CURVED_SHAPES = List.of(RailShape.NORTH_EAST, RailShape.NORTH_WEST, RailShape.SOUTH_EAST, RailShape.SOUTH_WEST);
 
 
 
@@ -35,20 +35,19 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
             //! Non-sloped shape names already match json models so no changes are needed there. This includes curved normal rails.
             //! All shape names are already lowercase.
             final RailShape shape = state.getValue(((BaseRailBlock)state.getBlock()).getShapeProperty());
-            final String shapeName = shape.isSlope() ?
-                ("raised" + shape.getName().replace("ascending", "")) :
-                ("flat_" + shape.getName())
-            ;
+            final String shapeName = shape.isSlope() ? "raised" : (CURVED_SHAPES.contains(shape) ? "corner" : "flat");
+            final String directionName = switch(shape) {
+                case ASCENDING_NORTH, NORTH_SOUTH, NORTH_EAST -> "_n";
+                case ASCENDING_EAST,  EAST_WEST,   SOUTH_EAST -> "_e";
+                case ASCENDING_SOUTH,              SOUTH_WEST -> "_s";
+                case ASCENDING_WEST,               NORTH_WEST -> "_w";
+            };
             final String poweredStateName = state.getBlock() != Blocks.RAIL ?
-                state.getValue(BlockStateProperties.POWERED).booleanValue() ? "on" : "off" :
+                state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off" :
                 ""
             ;
-            return List.of("rails/consistent_sloped/" + getRailTypeName() + "/" + shapeName + "_" + poweredStateName);
-//TODO branch 3d/2d
-                // String railModelName = "raised" + shape.getName().replace("ascending", "");
-                // if(state.getBlock() != Blocks.RAIL) railModelName += state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off";
-                // return List.of("rails/consistent_sloped/" + getRailTypeName() + "/" + railModelName);
-            // } //TODO REMOVE
+            // return List.of("rails/consistent_sloped/" + (is3D ? "3d" : "2d") + "/" + getRailTypeName() + "/" + shapeName + "_" + poweredStateName);
+            return List.of("rails/consistent_sloped/" + ("2d") + "/" + getRailTypeName() + "/" + shapeName + poweredStateName + directionName);
         }
         else {
             return null;

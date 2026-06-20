@@ -25,7 +25,7 @@ public class HoneyBlockPartProvider extends __base_PartProvider {
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         return AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK) ?
-            List.of("honey_block/transparent/block") :
+            List.of("honey_block/transparent/block_n") :
             null
         ;
     }

@@ -26,7 +26,7 @@ public class MangroveRootsPartProvider extends __base_PartProvider {
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         return AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS) ?
-            List.of("mangrove_roots/unobstructive/block") :
+            List.of("mangrove_roots/unobstructive/block_n") :
             null
         ;
     }

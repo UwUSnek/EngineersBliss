@@ -48,17 +48,17 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
                 e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
                 s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
                 w != RedstoneSide.NONE && n != RedstoneSide.NONE
-            ) r.add(wireModelDir + "/dot");
+            ) r.add(wireModelDir + "/dot_n");
 
             // Side connections
-            if(n == RedstoneSide.SIDE) r.add(wireModelDir + "/north_down");
-            if(e == RedstoneSide.SIDE) r.add(wireModelDir + "/east_down");
-            if(s == RedstoneSide.SIDE) r.add(wireModelDir + "/south_down");
-            if(w == RedstoneSide.SIDE) r.add(wireModelDir + "/west_down");
-            if(n == RedstoneSide.UP)   r.add(wireModelDir + "/north_up");
-            if(e == RedstoneSide.UP)   r.add(wireModelDir + "/east_up");
-            if(s == RedstoneSide.UP)   r.add(wireModelDir + "/south_up");
-            if(w == RedstoneSide.UP)   r.add(wireModelDir + "/west_up");
+            if(n == RedstoneSide.SIDE) r.add(wireModelDir + "/down_n");
+            if(e == RedstoneSide.SIDE) r.add(wireModelDir + "/down_e");
+            if(s == RedstoneSide.SIDE) r.add(wireModelDir + "/down_s");
+            if(w == RedstoneSide.SIDE) r.add(wireModelDir + "/down_w");
+            if(n == RedstoneSide.UP)   r.add(wireModelDir + "/up_n");
+            if(e == RedstoneSide.UP)   r.add(wireModelDir + "/up_e");
+            if(s == RedstoneSide.UP)   r.add(wireModelDir + "/up_s");
+            if(w == RedstoneSide.UP)   r.add(wireModelDir + "/up_w");
 
             return r;
         }

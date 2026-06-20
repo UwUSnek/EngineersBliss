@@ -26,7 +26,7 @@ public class ScaffoldingPartProvider extends __base_PartProvider {
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         return AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING) ?
-            List.of("scaffolding/unobstructive/" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable")) :
+            List.of("scaffolding/unobstructive/" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable") + "_n") :
             null
         ;
     }

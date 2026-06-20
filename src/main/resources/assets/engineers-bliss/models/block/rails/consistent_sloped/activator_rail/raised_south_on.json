@@ -1,6 +1,0 @@
-{
-  "parent": "engineers-bliss:block/rails/consistent_sloped/template_rail/raised_south",
-  "textures": {
-    "rail": "engineers-bliss:block/rails/consistent_sloped/activator_rail_on"
-  }
-}

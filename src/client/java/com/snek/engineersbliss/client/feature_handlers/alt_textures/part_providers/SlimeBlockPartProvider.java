@@ -25,7 +25,7 @@ public class SlimeBlockPartProvider extends __base_PartProvider {
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         return AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK) ?
-            List.of("slime_block/transparent/block") :
+            List.of("slime_block/transparent/block_n") :
             null
         ;
     }

@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/rails/consistent_sloped/2d/template_rail/flat",
+  "textures": {
+    "rail": "engineers-bliss:block/rails/consistent_sloped/activator_rail_on"
+  }
+}
