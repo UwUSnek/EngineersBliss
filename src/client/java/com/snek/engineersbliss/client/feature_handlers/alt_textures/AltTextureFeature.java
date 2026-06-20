@@ -11,12 +11,18 @@ import net.minecraft.world.level.block.Blocks;
 
 
 public enum AltTextureFeature {
-    LINE_REDSTONE_WIRE          ("Minimal Redstone Wire",        List.of(Blocks.REDSTONE_WIRE)),
-    CONSISTENT_SLOPED_RAILS     ("Consistent sloped Rails",      List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)),
     TRANSPARENT_SLIME_BLOCK     ("Transparent Slime Blocks",     List.of(Blocks.SLIME_BLOCK)),
     TRANSPARENT_HONEY_BLOCK     ("Transparent Honey Blocks",     List.of(Blocks.HONEY_BLOCK)),
     UNOBSTRUCTIVE_MANGROVE_ROOTS("Unobstructive Mangrove Roots", List.of(Blocks.MANGROVE_ROOTS)),
-    UNOBSTRUCTIVE_SCAFFOLDING   ("Unobstructive Scaffolding",    List.of(Blocks.SCAFFOLDING));
+    UNOBSTRUCTIVE_SCAFFOLDING   ("Unobstructive Scaffolding",    List.of(Blocks.SCAFFOLDING)),
+
+    MINIMAL_REDSTONE_WIRE          ("Minimal Redstone Wire",        List.of(Blocks.REDSTONE_WIRE)),
+    CONSISTENT_SLOPED_RAILS     ("Consistent sloped Rails",      List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)),
+
+    REDSTONE_WIRE_3D            ("3D Redstone Wire",             List.of(Blocks.REDSTONE_WIRE)),
+    RAILS_3D                    ("3D Rails",                     List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL));
+
+
 
 
     // Feature name and properties

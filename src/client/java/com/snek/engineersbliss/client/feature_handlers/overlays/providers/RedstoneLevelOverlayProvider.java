@@ -2,6 +2,8 @@ package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 
 import net.minecraft.core.BlockPos;
@@ -27,7 +29,7 @@ public final class RedstoneLevelOverlayProvider implements TextureOverlayProvide
 
     @Override
     public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return 0.025;
+        return (AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D) ? PIXEL_HEIGHT * 0.4 : 0.01) + 0.02;
     }
 
     @Override

@@ -42,7 +42,7 @@ public final class ComparatorLevelOverlayProvider implements TextureOverlayProvi
 
     @Override
     public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return PIXEL_HEIGHT * 2 + 0.025;
+        return PIXEL_HEIGHT * 2 + 0.02;
     }
 
 

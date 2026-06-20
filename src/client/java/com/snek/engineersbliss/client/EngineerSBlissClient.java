@@ -16,6 +16,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 
 
 
@@ -36,10 +37,17 @@ public class EngineerSBlissClient implements ClientModInitializer {
         );
 
 
+        // Initialize resource plugin for alt textures handler
+        PreparableModelLoadingPlugin.register(
+            AltTexturesModelPlugin::discoverModels,
+            new AltTexturesModelPlugin()
+        );
+
+
         // Initialize handlers
         RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
         AltTexturesHandler.init();
-        ModelLoadingPlugin.register(new AltTexturesModelPlugin());
+        // ModelLoadingPlugin.register(new AltTexturesModelPlugin());
         OverlaysHandler.init();
 
 
