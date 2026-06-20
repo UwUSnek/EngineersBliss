@@ -2,9 +2,6 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
-	"textures": {
-		"particle": "#rail"
-	},
 	"elements": [
 		{
 			"from": [0, 1, 0],

@@ -46,8 +46,7 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
                 state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off" :
                 ""
             ;
-            // return List.of("rails/consistent_sloped/" + (is3D ? "3d" : "2d") + "/" + getRailTypeName() + "/" + shapeName + "_" + poweredStateName);
-            return List.of("rails/consistent_sloped/" + ("2d") + "/" + getRailTypeName() + "/" + shapeName + poweredStateName + directionName);
+            return List.of("rails/consistent_sloped/" + (is3D ? "3d" : "2d") + "/" + getRailTypeName() + "/" + shapeName + poweredStateName + directionName);
         }
         else {
             return null;

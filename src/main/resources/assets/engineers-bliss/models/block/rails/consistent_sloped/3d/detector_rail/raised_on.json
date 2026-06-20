@@ -1,5 +1,5 @@
 {
-  "parent": "engineers-bliss:block/rails/consistent_sloped/2d/template_rail/raised",
+  "parent": "engineers-bliss:block/rails/consistent_sloped/3d/template_rail/detector_raised",
   "textures": {
     "rail": "engineers-bliss:block/rails/consistent_sloped/detector_rail_on_alt",
     "particle": "engineers-bliss:block/rails/consistent_sloped/detector_rail_on"

@@ -213,3 +213,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         });
     }
 }
+
+
+
+//TODO reuse this plugin to hide filtered blocks?
+//TODO only if it can filter all the blocks and is called when rebuilding chunk sections/slices
+//TODO and if culling follows geometry outputted by the plugin

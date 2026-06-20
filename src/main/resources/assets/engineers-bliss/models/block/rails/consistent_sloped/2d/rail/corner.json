@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "engineers-bliss:block/rails/consistent_sloped/rail_corner",
-		"rail": "engineers-bliss:block/rails/consistent_sloped/rail_corner"
+		"rail": "engineers-bliss:block/rails/consistent_sloped/rail_corner",
+		"particle": "engineers-bliss:block/rails/consistent_sloped/rail_corner"
 	},
 	"elements": [
 		{
