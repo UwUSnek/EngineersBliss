@@ -11,6 +11,8 @@
   - ~~Unobstructive Mangrove Roots~~
   - ~~Unobstructive Scaffolding~~
   - ~~Minimal Redstone Dust~~
+  - ~~3D Redstone Dust~~
+  - ~~3D Rails~~
 
 - **Overlays**:
   - Highlight the blocks moved by a piston

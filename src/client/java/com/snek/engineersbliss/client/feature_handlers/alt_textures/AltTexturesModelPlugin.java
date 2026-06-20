@@ -1,13 +1,26 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ActivatorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DetectorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.PoweredRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -47,8 +60,25 @@ import net.minecraft.world.level.block.state.properties.RedstoneSide;
 public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<Identifier>> {
 
     // A map containing baked custom models. The runtime resolver fetches models from here.
-    private static final Map<Identifier, BlockStateModel> customModels = new ConcurrentHashMap<>();
+    private static final Map<Identifier, BlockStateModel> customModels = new HashMap<>();
 
+    // A map containing the model part providers for each block
+    private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
+    static {
+        for(final var provider : List.of(
+            new SlimeBlockPartProvider(),
+            new HoneyBlockPartProvider(),
+            new MangroveRootsPartProvider(),
+            new ScaffoldingPartProvider(),
+            new RedstoneWirePartProvider(),
+            new RailPartProvider(),
+            new PoweredRailPartProvider(),
+            new ActivatorRailPartProvider(),
+            new DetectorRailPartProvider()
+        )){
+            partProviders.put(provider.getBlock(), provider);
+        }
+    }
 
 
 
@@ -150,19 +180,31 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {
 
                     // If the block has active features
-                    List<Identifier> stateIds = new ArrayList<>();
-                    final boolean keepVanilla = calcStateIds(state, stateIds);
-                    if(!stateIds.isEmpty()) {
+                    final __base_PartProvider partProvider = partProviders.get(state.getBlock());
+                    // final boolean keepVanilla = partProvider.shouldKeepVanilla(state);
+                    final @Nullable List<String> partNames = partProvider.calcPartNames(state);
+                    if(partNames != null) for(final String partName : partNames) {
+
+                    // }
+
+                    // List<Identifier> stateIds = new ArrayList<>();
+                    // final boolean keepVanilla = calcStateIds(state, stateIds);
+                    // if(!stateIds.isEmpty()) {
 
                         // Loop through the requested parts and merge them together
-                        for(Identifier stateId : stateIds) {
-                            final BlockStateModel custom = customModels.get(stateId);
-                            custom.collectParts(random, output);
-                        }
+                        // for(Identifier stateId : stateIds) {
+                            final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
+                            final BlockStateModel custom = customModels.get(partId);
+                            if(custom == null) {
+                                System.out.println("NULL PART ID: " + partId);//TODO REMOVE
+                                vanilla.collectParts(random, output);//TODO REMOVE
+                            } //TODO REMOVE
+                            else custom.collectParts(random, output);
+                        // }
                     }
 
                     // Add the vanilla parts if needed
-                    if(keepVanilla) {
+                    if(partProvider.shouldKeepVanilla(state)) {
                         vanilla.collectParts(random, output);
                     }
                 }
@@ -188,100 +230,100 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
-    /**
-     * Calculates a list of model parts based on the provided blockstate and the currently active texture features
-     * @param state The blockstate to check.
-     * @param ret A container for the output list of parts. This must be an empty list.
-     * @return true if the Vanilla model needs to be added to the parts, false otherwise.
-     */
-    private static boolean calcStateIds(BlockState state, final List<Identifier> ret) {
-        final List<String> r = new ArrayList<>();
-        final Block block = state.getBlock();
-        boolean keepVanilla = true;
+    // /**
+    //  * Calculates a list of model parts based on the provided blockstate and the currently active texture features
+    //  * @param state The blockstate to check.
+    //  * @param ret A container for the output list of parts. This must be an empty list.
+    //  * @return true if the Vanilla model needs to be added to the parts, false otherwise.
+    //  */
+    // private static boolean calcStateIds(BlockState state, final List<Identifier> ret) {
+    //     final List<String> r = new ArrayList<>();
+    //     final Block block = state.getBlock();
+    //     boolean keepVanilla = true;
 
 
-        // Calculate custom state IDs. These include the trailing underscore but not the block's ID
-        if(block == Blocks.SLIME_BLOCK) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK)) {
-                keepVanilla = false;
-                r.add("slime_block/transparent/block");
-            }
-        }
-        else if(block == Blocks.HONEY_BLOCK) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK)) {
-                keepVanilla = false;
-                r.add("honey_block/transparent/block");
-            }
-        }
-        else if(block == Blocks.MANGROVE_ROOTS) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS)) {
-                keepVanilla = false;
-                r.add("mangrove_roots/unobstructive/block");
-            }
-        }
-        else if(block == Blocks.SCAFFOLDING) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING)) {
-                keepVanilla = false;
-                final String stateName = state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable";
-                r.add("scaffolding/unobstructive/" + stateName);
-            }
-        }
-        else if(block == Blocks.REDSTONE_WIRE) {
-            final boolean isMinimal = AltTexturesHandler.getFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE);
-            final boolean is3d = AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D);
-            if(isMinimal || is3d) {
-                keepVanilla = false;
-                final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
-                final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
-                final RedstoneSide s = state.getValue(RedStoneWireBlock.SOUTH);
-                final RedstoneSide w = state.getValue(RedStoneWireBlock.WEST);
-                final String wireModelDir = "redstone_wire/minimal/" + (is3d ? "3d" : "2d");
+    //     // Calculate custom state IDs. These include the trailing underscore but not the block's ID
+    //     if(block == Blocks.SLIME_BLOCK) {
+    //         if(AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK)) {
+    //             keepVanilla = false;
+    //             r.add("slime_block/transparent/block");
+    //         }
+    //     }
+    //     else if(block == Blocks.HONEY_BLOCK) {
+    //         if(AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK)) {
+    //             keepVanilla = false;
+    //             r.add("honey_block/transparent/block");
+    //         }
+    //     }
+    //     // else if(block == Blocks.MANGROVE_ROOTS) {
+    //     //     if(AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS)) {
+    //     //         keepVanilla = false;
+    //     //         r.add("mangrove_roots/unobstructive/block");
+    //     //     }
+    //     // }
+    //     else if(block == Blocks.SCAFFOLDING) {
+    //         if(AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING)) {
+    //             keepVanilla = false;
+    //             final String stateName = state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable";
+    //             r.add("scaffolding/unobstructive/" + stateName);
+    //         }
+    //     }
+    //     else if(block == Blocks.REDSTONE_WIRE) {
+    //         final boolean isMinimal = AltTexturesHandler.getFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE);
+    //         final boolean is3d = AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D);
+    //         if(isMinimal || is3d) {
+    //             keepVanilla = false;
+    //             final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
+    //             final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
+    //             final RedstoneSide s = state.getValue(RedStoneWireBlock.SOUTH);
+    //             final RedstoneSide w = state.getValue(RedStoneWireBlock.WEST);
+    //             final String wireModelDir = "redstone_wire/minimal/" + (is3d ? "3d" : "2d");
 
-                // Central dot and power level
-                if(
-                    n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE ||
-                    n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
-                    e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
-                    s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
-                    w != RedstoneSide.NONE && n != RedstoneSide.NONE
-                ) r.add(wireModelDir + "/dot");
+    //             // Central dot and power level
+    //             if(
+    //                 n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE ||
+    //                 n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
+    //                 e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
+    //                 s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
+    //                 w != RedstoneSide.NONE && n != RedstoneSide.NONE
+    //             ) r.add(wireModelDir + "/dot");
 
-                // Side connections
-                if(n == RedstoneSide.SIDE) r.add(wireModelDir + "/north_down");
-                if(e == RedstoneSide.SIDE) r.add(wireModelDir + "/east_down");
-                if(s == RedstoneSide.SIDE) r.add(wireModelDir + "/south_down");
-                if(w == RedstoneSide.SIDE) r.add(wireModelDir + "/west_down");
-                if(n == RedstoneSide.UP)   r.add(wireModelDir + "/north_up");
-                if(e == RedstoneSide.UP)   r.add(wireModelDir + "/east_up");
-                if(s == RedstoneSide.UP)   r.add(wireModelDir + "/south_up");
-                if(w == RedstoneSide.UP)   r.add(wireModelDir + "/west_up");
-            }
-        }
-        else if(block instanceof BaseRailBlock rail) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)) {
-                final RailShape shape = state.getValue(rail.getShapeProperty());
-                if(shape.isSlope()) {
-                    keepVanilla = false;
+    //             // Side connections
+    //             if(n == RedstoneSide.SIDE) r.add(wireModelDir + "/north_down");
+    //             if(e == RedstoneSide.SIDE) r.add(wireModelDir + "/east_down");
+    //             if(s == RedstoneSide.SIDE) r.add(wireModelDir + "/south_down");
+    //             if(w == RedstoneSide.SIDE) r.add(wireModelDir + "/west_down");
+    //             if(n == RedstoneSide.UP)   r.add(wireModelDir + "/north_up");
+    //             if(e == RedstoneSide.UP)   r.add(wireModelDir + "/east_up");
+    //             if(s == RedstoneSide.UP)   r.add(wireModelDir + "/south_up");
+    //             if(w == RedstoneSide.UP)   r.add(wireModelDir + "/west_up");
+    //         }
+    //     }
+    //     else if(block instanceof BaseRailBlock rail) {
+    //         if(AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)) {
+    //             final RailShape shape = state.getValue(rail.getShapeProperty());
+    //             if(shape.isSlope()) {
+    //                 keepVanilla = false;
 
-                    //! Shape names have the format "ascending_<direction>" so i use that directly by removing "ascending_" as that matches the json file names perfectly
-                    final String id = BuiltInRegistries.BLOCK.getKey(block).getPath();
-                    String railModelName = "raised" + shape.getName().replace("ascending", "");
-                    if(block != Blocks.RAIL) railModelName += state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off";
-                    r.add("rails/consistent_sloped/" + id + "/" + railModelName);
-                }
-            }
-        }
-        else {
-            return true;
-        }
+    //                 //! Shape names have the format "ascending_<direction>" so i use that directly by removing "ascending_" as that matches the json file names perfectly
+    //                 final String id = BuiltInRegistries.BLOCK.getKey(block).getPath();
+    //                 String railModelName = "raised" + shape.getName().replace("ascending", "");
+    //                 if(block != Blocks.RAIL) railModelName += state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off";
+    //                 r.add("rails/consistent_sloped/" + id + "/" + railModelName);
+    //             }
+    //         }
+    //     }
+    //     else {
+    //         return true;
+    //     }
 
 
-        // Convert string paths to identifiers and return the vanilla flag
-        for(final String id : r) {
-            ret.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + id));
-        }
-        return keepVanilla;
-    }
+    //     // Convert string paths to identifiers and return the vanilla flag
+    //     for(final String id : r) {
+    //         ret.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + id));
+    //     }
+    //     return keepVanilla;
+    // }
 }
 
 

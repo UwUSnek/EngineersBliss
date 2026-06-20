@@ -22,6 +22,8 @@ By UwU_Snek.
   - Unobstructive Mangrove Roots texture
   - Unobstructive Scaffolding texture
   - Minimal Redstone Dust texture
+  - 3D Redstone Dust
+  - 3D Rails
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Display the update order of redstone wire and rail circuits
@@ -47,7 +49,7 @@ By UwU_Snek.
   - Insta kill mobs
   - Phase through blocks
   - Phase through entities
-  - Cycle container levels with a keybind
+  - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
 - **Utility blocks**
   - Infinite item sources
