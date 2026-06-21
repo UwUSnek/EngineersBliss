@@ -54,6 +54,7 @@ public class RailInputDataResolver {
         int y = startPos.getY();
         int z = startPos.getZ();
         @Nullable RailShape prevShape = null;
+        final PoweredRailBlock rail = (PoweredRailBlock)(level.getBlockState(startPos).getBlock());
 
 
         // Iterate towards the specified direction until the block is too far to receive power
@@ -61,19 +62,19 @@ public class RailInputDataResolver {
             BlockPos curPos = new BlockPos(x, y, z);
             BlockState state = level.getBlockState(curPos);
 
-            // If the block is not a powered rail, move to the block below it
+            // If the block is not a PoweredRailBlock, move to the block below it
+            //! This is never called on the first block, as the first block is always a PoweredRailBlock
             if(!(state.getBlock() instanceof PoweredRailBlock)) {
                 curPos = new BlockPos(x, --y, z);
                 state = level.getBlockState(curPos);
 
-                // If the block below is also not a powered rail, return power 0 (No source found, no other possible paths left)
-                if(!(state.getBlock() instanceof PoweredRailBlock)) {
+                // If the block below is not a connected rail of the same type, return power 0 (No source found, no other possible paths left)
+                if(!isSameRailAndConnected(level, curPos, prevShape, rail)) {
                     return 0;
                 }
             }
 
             // If this isn't the first block in the chain, check that it's a connected rail of the same type. Return power 0 if not
-            final PoweredRailBlock rail = (PoweredRailBlock) state.getBlock();
             if(prevShape != null && !isSameRailAndConnected(level, curPos, prevShape, rail)) {
                 return 0;
             }
@@ -117,12 +118,19 @@ public class RailInputDataResolver {
         if(!state.is(rail)) {
             return false;
         }
-        else {
-            RailShape myShape = state.getValue(rail.getShapeProperty());
-            return
-                (prevShape != RailShape.EAST_WEST   || myShape != RailShape.NORTH_SOUTH && myShape != RailShape.ASCENDING_NORTH && myShape != RailShape.ASCENDING_SOUTH) &&
-                (prevShape != RailShape.NORTH_SOUTH || myShape != RailShape.EAST_WEST   && myShape != RailShape.ASCENDING_EAST  && myShape != RailShape.ASCENDING_WEST)
-            ;
-        }
+
+        RailShape curShape = state.getValue(rail.getShapeProperty());
+        boolean prevEastWest =
+            prevShape == RailShape.EAST_WEST      ||
+            prevShape == RailShape.ASCENDING_EAST ||
+            prevShape == RailShape.ASCENDING_WEST
+        ;
+        boolean curEastWest =
+            curShape == RailShape.EAST_WEST       ||
+            curShape == RailShape.ASCENDING_EAST  ||
+            curShape == RailShape.ASCENDING_WEST
+        ;
+
+        return prevEastWest == curEastWest;
     }
 }
