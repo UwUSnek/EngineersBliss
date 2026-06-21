@@ -1,12 +1,13 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
@@ -86,29 +87,22 @@ public class OverlaysHandler {
     public static Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> getFeatureMask() { return featureMask; }
 
 
-    // A map that specified the proper attached data type for each Block
+    // A map that specifies the proper attached data type for each Block
     // ! This must be updated manually when new types of attached data are added
-    private static final Map<Block, Class<? extends __base_OverlayAttachedData>> attachedDataClasses = Map.of(
-        Blocks.COMPARATOR, ComparatorAttachedData.class,
-        Blocks.POWERED_RAIL, RailAttachedData.class,
-        Blocks.ACTIVATOR_RAIL, RailAttachedData.class
+    private static final Map<Block, TriFunction<Level, BlockPos, BlockState, ? extends __base_OverlayAttachedData>> attachedDataSuppliers = Map.of(
+        Blocks.REDSTONE_WIRE,  (a, b, c) -> null,
+        Blocks.COMPARATOR,     ComparatorAttachedData::new,
+        Blocks.POWERED_RAIL,   RailAttachedData::new,
+        Blocks.ACTIVATOR_RAIL, RailAttachedData::new
     );
 
     public static __base_OverlayAttachedData createAttachedData(final Level level, final BlockPos pos, final BlockState state) {
-        @Nullable Class<? extends __base_OverlayAttachedData> classType = null;
-        try {
-            classType = attachedDataClasses.get(state.getBlock());
-            if(classType == null) return null;
-            //BUG REPLACE REFLECTION WITH PROPER LOGIC
-            return classType.getDeclaredConstructor(Level.class, BlockPos.class, BlockState.class).newInstance(level, pos, state);
-        }
-        catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            e.printStackTrace();
+        final var supplier = attachedDataSuppliers.get(state.getBlock());
+        if(supplier == null) {
+            EngineerSBliss.LOGGER.error("Missing attached data supplier function for block {}", state.getBlock().getDescriptionId());
             return null;
         }
-        catch(NoSuchMethodException _) {
-            throw new ExceptionInInitializerError("Class " + classType.getName() + " must declare a public (Level, BlockPos, BlockState) constructor");
-        }
+        return supplier.apply(level, pos, state);
     }
 
     /**

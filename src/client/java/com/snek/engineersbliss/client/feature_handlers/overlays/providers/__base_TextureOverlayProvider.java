@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public abstract class TextureOverlayProvider extends __base_OverlayProvider {
+public abstract class __base_TextureOverlayProvider extends __base_OverlayProvider {
 
 
     /**

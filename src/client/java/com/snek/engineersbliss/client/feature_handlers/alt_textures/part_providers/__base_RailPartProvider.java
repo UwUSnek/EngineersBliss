@@ -47,6 +47,8 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
                 ""
             ;
             return List.of("rails/consistent_sloped/" + (is3D ? "3d" : "2d") + "/" + getRailTypeName() + "/" + shapeName + poweredStateName + directionName);
+            //TODO do something about the connector parts showing up between sloped rails
+            //TODO plugin thing can't choose model based on nearby blocks so idk how to go about that
         }
         else {
             return null;

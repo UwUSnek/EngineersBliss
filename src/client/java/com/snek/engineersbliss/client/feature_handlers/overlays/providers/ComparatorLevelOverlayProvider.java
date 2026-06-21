@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public final class ComparatorLevelOverlayProvider extends TextureOverlayProvider {
+public final class ComparatorLevelOverlayProvider extends __base_TextureOverlayProvider {
 
 
     @Override

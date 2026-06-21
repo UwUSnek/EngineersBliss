@@ -16,7 +16,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RailLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
-import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -87,7 +87,7 @@ public final class OverlayRenderer {
 
                     // Render each overlay provider that should be rendered, one by one, using the computed values
                     for(final __base_OverlayProvider provider : providers) {
-                        if(provider instanceof final TextureOverlayProvider p && p.shouldRender(state, pos, attachedData)) {
+                        if(provider instanceof final __base_TextureOverlayProvider p && p.shouldRender(state, pos, attachedData)) {
                             final TextureProviderDisplay display = p.getDisplay();
 
                             // Get texture path

@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 
 
-public final class RailLevelOverlayProvider extends TextureOverlayProvider {
+public final class RailLevelOverlayProvider extends __base_TextureOverlayProvider {
     private static final float TILT = (float)(Math.PI / 4);
 
 
