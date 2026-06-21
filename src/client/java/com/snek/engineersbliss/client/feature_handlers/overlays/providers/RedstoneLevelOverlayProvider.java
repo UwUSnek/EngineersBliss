@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public final class RedstoneLevelOverlayProvider implements TextureOverlayProvider {
+public final class RedstoneLevelOverlayProvider extends TextureOverlayProvider {
 
 
     @Override

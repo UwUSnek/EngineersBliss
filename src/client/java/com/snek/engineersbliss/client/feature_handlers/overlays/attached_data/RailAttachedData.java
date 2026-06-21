@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.attached_data;
 
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.network.overlay_data.resolvers.RailInputDataResolver;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -17,15 +18,15 @@ public class RailAttachedData implements __base_OverlayAttachedData {
 
 
     /**
-     * ! This mostly handles server compatibility checks: input is set to -1 if server doesn't have the mod installed.
-     * ! If the mod is installed, the input is set to 0 and stays so until the server sends update packets.
+     * ! This is mostly to avoid flashing values before the client can sync with the server.
+     * ! It also handles server compatibility checks: input is set to -1 if server doesn't have the mod installed.
      */
     public RailAttachedData(final Level level, final BlockPos pos, final BlockState state) {
         if(!NetworkUtils.serverHasMod()) {
             this.input = -1;
         }
         else {
-            this.input = 0;
+            this.input = RailInputDataResolver.calcPowerLevel(level, pos);
         }
     }
 

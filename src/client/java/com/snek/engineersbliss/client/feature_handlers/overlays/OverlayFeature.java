@@ -14,13 +14,12 @@ public enum OverlayFeature {
 
     REDSTONE_WIRE_POWER_LEVELS  ("Redstone Wire power levels",   List.of(Blocks.REDSTONE_WIRE)),
     RAIL_POWER_LEVELS           ("Rail power levels",            List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)),
-    COMPARATOR_POWER_LEVELS     ("Comparator power levels",      List.of(Blocks.COMPARATOR)), //TODO also add input power levels, including sides
+    COMPARATOR_POWER_LEVELS     ("Comparator power levels",      List.of(Blocks.COMPARATOR)),
 
     //TODO implement these as text
     //TODO implement these as text
-    //TODO implement these as text
-    REDSTONE_WIRE_LOGIC_SNIPPET     ("Redstone Wire logic snippet",      List.of(Blocks.REDSTONE_WIRE)), //TODO also add input power levels, including sides
-    COMPARATOR_LOGIC_SNIPPET     ("Comparator logic snippet",      List.of(Blocks.COMPARATOR)); //TODO also add input power levels, including sides
+    REDSTONE_WIRE_LOGIC_SNIPPET ("Redstone Wire logic snippet",  List.of(Blocks.REDSTONE_WIRE)), //TODO also add input power levels, including sides
+    COMPARATOR_LOGIC_SNIPPET    ("Comparator logic snippet",     List.of(Blocks.COMPARATOR)); //TODO also add input power levels, including sides
 
 
     // Feature name and properties

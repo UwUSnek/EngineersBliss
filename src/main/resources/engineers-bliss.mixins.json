@@ -8,9 +8,7 @@
 		"accessors.PoweredRailBlockAccessor",
 
 		"overlay_data.ComparatorInputChangeTrackerMixin",
-		"overlay_data.RailInputChangeTrackerMixin",
-
-		"overlay_hooks.PoweredRailLevelTrackerMixin"
+		"overlay_data.RailInputChangeTrackerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

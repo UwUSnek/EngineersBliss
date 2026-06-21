@@ -1,5 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
 
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
+
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 
 import net.minecraft.core.BlockPos;
@@ -8,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public interface TextureOverlayProvider extends __base_OverlayProvider {
+public abstract class TextureOverlayProvider extends __base_OverlayProvider {
 
 
     /**
@@ -19,7 +22,7 @@ public interface TextureOverlayProvider extends __base_OverlayProvider {
      * @param pos The position of the block.
      * @return True if the overlay needs to be rendered, false otherwise.
      */
-    public boolean shouldRender(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
+    public abstract boolean shouldRender(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
 
 
     /**
@@ -29,7 +32,7 @@ public interface TextureOverlayProvider extends __base_OverlayProvider {
      * @param pos The position of the block.
      * @return The path of the texture.
      */
-    public String calcTexturePath(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
+    public abstract String calcTexturePath(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
 
 
     /**
@@ -38,7 +41,7 @@ public interface TextureOverlayProvider extends __base_OverlayProvider {
      * @param pos The position of the block.
      * @return The vertical offset of the texture.
      */
-    public double calcVerticalOffset(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
+    public abstract double calcVerticalOffset(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
 
 
     /**
@@ -47,11 +50,23 @@ public interface TextureOverlayProvider extends __base_OverlayProvider {
      * @param pos The position of the block.
      * @return The width of the texture.
      */
-    public double calcWidth(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
+    public abstract double calcWidth(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
 
 
-    public TextureProviderDisplay getDisplay();
+    /**
+     * Returns the display type that should be used for this overlay.
+     * @return The display type.
+     */
+    public abstract TextureProviderDisplay getDisplay();
 
 
-    //FIXME add rotation function
+    /**
+     * Calculates the rotation that is to be applied to the rendered texture after display type alignment.
+     * @param state The blockstate of the block.
+     * @param pos The position of the block.
+     * @return The rotation expressed as euler angles, in radians, or null if no additional rotation should be applied.
+     */
+    public @Nullable Vector3f calcPostRotation(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
+        return null;
+    }
 }

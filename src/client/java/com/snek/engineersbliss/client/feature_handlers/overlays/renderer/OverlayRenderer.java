@@ -2,7 +2,10 @@ package com.snek.engineersbliss.client.feature_handlers.overlays.renderer;
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -20,9 +23,6 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.blockentity.state.SignRenderState;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -30,8 +30,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SignBlock;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
@@ -117,6 +115,13 @@ public final class OverlayRenderer {
                             if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
                                 final float camYaw = context.levelState().cameraRenderState.yRot;
                                 matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                            }
+
+
+                            // Apply custom rotation
+                            final @Nullable Vector3f rot = p.calcPostRotation(state, pos, attachedData);
+                            if(rot != null) {
+                                matrices.mulPose(new Quaternionf().rotateXYZ(rot.x, rot.y, rot.z));
                             }
 
 

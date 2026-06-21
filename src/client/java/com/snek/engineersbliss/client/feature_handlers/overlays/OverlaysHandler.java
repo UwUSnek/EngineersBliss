@@ -99,6 +99,7 @@ public class OverlaysHandler {
         try {
             classType = attachedDataClasses.get(state.getBlock());
             if(classType == null) return null;
+            //BUG REPLACE REFLECTION WITH PROPER LOGIC
             return classType.getDeclaredConstructor(Level.class, BlockPos.class, BlockState.class).newInstance(level, pos, state);
         }
         catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
