@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
+import com.snek.engineersbliss.network.overlay_data.payloads.RailUpdatePayload;
 
 
 
@@ -20,6 +21,7 @@ public class EngineerSBliss implements ModInitializer {
 
         // Register network payloads
         PayloadTypeRegistry.clientboundPlay().register(ComparatorUpdatePayload.TYPE, ComparatorUpdatePayload.CODEC);
+        PayloadTypeRegistry.clientboundPlay().register(      RailUpdatePayload.TYPE,       RailUpdatePayload.CODEC);
 
         // Log library loading
         LOGGER.info("Engineer's Bliss server loaded :3");

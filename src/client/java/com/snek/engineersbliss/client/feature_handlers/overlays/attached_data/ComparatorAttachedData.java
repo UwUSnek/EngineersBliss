@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public class OverlayAttachedDataComparator implements __base_OverlayAttachedData {
+public class ComparatorAttachedData implements __base_OverlayAttachedData {
     private final int back;
     private final int side;
     private final int out;
@@ -27,7 +27,7 @@ public class OverlayAttachedDataComparator implements __base_OverlayAttachedData
      * ! Not computing client comparator values would work too but this looks prettier.
      * ! This also handles server compatibility checks: output is set to -1 if server doesn't have the mod installed.
      */
-    public OverlayAttachedDataComparator(final Level level, final BlockPos pos, final BlockState state) {
+    public ComparatorAttachedData(final Level level, final BlockPos pos, final BlockState state) {
         if(!NetworkUtils.serverHasMod()) {
             this.back = -1;
             this.side = 0;
@@ -48,7 +48,7 @@ public class OverlayAttachedDataComparator implements __base_OverlayAttachedData
      * @param side The side input signal.
      * @param out The output signal.
      */
-    public OverlayAttachedDataComparator(final int back, final int side, final int out) {
+    public ComparatorAttachedData(final int back, final int side, final int out) {
         this.back = back;
         this.side = side;
         this.out  = out ;

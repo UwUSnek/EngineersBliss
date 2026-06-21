@@ -5,9 +5,12 @@
 	"mixins": [
 		"accessors.ComparatorBlockAccessor",
 		"accessors.DiodeBlockAccessor",
+		"accessors.PoweredRailBlockAccessor",
 
 		"overlay_data.ComparatorInputChangeTrackerMixin",
-		"overlay_data.RailInputChangeTrackerMixin"
+		"overlay_data.RailInputChangeTrackerMixin",
+
+		"overlay_hooks.PoweredRailLevelTrackerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

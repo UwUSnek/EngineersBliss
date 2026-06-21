@@ -20,7 +20,7 @@ public final class RailLevelOverlayProvider implements TextureOverlayProvider {
         return
             (state.is(Blocks.POWERED_RAIL) || state.is(Blocks.ACTIVATOR_RAIL)) //&&
             // attachedData != null && //TODO
-            // ((RailAttachedData)attachedData).getInputSignal() > 0 //TODO
+            // ((RailAttachedData)attachedData).getInputSignal() == 0 //! Exclude 0 but include -1 as that's the unknown level value //TODO
         ;
     }
 
@@ -29,7 +29,7 @@ public final class RailLevelOverlayProvider implements TextureOverlayProvider {
     public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         final RailAttachedData data = (RailAttachedData)attachedData;
         if(data != null) {
-            final String powerLevelStr = String.valueOf(data.getInputSignal());
+            final String powerLevelStr = String.valueOf(data.getInput());
             return "overlays/power_levels/" + powerLevelStr + ".png";
         }
         return "";

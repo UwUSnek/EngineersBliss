@@ -5,7 +5,6 @@
     "client": [
 
         "accessors.GameRendererAccessor",
-        "accessors.PoweredRailBlockAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",
 
@@ -16,7 +15,6 @@
 
         "screens.PauseScreenMixin",
 
-        "overlays.PoweredRailLevelTrackerMixin",
         "overlays.BlockstateChangeTrackerMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",

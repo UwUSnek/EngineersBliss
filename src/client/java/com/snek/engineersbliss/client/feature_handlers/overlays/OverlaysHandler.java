@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.OverlayAttachedDataComparator;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -89,7 +89,7 @@ public class OverlaysHandler {
     // A map that specified the proper attached data type for each Block
     // ! This must be updated manually when new types of attached data are added
     private static final Map<Block, Class<? extends __base_OverlayAttachedData>> attachedDataClasses = Map.of(
-        Blocks.COMPARATOR, OverlayAttachedDataComparator.class,
+        Blocks.COMPARATOR, ComparatorAttachedData.class,
         Blocks.POWERED_RAIL, RailAttachedData.class,
         Blocks.ACTIVATOR_RAIL, RailAttachedData.class
     );
