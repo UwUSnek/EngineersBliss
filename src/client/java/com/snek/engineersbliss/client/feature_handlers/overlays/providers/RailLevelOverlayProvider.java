@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 
 
 public final class RailLevelOverlayProvider extends TextureOverlayProvider {
-    private static final float TILT = (float)(Math.PI / 2);
+    private static final float TILT = (float)(Math.PI / 4);
 
 
     @Override
@@ -42,7 +42,9 @@ public final class RailLevelOverlayProvider extends TextureOverlayProvider {
 
     @Override
     public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return PIXEL_HEIGHT + 0.02;
+        final PoweredRailBlock rail = (PoweredRailBlock)state.getBlock();
+        final RailShape shape = state.getValue(rail.getShapeProperty());
+        return PIXEL_HEIGHT * (1d + (shape.isSlope() ? 8.25 : 0)) + 0.02;
     }
 
 
@@ -64,17 +66,17 @@ public final class RailLevelOverlayProvider extends TextureOverlayProvider {
         final RailShape shape = state.getValue(rail.getShapeProperty());
 
 
-        if(!shape.isSlope()) {
-            return new Vector3f(0, 0, 0);
-        }
-        else return switch(shape) {
-            case ASCENDING_NORTH -> new Vector3f(-TILT, 0, 0);
-            case ASCENDING_EAST  -> new Vector3f(+TILT, 0, 0);
-            case ASCENDING_SOUTH -> new Vector3f(0, 0, -TILT);
-            case ASCENDING_WEST  -> new Vector3f(0, 0, +TILT);
+        if(shape.isSlope()) return switch(shape) {
+            case ASCENDING_NORTH -> new Vector3f(+TILT, 0, 0);
+            case ASCENDING_SOUTH -> new Vector3f(-TILT, 0, 0);
+            case ASCENDING_EAST  -> new Vector3f(0, 0, +TILT);
+            case ASCENDING_WEST  -> new Vector3f(0, 0, -TILT);
             //! Default is never actually matched, this just stops Java from crying about it
             default -> null;
         };
+        else {
+            return new Vector3f(0, 0, 0);
+        }
     }
 }
 

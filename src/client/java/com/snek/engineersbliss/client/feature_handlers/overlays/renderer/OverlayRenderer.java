@@ -111,17 +111,17 @@ public final class OverlayRenderer {
                             matrices.translate(_x, _y, _z);
 
 
-                            // Align to camera if needed
-                            if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
-                                final float camYaw = context.levelState().cameraRenderState.yRot;
-                                matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
-                            }
-
-
                             // Apply custom rotation
                             final @Nullable Vector3f rot = p.calcPostRotation(state, pos, attachedData);
                             if(rot != null) {
                                 matrices.mulPose(new Quaternionf().rotateXYZ(rot.x, rot.y, rot.z));
+                            }
+
+
+                            // Align to camera if needed
+                            if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
+                                final float camYaw = context.levelState().cameraRenderState.yRot;
+                                matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
                             }
 
 
