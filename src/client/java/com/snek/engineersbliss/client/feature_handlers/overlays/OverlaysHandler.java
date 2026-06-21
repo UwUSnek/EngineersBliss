@@ -8,20 +8,18 @@ import java.util.Map;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.OverlayAttachedDataComparator;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
-import com.snek.engineersbliss.client.mixin.accessors.PoweredRailBlockAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.data_types.Pair;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PoweredRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
@@ -89,26 +87,33 @@ public class OverlaysHandler {
 
 
     // A map that specified the proper attached data type for each Block
-    // This must be updated manually when new types of attached data are added
+    // ! This must be updated manually when new types of attached data are added
     private static final Map<Block, Class<? extends __base_OverlayAttachedData>> attachedDataClasses = Map.of(
-        Blocks.COMPARATOR, OverlayAttachedDataComparator.class
-        // Blocks.COMPARATOR, OverlayAttachedDataComparator.class,
+        Blocks.COMPARATOR, OverlayAttachedDataComparator.class,
+        Blocks.POWERED_RAIL, RailAttachedData.class,
+        Blocks.ACTIVATOR_RAIL, RailAttachedData.class
     );
 
     public static __base_OverlayAttachedData createAttachedData(final Level level, final BlockPos pos, final BlockState state) {
+        @Nullable Class<? extends __base_OverlayAttachedData> classType = null;
         try {
-            final @Nullable var classType = attachedDataClasses.get(state.getBlock());
+            classType = attachedDataClasses.get(state.getBlock());
             if(classType == null) return null;
             return classType.getDeclaredConstructor(Level.class, BlockPos.class, BlockState.class).newInstance(level, pos, state);
         }
-        catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
+        catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
+        }
+        catch(NoSuchMethodException _) {
+            throw new ExceptionInInitializerError("Class " + classType.getName() + " must declare a public (Level, BlockPos, BlockState) constructor");
         }
     }
 
     /**
      * Updates the data attached to the specified block position, only if it exists in the global map.
+     * ! This should be used for external updates that aren't already handled by the automatic update detection system,
+     * ! such as update packets received from the server or other unique update events.
      * @param pos The position of the block.
      * @param newData The new data to attach.
      */
@@ -127,12 +132,10 @@ public class OverlaysHandler {
 
     /**
      * Calculates the flags of the specified block based on the current settings, the block's state and its surroundings.
-     * @param level The level the block is in. //TODO remove if unused
-     * @param pos The position of the block.
      * @param state The current blockstate of the block. Redundant but helps performance.
      * @return A long value whose bits represent the features that are currently active on the block, or 0 if the block doesn't have any available feature.
      */
-    public static long calcFeatureFlags(final Level level, final BlockPos pos, final BlockState state) {
+    public static long calcFeatureFlags(final BlockState state) {
         long r = 0;
 
         final Block block = state.getBlock();
@@ -162,7 +165,7 @@ public class OverlaysHandler {
         final var chunkFeatureMask = featureMask.computeIfAbsent(MinecraftUtils.blockPosToChunk(pos), k -> new HashMap<>());
 
         // Calculate new flags and put/remove the entry depending on the value
-        final long newFlags = calcFeatureFlags(level, pos, newState);
+        final long newFlags = calcFeatureFlags(newState);
         if(newFlags != 0) {
             chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, newState)));
         }
@@ -179,6 +182,7 @@ public class OverlaysHandler {
      * @param chunk The new chunk.
      */
     public static void onChunkLoad(final LevelChunk chunk) {
+        if(!chunk.getLevel().isClientSide()) return;
         final ChunkPos chunkPos = chunk.getPos();
         final Level level = chunk.getLevel();
         final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
@@ -206,7 +210,7 @@ public class OverlaysHandler {
                             if(OverlayFeature.hasFeature(block)) {
 
                                 // Calculate all flags and put them in the map if not empty
-                                final long newFlags = calcFeatureFlags(level, pos, state);
+                                final long newFlags = calcFeatureFlags(state);
                                 if(newFlags != 0) {
                                     chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, state)));
                                 }
@@ -275,7 +279,7 @@ public class OverlaysHandler {
 
                                         // Calculate new flags
                                         final long newFlags = v == null ?
-                                            calcFeatureFlags(level, pos, level.getBlockState(pos)) :
+                                            calcFeatureFlags(state) :
                                             updateFeatureFlags(v.getFirst(), feature.getFlagBit(), getFeature(feature))
                                         ;
 
@@ -289,145 +293,5 @@ public class OverlaysHandler {
                 }
             }
         }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TODO actually implement this stuff, maybe in a dedicated class?
-    //TODO actually implement this stuff, maybe in a dedicated class?
-    //TODO actually implement this stuff, maybe in a dedicated class?
-    //TODO actually implement this stuff, maybe in a dedicated class?
-    //TODO actually implement this stuff, maybe in a dedicated class?
-    //TODO actually implement this stuff, maybe in a dedicated class?
-
-
-    // A map that stores the current power level of each powered and activator rail block in the currently loaded client level
-    //! Changing dimension makes all of the new rails that load it replace the previous values.
-    //! These mix with the previous dimensions' data, but that's not as issue since the blockstate resolver
-    //! only ever checks rails that actually exist in the current level.
-    //FIXME this can cause bad numbers in case of outdated block palettes.
-    //FIXME clear the map when changing dimension
-    private static final Map<BlockPos, Integer> powerLevelsCache = new HashMap<>();
-
-
-    /**
-     * Returns the cached power level of the rail block at the specified position.
-     * @param pos The position of the rail block to check.
-     * @return The power level (0 to 9), or -1 if the block isn't a powerable rail or the value hasn't been cached yet.
-     */
-    public static int getRailLevel(final BlockPos pos) {
-        return powerLevelsCache.getOrDefault(pos, -1);
-    }
-    public static void depowerRail(final BlockPos pos) {
-        powerLevelsCache.put(pos, 0);
-    }
-    public static void addRailSource(final BlockPos pos, final int level) {
-        powerLevelsCache.merge(pos, level, Math::max);
-    }
-
-
-
-//FIXME make this a generic "world load populator" function instead of checking for rail levels only
-    /**
-     * Populates the map with data from newly loaded chunks.
-     * Call this from CHUNK_LOAD event.
-     */
-    public static void onChunkLoad(final ClientLevel level, final LevelChunk chunk) {
-        final ChunkPos chunkPos = chunk.getPos();
-        final int minX = chunkPos.getMinBlockX();
-        final int minZ = chunkPos.getMinBlockZ();
-
-        // For each chunk section
-        final var sections = chunk.getSections();
-        for(int i = 0; i < sections.length; ++i) {
-            final LevelChunkSection section = sections[i];
-            final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
-
-            // If it contains powered or activator rails
-            if(!section.hasOnlyAir() && section.maybeHas(state -> state.getBlock() instanceof PoweredRailBlock)) {
-
-                // For each block in the section
-                for(int x = 0; x < 16; x++) {
-                    for(int y = 0; y < 16; y++) {
-                        for(int z = 0; z < 16; z++) {
-
-                            // Force it to store its power level in the map by calling PoweredRailBlock.findPoweredRailSignal on it
-                            final BlockState state = section.getBlockState(x, y, z);
-                            if(state.getBlock() instanceof final PoweredRailBlock rail) {
-                                final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
-
-                                //! PoweredRailBlock.findPoweredRailSignal needs to be called on the current block type as the check also tests for that.
-                                //! Boolean parameter defines the direction in which the checks move, so calling this twice is required (forwards and backwards)
-
-                                //! Checks start at depth 0 and end at depth 8 (9 powered blocks on each direction, including the source)
-                                //! Checks start at depth 0 and end at depth 8 (9 powered blocks)
-
-                                ((PoweredRailBlockAccessor)state.getBlock()).invokeFindPoweredRailSignal(level, pos, state, true, 0);
-                                ((PoweredRailBlockAccessor)state.getBlock()).invokeFindPoweredRailSignal(level, pos, state, false, 0);
-                                //TODO this might need a rendering refresh
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
-
-    //TODO remove after implementing the stuff
-    public void todo (){
-
-
-            //FIXME move to overlays
-            // //! Rail power level isn't stored by Minecraft so this needs custom power source lookup logic
-            // if(force || AltTexturesHandler.getFeature(AltTextureFeature.RAIL_POWER_LEVELS)) {
-            //     ret.add("rails/power_levels/" + AltTexturesHandler.getRailLevel(blockPos));
-            // }
-
-
-
-            //FIXME move to overlays
-            // if(force || AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_POWER_LEVELS)) {
-            //     ret.add("redstone_wire/power_levels/" + state.getValue(RedStoneWireBlock.POWER));
-            // }
     }
 }

@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public class OverlayAttachedDataComparator extends __base_OverlayAttachedData {
+public class OverlayAttachedDataComparator implements __base_OverlayAttachedData {
     private final int back;
     private final int side;
     private final int out;
@@ -23,13 +23,9 @@ public class OverlayAttachedDataComparator extends __base_OverlayAttachedData {
 
 
     /**
-     * Used by overlay handler when blocks are changed or chunks load in
      * ! This is mostly to avoid flashing values before the client can sync with the server.
-     * ! Not computing values would work too but this looks prettier.
+     * ! Not computing client comparator values would work too but this looks prettier.
      * ! This also handles server compatibility checks: output is set to -1 if server doesn't have the mod installed.
-     * @param level The level instance.
-     * @param pos The position of the block.
-     * @param state The blockstate of the block.
      */
     public OverlayAttachedDataComparator(final Level level, final BlockPos pos, final BlockState state) {
         if(!NetworkUtils.serverHasMod()) {

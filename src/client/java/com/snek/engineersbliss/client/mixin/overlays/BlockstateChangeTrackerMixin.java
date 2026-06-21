@@ -3,12 +3,14 @@ package com.snek.engineersbliss.client.mixin.overlays;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 
@@ -17,16 +19,17 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(ClientLevel.class)
 public class BlockstateChangeTrackerMixin {
 
-    @Inject(method = "setBlock", at = @At("RETURN"))
-	private void setBlock(
+    @Inject(method = "sendBlockUpdated", at = @At("RETURN"))
+	private void sendBlockUpdated(
         final BlockPos pos,
-        final BlockState blockState,
+        final BlockState old,
+        final BlockState current,
         final int updateFlags,
-        final int updateLimit,
-        final CallbackInfoReturnable<Boolean> cir
+        final CallbackInfo ci
     ) {
-        if(cir.getReturnValue().booleanValue()) {
-            OverlaysHandler.onBlockChanged((ClientLevel)(Object)this, pos, blockState);
-        }
+
+        // If the block change wasn't rejected, call the overlay handler callback
+        OverlaysHandler.onBlockChanged((ClientLevel)(Object)this, pos, current);
+        //FIXME handle invalid block changes? if needed
     }
 }

@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.attached_data;
 
-import com.google.common.graph.Network;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
@@ -21,11 +20,17 @@ public class AttachedDataNetworkReceiver {
      */
     public static void register() {
         ClientPlayNetworking.registerGlobalReceiver(ComparatorUpdatePayload.TYPE, (payload, context) -> {
-
             Scheduler.run(() -> {
                 OverlaysHandler.updateAttachedData(payload.pos(), new OverlayAttachedDataComparator(payload.back(), payload.side(), payload.out()));
             });
         });
+        // ClientPlayNetworking.registerGlobalReceiver(RailUpdatePayload.TYPE, (payload, context) -> {
+        //     Scheduler.run(() -> {
+        //         OverlaysHandler.updateAttachedData(payload.pos(), new RailAttachedData(payload.input()));
+        //     });
+        // });
+
+        // // //! Rail data is collected from the client world
     }
 }
 

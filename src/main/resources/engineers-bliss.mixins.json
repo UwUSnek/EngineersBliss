@@ -6,7 +6,8 @@
 		"accessors.ComparatorBlockAccessor",
 		"accessors.DiodeBlockAccessor",
 
-		"overlay_data.ComparatorInputChangeTrackerMixin"
+		"overlay_data.ComparatorInputChangeTrackerMixin",
+		"overlay_data.RailInputChangeTrackerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

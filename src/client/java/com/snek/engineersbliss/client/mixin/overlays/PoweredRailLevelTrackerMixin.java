@@ -5,12 +5,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PoweredRailBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.RailShape;
 
 
 
@@ -23,24 +23,33 @@ public class PoweredRailLevelTrackerMixin {
 
 
     /**
-     * Inject into findPoweredRailSignal.
+     * Inject into isSameRailWithPower.
      * ! This is Vanilla's method for finding the power source of a powered rail chain.
      * ! It also stores a searchDepth that tracks how many blocks have been checked and stops at 9.
      * ! This is what the mixin yoinks to calculate the power level of the rail block.
+     *
+     * ! The calculated level is stored in the data's class in a static field to be used right away.
+     *
+     * ! This mixin is active on the server in single player.
+     * ! Additional checks ensure its only ever called on the client.
+     *
+     * ! Rails that are the source of the signal need to be checked externally using level.hasNeighborSignal(pos).
+     * ! This mixin only detects rails that are powered by other rails.
      */
     @Inject(
-        method = "findPoweredRailSignal",
+        method = "isSameRailWithPower",
         at = @At("RETURN"),
         cancellable = false
     )
-    private void findPoweredRailSignal(final Level level, final BlockPos pos, final BlockState state, final boolean forward, final int searchDepth, final CallbackInfoReturnable<Boolean> cir) {
-        final boolean isPowered = cir.getReturnValue();
-        if(!isPowered) {
-            OverlaysHandler.depowerRail(pos);
-        }
-        else {
-            OverlaysHandler.addRailSource(pos, 9 - searchDepth);
+    private void isSameRailWithPower(final Level level, final BlockPos pos, final boolean forward, final int searchDepth, final RailShape dir, final CallbackInfoReturnable<Boolean> cir) {
+        if(!level.isClientSide()) return;
+        if(!cir.getReturnValue().booleanValue()) return;
+
+
+        // If the current iteration is the one that found the source of the signal, update the static field with this power level
+        //! Levels start at 8 - n (8 is the first non-directly-powered rail block)
+        if(level.hasNeighborSignal(pos)) {
+            RailAttachedData.updateComputedValue(8 - searchDepth);
         }
     }
 }
-//FIXME this might need to be on the server? idk

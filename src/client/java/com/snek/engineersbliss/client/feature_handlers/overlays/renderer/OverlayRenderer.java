@@ -11,6 +11,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RailLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
@@ -52,7 +53,8 @@ public final class OverlayRenderer {
     //! This needs to be updated manually as new providers are added.
     private static List<__base_OverlayProvider> providers = List.of(
         new RedstoneLevelOverlayProvider(),
-        new ComparatorLevelOverlayProvider()
+        new ComparatorLevelOverlayProvider(),
+        new RailLevelOverlayProvider()
     );
 
 

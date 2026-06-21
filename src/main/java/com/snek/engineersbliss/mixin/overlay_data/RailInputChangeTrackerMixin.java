@@ -19,47 +19,51 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.DiodeBlock;
+import net.minecraft.world.level.block.PoweredRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 
 
 
 /**
- * A mixin that tracks the inputs of comparators
+ * A mixin that tracks the input signals of rail blocks
  */
-@Mixin(ComparatorBlock.class)
-public class ComparatorInputChangeTrackerMixin {
+@Mixin(PoweredRailBlock.class)
+public class RailInputChangeTrackerMixin {
 
     @Unique
-    private static final Map<BlockPos, int[]> lastSignals = new HashMap<>();
+    private static final Map<BlockPos, Integer> lastSignals = new HashMap<>();
+    @Unique
+    private static boolean recording = false;
+    private static BlockPos signalSourcePos = null;
 
 
 
-
-    @Inject(method = "refreshOutputState", at = @At("HEAD"))
-	private void refreshOutputState(final Level level, final BlockPos pos, final BlockState state, final CallbackInfo ci) {
+    @Inject(method = "updateState", at = @At("HEAD"))
+	private void updateState(final BlockState state, final Level level, final BlockPos pos, final Block block, final CallbackInfo ci) {
         if(level == null || level.isClientSide()) return;
 
-        // Calculate new signals, return if inputs are identical to the last ones
-        final int[] last = lastSignals.get(pos);
-        final int back = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeGetInputSignal       (level, pos, state);
-        final int side = ((DiodeBlockAccessor)(DiodeBlock)Blocks.COMPARATOR).invokeGetAlternateSignal   (level, pos, state);
-        if(last != null && last[0] == back && last[1] == side) return;
+        // Calculate new signals, return if input is identical to the last one
+        final Integer last = lastSignals.get(pos);
+        // final int back = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeGetInputSignal       (level, pos, state);
+        // final int side = ((DiodeBlockAccessor)(DiodeBlock)Blocks.COMPARATOR).invokeGetAlternateSignal   (level, pos, state);
+        if(last != null && last == ) return;
         final int out  = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeCalculateOutputSignal(level, pos, state);
         lastSignals.put(pos, new int[]{ back, side, out });
 
 
-        // Send update packet to all players that can see the block
-        for(final ServerPlayer player : PlayerLookup.tracking((ServerLevel)level, pos)) {
+        // // Send update packet to all players that can see the block
+        // for(final ServerPlayer player : PlayerLookup.tracking((ServerLevel)level, pos)) {
 
-            //! Only send packet to players with this mod installed
-            if(ServerPlayNetworking.canSend(player, ComparatorUpdatePayload.TYPE)) {
-                ServerPlayNetworking.send(player, new ComparatorUpdatePayload(pos, back, side, out));
-            }
-        }
+        //     //! Only send packet to players with this mod installed
+        //     if(ServerPlayNetworking.canSend(player, ComparatorUpdatePayload.TYPE)) {
+        //         ServerPlayNetworking.send(player, new ComparatorUpdatePayload(pos, back, side, out));
+        //     }
+        // }
     }
 }
 
