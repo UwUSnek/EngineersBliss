@@ -15,17 +15,6 @@ public abstract class __base_TextureOverlayProvider extends __base_OverlayProvid
 
 
     /**
-     * Determines if the current overlay should render on the target block.
-     * ! This function assumes that OverlaysHandler's relevant feature is always ON.
-     * ! User settings are NEVER taken in consideration, as that's the global feature map's responsibility.
-     * @param state The blockstate of the block.
-     * @param pos The position of the block.
-     * @return True if the overlay needs to be rendered, false otherwise.
-     */
-    public abstract boolean shouldRender(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData);
-
-
-    /**
      * Calculates the path of the texture to render.
      * This is relative to the "textures" directory of the mod.
      * @param state The blockstate of the block.

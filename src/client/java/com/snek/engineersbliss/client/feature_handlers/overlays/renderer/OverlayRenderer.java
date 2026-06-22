@@ -19,14 +19,17 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.providers.Redsto
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextOverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -152,6 +155,52 @@ public final class OverlayRenderer {
 
                             //! No endBatch call needed
                             //! Let the game handle that normally
+                        }
+                        else if(provider instanceof final __base_TextOverlayProvider p && p.shouldRender(state, pos, attachedData)) {
+                            final String text = p.calcText(state, pos, attachedData);
+                            final Font font = client.font;
+                            final float textWidth = font.width(text);
+
+                            // Create pose stack
+                            final PoseStack matrices = new PoseStack();
+                            matrices.pushPose();
+
+                            // Calculate center position and translate pose to it
+                            final Vec3 cameraPos = context.levelState().cameraRenderState.pos;
+                            final double _y = pos.getY() - cameraPos.y + p.calcVerticalOffset(state, pos, attachedData);
+                            final double _x = pos.getX() - cameraPos.x + 0.5;
+                            final double _z = pos.getZ() - cameraPos.z + 0.5;
+                            matrices.translate(_x, _y, _z);
+
+                            // Align to camera if needed
+                            final TextureProviderDisplay display = p.getDisplay();
+                            if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
+                                final float camYaw = context.levelState().cameraRenderState.yRot;
+                                matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                            }
+
+                            // Convert font space to block space
+                            final float scale = p.calcScale(state, pos, attachedData) / 18f;
+                            matrices.scale(scale, -scale, scale);
+                            if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
+                                matrices.mulPose(Axis.XP.rotationDegrees(90f));
+                            }
+
+                            // Submit centered text with no shadow, no background, no outline
+                            final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
+                            context.submitNodeCollector().submitText(
+                                matrices,
+                                -textWidth / 2f, -4f,
+                                Component.literal(text).getVisualOrderText(),
+                                false,
+                                Font.DisplayMode.SEE_THROUGH,
+                                0xF000F0,
+                                p.calcColor(state, pos, attachedData),
+                                0,
+                                0
+                            );
+
+                            matrices.popPose();
                         }
                     }
                 }
