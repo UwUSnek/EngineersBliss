@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.ComparatorMode;
 
 
 
@@ -50,6 +51,7 @@ public class ComparatorInputChangeTrackerMixin {
         if(last != null && last[0] == back && last[1] == side) return;
         final int out  = ((ComparatorBlockAccessor)       Blocks.COMPARATOR).invokeCalculateOutputSignal(level, pos, state);
         lastSignals.put(pos, new int[]{ back, side, out });
+        final boolean mode = state.getValue(ComparatorBlock.MODE) == ComparatorMode.SUBTRACT;
 
 
         // Send update packet to all players that can see the block
@@ -57,7 +59,7 @@ public class ComparatorInputChangeTrackerMixin {
 
             //! Only send packet to players with this mod installed
             if(ServerPlayNetworking.canSend(player, ComparatorUpdatePayload.TYPE)) {
-                ServerPlayNetworking.send(player, new ComparatorUpdatePayload(pos, back, side, out));
+                ServerPlayNetworking.send(player, new ComparatorUpdatePayload(pos, back, side, out, mode));
             }
         }
     }

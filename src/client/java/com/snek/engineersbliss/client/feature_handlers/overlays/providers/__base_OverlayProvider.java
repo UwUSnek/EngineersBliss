@@ -9,6 +9,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 public abstract class __base_OverlayProvider {
+    protected static final String UNKNOWN_LEVEL_TEXTURE = "overlays/power_levels/unknown.png";
+    protected static final String NO_SERVER_DATA_TEXT   = "Server data unavailable";
+
+
     protected __base_OverlayProvider() {}
     public static final double PIXEL_HEIGHT = 1f / 16;
 

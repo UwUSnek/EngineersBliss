@@ -26,7 +26,7 @@ public class AttachedDataNetworkReceiver {
     public static void register() {
         ClientPlayNetworking.registerGlobalReceiver(ComparatorUpdatePayload.TYPE, (payload, context) -> {
             Scheduler.run(() -> {
-                OverlaysHandler.updateAttachedData(payload.pos(), new ComparatorAttachedData(payload.back(), payload.side(), payload.out()));
+                OverlaysHandler.updateAttachedData(payload.pos(), new ComparatorAttachedData(payload.back(), payload.side(), payload.out(), payload.mode()));
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(RailUpdatePayload.TYPE, (payload, context) -> {

@@ -8,11 +8,12 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.block.state.properties.ComparatorMode;
 
 
 
 
-public record ComparatorUpdatePayload(BlockPos pos, int back, int side, int out) implements CustomPacketPayload {
+public record ComparatorUpdatePayload(BlockPos pos, int back, int side, int out, boolean mode /* true/false = subtract/compare */) implements CustomPacketPayload {
     public static final CustomPacketPayload.Type<ComparatorUpdatePayload> TYPE =
         new CustomPacketPayload.Type<>(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "comparator_update"))
     ;
@@ -23,6 +24,7 @@ public record ComparatorUpdatePayload(BlockPos pos, int back, int side, int out)
             ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::back,
             ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::side,
             ByteBufCodecs.VAR_INT, ComparatorUpdatePayload::out,
+            ByteBufCodecs.BOOL,    ComparatorUpdatePayload::mode,
             ComparatorUpdatePayload::new
         );
 

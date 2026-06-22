@@ -14,6 +14,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLogicOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RailLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
@@ -55,7 +56,10 @@ public final class OverlayRenderer {
     private static List<__base_OverlayProvider> providers = List.of(
         new RedstoneLevelOverlayProvider(),
         new ComparatorLevelOverlayProvider(),
-        new RailLevelOverlayProvider()
+        new RailLevelOverlayProvider(),
+
+        //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
+        new ComparatorLogicOverlayProvider()
     );
 
 
@@ -67,6 +71,8 @@ public final class OverlayRenderer {
     }
 
 
+    //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
+    //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
 
     private static void draw(final LevelRenderContext context) {
         final Minecraft client = Minecraft.getInstance();

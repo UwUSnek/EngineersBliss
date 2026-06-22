@@ -33,12 +33,20 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
 
     @Override
     public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+
+        // Return unknown level sprite if server doesn't have the mod installed
+        // ! Data constructor sets the output signal to -1 if the server doesn't have the mod installed.
+        // ! Displaying the correct levels depends on server packets.
         final RailAttachedData data = (RailAttachedData)attachedData;
-        if(data != null) {
+        if(data == null || data.getInput() == -1) {
+            return UNKNOWN_LEVEL_TEXTURE;
+        }
+
+        // Fetch proper data otherwise
+        else {
             final String powerLevelStr = String.valueOf(data.getInput());
             return "overlays/power_levels/" + powerLevelStr + ".png";
         }
-        return "";
     }
 
 

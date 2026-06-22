@@ -31,10 +31,10 @@ public final class ComparatorLevelOverlayProvider extends __base_TextureOverlayP
 
         // Return unknown level sprite if server doesn't have the mod installed
         // ! Data constructor sets the output signal to -1 if the server doesn't have the mod installed.
-        // ! Displaying the correct levels depend on server packets.
+        // ! Displaying the correct levels depends on server packets.
         final ComparatorAttachedData data = (ComparatorAttachedData)attachedData;
         if(data == null || data.getOutSignal() == -1) {
-            return "overlays/power_levels/unknown.png";
+            return UNKNOWN_LEVEL_TEXTURE;
         }
 
         // Fetch proper data otherwise
