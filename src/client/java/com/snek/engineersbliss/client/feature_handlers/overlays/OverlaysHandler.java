@@ -62,7 +62,7 @@ public class OverlaysHandler {
      */
     public static void setFeature(final OverlayFeature feature, final boolean value) {
         features.put(feature, value);
-        onFeatureToggle(feature);
+        // onFeatureToggle(feature);
     }
 
     /***
@@ -237,56 +237,56 @@ public class OverlaysHandler {
 
 
 
-    /**
-     * Updates the feature mask of all chunks containing affected blocks. This must be called when a feature is toggled.
-     * @param feature The feature that was toggled.
-     */
-    public static void onFeatureToggle(final OverlayFeature feature) {
+    // /**
+    //  * Updates the feature mask of all chunks containing affected blocks. This must be called when a feature is toggled.
+    //  * @param feature The feature that was toggled.
+    //  */
+    // public static void onFeatureToggle(final OverlayFeature feature) {
 
-        // For each loaded chunk
-        for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
-            final ChunkPos chunkPos = chunk.getPos();
-            final Level level = chunk.getLevel();
-            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
-            final int minX = chunkPos.getMinBlockX();
-            final int minZ = chunkPos.getMinBlockZ();
+    //     // For each loaded chunk
+    //     for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
+    //         final ChunkPos chunkPos = chunk.getPos();
+    //         final Level level = chunk.getLevel();
+    //         final int minX = chunkPos.getMinBlockX();
+    //         final int minZ = chunkPos.getMinBlockZ();
 
-            // For each chunk section
-            final var sections = chunk.getSections();
-            for(int i = 0; i < sections.length; ++i) {
-                final LevelChunkSection section = sections[i];
-                final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
+    //         // For each chunk section
+    //         final var sections = chunk.getSections();
+    //         for(int i = 0; i < sections.length; ++i) {
+    //             final LevelChunkSection section = sections[i];
+    //             final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
 
-                // If the section contains an affected block
-                if(!section.hasOnlyAir() && section.maybeHas(state -> feature.affects(state.getBlock()))) {
+    //             // If the section contains an affected block
+    //             if(!section.hasOnlyAir() && section.maybeHas(state -> feature.affects(state.getBlock()))) {
+    //                 final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
 
-                    // For each block in the section
-                    for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
-                        for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
-                            for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+    //                 // For each block in the section
+    //                 for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
+    //                     for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
+    //                         for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
 
-                                // Recalculate the state
-                                final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
-                                final BlockState state = level.getBlockState(pos);
-                                chunkFeatureMask.compute(
-                                    pos,
-                                    (k, v) -> {
+    //                             // Recalculate the state
+    //                             final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+    //                             final BlockState state = level.getBlockState(pos);
+    //                             chunkFeatureMask.compute(
+    //                                 pos,
+    //                                 (k, v) -> {
 
-                                        // Calculate new flags
-                                        final long newFlags = v == null ?
-                                            calcFeatureFlags(state) :
-                                            updateFeatureFlags(v.getFirst(), feature.getFlagBit(), getFeature(feature))
-                                        ;
+    //                                     // Calculate new flags
+    //                                     final long newFlags = v == null ?
+    //                                         calcFeatureFlags(state) :
+    //                                         updateFeatureFlags(v.getFirst(), feature.getFlagBit(), getFeature(feature))
+    //                                     ;
 
-                                        // put/remove the entry depending on the value
-                                        return newFlags != 0 ? Pair.from(newFlags, createAttachedData(level, pos, state)) : null;
-                                    }
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //                                     // put/remove the data entry depending on the value
+    //                                     return newFlags != 0 ? Pair.from(newFlags, createAttachedData(level, pos, state)) : null;
+    //                                 }
+    //                             );
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }

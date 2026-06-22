@@ -4,6 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 
 import net.minecraft.core.BlockPos;
@@ -19,7 +21,11 @@ public final class RedstoneLevelOverlayProvider extends __base_TextureOverlayPro
 
     @Override
     public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return state.is(Blocks.REDSTONE_WIRE) && state.getValue(RedStoneWireBlock.POWER) > 0;
+        return
+            OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS) &&
+            state.is(Blocks.REDSTONE_WIRE) &&
+            state.getValue(RedStoneWireBlock.POWER) > 0
+        ;
     }
 
     @Override
