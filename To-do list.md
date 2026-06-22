@@ -13,11 +13,13 @@
   - ~~Minimal Redstone Dust~~
   - ~~3D Redstone Dust~~
   - ~~3D Rails~~
+  - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Highlight unstable blockstates //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
   - Display scheduled tick timers
+  - Display Hopper cooldown timers
   - ~~Show Redstone Wire power level~~
   - ~~Show Powered Rail and Activator Rail power levels~~
   - ~~Show Comparator power levels~~
@@ -38,16 +40,29 @@
   - Disable redstone wire particles
   - Disable fluid flushing
   - Disable block gravity
-  - Disable explosion block damage
+  - Disable explosion block and entity damage
 
 - **Creative mode tweaks**
-  - Custom reach distance
-  - Custom interaction radius (click multiple blocks at once)
+  - Control flying speed
+  - Control reach distance
+  - Control interaction radius (click multiple blocks at once)
+  - Configurable fast clicking
+  - Place blocks facing away from the player
+  - Place blocks with an offset
   - Insta kill mobs
-  - Phase through blocks
+  - Phase through blocks while flying
   - Phase through entities
-  - Cycle container levels with a keybind (look at container, press tab, scroll with mouse wheel)
+  - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
+  - Disable being slowed down by and bouncing on Slime Blocks
+  - Disable being slowed down by Honey Blocks
+  - Disable being slowed down by Soul Sand
+  - Disable sliding on Ice, Packed Ice and Blue Ice
+  - Disable being moved by Water and Lava currents
+  - Disable being on fire
+  - Disable freezing effect
+  - Disable item change animation
+  - Disable hand swing animation
 
 - **Utility blocks**
   - Infinite item sources
@@ -70,3 +85,25 @@
   - Count and find items within containers in a selected area
   - Replace item stacks remotely
   - Easily fill open containers with specific items
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Not features:
+
+- Update UI, draw one with a more modern style

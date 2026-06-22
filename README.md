@@ -27,6 +27,7 @@ By UwU_Snek.
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Display scheduled tick timers
+  - Display Hopper cooldown timers
   - Show Redstone Wire power level
   - Show Powered Rail and Activator Rail power levels
   - Show Comparator power levels
@@ -47,13 +48,26 @@ By UwU_Snek.
   - Disable block gravity
   - Disable explosion block damage
 - **Creative mode tweaks**
-  - Custom reach distance
-  - Custom interaction radius (click multiple blocks at once)
+  - Control flying speed
+  - Control reach distance
+  - Control interaction radius (click multiple blocks at once)
+  - Configurable fast clicking
+  - Place blocks facing away from the player
+  - Place blocks with an offset
   - Insta kill mobs
-  - Phase through blocks
+  - Phase through blocks while flying
   - Phase through entities
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
+  - Disable being slowed down by and bouncing on Slime Blocks
+  - Disable being slowed down by Honey Blocks
+  - Disable being slowed down by Soul Sand
+  - Disable sliding on Ice, Packed Ice and Blue Ice
+  - Disable being moved by Water and Lava currents
+  - Disable being on fire
+  - Disable freezing effect
+  - Disable item change animation
+  - Disable hand swing animation
 - **Utility blocks**
   - Infinite item sources
   - Rate counter hoppers
@@ -86,10 +100,6 @@ By UwU_Snek.
 
 ## Contributing
 
-Engineer's Bliss was built to fill the gaps existing mods leave behind.
-Because of this, it avoids implementing features that are already available in popular mods or aren't easily accessible.
-<br>
-<br>
 You can open a [GitHub](https://github.com/UwUSnek/EngineersBliss) issue to report bugs and submit suggestions or ideas. Pull requests are always welcome :3<br>
 For anything else, you can DM me on Discord (uwu_snek).
 <br>
