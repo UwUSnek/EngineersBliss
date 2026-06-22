@@ -4,6 +4,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -51,7 +52,7 @@ public class BlockRenderer {
     public static void renderBlockSpriteSheet(GuiGraphicsExtractor graphics, Block block, int x, int y, int size) {
 
         // Get block index, fallback to default icon if absent
-        Identifier id = block.builtInRegistryHolder().key().identifier();
+        Identifier id = BuiltInRegistries.BLOCK.getKey(block);
         int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
         if(blockIdx == -1) {
             renderBlockIcon(graphics, block, x, y, size);

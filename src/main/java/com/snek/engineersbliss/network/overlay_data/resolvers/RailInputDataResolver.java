@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.network.overlay_data.resolvers;
 
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Unique;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

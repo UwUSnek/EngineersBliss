@@ -114,7 +114,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                     // Filter tags
                     if(andGroup.startsWith("#")) {
                         final String tagQuery = andGroup.substring(1).toLowerCase();
-                        return !block.builtInRegistryHolder().tags().anyMatch(tag -> tag.location().toString().toLowerCase().contains(tagQuery));
+                        return BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().noneMatch(tag -> tag.location().toString().toLowerCase().contains(tagQuery));
                     }
 
                     // Filter loaded blocks and recalculate list if needed
@@ -191,7 +191,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
                 tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
-                block.builtInRegistryHolder().tags().forEach(tag ->
+                BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
                     tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
                 );
                 graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);

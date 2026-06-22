@@ -13,9 +13,7 @@ import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 
 
@@ -47,7 +45,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
         // Initialize handlers
         RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
         AltTexturesHandler.init();
-        // ModelLoadingPlugin.register(new AltTexturesModelPlugin());
         OverlaysHandler.init();
 
 
