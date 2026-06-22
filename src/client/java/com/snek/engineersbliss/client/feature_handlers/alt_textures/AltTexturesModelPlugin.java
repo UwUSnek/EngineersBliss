@@ -52,6 +52,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<Identifier>> {
     private static final List<String>   PART_SUFFIXES  = List.of("n", "e", "s", "w");
     private static final List<Quadrant> PART_QUADRANTS = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
+    private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
 
 
     // A map containing baked custom models. The runtime resolver fetches models from here.
@@ -91,7 +92,14 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 id -> {
                     return id.getNamespace().equals(EngineerSBliss.MOD_ID) && id.getPath().endsWith(".json");
                 }).keySet().forEach(id -> {
+
+                    // Skip models in the same directory as files named ".template"
                     final String path = id.getPath();
+                    final String dir  = path.substring(0, path.lastIndexOf('/') + 1);
+                    final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + ".template");
+                    if(resourceManager.getResource(templateMarker).isPresent()) return;
+
+                    // If the model is not a template, load it in the runtime map
                     final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
                     r.add(finalId);
                     EngineerSBliss.LOGGER.info("Loaded dynamic custom model {}", finalId);
