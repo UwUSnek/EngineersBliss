@@ -132,6 +132,12 @@ public final class OverlayRenderer {
                                 final float camYaw = context.levelState().cameraRenderState.yRot;
                                 matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
                             }
+                            else if(display == TextureProviderDisplay.BILLBOARD) {
+                                final float camYaw   = context.levelState().cameraRenderState.yRot;
+                                final float camPitch = context.levelState().cameraRenderState.xRot;
+                                matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                                matrices.mulPose(Axis.XP.rotationDegrees(-camPitch));
+                            }
 
 
                             // Calculate text light level and color
@@ -143,7 +149,7 @@ public final class OverlayRenderer {
                             final double width = p.calcWidth(state, pos, attachedData);
                             final int overlay = OverlayTexture.NO_OVERLAY;
                             final Matrix4f pose = matrices.last().pose();
-                            if(display == TextureProviderDisplay.CAMERA_LOCKED) {
+                            if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.BILLBOARD) {
                                 vertexConsumer.addVertex(pose, (float)-width,                  0, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
                                 vertexConsumer.addVertex(pose, (float)-width, (float)(width * 2), 0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
                                 vertexConsumer.addVertex(pose, (float)+width, (float)(width * 2), 0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
@@ -183,6 +189,12 @@ public final class OverlayRenderer {
                             if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
                                 final float camYaw = context.levelState().cameraRenderState.yRot;
                                 matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                            }
+                            else if(display == TextureProviderDisplay.BILLBOARD) {
+                                final float camYaw   = context.levelState().cameraRenderState.yRot;
+                                final float camPitch = context.levelState().cameraRenderState.xRot;
+                                matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                                matrices.mulPose(Axis.XP.rotationDegrees(-camPitch));
                             }
 
                             // Convert font space to block space

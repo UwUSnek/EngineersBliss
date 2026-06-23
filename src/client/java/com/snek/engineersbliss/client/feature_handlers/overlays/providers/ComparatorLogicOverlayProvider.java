@@ -20,13 +20,11 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
     @Override
     public boolean shouldRender(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
         return
-            OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET) &&
-            state.is(Blocks.COMPARATOR)
             //! Comparator level is always shown, including 0 (no signal) and -1 (no server data)
+            OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET) &&
+            state.is(Blocks.COMPARATOR) &&
+            //TODO chec kplayer distance
         ;
-        //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
-        //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
-
     }
 
 
@@ -39,6 +37,12 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
     @Override
     public float calcScale(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData attachedData) {
         return 0.25f;
+    }
+
+
+    @Override
+    public TextureProviderDisplay getDisplay() {
+        return TextureProviderDisplay.BILLBOARD;
     }
 
 
