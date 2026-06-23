@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class __base_TaskHandler {
     private long targetTick;
+    private long taskIndex; //! The index of this task within the tick
     private final @NotNull Runnable task;
     private boolean cancelled = false;
 
@@ -38,11 +39,27 @@ public class __base_TaskHandler {
     }
 
     /**
+     * Retrieves the index of this task within the tick it was scheduled for.
+     * @return The index.
+     */
+    public long getTaskIndex() {
+        return taskIndex;
+    }
+
+    /**
      * Sets a new target tick for this task.
      * @param targetTick the new targe tick.
      */
     public void setTargetTick(final long targetTick) {
         this.targetTick = targetTick;
+    }
+
+    /**
+     * Sets a new task index to this task.
+     * @param taskIndex the new task index.
+     */
+    public void setTargetTaskIndex(final long taskIndex) {
+        this.taskIndex = taskIndex;
     }
 
 
@@ -51,10 +68,12 @@ public class __base_TaskHandler {
     /**
      * Creates a new __base_TaskHandler.
      * @param targetTick The tick the task is scheduled for.
+     * @param taskIndex The index of this task within its scheduled tick.
      * @param task The task to execute.
      */
-    public __base_TaskHandler(final @NotNull Runnable task, final long targetTick) {
+    public __base_TaskHandler(final @NotNull Runnable task, final long targetTick, final long taskIndex) {
         this.targetTick = targetTick;
+        this.taskIndex = taskIndex;
         this.task = task;
     }
 

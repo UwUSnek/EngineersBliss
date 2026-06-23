@@ -19,9 +19,16 @@ import org.jetbrains.annotations.NotNull;
 public final class Scheduler {
     private Scheduler() { }
 
+    // ! Outer queue orders by target tick, but doesn't guarantee an order between entries with the same priority.
+    // ! This is solved by adding an additional index value to the ordering data.
+
+    // ! For ordering, the index uses the 31 least significan bits, while the tick value uses the remaining 32 (1 is sign).
+    // ! This leaves a max of ~2bil tasks per tick and a max uninterrupted uptime for the server of ~6.8 years.
+
     private static long tickNum = 0;
+    private static long tickTaskIndex = 0;
     private static final @NotNull PriorityQueue<@NotNull __base_TaskHandler> taskQueue = new PriorityQueue<>(
-        Comparator.comparingLong(e -> e.getTargetTick())
+        Comparator.comparingLong(e -> (e.getTargetTick() << 31) | e.getTaskIndex())
     );
 
 
@@ -53,11 +60,13 @@ public final class Scheduler {
             // Renew task handler if it's a LoopTaskHadler and has not been cancelled
             if(handler instanceof final LoopTaskHandler h && !h.isCancelled()) {
                 h.setTargetTick(tickNum + h.getInterval());
+                h.setTargetTaskIndex(tickTaskIndex++);
                 taskQueue.add(h);
             }
         }
 
         tickNum++;
+        tickTaskIndex = 0;
     }
 
 
@@ -71,8 +80,9 @@ public final class Scheduler {
      * @return The handler of the newly created task schedule.
      */
     public static @NotNull LoopTaskHandler loop(final long delay, final long interval, final @NotNull Runnable task) {
-        final @NotNull LoopTaskHandler handler = new LoopTaskHandler(task, tickNum + delay, interval);
+        final @NotNull LoopTaskHandler handler = new LoopTaskHandler(task, tickNum + delay, tickTaskIndex, interval);
         taskQueue.add(handler);
+        ++tickTaskIndex;
         return handler;
     }
 
@@ -86,8 +96,9 @@ public final class Scheduler {
      * @return The handler of the newly created task schedule.
      */
     public static @NotNull TaskHandler schedule(final long delay, final @NotNull Runnable task) {
-        final @NotNull TaskHandler handler = new TaskHandler(task, tickNum + delay);
+        final @NotNull TaskHandler handler = new TaskHandler(task, tickNum + delay, tickTaskIndex);
         taskQueue.add(handler);
+        ++tickTaskIndex;
         return handler;
     }
 

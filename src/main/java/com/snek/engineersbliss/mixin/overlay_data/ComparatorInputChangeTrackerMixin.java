@@ -56,17 +56,11 @@ public class ComparatorInputChangeTrackerMixin {
         if(level == null || level.isClientSide()) return;
         if(!state.is(Blocks.COMPARATOR)) return;
 
-        System.out.println("CALLED refreshOutputState ON SERVER");
+
         // Calculate new signals
-        // // //! Side inputs are calculated manually instead of using DiodeBlock's getAlternateSignal in order to detect individual changes
         final int[] last = lastSignals.get(pos);
         final int back = ((ComparatorBlockAccessor)Blocks.COMPARATOR).invokeGetInputSignal    (level, pos, state);
         final int side = ((     DiodeBlockAccessor)Blocks.COMPARATOR).invokeGetAlternateSignal(level, pos, state);
-        // Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
-		// Direction clockWise = direction.getClockWise();
-		// Direction counterClockWise = direction.getCounterClockWise();
-		// final int right = level.getControlInputSignal(pos.relative(clockWise),        clockWise,        false);
-		// final int left  = level.getControlInputSignal(pos.relative(counterClockWise), counterClockWise, false);
 
 
         // Return if inputs are identical to the last ones, update map otherwise
@@ -81,6 +75,12 @@ public class ComparatorInputChangeTrackerMixin {
 
             //! Only send packet to players with this mod installed
             if(ServerPlayNetworking.canSend(player, ComparatorUpdatePayload.TYPE)) {
+                System.out.println("SENDING SIDE " + side + " from server");
+                //BUG this goes down to 0 in steps of 2 power??? what the actual f
+                //BUG send timestamp with the packet to ensure outdated ones are discarded,
+                //BUG make this a base packet class or something idk
+
+                //BUG though that wouldn't make sense cause minecraft already uses TCP?? which is guaranteed to receive in the same order??
                 ServerPlayNetworking.send(player, new ComparatorUpdatePayload(pos, back, side, out, mode));
             }
         }
