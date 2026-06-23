@@ -29,6 +29,10 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 @Mixin(PoweredRailBlock.class)
 public class RailInputChangeTrackerMixin {
+
+
+    //FIXME filter per dimension too
+    // Stores the last fecthed input for each tracked rail block
     private static final Map<BlockPos, Integer> lastSignals = new HashMap<>();
 
 
