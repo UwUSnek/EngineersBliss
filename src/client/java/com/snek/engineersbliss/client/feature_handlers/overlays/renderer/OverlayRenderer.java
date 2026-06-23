@@ -192,8 +192,7 @@ public final class OverlayRenderer {
                                 matrices.mulPose(Axis.XP.rotationDegrees(90f));
                             }
 
-                            // Submit centered text with no shadow, no background, no outline
-                            final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
+                            // Submit centered text with no shadow, default background, no outline
                             context.submitNodeCollector().submitText(
                                 matrices,
                                 -textWidth / 2f, -4f,
@@ -202,8 +201,8 @@ public final class OverlayRenderer {
                                 Font.DisplayMode.SEE_THROUGH,
                                 0xF000F0,
                                 p.calcColor(state, pos, attachedData),
-                                0,
-                                0
+                                0x99151515, // Background //TODO maybe make this a parameter?
+                                0x00000000  // Outline //TODO maybe make this a parameter?
                             );
 
                             matrices.popPose();

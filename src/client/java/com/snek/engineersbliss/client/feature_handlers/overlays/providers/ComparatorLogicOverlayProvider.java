@@ -63,8 +63,8 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
                 final int side = data.getSideSignal();
                 final int out  = data.getOutSignal ();
                 return data.getMode() ?
-                    String.format("max(0, %d - %d) ➡ %d",   back, side,       out) :
-                    String.format("%d <= %d ? %d : 0 ➡ %d", back, side, side, out)
+                    String.format("max(0,%d-%d) ➡ %d", back, side,       out) :
+                    String.format("%d≥%d?%d:0 ➡ %d",   back, side, back, out)
                 ;
             }
         }
