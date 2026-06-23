@@ -107,3 +107,4 @@
 # Not features:
 
 - Update UI, draw one with a more modern style
+- render stats //TODO minecraft.getGpuUtilization()

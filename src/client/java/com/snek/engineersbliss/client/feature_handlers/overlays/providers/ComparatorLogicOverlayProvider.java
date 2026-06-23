@@ -22,8 +22,7 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
         return
             //! Comparator level is always shown, including 0 (no signal) and -1 (no server data)
             OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET) &&
-            state.is(Blocks.COMPARATOR) &&
-            //TODO chec kplayer distance
+            state.is(Blocks.COMPARATOR)
         ;
     }
 
@@ -43,6 +42,12 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
     @Override
     public TextureProviderDisplay getDisplay() {
         return TextureProviderDisplay.BILLBOARD;
+    }
+
+
+    @Override
+    public int getMaxRenderDistance() {
+        return 8;
     }
 
 
