@@ -31,9 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class RailInputChangeTrackerMixin {
 
 
-    //FIXME filter per dimension too
     // Stores the last fecthed input for each tracked rail block
-    private static final Map<BlockPos, Integer> lastSignals = new HashMap<>();
+    private static final Map<Level, Map<BlockPos, Integer>> lastSignals = new HashMap<>();
 
 
 
@@ -47,9 +46,10 @@ public class RailInputChangeTrackerMixin {
 
 
         // Return if input is identical to the last one. Update map otherwise
-        final Integer lastSignal = lastSignals.get(pos);
-        if(lastSignal != null && lastSignal == newSignal) return;
-        lastSignals.put(pos, newSignal);
+        final var signalCacheLevel = lastSignals.compute(level, (kkey, map) -> map == null ? new HashMap<>() : map);
+        final Integer last = signalCacheLevel.get(pos);
+        if(last != null && last == newSignal) return;
+        signalCacheLevel.put(pos, newSignal);
 
 
         // If signal is different, send update packets to all players that can see the block
