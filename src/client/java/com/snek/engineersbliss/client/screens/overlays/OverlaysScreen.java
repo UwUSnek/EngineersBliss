@@ -26,9 +26,14 @@ public class OverlaysScreen extends __base_PauseScreen {
     protected void init() {
 
         // Power levels  //TODO add header
-        addButton(getToggleText(OverlayFeature.COMPARATOR_POWER_LEVELS,      OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_POWER_LEVELS)),      b -> toggleFeature(OverlayFeature.COMPARATOR_POWER_LEVELS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS)),   b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.RAIL_POWER_LEVELS,            OverlaysHandler.getFeature(OverlayFeature.RAIL_POWER_LEVELS)),            b -> toggleFeature(OverlayFeature.RAIL_POWER_LEVELS,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+        addButton(getToggleText(OverlayFeature.COMPARATOR_POWER_LEVELS,      OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_POWER_LEVELS)),      b -> toggleFeature(OverlayFeature.COMPARATOR_POWER_LEVELS,      b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
+        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS)),   b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
+        addButton(getToggleText(OverlayFeature.RAIL_POWER_LEVELS,            OverlaysHandler.getFeature(OverlayFeature.RAIL_POWER_LEVELS)),            b -> toggleFeature(OverlayFeature.RAIL_POWER_LEVELS,            b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+
+        // Logic
+        addButton(getToggleText(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,     OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET)),     b -> toggleFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,     b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
+        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE,   OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE)),   b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
+        addButton(getToggleText(OverlayFeature.RAIL_POWER_SOURCE,            OverlaysHandler.getFeature(OverlayFeature.RAIL_POWER_SOURCE)),            b -> toggleFeature(OverlayFeature.RAIL_POWER_SOURCE,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
     }
 
 
