@@ -2,7 +2,7 @@ package com.snek.engineersbliss.client.screens.alt_textures;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.screens.__base_PauseScreen;
+import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 
 
 
-public class AltTexturesScreen extends __base_PauseScreen {
+public class AltTexturesScreen extends __base_Screen {
     private static final int BUTTON_WIDTH = 200;
 
 

@@ -46,14 +46,17 @@
   - Control flying speed
   - Control reach distance
   - Control interaction radius (click multiple blocks at once)
+
   - Configurable fast clicking
+  - Insta kill mobs
   - Place blocks facing away from the player
   - Place blocks with an offset
-  - Insta kill mobs
-  - Phase through blocks while flying
-  - Phase through entities
+
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
+
+  - Phase through blocks while flying
+  - Phase through entities
   - Disable being slowed down by and bouncing on Slime Blocks
   - Disable being slowed down by Honey Blocks
   - Disable being slowed down by Soul Sand
