@@ -1,11 +1,15 @@
 package com.snek.engineersbliss.client.screens.creative_tweaks;
 
+import java.util.List;
+
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
-import com.snek.engineersbliss.client.screens.parts.__base_Slider;
+import com.snek.engineersbliss.client.screens.parts.SteppedSlider;
+import com.snek.engineersbliss.client.screens.parts.__base_AnalogueSlider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -28,16 +32,20 @@ public class CreativeTweaksScreen extends __base_Screen {
     @Override
     protected void init() {
 
-        addRenderableWidget(new __base_Slider(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH, BUTTON_HEIGHT, "Flying Speed", 0.05, 1.0, flySpeed) {
-            @Override protected void applyValue() {
-                final Player player = minecraft.player;
-                if(player != null && player.getAbilities().instabuild) {
-                    player.getAbilities().setFlyingSpeed((float)flySpeed);
-                }
-            }
-        });
+        addRenderableWidget(new SteppedSlider<Float>(
+            BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH, BUTTON_HEIGHT,
+            "Flying Speed", List.of(1f, 2f, 4f, 10f, 20f, 50f, 100f), 0, CreativeTweaksScreen::onFlyingSpeedChange
+        ));
+        // ) {
+        //     @Override protected void applyValue() {
+        //         final Player player = minecraft.player;
+        //         if(player != null && player.getAbilities().instabuild) {
+        //             player.getAbilities().setFlyingSpeed((float)flySpeed);
+        //         }
+        //     }
+        // });
 
-        addRenderableWidget(new __base_Slider(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH, BUTTON_HEIGHT, "Reach Distance", 1.0, 20.0, reachDistance) {
+        addRenderableWidget(new __base_AnalogueSlider(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH, BUTTON_HEIGHT, "Reach Distance", 1.0, 20.0, reachDistance) {
             @Override protected void applyValue() {
                 final Player player = minecraft.player;
                 if(player != null && player.getAbilities().instabuild) {
@@ -54,7 +62,7 @@ public class CreativeTweaksScreen extends __base_Screen {
             }
         });
 
-        addRenderableWidget(new __base_Slider(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH, BUTTON_HEIGHT, "Interaction Radius", 1.0, 10.0, interactionRadius) {
+        addRenderableWidget(new __base_AnalogueSlider(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH, BUTTON_HEIGHT, "Interaction Radius", 1.0, 10.0, interactionRadius) {
             @Override protected void applyValue() {
                 interactionRadius = value;
                 //TODO
@@ -75,5 +83,16 @@ public class CreativeTweaksScreen extends __base_Screen {
         b.setMessage(Component.literal(getToggleText(feature, newState)));
         AltTexturesHandler.setFeature(feature, newState);
         MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
+    }
+
+
+
+
+
+    private static void onFlyingSpeedChange(final SteppedSlider<Float> slider, final Float value) {
+        final Player player = Minecraft.getInstance().player;
+        if(player != null && player.getAbilities().instabuild) {
+            player.getAbilities().setFlyingSpeed(value);
+        }
     }
 }
