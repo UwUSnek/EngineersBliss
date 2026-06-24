@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +32,42 @@ public class MinecraftUtils {
     private MinecraftUtils() { }
 
 
+
+
+
+
+
+    /**
+     * Checks if the 4 chunks directly adjacent to the specified chunk are fully loaded.
+     * @param level The level containing the chunk.
+     * @param chunkPos The position of the chunk.
+     * @return True if the chunks are loaded, false otherwise.
+     */
+    public static boolean areChunkNeighboursLoaded(final Level level, final ChunkPos chunkPos) {
+        return
+            areChunkDirectNeighboursLoaded(level, chunkPos) &&
+            level.isLoaded(chunkPos.getBlockAt(+LevelChunkSection.SECTION_WIDTH, 0, +LevelChunkSection.SECTION_WIDTH)) &&
+            level.isLoaded(chunkPos.getBlockAt(-LevelChunkSection.SECTION_WIDTH, 0, -LevelChunkSection.SECTION_WIDTH)) &&
+            level.isLoaded(chunkPos.getBlockAt(-LevelChunkSection.SECTION_WIDTH, 0, +LevelChunkSection.SECTION_WIDTH)) &&
+            level.isLoaded(chunkPos.getBlockAt(+LevelChunkSection.SECTION_WIDTH, 0, -LevelChunkSection.SECTION_WIDTH))
+        ;
+    }
+
+
+    /**
+     * Checks if the 8 chunks adjacent to the specified chunk are fully loaded.
+     * @param level The level containing the chunk.
+     * @param chunkPos The position of the chunk.
+     * @return True if the chunks are loaded, false otherwise.
+     */
+    public static boolean areChunkDirectNeighboursLoaded(final Level level, final ChunkPos chunkPos) {
+        return
+            level.isLoaded(chunkPos.getBlockAt(+LevelChunkSection.SECTION_WIDTH, 0, 0)) &&
+            level.isLoaded(chunkPos.getBlockAt(-LevelChunkSection.SECTION_WIDTH, 0, 0)) &&
+            level.isLoaded(chunkPos.getBlockAt(0, 0, +LevelChunkSection.SECTION_WIDTH)) &&
+            level.isLoaded(chunkPos.getBlockAt(0, 0, -LevelChunkSection.SECTION_WIDTH))
+        ;
+    }
 
 
 

@@ -13,6 +13,8 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.Ra
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.data_types.Pair;
+import com.snek.engineersbliss.client.utils.scheduler.LoopTaskHandler;
+import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
@@ -34,6 +36,7 @@ public class OverlaysHandler {
 
     // A map containing all available feature and their current state
     private static Map<OverlayFeature, Boolean> features = new EnumMap<>(OverlayFeature.class);
+
 
 
     /**
@@ -171,6 +174,16 @@ public class OverlaysHandler {
 
 
 
+
+
+
+
+    // These keep track of chunks that are currently waiting for their 8 neighbour to load in in order to calculate overlay data
+    private static Map<ChunkPos, LoopTaskHandler> waitingForNeighbours = new HashMap<>();
+
+
+
+
     /**
      * Updates the runtime map. This must be called whenever a chunk is loaded into the client's level.
      * @param chunk The new chunk.
@@ -179,42 +192,52 @@ public class OverlaysHandler {
         if(!chunk.getLevel().isClientSide()) return;
         final ChunkPos chunkPos = chunk.getPos();
         final Level level = chunk.getLevel();
-        final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
-        final int minX = chunkPos.getMinBlockX();
-        final int minZ = chunkPos.getMinBlockZ();
 
-        // For each chunk section
-        final var sections = chunk.getSections();
-        for(int i = 0; i < sections.length; ++i) {
-            final LevelChunkSection section = sections[i];
-            final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
 
-            // If the section contains blocks with features
-            if(!section.hasOnlyAir() && section.maybeHas(state -> OverlayFeature.hasFeature(state.getBlock()))) {
+        // Wait for the chunk's neighbours to load in. Cancel the loop task and continue when they finally do
+        waitingForNeighbours.put(chunkPos, Scheduler.loop(0, 4, () -> {
+            if(!MinecraftUtils.areChunkNeighboursLoaded(level, chunkPos)) return;
+            waitingForNeighbours.get(chunkPos).cancel();
+            waitingForNeighbours.remove(chunkPos);
 
-                // For each block in the section
-                for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
-                    for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
-                        for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
-                            final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
-                            final BlockState state = level.getBlockState(pos);
-                            final Block block = state.getBlock();
+            // For each chunk section
+            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
+            final int minX = chunkPos.getMinBlockX();
+            final int minZ = chunkPos.getMinBlockZ();
+            final var sections = chunk.getSections();
+            for(int i = 0; i < sections.length; ++i) {
+                final LevelChunkSection section = sections[i];
+                final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
 
-                            //If the block has features
-                            if(OverlayFeature.hasFeature(block)) {
+                // If the section contains blocks with features
+                if(!section.hasOnlyAir() && section.maybeHas(state -> OverlayFeature.hasFeature(state.getBlock()))) {
 
-                                // Calculate all flags and put them in the map if not empty
-                                final long newFlags = calcFeatureFlags(state);
-                                if(newFlags != 0) {
-                                    chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, state)));
+                    // For each block in the section
+                    for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
+                        for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
+                            for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+                                final BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
+                                final BlockState state = level.getBlockState(pos);
+                                final Block block = state.getBlock();
+
+                                //If the block has features
+                                if(OverlayFeature.hasFeature(block)) {
+
+                                    // Calculate all flags and put them in the map if not empty
+                                    final long newFlags = calcFeatureFlags(state);
+                                    if(newFlags != 0) {
+                                        chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, state)));
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
+        }));
     }
+
+
 
 
     /**
@@ -223,6 +246,11 @@ public class OverlaysHandler {
      */
     public static void onChunkUnload(final ChunkPos pos) {
         featureMask.remove(pos);
+        final LoopTaskHandler handler = waitingForNeighbours.get(pos);
+        if(handler != null) {
+            handler.cancel();
+            waitingForNeighbours.remove(pos);
+        }
     }
 
 
@@ -231,5 +259,9 @@ public class OverlaysHandler {
      */
     public static void onLevelChange() {
         featureMask.clear();
+        waitingForNeighbours.forEach((k, v) -> {
+            if(v != null) v.cancel();
+        });
+        waitingForNeighbours.clear();
     }
 }
