@@ -82,109 +82,53 @@
 			}
 		},
 		{
-			"from": [7, 0, 3],
-			"to": [9, 0.249, 13],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0.501, 8]},
+			"from": [4.75, 0.25, 4.75],
+			"to": [11.25, 0.875, 11.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0.75, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 0, 0], "texture": "#rail"},
-				"east": {"uv": [9, 3, 8, 13], "rotation": 90, "texture": "#rail"},
-				"south": {"uv": [0, 0, 0, 0], "texture": "#rail"},
-				"west": {"uv": [8, 3, 7, 13], "rotation": 270, "texture": "#rail"},
-				"up": {"uv": [7, 3, 9, 13], "texture": "#rail"},
-				"down": {"uv": [7, 13, 9, 3], "texture": "#rail"}
+				"north": {"uv": [5, 6, 11, 5], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [11, 5, 10, 11], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [5, 11, 11, 10], "texture": "#rail"},
+				"west": {"uv": [6, 5, 5, 11], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#rail"},
+				"down": {"uv": [5, 11, 11, 5], "texture": "#rail"}
 			}
 		},
 		{
-			"from": [4, 0.25, 0],
-			"to": [5, 0.875, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 1, 8.1]},
+			"from": [5.75, 0.5, 5.75],
+			"to": [10.25, 1, 10.25],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0.75, 8]},
 			"faces": {
-				"north": {"uv": [4, 1, 5, 0], "rotation": 180, "texture": "#rail"},
-				"east": {"uv": [5, 0, 4, 16], "rotation": 90, "texture": "#rail"},
-				"south": {"uv": [4, 16, 5, 15], "texture": "#rail"},
-				"west": {"uv": [0, 0, 0, 0], "texture": "#rail"},
-				"up": {"uv": [4, 0, 5, 16], "texture": "#rail"},
-				"down": {"uv": [4, 16, 5, 0], "texture": "#rail"}
-			}
-		},
-		{
-			"from": [11, 0.25, 0],
-			"to": [12, 0.875, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 1, 8.1]},
-			"faces": {
-				"north": {"uv": [11, 1, 12, 0], "rotation": 180, "texture": "#rail"},
-				"east": {"uv": [0, 0, 0, 0], "texture": "#rail"},
-				"south": {"uv": [11, 16, 12, 15], "texture": "#rail"},
-				"west": {"uv": [12, 0, 11, 16], "rotation": 270, "texture": "#rail"},
-				"up": {"uv": [11, 0, 12, 16], "texture": "#rail"},
-				"down": {"uv": [11, 16, 12, 0], "texture": "#rail"}
-			}
-		},
-		{
-			"from": [12, 0.25, -0.2],
-			"to": [14, 1.25, 16.2],
-			"rotation": {"angle": 0, "axis": "y", "origin": [13, 0.75, 8.1]},
-			"faces": {
-				"north": {"uv": [12, 1, 14, 0], "rotation": 180, "texture": "#rail"},
-				"east": {"uv": [14, 0, 13, 16], "rotation": 90, "texture": "#rail"},
-				"south": {"uv": [12, 16, 14, 15], "texture": "#rail"},
-				"west": {"uv": [13, 0, 12, 16], "rotation": 270, "texture": "#rail"},
-				"up": {"uv": [12, 0, 14, 16], "texture": "#rail"},
-				"down": {"uv": [12, 16, 14, 0], "texture": "#rail"}
-			}
-		},
-		{
-			"from": [2, 0.25, -0.2],
-			"to": [4, 1.25, 16.2],
-			"rotation": {"angle": 0, "axis": "y", "origin": [-2, 1, 8.1]},
-			"faces": {
-				"north": {"uv": [2, 1, 4, 0], "rotation": 180, "texture": "#rail"},
-				"east": {"uv": [4, 0, 3, 16], "rotation": 90, "texture": "#rail"},
-				"south": {"uv": [2, 16, 4, 15], "texture": "#rail"},
-				"west": {"uv": [3, 0, 2, 16], "rotation": 270, "texture": "#rail"},
-				"up": {"uv": [2, 0, 4, 16], "texture": "#rail"},
-				"down": {"uv": [2, 16, 4, 0], "texture": "#rail"}
+				"north": {"uv": [6, 7, 10, 6], "rotation": 180, "texture": "#rail"},
+				"east": {"uv": [10, 6, 9, 10], "rotation": 90, "texture": "#rail"},
+				"south": {"uv": [6, 10, 10, 9], "texture": "#rail"},
+				"west": {"uv": [7, 6, 6, 10], "rotation": 270, "texture": "#rail"},
+				"up": {"uv": [6, 6, 10, 10], "texture": "#rail"},
+				"down": {"uv": [6, 10, 10, 6], "texture": "#rail"}
 			}
 		}
 	],
 	"groups": [
 		{
-			"name": "group",
+			"name": "planks",
 			"origin": [8, 1, -4],
 			"scope": 0,
 			"color": 0,
-			"children": [
-				{
-					"name": "planks",
-					"origin": [8, 1, -4],
-					"scope": 0,
-					"color": 0,
-					"children": [0, 1, 2, 3]
-				},
-				{
-					"name": "iron bars",
-					"origin": [-2, 1, 8],
-					"scope": 0,
-					"color": 0,
-					"children": [4, 5]
-				},
-				{
-					"name": "central connection",
-					"origin": [8, 8, 8],
-					"scope": 0,
-					"color": 0,
-					"children": [6]
-				},
-				{
-					"name": "gold",
-					"origin": [-2, 1, 8],
-					"scope": 0,
-					"color": 0,
-					"children": [7, 8]
-				}
-			]
+			"children": [0, 1, 2, 3]
 		},
-		9,
-		10
+		{
+			"name": "iron bars",
+			"origin": [-2, 1, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [4, 5]
+		},
+		{
+			"name": "plate",
+			"origin": [13, 0.75, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [6, 7]
+		}
 	]
 }
