@@ -1,8 +1,21 @@
 # Engineer's Bliss
 
-A rendering and utility mod for Redstone engineers.
+A **rendering** and **utility** mod for Redstone Engineers.<br>
+:3
 
-By UwU_Snek.
+<br>
+
+Engineer's Bliss focuses on improving the experience of designing Vanilla Redstone machines
+through a multitude of tools and custom items and blocks.
+
+These include anything from overlays and fast clicking to automatic circuit analysis tools,
+custom items, render filters and an in-game block property lookup tool.
+
+<br>
+
+Mod written and tested by **UwU_Snek**.<br>
+Minecraft 26.1+.<br>
+Fabric Load 0.19.3+.
 
 <br>
 
@@ -28,6 +41,15 @@ You are free to copy, modify, and redistribute it, as long as you provide the so
 
 <br>
 
+> **NOTICE**<br>
+>
+> Any mod that modifies game mechanics in any way has the potential to break parts of Engineer's Bliss.<br>
+> The objective is to make Engineer's Bliss compatible with as many popular mods as possible,
+> without changing how it behaves in Vanilla in order to accomodate other mods.<br>
+> Compatibility issues can be reported on the GitHub page.
+
+<br>
+
 > **IMPORTANT**<br>
 >
 > **Do not submit AI-generated code**.<br>
@@ -46,9 +68,13 @@ If you enjoy the mod, consider supporting me on
 It helps a lot :3
 
 <br>
+<br>
+<br>
 
 ---
 
+<br>
+<br>
 <br>
 
 ## Full list of features
@@ -139,7 +165,7 @@ It helps a lot :3
   - Rate counter hoppers
   - Water Current Sponge
   - Lava Current Sponge
-  - Infinite barrel
+  - Item Sink (storage block with infinite capacity)
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
