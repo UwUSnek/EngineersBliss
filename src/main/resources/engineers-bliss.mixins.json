@@ -8,7 +8,9 @@
 		"accessors.PoweredRailBlockAccessor",
 
 		"overlay_data.ComparatorInputChangeTrackerMixin",
-		"overlay_data.RailInputChangeTrackerMixin"
+		"overlay_data.RailInputChangeTrackerMixin",
+
+		"creative_tweaks.ReachDistanceCapMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

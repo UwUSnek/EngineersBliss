@@ -132,6 +132,7 @@ It helps a lot :3
   - Phase through entities
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
+  - Zoom view with a keybind
   - Disable being slowed down by and bouncing on Slime Blocks
   - Disable being slowed down by Honey Blocks
   - Disable being slowed down by Soul Sand

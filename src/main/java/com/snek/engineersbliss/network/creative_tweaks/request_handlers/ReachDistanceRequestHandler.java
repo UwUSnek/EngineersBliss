@@ -18,9 +18,17 @@ public class ReachDistanceRequestHandler {
 
 
     public static void handle(ReachDistanceChangeRequestPayload packet, final ServerPlayer player) {
-        var attr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
-        if(attr != null) {
-            attr.addOrUpdateTransientModifier(new AttributeModifier(
+        var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
+        if(blockAttr != null) {
+            blockAttr.addOrUpdateTransientModifier(new AttributeModifier(
+                REACH_MODIFIER_ID,
+                packet.reach() - DEFAULT_REACH,
+                AttributeModifier.Operation.ADD_VALUE
+            ));
+        }
+        var entityAttr = player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE);
+        if(entityAttr != null) {
+            entityAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
                 packet.reach() - DEFAULT_REACH,
                 AttributeModifier.Operation.ADD_VALUE

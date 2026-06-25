@@ -54,6 +54,7 @@
 
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
+  - Zoom view with a keybind
 
   - Phase through blocks while flying
   - Phase through entities
