@@ -51,8 +51,7 @@ public class InteractionFilterMixin {
                 final BlockState state = minecraft.level.getBlockState(pos);
                 if(state.isAir()) return null;
                 if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) return null;
-                final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player))
-                    .clip(start, end, pos);
+                final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player)).clip(start, end, pos);
                 return hit != null ? hit : BlockHitResult.miss(end, Direction.UP, pos);
             },
             context -> BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end))
