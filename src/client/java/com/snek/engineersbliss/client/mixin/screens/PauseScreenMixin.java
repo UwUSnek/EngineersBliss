@@ -121,7 +121,7 @@ public class PauseScreenMixin extends Screen {
                 altTexturesButton     = addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
                 mufflerButton         = addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth);
 
-                addButton("??",               JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
+                addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
             })
         ;
     }
