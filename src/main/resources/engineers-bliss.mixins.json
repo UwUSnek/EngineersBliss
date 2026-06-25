@@ -10,7 +10,9 @@
 		"overlay_data.ComparatorInputChangeTrackerMixin",
 		"overlay_data.RailInputChangeTrackerMixin",
 
-		"creative_tweaks.ReachDistanceCapMixin"
+		"creative_tweaks.ReachDistanceCapMixin",
+		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
+		"creative_tweaks.PlayerMovementLimitFixMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

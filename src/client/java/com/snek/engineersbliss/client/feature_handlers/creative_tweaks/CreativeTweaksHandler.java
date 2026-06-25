@@ -15,17 +15,14 @@ import net.minecraft.world.entity.player.Player;
 
 public class CreativeTweaksHandler {
     private CreativeTweaksHandler() { }
-
     private static final float DEFAULT_FLYING_SPEED = new Abilities().getFlyingSpeed();
-
 
 
 
     public static void onFlyingSpeedChange(final Float value) {
         final Player player = Minecraft.getInstance().player;
-        if(player != null && player.getAbilities().instabuild) {
-            player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
-        }
+        if(!player.getAbilities().instabuild) return;
+        player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
     }
 
 
