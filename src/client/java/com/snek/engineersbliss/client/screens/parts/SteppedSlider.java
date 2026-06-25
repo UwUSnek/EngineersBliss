@@ -1,11 +1,10 @@
 package com.snek.engineersbliss.client.screens.parts;
 
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 
 
 
@@ -13,13 +12,13 @@ import net.minecraft.util.Mth;
 public class SteppedSlider<T> extends AbstractSliderButton {
     private final String label;
     private final List<T> stepValues;
-    private final BiConsumer<SteppedSlider<T>, T> onApplyValue;
+    private final Consumer<T> onApplyValue;
 
 
     public SteppedSlider(
         final int x, final int y, final int w, final int h, final String label,
         final List<T> stepValues, final int defaultValueIndex,
-        final BiConsumer<SteppedSlider<T>, T> onApplyValue
+        final Consumer<T> onApplyValue
     ) {
         super(x, y, w, h, Component.empty(), indexToUnit(defaultValueIndex, stepValues.size()));
         this.label = label;
@@ -44,7 +43,7 @@ public class SteppedSlider<T> extends AbstractSliderButton {
 
     @Override
     protected void applyValue() {
-        onApplyValue.accept(this, getSelectedValue());
+        onApplyValue.accept(getSelectedValue());
     }
 
 

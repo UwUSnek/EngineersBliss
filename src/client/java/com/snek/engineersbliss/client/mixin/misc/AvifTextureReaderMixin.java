@@ -1,7 +1,7 @@
 package com.snek.engineersbliss.client.mixin.misc;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -75,7 +75,7 @@ public class AvifTextureReaderMixin {
 
                 final TextureMetadataSection metadata = resource.metadata().getSection(TextureMetadataSection.TYPE).orElse(null);
 
-                Scheduler.run(() -> {
+                ClientScheduler.run(() -> {
                     final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
                     final IntBuffer ibuf = MemoryUtil.memIntBuffer(image.getPointer(), w * h);
                     for(int i = 0; i < pixels.length; i++) {
