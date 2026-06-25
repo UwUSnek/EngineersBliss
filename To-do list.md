@@ -47,6 +47,7 @@
   - Control reach distance
   - Control interaction radius (click multiple blocks at once)
   - Configurable fast clicking
+  - Snap view to specific angles //TODO in-game indicators for multiples of 22 and 45 ° on both axes. use a keybind to snap to them
   - Place blocks facing away from the player
   - Place blocks with an offset
   - Insta kill mobs
@@ -85,9 +86,8 @@
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
-  - Lava Sponge
-  - Infinite Sponge
-  - Infinite Lava Sponge
+  - Water Current Sponge
+  - Lava Current Sponge
   - Infinite barrel
   - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
   - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
@@ -120,13 +120,7 @@
   - [Vanilla block & item] Your Player Head as an item
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey
-
-
-
-
-
-
-
+  - [Vanilla block & entity] Armor Stand with arms
 
 
 

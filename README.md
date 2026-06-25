@@ -98,6 +98,7 @@ It helps a lot :3
   - Control reach distance
   - Control interaction radius (click multiple blocks at once)
   - Configurable fast clicking
+  - Snap view to specific angles
   - Place blocks facing away from the player
   - Place blocks with an offset
   - Insta kill mobs
@@ -136,6 +137,9 @@ It helps a lot :3
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
+  - Water Current Sponge
+  - Lava Current Sponge
+  - Infinite barrel
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
@@ -164,3 +168,4 @@ It helps a lot :3
   - [Vanilla block & item] Your Player Head as an item
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey
+  - [Vanilla block & entity] Armor Stand with arms
