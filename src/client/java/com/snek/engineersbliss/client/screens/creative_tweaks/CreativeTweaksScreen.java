@@ -31,12 +31,16 @@ public class CreativeTweaksScreen extends __base_Screen {
     private static final Identifier REACH_MODIFIER_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "creative_tweaks.reach");
 
 
-    // private double flySpeed = 0.1;
-    // private double reachDistance = 4.5;
-    // private double interactionRadius = 1.0;
+    private static int interactionRadius = 1;
 
 
-    public CreativeTweaksScreen() { }
+
+
+    public CreativeTweaksScreen() {
+        super();
+    }
+
+
 
 
     @Override
@@ -46,7 +50,7 @@ public class CreativeTweaksScreen extends __base_Screen {
 
         addRenderableWidget(new SteppedSlider<Float>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH, BUTTON_HEIGHT,
-            "Flying Speed", List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0, CreativeTweaksScreen::onFlyingSpeedChange
+            "Flying speed", List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0, CreativeTweaksScreen::onFlyingSpeedChange
         ));
 
 
@@ -55,28 +59,32 @@ public class CreativeTweaksScreen extends __base_Screen {
             "Reach distance", List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0, CreativeTweaksScreen::onReachDistanceChange
         ));
 
-        addRenderableWidget(new __base_AnalogueSlider(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH, BUTTON_HEIGHT, "Interaction Radius", 1.0, 10.0, 1) {
-            @Override protected void applyValue() {
-                // interactionRadius = value;
-                //TODO
-            }
-        });
+
+        addRenderableWidget(new SteppedSlider<Integer>(
+            BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH, BUTTON_HEIGHT,
+            "Interaction radius", List.of(1, 2, 3, 4, 5, 10, 20), 0, CreativeTweaksScreen::onInteractionRadiusChanged
+        ));
     }
 
 
 
 
-    public String getToggleText(final AltTextureFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
-    }
+    // public String getToggleText(final AltTextureFeature feature, final boolean state) {
+    //     return feature.getName() + ": " + (state ? "ON" : "OFF");
+    // }
 
 
-    public void toggleFeature(final AltTextureFeature feature, final Button b) {
-        boolean newState = !AltTexturesHandler.getFeature(feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
-        AltTexturesHandler.setFeature(feature, newState);
-        MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
-    }
+    // public void toggleFeature(final AltTextureFeature feature, final Button b) {
+    //     boolean newState = !AltTexturesHandler.getFeature(feature);
+    //     b.setMessage(Component.literal(getToggleText(feature, newState)));
+    //     AltTexturesHandler.setFeature(feature, newState);
+    //     MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
+    // }
+
+
+
+
+
 
 
 
@@ -102,5 +110,10 @@ public class CreativeTweaksScreen extends __base_Screen {
                 ));
             }
         }
+    }
+
+
+    private static void onInteractionRadiusChanged(final SteppedSlider<Integer> slider, final Integer value) {
+        interactionRadius = value;
     }
 }

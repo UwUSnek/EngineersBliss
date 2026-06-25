@@ -37,7 +37,7 @@ public class SteppedSlider<T> extends AbstractSliderButton {
 
     @Override
     protected void updateMessage() {
-        setMessage(Component.literal(label + ": " + String.format("%.2f", getSelectedValue())));
+        setMessage(Component.literal(label + ": " + getSelectedValue()));
     }
 
 
@@ -46,3 +46,5 @@ public class SteppedSlider<T> extends AbstractSliderButton {
         onApplyValue.accept(this, getSelectedValue());
     }
 }
+
+//TODO show like a graph or something that visually ilustrates the magnitude of each step's value
