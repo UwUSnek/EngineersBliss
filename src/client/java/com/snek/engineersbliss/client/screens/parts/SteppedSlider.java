@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 
 
 
@@ -44,6 +45,18 @@ public class SteppedSlider<T> extends AbstractSliderButton {
     @Override
     protected void applyValue() {
         onApplyValue.accept(this, getSelectedValue());
+    }
+
+
+    static double snap(double value, int steps) {
+        --steps;
+        return Math.round(value * steps) / (double) steps;
+    }
+
+    @Override
+    protected void setValue(final double newValue) {
+        final double snappedValue = snap(newValue, stepValues.size());
+        super.setValue(snappedValue); //! Superclass handles 0-1 clamping
     }
 }
 
