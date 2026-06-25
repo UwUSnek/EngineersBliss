@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.scheduler;
+package com.snek.engineersbliss.utils.scheduler;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
  * This scheduler also supports looping and cancelling tasks.
  * @since v1.1.0
  */
-public final class Scheduler {
-    private Scheduler() { }
+public final class ServerScheduler {
+    private ServerScheduler() { }
 
     // ! Outer queue orders by target tick, but doesn't guarantee an order between entries with the same priority.
     // ! This is solved by adding an additional index value to the ordering data.

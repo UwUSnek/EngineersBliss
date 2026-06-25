@@ -1,18 +1,18 @@
-package com.snek.engineersbliss.client.utils.scheduler;
+package com.snek.engineersbliss.utils.scheduler;
 
 
 /**
  * An object that can be used to add a variable tick cooldown to arbitrary code.
  * @since v1.1.0
  */
-public class RateLimiter {
+public class ClientRateLimiter {
     private long cooldownEnd;
 
 
     /**
      * Creates a new RateLimiter.
      */
-    public RateLimiter() {
+    public ClientRateLimiter() {
         cooldownEnd = 0;
     }
 
@@ -25,7 +25,7 @@ public class RateLimiter {
      */
     public void renewCooldown(final long cooldown) {
 
-        final long cooldownEndNew = Scheduler.getTickNum() + cooldown;
+        final long cooldownEndNew = ClientScheduler.getTickNum() + cooldown;
         if(cooldownEnd < cooldownEndNew) {
             cooldownEnd = cooldownEndNew;
         }
@@ -37,6 +37,6 @@ public class RateLimiter {
      * @return True if the cooldown has expired, false otherwise.
      */
     public boolean attempt() {
-        return Scheduler.getTickNum() >= cooldownEnd;
+        return ClientScheduler.getTickNum() >= cooldownEnd;
     }
 }

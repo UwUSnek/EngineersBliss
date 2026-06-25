@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 
 
 
-public abstract class __base_PauseScreen extends Screen {
+public abstract class __base_Screen extends Screen {
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 4;
     public static final int LIST_TOP = 32;
@@ -21,7 +21,7 @@ public abstract class __base_PauseScreen extends Screen {
 
 
 
-    protected __base_PauseScreen() {
+    protected __base_Screen() {
         super(Component.literal(""));
     }
 

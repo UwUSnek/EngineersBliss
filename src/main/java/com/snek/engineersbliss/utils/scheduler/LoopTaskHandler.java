@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.scheduler;
+package com.snek.engineersbliss.utils.scheduler;
 
 import org.jetbrains.annotations.NotNull;
 

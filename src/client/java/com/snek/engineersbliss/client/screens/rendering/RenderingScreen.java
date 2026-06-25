@@ -2,7 +2,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.__base_PauseScreen;
+import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
@@ -19,7 +19,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
-public class RenderingScreen extends __base_PauseScreen {
+public class RenderingScreen extends __base_Screen {
     private int panelWidthCenter;
     private int panelWidthSide;
     private int halfButtonWidth;
