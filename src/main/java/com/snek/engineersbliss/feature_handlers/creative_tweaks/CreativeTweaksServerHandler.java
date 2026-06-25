@@ -17,7 +17,9 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -42,6 +44,10 @@ public class CreativeTweaksServerHandler {
 
 
     private static final Map<UUID, Integer> interactionRadii = new HashMap<>();
+    private static @Nullable BlockPos pickOverride = null;
+    public static @Nullable BlockPos getPickOverride() { return pickOverride; }
+
+
 
 
     /**
@@ -50,8 +56,11 @@ public class CreativeTweaksServerHandler {
      * @param value The new interaction radius, in blocks.
      */
     public static void updateInteractionRadius(final ServerPlayer player, final int value) {
+        if(!player.getAbilities().instabuild) return;
         interactionRadii.put(player.getUUID(), value);
     }
+
+
 
 
     /**
@@ -60,6 +69,9 @@ public class CreativeTweaksServerHandler {
      * @param value The new reach distance, in blocks.
      */
     public static void updateReachDistance(final ServerPlayer player, final double value) {
+        if(!player.getAbilities().instabuild) return;
+
+
         var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
         if(blockAttr != null) {
             blockAttr.addOrUpdateTransientModifier(new AttributeModifier(
@@ -84,10 +96,9 @@ public class CreativeTweaksServerHandler {
 
 
 
-
     public static void register() {
         PlayerBlockBreakEvents.BEFORE.register(CreativeTweaksServerHandler::beforeBlockBreak);
-        // UseBlockCallback.EVENT.register(CreativeTweaksServerHandler::afterBlockUse);
+        UseBlockCallback.EVENT.register(CreativeTweaksServerHandler::afterBlockUse);
     }
 
 
@@ -95,6 +106,7 @@ public class CreativeTweaksServerHandler {
     private static boolean processingCustomBreak = false;
     private static boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState blockState, @Nullable BlockEntity blockEntity) {
         if(level.isClientSide()) return true;
+        if(!player.getAbilities().instabuild) return true;
 
 
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
@@ -122,39 +134,43 @@ public class CreativeTweaksServerHandler {
 
 
 
-    // private static boolean processingCustomPlace = false;
-    // private static InteractionResult afterBlockUse(Player player, Level level, InteractionHand hand, BlockHitResult blockHitResult) {
-    //     if(level.isClientSide()) return InteractionResult.PASS;
+    private static boolean processingCustomPlace = false;
+    private static InteractionResult afterBlockUse(Player player, Level level, InteractionHand hand, BlockHitResult blockHitResult) {
+        if(level.isClientSide()) return InteractionResult.PASS;
+        if(!player.getAbilities().instabuild) return InteractionResult.PASS;
 
 
-    //     // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
-    //     if(!processingCustomPlace) {
-    //         processingCustomPlace = true;
-    //         int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS);
-    //         Vec3 vec3Pos = blockHitResult.getLocation();
-    //         BlockPos pos = BlockPos.containing(vec3Pos);
+        // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
+        if(!processingCustomPlace) {
+            processingCustomPlace = true;
+            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS);
+            Vec3 vec3Pos = blockHitResult.getLocation();
+            BlockPos pos = BlockPos.containing(vec3Pos);
 
-    //         final ItemStack stack = player.getActiveItem();
-    //         BlockPos.betweenClosed(
-    //             pos.offset(-radius, -radius, -radius),
-    //             pos.offset( radius,  radius,  radius)
-    //         ).forEach(pos2 -> {
-    //             if(!pos2.equals(pos)) { //! Skip vanilla block
-    //                 if(new Vec3(pos2).distanceTo(new Vec3(pos)) <= radius) {
-    //                     final InteractionResult result = stack.useOn(new UseOnContext(
-    //                         level, player, hand, stack,
-    //                         new BlockHitResult(Vec3.atCenterOf(pos2), blockHitResult.getDirection(), pos2, false)
-    //                     ));
-    //                     if(result == InteractionResult.PASS) {
-    //                         stack.use(level, player, hand);
-    //                     }
-    //                 }
-    //             }
-    //         });
-    //         processingCustomPlace = false;
-    //     }
+            final ItemStack stack = player.getActiveItem();
+            BlockPos.betweenClosed(
+                pos.offset(-radius, -radius, -radius),
+                pos.offset( radius,  radius,  radius)
+            ).forEach(pos2 -> {
+                if(!pos2.equals(pos)) { //! Skip vanilla block
+                    if(new Vec3(pos2).distanceTo(new Vec3(pos)) <= radius) {
+                        final ItemStack stackCopy = stack.copy(); //! Use a copy so entity items don't run out in creative mode
+                        final InteractionResult result = stackCopy.useOn(new UseOnContext(
+                            level, player, hand, stackCopy,
+                            new BlockHitResult(Vec3.atCenterOf(pos2), blockHitResult.getDirection(), pos2, false)
+                        ));
+                        if(result == InteractionResult.PASS) {
+                            pickOverride = pos2;
+                            stackCopy.use(level, player, hand);
+                            pickOverride = null;
+                        }
+                    }
+                }
+            });
+            processingCustomPlace = false;
+        }
 
-    //     // Return PASS, letting vanilla click the original block
-    //     return InteractionResult.PASS;
-    // }
+        // Return PASS, letting vanilla click the original block
+        return InteractionResult.PASS;
+    }
 }

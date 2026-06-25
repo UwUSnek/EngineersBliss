@@ -43,7 +43,7 @@ public class EngineerSBliss implements ModInitializer {
 
 
         // Register client->server network payloads
-        PayloadTypeRegistry.serverboundPlay().register(ReachDistanceChangeRequestPayload.TYPE, ReachDistanceChangeRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(    ReachDistanceChangeRequestPayload.TYPE,     ReachDistanceChangeRequestPayload.CODEC);
         PayloadTypeRegistry.serverboundPlay().register(InteractionRadiusChangeRequestPayload.TYPE, InteractionRadiusChangeRequestPayload.CODEC);
         CreativeTweakRequestReceiver.register();
 

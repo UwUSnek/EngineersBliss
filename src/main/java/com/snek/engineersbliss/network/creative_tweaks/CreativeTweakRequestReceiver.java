@@ -16,6 +16,8 @@ public class CreativeTweakRequestReceiver {
 
 
     public static void register() {
+        //! Flying speed is set by the client
+
         ServerPlayNetworking.registerGlobalReceiver(ReachDistanceChangeRequestPayload.TYPE, (payload, context) -> {
             ServerScheduler.run(() -> {
                 CreativeTweaksServerHandler.updateReachDistance(context.player(), payload.reach());
