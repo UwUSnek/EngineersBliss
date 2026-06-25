@@ -32,7 +32,7 @@ public class AltTexturesScreen extends __base_PauseScreen {
         addButton(getToggleText(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING,    AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING)),    b -> toggleFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING,    b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, BUTTON_WIDTH);
 
         // Misc //TODO add header
-        addButton(getToggleText(AltTextureFeature.MINIMAL_REDSTONE_WIRE,           AltTexturesHandler.getFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE)),           b -> toggleFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE,           b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.MINIMAL_REDSTONE_WIRE,        AltTexturesHandler.getFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE)),        b -> toggleFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE,        b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.CONSISTENT_SLOPED_RAILS,      AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)),      b -> toggleFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
 
         // 3D //TODO add header
