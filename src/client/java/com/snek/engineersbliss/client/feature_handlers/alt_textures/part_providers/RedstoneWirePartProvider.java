@@ -41,9 +41,11 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
             final RedstoneSide w = state.getValue(RedStoneWireBlock.WEST);
             final String wireModelDir = "redstone_wire/minimal/" + (is3d ? "3d" : "2d");
 
-            // Central dot and power level
-            if(
-                n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE ||
+            // Central dot
+            if(n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE) {
+                r.add(wireModelDir + "/large_dot_n");
+            }
+            else if(
                 n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
                 e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
                 s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
