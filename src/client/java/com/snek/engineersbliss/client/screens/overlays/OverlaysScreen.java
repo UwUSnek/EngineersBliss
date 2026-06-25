@@ -2,7 +2,7 @@ package com.snek.engineersbliss.client.screens.overlays;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.screens.__base_PauseScreen;
+import com.snek.engineersbliss.client.screens.__base_Screen;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 
 
 
-public class OverlaysScreen extends __base_PauseScreen {
+public class OverlaysScreen extends __base_Screen {
     private static final int BUTTON_WIDTH = 200;
 
 

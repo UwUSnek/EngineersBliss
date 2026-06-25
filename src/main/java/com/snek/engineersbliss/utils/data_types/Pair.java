@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.data_types;
+package com.snek.engineersbliss.utils.data_types;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

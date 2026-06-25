@@ -4,13 +4,13 @@ import javax.imageio.spi.IIORegistry;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -23,6 +23,12 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+
+
+        // Register scheduler
+        ClientTickEvents.END_CLIENT_TICK.register(_server -> {
+            ClientScheduler.tick();
+        });
 
 
         // Initialize utility classes
@@ -54,12 +60,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
         // Register network receivers
         AttachedDataNetworkReceiver.register();
-
-
-        // Register scheduler
-        ClientTickEvents.END_CLIENT_TICK.register(_server -> {
-            Scheduler.tick();
-        });
 
 
         // Log library loading

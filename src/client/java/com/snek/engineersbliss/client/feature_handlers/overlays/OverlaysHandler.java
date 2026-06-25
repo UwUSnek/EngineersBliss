@@ -12,9 +12,9 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.Co
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
-import com.snek.engineersbliss.client.utils.data_types.Pair;
-import com.snek.engineersbliss.client.utils.scheduler.LoopTaskHandler;
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
+import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents;
@@ -195,7 +195,7 @@ public class OverlaysHandler {
 
 
         // Wait for the chunk's neighbours to load in. Cancel the loop task and continue when they finally do
-        waitingForNeighbours.put(chunkPos, Scheduler.loop(0, 4, () -> {
+        waitingForNeighbours.put(chunkPos, ClientScheduler.loop(0, 4, () -> {
             if(!MinecraftUtils.areChunkNeighboursLoaded(level, chunkPos)) return;
             waitingForNeighbours.get(chunkPos).cancel();
             waitingForNeighbours.remove(chunkPos);

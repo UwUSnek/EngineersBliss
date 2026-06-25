@@ -9,8 +9,8 @@ import java.util.Map.Entry;
 
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderersAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
-import com.snek.engineersbliss.client.utils.scheduler.LoopTaskHandler;
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -153,7 +153,7 @@ public class RenderFilterHandler {
 
         final int[] index = { 0 };
         final LoopTaskHandler[] handle = { null };
-        handle[0] = Scheduler.loop(1, 1, () -> {
+        handle[0] = ClientScheduler.loop(1, 1, () -> {
             if(index[0] >= chunks.size()) {
                 handle[0].cancel();
                 return;

@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
+import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
@@ -113,7 +114,7 @@ public class PauseScreenMixin extends Screen {
                 groupsButton          = addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth);
                 containerToolsButton  = addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth);
                 gameplayTweaksButton  = addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth);
-                creativeTweaksButton  = addButton("[Y] Creative tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
+                creativeTweaksButton  = addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
 
                 renderingButton       = addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
                 overlaysButton        = addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);

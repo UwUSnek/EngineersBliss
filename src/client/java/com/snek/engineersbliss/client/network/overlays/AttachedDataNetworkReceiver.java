@@ -1,7 +1,9 @@
-package com.snek.engineersbliss.client.feature_handlers.overlays.attached_data;
+package com.snek.engineersbliss.client.network.overlays;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
 import com.snek.engineersbliss.network.overlay_data.payloads.RailUpdatePayload;
 
@@ -25,12 +27,12 @@ public class AttachedDataNetworkReceiver {
      */
     public static void register() {
         ClientPlayNetworking.registerGlobalReceiver(ComparatorUpdatePayload.TYPE, (payload, context) -> {
-            Scheduler.run(() -> {
+            com.snek.engineersbliss.utils.scheduler.ClientScheduler.run(() -> {
                 OverlaysHandler.updateAttachedData(payload.pos(), new ComparatorAttachedData(payload.back(), payload.side(), payload.out(), payload.mode()));
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(RailUpdatePayload.TYPE, (payload, context) -> {
-            Scheduler.run(() -> {
+            ClientScheduler.run(() -> {
                 OverlaysHandler.updateAttachedData(payload.pos(), new RailAttachedData(payload.input()));
             });
         });

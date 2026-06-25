@@ -10,7 +10,6 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 
