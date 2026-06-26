@@ -5,16 +5,16 @@
 	"mixins": [
 		"accessors.ComparatorBlockAccessor",
 		"accessors.DiodeBlockAccessor",
-		"accessors.PoweredRailBlockAccessor",
-
+		"accessors.PoweredRailBlockAccessor"
+	],
+	"server": [
 		"overlay_data.ComparatorInputChangeTrackerMixin",
 		"overlay_data.RailInputChangeTrackerMixin",
 
 		"creative_tweaks.ReachDistanceCapMixin",
 		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
-		"creative_tweaks.PlayerMovementLimitFixMixin"
-	],
-	"server": [
+		"creative_tweaks.PlayerMovementLimitFixMixin",
+
 		"creative_tweaks.SlimeFeaturesMixin",
 		"creative_tweaks.FrictionFeaturesMixin"
 	],
