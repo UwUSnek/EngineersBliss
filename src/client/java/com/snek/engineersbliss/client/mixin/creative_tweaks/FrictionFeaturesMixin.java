@@ -1,9 +1,9 @@
-package com.snek.engineersbliss.mixin.creative_tweaks;
+package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,8 +18,9 @@ import net.minecraft.world.level.block.Blocks;
 
 
 /**
- * Server-side feature mixin.
- * This mixin has an identical counterpart on the client in order to guarantee identical logic calculations and minimize client desynchronization.
+ * Client counterpart of the server's feature mixin.
+ * This prevents incorrect client-side calculations done before the server syncs up.
+ * Sometimes Vanilla client logic can block server-side features because of how Minecraft handles movement synchronization.
  */
 @Mixin(LivingEntity.class)
 public class FrictionFeaturesMixin {
@@ -33,13 +34,12 @@ public class FrictionFeaturesMixin {
     )
     private float travelInAir(Block block) {
         final LivingEntity entity = (LivingEntity)(Object)this;
-        if(entity.level().isClientSide()) return block.getFriction();
+        if(!entity.level().isClientSide()) return block.getFriction();
 
 
-        if(entity instanceof Player player) {
+        if(entity instanceof Player) {
             if(block == Blocks.SLIME_BLOCK) {
-                final long featureMask = CreativeTweaksServerHandler.getToggleFeatures(player);
-                if(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN.hasFlagBit(featureMask)) {
+                if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
                     return DEFAULT_FRICTION;
                 }
             }

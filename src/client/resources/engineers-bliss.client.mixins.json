@@ -18,6 +18,7 @@
         "overlays.BlockstateChangeTrackerMixin",
 
         "creative_tweaks.SlimeFeaturesMixin",
+        "creative_tweaks.FrictionFeaturesMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",

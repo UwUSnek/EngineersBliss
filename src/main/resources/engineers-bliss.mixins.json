@@ -12,7 +12,9 @@
 
 		"creative_tweaks.ReachDistanceCapMixin",
 		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
-		"creative_tweaks.PlayerMovementLimitFixMixin",
+		"creative_tweaks.PlayerMovementLimitFixMixin"
+	],
+	"server": [
 		"creative_tweaks.SlimeFeaturesMixin",
 		"creative_tweaks.FrictionFeaturesMixin"
 	],

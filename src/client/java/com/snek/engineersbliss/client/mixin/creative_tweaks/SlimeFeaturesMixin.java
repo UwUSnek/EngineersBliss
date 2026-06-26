@@ -26,28 +26,23 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SlimeFeaturesMixin {
 
 
-    // @Inject(method = "stepOn", at = @At("HEAD"), cancellable = true)
-    // public void stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity, final CallbackInfo ci) {
-    //     if(!level.isClientSide()) return;
-    //     if(entity instanceof Player) {
-    //         if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
-    //             ci.cancel();
-    //         }
-    //     }
-    // }
+    @Inject(method = "stepOn", at = @At("HEAD"), cancellable = true)
+    public void stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity, final CallbackInfo ci) {
+        if(!level.isClientSide()) return;
+        if(entity instanceof Player) {
+            if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
+                ci.cancel();
+            }
+        }
+    }
 
-    // @Inject(method = "bounceUp", at = @At("HEAD"), cancellable = true)
-    // public void bounceUp(final Entity entity, final CallbackInfo ci) {
-    //     if(!entity.level().isClientSide()) return;
-    //     if(entity instanceof Player) {
-    //         if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_SLIME_BOUNCE)) {
-    //             ci.cancel();
-    //         }
-    //     }
-    // }
+    @Inject(method = "bounceUp", at = @At("HEAD"), cancellable = true)
+    public void bounceUp(final Entity entity, final CallbackInfo ci) {
+        if(!entity.level().isClientSide()) return;
+        if(entity instanceof Player) {
+            if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_SLIME_BOUNCE)) {
+                ci.cancel();
+            }
+        }
+    }
 }
-
-//TODO REMOVE IF UNUSED
-//TODO REMOVE IF UNUSED
-//TODO REMOVE IF UNUSED
-//TODO REMOVE IF UNUSED

@@ -10,19 +10,17 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksSe
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 
 
-// // /**
-// //  * Server-side feature mixin.
-// //  * This mixin has an identical counterpart on the client in order to guarantee identical logic calculations and minimize client desynchronization.
-// //  */
+/**
+ * Server-side feature mixin.
+ * This mixin has an identical counterpart on the client in order to guarantee identical logic calculations and minimize client desynchronization.
+ */
 @Mixin(SlimeBlock.class)
 public class SlimeFeaturesMixin {
 
