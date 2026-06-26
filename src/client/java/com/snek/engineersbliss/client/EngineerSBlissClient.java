@@ -7,6 +7,7 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHan
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
@@ -52,6 +53,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
         RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
         AltTexturesHandler.init();
         OverlaysHandler.init();
+        // CreativeTweaksHandler.init();
 
 
         // Register overlay renderers

@@ -12,7 +12,8 @@
 
 		"creative_tweaks.ReachDistanceCapMixin",
 		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
-		"creative_tweaks.PlayerMovementLimitFixMixin"
+		"creative_tweaks.PlayerMovementLimitFixMixin",
+		"creative_tweaks.SlimeFeaturesMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
