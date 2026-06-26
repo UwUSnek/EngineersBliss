@@ -17,11 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-/**
- * Client counterpart of the server's feature mixin.
- * This prevents incorrect client-side calculations done before the server syncs up.
- * Sometimes Vanilla client logic can block server-side features because of how Minecraft handles movement synchronization.
- */
 @Mixin(LivingEntity.class)
 public class FrictionFeaturesMixin {
     @Unique

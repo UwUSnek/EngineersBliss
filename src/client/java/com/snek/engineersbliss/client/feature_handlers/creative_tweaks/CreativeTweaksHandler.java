@@ -1,9 +1,5 @@
 package com.snek.engineersbliss.client.feature_handlers.creative_tweaks;
 
-import java.util.EnumMap;
-import java.util.Map;
-
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
@@ -44,7 +40,6 @@ public class CreativeTweaksHandler {
 
 
 
-    //TODO add a disclaimer that says all of these toggle features require the mod to be installed on the server
     public static void setFeature(final CreativeTweakFeature feature, boolean value) {
         // features.put(feature, value);
         final long lastMask = clientFeatureMask;
@@ -53,6 +48,8 @@ public class CreativeTweaksHandler {
         if(clientFeatureMask != lastMask) {
         if(NetworkUtils.serverHasMod()) {
             ClientPlayNetworking.send(new CreativeTweaksToggleFeaturesUpdateRequestPayload(clientFeatureMask));
+            //FIXME REMOVE THE WHOLE SERVER COORDINATION/PACKET THING FOR TOGGLE FEATURES IF NOT NEEDED
+            //FIXME movement packets are client only, server just validates speed or something, idk. Slime block and sliding are already fully client side
         }
         }
     }

@@ -18,9 +18,7 @@
 		"overlay_data.RailInputChangeTrackerMixin",
 
 		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
-		"creative_tweaks.PlayerMovementLimitFixMixin",
-		"creative_tweaks.SlimeFeaturesMixin",
-		"creative_tweaks.FrictionFeaturesMixin"
+		"creative_tweaks.PlayerMovementLimitFixMixin"
 	],
 
 
