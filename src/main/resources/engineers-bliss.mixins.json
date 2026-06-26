@@ -2,22 +2,28 @@
 	"required": true,
 	"package": "com.snek.engineersbliss.mixin",
 	"compatibilityLevel": "JAVA_25",
+
+
 	"mixins": [
 		"accessors.ComparatorBlockAccessor",
 		"accessors.DiodeBlockAccessor",
-		"accessors.PoweredRailBlockAccessor"
+		"accessors.PoweredRailBlockAccessor",
+
+		"creative_tweaks.ReachDistanceCapMixin"
 	],
+
+
 	"server": [
 		"overlay_data.ComparatorInputChangeTrackerMixin",
 		"overlay_data.RailInputChangeTrackerMixin",
 
-		"creative_tweaks.ReachDistanceCapMixin",
 		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
 		"creative_tweaks.PlayerMovementLimitFixMixin",
-
 		"creative_tweaks.SlimeFeaturesMixin",
 		"creative_tweaks.FrictionFeaturesMixin"
 	],
+
+
 	"injectors": {
 		"defaultRequire": 1
 	},
