@@ -43,14 +43,16 @@
   - Disable explosion block and entity damage
 
 - **Creative mode tweaks**
-  - Control flying speed
-  - Control reach distance
-  - Control interaction radius (click multiple blocks at once)
+  - ~~Control flying speed~~
+  - ~~Control reach distance~~
+  - ~~Control interaction radius (click multiple blocks at once)~~
+  - add in-game UI for these. display their current values with icons and such
 
   - Configurable fast clicking
   - Snap view to specific angles //TODO in-game indicators for multiples of 22 and 45 ° on both axes. use a keybind to snap to them
   - Place blocks facing away from the player
   - Place blocks with an offset
+  - add in-game UI for fast clicking. display its current values with icons and such
 
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
