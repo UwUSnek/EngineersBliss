@@ -1,10 +1,8 @@
-package com.snek.engineersbliss.client.feature_handlers.creative_tweaks;
+package com.snek.engineersbliss.feature_handlers.creative_tweaks;
 
 
 
 public enum CreativeTweakFeature {
-
-
     PHASE_THROUGH_BLOCKS         ("Phase through blocks while flying"), //TODO
     PHASE_THROUGH_ENTITIES       ("Phase through entities"), //TODO
     DISABLE_SLIME_BOUNCE         ("Disable bouncing on Slime Blocks"), //TODO
@@ -27,6 +25,7 @@ public enum CreativeTweakFeature {
 
     public String getName() { return name; }
     public long getFlagBit() { return flagBit; }
+    public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
 
 
     private CreativeTweakFeature(String name) {

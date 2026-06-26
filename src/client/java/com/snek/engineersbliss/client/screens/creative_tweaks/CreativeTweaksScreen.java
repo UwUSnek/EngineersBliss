@@ -2,10 +2,10 @@ package com.snek.engineersbliss.client.screens.creative_tweaks;
 
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.parts.SteppedSlider;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -67,12 +67,12 @@ public class CreativeTweaksScreen extends __base_Screen {
         return feature.getName() + ": " + (state ? "ON" : "OFF");
     }
     public String getToggleText(final CreativeTweakFeature feature) {
-        return getToggleText(feature, CreativeTweaksHandler.getFeature(feature));
+        return getToggleText(feature, CreativeTweaksHandler.hasFeature(feature));
     }
 
 
     public void toggleFeature(final CreativeTweakFeature feature, final Button b) {
-        boolean newState = !CreativeTweaksHandler.getFeature(feature);
+        boolean newState = !CreativeTweaksHandler.hasFeature(feature);
         b.setMessage(Component.literal(getToggleText(feature, newState)));
         CreativeTweaksHandler.setFeature(feature, newState);
     }

@@ -5,8 +5,10 @@ import java.util.Map;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.ReachDistanceChangeRequestPayload;
+import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
@@ -42,19 +44,24 @@ public class CreativeTweaksHandler {
 
 
 
+    //TODO add a disclaimer that says all of these toggle features require the mod to be installed on the server
     public static void setFeature(final CreativeTweakFeature feature, boolean value) {
         // features.put(feature, value);
         final long lastMask = clientFeatureMask;
         final long featureBit = feature.getFlagBit();
         if(value) clientFeatureMask |= featureBit; else clientFeatureMask &= ~featureBit;
         if(clientFeatureMask != lastMask) {
-
+        if(NetworkUtils.serverHasMod()) {
+            ClientPlayNetworking.send(new CreativeTweaksToggleFeaturesUpdateRequestPayload(clientFeatureMask));
+        }
         }
     }
 
-    public static boolean getFeature(final CreativeTweakFeature feature) {
+    //TODO add to feature enum
+    //TODO public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
+    public static boolean hasFeature(final CreativeTweakFeature feature) {
         // return features.get(feature);
-        return (clientFeatureMask & feature.getFlagBit()) != 0;
+        return feature.hasFlagBit(clientFeatureMask);
     }
 
 

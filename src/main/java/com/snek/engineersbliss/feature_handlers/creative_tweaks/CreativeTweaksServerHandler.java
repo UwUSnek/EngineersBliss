@@ -46,6 +46,15 @@ public class CreativeTweaksServerHandler {
     public static @Nullable BlockPos getPickOverride() { return pickOverride; }
 
 
+    private static final Map<UUID, Long> toggleFeatureMasks = new HashMap<>();
+    public static void updateToggleFeatures(final Player player, final long featureMask) {
+        toggleFeatureMasks.put(player.getUUID(), featureMask);
+    }
+    public static long getToggleFeatures(final Player player) {
+        return toggleFeatureMasks.getOrDefault(player.getUUID(), 0L);
+    }
+
+
 
 
     /**

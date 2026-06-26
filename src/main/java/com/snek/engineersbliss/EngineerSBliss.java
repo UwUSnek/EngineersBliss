@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 import com.snek.engineersbliss.network.creative_tweaks.CreativeTweakRequestReceiver;
+import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.ReachDistanceChangeRequestPayload;
 import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
@@ -43,8 +44,9 @@ public class EngineerSBliss implements ModInitializer {
 
 
         // Register client->server network payloads
-        PayloadTypeRegistry.serverboundPlay().register(    ReachDistanceChangeRequestPayload.TYPE,     ReachDistanceChangeRequestPayload.CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(InteractionRadiusChangeRequestPayload.TYPE, InteractionRadiusChangeRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(               ReachDistanceChangeRequestPayload.TYPE,                ReachDistanceChangeRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(           InteractionRadiusChangeRequestPayload.TYPE,            InteractionRadiusChangeRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(CreativeTweaksToggleFeaturesUpdateRequestPayload.TYPE, CreativeTweaksToggleFeaturesUpdateRequestPayload.CODEC);
         CreativeTweakRequestReceiver.register();
 
 
