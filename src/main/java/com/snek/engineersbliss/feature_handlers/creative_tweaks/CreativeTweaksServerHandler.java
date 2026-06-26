@@ -17,9 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -112,7 +110,7 @@ public class CreativeTweaksServerHandler {
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
         if(!processingCustomBreak) {
             processingCustomBreak = true;
-            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS);
+            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS) - 1;
 
             BlockPos.betweenClosed(
                 pos.offset(-radius, -radius, -radius),
@@ -143,7 +141,7 @@ public class CreativeTweaksServerHandler {
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
         if(!processingCustomPlace) {
             processingCustomPlace = true;
-            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS);
+            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS) - 1;
             Vec3 vec3Pos = blockHitResult.getLocation();
             BlockPos pos = BlockPos.containing(vec3Pos);
 
