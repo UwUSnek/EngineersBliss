@@ -197,8 +197,11 @@ public class OverlaysHandler {
         // Wait for the chunk's neighbours to load in. Cancel the loop task and continue when they finally do
         waitingForNeighbours.put(chunkPos, ClientScheduler.loop(0, 4, () -> {
             if(!MinecraftUtils.areChunkNeighboursLoaded(level, chunkPos)) return;
-            waitingForNeighbours.get(chunkPos).cancel();
-            waitingForNeighbours.remove(chunkPos);
+            final LoopTaskHandler handler = waitingForNeighbours.get(chunkPos);
+            if(handler != null) {
+                handler.cancel();
+                waitingForNeighbours.remove(chunkPos);
+            }
 
             // For each chunk section
             final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
