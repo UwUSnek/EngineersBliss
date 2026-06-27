@@ -65,14 +65,21 @@
   - Disable not being able to jump from Honey Blocks
   - Disable sliding on the sides of Honey Blocks
   - ~~Disable being slowed down by Slime Blocks~~
-  - Disable being slowed down by Honey Blocks
-  - Disable being slowed down by Soul Sand
-  - Disable sliding on Ice, Packed Ice and Blue Ice
+  - ~~Disable being slowed down by Honey Blocks~~
+  - ~~Disable being slowed down by Soul Sand~~
+  - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - Disable being moved by Water and Lava currents
-  - Disable being on fire
-  - Disable freezing effect
+  - Disable being pushed or pulled by Bubble Columns
+
   - Disable item change animation
   - Disable hand swing animation
+  - Disable being on fire
+  - Disable freezing effect
+  - Disable loading screen and overlay effect of Nether Portals
+  - Disable reduced FOV when inside a body of Water
+  - Disable overlay effect of Water
+  - Disable overlay effect of Lava
+
 
 - **Property lookup**:
   - Quickly find blocks based on their properties

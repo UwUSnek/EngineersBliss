@@ -122,18 +122,15 @@ It helps a lot :3
 - **Creative mode tweaks**
   - Control flying speed
   - Control reach distance
-  - Control interaction radius (click multiple blocks at once)
-  
+  - Control interaction radius (click multiple blocks at once)<br><br>
   - Configurable fast clicking
   - Snap view to specific angles
   - Place blocks facing away from the player
   - Place blocks with an offset
-  - Insta kill mobs
-
+  - Insta kill mobs<br><br>
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
-  - Zoom view with a keybind
-
+  - Zoom view with a keybind<br><br>
   - Phase through blocks while flying
   - Phase through entities
   - Disable bouncing on Slime Blocks
@@ -144,10 +141,15 @@ It helps a lot :3
   - Disable being slowed down by Soul Sand
   - Disable sliding on Ice, Packed Ice and Blue Ice
   - Disable being moved by Water and Lava currents
-  - Disable being on fire
-  - Disable freezing effect
+  - Disable being pushed or pulled by Bubble Columns<br><br>
   - Disable item change animation
   - Disable hand swing animation
+  - Disable being on fire
+  - Disable freezing effect
+  - Disable loading screen and overlay effect of Nether Portals
+  - Disable reduced FOV when inside a body of Water
+  - Disable overlay effect of Water
+  - Disable overlay effect of Lava
   <br><br>
 - **Property lookup**:
   - Quickly find blocks based on their properties
