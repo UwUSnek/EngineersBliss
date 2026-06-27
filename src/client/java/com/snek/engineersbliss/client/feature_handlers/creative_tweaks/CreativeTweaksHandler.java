@@ -20,28 +20,28 @@ public class CreativeTweaksHandler {
     private static final float DEFAULT_FLYING_SPEED = new Abilities().getFlyingSpeed();
 
 
-    // private static Map<CreativeTweakFeature, Boolean> features = new EnumMap<>(CreativeTweakFeature.class); //TODO remove
-    private static long clientFeatureMask = 0;
-    // public static void init(){
-    //     for(CreativeTweakFeature feature : CreativeTweakFeature.values()) {
-    //         features.put(feature, false);
-    //     }
-    // }
-    // public long createClientFeatureMask() {
-    //     final long r = 0;
-    //     for(var entry : features.entrySet()) {
-    //         if(entry.getValue().booleanValue()) {
-    //             r |=
-    //         }
-    //     }
-    // }
+    private static long clientFeatureMask = 0
+    |   CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY      .getFlagBit()
+    |   CreativeTweakFeature.PHASE_THROUGH_ENTITIES        .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_HONEY_JUMP            .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_HONEY_SLIDING         .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN        .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_SLIME_BOUNCE          .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN        .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN     .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_ICE_SLIDING           .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_CURRENT_DRAG          .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_FIRE_EFFECT           .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_FREEZING_EFFECT       .getFlagBit()
+    |   CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION .getFlagBit() &0
+    |   CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION  .getFlagBit() &0
+    ;
 
 
 
 
 
     public static void setFeature(final CreativeTweakFeature feature, boolean value) {
-        // features.put(feature, value);
         final long lastMask = clientFeatureMask;
         final long featureBit = feature.getFlagBit();
         if(value) clientFeatureMask |= featureBit; else clientFeatureMask &= ~featureBit;
@@ -54,10 +54,10 @@ public class CreativeTweaksHandler {
         }
     }
 
+
     //TODO add to feature enum
     //TODO public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
     public static boolean hasFeature(final CreativeTweakFeature feature) {
-        // return features.get(feature);
         return feature.hasFlagBit(clientFeatureMask);
     }
 

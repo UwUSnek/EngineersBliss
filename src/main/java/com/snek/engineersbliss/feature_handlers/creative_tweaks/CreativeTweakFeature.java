@@ -3,7 +3,7 @@ package com.snek.engineersbliss.feature_handlers.creative_tweaks;
 
 
 public enum CreativeTweakFeature {
-    PHASE_THROUGH_BLOCKS         ("Phase through blocks while flying"), //TODO
+    PHASE_THROUGH_BLOCKS_FLY         ("Phase through blocks while flying"), //TODO
     PHASE_THROUGH_ENTITIES       ("Phase through entities"), //TODO
     DISABLE_SLIME_BOUNCE         ("Disable bouncing on Slime Blocks"), //TODO
     DISABLE_HONEY_JUMP           ("Disable not being able to jump from Honey Blocks"), //TODO
