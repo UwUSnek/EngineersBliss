@@ -19,6 +19,7 @@
 
         "creative_tweaks.SlimeFeaturesMixin",
         "creative_tweaks.FrictionFeaturesMixin",
+        "creative_tweaks.SpeedFactorFeaturesMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",

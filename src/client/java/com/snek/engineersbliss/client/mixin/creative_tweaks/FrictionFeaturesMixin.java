@@ -17,10 +17,16 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
+
+
+
+
 @Mixin(LivingEntity.class)
 public class FrictionFeaturesMixin {
     @Unique
-    private static final float DEFAULT_FRICTION = Blocks.GRASS_BLOCK.getFriction();
+    private static final float DEFAULT_FRICTION = Blocks.STONE.getFriction();
+
+
 
 
     @Redirect(
@@ -38,6 +44,18 @@ public class FrictionFeaturesMixin {
                     return DEFAULT_FRICTION;
                 }
             }
+            if(
+                block == Blocks.ICE        ||
+                block == Blocks.PACKED_ICE ||
+                block == Blocks.BLUE_ICE   ||
+                block == Blocks.FROSTED_ICE
+            ) {
+                if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
+                    return DEFAULT_FRICTION;
+                }
+            }
+            //! Honey Block uses custom SpeedFactor instead of Friction
+            //! Soul Sand   uses custom SpeedFactor instead of Friction
         }
         return block.getFriction();
     }
