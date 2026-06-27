@@ -52,6 +52,7 @@
   - Snap view to specific angles //TODO in-game indicators for multiples of 22 and 45 ° on both axes. use a keybind to snap to them
   - Place blocks facing away from the player
   - Place blocks with an offset
+  - Insta kill mobs
   - add in-game UI for fast clicking. display its current values with icons and such
 
   - Scroll block delays and container levels with your mouse wheel >:3
@@ -60,7 +61,10 @@
 
   - Phase through blocks while flying
   - Phase through entities
-  - Disable being slowed down by and bouncing on Slime Blocks
+  - ~~Disable bouncing on Slime Blocks~~
+  - Disable not being able to jump from Honey Blocks
+  - Disable sliding on the sides of Honey Blocks
+  - ~~Disable being slowed down by Slime Blocks~~
   - Disable being slowed down by Honey Blocks
   - Disable being slowed down by Soul Sand
   - Disable sliding on Ice, Packed Ice and Blue Ice
@@ -142,3 +146,7 @@
 
 - Update UI, draw one with a more modern style
 - render stats //TODO minecraft.getGpuUtilization()
+
+
+
+- Fix changes caused by the custom interaction radius not sending block updates to the client
