@@ -21,6 +21,7 @@
         "creative_tweaks.FrictionFeaturesMixin",
         "creative_tweaks.SpeedFactorFeaturesMixin",
 		"creative_tweaks.BlockPhasingMixin",
+		"creative_tweaks.ScreenOverlayHiderMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
