@@ -83,6 +83,7 @@ It helps a lot :3
   - Selectively hide blocks by type or rendering method
   - Click through hidden blocks
   - Custom block outlines
+  - Player model rendering in the pause menu
   <br><br>
 - **Alternative textures**:
   - Less opaque Slime Block texture
@@ -139,6 +140,7 @@ It helps a lot :3
   - Disable being slowed down by Slime Blocks
   - Disable being slowed down by Honey Blocks
   - Disable being slowed down by Soul Sand
+  - Disable being slowed down by Powder Snow
   - Disable sliding on Ice, Packed Ice and Blue Ice
   - Disable being moved by Water and Lava currents
   - Disable being pushed or pulled by Bubble Columns<br><br>

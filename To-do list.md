@@ -13,6 +13,7 @@
   - ~~Minimal Redstone Dust~~
   - ~~3D Redstone Dust~~
   - ~~3D Rails~~
+  - Player model rendering in the pause menu
   - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:
@@ -59,7 +60,7 @@
   - Teleport to the block you are looking at with a keybind
   - Zoom view with a keybind
 
-  - Phase through blocks while flying
+  - ~~Phase through blocks while flying~~
   - Phase through entities
   - ~~Disable bouncing on Slime Blocks~~
   - Disable not being able to jump from Honey Blocks
@@ -67,6 +68,7 @@
   - ~~Disable being slowed down by Slime Blocks~~
   - ~~Disable being slowed down by Honey Blocks~~
   - ~~Disable being slowed down by Soul Sand~~
+  - Disable being slowed down by powder snow
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - Disable being moved by Water and Lava currents
   - Disable being pushed or pulled by Bubble Columns
