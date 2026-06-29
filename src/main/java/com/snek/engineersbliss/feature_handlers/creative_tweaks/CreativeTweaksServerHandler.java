@@ -52,7 +52,8 @@ public class CreativeTweaksServerHandler {
         toggleFeatureMasks.put(player.getUUID(), featureMask);
     }
     public static long getToggleFeatures(final Player player) {
-        return toggleFeatureMasks.getOrDefault(player.getUUID(), 0L);
+        final Long r = toggleFeatureMasks.get(player.getUUID());
+        return r == null ? CreativeTweakFeature.DEFAULT_FLAGS : r;
     }
 
 

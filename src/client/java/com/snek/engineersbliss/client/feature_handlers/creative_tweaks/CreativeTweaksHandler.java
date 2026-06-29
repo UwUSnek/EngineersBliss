@@ -18,30 +18,7 @@ import net.minecraft.world.entity.player.Player;
 public class CreativeTweaksHandler {
     private CreativeTweaksHandler() { }
     private static final float DEFAULT_FLYING_SPEED = new Abilities().getFlyingSpeed();
-
-
-    private static long clientFeatureMask = 0
-    |   CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY     .getFlagBit()
-    |   CreativeTweakFeature.PHASE_THROUGH_ENTITIES       .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_HONEY_JUMP           .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_HONEY_SLIDING        .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN       .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_SLIME_BOUNCE         .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN       .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN    .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_ICE_SLIDING          .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_CURRENT_DRAG         .getFlagBit()
-
-    |   CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION.getFlagBit() &0
-    |   CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION .getFlagBit() &0
-    |   CreativeTweakFeature.DISABLE_FIRE_EFFECT          .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_FREEZING_EFFECT      .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_NETHER_PORTAL_OVERLAY.getFlagBit()
-    |   CreativeTweakFeature.DISABLE_WATER_FOV_CHANGE     .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_WATER_OVERLAY        .getFlagBit()
-    |   CreativeTweakFeature.DISABLE_LAVA_OVERLAY         .getFlagBit()
-    //TODO maybe add a disable snow overlay? idk if freezing is linked to the overlay or if they are separate things
-    ;
+    private static long clientFeatureMask = CreativeTweakFeature.DEFAULT_FLAGS; //TODO use this same system for the other toggle features
 
 
 
