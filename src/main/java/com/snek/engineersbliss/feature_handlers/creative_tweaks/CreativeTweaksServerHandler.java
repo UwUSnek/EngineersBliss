@@ -186,15 +186,18 @@ public class CreativeTweaksServerHandler {
 
 
 
-    public static boolean canPlayerPhaseThroughBlocks(final Entity entity) {
+    public static boolean playerHasFeature(final Entity entity, final CreativeTweakFeature feature) {
         if(entity instanceof Player player) {
             long featureMask = getToggleFeatures(player);
-            if(CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY.hasFlagBit(featureMask)) {
-                if(player.getAbilities().instabuild && player.getAbilities().flying) {
+            if(feature.hasFlagBit(featureMask)) {
+                if(player.getAbilities().instabuild) {
                     return true;
                 }
             }
         }
         return false;
+    }
+    public static boolean canPlayerPhaseThroughBlocks(final Entity entity) {
+        return playerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }
