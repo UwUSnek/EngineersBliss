@@ -73,11 +73,11 @@
 
   - Disable item change animation
   - Disable hand swing animation
-  - Disable being on fire
-  - Disable freezing effect
+  - ~~Disable being on fire~~
+  - ~~Disable freezing effect~~
   - Disable loading screen and overlay effect of Nether Portals
   - Disable reduced FOV when inside a body of Water
-  - Disable overlay effect of Water
+  - ~~Disable overlay effect of Water~~
   - Disable overlay effect of Lava
 
 
