@@ -20,6 +20,7 @@
         "creative_tweaks.SlimeFeaturesMixin",
         "creative_tweaks.FrictionFeaturesMixin",
         "creative_tweaks.SpeedFactorFeaturesMixin",
+		"creative_tweaks.PowderSnowMovementMixin",
 		"creative_tweaks.BlockPhasingMixin",
 		"creative_tweaks.ScreenOverlayHiderMixin",
 		"creative_tweaks.FireEffectSuppressorMixin",

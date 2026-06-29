@@ -36,7 +36,6 @@ public class SpeedFactorFeaturesMixin {
     )
     private float getBlockSpeedFactor(Block block) {
         final Entity entity = (Entity)(Object)this;
-        Blocks.POWDER_SNOW
         if(!entity.level().isClientSide()) return block.getSpeedFactor();
 
 
