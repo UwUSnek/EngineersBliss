@@ -1,0 +1,32 @@
+package com.snek.engineersbliss.mixin.creative_tweaks;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
+
+
+
+
+/**
+ * This mixin cancels block collisions if the player is flying in creative mode.
+ * This is done by replacing the collide logic with a no-op,
+ * so the movement is never altered and the player can freely travel through blocks.
+ */
+@Mixin(Entity.class)
+public class BlockPhasingMixin {
+
+
+
+    @Inject(method = "collide", at = @At("HEAD"), cancellable = true, require = 1)
+	private void collide(final Vec3 movement, final CallbackInfoReturnable<Vec3> cir) {
+        if(CreativeTweaksServerHandler.canPlayerPhaseThroughBlocks((Entity)(Object)this)) {
+            cir.setReturnValue(movement);
+        }
+    }
+}

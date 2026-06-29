@@ -2,6 +2,7 @@
     "required": true,
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
+    "verbose": true,
     "client": [
 
         "accessors.GameRendererAccessor",
@@ -20,12 +21,12 @@
         "creative_tweaks.SlimeFeaturesMixin",
         "creative_tweaks.FrictionFeaturesMixin",
         "creative_tweaks.SpeedFactorFeaturesMixin",
+		"creative_tweaks.BlockPhasingMixin",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
         "rendering.CustomOutlinesMixin",
-
-        "interactions.InteractionFilterMixin"
+        "rendering.InteractionFilterMixin"
     ],
     "injectors": {
         "defaultRequire": 1

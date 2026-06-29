@@ -40,6 +40,7 @@ public class CreativeTweaksHandler {
     |   CreativeTweakFeature.DISABLE_WATER_FOV_CHANGE     .getFlagBit()
     |   CreativeTweakFeature.DISABLE_WATER_OVERLAY        .getFlagBit()
     |   CreativeTweakFeature.DISABLE_LAVA_OVERLAY         .getFlagBit()
+    //TODO maybe add a disable snow overlay? idk if freezing is linked to the overlay or if they are separate things
     ;
 
 
@@ -55,7 +56,7 @@ public class CreativeTweaksHandler {
             ClientPlayNetworking.send(new CreativeTweaksToggleFeaturesUpdateRequestPayload(clientFeatureMask));
             //FIXME REMOVE THE WHOLE SERVER COORDINATION/PACKET THING FOR TOGGLE FEATURES IF NOT NEEDED
             //FIXME movement packets are client only, server just validates speed or something, idk. Slime block and sliding are already fully client side
-        }
+            }
         }
     }
 

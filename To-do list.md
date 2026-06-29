@@ -157,3 +157,6 @@
 
 
 - Fix changes caused by the custom interaction radius not sending block updates to the client
+
+- Fix creative tweaks toggle feature mask not respecting defaults when no player feature data is available
+- Add small pretty custom icons for all the settings

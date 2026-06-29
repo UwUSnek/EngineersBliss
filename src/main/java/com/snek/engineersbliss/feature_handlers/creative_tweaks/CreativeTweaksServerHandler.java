@@ -15,6 +15,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -179,5 +180,20 @@ public class CreativeTweaksServerHandler {
 
         // Return PASS, letting vanilla click the original block
         return InteractionResult.PASS;
+    }
+
+
+
+
+    public static boolean canPlayerPhaseThroughBlocks(final Entity entity) {
+        if(entity instanceof Player player) {
+            long featureMask = getToggleFeatures(player);
+            if(CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY.hasFlagBit(featureMask)) {
+                if(player.getAbilities().instabuild && player.getAbilities().flying) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

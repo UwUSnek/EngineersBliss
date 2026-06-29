@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 @Mixin(RangedAttribute.class)
 public class ReachDistanceCapMixin {
 
-    @Inject(method = "sanitizeValue", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "sanitizeValue", at = @At("HEAD"), cancellable = true, require = 1)
     public void sanitizeValue(final double value, CallbackInfoReturnable<Double> cir) {
         final RangedAttribute _this = (RangedAttribute)(Object)this;
         final String id = _this.getDescriptionId();

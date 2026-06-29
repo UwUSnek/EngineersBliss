@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin.interactions;
+package com.snek.engineersbliss.client.mixin.rendering;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
