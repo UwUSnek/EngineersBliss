@@ -33,15 +33,9 @@ public class ScreenOverlayHiderMixin {
 
     @Inject(method = "getViewBlockingState", at = @At("HEAD"), cancellable = true, require = 1)
     private static void getViewBlockingState(final Player player, final CallbackInfoReturnable<BlockState> cir) {
-        if(CreativeTweaksServerHandler.canPlayerPhaseThroughBlocks(player)) {
+        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(player)) {
             cir.setReturnValue(null);
         }
-    }
-
-
-    @Inject(method = "renderItemActivationAnimation", at = @At("HEAD"), cancellable = true, require = 1)
-	private void renderItemActivationAnimation(final PoseStack poseStack, final float partialTicks, final SubmitNodeCollector submitNodeCollector, final CallbackInfo ci) {
-        ci.cancel();
     }
 
 

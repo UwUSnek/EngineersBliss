@@ -197,7 +197,7 @@ public class CreativeTweaksServerHandler {
         }
         return false;
     }
-    public static boolean canPlayerPhaseThroughBlocks(final Entity entity) {
+    public static boolean shouldPlayerPhaseThroughBlocks(final Entity entity) {
         return playerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }

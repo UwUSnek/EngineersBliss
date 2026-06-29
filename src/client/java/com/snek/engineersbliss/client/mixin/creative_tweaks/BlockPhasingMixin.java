@@ -24,7 +24,7 @@ public class BlockPhasingMixin {
 
     @Inject(method = "suffocatesAt", at = @At("HEAD"), cancellable = true, require = 1)
 	private void suffocatesAt(final BlockPos pos, final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksServerHandler.canPlayerPhaseThroughBlocks((Entity)(Object)this)) {
+        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks((Entity)(Object)this)) {
             cir.setReturnValue(false);
         }
     }

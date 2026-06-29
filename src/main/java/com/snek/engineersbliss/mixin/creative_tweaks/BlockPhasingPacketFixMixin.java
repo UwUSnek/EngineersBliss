@@ -31,7 +31,7 @@ public class BlockPhasingPacketFixMixin {
         double newX, double newY, double newZ,
         CallbackInfoReturnable<Boolean> cir
     ) {
-        if(CreativeTweaksServerHandler.canPlayerPhaseThroughBlocks(entity)) {
+        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(entity)) {
             cir.setReturnValue(false);
         }
     }
