@@ -2,7 +2,6 @@
 	"required": true,
 	"package": "com.snek.engineersbliss.mixin",
 	"compatibilityLevel": "JAVA_25",
-    "verbose": true,
 
 
 	"mixins": [
@@ -18,7 +17,7 @@
 		"creative_tweaks.PlayerMovementLimitFixMixin",
 		"creative_tweaks.BlockPhasingMixin",
 		"creative_tweaks.BlockPhasingPoseFixMixin",
-		"creative_tweaks.PlayerBlockPhasingPacketCollisionCheckMixin"
+		"creative_tweaks.BlockPhasingPacketFixMixin"
 	],
 
 

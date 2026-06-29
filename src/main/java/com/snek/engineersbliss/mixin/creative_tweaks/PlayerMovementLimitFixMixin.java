@@ -12,6 +12,10 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 
 
 
+/**
+ * This mixin makes the server skip the "Player <name> moved too fast!" check.
+ * ! This feature is required for the custom creative flying speed feature to work on dedicated servers.
+ */
 @Mixin(ServerGamePacketListenerImpl.class)
 public class PlayerMovementLimitFixMixin {
     @Shadow public ServerPlayer player;

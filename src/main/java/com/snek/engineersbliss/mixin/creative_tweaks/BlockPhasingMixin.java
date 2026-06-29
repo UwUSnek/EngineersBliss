@@ -15,8 +15,9 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * This mixin cancels block collisions if the player is flying in creative mode.
- * This is done by replacing the collide logic with a no-op,
- * so the movement is never altered and the player can freely travel through blocks.
+ * This is done by replacing the collide logic with a no-op, so the movement is never altered and the player can freely travel through blocks.
+ * ! This is required for the feature to work.
+ * ! This check runs separately from the LocalPlayer.suffocatesAt block pushing effect and the server's ServerGamePacketListenerImpl.isEntityCollidingWithAnythingNew check.
  */
 @Mixin(Entity.class)
 public class BlockPhasingMixin {
