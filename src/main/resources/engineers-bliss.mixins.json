@@ -20,7 +20,9 @@
 		"creative_tweaks.BlockPhasingPacketFixMixin",
 		"creative_tweaks.EntityPhasingMixin",
 		"creative_tweaks.EntityPhasingMinecartMixin",
-		"creative_tweaks.EntityPhasingBoatMixin"
+		"creative_tweaks.EntityPhasingBoatMixin",
+		"creative_tweaks.FireEffectSuppressorMixin",
+		"creative_tweaks.FreezeEffectSuppressorMixin"
 	],
 
 
