@@ -142,6 +142,7 @@
 
 
 
+- disable punching end crystals? //TODO maybe? idk, very niche
 
 
 

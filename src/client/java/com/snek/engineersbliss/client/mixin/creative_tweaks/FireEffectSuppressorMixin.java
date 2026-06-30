@@ -19,8 +19,10 @@ public class FireEffectSuppressorMixin {
 
     @Inject(method = "fireImmune", at = @At("HEAD"), cancellable = true, require = 1)
 	private void fireImmune(final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksServerHandler.playerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
-            cir.setReturnValue(true);
+        if(!cir.getReturnValueZ()) {
+            if(CreativeTweaksServerHandler.playerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
+                cir.setReturnValue(true);
+            }
         }
     }
 }

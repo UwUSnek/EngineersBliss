@@ -100,7 +100,7 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
     public void init(final CallbackInfo ci) {
         final int buttonWidth = 100;
         final int gap = 16;

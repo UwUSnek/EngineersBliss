@@ -2,15 +2,14 @@ package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -35,28 +34,26 @@ public class FrictionFeaturesMixin {
     )
     private float travelInAir(Block block) {
         final LivingEntity entity = (LivingEntity)(Object)this;
-        if(!entity.level().isClientSide()) return block.getFriction();
 
 
-        if(entity instanceof Player) {
-            if(block == Blocks.SLIME_BLOCK) {
-                if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
-                    return DEFAULT_FRICTION;
-                }
+        if(block == Blocks.SLIME_BLOCK) {
+            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
+                return DEFAULT_FRICTION;
             }
-            if(
-                block == Blocks.ICE        ||
-                block == Blocks.PACKED_ICE ||
-                block == Blocks.BLUE_ICE   ||
-                block == Blocks.FROSTED_ICE
-            ) {
-                if(CreativeTweaksHandler.hasFeature(CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
-                    return DEFAULT_FRICTION;
-                }
-            }
-            //! Honey Block uses custom SpeedFactor instead of Friction
-            //! Soul Sand   uses custom SpeedFactor instead of Friction
         }
+        if(
+            block == Blocks.ICE        ||
+            block == Blocks.PACKED_ICE ||
+            block == Blocks.BLUE_ICE   ||
+            block == Blocks.FROSTED_ICE
+        ) {
+            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
+                return DEFAULT_FRICTION;
+            }
+        }
+        //! Honey Block uses custom SpeedFactor instead of Friction
+        //! Soul Sand   uses custom SpeedFactor instead of Friction
+
         return block.getFriction();
     }
 }

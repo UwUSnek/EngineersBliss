@@ -23,10 +23,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 
 @Mixin(Minecraft.class)
 public class InteractionFilterMixin {
-    @Inject(
-        method = "pick",
-        at = @At("RETURN")
-    )
+    @Inject(method = "pick", at = @At("RETURN"), cancellable = false, require = 1)
     public void onPick(final float partialTicks, final CallbackInfo ci) {
         if(RenderFilterHandler.getTargetHiddenBlocks()) return;
         final Minecraft minecraft = Minecraft.getInstance();

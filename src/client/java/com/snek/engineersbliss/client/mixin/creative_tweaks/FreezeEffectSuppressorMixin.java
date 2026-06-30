@@ -19,8 +19,10 @@ public class FreezeEffectSuppressorMixin {
 
     @Inject(method = "canFreeze", at = @At("HEAD"), cancellable = true, require = 1)
 	private void canFreeze(final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksServerHandler.playerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
-            cir.setReturnValue(false);
+        if(cir.getReturnValueZ()) {
+            if(CreativeTweaksServerHandler.playerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
+                cir.setReturnValue(false);
+            }
         }
     }
 }
