@@ -17,11 +17,26 @@
 
         "overlays.BlockstateChangeTrackerMixin",
 
+        "creative_tweaks.SlimeFeaturesMixin",
+        "creative_tweaks.FrictionFeaturesMixin",
+        "creative_tweaks.SpeedFactorFeaturesMixin",
+		"creative_tweaks.PowderSnowSlowdownSuppressorMixin",
+		"creative_tweaks.SweetBerriesSlowdownSuppressorMixin",
+		"creative_tweaks.CobwebSlowdownSuppressorMixin",
+		"creative_tweaks.BlockPhasingMixin",
+		"creative_tweaks.ScreenOverlayHiderMixin",
+		"creative_tweaks.FireEffectSuppressorMixin",
+		"creative_tweaks.FreezeEffectSuppressorMixin",
+		"creative_tweaks.FluidSpeedMixin",
+		"creative_tweaks.FluidSpeedSprintFixMixin",
+		"creative_tweaks.CurrentDragSuppressorMixin",
+		"creative_tweaks.ClimbableSlowdownSuppressor",
+		"creative_tweaks.BedBounceSuppressorMixin",
+
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
         "rendering.CustomOutlinesMixin",
-
-        "interactions.InteractionFilterMixin"
+        "rendering.InteractionFilterMixin"
     ],
     "injectors": {
         "defaultRequire": 1

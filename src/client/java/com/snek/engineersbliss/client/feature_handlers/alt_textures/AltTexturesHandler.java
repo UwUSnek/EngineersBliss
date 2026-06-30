@@ -11,8 +11,6 @@ public class AltTexturesHandler {
 
 
     private static Map<AltTextureFeature, Boolean> features = new EnumMap<>(AltTextureFeature.class);
-
-
     public static void init(){
         for(AltTextureFeature feature : AltTextureFeature.values()) {
             features.put(feature, true);

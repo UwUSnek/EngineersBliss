@@ -34,10 +34,14 @@ public abstract class JuliaSetShaderMixin {
 
 
 
-    @Inject(method = "render", at = @At(
-        value = "INVOKE",
-        target = "Lnet/minecraft/client/gui/render/GuiRenderer;endFrame()V"
-    ))
+    @Inject(
+        method = "render", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/render/GuiRenderer;endFrame()V"
+        ),
+        cancellable = false,
+        require = 1
+    )
     private void onAfterGuiRender(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci) {
 
         // Return and reset screen if current screen is not a julia renderer

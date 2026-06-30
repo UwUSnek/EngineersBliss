@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin.interactions;
+package com.snek.engineersbliss.client.mixin.rendering;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,10 +23,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 
 @Mixin(Minecraft.class)
 public class InteractionFilterMixin {
-    @Inject(
-        method = "pick",
-        at = @At("RETURN")
-    )
+    @Inject(method = "pick", at = @At("RETURN"), cancellable = false, require = 1)
     public void onPick(final float partialTicks, final CallbackInfo ci) {
         if(RenderFilterHandler.getTargetHiddenBlocks()) return;
         final Minecraft minecraft = Minecraft.getInstance();
@@ -51,8 +48,7 @@ public class InteractionFilterMixin {
                 final BlockState state = minecraft.level.getBlockState(pos);
                 if(state.isAir()) return null;
                 if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) return null;
-                final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player))
-                    .clip(start, end, pos);
+                final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player)).clip(start, end, pos);
                 return hit != null ? hit : BlockHitResult.miss(end, Direction.UP, pos);
             },
             context -> BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end))

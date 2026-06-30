@@ -25,7 +25,7 @@ public class RenderFilterBlockSodiumMixin {
         method = "getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;",
         at = @At("RETURN"),
         cancellable = true,
-        remap = false
+        require = 0
     )
     public void getBlockState(int blockX, int blockY, int blockZ, CallbackInfoReturnable<BlockState> cir) {
         BlockState state = cir.getReturnValue();

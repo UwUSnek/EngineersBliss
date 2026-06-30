@@ -25,7 +25,6 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.multiplayer.chat.LoggedChatMessage.Player;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
