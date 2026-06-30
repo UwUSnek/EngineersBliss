@@ -68,7 +68,7 @@
   - ~~Disable being slowed down by Slime Blocks~~
   - ~~Disable being slowed down by Honey Blocks~~
   - ~~Disable being slowed down by Soul Sand~~
-  - Disable being slowed down by powder snow
+  - ~~Disable being slowed down by powder snow~~
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - Disable being moved by Water and Lava currents
   - Disable being pushed or pulled by Bubble Columns

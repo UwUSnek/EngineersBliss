@@ -17,7 +17,8 @@
 		"creative_tweaks.PlayerMovementLimitFixMixin",
 		"creative_tweaks.BlockPhasingMixin",
 		"creative_tweaks.BlockPhasingPoseFixMixin",
-		"creative_tweaks.BlockPhasingPacketFixMixin"
+		"creative_tweaks.BlockPhasingPacketFixMixin",
+		"creative_tweaks.EntityPhasingMixin"
 	],
 
 
