@@ -96,7 +96,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                     // Skip models in the same directory as files named ".template"
                     final String path = id.getPath();
                     final String dir  = path.substring(0, path.lastIndexOf('/') + 1);
-                    final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + ".template");
+                    final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
                     if(resourceManager.getResource(templateMarker).isPresent()) return;
 
                     // If the model is not a template, load it in the runtime map
