@@ -36,7 +36,6 @@ public class ClimbableSlowdownSuppressor {
     private void captureOriginal(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
         if((Object)this instanceof Player) {
             originalDelta = delta;
-            SweetBerryBushBlock
         }
     }
 

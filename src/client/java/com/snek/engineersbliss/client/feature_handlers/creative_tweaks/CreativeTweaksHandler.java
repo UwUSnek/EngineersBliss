@@ -38,16 +38,6 @@ public class CreativeTweaksHandler {
     }
 
 
-    //TODO add to feature enum
-    //TODO public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
-    public static boolean hasFeature(final CreativeTweakFeature feature) {
-        return feature.hasFlagBit(clientFeatureMask);
-    }
-
-
-
-
-
 
 
 
