@@ -34,9 +34,22 @@ public abstract class FluidSpeedMixin {
      * Manually adds back the floating in fluid, falling in fluid, and jumping out of fluid physics.
      */
     @Unique private void customTravelInFluid(final Player _this, final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY) {
+
+        // Default air movement
+        // ! Force set onGround to true while running this to stop fluids from making the player "not on the ground" while sprinting.
+        // ! No idea why they do that, but they do, and that changes how block friction is calculated, making movements feel slippery.
+        final boolean lastOnGround = _this.onGround();
+        _this.setOnGround(true);
         travelInAir(input);
+        _this.setOnGround(lastOnGround);
+
+
+        //! Reset gravity back to water gravity
         Vec3 mov = _this.getDeltaMovement();
-        _this.setDeltaMovement(new Vec3(mov.x, mov.y + getEffectiveGravity(), mov.z)); //! Change air gravity back to water gravity
+        _this.setDeltaMovement(new Vec3(mov.x, mov.y + getEffectiveGravity(), mov.z));
+
+
+        // Apply floating in fluid, falling in fluid, and jumping in fluid physics
         _this.setDeltaMovement(_this.getFluidFallingAdjustedMovement(baseGravity, isFalling, _this.getDeltaMovement()));
         floatInWaterWhileRidden();
         jumpOutOfFluid(oldY);

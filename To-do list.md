@@ -161,3 +161,6 @@
 - Fix changes caused by the custom interaction radius not sending block updates to the client
 
 - Add small pretty custom icons for all the settings
+
+- add cool redstone mechanism overlay in front of the main menu screen
+- add cool small redstone mechanism overlay in the pause menu
