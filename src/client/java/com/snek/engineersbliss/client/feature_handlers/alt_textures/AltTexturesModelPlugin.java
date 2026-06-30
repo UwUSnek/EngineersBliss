@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
@@ -86,7 +87,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             final String root = "models/block";
 
             // Find all json models using the resource manager. Filter out stuff not from this mod and non-json files
-            final ResourceManager resourceManager = sharedState.resourceManager();
+            final @NonNull ResourceManager resourceManager = sharedState.resourceManager();
             resourceManager.listResources(
                 root,
                 id -> {
@@ -119,7 +120,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // Register the custom models during startup
         // Minecraft needs to know about all the models and textures beforehand in order to use them for rendering
         initContext.modifyBlockModelOnLoad().register((model, onLoadContext) -> {
-            final BlockState state = onLoadContext.state();
+            final @NonNull BlockState state = onLoadContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
@@ -151,7 +152,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // This step yoinks the loaded custom model and stores a local reference to it so it can be used when needed
 
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
-            final BlockState state = beforeBakeContext.state();
+            final @NonNull BlockState state = beforeBakeContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
@@ -177,12 +178,12 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // Particles and material flags are always vanilla, while the model parts are replaced by the custom model when needed
 
         initContext.modifyBlockModelAfterBake().register((model, afterBakeContext) -> {
-            final BlockState state = afterBakeContext.state();
+            final @NonNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
 
-            final BlockStateModel vanilla = model;
+            final @NonNull BlockStateModel vanilla = model;
             return new BlockStateModel() {
                 @Override
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {

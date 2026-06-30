@@ -113,6 +113,8 @@ public class CreativeTweaksServerHandler {
 
 
     private static boolean processingCustomBreak = false;
+
+    @SuppressWarnings("java:S3516")
     private static boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState blockState, @Nullable BlockEntity blockEntity) {
         if(level.isClientSide()) return true;
         if(!player.getAbilities().instabuild) return true;

@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
+import org.jspecify.annotations.NonNull;
+
 import com.snek.engineersbliss.EngineerSBliss;
 
 import net.minecraft.client.Minecraft;
@@ -52,7 +54,7 @@ public class BlockRenderer {
     public static void renderBlockSpriteSheet(GuiGraphicsExtractor graphics, Block block, int x, int y, int size) {
 
         // Get block index, fallback to default icon if absent
-        Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+        @NonNull Identifier id = BuiltInRegistries.BLOCK.getKey(block);
         int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
         if(blockIdx == -1) {
             renderBlockIcon(graphics, block, x, y, size);

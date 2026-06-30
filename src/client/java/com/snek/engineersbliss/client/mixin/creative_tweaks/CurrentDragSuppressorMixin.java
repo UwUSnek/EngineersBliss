@@ -17,6 +17,8 @@ import net.minecraft.world.entity.player.Player;
 @Mixin(Player.class)
 public class CurrentDragSuppressorMixin {
 
+
+    @SuppressWarnings("unused")
     @Inject(method = "isPushedByFluid", at = @At("RETURN"), cancellable = true, require = 1)
     private void isPushedByFluid(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {

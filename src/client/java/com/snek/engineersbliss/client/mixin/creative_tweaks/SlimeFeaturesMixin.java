@@ -22,19 +22,21 @@ import net.minecraft.world.level.block.state.BlockState;
 public class SlimeFeaturesMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "stepOn", at = @At("HEAD"), cancellable = true)
-    public void stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity, final CallbackInfo ci) {
+    private void stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity, final CallbackInfo ci) {
         if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
             ci.cancel();
         }
     }
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "updateEntityMovementAfterFallOn",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
-    public boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
+    private boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
         if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_BOUNCE)) {
             return true;
         }

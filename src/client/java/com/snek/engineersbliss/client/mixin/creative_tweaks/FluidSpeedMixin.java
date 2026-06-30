@@ -58,6 +58,7 @@ public abstract class FluidSpeedMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "travelInWater", at = @At("HEAD"), cancellable = true, require = 1)
     private void travelInWater(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
@@ -75,6 +76,7 @@ public abstract class FluidSpeedMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "travelInLava", at = @At("HEAD"), cancellable = true, require = 1)
     private void travelInLava(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 

@@ -28,6 +28,7 @@ public class SpeedFactorFeaturesMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "getBlockSpeedFactor",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getSpeedFactor()F")

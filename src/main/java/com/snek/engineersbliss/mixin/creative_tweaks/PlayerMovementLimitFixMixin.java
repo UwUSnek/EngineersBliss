@@ -20,6 +20,8 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 public class PlayerMovementLimitFixMixin {
     @Shadow public ServerPlayer player;
 
+
+    @SuppressWarnings("unused")
     @Inject(method = "shouldCheckPlayerMovement", at = @At("HEAD"), cancellable = true, require = 1)
     private void shouldCheckPlayerMovement(boolean isFallFlying, CallbackInfoReturnable<Boolean> cir) {
         if(player.getAbilities().instabuild) {

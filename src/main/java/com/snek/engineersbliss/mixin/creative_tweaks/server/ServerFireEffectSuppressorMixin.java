@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 public class ServerFireEffectSuppressorMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "fireImmune", at = @At("RETURN"), cancellable = true, require = 1)
 	private void fireImmune(final CallbackInfoReturnable<Boolean> cir) {
         if(!cir.getReturnValueZ()) {

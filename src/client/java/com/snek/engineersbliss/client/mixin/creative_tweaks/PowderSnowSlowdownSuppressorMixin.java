@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 public class PowderSnowSlowdownSuppressorMixin {
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "entityInside",
         at = @At(

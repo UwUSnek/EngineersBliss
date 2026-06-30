@@ -22,7 +22,10 @@ import net.minecraft.world.phys.Vec3;
 
 @Mixin(Item.class)
 public class PlayerTargetedBlockOverrideMixin {
+    private PlayerTargetedBlockOverrideMixin() {}
 
+
+    @SuppressWarnings("unused")
     @Inject(method = "getPlayerPOVHitResult", at = @At("HEAD"), cancellable = true, require = 1)
     private static void overrideGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid fluid, CallbackInfoReturnable<BlockHitResult> cir) {
         final BlockPos override = CreativeTweaksServerHandler.getPickOverride();

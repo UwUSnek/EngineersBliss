@@ -23,6 +23,7 @@ import net.minecraft.client.player.LocalPlayer;
 public class FluidSpeedSprintFixMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "isSprintingPossible", at = @At("RETURN"), cancellable = true)
     private void isSprintingPossible(final boolean allowedInShallowWater, final CallbackInfoReturnable<Boolean> cir) {
         final LocalPlayer _this = (LocalPlayer)(Object)this;

@@ -28,6 +28,7 @@ public class FrictionFeaturesMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "travelInAir",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F")

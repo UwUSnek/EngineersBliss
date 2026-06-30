@@ -17,11 +17,12 @@ import net.minecraft.world.level.block.BedBlock;
 public class BedBounceSuppressorMixin {
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "updateEntityMovementAfterFallOn",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
-    public boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
+    private boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
         if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_BED_BOUNCE)) {
             return true;
         }

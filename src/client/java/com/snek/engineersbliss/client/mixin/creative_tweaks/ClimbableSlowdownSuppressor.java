@@ -32,6 +32,7 @@ public class ClimbableSlowdownSuppressor {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "handleOnClimbable", at = @At("HEAD"))
     private void captureOriginal(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
         if((Object)this instanceof Player) {
@@ -42,6 +43,7 @@ public class ClimbableSlowdownSuppressor {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "handleOnClimbable", at = @At("RETURN"), cancellable = true)
     private void handleOnClimbable(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
         final LivingEntity _this = (LivingEntity)(Object)this;
