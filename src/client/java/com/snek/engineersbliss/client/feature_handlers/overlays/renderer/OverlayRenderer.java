@@ -81,7 +81,7 @@ public final class OverlayRenderer {
 
 
         // For each chunk in the feature mask
-        for(final var chunkFeatureMaskEntry : OverlaysHandler.getFeatureMask().entrySet()) {
+        for(final var chunkFeatureMaskEntry : OverlaysHandler.getFeatureWorldMap().entrySet()) {
             final ChunkPos chunkPos = chunkFeatureMaskEntry.getKey();
             final LevelChunk chunk = level.getChunk(chunkPos.x(), chunkPos.z());
 
