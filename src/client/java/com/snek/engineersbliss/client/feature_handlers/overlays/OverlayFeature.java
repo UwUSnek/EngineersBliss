@@ -12,16 +12,19 @@ import net.minecraft.world.level.block.Blocks;
 
 public enum OverlayFeature {
 
-    REDSTONE_WIRE_POWER_LEVELS  ("Redstone Wire power levels",   List.of(Blocks.REDSTONE_WIRE)),
-    RAIL_POWER_LEVELS           ("Rail power levels",            List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)),
-    COMPARATOR_POWER_LEVELS     ("Comparator power levels",      List.of(Blocks.COMPARATOR)),
+    REDSTONE_WIRE_POWER_LEVELS    ("Redstone Wire power levels",   List.of(Blocks.REDSTONE_WIRE)),
+    RAIL_POWER_LEVELS             ("Rail power levels",            List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)),
+    COMPARATOR_POWER_LEVELS       ("Comparator power levels",      List.of(Blocks.COMPARATOR)),
 
-    //TODO implement these as text
-    COMPARATOR_LOGIC_SNIPPET    ("Comparator logic snippet",     List.of(Blocks.COMPARATOR)), //TODO also add input power levels, including sides
+    COMPARATOR_LOGIC_SNIPPET      ("Comparator logic snippet",     List.of(Blocks.COMPARATOR)), //TODO implement these as custom arrows
+    REDSTONE_WIRE_POWER_SOURCE    ("Redstone wire power source",     List.of(Blocks.REDSTONE_WIRE)), //TODO implement these as custom arrows
+    RAIL_POWER_SOURCE             ("Rail power source",     List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)), //TODO implement these as custom arrows
 
-    //TODO implement these as custom arrows
-    REDSTONE_WIRE_POWER_SOURCE  ("Redstone wire power source",     List.of(Blocks.REDSTONE_WIRE)),
-    RAIL_POWER_SOURCE           ("Rail power source",     List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL));
+    BETTER_BARRIER_DISPLAY        ("Better Barrier display",        List.of(Blocks.BARRIER)),
+    BETTER_STRUCTURE_VOID_DISPLAY ("Better Structure Void display", List.of(Blocks.STRUCTURE_VOID)),
+    BETTER_LIGHT_BLOCK_DISPLAY    ("Better Light Block display",    List.of(Blocks.LIGHT));
+
+
 
 
     // Feature name and properties
