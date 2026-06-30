@@ -8,6 +8,7 @@ import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksTo
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 
@@ -35,6 +36,31 @@ public class CreativeTweaksHandler {
             //FIXME movement packets are client only, server just validates speed or something, idk. Slime block and sliding are already fully client side
             }
         }
+    }
+
+    /**
+     * Checks if a player has the specified feature toggled ON.
+     * ! This cannot be called by the server. Use CreativeTweaksServerHandler.serverPlayerHasFeature(Entity, CreativeTweakFeature) instead.
+     */
+    public static boolean clientPlayerHasFeature(final Entity entity, final CreativeTweakFeature feature) {
+        if(entity instanceof Player player) {
+            if(feature.hasFlagBit(clientFeatureMask)) {
+                if(player.getAbilities().instabuild) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    /**
+     * Checks if a player has the specified feature toggled ON.
+     * ! This cannot be called by the server. Use CreativeTweaksServerHandler.serverPlayerHasFeature(Entity, CreativeTweakFeature) instead.
+     */
+    public static boolean clientPlayerHasFeature(final CreativeTweakFeature feature) {
+        return clientPlayerHasFeature(Minecraft.getInstance().player, feature);
+    }
+    public static boolean shouldPlayerPhaseThroughBlocks() {
+        return clientPlayerHasFeature(CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && Minecraft.getInstance().player.getAbilities().flying;
     }
 
 

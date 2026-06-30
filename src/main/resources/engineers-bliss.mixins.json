@@ -14,17 +14,19 @@
 
 		"creative_tweaks.ReachDistanceCapMixin",
 		"creative_tweaks.PlayerTargetedBlockOverrideMixin",
-		"creative_tweaks.PlayerMovementLimitFixMixin",
-		"creative_tweaks.BlockPhasingMixin",
-		"creative_tweaks.BlockPhasingPoseFixMixin",
-		"creative_tweaks.BlockPhasingPacketFixMixin",
-		"creative_tweaks.EntityPhasingMixin",
-		"creative_tweaks.EntityPhasingMinecartMixin",
-		"creative_tweaks.EntityPhasingBoatMixin"
+		"creative_tweaks.PlayerMovementLimitFixMixin"
 	],
 
 
 	"server": [
+		"creative_tweaks.server.ServerBlockPhasingMixin",
+		"creative_tweaks.server.ServerBlockPhasingPoseFixMixin",
+		"creative_tweaks.server.ServerBlockPhasingPacketFixMixin",
+		"creative_tweaks.server.ServerEntityPhasingMixin",
+		"creative_tweaks.server.ServerEntityPhasingMinecartMixin",
+		"creative_tweaks.server.ServerEntityPhasingBoatMixin",
+		"creative_tweaks.server.ServerFireEffectSuppressorMixin",
+		"creative_tweaks.server.ServerFreezeEffectSuppressorMixin"
 	],
 
 

@@ -64,7 +64,7 @@ public abstract class FluidSpeedMixin {
         // If entity is a player and they are not swimming (keep default swimming movement) and they have the feature active, use the custom movement
         if((Object)this instanceof Player _this) {
             if(!_this.isSwimming()) {
-                if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
+                if(CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
                     customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                     ci.cancel();
                 }
@@ -80,7 +80,7 @@ public abstract class FluidSpeedMixin {
 
         // If entity is a player and they have the feature active, use the custom movement
         if((Object)this instanceof Player _this) {
-            if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
                 customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                 ci.cancel();
             }

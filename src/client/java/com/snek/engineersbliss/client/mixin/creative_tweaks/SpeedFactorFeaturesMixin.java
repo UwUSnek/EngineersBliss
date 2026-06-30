@@ -37,12 +37,12 @@ public class SpeedFactorFeaturesMixin {
 
 
         if(block == Blocks.HONEY_BLOCK) {
-            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN)) {
                 return DEFAULT_SPEED_FACTOR;
             }
         }
         if(block == Blocks.SOUL_SAND) {
-            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN)) {
                 return DEFAULT_SPEED_FACTOR;
             }
         }

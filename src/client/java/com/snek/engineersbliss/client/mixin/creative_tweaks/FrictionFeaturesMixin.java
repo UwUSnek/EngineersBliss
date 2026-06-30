@@ -37,7 +37,7 @@ public class FrictionFeaturesMixin {
 
 
         if(block == Blocks.SLIME_BLOCK) {
-            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
                 return DEFAULT_FRICTION;
             }
         }
@@ -47,7 +47,7 @@ public class FrictionFeaturesMixin {
             block == Blocks.BLUE_ICE   ||
             block == Blocks.FROSTED_ICE
         ) {
-            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
                 return DEFAULT_FRICTION;
             }
         }
