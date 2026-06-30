@@ -28,6 +28,7 @@
 		"creative_tweaks.FluidSpeedMixin",
 		"creative_tweaks.FluidSpeedSprintFixMixin",
 		"creative_tweaks.CurrentDragSuppressorMixin",
+		"creative_tweaks.ClimbableSlowdownSuppressor",
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
