@@ -186,7 +186,11 @@ public class CreativeTweaksServerHandler {
 
 
 
-    public static boolean playerHasFeature(final Entity entity, final CreativeTweakFeature feature) {
+    /**
+     * Checks if a player has the specified feature toggled ON.
+     * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakFeature) instead.
+     */
+    public static boolean serverPlayerHasFeature(final Entity entity, final CreativeTweakFeature feature) {
         if(entity instanceof Player player) {
             long featureMask = getToggleFeatures(player);
             if(feature.hasFlagBit(featureMask)) {
@@ -198,6 +202,6 @@ public class CreativeTweaksServerHandler {
         return false;
     }
     public static boolean shouldPlayerPhaseThroughBlocks(final Entity entity) {
-        return playerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
+        return serverPlayerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }

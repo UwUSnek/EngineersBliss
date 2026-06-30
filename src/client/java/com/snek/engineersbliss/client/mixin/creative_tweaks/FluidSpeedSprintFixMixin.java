@@ -27,7 +27,7 @@ public class FluidSpeedSprintFixMixin {
     private void isSprintingPossible(final boolean allowedInShallowWater, final CallbackInfoReturnable<Boolean> cir) {
         final LocalPlayer _this = (LocalPlayer)(Object)this;
         if(!cir.getReturnValueZ()) {
-            if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN) && _this.isInShallowWater()) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN) && _this.isInShallowWater()) {
                 cir.setReturnValue(true);
             }
         }

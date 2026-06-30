@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.mixin.creative_tweaks;
+package com.snek.engineersbliss.mixin.creative_tweaks.server;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,14 +13,14 @@ import net.minecraft.world.entity.Entity;
 
 
 @Mixin(Entity.class)
-public class FireEffectSuppressorMixin {
+public class ServerFireEffectSuppressorMixin {
 
 
     @Inject(method = "fireImmune", at = @At("RETURN"), cancellable = true, require = 1)
 	private void fireImmune(final CallbackInfoReturnable<Boolean> cir) {
         if(!cir.getReturnValueZ()) {
             final Entity entity = (Entity)(Object)this;
-            if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
                 cir.setReturnValue(true);
             }
         }

@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ public class BlockPhasingMixin {
 
     @Inject(method = "suffocatesAt", at = @At("HEAD"), cancellable = true, require = 1)
 	private void suffocatesAt(final BlockPos pos, final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks((Entity)(Object)this)) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
             cir.setReturnValue(false);
         }
     }

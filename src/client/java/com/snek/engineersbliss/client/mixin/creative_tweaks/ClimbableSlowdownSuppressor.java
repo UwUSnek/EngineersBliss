@@ -52,14 +52,14 @@ public class ClimbableSlowdownSuppressor {
 
 
             // Handle Ladders
-            if(state.is(Blocks.LADDER) && CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN)) {
+            if(state.is(Blocks.LADDER) && CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN)) {
                 Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
 
 
             // Handle Vines
-            if(state.is(Blocks.VINE) && CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_VINES_SLOWDOWN)) {
+            if(state.is(Blocks.VINE) && CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_VINES_SLOWDOWN)) {
                 Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
@@ -68,7 +68,7 @@ public class ClimbableSlowdownSuppressor {
             // Handle Twisting Vines
             if(
                 (state.is(Blocks.TWISTING_VINES) || state.is(Blocks.TWISTING_VINES_PLANT)) &&
-                CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN)
+                CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN)
             ) {
                 Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
@@ -78,7 +78,7 @@ public class ClimbableSlowdownSuppressor {
             // Handle Weeping Vines
             if(
                 (state.is(Blocks.WEEPING_VINES) || state.is(Blocks.WEEPING_VINES_PLANT)) &&
-                CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN)
+                CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN)
             ) {
                 Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));

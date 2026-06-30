@@ -21,7 +21,7 @@ public class CurrentDragSuppressorMixin {
     private void isPushedByFluid(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {
             final Player _this = (Player)(Object)this;
-            if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_CURRENT_DRAG)) {
+            if(CreativeTweaksServerHandler.serverPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_CURRENT_DRAG)) {
                 cir.setReturnValue(false);
             }
         }

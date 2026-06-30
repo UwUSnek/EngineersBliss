@@ -22,7 +22,7 @@ public class BedBounceSuppressorMixin {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
     public boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
-        if(CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_BED_BOUNCE)) {
+        if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_BED_BOUNCE)) {
             return true;
         }
         return entity.isSuppressingBounce();

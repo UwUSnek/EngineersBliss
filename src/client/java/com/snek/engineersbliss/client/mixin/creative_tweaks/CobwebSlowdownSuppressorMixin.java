@@ -28,7 +28,7 @@ public class CobwebSlowdownSuppressorMixin {
         )
     )
     private void makeStuckInBlock(Entity entity, BlockState state, Vec3 speedMultiplier) {
-        if(!CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN)) {
+        if(!CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN)) {
             entity.makeStuckInBlock(state, speedMultiplier);
         }
     }

@@ -1,10 +1,10 @@
-package com.snek.engineersbliss.mixin.creative_tweaks;
+package com.snek.engineersbliss.client.mixin.creative_tweaks.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
  * ! This check runs separately from client-side LocalPlayer.suffocatesAt block pushing effect and the Entity.collide movement calculation.
  */
 @Mixin(ServerGamePacketListenerImpl.class)
-public class BlockPhasingPacketFixMixin {
+public class ClientBlockPhasingPacketFixMixin {
 
 
     @Inject(method = "isEntityCollidingWithAnythingNew", at = @At("HEAD"), cancellable = true, require = 1)
@@ -31,7 +31,7 @@ public class BlockPhasingPacketFixMixin {
         double newX, double newY, double newZ,
         CallbackInfoReturnable<Boolean> cir
     ) {
-        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(entity)) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
             cir.setReturnValue(false);
         }
     }
