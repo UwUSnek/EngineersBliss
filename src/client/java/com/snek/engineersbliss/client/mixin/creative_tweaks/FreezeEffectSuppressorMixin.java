@@ -17,10 +17,10 @@ import net.minecraft.world.entity.Entity;
 public class FreezeEffectSuppressorMixin {
 
 
-    @Inject(method = "canFreeze", at = @At("HEAD"), cancellable = true, require = 1)
+    @Inject(method = "canFreeze", at = @At("RETURN"), cancellable = true, require = 1)
 	private void canFreeze(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {
-            if(CreativeTweaksServerHandler.playerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
+            if(CreativeTweaksServerHandler.playerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_FREEZING_EFFECT)) {
                 cir.setReturnValue(false);
             }
         }
