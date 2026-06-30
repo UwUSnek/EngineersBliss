@@ -8,7 +8,7 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFea
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.PowderSnowBlock;
+import net.minecraft.world.level.block.SweetBerryBushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -16,8 +16,8 @@ import net.minecraft.world.phys.Vec3;
 
 
 
-@Mixin(PowderSnowBlock.class)
-public class PowderSnowMovementMixin {
+@Mixin(SweetBerryBushBlock.class)
+public class SweetBerriesSlowdownSuppressorMixin {
 
 
     @Redirect(
@@ -28,7 +28,7 @@ public class PowderSnowMovementMixin {
         )
     )
     private void makeStuckInBlock(Entity entity, BlockState state, Vec3 speedMultiplier) {
-        if(!CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_POWDER_SNOW_SLOWDOWN)) {
+        if(!CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_SWEET_BERRIES_SLOWDOWN)) {
             entity.makeStuckInBlock(state, speedMultiplier);
         }
     }

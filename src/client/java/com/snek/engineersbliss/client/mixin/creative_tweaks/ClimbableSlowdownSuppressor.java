@@ -12,6 +12,7 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksSe
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SweetBerryBushBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -35,6 +36,7 @@ public class ClimbableSlowdownSuppressor {
     private void captureOriginal(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
         if((Object)this instanceof Player) {
             originalDelta = delta;
+            SweetBerryBushBlock
         }
     }
 
