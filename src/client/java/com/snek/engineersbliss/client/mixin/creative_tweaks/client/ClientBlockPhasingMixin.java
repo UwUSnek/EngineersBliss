@@ -26,7 +26,7 @@ public class ClientBlockPhasingMixin {
     @SuppressWarnings("unused")
     @Inject(method = "collide", at = @At("HEAD"), cancellable = true, require = 1)
 	private void collide(final Vec3 movement, final CallbackInfoReturnable<Vec3> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(movement);
         }
     }

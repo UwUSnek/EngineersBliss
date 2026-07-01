@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -34,11 +34,8 @@ public class FrictionFeaturesMixin {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F")
     )
     private float travelInAir(Block block) {
-        final LivingEntity entity = (LivingEntity)(Object)this;
-
-
         if(block == Blocks.SLIME_BLOCK) {
-            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
                 return DEFAULT_FRICTION;
             }
         }
@@ -48,7 +45,7 @@ public class FrictionFeaturesMixin {
             block == Blocks.BLUE_ICE   ||
             block == Blocks.FROSTED_ICE
         ) {
-            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_ICE_SLIDING)) {
                 return DEFAULT_FRICTION;
             }
         }

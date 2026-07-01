@@ -32,7 +32,7 @@ public class ClientBlockPhasingPacketFixMixin {
         double newX, double newY, double newZ,
         CallbackInfoReturnable<Boolean> cir
     ) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(entity)) {
             cir.setReturnValue(false);
         }
     }

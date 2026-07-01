@@ -15,7 +15,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -188,11 +187,15 @@ public class CreativeTweaksServerHandler {
 
 
 
+
+
+
+
     /**
      * Checks if a player has the specified feature toggled ON.
      * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakFeature) instead.
      */
-    public static boolean serverPlayerHasFeature(final Entity entity, final CreativeTweakFeature feature) {
+    public static boolean serverPlayerHasFeature(final Object entity, final CreativeTweakFeature feature) {
         if(entity instanceof Player player) {
             long featureMask = getToggleFeatures(player);
             if(feature.hasFlagBit(featureMask)) {
@@ -203,7 +206,7 @@ public class CreativeTweaksServerHandler {
         }
         return false;
     }
-    public static boolean shouldPlayerPhaseThroughBlocks(final Entity entity) {
+    public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
         return serverPlayerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }

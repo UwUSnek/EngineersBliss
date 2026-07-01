@@ -20,7 +20,7 @@ public class ClientFireEffectSuppressorMixin {
     @Inject(method = "fireImmune", at = @At("RETURN"), cancellable = true, require = 1)
 	private void fireImmune(final CallbackInfoReturnable<Boolean> cir) {
         if(!cir.getReturnValueZ()) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
                 cir.setReturnValue(true);
             }
         }
