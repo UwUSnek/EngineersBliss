@@ -46,7 +46,7 @@ public abstract class __base_Screen extends Screen {
             return true;
         }
         else {
-            return super.keyPressed(event);
+            return super.keyReleased(event);
         }
     }
 
