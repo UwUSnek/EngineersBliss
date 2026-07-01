@@ -98,20 +98,48 @@ public class RenderingScreen extends __base_Screen {
         searchField.setX(BORDER_WIDTH);
         this.addRenderableWidget(searchField);
 
-        addButton(getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()), this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
+        addButton(
+            getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()),
+            "Toggle targeting hidden blocks",
+            this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+        );
 
 
 
 
         // Right sidebar
 
-        addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP,                                   panelWidthSide);
-        addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
+        addButton(
+            "Reset filters",
+            "Reset all rendering filters to their default state.",
+            this::resetFilters, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP, panelWidthSide
+        );
+        addButton(
+            "Recalculate light",
+            "Recalculate all the light. This is a very resource intensive process that might take many seconds or minutes depending on your hardware.",
+            this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+        );
 
-        renderBlockOutlinesButton = addButton(getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide);
-        renderBlocksButton        = addButton(getToggleText_renderBlocks       (RenderFilterHandler.getRenderBlocks()),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
-        renderBlockEntitiesButton = addButton(getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
-        renderFluidsButton        = addButton(getToggleText_renderFluids       (RenderFilterHandler.getRenderFluids()),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
+        renderBlockOutlinesButton = addButton(
+            getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()),
+            "Toggle whether block outlines should be rendered at all",
+            this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
+        );
+        renderBlocksButton = addButton(
+            getToggleText_renderBlocks(RenderFilterHandler.getRenderBlocks()),
+            "Toggle whether blocks without custom block entity rendering should be rendered at all.",
+            this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
+        );
+        renderBlockEntitiesButton = addButton(
+            getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()),
+            "Toggle whether blocks with custom block entity rendering should be rendered at all.",
+            this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
+        );
+        renderFluidsButton = addButton(
+            getToggleText_renderFluids(RenderFilterHandler.getRenderFluids()),
+            "Toggle whether fluids should be rendered at all.",
+            this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
+        );
 
 
 

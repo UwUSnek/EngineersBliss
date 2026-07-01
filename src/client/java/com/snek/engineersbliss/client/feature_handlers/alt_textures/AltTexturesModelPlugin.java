@@ -190,21 +190,27 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
                     // Add custom parts
                     final __base_PartProvider partProvider = partProviders.get(state.getBlock());
-                    final @Nullable List<String> partNames = partProvider.calcPartNames(state);
-                    if(partNames != null) for(final String partName : partNames) {
-                        final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
-                        final BlockStateModel custom = customModels.get(partId);
-                        if(custom != null) {
-                            custom.collectParts(random, output);
+                    if(partProvider != null) {
+                        final @Nullable List<String> partNames = partProvider.calcPartNames(state);
+                        if(partNames != null) for(final String partName : partNames) {
+                            final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
+                            final BlockStateModel custom = customModels.get(partId);
+                            if(custom != null) {
+                                custom.collectParts(random, output);
+                            }
+                            else {
+                                EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
+                                vanilla.collectParts(random, output);
+                            }
                         }
-                        else {
-                            EngineerSBliss.LOGGER.error("Baked dynamic model part is null: {}", partId);
+
+                        // Add the vanilla parts if needed
+                        if(partProvider.shouldKeepVanilla(state)) {
                             vanilla.collectParts(random, output);
                         }
                     }
-
-                    // Add the vanilla parts if needed
-                    if(partProvider.shouldKeepVanilla(state)) {
+                    else {
+                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", block.getName().getString());
                         vanilla.collectParts(random, output);
                     }
                 }

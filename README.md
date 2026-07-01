@@ -90,9 +90,16 @@ It helps a lot :3
   - Less opaque Honey Block texture
   - Unobstructive Mangrove Roots texture
   - Unobstructive Scaffolding texture
-  - Minimal Redstone Dust texture
-  - 3D Redstone Dust
+  - Minimal Redstone Wire texture
+  - 3D Redstone Wire
   - 3D Rails
+  - 3D Ladders
+  - 3D Iron Chains & Copper Chains
+  - 3D Iron Bars & Copper Bars
+  - 3D Vines
+  - 3D Glow Lichen
+  - 3D Doors
+  - 3D Trapdoors
   <br><br>
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -131,7 +138,8 @@ It helps a lot :3
   - Insta kill mobs<br><br>
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
-  - Zoom view with a keybind<br><br>
+  - Zoom view with a keybind
+  - Toggle full brightness with a keybind<br><br>
   - Phase through blocks while flying
   - Phase through entities
   - Disable bouncing on Slime Blocks
@@ -143,15 +151,16 @@ It helps a lot :3
   - Disable being slowed down by Powder Snow
   - Disable sliding on Ice, Packed Ice and Blue Ice
   - Disable being moved by Water and Lava currents
-  - Disable being pushed or pulled by Bubble Columns<br><br>
+  - Disable being dragged by Bubble Columns<br><br>
   - Disable item change animation
   - Disable hand swing animation
   - Disable being on fire
   - Disable freezing effect
-  - Disable loading screen and overlay effect of Nether Portals
+  - Disable dimension change loading screens
   - Disable reduced FOV when inside a body of Water
   - Disable overlay effect of Water
   - Disable overlay effect of Lava
+  - Disable overlay effect of Nether Portals
   <br><br>
 - **Property lookup**:
   - Quickly find blocks based on their properties
