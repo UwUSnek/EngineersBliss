@@ -6,7 +6,9 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,7 +22,8 @@ public final class StructureVoidOverlayProvider extends __base_TextureOverlayPro
     public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
         return
             OverlaysHandler.getFeature(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY) &&
-            state.is(Blocks.STRUCTURE_VOID)
+            state.is(Blocks.STRUCTURE_VOID) &&
+            Minecraft.getInstance().player.getMainHandItem().getItem() == (Items.STRUCTURE_VOID)
         ;
     }
 
@@ -31,17 +34,22 @@ public final class StructureVoidOverlayProvider extends __base_TextureOverlayPro
 
     @Override
     public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return 0.0;
+        return 0.5;
     }
 
     @Override
     public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
-        return 0.25;
+        return 0.5;
     }
 
     @Override
     public TextureProviderDisplay getDisplay() {
         return TextureProviderDisplay.BILLBOARD;
+    }
+
+    @Override
+    public float calcAnchor(BlockState state, BlockPos pos, __base_OverlayAttachedData data) {
+        return 0.5f;
     }
 }
 

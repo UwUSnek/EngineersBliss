@@ -58,4 +58,9 @@ public abstract class __base_TextureOverlayProvider extends __base_OverlayProvid
     public @Nullable Vector3f calcPostRotation(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
         return null;
     }
+
+
+    public float calcAnchor(BlockState state, BlockPos pos, __base_OverlayAttachedData data) {
+        return 0f;
+    }
 }

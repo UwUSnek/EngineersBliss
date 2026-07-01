@@ -165,10 +165,13 @@ public final class OverlayRenderer {
                                 final int overlay = OverlayTexture.NO_OVERLAY;
                                 final Matrix4f pose = matrices.last().pose();
                                 if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.BILLBOARD) {
-                                    vertexConsumer.addVertex(pose, (float)-width,                  0, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)-width, (float)(width * 2), 0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)+width, (float)(width * 2), 0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)+width,                  0, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    final float anchor = p.calcAnchor(state, pos, attachedData);
+                                    final float bottom = (float)(-width * 2 * anchor);
+                                    final float top    = bottom + (float)(width * 2);
+                                    vertexConsumer.addVertex(pose, (float)-width, bottom, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    vertexConsumer.addVertex(pose, (float)-width, top,    0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    vertexConsumer.addVertex(pose, (float)+width, top,    0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    vertexConsumer.addVertex(pose, (float)+width, bottom, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
                                 }
                                 else if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
                                     vertexConsumer.addVertex(pose, (float)-width, 0, (float)-width).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
