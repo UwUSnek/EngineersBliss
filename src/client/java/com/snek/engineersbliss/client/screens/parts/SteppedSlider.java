@@ -28,10 +28,10 @@ public class SteppedSlider<T> extends AbstractSliderButton {
     }
 
 
-    private static double indexToUnit(final int   index, final int size) { return (double)index / size;  }
-    private static int    unitToIndex(final double unit, final int size) { return Math.min(size - 1, (int)(unit * size)); }
-    private double indexToUnit(final int   index) { return indexToUnit(index, stepValues.size()); }
-    private int    unitToIndex(final double unit) { return unitToIndex(unit,  stepValues.size()); }
+    public static double indexToUnit(final int   index, final int size) { return (double)index / size;  }
+    public static int    unitToIndex(final double unit, final int size) { return Math.min(size - 1, (int)(unit * size)); }
+    public double indexToUnit(final int   index) { return indexToUnit(index, stepValues.size()); }
+    public int    unitToIndex(final double unit) { return unitToIndex(unit,  stepValues.size()); }
     public T getSelectedValue() { return stepValues.get(unitToIndex(value)); }
 
 

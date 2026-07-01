@@ -39,8 +39,9 @@ public class PauseScreenMixin extends Screen {
 
     private static Button renderingButton;
     private static Button overlaysButton;
-    private static Button mufflerButton;
     private static Button altTexturesButton;
+    private static Button mufflerButton;
+    private static Button actionHistory;
 
 
     protected PauseScreenMixin(final Component title) {
@@ -89,13 +90,17 @@ public class PauseScreenMixin extends Screen {
             creativeTweaksButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
             return true;
         }
+        if(event.key() == InputConstants.KEY_U) {
+            actionHistory.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
+            return true;
+        }
         return super.keyPressed(event);
     }
 
 
 
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
     public void init(final CallbackInfo ci) {
         final int buttonWidth = 100;
         final int gap = 16;
@@ -110,18 +115,19 @@ public class PauseScreenMixin extends Screen {
                 final int x2 = x1 - buttonWidth - gap;
                 final int y = first.getY();
 
-                blockPropertiesButton = addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth);
-                groupsButton          = addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth);
-                containerToolsButton  = addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth);
-                gameplayTweaksButton  = addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth);
+                blockPropertiesButton = addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
+                groupsButton          = addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
+                containerToolsButton  = addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
+                gameplayTweaksButton  = addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
                 creativeTweaksButton  = addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
 
                 renderingButton       = addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
                 overlaysButton        = addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
                 altTexturesButton     = addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
-                mufflerButton         = addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth);
+                mufflerButton         = addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
+                actionHistory         = addButton("[U] Action History",   AltTexturesScreen::new, x2, y + BUTTON_SPACING * 4, buttonWidth); //FIXME
 
-                addButton("??",               JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
+                addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
             })
         ;
     }

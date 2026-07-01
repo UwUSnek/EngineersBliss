@@ -13,10 +13,13 @@ import com.mojang.math.Axis;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.BarrierOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLogicOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.LightBlockOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RailLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
@@ -25,7 +28,6 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.multiplayer.chat.LoggedChatMessage.Player;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -60,7 +62,12 @@ public final class OverlayRenderer {
         new RailLevelOverlayProvider(),
 
         //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
-        new ComparatorLogicOverlayProvider()
+        new ComparatorLogicOverlayProvider(),
+
+
+        new StructureVoidOverlayProvider(),
+        new BarrierOverlayProvider(),
+        new LightBlockOverlayProvider()
     );
 
 
@@ -82,7 +89,7 @@ public final class OverlayRenderer {
 
 
         // For each chunk in the feature mask
-        for(final var chunkFeatureMaskEntry : OverlaysHandler.getFeatureMask().entrySet()) {
+        for(final var chunkFeatureMaskEntry : OverlaysHandler.getFeatureWorldMap().entrySet()) {
             final ChunkPos chunkPos = chunkFeatureMaskEntry.getKey();
             final LevelChunk chunk = level.getChunk(chunkPos.x(), chunkPos.z());
 
@@ -158,10 +165,13 @@ public final class OverlayRenderer {
                                 final int overlay = OverlayTexture.NO_OVERLAY;
                                 final Matrix4f pose = matrices.last().pose();
                                 if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.BILLBOARD) {
-                                    vertexConsumer.addVertex(pose, (float)-width,                  0, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)-width, (float)(width * 2), 0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)+width, (float)(width * 2), 0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)+width,                  0, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    final float anchor = p.calcAnchor(state, pos, attachedData);
+                                    final float bottom = (float)(-width * 2 * anchor);
+                                    final float top    = bottom + (float)(width * 2);
+                                    vertexConsumer.addVertex(pose, (float)-width, bottom, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    vertexConsumer.addVertex(pose, (float)-width, top,    0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    vertexConsumer.addVertex(pose, (float)+width, top,    0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                                    vertexConsumer.addVertex(pose, (float)+width, bottom, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
                                 }
                                 else if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
                                     vertexConsumer.addVertex(pose, (float)-width, 0, (float)-width).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);

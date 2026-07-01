@@ -6,6 +6,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
@@ -45,7 +46,7 @@ public abstract class __base_Screen extends Screen {
             return true;
         }
         else {
-            return super.keyPressed(event);
+            return super.keyReleased(event);
         }
     }
 
@@ -58,8 +59,9 @@ public abstract class __base_Screen extends Screen {
     }
 
 
-    protected Button addButton(String label, Consumer<Button> action, int x, int y, int width) {
+    protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
         Button r = Button.builder(Component.literal(label), b -> { action.accept(b); b.setFocused(false); }).size(width, Layout.BUTTON_HEIGHT).pos(x, y).build();
+        r.setTooltip(Tooltip.create(Component.literal(details)));
         this.addRenderableWidget(r);
         return r;
     }

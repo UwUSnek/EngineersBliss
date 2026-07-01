@@ -10,9 +10,17 @@
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
   - ~~Unobstructive Scaffolding~~
-  - ~~Minimal Redstone Dust~~
-  - ~~3D Redstone Dust~~
+  - ~~Minimal Redstone Wire~~
+  - ~~3D Redstone Wire~~
   - ~~3D Rails~~
+  - 3D Ladders
+  - 3D Iron Chains & Copper Chains
+  - 3D Iron Bars & Copper Bars
+  - 3D Vines
+  - 3D Glow Lichen
+  - 3D Doors
+  - 3D Trapdoors
+  - Player model rendering in the pause menu //TODO add this to the readme if possible
   - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:
@@ -43,29 +51,46 @@
   - Disable explosion block and entity damage
 
 - **Creative mode tweaks**
-  - Control flying speed
-  - Control reach distance
-  - Control interaction radius (click multiple blocks at once)
+  - ~~Control flying speed~~
+  - ~~Control reach distance~~
+  - ~~Control interaction radius (click multiple blocks at once)~~
+  - add in-game UI for these. display their current values with icons and such
 
   - Configurable fast clicking
   - Snap view to specific angles //TODO in-game indicators for multiples of 22 and 45 ° on both axes. use a keybind to snap to them
   - Place blocks facing away from the player
   - Place blocks with an offset
+  - Insta kill mobs
+  - add in-game UI for fast clicking. display its current values with icons and such
 
   - Scroll block delays and container levels with your mouse wheel >:3
   - Teleport to the block you are looking at with a keybind
+  - Zoom view with a keybind
+  - Toggle full brightness with a keybind
 
-  - Phase through blocks while flying
-  - Phase through entities
-  - Disable being slowed down by and bouncing on Slime Blocks
-  - Disable being slowed down by Honey Blocks
-  - Disable being slowed down by Soul Sand
-  - Disable sliding on Ice, Packed Ice and Blue Ice
-  - Disable being moved by Water and Lava currents
-  - Disable being on fire
-  - Disable freezing effect
+  - ~~Phase through blocks while flying~~
+  - ~~Phase through entities~~
+  - ~~Disable bouncing on Slime Blocks~~
+  - Disable not being able to jump from Honey Blocks
+  - Disable sliding on the sides of Honey Blocks
+  - ~~Disable being slowed down by Slime Blocks~~
+  - ~~Disable being slowed down by Honey Blocks~~
+  - ~~Disable being slowed down by Soul Sand~~
+  - ~~Disable being slowed down by powder snow~~
+  - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
+  - ~~Disable being moved by Water and Lava currents~~
+  - Disable being dragged by Bubble Columns
+
   - Disable item change animation
   - Disable hand swing animation
+  - ~~Disable being on fire~~
+  - ~~Disable freezing effect~~
+  - Disable dimension change loading screens
+  - Disable reduced FOV when inside a body of Water
+  - ~~Disable overlay effect of Water~~
+  - Disable overlay effect of Lava
+  - Disable overlay effect of Nether Portals
+
 
 - **Property lookup**:
   - Quickly find blocks based on their properties
@@ -126,6 +151,7 @@
 
 
 
+- disable punching end crystals? //TODO maybe? idk, very niche
 
 
 
@@ -139,3 +165,12 @@
 
 - Update UI, draw one with a more modern style
 - render stats //TODO minecraft.getGpuUtilization()
+
+
+
+- Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
+
+- Add small pretty custom icons for all the settings
+
+- add cool redstone mechanism overlay in front of the main menu screen
+- add cool small redstone mechanism overlay in the pause menu

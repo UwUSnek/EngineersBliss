@@ -5,6 +5,10 @@ import java.util.List;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.parts.SteppedSlider;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
 
 
 
@@ -26,36 +30,72 @@ public class CreativeTweaksScreen extends __base_Screen {
 
 
 
+        //TODO name header: Player properties
         addRenderableWidget(new SteppedSlider<Float>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH, BUTTON_HEIGHT,
             "Flying speed", List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0, CreativeTweaksHandler::onFlyingSpeedChange
         ));
-
-
         addRenderableWidget(new SteppedSlider<Float>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH, BUTTON_HEIGHT,
             "Reach distance", List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0, CreativeTweaksHandler::onReachDistanceChange
         ));
-
-
         addRenderableWidget(new SteppedSlider<Integer>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH, BUTTON_HEIGHT,
             "Interaction radius", List.of(1, 2, 3, 4, 5, 10, 20), 0, CreativeTweaksHandler::onInteractionRadiusChanged
         ));
+
+
+        //TODO name header: World interactions
+        addButton(getToggleText(CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY),        CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY       .getDetails(), b -> toggleFeature(CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY,        b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  0, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.PHASE_THROUGH_ENTITIES),          CreativeTweakFeature.PHASE_THROUGH_ENTITIES         .getDetails(), b -> toggleFeature(CreativeTweakFeature.PHASE_THROUGH_ENTITIES,          b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  1, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_FIRE_EFFECT),             CreativeTweakFeature.DISABLE_FIRE_EFFECT            .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_FIRE_EFFECT,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  2, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_FREEZING_EFFECT),         CreativeTweakFeature.DISABLE_FREEZING_EFFECT        .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_FREEZING_EFFECT,         b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  3, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_HONEY_JUMP),              CreativeTweakFeature.DISABLE_HONEY_JUMP             .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_HONEY_JUMP,              b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  4, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_HONEY_SLIDING),           CreativeTweakFeature.DISABLE_HONEY_SLIDING          .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_HONEY_SLIDING,           b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  5, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_SLIME_BOUNCE),            CreativeTweakFeature.DISABLE_SLIME_BOUNCE           .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_SLIME_BOUNCE,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  6, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_BED_BOUNCE),              CreativeTweakFeature.DISABLE_BED_BOUNCE             .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_BED_BOUNCE,              b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  7, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_ICE_SLIDING),             CreativeTweakFeature.DISABLE_ICE_SLIDING            .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_ICE_SLIDING,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  8, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_CURRENT_DRAG),            CreativeTweakFeature.DISABLE_CURRENT_DRAG           .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_CURRENT_DRAG,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  9, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_BUBBLE_COLUMN_DRAG),      CreativeTweakFeature.DISABLE_BUBBLE_COLUMN_DRAG     .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_BUBBLE_COLUMN_DRAG,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 10, BUTTON_WIDTH);
+
+        //TODO name header: Speed debuff suppressors
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN),          CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN         .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN,          b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  0, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN),          CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN         .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN,          b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  1, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN),       CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN      .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN,       b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  2, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_POWDER_SNOW_SLOWDOWN),    CreativeTweakFeature.DISABLE_POWDER_SNOW_SLOWDOWN   .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_POWDER_SNOW_SLOWDOWN,    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  3, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_WATER_SLOWDOWN),          CreativeTweakFeature.DISABLE_WATER_SLOWDOWN         .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_WATER_SLOWDOWN,          b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  4, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN),           CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN          .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN,           b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  5, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN),         CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN        .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN,         b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  6, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN),         CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN        .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN,         b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  7, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_VINES_SLOWDOWN),          CreativeTweakFeature.DISABLE_VINES_SLOWDOWN         .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_VINES_SLOWDOWN,          b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  8, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN), CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN.getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN, b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  9, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN),  CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN,  b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 10, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_SWEET_BERRIES_SLOWDOWN),  CreativeTweakFeature.DISABLE_SWEET_BERRIES_SLOWDOWN .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_SWEET_BERRIES_SLOWDOWN,  b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 11, BUTTON_WIDTH);
+
+        //TODO name header: Visual clutter
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION),   CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION  .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 0, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION),    CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION   .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION,    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 1, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_DIMENSION_CHANGE_SCREEN), CreativeTweakFeature.DISABLE_DIMENSION_CHANGE_SCREEN.getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_DIMENSION_CHANGE_SCREEN, b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 2, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_WATER_FOV_CHANGE),        CreativeTweakFeature.DISABLE_WATER_FOV_CHANGE       .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_WATER_FOV_CHANGE,        b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 3, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_WATER_OVERLAY),           CreativeTweakFeature.DISABLE_WATER_OVERLAY          .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_WATER_OVERLAY,           b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 4, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_LAVA_OVERLAY),            CreativeTweakFeature.DISABLE_LAVA_OVERLAY           .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_LAVA_OVERLAY,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 5, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.DISABLE_NETHER_PORTAL_OVERLAY),   CreativeTweakFeature.DISABLE_NETHER_PORTAL_OVERLAY  .getDetails(), b -> toggleFeature(CreativeTweakFeature.DISABLE_NETHER_PORTAL_OVERLAY,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 3, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) * 6, BUTTON_WIDTH);
     }
 
 
 
 
-    // public String getToggleText(final AltTextureFeature feature, final boolean state) {
-    //     return feature.getName() + ": " + (state ? "ON" : "OFF");
-    // }
+    public String getToggleText(final CreativeTweakFeature feature, final boolean state) {
+        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    }
+    public String getToggleText(final CreativeTweakFeature feature) {
+        return getToggleText(feature, CreativeTweaksHandler.clientPlayerHasFeature(minecraft.player, feature));
+    }
 
 
-    // public void toggleFeature(final AltTextureFeature feature, final Button b) {
-    //     boolean newState = !AltTexturesHandler.getFeature(feature);
-    //     b.setMessage(Component.literal(getToggleText(feature, newState)));
-    //     AltTexturesHandler.setFeature(feature, newState);
-    //     MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
-    // }
+    public void toggleFeature(final CreativeTweakFeature feature, final Button b) {
+        boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(minecraft.player, feature);
+        b.setMessage(Component.literal(getToggleText(feature, newState)));
+        CreativeTweaksHandler.setFeature(feature, newState);
+    }
 }

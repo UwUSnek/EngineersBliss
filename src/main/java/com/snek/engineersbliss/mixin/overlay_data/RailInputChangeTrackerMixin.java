@@ -3,6 +3,7 @@ package com.snek.engineersbliss.mixin.overlay_data;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +38,8 @@ public class RailInputChangeTrackerMixin {
 
 
 
-    @Inject(method = "updateState", at = @At("HEAD"))
+    @SuppressWarnings("unused")
+    @Inject(method = "updateState", at = @At("HEAD"), cancellable = false, require = 1)
 	private void updateState(final BlockState state, final Level level, final BlockPos pos, final Block block, final CallbackInfo ci) {
         if(level == null || level.isClientSide()) return;
 
@@ -46,7 +48,7 @@ public class RailInputChangeTrackerMixin {
 
 
         // Return if input is identical to the last one. Update map otherwise
-        final var signalCacheLevel = lastSignals.compute(level, (kkey, map) -> map == null ? new HashMap<>() : map);
+        final @NonNull Map<BlockPos, Integer> signalCacheLevel = lastSignals.compute(level, (kkey, map) -> map == null ? new HashMap<>() : map);
         final Integer last = signalCacheLevel.get(pos);
         if(last != null && last == newSignal) return;
         signalCacheLevel.put(pos, newSignal);
