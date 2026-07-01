@@ -10,6 +10,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
@@ -89,7 +90,10 @@ public class OverlaysHandler {
         Blocks.REDSTONE_WIRE,  (a, b, c) -> null,
         Blocks.COMPARATOR,     ComparatorAttachedData::new,
         Blocks.POWERED_RAIL,   RailAttachedData::new,
-        Blocks.ACTIVATOR_RAIL, RailAttachedData::new
+        Blocks.ACTIVATOR_RAIL, RailAttachedData::new,
+        Blocks.STRUCTURE_VOID, (a, b, c) -> null,
+        Blocks.BARRIER,        (a, b, c) -> null,
+        Blocks.LIGHT,          (a, b, c) -> null
     );
 
     public static __base_OverlayAttachedData createAttachedData(final Level level, final BlockPos pos, final BlockState state) {

@@ -16,6 +16,7 @@
         "screens.PauseScreenMixin",
 
         "overlays.BlockstateChangeTrackerMixin",
+        "overlays.VanillaParticleSuppressor",
 
         "creative_tweaks.SlimeFeaturesMixin",
         "creative_tweaks.FrictionFeaturesMixin",
