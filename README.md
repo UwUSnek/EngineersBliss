@@ -183,9 +183,9 @@ It helps a lot :3
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
-  - Water Current Sponge
-  - Lava Current Sponge
   - Item Sink (storage block with infinite capacity)
+  - 0 Friction blocks
+  - ∞ Friction blocks
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
