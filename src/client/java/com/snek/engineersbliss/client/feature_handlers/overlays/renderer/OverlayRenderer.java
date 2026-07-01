@@ -13,10 +13,13 @@ import com.mojang.math.Axis;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.BarrierOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLogicOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.LightBlockOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RailLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
@@ -59,7 +62,12 @@ public final class OverlayRenderer {
         new RailLevelOverlayProvider(),
 
         //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
-        new ComparatorLogicOverlayProvider()
+        new ComparatorLogicOverlayProvider(),
+
+
+        new StructureVoidOverlayProvider(),
+        new BarrierOverlayProvider(),
+        new LightBlockOverlayProvider()
     );
 
 
