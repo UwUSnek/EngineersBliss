@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.feature_handlers.creative_tweaks;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
@@ -65,7 +65,7 @@ public class CreativeTweaksHandler {
 
 
     public static void onFlyingSpeedChange(final Float value) {
-        final @NonNull Player player = Minecraft.getInstance().player;
+        final @NotNull Player player = Minecraft.getInstance().player;
         if(!player.getAbilities().instabuild) return;
         player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
     }

@@ -120,6 +120,10 @@ public class PauseScreenMixin extends Screen {
                 containerToolsButton  = addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
                 gameplayTweaksButton  = addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
                 creativeTweaksButton  = addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
+                //FIXME add a BIG disclaimer to "gameplay tweaks" screen that says it changes game mechanics
+                //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
+                //FIXME move no particles to alternative texture maybe?
+                //FIXME move visible block overlays to alternative texture maybe?
 
                 renderingButton       = addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
                 overlaysButton        = addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
