@@ -17,12 +17,12 @@ import net.minecraft.world.entity.Entity;
 public class ClientEntityPhasingMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "push", at = @At("HEAD"), cancellable = true, require = 1)
-    public void push(final Entity entity, final CallbackInfo ci) {
-        final Entity _this = (Entity)(Object)this;
+    private void push(final Entity entity, final CallbackInfo ci) {
         if(
             CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_ENTITIES) ||
-            CreativeTweaksHandler.clientPlayerHasFeature(_this,  CreativeTweakFeature.PHASE_THROUGH_ENTITIES)
+            CreativeTweaksHandler.clientPlayerHasFeature(this,   CreativeTweakFeature.PHASE_THROUGH_ENTITIES)
         ) {
             ci.cancel();
         }

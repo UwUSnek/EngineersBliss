@@ -16,10 +16,11 @@ import net.minecraft.world.entity.Entity;
 public class ClientFreezeEffectSuppressorMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "canFreeze", at = @At("RETURN"), cancellable = true, require = 1)
 	private void canFreeze(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakFeature.DISABLE_FREEZING_EFFECT)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_FREEZING_EFFECT)) {
                 cir.setReturnValue(false);
             }
         }

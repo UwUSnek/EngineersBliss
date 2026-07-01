@@ -11,7 +11,7 @@ public abstract class __base_AnalogueSlider extends AbstractSliderButton {
     private final double min;
     private final double max;
 
-    public __base_AnalogueSlider(final int x, final int y, final int w, final int h, final String label, final double min, final double max, final double initial) {
+    protected __base_AnalogueSlider(final int x, final int y, final int w, final int h, final String label, final double min, final double max, final double initial) {
         super(x, y, w, h, Component.empty(), (initial - min) / (max - min));
         this.label = label;
         this.min = min;

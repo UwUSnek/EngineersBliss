@@ -9,7 +9,6 @@ import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeT
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
 
 
 
@@ -22,9 +21,10 @@ import net.minecraft.world.entity.Entity;
 public class BlockPhasingMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "suffocatesAt", at = @At("HEAD"), cancellable = true, require = 1)
 	private void suffocatesAt(final BlockPos pos, final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(false);
         }
     }

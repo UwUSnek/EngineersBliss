@@ -25,13 +25,14 @@ import net.minecraft.world.phys.AABB;
 public class ClientBlockPhasingPacketFixMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "isEntityCollidingWithAnythingNew", at = @At("HEAD"), cancellable = true, require = 1)
     private void isEntityCollidingWithAnythingNew(
         LevelReader level, Entity entity, AABB oldAABB,
         double newX, double newY, double newZ,
         CallbackInfoReturnable<Boolean> cir
     ) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(entity)) {
             cir.setReturnValue(false);
         }
     }

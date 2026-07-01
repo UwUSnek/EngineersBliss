@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,21 +28,19 @@ public class SpeedFactorFeaturesMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "getBlockSpeedFactor",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getSpeedFactor()F")
     )
     private float getBlockSpeedFactor(Block block) {
-        final Entity entity = (Entity)(Object)this;
-
-
         if(block == Blocks.HONEY_BLOCK) {
-            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN)) {
                 return DEFAULT_SPEED_FACTOR;
             }
         }
         if(block == Blocks.SOUL_SAND) {
-            if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN)) {
                 return DEFAULT_SPEED_FACTOR;
             }
         }

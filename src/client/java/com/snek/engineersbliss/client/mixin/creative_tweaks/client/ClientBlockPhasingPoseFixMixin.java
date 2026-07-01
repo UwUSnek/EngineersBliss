@@ -20,9 +20,11 @@ import net.minecraft.world.entity.player.Player;
 @Mixin(Player.class)
 public class ClientBlockPhasingPoseFixMixin {
 
+
+    @SuppressWarnings("unused")
     @Inject(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At("HEAD"), cancellable = true, require = 1)
     private void canPlayerFitWithinBlocksAndEntitiesWhen(final Pose newPose, final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(true);
         }
     }

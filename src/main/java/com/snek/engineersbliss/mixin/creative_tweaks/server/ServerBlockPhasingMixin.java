@@ -7,8 +7,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -25,9 +23,10 @@ import net.minecraft.world.phys.Vec3;
 public class ServerBlockPhasingMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "collide", at = @At("HEAD"), cancellable = true, require = 1)
 	private void collide(final Vec3 movement, final CallbackInfoReturnable<Vec3> cir) {
-        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks((Entity)(Object)this)) {
+        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(movement);
         }
     }

@@ -26,20 +26,24 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 @Mixin(ScreenEffectRenderer.class)
 public class ScreenOverlayHiderMixin {
+    private ScreenOverlayHiderMixin() {}
 
 
 
+
+    @SuppressWarnings("unused")
     @Inject(method = "getViewBlockingState", at = @At("HEAD"), cancellable = true, require = 1)
     private static void getViewBlockingState(final Player player, final CallbackInfoReturnable<BlockState> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks()) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(player)) {
             cir.setReturnValue(null);
         }
     }
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "renderWater", at = @At("HEAD"), cancellable = true, require = 1)
 	private static void renderWater(final Minecraft minecraft, final PoseStack poseStack, final MultiBufferSource bufferSource, final CallbackInfo ci) {
-        if(CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakFeature.DISABLE_WATER_OVERLAY)) {
+        if(CreativeTweaksHandler.clientPlayerHasFeature(minecraft.player, CreativeTweakFeature.DISABLE_WATER_OVERLAY)) {
             ci.cancel();
         }
     }
