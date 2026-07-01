@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.mixin.creative_tweaks;
+package com.snek.engineersbliss.mixin.creative_tweaks.server;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,9 +22,10 @@ import net.minecraft.world.phys.AABB;
  * ! This check runs separately from client-side LocalPlayer.suffocatesAt block pushing effect and the Entity.collide movement calculation.
  */
 @Mixin(ServerGamePacketListenerImpl.class)
-public class BlockPhasingPacketFixMixin {
+public class ServerBlockPhasingPacketFixMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "isEntityCollidingWithAnythingNew", at = @At("HEAD"), cancellable = true, require = 1)
     private void isEntityCollidingWithAnythingNew(
         LevelReader level, Entity entity, AABB oldAABB,

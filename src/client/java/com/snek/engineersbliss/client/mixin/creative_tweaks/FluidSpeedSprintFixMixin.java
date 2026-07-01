@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
 import org.spongepowered.asm.mixin.Mixin;
 
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,11 +23,12 @@ import net.minecraft.client.player.LocalPlayer;
 public class FluidSpeedSprintFixMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "isSprintingPossible", at = @At("RETURN"), cancellable = true)
     private void isSprintingPossible(final boolean allowedInShallowWater, final CallbackInfoReturnable<Boolean> cir) {
         final LocalPlayer _this = (LocalPlayer)(Object)this;
         if(!cir.getReturnValueZ()) {
-            if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN) && _this.isInShallowWater()) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN) && _this.isInShallowWater()) {
                 cir.setReturnValue(true);
             }
         }

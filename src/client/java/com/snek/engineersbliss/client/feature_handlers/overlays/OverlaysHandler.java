@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +10,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
@@ -32,10 +32,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 public class OverlaysHandler {
     private OverlaysHandler() {}
-
-
-    // A map containing all available feature and their current state
-    private static Map<OverlayFeature, Boolean> features = new EnumMap<>(OverlayFeature.class);
+    private static long _featureMask = OverlayFeature.DEFAULT_FLAGS;
 
 
 
@@ -44,9 +41,6 @@ public class OverlaysHandler {
      * This must be called in the mod's initializer function.
      */
     public static void init(){
-        for(final OverlayFeature feature : OverlayFeature.values()) {
-            features.put(feature, true);
-        }
 
         // Register listeners
         ClientChunkEvents.CHUNK_LOAD  .register((level, chunk) -> onChunkLoad(chunk));
@@ -63,8 +57,9 @@ public class OverlaysHandler {
      * @param feature The feature.
      * @param value The new value.
      */
-    public static void setFeature(final OverlayFeature feature, final boolean value) {
-        features.put(feature, value);
+    public static void setFeature(final OverlayFeature feature, boolean value) {
+        final long featureBit = feature.getFlagBit();
+        if(value) _featureMask |= featureBit; else _featureMask &= ~featureBit;
     }
 
     /***
@@ -73,7 +68,7 @@ public class OverlaysHandler {
      * @return The current value.
      */
     public static boolean getFeature(final OverlayFeature feature) {
-        return features.get(feature);
+        return feature.hasFlagBit(_featureMask);
     }
 
 
@@ -85,8 +80,8 @@ public class OverlaysHandler {
     // A map containing all the states of all features on all currently visible blocks.
     //! Map is initially created with capacity 5000, while internal maps depend entirely on their contents.
     //! Outer map stays allocated for the entire lifetime of the client to improve performance on level changes.
-    private static final Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> featureMask = HashMap.newHashMap(5000);
-    public static Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> getFeatureMask() { return featureMask; }
+    private static final Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> featureWorldMap = HashMap.newHashMap(5000);
+    public static Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> getFeatureWorldMap() { return featureWorldMap; }
 
 
     // A map that specifies the proper attached data type for each Block
@@ -95,7 +90,10 @@ public class OverlaysHandler {
         Blocks.REDSTONE_WIRE,  (a, b, c) -> null,
         Blocks.COMPARATOR,     ComparatorAttachedData::new,
         Blocks.POWERED_RAIL,   RailAttachedData::new,
-        Blocks.ACTIVATOR_RAIL, RailAttachedData::new
+        Blocks.ACTIVATOR_RAIL, RailAttachedData::new,
+        Blocks.STRUCTURE_VOID, (a, b, c) -> null,
+        Blocks.BARRIER,        (a, b, c) -> null,
+        Blocks.LIGHT,          (a, b, c) -> null
     );
 
     public static __base_OverlayAttachedData createAttachedData(final Level level, final BlockPos pos, final BlockState state) {
@@ -115,7 +113,7 @@ public class OverlaysHandler {
      * @param newData The new data to attach.
      */
     public static void updateAttachedData(final BlockPos pos, __base_OverlayAttachedData newData) {
-        final var chunkFeatureMask = featureMask.get(MinecraftUtils.blockPosToChunk(pos));
+        final var chunkFeatureMask = featureWorldMap.get(MinecraftUtils.blockPosToChunk(pos));
         if(chunkFeatureMask != null) {
             final var pair = chunkFeatureMask.get(pos);
             if(pair != null) {
@@ -159,7 +157,7 @@ public class OverlaysHandler {
      */
     public static void onBlockChanged(final Level level, final BlockPos pos, final BlockState newState) {
         if(!level.isClientSide()) return;
-        final var chunkFeatureMask = featureMask.computeIfAbsent(MinecraftUtils.blockPosToChunk(pos), k -> new HashMap<>());
+        final var chunkFeatureMask = featureWorldMap.computeIfAbsent(MinecraftUtils.blockPosToChunk(pos), k -> new HashMap<>());
 
         // Calculate new flags and put/remove the entry depending on the value
         final long newFlags = calcFeatureFlags(newState);
@@ -204,7 +202,7 @@ public class OverlaysHandler {
             }
 
             // For each chunk section
-            final var chunkFeatureMask = featureMask.computeIfAbsent(chunkPos, k -> new HashMap<>());
+            final var chunkFeatureMask = featureWorldMap.computeIfAbsent(chunkPos, k -> new HashMap<>());
             final int minX = chunkPos.getMinBlockX();
             final int minZ = chunkPos.getMinBlockZ();
             final var sections = chunk.getSections();
@@ -248,7 +246,7 @@ public class OverlaysHandler {
      * @param pos The chunk position of the chunk that was unloaded.
      */
     public static void onChunkUnload(final ChunkPos pos) {
-        featureMask.remove(pos);
+        featureWorldMap.remove(pos);
         final LoopTaskHandler handler = waitingForNeighbours.get(pos);
         if(handler != null) {
             handler.cancel();
@@ -261,7 +259,7 @@ public class OverlaysHandler {
      * Clears the runtime map. This must be called whenever the client changes level.
      */
     public static void onLevelChange() {
-        featureMask.clear();
+        featureWorldMap.clear();
         waitingForNeighbours.forEach((k, v) -> {
             if(v != null) v.cancel();
         });

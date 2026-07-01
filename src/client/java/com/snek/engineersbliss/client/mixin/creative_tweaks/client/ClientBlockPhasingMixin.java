@@ -1,11 +1,11 @@
-package com.snek.engineersbliss.mixin.creative_tweaks;
+package com.snek.engineersbliss.client.mixin.creative_tweaks.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -20,13 +20,13 @@ import net.minecraft.world.phys.Vec3;
  * ! This check runs separately from the LocalPlayer.suffocatesAt block pushing effect and the server's ServerGamePacketListenerImpl.isEntityCollidingWithAnythingNew check.
  */
 @Mixin(Entity.class)
-public class BlockPhasingMixin {
+public class ClientBlockPhasingMixin {
 
 
-
+    @SuppressWarnings("unused")
     @Inject(method = "collide", at = @At("HEAD"), cancellable = true, require = 1)
 	private void collide(final Vec3 movement, final CallbackInfoReturnable<Vec3> cir) {
-        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks((Entity)(Object)this)) {
+        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(movement);
         }
     }

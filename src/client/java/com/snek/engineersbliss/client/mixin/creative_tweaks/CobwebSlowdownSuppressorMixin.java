@@ -4,8 +4,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.WebBlock;
@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 public class CobwebSlowdownSuppressorMixin {
 
 
+    @SuppressWarnings("unused")
     @Redirect(
         method = "entityInside",
         at = @At(
@@ -28,7 +29,7 @@ public class CobwebSlowdownSuppressorMixin {
         )
     )
     private void makeStuckInBlock(Entity entity, BlockState state, Vec3 speedMultiplier) {
-        if(!CreativeTweaksServerHandler.playerHasFeature(entity, CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN)) {
+        if(!CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_COBWEB_SLOWDOWN)) {
             entity.makeStuckInBlock(state, speedMultiplier);
         }
     }

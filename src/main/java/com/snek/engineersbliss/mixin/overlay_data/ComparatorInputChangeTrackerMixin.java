@@ -34,7 +34,6 @@ import net.minecraft.world.level.redstone.Orientation;
 /**
  * A mixin that tracks the inputs of comparators
  */
-// @Mixin(ComparatorBlock.class)
 @Mixin(DiodeBlock.class)
 public class ComparatorInputChangeTrackerMixin {
 
@@ -46,6 +45,7 @@ public class ComparatorInputChangeTrackerMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "neighborChanged", at = @At("HEAD"), cancellable = false, require = 1)
     private void neighborChanged(final BlockState state, final Level level, final BlockPos pos, final Block block, @Nullable final Orientation orientation, final boolean movedByPiston, final CallbackInfo ci) {
 

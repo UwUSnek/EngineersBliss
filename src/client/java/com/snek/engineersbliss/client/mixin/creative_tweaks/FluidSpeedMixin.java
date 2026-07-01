@@ -4,8 +4,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -58,13 +58,14 @@ public abstract class FluidSpeedMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "travelInWater", at = @At("HEAD"), cancellable = true, require = 1)
     private void travelInWater(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
         // If entity is a player and they are not swimming (keep default swimming movement) and they have the feature active, use the custom movement
         if((Object)this instanceof Player _this) {
             if(!_this.isSwimming()) {
-                if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
+                if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
                     customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                     ci.cancel();
                 }
@@ -75,12 +76,13 @@ public abstract class FluidSpeedMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "travelInLava", at = @At("HEAD"), cancellable = true, require = 1)
     private void travelInLava(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
         // If entity is a player and they have the feature active, use the custom movement
         if((Object)this instanceof Player _this) {
-            if(CreativeTweaksServerHandler.playerHasFeature(_this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
                 customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                 ci.cancel();
             }

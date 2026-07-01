@@ -20,8 +20,11 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 public class RenderingScreen extends __base_Screen {
+    @SuppressWarnings("java:S1450")
     private int panelWidthCenter;
+    @SuppressWarnings("java:S1450")
     private int panelWidthSide;
+    @SuppressWarnings("java:S1450")
     private int halfButtonWidth;
 
 
@@ -95,27 +98,55 @@ public class RenderingScreen extends __base_Screen {
         searchField.setX(BORDER_WIDTH);
         this.addRenderableWidget(searchField);
 
-        addButton(getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()), this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
+        addButton(
+            getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()),
+            "Toggle targeting hidden blocks",
+            this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+        );
 
 
 
 
         // Right sidebar
 
-        addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP,                                   panelWidthSide);
-        addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
+        addButton(
+            "Reset filters",
+            "Reset all rendering filters to their default state.",
+            this::resetFilters, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP, panelWidthSide
+        );
+        addButton(
+            "Recalculate light",
+            "Recalculate all the light. This is a very resource intensive process that might take many seconds or minutes depending on your hardware.",
+            this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+        );
 
-        renderBlockOutlinesButton = addButton(getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide);
-        renderBlocksButton        = addButton(getToggleText_renderBlocks       (RenderFilterHandler.getRenderBlocks()),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
-        renderBlockEntitiesButton = addButton(getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
-        renderFluidsButton        = addButton(getToggleText_renderFluids       (RenderFilterHandler.getRenderFluids()),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
+        renderBlockOutlinesButton = addButton(
+            getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()),
+            "Toggle whether block outlines should be rendered at all",
+            this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
+        );
+        renderBlocksButton = addButton(
+            getToggleText_renderBlocks(RenderFilterHandler.getRenderBlocks()),
+            "Toggle whether blocks without custom block entity rendering should be rendered at all.",
+            this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
+        );
+        renderBlockEntitiesButton = addButton(
+            getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()),
+            "Toggle whether blocks with custom block entity rendering should be rendered at all.",
+            this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
+        );
+        renderFluidsButton = addButton(
+            getToggleText_renderFluids(RenderFilterHandler.getRenderFluids()),
+            "Toggle whether fluids should be rendered at all.",
+            this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
+        );
 
 
 
 
         // Main list
         //! This needs to be rendered last to let tooltips show on top of right side buttons
-        blockList = new BlockListWidget(this.minecraft, this, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
+        blockList = new BlockListWidget(this.minecraft, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
         blockList.setX(panelWidthSide + BORDER_WIDTH * 2);
         this.addRenderableWidget(blockList);
         blockList.filter("");
@@ -149,28 +180,30 @@ public class RenderingScreen extends __base_Screen {
 
         // Draw render stats
         final ClientLevel level = Minecraft.getInstance().level;
-        final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-        final int rightTextX = this.width - panelWidthSide;
-        final int lightProgress = RenderFilterHandler.getLightRecalcProgress();
-        final int lightMax = RenderFilterHandler.getLightRecalcMax();
-        final String[] renderStats = {
-            "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
-            "Loaded chunks: ", String.format("%,d", loadedChunkNum),
-            "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
-        };
+        if(level != null) {
+            final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
+            final int rightTextX = this.width - panelWidthSide;
+            final int lightProgress = RenderFilterHandler.getLightRecalcProgress();
+            final int lightMax = RenderFilterHandler.getLightRecalcMax();
+            final String[] renderStats = {
+                "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
+                "Loaded chunks: ", String.format("%,d", loadedChunkNum),
+                "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
+            };
 
-        graphics.text(this.font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[2], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[4], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
-        int rightTextPrefixWidth = 0;
-        for(int i = 0; i < renderStats.length; i += 2) {
-            final int w = this.font.width(renderStats[i]);
-            if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
+            graphics.text(this.font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, renderStats[2], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, renderStats[4], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            int rightTextPrefixWidth = 0;
+            for(int i = 0; i < renderStats.length; i += 2) {
+                final int w = this.font.width(renderStats[i]);
+                if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
+            }
+
+            graphics.text(this.font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
         }
-
-        graphics.text(this.font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
     }
 
 
