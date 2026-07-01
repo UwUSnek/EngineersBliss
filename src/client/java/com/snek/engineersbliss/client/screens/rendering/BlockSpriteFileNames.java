@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class BlockSpriteFileNames {
 
 
     public static List<String> getIdList() { return idList; }
-    private static final List<String> idList = List.of(
+    private static final List<String> idList = new ArrayList(List.of(
         "stone",
         "granite",
         "polished_granite",
@@ -1182,7 +1183,7 @@ public class BlockSpriteFileNames {
         "structure_void",
         "test_block",
         "test_instance_block"
-    );
+    ));
     static {
         Collections.sort(idList);
     }
