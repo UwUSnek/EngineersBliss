@@ -21,7 +21,7 @@ public class Layout {
 
 
 
-    private static Identifier getFontIdForScale(final String baseName) {
+    public static Identifier getFontIdForScale(final String baseName) {
         int scale = Minecraft.getInstance().getWindow().getGuiScale();
         return Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, String.format("%s_%dx", baseName, scale));
     }

@@ -21,13 +21,15 @@ import net.minecraft.world.level.block.state.BlockState;
 @Mixin(LevelSlice.class)
 public class RenderFilterBlockSodiumMixin {
 
+
+    @SuppressWarnings("unused")
     @Inject(
         method = "getBlockState(III)Lnet/minecraft/world/level/block/state/BlockState;",
         at = @At("RETURN"),
         cancellable = true,
         require = 0
     )
-    public void getBlockState(int blockX, int blockY, int blockZ, CallbackInfoReturnable<BlockState> cir) {
+    private void getBlockState(int blockX, int blockY, int blockZ, CallbackInfoReturnable<BlockState> cir) {
         BlockState state = cir.getReturnValue();
 
         if(!RenderFilterHandler.shouldBlockRender(state)) {

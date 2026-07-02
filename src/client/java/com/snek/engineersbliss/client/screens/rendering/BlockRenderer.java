@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -163,7 +164,7 @@ public class BlockRenderer {
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
 
-        graphics.text(Minecraft.getInstance().font, block.getName().getVisualOrderText(), 0, 0, color);
+        graphics.text(Minecraft.getInstance().font, new UiMonoTxt(block.getName()).get().getVisualOrderText(), 0, 0, color);
 
         // Pop pose
         graphics.pose().popMatrix();

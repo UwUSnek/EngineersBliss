@@ -27,9 +27,9 @@ import net.minecraft.network.chat.Style;
  * @since v1.1.0
  */
 public class Txt {
-    private final MutableComponent rawText;
-    private Style style;
-    private int _length;
+    protected final MutableComponent rawText;
+    protected Style style;
+    protected int _length;
     public int length() { return _length; }
 
 

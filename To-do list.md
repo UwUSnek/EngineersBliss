@@ -26,6 +26,8 @@
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
   - Player model rendering in the pause menu //TODO add this to the readme if possible
+    - Display player name above model
+    - Display customizable title under the name
   - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:

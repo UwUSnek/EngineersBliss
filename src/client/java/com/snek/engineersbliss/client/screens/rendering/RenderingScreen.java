@@ -5,15 +5,16 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHan
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.screens.parts.UiEditBox;
+import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.Layout;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
@@ -28,7 +29,7 @@ public class RenderingScreen extends __base_Screen {
     private int halfButtonWidth;
 
 
-    private EditBox searchField;
+    private UiEditBox searchField;
     private BlockListWidget blockList;
 
 
@@ -91,8 +92,8 @@ public class RenderingScreen extends __base_Screen {
 
         // Left sidebar
 
-        searchField = new EditBox(this.font, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, Component.literal("Search..."));
-        searchField.setHint(Component.literal("Search..."));
+        searchField = new UiEditBox(BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiMonoTxt("Search...").get());
+        searchField.setHint(new UiMonoTxt("Search...").get());
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));
         searchField.setX(BORDER_WIDTH);
@@ -173,8 +174,8 @@ public class RenderingScreen extends __base_Screen {
             "|", "Search either of two strings"
         };
         for(int i = 0; i < syntaxInstructions.length / 2; i++) {
-            graphics.text(this.font, syntaxInstructions[i * 2],     BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
-            graphics.text(this.font, syntaxInstructions[i * 2 + 1], BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(syntaxInstructions[i * 2    ]).get(), BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(syntaxInstructions[i * 2 + 1]).get(), BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
         }
 
 
@@ -191,18 +192,18 @@ public class RenderingScreen extends __base_Screen {
                 "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
             };
 
-            graphics.text(this.font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(this.font, renderStats[2], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(this.font, renderStats[4], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(renderStats[0]).get(), rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(renderStats[2]).get(), rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(renderStats[4]).get(), rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
             int rightTextPrefixWidth = 0;
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int w = this.font.width(renderStats[i]);
                 if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
             }
 
-            graphics.text(this.font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(this.font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(this.font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(renderStats[1]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(renderStats[3]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, new UiMonoTxt(renderStats[5]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
         }
     }
 
@@ -237,7 +238,7 @@ public class RenderingScreen extends __base_Screen {
     public static void toggleTargetHiddenBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
         RenderFilterHandler.setTargetHiddenBlocks(newState);
-        b.setMessage(Component.literal(getToggleText_targetHiddenBlocks(newState)));
+        b.setMessage(new UiMonoTxt(getToggleText_targetHiddenBlocks(newState)).get());
     }
 
 
@@ -249,7 +250,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderBlockOutlines(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderBlockOutlines(newState)));
+        b.setMessage(new UiMonoTxt(getToggleText_renderBlockOutlines(newState)).get());
     }
 
 
@@ -261,7 +262,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderBlocks(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderBlocks(newState)));
+        b.setMessage(new UiMonoTxt(getToggleText_renderBlocks(newState)).get());
     }
 
 
@@ -273,7 +274,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderBlockEntities(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderBlockEntities(newState)));
+        b.setMessage(new UiMonoTxt(getToggleText_renderBlockEntities(newState)).get());
     }
 
 
@@ -285,7 +286,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderFluids(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderFluids(newState)));
+        b.setMessage(new UiMonoTxt(getToggleText_renderFluids(newState)).get());
     }
 }
 

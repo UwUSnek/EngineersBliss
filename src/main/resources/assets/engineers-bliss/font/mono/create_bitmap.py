@@ -3,7 +3,7 @@ from fontTools.ttLib import TTFont
 import json, math
 
 
-FONT_PATH = "bold.ttf"
+FONT_PATH = "medium.ttf"
 FALLBACK_FONT_PATH = "fallback_light.ttf"
 SIZE = 8
 CELL = 10

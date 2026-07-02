@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.EngineerSBliss;
 
@@ -34,6 +33,7 @@ public abstract class JuliaSetShaderMixin {
 
 
 
+    @SuppressWarnings("unused")
     @Inject(
         method = "render", at = @At(
             value = "INVOKE",

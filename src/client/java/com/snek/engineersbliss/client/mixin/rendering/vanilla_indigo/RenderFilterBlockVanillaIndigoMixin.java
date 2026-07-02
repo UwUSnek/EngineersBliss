@@ -25,8 +25,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class RenderFilterBlockVanillaIndigoMixin {
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "getBlockState", at = @At("RETURN"), cancellable = true, require = 0)
-    public void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
+    private void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
         BlockState state = cir.getReturnValue();
 
         if(!RenderFilterHandler.shouldBlockRender(state)) {

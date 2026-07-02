@@ -5,6 +5,7 @@ import javax.imageio.spi.IIORegistry;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
+import com.snek.engineersbliss.client.screens.Layout;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
@@ -12,6 +13,7 @@ import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 
@@ -61,6 +63,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Log library loading
-        EngineerSBliss.LOGGER.info("Engineer's Bliss client loaded :3");
+        EngineerSBliss.LOGGER.info(EngineerSBliss.MOD_NAME + " client loaded :3");
     }
 }
