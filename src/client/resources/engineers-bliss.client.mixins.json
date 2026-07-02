@@ -32,6 +32,7 @@
 		"creative_tweaks.CurrentDragSuppressorMixin",
 		"creative_tweaks.ClimbableSlowdownSuppressor",
 		"creative_tweaks.BedBounceSuppressorMixin",
+		"creative_tweaks.BubbleColumnsPushSuppressorMixin",
 		"creative_tweaks.client.ClientBlockPhasingMixin",
 		"creative_tweaks.client.ClientBlockPhasingPoseFixMixin",
 		"creative_tweaks.client.ClientBlockPhasingPacketFixMixin",
