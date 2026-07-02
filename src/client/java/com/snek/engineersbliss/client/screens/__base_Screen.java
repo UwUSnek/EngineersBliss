@@ -60,13 +60,16 @@ public abstract class __base_Screen extends Screen {
 
 
     protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
-        Button r = Button.builder(
-            Component.literal(label).withStyle(Layout.textStyle), b -> { action.accept(b); b.setFocused(false); })
+        Button r =
+            Button.builder(
+                Component.literal(label).withStyle(Layout.textStyleForScale()),
+                b -> { action.accept(b); b.setFocused(false); }
+            )
             .size(width, BUTTON_HEIGHT)
             .pos(x, y)
+            .tooltip(Tooltip.create(Component.literal(details)))
             .build()
         ;
-        r.setTooltip(Tooltip.create(Component.literal(details)));
         this.addRenderableWidget(r);
         return r;
     }

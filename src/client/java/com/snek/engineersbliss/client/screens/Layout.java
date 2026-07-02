@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.screens;
 
 import com.snek.engineersbliss.EngineerSBliss;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
@@ -18,6 +19,15 @@ public class Layout {
     public static final int BUTTON_HEIGHT = 20;
 
 
-    public static final FontDescription textFont = new FontDescription.Resource(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui_font"));
-    public static final Style textStyle = Style.EMPTY.withoutShadow().withFont(textFont);
+
+
+    private static Identifier getFontIdForScale(final String baseName) {
+        int scale = Minecraft.getInstance().getWindow().getGuiScale();
+        return Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, String.format("%s_%dx", baseName, scale));
+    }
+
+    public static final Style textStyleForScale() {
+        final FontDescription textFont = new FontDescription.Resource(getFontIdForScale("ui_font"));
+        return Style.EMPTY.withoutShadow().withFont(textFont);
+    }
 }

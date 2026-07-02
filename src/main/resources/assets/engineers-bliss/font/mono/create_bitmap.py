@@ -2,13 +2,16 @@ from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
 import json, math
 
+
 FONT_PATH = "light.ttf"
-UPSCALE = 4
-SIZE = 10
-CELL = 12
-SCALED_SIZE = UPSCALE * SIZE
-SCALED_CELL = UPSCALE * CELL
+SIZE = 8
+CELL = 10
 COLS = 20  # atlas width in glyphs
+SCALES = [1, 2, 3, 4]
+
+OUTPUT_PNG_NAME  = "mono"
+OUTPUT_JSON_NAME = "ui_font"
+
 
 
 # Find all codepoints in the font
@@ -16,60 +19,69 @@ ttf = TTFont(FONT_PATH, lazy=True)
 cmap = ttf.getBestCmap()
 codepoints = sorted(cmap.keys())
 
-font = ImageFont.truetype(FONT_PATH, SCALED_SIZE)
 
 
 
-
-# Skip blank glyphs
-def has_ink(ch):
+def is_visible(ch, font):
     if ch in (0x20,):  # Manually skip standard spaces
         return False
     mask = font.getmask(chr(ch))
     bbox = mask.getbbox()
     return bbox is not None
 
-chars = [c for c in codepoints if has_ink(c)]
+
+
+
+def build_atlas(upscale):
+    scaled_size = upscale * SIZE
+    scaled_cell = upscale * CELL
+
+    font = ImageFont.truetype(FONT_PATH, scaled_size)
+    chars = [ c for c in codepoints if is_visible(c, font) ]
+
+    png_name  = f"{ OUTPUT_PNG_NAME  }_{ upscale }x.png"
+    json_name = f"{ OUTPUT_JSON_NAME }_{ upscale }x.json"
+
+
+    # Pad to full rows (required by minecraft)
+    rows = math.ceil(len(chars) / COLS)
+    chars_padded = chars + [0] * (rows * COLS - len(chars))
+    grid = [ chars_padded[r * COLS:(r + 1) * COLS] for r in range(rows) ]
+    grid_str = [ "".join(chr(c) for c in row) for row in grid ]
+
+
+    # Render atlas
+    img = Image.new("RGBA", (COLS * scaled_cell, rows * scaled_cell), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    for row, line in enumerate(grid_str):
+        for col, ch in enumerate(line):
+            if ord(ch) != 0:
+                draw.text((col * scaled_cell, row * scaled_cell), ch, font=font, fill=(255, 255, 255, 255))
+    img.save(png_name)
+
+
+    # Write JSON
+    provider = {
+        "providers": [
+            {
+                "type": "bitmap",
+                "file": f"engineers-bliss:font/{ png_name }",
+                "height": CELL,
+                "ascent": CELL - 2,
+                "chars": grid_str
+            },
+            {"type": "space", "advances": {" ": 5}}
+        ]
+    }
+    with open(json_name, "w", encoding="utf-8") as f:
+        json.dump(provider, f, ensure_ascii=False, indent=2)
+
+
+    # Print output message
+    print(f"[{ upscale }x] {len(codepoints)} codepoints, {len(chars)} rendered, atlas is { COLS }x{ rows } cells -> { png_name }, { json_name }")
 
 
 
 
-# Pad to full rows (required by minecraft)
-ROWS = math.ceil(len(chars) / COLS)
-chars += [0] * (ROWS * COLS - len(chars))
-
-grid = [chars[r*COLS:(r+1)*COLS] for r in range(ROWS)]
-grid_str = ["".join(chr(c) for c in row) for row in grid]
-
-
-
-
-# Render atlas
-img = Image.new("RGBA", (COLS * SCALED_CELL, ROWS * SCALED_CELL), (0, 0, 0, 0))
-draw = ImageDraw.Draw(img)
-for row, line in enumerate(grid_str):
-    for col, ch in enumerate(line):
-        if ord(ch) != 0:
-            draw.text((col * SCALED_CELL, row * SCALED_CELL), ch, font=font, fill=(255, 255, 255, 255))
-img.save("mono.png")
-
-
-
-
-# Create provider JSON
-provider = {
-    "providers": [
-        {
-            "type": "bitmap",
-            "file": "engineers-bliss:font/mono.png",
-            "height": SIZE,
-            "ascent": SIZE - 1,
-            "chars": grid_str
-        },
-        {"type": "space", "advances": {" ": 5}}
-    ]
-}
-with open("font.json", "w", encoding="utf-8") as f:
-    json.dump(provider, f, ensure_ascii=False, indent=2)
-
-print(f"{len(codepoints)} codepoints, {len([c for c in chars if c])} rendered, atlas is {COLS}x{ROWS} cells")
+for scale in SCALES:
+    build_atlas(scale)

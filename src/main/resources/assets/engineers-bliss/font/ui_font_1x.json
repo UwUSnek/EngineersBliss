@@ -2,9 +2,9 @@
   "providers": [
     {
       "type": "bitmap",
-      "file": "engineers-bliss:font/mono.png",
+      "file": "engineers-bliss:font/mono_1x.png",
       "height": 10,
-      "ascent": 9,
+      "ascent": 8,
       "chars": [
         "!\"#$%&'()*+,-./01234",
         "56789:;<=>?@ABCDEFGH",
