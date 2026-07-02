@@ -182,8 +182,8 @@ public enum CreativeTweakFeature {
 
 
     private class Notices {
-        public static final String CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE = "This only works while in Creative Mode. Other entities are unaffected.";
-        public static final String CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE    = "This only works while in Creative Mode. Other players are unaffected.";
+        public static final String CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE = "This only works while in Creative Mode and doesn't affect other entities.";
+        public static final String CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE    = "This only works while in Creative Mode and doesn't affect other players.";
     }
 
 
