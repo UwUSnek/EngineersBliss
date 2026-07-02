@@ -19,7 +19,7 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
         final List<T> stepValues, final int defaultValueIndex,
         final Consumer<T> onApplyValue
     ) {
-        super(x, y, w, h, new UiMonoTxt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
+        super(x, y, w, h, new UiTxt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
         this.label = label;
         this.stepValues = stepValues;
         this.onApplyValue = onApplyValue;
@@ -36,7 +36,7 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
 
     @Override
     protected void updateMessage() {
-        setMessage(new UiMonoTxt(label + ": " + getSelectedValue()).get());
+        setMessage(new UiTxt(label + ": " + getSelectedValue()).get());
     }
 
 

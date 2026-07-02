@@ -8,10 +8,10 @@ FALLBACK_FONT_PATH = "fallback_light.ttf"
 SIZE = 8
 CELL = 10
 COLS = 20  # atlas width in glyphs
-SCALES = [1, 2, 3, 4]
+SCALES = [ 1, 1.5, 2, 2.5, 3, 3.5, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10 ]
 
-OUTPUT_PNG_NAME  = "mono"
-OUTPUT_JSON_NAME = "ui_font"
+OUTPUT_PNG_NAME  = "output/atlases/ui"
+OUTPUT_JSON_NAME = "output/providers/ui"
 
 
 

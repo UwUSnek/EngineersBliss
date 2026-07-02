@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.screens;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.parts.UiTxt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -23,7 +23,7 @@ public abstract class __base_Screen extends Screen {
 
 
     protected __base_Screen() {
-        super(new UiMonoTxt().get());
+        super(new UiTxt().get());
     }
 
 
@@ -62,12 +62,12 @@ public abstract class __base_Screen extends Screen {
     protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
         Button r =
             Button.builder(
-                new UiMonoTxt(label).get(),
+                new UiTxt(label).get(),
                 b -> { action.accept(b); b.setFocused(false); }
             )
             .size(width, BUTTON_HEIGHT)
             .pos(x, y)
-            .tooltip(Tooltip.create(new UiMonoTxt(details).get()))
+            .tooltip(Tooltip.create(new UiTxt(details).get()))
             .build()
         ;
         this.addRenderableWidget(r);

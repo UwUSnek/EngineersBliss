@@ -12,7 +12,7 @@ import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
-import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.parts.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.gui.components.Button;
@@ -142,7 +142,7 @@ public class PauseScreenMixin extends Screen {
 
     private Button addButton(String label, Supplier<Screen> screenFactory, int x, int y, int width) {
         Button btn = Button.builder(
-            new UiMonoTxt(label).get(),
+            new UiTxt(label).get(),
                 b -> {
                 minecraft.setScreen(screenFactory.get());
                 b.setFocused(false);

@@ -27,7 +27,7 @@ public class Layout {
     }
 
     public static final Style textStyleForScale() {
-        final FontDescription textFont = new FontDescription.Resource(getFontIdForScale("ui_font"));
+        final FontDescription textFont = new FontDescription.Resource(getFontIdForScale("ui"));
         return Style.EMPTY.withoutShadow().withFont(textFont);
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.parts.UiSteppedSlider;
-import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.parts.UiTxt;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
 
 import net.minecraft.client.Minecraft;
@@ -96,7 +96,7 @@ public class CreativeTweaksScreen extends __base_Screen {
 
     public static void toggleFeature(final CreativeTweakFeature feature, final Button b) {
         boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
-        b.setMessage(new UiMonoTxt(getToggleText(feature, newState)).get());
+        b.setMessage(new UiTxt(getToggleText(feature, newState)).get());
         CreativeTweaksHandler.setFeature(feature, newState);
     }
 }

@@ -2,7 +2,7 @@
   "providers": [
     {
       "type": "bitmap",
-      "file": "engineers-bliss:font/mono_2x.png",
+      "file": "engineers-bliss:font/ui_2x.png",
       "height": 10,
       "ascent": 8,
       "chars": [

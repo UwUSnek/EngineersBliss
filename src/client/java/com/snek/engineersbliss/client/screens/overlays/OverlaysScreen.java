@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.screens.overlays;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
-import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.parts.UiTxt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -57,7 +57,7 @@ public class OverlaysScreen extends __base_Screen {
 
     public static void toggleFeature(final OverlayFeature feature, final Button b) {
         boolean newState = !OverlaysHandler.getFeature(feature);
-        b.setMessage(new UiMonoTxt(getToggleText(feature, newState)).get());
+        b.setMessage(new UiTxt(getToggleText(feature, newState)).get());
         OverlaysHandler.setFeature(feature, newState);
     }
 }

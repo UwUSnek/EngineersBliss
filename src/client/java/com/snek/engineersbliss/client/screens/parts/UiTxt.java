@@ -12,17 +12,17 @@ import net.minecraft.network.chat.MutableComponent;
 
 
 
-public class UiMonoTxt extends Txt {
+public class UiTxt extends Txt {
 
-    public UiMonoTxt() { super(); }
-    public UiMonoTxt(final @NotNull String s) { super(s); }
-    public UiMonoTxt(final @NotNull MutableComponent s) { super(s); }
-    public UiMonoTxt(final @NotNull Component s) { super(s); }
+    public UiTxt() { super(); }
+    public UiTxt(final @NotNull String s) { super(s); }
+    public UiTxt(final @NotNull MutableComponent s) { super(s); }
+    public UiTxt(final @NotNull Component s) { super(s); }
 
 
     @Override
     public @NotNull Component get() {
-        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale("ui_font"))).withoutShadow());
+        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale("ui"))).withoutShadow());
         return rawText;
     }
 }

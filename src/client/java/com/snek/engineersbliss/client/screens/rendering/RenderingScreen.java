@@ -6,7 +6,7 @@ import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.screens.parts.UiEditBox;
-import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.parts.UiTxt;
 import com.snek.engineersbliss.client.screens.Layout;
 
 import net.minecraft.client.Minecraft;
@@ -92,8 +92,8 @@ public class RenderingScreen extends __base_Screen {
 
         // Left sidebar
 
-        searchField = new UiEditBox(BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiMonoTxt("Search...").get());
-        searchField.setHint(new UiMonoTxt("Search...").get());
+        searchField = new UiEditBox(BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiTxt("Search...").get());
+        searchField.setHint(new UiTxt("Search...").get());
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));
         searchField.setX(BORDER_WIDTH);
@@ -174,8 +174,8 @@ public class RenderingScreen extends __base_Screen {
             "|", "Search either of two strings"
         };
         for(int i = 0; i < syntaxInstructions.length / 2; i++) {
-            graphics.text(this.font, new UiMonoTxt(syntaxInstructions[i * 2    ]).get(), BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
-            graphics.text(this.font, new UiMonoTxt(syntaxInstructions[i * 2 + 1]).get(), BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(syntaxInstructions[i * 2    ]).get(), BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(syntaxInstructions[i * 2 + 1]).get(), BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
         }
 
 
@@ -192,18 +192,18 @@ public class RenderingScreen extends __base_Screen {
                 "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
             };
 
-            graphics.text(this.font, new UiMonoTxt(renderStats[0]).get(), rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(this.font, new UiMonoTxt(renderStats[2]).get(), rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(this.font, new UiMonoTxt(renderStats[4]).get(), rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[0]).get(), rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[2]).get(), rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[4]).get(), rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
             int rightTextPrefixWidth = 0;
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int w = this.font.width(renderStats[i]);
                 if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
             }
 
-            graphics.text(this.font, new UiMonoTxt(renderStats[1]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(this.font, new UiMonoTxt(renderStats[3]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(this.font, new UiMonoTxt(renderStats[5]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[1]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[3]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[5]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
         }
     }
 
@@ -238,7 +238,7 @@ public class RenderingScreen extends __base_Screen {
     public static void toggleTargetHiddenBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
         RenderFilterHandler.setTargetHiddenBlocks(newState);
-        b.setMessage(new UiMonoTxt(getToggleText_targetHiddenBlocks(newState)).get());
+        b.setMessage(new UiTxt(getToggleText_targetHiddenBlocks(newState)).get());
     }
 
 
@@ -250,7 +250,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderBlockOutlines(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(new UiMonoTxt(getToggleText_renderBlockOutlines(newState)).get());
+        b.setMessage(new UiTxt(getToggleText_renderBlockOutlines(newState)).get());
     }
 
 
@@ -262,7 +262,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderBlocks(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(new UiMonoTxt(getToggleText_renderBlocks(newState)).get());
+        b.setMessage(new UiTxt(getToggleText_renderBlocks(newState)).get());
     }
 
 
@@ -274,7 +274,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderBlockEntities(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(new UiMonoTxt(getToggleText_renderBlockEntities(newState)).get());
+        b.setMessage(new UiTxt(getToggleText_renderBlockEntities(newState)).get());
     }
 
 
@@ -286,7 +286,7 @@ public class RenderingScreen extends __base_Screen {
         RenderFilterHandler.setRenderFluids(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(new UiMonoTxt(getToggleText_renderFluids(newState)).get());
+        b.setMessage(new UiTxt(getToggleText_renderFluids(newState)).get());
     }
 }
 

@@ -5,7 +5,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesH
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
-import com.snek.engineersbliss.client.screens.parts.UiMonoTxt;
+import com.snek.engineersbliss.client.screens.parts.UiTxt;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -73,7 +73,7 @@ public class AltTexturesScreen extends __base_Screen {
 
     public static void toggleFeature(final AltTextureFeature feature, final Button b) {
         boolean newState = !AltTexturesHandler.getFeature(feature);
-        b.setMessage(new UiMonoTxt(getToggleText(feature, newState)).get());
+        b.setMessage(new UiTxt(getToggleText(feature, newState)).get());
         AltTexturesHandler.setFeature(feature, newState);
         MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
     }
