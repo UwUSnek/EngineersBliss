@@ -22,7 +22,6 @@ fallback_ttf = TTFont(FALLBACK_FONT_PATH, lazy=True)
 fallback_cmap = fallback_ttf.getBestCmap()
 codepoints = sorted(set(cmap) | set(fallback_cmap))
 
-
 glyph_source = {}
 for cp in fallback_cmap:
     glyph_source[cp] = FALLBACK_FONT_PATH
@@ -50,11 +49,18 @@ def build_atlas(upscale):
     json_name = f"{ OUTPUT_JSON_NAME }_{ upscale }x.json"
 
 
+    # Fetch fonts and store chars
     font_main = ImageFont.truetype(FONT_PATH, scaled_size)
     font_fallback = ImageFont.truetype(FALLBACK_FONT_PATH, scaled_size)
     def font_for(cp):
         return font_main if glyph_source[cp] == FONT_PATH else font_fallback
     chars = [c for c in codepoints if is_visible(c, font_for(c))]
+
+
+    # Calculate font ascents
+    main_ascent, _ = font_main.getmetrics()
+    fallback_ascent, _ = font_fallback.getmetrics()
+    y_offset = main_ascent - fallback_ascent  # add this when drawing fallback glyphs
 
 
     # Pad to full rows (required by minecraft)
@@ -69,8 +75,12 @@ def build_atlas(upscale):
     draw = ImageDraw.Draw(img)
     for row, line in enumerate(grid_str):
         for col, ch in enumerate(line):
-            if ord(ch) != 0:
-                draw.text((col * scaled_cell, row * scaled_cell), ch, font=font_for(ord(ch)), fill=(255, 255, 255, 255))
+            codepoint = ord(ch)
+            if codepoint != 0:
+                font = font_for(codepoint)
+                x = col * scaled_cell
+                y = row * scaled_cell + (y_offset if font is font_fallback else 0)
+                draw.text((x, y), ch, font=font, fill=(255,255,255,255))
     img.save(png_name)
 
 
@@ -81,7 +91,7 @@ def build_atlas(upscale):
                 "type": "bitmap",
                 "file": f"engineers-bliss:font/{ png_name }",
                 "height": CELL,
-                "ascent": CELL - 2,
+                "ascent": round(main_ascent / scaled_cell * CELL),
                 "chars": grid_str
             },
             {"type": "space", "advances": {" ": 5}}

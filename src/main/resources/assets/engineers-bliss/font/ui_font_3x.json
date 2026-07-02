@@ -4,7 +4,7 @@
       "type": "bitmap",
       "file": "engineers-bliss:font/mono_3x.png",
       "height": 10,
-      "ascent": 8,
+      "ascent": 6,
       "chars": [
         "!\"#$%&'()*+,-./01234",
         "56789:;<=>?@ABCDEFGH",
