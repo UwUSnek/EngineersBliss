@@ -3,7 +3,8 @@ from fontTools.ttLib import TTFont
 import json, math
 
 
-FONT_PATH = "light.ttf"
+FONT_PATH = "medium.ttf"
+FALLBACK_FONT_PATH = "fallback_light.ttf"
 SIZE = 8
 CELL = 10
 COLS = 20  # atlas width in glyphs
@@ -17,7 +18,17 @@ OUTPUT_JSON_NAME = "ui_font"
 # Find all codepoints in the font
 ttf = TTFont(FONT_PATH, lazy=True)
 cmap = ttf.getBestCmap()
-codepoints = sorted(cmap.keys())
+fallback_ttf = TTFont(FALLBACK_FONT_PATH, lazy=True)
+fallback_cmap = fallback_ttf.getBestCmap()
+codepoints = sorted(set(cmap) | set(fallback_cmap))
+
+
+glyph_source = {}
+for cp in fallback_cmap:
+    glyph_source[cp] = FALLBACK_FONT_PATH
+for cp in cmap:  # overwrite with main font where available
+    glyph_source[cp] = FONT_PATH
+codepoints = sorted(glyph_source)
 
 
 
@@ -35,12 +46,15 @@ def is_visible(ch, font):
 def build_atlas(upscale):
     scaled_size = upscale * SIZE
     scaled_cell = upscale * CELL
-
-    font = ImageFont.truetype(FONT_PATH, scaled_size)
-    chars = [ c for c in codepoints if is_visible(c, font) ]
-
     png_name  = f"{ OUTPUT_PNG_NAME  }_{ upscale }x.png"
     json_name = f"{ OUTPUT_JSON_NAME }_{ upscale }x.json"
+
+
+    font_main = ImageFont.truetype(FONT_PATH, scaled_size)
+    font_fallback = ImageFont.truetype(FALLBACK_FONT_PATH, scaled_size)
+    def font_for(cp):
+        return font_main if glyph_source[cp] == FONT_PATH else font_fallback
+    chars = [c for c in codepoints if is_visible(c, font_for(c))]
 
 
     # Pad to full rows (required by minecraft)
@@ -56,7 +70,7 @@ def build_atlas(upscale):
     for row, line in enumerate(grid_str):
         for col, ch in enumerate(line):
             if ord(ch) != 0:
-                draw.text((col * scaled_cell, row * scaled_cell), ch, font=font, fill=(255, 255, 255, 255))
+                draw.text((col * scaled_cell, row * scaled_cell), ch, font=font_for(ord(ch)), fill=(255, 255, 255, 255))
     img.save(png_name)
 
 

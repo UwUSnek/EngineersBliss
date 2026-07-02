@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 
 
 
@@ -60,14 +61,15 @@ public abstract class __base_Screen extends Screen {
 
 
     protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
+        final Style textStyle = Layout.textStyleForScale();
         Button r =
             Button.builder(
-                Component.literal(label).withStyle(Layout.textStyleForScale()),
+                Component.literal(label).withStyle(textStyle),
                 b -> { action.accept(b); b.setFocused(false); }
             )
             .size(width, BUTTON_HEIGHT)
             .pos(x, y)
-            .tooltip(Tooltip.create(Component.literal(details)))
+            .tooltip(Tooltip.create(Component.literal(details).withStyle(textStyle)))
             .build()
         ;
         this.addRenderableWidget(r);
