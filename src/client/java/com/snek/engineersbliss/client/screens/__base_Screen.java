@@ -15,10 +15,10 @@ import net.minecraft.network.chat.Component;
 
 
 public abstract class __base_Screen extends Screen {
-    public static final int BORDER_WIDTH = 10;
-    public static final int BORDER_HEIGHT = 4;
-    public static final int LIST_TOP = 32;
-    public static final int BUTTON_HEIGHT = 20;
+    public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
+    public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
+    public static final int LIST_TOP      = Layout.LIST_TOP;
+    public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
 
 
@@ -60,7 +60,12 @@ public abstract class __base_Screen extends Screen {
 
 
     protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
-        Button r = Button.builder(Component.literal(label), b -> { action.accept(b); b.setFocused(false); }).size(width, Layout.BUTTON_HEIGHT).pos(x, y).build();
+        Button r = Button.builder(
+            Component.literal(label).withStyle(Layout.textStyle), b -> { action.accept(b); b.setFocused(false); })
+            .size(width, BUTTON_HEIGHT)
+            .pos(x, y)
+            .build()
+        ;
         r.setTooltip(Tooltip.create(Component.literal(details)));
         this.addRenderableWidget(r);
         return r;
