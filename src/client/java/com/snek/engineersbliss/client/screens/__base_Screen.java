@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.screens;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -24,7 +25,7 @@ public abstract class __base_Screen extends Screen {
 
 
     protected __base_Screen() {
-        super(Component.literal(""));
+        super(new Txt().get());
     }
 
 
