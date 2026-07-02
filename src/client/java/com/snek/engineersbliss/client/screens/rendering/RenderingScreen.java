@@ -101,7 +101,7 @@ public class RenderingScreen extends __base_Screen {
         addButton(
             getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()),
             "Toggle targeting hidden blocks",
-            this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+            RenderingScreen::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
         );
 
 
@@ -117,28 +117,28 @@ public class RenderingScreen extends __base_Screen {
         addButton(
             "Recalculate light",
             "Recalculate all the light. This is a very resource intensive process that might take many seconds or minutes depending on your hardware.",
-            this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+            RenderingScreen::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
         );
 
         renderBlockOutlinesButton = addButton(
             getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()),
             "Toggle whether block outlines should be rendered at all",
-            this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
+            RenderingScreen::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
         );
         renderBlocksButton = addButton(
             getToggleText_renderBlocks(RenderFilterHandler.getRenderBlocks()),
             "Toggle whether blocks without custom block entity rendering should be rendered at all.",
-            this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
+            RenderingScreen::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
         );
         renderBlockEntitiesButton = addButton(
             getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()),
             "Toggle whether blocks with custom block entity rendering should be rendered at all.",
-            this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
+            RenderingScreen::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
         );
         renderFluidsButton = addButton(
             getToggleText_renderFluids(RenderFilterHandler.getRenderFluids()),
             "Toggle whether fluids should be rendered at all.",
-            this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
+            RenderingScreen::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
         );
 
 
@@ -225,26 +225,26 @@ public class RenderingScreen extends __base_Screen {
 
 
 
-    public void recalculateLight(final Button b) {
+    public static void recalculateLight(final Button b) {
         RenderFilterHandler.recalculateLight();
     }
 
 
 
-    public String getToggleText_targetHiddenBlocks(final boolean state) {
+    public static String getToggleText_targetHiddenBlocks(final boolean state) {
         return "Target hidden blocks: " + (state ? "YES" : "NO");
     }
-    public void toggleTargetHiddenBlocks(final Button b) {
+    public static void toggleTargetHiddenBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
         RenderFilterHandler.setTargetHiddenBlocks(newState);
         b.setMessage(Component.literal(getToggleText_targetHiddenBlocks(newState)));
     }
 
 
-    public String getToggleText_renderBlockOutlines(final boolean state) {
+    public static String getToggleText_renderBlockOutlines(final boolean state) {
         return "[O] Render block outlines: " + (state ? "YES" : "NO");
     }
-    public void toggleRenderBlockOutlines(final Button b) {
+    public static void toggleRenderBlockOutlines(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
         RenderFilterHandler.setRenderBlockOutlines(newState);
         RenderFilterHandler.recalculate();
@@ -253,10 +253,10 @@ public class RenderingScreen extends __base_Screen {
     }
 
 
-    public String getToggleText_renderBlocks(final boolean state) {
+    public static String getToggleText_renderBlocks(final boolean state) {
         return "[B] Render blocks: " + (state ? "YES" : "NO");
     }
-    public void toggleRenderBlocks(final Button b) {
+    public static void toggleRenderBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlocks();
         RenderFilterHandler.setRenderBlocks(newState);
         RenderFilterHandler.recalculate();
@@ -265,10 +265,10 @@ public class RenderingScreen extends __base_Screen {
     }
 
 
-    public String getToggleText_renderBlockEntities(final boolean state) {
+    public static String getToggleText_renderBlockEntities(final boolean state) {
         return "[E] Render block entities: " + (state ? "YES" : "NO");
     }
-    public void toggleRenderBlockEntities(final Button b) {
+    public static void toggleRenderBlockEntities(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlockEntities();
         RenderFilterHandler.setRenderBlockEntities(newState);
         RenderFilterHandler.recalculate();
@@ -277,10 +277,10 @@ public class RenderingScreen extends __base_Screen {
     }
 
 
-    public String getToggleText_renderFluids(final boolean state) {
+    public static String getToggleText_renderFluids(final boolean state) {
         return "[F] Render fluids: " + (state ? "YES" : "NO");
     }
-    public void toggleRenderFluids(final Button b) {
+    public static void toggleRenderFluids(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderFluids();
         RenderFilterHandler.setRenderFluids(newState);
         RenderFilterHandler.recalculate();

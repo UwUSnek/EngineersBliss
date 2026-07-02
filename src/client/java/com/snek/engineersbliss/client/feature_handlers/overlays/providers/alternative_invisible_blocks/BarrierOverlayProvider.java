@@ -1,10 +1,12 @@
-package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
+package com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

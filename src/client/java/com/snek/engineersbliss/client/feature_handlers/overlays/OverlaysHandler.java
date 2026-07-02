@@ -10,7 +10,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
-import com.snek.engineersbliss.client.feature_handlers.overlays.providers.StructureVoidOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;

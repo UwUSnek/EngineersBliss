@@ -103,16 +103,6 @@ public enum AltTextureFeature {
         true, "3D Glow Lichen",
         "Replaces the default flat texture of Glow Lichen with a three-dimensional model.",
         List.of(Blocks.GLOW_LICHEN)
-    ),
-    DOORS_3D( //TODO IMPLEMENT
-        true, "3D Doors",
-        "Replaces the default model of Doors with a more three-dimensional model.",
-        StreamSupport.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.DOORS).spliterator(), false).map(Holder::value).toList()
-    ),
-    TRAPDOORS_3D( //TODO IMPLEMENT
-        true, "3D Trapdoors",
-        "Replaces the default model of Trapdoors with a more three-dimensional model.",
-        StreamSupport.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.TRAPDOORS).spliterator(), false).map(Holder::value).toList()
     );
 
 
