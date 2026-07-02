@@ -3,7 +3,7 @@ from fontTools.ttLib import TTFont
 import json, math
 
 
-FONT_PATH = "medium.ttf"
+FONT_PATH = "bold.ttf"
 FALLBACK_FONT_PATH = "fallback_light.ttf"
 SIZE = 8
 CELL = 10
@@ -72,15 +72,22 @@ def build_atlas(upscale):
 
     # Render atlas
     img = Image.new("RGBA", (COLS * scaled_cell, rows * scaled_cell), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
     for row, line in enumerate(grid_str):
         for col, ch in enumerate(line):
             codepoint = ord(ch)
             if codepoint != 0:
+
+                # Get proper font and calculate cell position
                 font = font_for(codepoint)
                 x = col * scaled_cell
-                y = row * scaled_cell + (y_offset if font is font_fallback else 0)
-                draw.text((x, y), ch, font=font, fill=(255,255,255,255))
+                y = row * scaled_cell
+                glyph_local_y = y_offset if font is font_fallback else 0
+
+                # Draw the glyph on a temporary image, then paste the image to the atlas
+                # ! This clips large glyphs so they don't spill into nearby cells
+                glyph_img = Image.new("RGBA", (scaled_cell, scaled_cell), (0, 0, 0, 0))
+                ImageDraw.Draw(glyph_img).text((0, glyph_local_y), ch, font=font, fill=(255, 255, 255, 255))
+                img.paste(glyph_img, (x, y), glyph_img)
     img.save(png_name)
 
 
