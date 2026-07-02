@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,7 +50,7 @@ public class ClimbableSlowdownSuppressor {
 
 
         if(_this.onClimbable()) {
-            final @NonNull BlockState state = _this.getInBlockState();
+            final @NotNull BlockState state = _this.getInBlockState();
 
 
             // Handle Ladders

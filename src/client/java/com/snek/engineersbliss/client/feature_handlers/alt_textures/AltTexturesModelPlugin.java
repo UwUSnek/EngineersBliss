@@ -7,20 +7,23 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ActivatorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DetectorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.PoweredRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
@@ -51,9 +54,13 @@ import net.minecraft.world.level.block.state.BlockState;
  * It registers custom models and textures during startup and fetches the right ones based on config settings when resolving the block state's model.
  */
 public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<Identifier>> {
-    private static final List<String>   PART_SUFFIXES  = List.of("n", "e", "s", "w");
-    private static final List<Quadrant> PART_QUADRANTS = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
+    private static final List<String>   PART_SUFFIXES_HORIZONTAL  = List.of("n", "e", "s", "w");
+    private static final List<Quadrant> PART_QUADRANTS_HORIZONTAL = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
+    private static final List<String>   PART_SUFFIXES_VERTICAL    = List.of("u", "d");
+    private static final List<Quadrant> PART_QUADRANTS_VERTICAL   = List.of(Quadrant.R270, Quadrant.R90);
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
+
+
 
 
     // A map containing baked custom models. The runtime resolver fetches models from here.
@@ -71,7 +78,10 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new RailPartProvider(),
             new PoweredRailPartProvider(),
             new ActivatorRailPartProvider(),
-            new DetectorRailPartProvider()
+            new DetectorRailPartProvider(),
+            new LadderPartProvider(),
+            new VinesPartProvider(),
+            new GlowLichenPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
@@ -87,7 +97,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             final String root = "models/block";
 
             // Find all json models using the resource manager. Filter out stuff not from this mod and non-json files
-            final @NonNull ResourceManager resourceManager = sharedState.resourceManager();
+            final @NotNull ResourceManager resourceManager = sharedState.resourceManager();
             resourceManager.listResources(
                 root,
                 id -> {
@@ -95,7 +105,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 }).keySet().forEach(id -> {
 
                     // Skip models in the same directory as files named ".template"
-                    final String path = id.getPath();
+                    final @NotNull String path = id.getPath();
                     final String dir  = path.substring(0, path.lastIndexOf('/') + 1);
                     final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
                     if(resourceManager.getResource(templateMarker).isPresent()) return;
@@ -120,7 +130,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // Register the custom models during startup
         // Minecraft needs to know about all the models and textures beforehand in order to use them for rendering
         initContext.modifyBlockModelOnLoad().register((model, onLoadContext) -> {
-            final @NonNull BlockState state = onLoadContext.state();
+            final @NotNull BlockState state = onLoadContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
@@ -152,18 +162,25 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // This step yoinks the loaded custom model and stores a local reference to it so it can be used when needed
 
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
-            final @NonNull BlockState state = beforeBakeContext.state();
+            final @NotNull BlockState state = beforeBakeContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
 
             // For each model ID
-            for(Identifier modelId : modelIds) {
+            for(@NotNull Identifier modelId : modelIds) {
 
-                // Bake one model per direction and store it locally
-                for(int i = 0; i < 4; ++i) {
-                    final BlockStateModelPart part = new Variant(modelId).withYRot(PART_QUADRANTS.get(i)).bake(beforeBakeContext.baker());
-                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES.get(i));
+                // Bake one model per horizontal direction
+                for (int i = 0; i < 4; ++i) {
+                    final BlockStateModelPart part = new Variant(modelId).withYRot(PART_QUADRANTS_HORIZONTAL.get(i)).bake(beforeBakeContext.baker());
+                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_HORIZONTAL.get(i));
+                    customModels.put(rotatedModelId, new SingleVariant(part));
+                }
+
+                // Bake up and down variants
+                for (int i = 0; i < 2; ++i) {
+                    final BlockStateModelPart part = new Variant(modelId).withYRot(Quadrant.R180).withXRot(PART_QUADRANTS_VERTICAL.get(i)).bake(beforeBakeContext.baker());
+                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_VERTICAL.get(i));
                     customModels.put(rotatedModelId, new SingleVariant(part));
                 }
             }
@@ -178,12 +195,12 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // Particles and material flags are always vanilla, while the model parts are replaced by the custom model when needed
 
         initContext.modifyBlockModelAfterBake().register((model, afterBakeContext) -> {
-            final @NonNull BlockState state = afterBakeContext.state();
+            final @NotNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
 
-            final @NonNull BlockStateModel vanilla = model;
+            final @NotNull BlockStateModel vanilla = model;
             return new BlockStateModel() {
                 @Override
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {

@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
 
@@ -54,7 +54,7 @@ public class BlockRenderer {
     public static void renderBlockSpriteSheet(GuiGraphicsExtractor graphics, Block block, int x, int y, int size) {
 
         // Get block index, fallback to default icon if absent
-        @NonNull Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+        @NotNull Identifier id = BuiltInRegistries.BLOCK.getKey(block);
         int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
         if(blockIdx == -1) {
             renderBlockIcon(graphics, block, x, y, size);

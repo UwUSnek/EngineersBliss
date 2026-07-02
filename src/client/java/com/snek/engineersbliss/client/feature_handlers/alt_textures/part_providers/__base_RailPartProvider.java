@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
@@ -35,7 +35,7 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
             //! Sloped shape names have the format "ascending_<direction>" so this uses that directly by removing "ascending_" as that matches the json file names perfectly.
             //! Non-sloped shape names already match json models so no changes are needed there. This includes curved normal rails.
             //! All shape names are already lowercase.
-            final @NonNull RailShape shape = state.getValue(((BaseRailBlock)state.getBlock()).getShapeProperty());
+            final @NotNull RailShape shape = state.getValue(((BaseRailBlock)state.getBlock()).getShapeProperty());
             final String shapeName = shape.isSlope() ? "raised" : (CURVED_SHAPES.contains(shape) ? "corner" : "flat");
             final String directionName = switch(shape) {
                 case ASCENDING_NORTH, NORTH_SOUTH, NORTH_EAST -> "_n";

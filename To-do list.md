@@ -6,20 +6,25 @@
   - ~~Custom block outlines~~
 
 - **Alternative textures**
+  - ~~Minimal Redstone Wire~~
+  - Disable redstone wire particles
   - ~~Transparent Slime Block~~
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
   - ~~Unobstructive Scaffolding~~
-  - ~~Minimal Redstone Wire~~
+  
+  - ~~Consistent sloped rails~~
+  - ~~Alternative Barrier rendering~~
+  - ~~Alternative Structure Void rendering~~
+  - ~~Alternative Light Block rendering~~
+
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
-  - 3D Ladders
+  - ~~3D Ladders~~
   - 3D Iron Chains & Copper Chains
   - 3D Iron Bars & Copper Bars
-  - 3D Vines
-  - 3D Glow Lichen
-  - 3D Doors
-  - 3D Trapdoors
+  - ~~3D Vines~~
+  - ~~3D Glow Lichen~~
   - Player model rendering in the pause menu //TODO add this to the readme if possible
   - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
@@ -45,7 +50,6 @@
   - Copy and move groups around or across worlds
 
 - **Gameplay tweaks**:
-  - Disable redstone wire particles
   - Disable fluid flushing
   - Disable block gravity
   - Disable explosion block and entity damage
@@ -113,9 +117,9 @@
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
-  - Water Current Sponge
-  - Lava Current Sponge
   - Item Sink (storage block with infinite capacity)
+  - 0 Friction blocks
+  - ∞ Friction blocks
   - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
   - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
   - [Vanilla Item] Name Tag item with Custom Name //TODO meant for name tagging mobs (makes them persistent). add to item lore
@@ -174,3 +178,7 @@
 
 - add cool redstone mechanism overlay in front of the main menu screen
 - add cool small redstone mechanism overlay in the pause menu
+
+
+
+- maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff

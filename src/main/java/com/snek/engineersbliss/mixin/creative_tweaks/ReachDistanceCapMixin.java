@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.mixin.creative_tweaks;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +18,7 @@ public class ReachDistanceCapMixin {
     @Inject(method = "sanitizeValue", at = @At("HEAD"), cancellable = true, require = 1)
     public void sanitizeValue(final double value, CallbackInfoReturnable<Double> cir) {
         final RangedAttribute _this = (RangedAttribute)(Object)this;
-        final @NonNull String id = _this.getDescriptionId();
+        final @NotNull String id = _this.getDescriptionId();
         if(
             id.equals("attribute.name.block_interaction_range") ||
             id.equals("attribute.name.entity_interaction_range")

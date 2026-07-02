@@ -13,14 +13,14 @@ import com.mojang.math.Axis;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
-import com.snek.engineersbliss.client.feature_handlers.overlays.providers.BarrierOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.ComparatorLogicOverlayProvider;
-import com.snek.engineersbliss.client.feature_handlers.overlays.providers.LightBlockOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RailLevelOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.RedstoneLevelOverlayProvider;
-import com.snek.engineersbliss.client.feature_handlers.overlays.providers.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.BarrierOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.LightBlockOverlayProvider;
+import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.StructureVoidOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextOverlayProvider;
@@ -57,14 +57,17 @@ public final class OverlayRenderer {
     // A list constaining all overlay providers.
     //! This needs to be updated manually as new providers are added.
     private static List<__base_OverlayProvider> providers = List.of(
+
+        // Power level
         new RedstoneLevelOverlayProvider(),
         new ComparatorLevelOverlayProvider(),
         new RailLevelOverlayProvider(),
 
+        // Logic
         //FIXME only check the targeted block once per "targeted-block-overlay" provider instead of running this on every block
         new ComparatorLogicOverlayProvider(),
 
-
+        // Invisible blocks //! Feature toggled from the Alt Textures screen
         new StructureVoidOverlayProvider(),
         new BarrierOverlayProvider(),
         new LightBlockOverlayProvider()

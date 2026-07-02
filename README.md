@@ -86,11 +86,16 @@ It helps a lot :3
   - Player model rendering in the pause menu
   <br><br>
 - **Alternative textures**:
-  - Less opaque Slime Block texture
-  - Less opaque Honey Block texture
-  - Unobstructive Mangrove Roots texture
-  - Unobstructive Scaffolding texture
-  - Minimal Redstone Wire texture
+  - Minimal Redstone Wire
+  - Disable redstone wire particles
+  - Less opaque Slime Blocks
+  - Less opaque Honey Blocks
+  - Unobstructive Mangrove Roots
+  - Unobstructive Scaffoldings<br><br>
+  - Consistent sloped Rails
+  - Alternative Barrier rendering
+  - Alternative Structure Void rendering
+  - Alternative Light Block rendering<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders
@@ -98,8 +103,6 @@ It helps a lot :3
   - 3D Iron Bars & Copper Bars
   - 3D Vines
   - 3D Glow Lichen
-  - 3D Doors
-  - 3D Trapdoors
   <br><br>
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -183,9 +186,9 @@ It helps a lot :3
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
-  - Water Current Sponge
-  - Lava Current Sponge
   - Item Sink (storage block with infinite capacity)
+  - 0 Friction blocks
+  - ∞ Friction blocks
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
