@@ -2,7 +2,7 @@
   "providers": [
     {
       "type": "bitmap",
-      "file": "engineers-bliss:font/ui_3x.png",
+      "file": "engineers-bliss:font/ui_bold_3x.png",
       "height": 10,
       "ascent": 8,
       "chars": [

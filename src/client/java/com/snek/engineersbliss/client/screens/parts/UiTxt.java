@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.screens.Layout;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.MutableComponent;
 
 
@@ -22,7 +21,7 @@ public class UiTxt extends Txt {
 
     @Override
     public @NotNull Component get() {
-        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale("ui"))).withoutShadow());
+        rawText.setStyle(Layout.textStyleForScale(Layout.FONT_NAME_UI_MEDIUM));
         return rawText;
     }
 }
