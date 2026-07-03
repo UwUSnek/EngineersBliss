@@ -12,19 +12,28 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ActivatorRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DetectorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.PoweredRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.CopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.ExposedCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.IronChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.OxidizedCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedExposedCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedOxidizedCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedWeatheredCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WeatheredCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.ActivatorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.DetectorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.PoweredRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.RailPartProvider;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -59,6 +68,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     private static final List<Quadrant> PART_QUADRANTS_HORIZONTAL = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
     private static final List<String>   PART_SUFFIXES_VERTICAL    = List.of("u", "d");
     private static final List<Quadrant> PART_QUADRANTS_VERTICAL   = List.of(Quadrant.R270, Quadrant.R90);
+    private static final List<Quadrant> PART_XROT_AXIS            = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R90);
+    private static final List<Quadrant> PART_YROT_AXIS            = List.of(Quadrant.R0, Quadrant.R0, Quadrant.R90);
+    private static final List<String>   PART_SUFFIXES_AXIS        = List.of("y", "z", "x");
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
 
 
@@ -76,13 +88,24 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new MangroveRootsPartProvider(),
             new ScaffoldingPartProvider(),
             new RedstoneWirePartProvider(),
+            new LadderPartProvider(),
+            new VinesPartProvider(),
+            new GlowLichenPartProvider(),
+
             new RailPartProvider(),
             new PoweredRailPartProvider(),
             new ActivatorRailPartProvider(),
             new DetectorRailPartProvider(),
-            new LadderPartProvider(),
-            new VinesPartProvider(),
-            new GlowLichenPartProvider()
+
+            new IronChainPartProvider(),
+            new CopperChainPartProvider(),
+            new ExposedCopperChainPartProvider(),
+            new WeatheredCopperChainPartProvider(),
+            new OxidizedCopperChainPartProvider(),
+            new WaxedCopperChainPartProvider(),
+            new WaxedExposedCopperChainPartProvider(),
+            new WaxedWeatheredCopperChainPartProvider(),
+            new WaxedOxidizedCopperChainPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
@@ -173,16 +196,34 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
                 // Bake one model per horizontal direction
                 for (int i = 0; i < 4; ++i) {
-                    final BlockStateModelPart part = new Variant(modelId).withYRot(PART_QUADRANTS_HORIZONTAL.get(i)).bake(beforeBakeContext.baker());
+                    final BlockStateModelPart part = new Variant(modelId)
+                        .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
+                        .bake(beforeBakeContext.baker())
+                    ;
                     final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_HORIZONTAL.get(i));
                     customModels.put(rotatedModelId, new SingleVariant(part));
                 }
 
                 // Bake up and down variants
                 for (int i = 0; i < 2; ++i) {
-                    final BlockStateModelPart part = new Variant(modelId).withYRot(Quadrant.R180).withXRot(PART_QUADRANTS_VERTICAL.get(i)).bake(beforeBakeContext.baker());
+                    final BlockStateModelPart part = new Variant(modelId)
+                        .withYRot(Quadrant.R180)
+                        .withXRot(PART_QUADRANTS_VERTICAL.get(i))
+                        .bake(beforeBakeContext.baker())
+                    ;
                     final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_VERTICAL.get(i));
                     customModels.put(rotatedModelId, new SingleVariant(part));
+                }
+
+                // Bake axis-aligned variants
+                for (int i = 0; i < 3; ++i) {
+                    final BlockStateModelPart part = new Variant(modelId)
+                        .withXRot(PART_XROT_AXIS.get(i))
+                        .withYRot(PART_YROT_AXIS.get(i))
+                        .bake(beforeBakeContext.baker())
+                    ;
+                    final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_AXIS.get(i));
+                    customModels.put(axisModelId, new SingleVariant(part));
                 }
             }
             return model;

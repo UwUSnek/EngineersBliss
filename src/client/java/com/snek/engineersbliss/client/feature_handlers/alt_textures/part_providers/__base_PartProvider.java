@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -24,6 +25,14 @@ public abstract class __base_PartProvider {
             case SOUTH -> "_s";
             case WEST  -> "_w";
             default    -> "";
+        };
+    }
+    protected static String getVariationSuffixFromAxis(final Axis axis) {
+        return switch(axis) {
+            case X  -> "_x";
+            case Y  -> "_y";
+            case Z  -> "_z";
+            default -> "";
         };
     }
 }

@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers;
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

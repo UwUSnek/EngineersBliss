@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/chains/3d/template/template",
+  "textures": {
+    "texture": "engineers-bliss:block/chains/3d/copper"
+  }
+}

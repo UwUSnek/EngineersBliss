@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers;
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Blocks;
