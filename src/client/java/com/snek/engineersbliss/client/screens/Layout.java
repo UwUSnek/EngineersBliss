@@ -51,17 +51,18 @@ public class Layout {
      * ! Available providers are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
      * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
      * @param scale The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
-     *              This is clamped between 0.5 and 5 and rounded to the nearest multiple of 0.5 units.
+     *              This is clamped between 0.25 and 5 and rounded to the nearest multiple of 0.25 units.
+     *              For pixel-perfect rendering, ensure the text size is a multiple of 0.25 units (4px minecraft text height)
      * @return The ID of the font provider.
      */
     public static Identifier getFontIdForScale(final String baseName, final float scale) {
         float guiScale = Minecraft.getInstance().getWindow().getGuiScale() * scale;
 
-        // Snap to nearest 0.5 increment, clamped between 0.5 and FONT_MAX_SCALE
-        float snapped = Math.round(guiScale * 2f) / 2f;
-        snapped = Math.clamp(snapped, 0.5f, FONT_MAX_SCALE);
+        // Snap to nearest 0.25 increment, clamped between 0.25 and FONT_MAX_SCALE
+        float snapped = Math.round(guiScale * 4f) / 4f;
+        snapped = Math.clamp(snapped, 0.25f, FONT_MAX_SCALE);
 
-        // Format as "1" for whole numbers, "1.5" for half-steps, to matches atlas filenames
+        // Format as "1" for whole numbers, "1.5" for decimal steps, to matches atlas filenames
         String scaleStr = (snapped == Math.floor(snapped))
             ? String.valueOf((int)snapped)
             : String.valueOf(snapped)
@@ -90,7 +91,8 @@ public class Layout {
      * ! Available fonts are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
      * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
      * @param scale The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
-     *              This is clamped between 0.5 and 5 and rounded to the nearest multiple of 0.5 units.
+     *              This is clamped between 0.25 and 5 and rounded to the nearest multiple of 0.25 units.
+     *              For pixel-perfect rendering, ensure the text size is a multiple of 0.25 units (4px minecraft text height)
      * @return The style.
      */
     public static final Style textStyleForScale(final String fontName, final float scale) {

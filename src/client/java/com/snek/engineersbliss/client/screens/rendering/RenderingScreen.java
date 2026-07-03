@@ -233,7 +233,7 @@ public class RenderingScreen extends __base_Screen {
 
 
     public static String getToggleText_targetHiddenBlocks(final boolean state) {
-        return "Target hidden blocks: " + (state ? "YES" : "NO");
+        return "Target hidden blocks: " + (state ? "ON" : "OFF");
     }
     public static void toggleTargetHiddenBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
@@ -243,7 +243,7 @@ public class RenderingScreen extends __base_Screen {
 
 
     public static String getToggleText_renderBlockOutlines(final boolean state) {
-        return "[O] Render block outlines: " + (state ? "YES" : "NO");
+        return "[O] Render block outlines: " + (state ? "ON" : "OFF");
     }
     public static void toggleRenderBlockOutlines(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
@@ -255,7 +255,7 @@ public class RenderingScreen extends __base_Screen {
 
 
     public static String getToggleText_renderBlocks(final boolean state) {
-        return "[B] Render blocks: " + (state ? "YES" : "NO");
+        return "[B] Render blocks: " + (state ? "ON" : "OFF");
     }
     public static void toggleRenderBlocks(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlocks();
@@ -267,7 +267,7 @@ public class RenderingScreen extends __base_Screen {
 
 
     public static String getToggleText_renderBlockEntities(final boolean state) {
-        return "[E] Render block entities: " + (state ? "YES" : "NO");
+        return "[E] Render block entities: " + (state ? "ON" : "OFF");
     }
     public static void toggleRenderBlockEntities(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderBlockEntities();
@@ -279,7 +279,7 @@ public class RenderingScreen extends __base_Screen {
 
 
     public static String getToggleText_renderFluids(final boolean state) {
-        return "[F] Render fluids: " + (state ? "YES" : "NO");
+        return "[F] Render fluids: " + (state ? "ON" : "OFF");
     }
     public static void toggleRenderFluids(final Button b) {
         boolean newState = !RenderFilterHandler.getRenderFluids();
