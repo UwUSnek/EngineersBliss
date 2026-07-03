@@ -22,14 +22,14 @@ public enum CreativeTweakFeature {
         () -> new UiTxt("Phase through blocks"),
         () -> new Txt()
             .cat(new UiTxt("Lets you phase through blocks while flying, completely ignoring their collisions.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE)
+            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE).cat("\n")
             .cat(Notices.MULTIPLAYER_NOTICE)
     ),
     PHASE_THROUGH_ENTITIES(CreativeTweakServerFeature.PHASE_THROUGH_ENTITIES,
         () -> new UiTxt("Phase through entities"),
         () -> new Txt()
             .cat(new UiTxt("Stops you from pushing and being pushed by other entities, even while not flying.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE)
+            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE).cat("\n")
             .cat(Notices.MULTIPLAYER_NOTICE)
     ),
     DISABLE_FIRE_EFFECT(CreativeTweakServerFeature.DISABLE_FIRE_EFFECT,
