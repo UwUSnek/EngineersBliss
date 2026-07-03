@@ -164,7 +164,7 @@ public class BlockRenderer {
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
 
-        graphics.text(Minecraft.getInstance().font, new UiTxt(block.getName()).get().getVisualOrderText(), 0, 0, color);
+        graphics.text(Minecraft.getInstance().font, new UiTxt(block.getName(), scale).get().getVisualOrderText(), 0, 0, color);
 
         // Pop pose
         graphics.pose().popMatrix();

@@ -10,6 +10,10 @@ import net.minecraft.resources.Identifier;
 
 
 
+
+
+
+
 public class Layout {
     private Layout() { }
 
@@ -30,9 +34,26 @@ public class Layout {
 
 
 
+    /**
+     * Fetches the ID of the font provider of the specified font that is most optimal for rendering text of default size.
+     * This takes into account the current GUI Scale option.
+     * ! Available providers are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
+     * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
+     * @return The ID of the font provider.
+     */
     public static Identifier getFontIdForScale(final String baseName) {
         return getFontIdForScale(baseName, 1);
     }
+
+    /**
+     * Fetches the ID of the font provider of the specified font that is most optimal for rendering text of the specified size.
+     * This takes into account the current GUI Scale option.
+     * ! Available providers are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
+     * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
+     * @param scale The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
+     *              This is clamped between 0.5 and 5 and rounded to the nearest multiple of 0.5 units.
+     * @return The ID of the font provider.
+     */
     public static Identifier getFontIdForScale(final String baseName, final float scale) {
         float guiScale = Minecraft.getInstance().getWindow().getGuiScale() * scale;
 
@@ -50,11 +71,30 @@ public class Layout {
     }
 
 
+
+
+    /**
+     * Creates a style with the variant of the specified font that is most optimal for rendering text of default size.
+     * This takes into account the current GUI Scale option.
+     * ! Available fonts are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
+     * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
+     * @return The style.
+     */
     public static final Style textStyleForScale(final String fontName) {
         return textStyleForScale(fontName, 1);
     }
+
+    /**
+     * Creates a style with the variant of the specified font that is most optimal for rendering text of the specified size.
+     * This takes into account the current GUI Scale option.
+     * ! Available fonts are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
+     * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
+     * @param scale The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
+     *              This is clamped between 0.5 and 5 and rounded to the nearest multiple of 0.5 units.
+     * @return The style.
+     */
     public static final Style textStyleForScale(final String fontName, final float scale) {
         final FontDescription textFont = new FontDescription.Resource(getFontIdForScale(fontName));
-        return Style.EMPTY.withoutShadow().withFont(textFont);
+        return Style.EMPTY.withFont(textFont);
     }
 }
