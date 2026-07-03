@@ -190,9 +190,9 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 final Block block = hoveredEntry.block;
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
-                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
+                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" " + BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
-                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt("#" + tag.location()).gray().get().getVisualOrderText()))
+                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" #" + tag.location()).gray().get().getVisualOrderText()))
                 );
                 graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
