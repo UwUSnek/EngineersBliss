@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.feature_handlers.creative_tweaks;
 
 import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.EngineerSBliss;
 
 import java.util.function.Supplier;
 
@@ -22,12 +23,14 @@ public enum CreativeTweakFeature {
         () -> new Txt()
             .cat(new UiTxt("Lets you phase through blocks while flying, completely ignoring their collisions.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE)
     ),
     PHASE_THROUGH_ENTITIES(CreativeTweakServerFeature.PHASE_THROUGH_ENTITIES,
         () -> new UiTxt("Phase through entities"),
         () -> new Txt()
             .cat(new UiTxt("Stops you from pushing and being pushed by other entities, even while not flying.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE)
     ),
     DISABLE_FIRE_EFFECT(CreativeTweakServerFeature.DISABLE_FIRE_EFFECT,
         () -> new UiTxt("Disable being on fire"),
@@ -221,9 +224,14 @@ public enum CreativeTweakFeature {
     private class Notices {
         public static final Txt CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE = new UiTxt(
             "This only works while in Creative Mode and doesn't affect other entities."
-        ).red();
-        public static final Txt CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE    = new UiTxt(
+        ).yellow();
+
+        public static final Txt CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE = new UiTxt(
             "This only works while in Creative Mode and doesn't affect other players."
+        ).yellow();
+
+        public static final Txt MULTIPLAYER_NOTICE = new UiTxt(
+            "This doesn't work on servers without " + EngineerSBliss.MOD_NAME + " mod installed."
         ).red();
     }
 
@@ -258,6 +266,6 @@ public enum CreativeTweakFeature {
         this.serverFeature = serverFeature;
         this.nameSupplier    = nameSupplier;
         this.detailsSupplier = detailsSupplier;
-        this.flagBit = 1 << ordinal();
+        this.flagBit = serverFeature.getFlagBit();
     }
 }

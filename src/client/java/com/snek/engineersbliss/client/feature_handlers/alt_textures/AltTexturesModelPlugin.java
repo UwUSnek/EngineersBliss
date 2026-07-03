@@ -44,6 +44,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.DetectorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.PoweredRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.RailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.OakHangingSignPartProvider;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -126,7 +127,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new WaxedCopperLanternPartProvider(),
             new WaxedExposedCopperLanternPartProvider(),
             new WaxedWeatheredCopperLanternPartProvider(),
-            new WaxedOxidizedCopperLanternPartProvider()
+            new WaxedOxidizedCopperLanternPartProvider(),
+
+            new OakHangingSignPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }

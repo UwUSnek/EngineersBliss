@@ -187,4 +187,4 @@
 
 
 - add a "about" screen that talks abotu the mod, basically just copy the readme.
-  - display my player skin in there too and name 
+  - display my skin/drawing in there too and name
