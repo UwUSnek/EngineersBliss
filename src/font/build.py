@@ -95,7 +95,10 @@ def build_atlas(name, font_path, fallback_path, upscale):
                 glyph_img = Image.new("RGBA", (scaled_cell, scaled_cell), (0, 0, 0, 0))
                 ImageDraw.Draw(glyph_img).text((0, glyph_local_y), ch, font=font, fill=(255, 255, 255, 255))
                 img.paste(glyph_img, (x, y), glyph_img)
-    img.save(png_path)
+
+    # Glyphs are pure white. Converting to LA (grayscale + alpha) allows for better compression
+    img = img.convert("LA")
+    img.save(png_path, optimize=True)
 
 
     # Write JSON
