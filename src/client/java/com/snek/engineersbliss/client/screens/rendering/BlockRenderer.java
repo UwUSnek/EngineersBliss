@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.parts.UiTxt;
+import com.snek.engineersbliss.client.screens.AvifTextureTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -66,32 +67,38 @@ public class BlockRenderer {
         int localIdx = blockIdx % SHEETS_PER_ATLAS;
         int sheetCol = localIdx % ATLAS_COLS;
         int sheetRow = localIdx / ATLAS_COLS;
-        Identifier texture = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".avif");
+        Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".avif");
 
-        // Atlas dimensions in sheets
-        float atlasW = ATLAS_COLS * (float)SPRITE_SHEET_WIDTH;
-        float atlasH = ATLAS_ROWS * (float)SPRITE_SHEET_HEIGHT;
 
-        // Current animation frame
-        int frame = (int)((System.currentTimeMillis() / (1000L / SPRITE_FPS)) % SPRITE_FRAME_COUNT);
-        int frameCol = frame % SPRITE_COLS;
-        int frameRow = frame / SPRITE_COLS;
+        if(!AvifTextureTracker.isTextureReady(textureId)) {
+            graphics.blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
+        }
+        else {
 
-        // Pixel offsets of this sheet within the atlas
-        float sheetOffsetX = sheetCol * (float)SPRITE_SHEET_WIDTH;
-        float sheetOffsetY = sheetRow * (float)SPRITE_SHEET_HEIGHT;
+            // Atlas dimensions in sheets
+            float atlasW = ATLAS_COLS * (float)SPRITE_SHEET_WIDTH;
+            float atlasH = ATLAS_ROWS * (float)SPRITE_SHEET_HEIGHT;
 
-        float u0 = (sheetOffsetX + frameCol       * SPRITE_FRAME_WIDTH)  / atlasW;
-        float u1 = (sheetOffsetX + (frameCol + 1) * SPRITE_FRAME_WIDTH)  / atlasW;
-        float v0 = (sheetOffsetY + frameRow       * SPRITE_FRAME_HEIGHT) / atlasH;
-        float v1 = (sheetOffsetY + (frameRow + 1) * SPRITE_FRAME_HEIGHT) / atlasH;
+            // Current animation frame
+            int frame = (int)((System.currentTimeMillis() / (1000L / SPRITE_FPS)) % SPRITE_FRAME_COUNT);
+            int frameCol = frame % SPRITE_COLS;
+            int frameRow = frame / SPRITE_COLS;
 
-        graphics.blit(texture, x, y, x + size, y + size, u0, u1, v0, v1);
+            // Pixel offsets of this sheet within the atlas
+            float sheetOffsetX = sheetCol * (float)SPRITE_SHEET_WIDTH;
+            float sheetOffsetY = sheetRow * (float)SPRITE_SHEET_HEIGHT;
+
+            float u0 = (sheetOffsetX +  frameCol      * SPRITE_FRAME_WIDTH)  / atlasW;
+            float u1 = (sheetOffsetX + (frameCol + 1) * SPRITE_FRAME_WIDTH)  / atlasW;
+            float v0 = (sheetOffsetY +  frameRow      * SPRITE_FRAME_HEIGHT) / atlasH;
+            float v1 = (sheetOffsetY + (frameRow + 1) * SPRITE_FRAME_HEIGHT) / atlasH;
+
+            graphics.blit(textureId, x, y, x + size, y + size, u0, u1, v0, v1);
+        }
     }
 
     /**
      * Renders an animated block spritesheet on the provided Graphics.
-     * Spritesheets are 480x34560 vertical strips (72 frames × 480px).
      * The default size is 16px.
      * @param graphics  The output Graphics
      * @param block     The block whose spritesheet to render
