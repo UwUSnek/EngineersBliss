@@ -231,7 +231,7 @@ public enum CreativeTweakFeature {
         ).yellow();
 
         public static final Txt MULTIPLAYER_NOTICE = new UiTxt(
-            "This doesn't work on servers without " + EngineerSBliss.MOD_NAME + " mod installed."
+            "This doesn't work on servers without the " + EngineerSBliss.MOD_NAME + " mod installed."
         ).red();
     }
 

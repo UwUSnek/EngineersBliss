@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays;
 
 import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.HashSet;
@@ -25,7 +26,8 @@ public enum OverlayFeature {
         () -> new UiTxt("Rail power levels"),
         () -> new Txt()
             .cat(new UiTxt("Displays the power level of powered Activator Rails and Powered Rails.\n"))
-            .cat(new UiTxt("This follows Minecraft Vanilla's quirky rail update logic, so the displayed power levels might at times seem counterintuitive."))
+            .cat(new UiTxt("This follows Minecraft Vanilla's quirky rail update logic, so the displayed power levels might at times seem counterintuitive.\n"))
+            .cat(Notices.MULTIPLAYER_NOTICE)
         ,
         List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)
     ),
@@ -33,7 +35,8 @@ public enum OverlayFeature {
         () -> new UiTxt("Comparator power levels"),
         () -> new Txt()
             .cat(new UiTxt("Displays the output power level of Comparators.\n"))
-            .cat(new UiTxt("Unlike other power level overlays, this is also shown on Comparators with output 0."))
+            .cat(new UiTxt("Unlike other power level overlays, this is also shown on Comparators with output 0.\n"))
+            .cat(Notices.MULTIPLAYER_NOTICE)
         ,
         List.of(Blocks.COMPARATOR)
     ),
@@ -43,17 +46,26 @@ public enum OverlayFeature {
 
     COMPARATOR_LOGIC_SNIPPET(false,
         () -> new UiTxt("Comparator logic snippet"),
-        () -> new UiTxt("Displays the logic Comparators use to calculate their output signal as an expression."),
+        () -> new Txt()
+            .cat(new UiTxt("Displays the logic Comparators use to calculate their output signal as an expression.\n"))
+            .cat(Notices.MULTIPLAYER_NOTICE)
+        ,
         List.of(Blocks.COMPARATOR)
     ), //TODO implement these as custom arrows
     REDSTONE_WIRE_POWER_SOURCE(false,
         () -> new UiTxt("Redstone Wire power source"),
-        () -> new UiTxt("Shows arrows connecting each Redstone Wire to the blocks that are currently powering it."),
+        () -> new Txt()
+            .cat(new UiTxt("Shows arrows connecting each Redstone Wire to the blocks that are currently powering it.\n"))
+            .cat(Notices.MULTIPLAYER_NOTICE)
+        ,
         List.of(Blocks.REDSTONE_WIRE)
     ), //TODO implement these as custom arrows
     RAIL_POWER_SOURCE(false,
         () -> new UiTxt("Rail power source"),
-        () -> new UiTxt("Shows arrows connecting each Activator Rail and Powered Rail to the block that is currently powering it."),
+        () -> new Txt()
+            .cat(new UiTxt("Shows arrows connecting each Activator Rail and Powered Rail to the block that is currently powering it.\n"))
+            .cat(Notices.MULTIPLAYER_NOTICE)
+        ,
         List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)
     ), //TODO implement these as custom arrows
 
@@ -93,6 +105,10 @@ public enum OverlayFeature {
         public static final Txt OVERLAY_PROS_NOTICE = new UiTxt(
             "Overlays are shown and removed instantly, don't have a view distance limit and can be seen through walls."
         ).green();
+
+        public static final Txt MULTIPLAYER_NOTICE = new UiTxt(
+            "This overlay isn't available on servers without the " + EngineerSBliss.MOD_NAME + " mod installed."
+        ).red();
     }
 
 
