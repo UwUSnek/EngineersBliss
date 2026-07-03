@@ -1,8 +1,7 @@
-package com.snek.engineersbliss.client.screens.parts;
+package com.snek.engineersbliss.client.utils;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.snek.engineersbliss.client.screens.Layout;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.network.chat.Component;

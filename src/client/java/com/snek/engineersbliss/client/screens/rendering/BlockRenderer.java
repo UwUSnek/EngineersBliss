@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.screens.parts.UiTxt;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.AvifTextureTracker;
 
 import net.minecraft.client.Minecraft;

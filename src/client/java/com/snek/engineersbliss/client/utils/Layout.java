@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens;
+package com.snek.engineersbliss.client.utils;
 
 import com.snek.engineersbliss.EngineerSBliss;
 

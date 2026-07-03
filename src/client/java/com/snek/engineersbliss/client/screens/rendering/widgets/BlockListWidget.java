@@ -23,10 +23,10 @@ import java.util.regex.Pattern;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.Layout;
-import com.snek.engineersbliss.client.screens.parts.UiTxt;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;

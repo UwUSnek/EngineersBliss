@@ -52,7 +52,7 @@ public class CreativeTweaksServerHandler {
     }
     public static long getToggleFeatures(final Player player) {
         final Long r = toggleFeatureMasks.get(player.getUUID());
-        return r == null ? CreativeTweakFeature.DEFAULT_FLAGS : r;
+        return r == null ? CreativeTweakServerFeature.DEFAULT_FLAGS : r;
     }
 
 
@@ -193,9 +193,9 @@ public class CreativeTweaksServerHandler {
 
     /**
      * Checks if a player has the specified feature toggled ON.
-     * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakFeature) instead.
+     * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakServerFeature) instead.
      */
-    public static boolean serverPlayerHasFeature(final Object entity, final CreativeTweakFeature feature) {
+    public static boolean serverPlayerHasFeature(final Object entity, final CreativeTweakServerFeature feature) {
         if(entity instanceof Player player) {
             long featureMask = getToggleFeatures(player);
             if(feature.hasFlagBit(featureMask)) {
@@ -207,6 +207,6 @@ public class CreativeTweaksServerHandler {
         return false;
     }
     public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
-        return serverPlayerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
+        return serverPlayerHasFeature(entity, CreativeTweakServerFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }

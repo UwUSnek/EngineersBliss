@@ -3,6 +3,8 @@ package com.snek.engineersbliss.client.screens.parts;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.snek.engineersbliss.client.utils.UiTxt;
+
 import net.minecraft.client.gui.components.AbstractSliderButton;
 
 

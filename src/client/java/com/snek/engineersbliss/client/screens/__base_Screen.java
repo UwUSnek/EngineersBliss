@@ -3,7 +3,9 @@ package com.snek.engineersbliss.client.screens;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.snek.engineersbliss.client.screens.parts.UiTxt;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -59,15 +61,15 @@ public abstract class __base_Screen extends Screen {
     }
 
 
-    protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
+    protected Button addButton(Txt label, Txt details, Consumer<Button> action, int x, int y, int width) {
         Button r =
             Button.builder(
-                new UiTxt(label).get(),
+                label.get(),
                 b -> { action.accept(b); b.setFocused(false); }
             )
             .size(width, BUTTON_HEIGHT)
             .pos(x, y)
-            .tooltip(Tooltip.create(new UiTxt(details).get()))
+            .tooltip(Tooltip.create(details.get()))
             .build()
         ;
         this.addRenderableWidget(r);

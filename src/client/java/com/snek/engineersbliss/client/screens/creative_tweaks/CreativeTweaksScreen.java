@@ -5,8 +5,9 @@ import java.util.List;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.parts.UiSteppedSlider;
-import com.snek.engineersbliss.client.screens.parts.UiTxt;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -86,17 +87,17 @@ public class CreativeTweaksScreen extends __base_Screen {
 
 
 
-    public static String getToggleText(final CreativeTweakFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    public static Txt getToggleText(final CreativeTweakFeature feature, final boolean state) {
+        return new UiTxt(feature.getName() + ": " + (state ? "ON" : "OFF"));
     }
-    public static String getToggleText(final CreativeTweakFeature feature) {
+    public static Txt getToggleText(final CreativeTweakFeature feature) {
         return getToggleText(feature, CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature));
     }
 
 
     public static void toggleFeature(final CreativeTweakFeature feature, final Button b) {
         boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
-        b.setMessage(new UiTxt(getToggleText(feature, newState)).get());
+        b.setMessage(getToggleText(feature, newState).get());
         CreativeTweaksHandler.setFeature(feature, newState);
     }
 }

@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.screens.parts;
 
-import com.snek.engineersbliss.client.screens.Layout;
+import com.snek.engineersbliss.client.utils.Layout;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
