@@ -62,9 +62,9 @@ public enum AltTextureFeature {
     STATIC_CHESTS(true,
         () -> new UiTxt("Static Chest models"),
         () -> new Txt()
-            .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance."))
-            .cat(new UiTxt("This breaks the opening and closing animations.").Orange())
-            .cat(new UiTxt("This breaks custom textures and models defined by standard Resource Packs.").red())
+            .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance.\n"))
+            .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange())
+            .cat(new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red())
             .cat(new UiTxt("This feature is not compatible with other static block entity model mods.").red())
         ,
         Groups.ALL_CHESTS
@@ -72,9 +72,9 @@ public enum AltTextureFeature {
     STATIC_SIGNS(true,
         () -> new UiTxt("Static Sign models"),
         () -> new Txt()
-            .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance."))
-            .cat(new UiTxt("The text will still be rendered dynamically, so signs will still be laggier than normal blocks, but way less than Vanilla's.").Orange())
-            .cat(new UiTxt("This breaks custom textures and models defined by standard Resource Packs.").red())
+            .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
+            .cat(new UiTxt("The text will still be rendered dynamically, so signs will still be laggier than normal blocks, but way less than Vanilla's.\n").Orange())
+            .cat(new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red())
             .cat(new UiTxt("This feature is not compatible with other static block entity model mods.").red())
         ,
         Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
@@ -108,7 +108,7 @@ public enum AltTextureFeature {
         () -> new UiTxt("3D Chains"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Iron Chains and Copper Chains with a three-dimensional model.\n"))
-            .cat(new UiTxt("This also affects the chains in Lanterns, Copper Lanterns, and Hanging Signs.").yellow())
+            .cat(new UiTxt("This also affects the chains in Lanterns, Copper Lanterns, and Hanging Signs.\n").yellow())
             .cat(new UiTxt("3D Hanging Sign chains require [Static Sign Models]").yellow())
         ,
         Stream.of(Stream.of(Blocks.IRON_CHAIN), Blocks.COPPER_CHAIN.asList().stream(), Groups.ALL_LANTERNS.stream(), Groups.ALL_SIGNS.stream()).flatMap(s -> s).toList()

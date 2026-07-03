@@ -92,7 +92,7 @@ public enum OverlayFeature {
     private class Notices {
         public static final Txt OVERLAY_PROS_NOTICE = new UiTxt(
             "Overlays are shown and removed instantly, don't have a view distance limit and can be seen through walls."
-        ).red();
+        ).green();
     }
 
 
