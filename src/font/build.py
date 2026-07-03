@@ -1,7 +1,7 @@
 from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
 from concurrent.futures import ProcessPoolExecutor
-import json, math, os
+import json, math, os, subprocess, shutil
 
 
 
@@ -33,6 +33,20 @@ def is_visible(ch, font):
     mask = font.getmask(chr(ch))
     bbox = mask.getbbox()
     return bbox is not None
+
+
+
+
+if shutil.which("oxipng") is None:
+    print("Oxipng not found on PATH")
+    exit(0)
+
+def optimize_png(path):
+    subprocess.run(
+        ["oxipng", "-o", "max", "--zopfli", "--strip", "safe", path],
+        check=True,
+        capture_output=True
+    )
 
 
 
@@ -97,8 +111,12 @@ def build_atlas(name, font_path, fallback_path, upscale):
                 img.paste(glyph_img, (x, y), glyph_img)
 
     # Glyphs are pure white. Converting to LA (grayscale + alpha) allows for better compression
+    # Optimization step further reduces the png's file using Oxipng
     img = img.convert("LA")
     img.save(png_path, optimize=True)
+    optimize_png(png_path)
+    #! ^ This halves the final size of the PNGs, but it also makes the process some ~1500 times slower.
+    #! Only enable the optimize_png step if rendering for production. Testing fonts can be done without it.
 
 
     # Write JSON
@@ -147,3 +165,6 @@ if __name__ == "__main__":
 
     with ProcessPoolExecutor() as executor:
         list(executor.map(build_atlas, *zip(*jobs)))
+
+
+
