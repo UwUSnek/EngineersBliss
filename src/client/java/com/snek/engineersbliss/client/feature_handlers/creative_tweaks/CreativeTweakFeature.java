@@ -236,12 +236,12 @@ public enum CreativeTweakFeature {
 
     // Name and properties
     //! Txt values are computed lazily as they depend on the Minecraft window and cannot be calculated during static initialization
-    private CreativeTweakServerFeature serverFeature;
-    private Supplier<Txt> nameSupplier;
-    private Supplier<Txt> detailsSupplier;
+    private final CreativeTweakServerFeature serverFeature;
+    private final Supplier<Txt> nameSupplier;
+    private final Supplier<Txt> detailsSupplier;
     private Txt name    = null;
     private Txt details = null;
-    private long flagBit; //! Flag bit index is calculated from the order of declaration
+    private final long flagBit; //! Flag bit index is calculated from the order of declaration
     //! Defaults defined in CreativeTweakServerFeature
 
 
@@ -254,7 +254,7 @@ public enum CreativeTweakFeature {
     //! Defaults defined in CreativeTweakServerFeature
 
 
-    private CreativeTweakFeature(final CreativeTweakServerFeature serverFeature, Supplier<Txt> nameSupplier, Supplier<Txt> detailsSupplier) {
+    private CreativeTweakFeature(final CreativeTweakServerFeature serverFeature, final Supplier<Txt> nameSupplier, final Supplier<Txt> detailsSupplier) {
         this.serverFeature = serverFeature;
         this.nameSupplier    = nameSupplier;
         this.detailsSupplier = detailsSupplier;

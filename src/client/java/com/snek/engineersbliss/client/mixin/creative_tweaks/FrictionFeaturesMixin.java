@@ -33,7 +33,7 @@ public class FrictionFeaturesMixin {
         method = "travelInAir",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getFriction()F")
     )
-    private float travelInAir(Block block) {
+    private float travelInAir(final Block block) {
         if(block == Blocks.SLIME_BLOCK) {
             if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
                 return DEFAULT_FRICTION;

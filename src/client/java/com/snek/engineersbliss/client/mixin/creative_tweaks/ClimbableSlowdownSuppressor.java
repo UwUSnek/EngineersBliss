@@ -55,14 +55,14 @@ public class ClimbableSlowdownSuppressor {
 
             // Handle Ladders
             if(state.is(Blocks.LADDER) && CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN)) {
-                Vec3 clamped = cir.getReturnValue();
+                final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
 
 
             // Handle Vines
             if(state.is(Blocks.VINE) && CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_VINES_SLOWDOWN)) {
-                Vec3 clamped = cir.getReturnValue();
+                final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
 
@@ -72,7 +72,7 @@ public class ClimbableSlowdownSuppressor {
                 (state.is(Blocks.TWISTING_VINES) || state.is(Blocks.TWISTING_VINES_PLANT)) &&
                 CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN)
             ) {
-                Vec3 clamped = cir.getReturnValue();
+                final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
 
@@ -82,7 +82,7 @@ public class ClimbableSlowdownSuppressor {
                 (state.is(Blocks.WEEPING_VINES) || state.is(Blocks.WEEPING_VINES_PLANT)) &&
                 CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN)
             ) {
-                Vec3 clamped = cir.getReturnValue();
+                final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
         }

@@ -60,7 +60,7 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
 
 
     @Override
-    public boolean shouldKeepVanilla(BlockState state) {
+    public boolean shouldKeepVanilla(final BlockState state) {
         return
             ! AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS) &&
             ! AltTexturesHandler.getFeature(AltTextureFeature.RAILS_3D)

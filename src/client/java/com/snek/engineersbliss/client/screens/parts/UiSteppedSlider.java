@@ -48,7 +48,7 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
     }
 
 
-    static double snap(double value, int steps) {
+    static double snap(final double value, int steps) {
         --steps;
         return Math.round(value * steps) / (double) steps;
     }

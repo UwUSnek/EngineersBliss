@@ -11,7 +11,7 @@ import net.minecraft.util.FormattedCharSequence;
 
 public class UiEditBox extends EditBox {
 
-    public UiEditBox(int x, int y, int width, int height, Component narration) {
+    public UiEditBox(final int x, final int y, final int width, final int height, final Component narration) {
         super(Minecraft.getInstance().font, x, y, width, height, narration);
         this.setTextShadow(false);
         this.addFormatter((text, offset) ->

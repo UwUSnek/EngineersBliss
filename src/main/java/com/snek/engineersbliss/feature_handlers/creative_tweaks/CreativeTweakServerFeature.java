@@ -46,7 +46,7 @@ public enum CreativeTweakServerFeature {
 
 
     // Name and properties
-    private long flagBit; //! Flag bit index is calculated from the order of declaration
+    private final long flagBit; //! Flag bit index is calculated from the order of declaration
     private boolean _default;
 
 
@@ -57,7 +57,7 @@ public enum CreativeTweakServerFeature {
 
     public static long DEFAULT_FLAGS = 0;
     static {
-        for(var feature : values()) {
+        for(final var feature : values()) {
             if(feature._default) DEFAULT_FLAGS |= feature.getFlagBit();
         }
     }

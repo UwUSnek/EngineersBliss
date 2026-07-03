@@ -56,7 +56,7 @@ public class OverlaysScreen extends __base_Screen {
 
 
     public static void toggleFeature(final OverlayFeature feature, final Button b) {
-        boolean newState = !OverlaysHandler.getFeature(feature);
+        final boolean newState = !OverlaysHandler.getFeature(feature);
         b.setMessage(getToggleText(feature, newState).get());
         OverlaysHandler.setFeature(feature, newState);
     }

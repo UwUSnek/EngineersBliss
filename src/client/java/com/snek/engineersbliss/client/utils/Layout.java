@@ -56,14 +56,14 @@ public class Layout {
      * @return The ID of the font provider.
      */
     public static Identifier getFontIdForScale(final String baseName, final float scale) {
-        float guiScale = Minecraft.getInstance().getWindow().getGuiScale() * scale;
+        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale() * scale;
 
         // Snap to nearest 0.25 increment, clamped between 0.25 and FONT_MAX_SCALE
         float snapped = Math.round(guiScale * 4f) / 4f;
         snapped = Math.clamp(snapped, 0.25f, FONT_MAX_SCALE);
 
         // Format as "1" for whole numbers, "1.5" for decimal steps, to matches atlas filenames
-        String scaleStr = (snapped == Math.floor(snapped))
+        final String scaleStr = (snapped == Math.floor(snapped))
             ? String.valueOf((int)snapped)
             : String.valueOf(snapped)
         ;

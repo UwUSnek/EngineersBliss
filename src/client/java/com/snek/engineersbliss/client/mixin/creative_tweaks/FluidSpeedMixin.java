@@ -45,7 +45,7 @@ public abstract class FluidSpeedMixin {
 
 
         //! Reset gravity back to water gravity
-        Vec3 mov = _this.getDeltaMovement();
+        final Vec3 mov = _this.getDeltaMovement();
         _this.setDeltaMovement(new Vec3(mov.x, mov.y + getEffectiveGravity(), mov.z));
 
 
@@ -63,7 +63,7 @@ public abstract class FluidSpeedMixin {
     private void travelInWater(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
         // If entity is a player and they are not swimming (keep default swimming movement) and they have the feature active, use the custom movement
-        if((Object)this instanceof Player _this) {
+        if((Object)this instanceof final Player _this) {
             if(!_this.isSwimming()) {
                 if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
                     customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
@@ -81,7 +81,7 @@ public abstract class FluidSpeedMixin {
     private void travelInLava(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
         // If entity is a player and they have the feature active, use the custom movement
-        if((Object)this instanceof Player _this) {
+        if((Object)this instanceof final Player _this) {
             if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
                 customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                 ci.cancel();

@@ -80,7 +80,7 @@ public class CreativeTweaksServerHandler {
         if(!player.getAbilities().instabuild) return;
 
 
-        var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
+        final var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
         if(blockAttr != null) {
             blockAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
@@ -88,7 +88,7 @@ public class CreativeTweaksServerHandler {
                 AttributeModifier.Operation.ADD_VALUE
             ));
         }
-        var entityAttr = player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE);
+        final var entityAttr = player.getAttribute(Attributes.ENTITY_INTERACTION_RANGE);
         if(entityAttr != null) {
             entityAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
@@ -114,7 +114,7 @@ public class CreativeTweaksServerHandler {
     private static boolean processingCustomBreak = false;
 
     @SuppressWarnings("java:S3516")
-    private static boolean beforeBlockBreak(Level level, Player player, BlockPos pos, BlockState blockState, @Nullable BlockEntity blockEntity) {
+    private static boolean beforeBlockBreak(final Level level, final Player player, final BlockPos pos, final BlockState blockState, @Nullable final BlockEntity blockEntity) {
         if(level.isClientSide()) return true;
         if(!player.getAbilities().instabuild) return true;
 
@@ -122,7 +122,7 @@ public class CreativeTweaksServerHandler {
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
         if(!processingCustomBreak) {
             processingCustomBreak = true;
-            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS) - 1;
+            final int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS) - 1;
 
             BlockPos.betweenClosed(
                 pos.offset(-radius, -radius, -radius),
@@ -145,7 +145,7 @@ public class CreativeTweaksServerHandler {
 
 
     private static boolean processingCustomPlace = false;
-    private static InteractionResult afterBlockUse(Player player, Level level, InteractionHand hand, BlockHitResult blockHitResult) {
+    private static InteractionResult afterBlockUse(final Player player, final Level level, final InteractionHand hand, final BlockHitResult blockHitResult) {
         if(level.isClientSide()) return InteractionResult.PASS;
         if(!player.getAbilities().instabuild) return InteractionResult.PASS;
 
@@ -153,9 +153,9 @@ public class CreativeTweaksServerHandler {
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
         if(!processingCustomPlace) {
             processingCustomPlace = true;
-            int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS) - 1;
-            Vec3 vec3Pos = blockHitResult.getLocation();
-            BlockPos pos = BlockPos.containing(vec3Pos);
+            final int radius = interactionRadii.getOrDefault(player.getUUID(), DEFAULT_INTERACTION_RADIUS) - 1;
+            final Vec3 vec3Pos = blockHitResult.getLocation();
+            final BlockPos pos = BlockPos.containing(vec3Pos);
 
             final ItemStack stack = player.getActiveItem();
             BlockPos.betweenClosed(
@@ -196,8 +196,8 @@ public class CreativeTweaksServerHandler {
      * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakServerFeature) instead.
      */
     public static boolean serverPlayerHasFeature(final Object entity, final CreativeTweakServerFeature feature) {
-        if(entity instanceof Player player) {
-            long featureMask = getToggleFeatures(player);
+        if(entity instanceof final Player player) {
+            final long featureMask = getToggleFeatures(player);
             if(feature.hasFlagBit(featureMask)) {
                 if(player.getAbilities().instabuild) {
                     return true;

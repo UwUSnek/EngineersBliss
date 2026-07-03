@@ -92,7 +92,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
     //! Called by the prepatable model plugin system once the plugin is registered.
     //! Registed from the client initializer.
-    public static CompletableFuture<List<Identifier>> discoverModels(PreparableReloadListener.SharedState sharedState, Executor executor) {
+    public static CompletableFuture<List<Identifier>> discoverModels(final PreparableReloadListener.SharedState sharedState, final Executor executor) {
         return CompletableFuture.supplyAsync(() -> {
             final List<Identifier> r = new ArrayList<>();
             final String root = "models/block";
@@ -125,7 +125,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
     @Override //! Called automatically. No need to manually call from the client initializer
-    public void initialize(List<Identifier> modelIds, Context initContext) {
+    public void initialize(final List<Identifier> modelIds, final Context initContext) {
 
 
         // Register the custom models during startup
@@ -140,7 +140,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 @Override
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
                     model.resolveDependencies(resolver);
-                    for(Identifier modelId : modelIds) {
+                    for(final Identifier modelId : modelIds) {
                         resolver.markDependency(modelId);
                     }
                 }
@@ -169,7 +169,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
             // For each model ID
-            for(@NotNull Identifier modelId : modelIds) {
+            for(@NotNull final Identifier modelId : modelIds) {
 
                 // Bake one model per horizontal direction
                 for (int i = 0; i < 4; ++i) {

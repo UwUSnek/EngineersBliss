@@ -95,7 +95,7 @@ public class CreativeTweaksScreen extends __base_Screen {
 
 
     public static void toggleFeature(final CreativeTweakFeature feature, final Button b) {
-        boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
+        final boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
         b.setMessage(getToggleText(feature, newState).get());
         CreativeTweaksHandler.setFeature(feature, newState);
     }

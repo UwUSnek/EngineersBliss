@@ -36,7 +36,7 @@ public class SlimeFeaturesMixin {
         method = "updateEntityMovementAfterFallOn",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
-    private boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
+    private boolean isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_BOUNCE)) {
             return true;
         }

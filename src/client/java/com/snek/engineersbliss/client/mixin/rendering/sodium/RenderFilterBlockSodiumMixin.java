@@ -29,8 +29,8 @@ public class RenderFilterBlockSodiumMixin {
         cancellable = true,
         require = 0
     )
-    private void getBlockState(int blockX, int blockY, int blockZ, CallbackInfoReturnable<BlockState> cir) {
-        BlockState state = cir.getReturnValue();
+    private void getBlockState(final int blockX, final int blockY, final int blockZ, final CallbackInfoReturnable<BlockState> cir) {
+        final BlockState state = cir.getReturnValue();
 
         if(!RenderFilterHandler.shouldBlockRender(state)) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());

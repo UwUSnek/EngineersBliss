@@ -72,7 +72,7 @@ public class AltTexturesScreen extends __base_Screen {
 
 
     public static void toggleFeature(final AltTextureFeature feature, final Button b) {
-        boolean newState = !AltTexturesHandler.getFeature(feature);
+        final boolean newState = !AltTexturesHandler.getFeature(feature);
         b.setMessage(getToggleText(feature, newState).get());
         AltTexturesHandler.setFeature(feature, newState);
         MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());

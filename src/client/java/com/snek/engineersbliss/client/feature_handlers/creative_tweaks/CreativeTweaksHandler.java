@@ -27,7 +27,7 @@ public class CreativeTweaksHandler {
 
 
 
-    public static void setFeature(final CreativeTweakFeature feature, boolean value) {
+    public static void setFeature(final CreativeTweakFeature feature, final boolean value) {
 
         // Update feature bit
         final long featureBit = feature.getFlagBit();
@@ -48,7 +48,7 @@ public class CreativeTweaksHandler {
      * ! This cannot be called by the server. Use CreativeTweaksServerHandler.serverPlayerHasFeature(Entity, CreativeTweakFeature) instead.
      */
     public static boolean clientPlayerHasFeature(final Object entity, final CreativeTweakFeature feature) {
-        if(entity instanceof Player player) {
+        if(entity instanceof final Player player) {
             if(feature.hasFlagBit(clientFeatureMask)) {
                 if(player.getAbilities().instabuild) {
                     return true;

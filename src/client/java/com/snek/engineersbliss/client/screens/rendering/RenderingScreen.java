@@ -45,7 +45,7 @@ public class RenderingScreen extends __base_Screen {
 
 
     @Override
-    public boolean keyPressed(KeyEvent event) {
+    public boolean keyPressed(final KeyEvent event) {
         if(!searchField.isFocused()) {
             if(event.key() == InputConstants.KEY_O) {
                 toggleRenderBlockOutlines(renderBlockOutlinesButton);
@@ -70,7 +70,7 @@ public class RenderingScreen extends __base_Screen {
 
     //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+    public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
         searchField.setFocused(searchField.isHovered());
         return super.mouseClicked(event, doubleClick);
     }
@@ -236,7 +236,7 @@ public class RenderingScreen extends __base_Screen {
         return new UiTxt("Target hidden blocks: " + (state ? "ON" : "OFF"));
     }
     public static void toggleTargetHiddenBlocks(final Button b) {
-        boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
+        final boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
         RenderFilterHandler.setTargetHiddenBlocks(newState);
         b.setMessage(getToggleText_targetHiddenBlocks(newState).get());
     }
@@ -246,7 +246,7 @@ public class RenderingScreen extends __base_Screen {
         return new UiTxt("[O] Render block outlines: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderBlockOutlines(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
+        final boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
         RenderFilterHandler.setRenderBlockOutlines(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
@@ -258,7 +258,7 @@ public class RenderingScreen extends __base_Screen {
         return new UiTxt("[B] Render blocks: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderBlocks(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderBlocks();
+        final boolean newState = !RenderFilterHandler.getRenderBlocks();
         RenderFilterHandler.setRenderBlocks(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
@@ -270,7 +270,7 @@ public class RenderingScreen extends __base_Screen {
         return new UiTxt("[E] Render block entities: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderBlockEntities(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderBlockEntities();
+        final boolean newState = !RenderFilterHandler.getRenderBlockEntities();
         RenderFilterHandler.setRenderBlockEntities(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
@@ -282,7 +282,7 @@ public class RenderingScreen extends __base_Screen {
         return new UiTxt("[F] Render fluids: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderFluids(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderFluids();
+        final boolean newState = !RenderFilterHandler.getRenderFluids();
         RenderFilterHandler.setRenderFluids(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();

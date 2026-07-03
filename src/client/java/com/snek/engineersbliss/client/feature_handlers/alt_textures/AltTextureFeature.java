@@ -126,13 +126,13 @@ public enum AltTextureFeature {
 
     // Feature name and properties
     //! Txt values are computed lazily as they depend on the Minecraft window and cannot be calculated during static initialization
-    private Supplier<Txt> nameSupplier;
-    private Supplier<Txt> detailsSupplier;
+    private final Supplier<Txt> nameSupplier;
+    private final Supplier<Txt> detailsSupplier;
     private Txt name    = null;
     private Txt details = null;
     List<Block> affectedBlocks;
-    private long flagBit; //! Flag bit index is calculated from the order of declaration
-    private boolean _default;
+    private final long flagBit; //! Flag bit index is calculated from the order of declaration
+    private final boolean _default;
 
 
     // Getters and checks
@@ -147,14 +147,14 @@ public enum AltTextureFeature {
 
     public static long DEFAULT_FLAGS = 0;
     static {
-        for(var feature : values()) {
+        for(final var feature : values()) {
             if(feature._default) DEFAULT_FLAGS |= feature.getFlagBit();
         }
     }
 
 
     // Constructor
-    private AltTextureFeature(final boolean _default, Supplier<Txt> nameSupplier, Supplier<Txt> detailsSupplier, List<Block> affectedBlocks) {
+    private AltTextureFeature(final boolean _default, final Supplier<Txt> nameSupplier, final Supplier<Txt> detailsSupplier, final List<Block> affectedBlocks) {
         this._default = _default;
         this.nameSupplier    = nameSupplier;
         this.detailsSupplier = detailsSupplier;
@@ -168,7 +168,7 @@ public enum AltTextureFeature {
     public static Set<Block> getBlocksWithFeatures() { return blocksWithFeatures; }
     public static boolean hasFeature(final Block block) { return blocksWithFeatures.contains(block); }
     static {
-        for(AltTextureFeature feature : values()) {
+        for(final AltTextureFeature feature : values()) {
             blocksWithFeatures.addAll(feature.affectedBlocks);
         }
     }

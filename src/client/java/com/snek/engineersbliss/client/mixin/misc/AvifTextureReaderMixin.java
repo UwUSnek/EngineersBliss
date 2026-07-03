@@ -51,13 +51,13 @@ public class AvifTextureReaderMixin {
         try(InputStream s = AvifTextureReaderMixin.class.getResourceAsStream("/assets/" + EngineerSBliss.MOD_ID + "/textures/gui/placeholder_texture.png")) {
             LOADING_IMAGE = NativeImage.read(s);
         }
-        catch(IOException e) {
+        catch(final IOException e) {
             e.printStackTrace(); //TODO use proper logging
         }
     }
 
     private static NativeImage buildPlaceholderImage() {
-        NativeImage copy = new NativeImage(LOADING_IMAGE.getWidth(), LOADING_IMAGE.getHeight(), false);
+        final NativeImage copy = new NativeImage(LOADING_IMAGE.getWidth(), LOADING_IMAGE.getHeight(), false);
         MemoryUtil.memCopy(LOADING_IMAGE.getPointer(), copy.getPointer(), LOADING_IMAGE.getWidth() * LOADING_IMAGE.getHeight() * 4L);
         return copy;
     }
@@ -70,7 +70,7 @@ public class AvifTextureReaderMixin {
     private static void load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
         if(!id.getPath().endsWith(".avif")) return;
 
-        NativeImage placeholder = buildPlaceholderImage();
+        final NativeImage placeholder = buildPlaceholderImage();
         cir.setReturnValue(new TextureContents(placeholder, null));
 
         CompletableFuture.runAsync(() -> {
@@ -104,8 +104,8 @@ public class AvifTextureReaderMixin {
                         final int p = pixels[i];
                         ibuf.put(i, (p & 0xFF00FF00) | ((p & 0x00FF0000) >> 16) | ((p & 0x000000FF) << 16));
                     }
-                    AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
-                    if(tex instanceof ReloadableTexture reloadable) {
+                    final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
+                    if(tex instanceof final ReloadableTexture reloadable) {
                         reloadable.apply(new TextureContents(image, metadata));
                         AvifTextureTracker.markLoaded(id);
                     }
@@ -113,7 +113,7 @@ public class AvifTextureReaderMixin {
                         System.out.println("TEXTURE IS NOT RELOADABLE");//TODO use proper error reporting
                     }
                 });
-            } catch(Exception e) {
+            } catch(final Exception e) {
                 e.printStackTrace(); //TODO use proper error reporting
             }
         });

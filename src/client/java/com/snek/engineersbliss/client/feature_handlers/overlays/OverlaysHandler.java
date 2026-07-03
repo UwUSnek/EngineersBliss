@@ -56,7 +56,7 @@ public class OverlaysHandler {
      * @param feature The feature.
      * @param value The new value.
      */
-    public static void setFeature(final OverlayFeature feature, boolean value) {
+    public static void setFeature(final OverlayFeature feature, final boolean value) {
         final long featureBit = feature.getFlagBit();
         if(value) _featureMask |= featureBit; else _featureMask &= ~featureBit;
     }
@@ -111,7 +111,7 @@ public class OverlaysHandler {
      * @param pos The position of the block.
      * @param newData The new data to attach.
      */
-    public static void updateAttachedData(final BlockPos pos, __base_OverlayAttachedData newData) {
+    public static void updateAttachedData(final BlockPos pos, final __base_OverlayAttachedData newData) {
         final var chunkFeatureMask = featureWorldMap.get(MinecraftUtils.blockPosToChunk(pos));
         if(chunkFeatureMask != null) {
             final var pair = chunkFeatureMask.get(pos);

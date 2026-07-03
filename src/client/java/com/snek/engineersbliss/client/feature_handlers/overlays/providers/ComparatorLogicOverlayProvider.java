@@ -18,7 +18,7 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
 
 
     @Override
-    public boolean shouldRender(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
+    public boolean shouldRender(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData attachedData) {
         return
             //! Comparator level is always shown, including 0 (no signal) and -1 (no server data)
             OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET) &&
@@ -52,7 +52,7 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
 
 
     @Override
-    public String calcText(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
+    public String calcText(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData attachedData) {
 
         // Return no server data text if server doesn't have the mod installed
         // ! Data constructor sets the output signal to -1 if the server doesn't have the mod installed.

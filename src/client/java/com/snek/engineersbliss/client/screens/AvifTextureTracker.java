@@ -17,10 +17,10 @@ public class AvifTextureTracker {
     private static final Set<Identifier> loadedTextures = ConcurrentHashMap.newKeySet();
 
 
-    public static void markLoaded(Identifier id) {
+    public static void markLoaded(final Identifier id) {
         loadedTextures.add(id);
     }
-    public static boolean isTextureReady(Identifier id) {
+    public static boolean isTextureReady(final Identifier id) {
         return loadedTextures.contains(id);
     }
 }

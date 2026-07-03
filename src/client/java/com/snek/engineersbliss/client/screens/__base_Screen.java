@@ -32,7 +32,7 @@ public abstract class __base_Screen extends Screen {
 
     protected boolean tabPressed = false;
     @Override
-    public boolean keyPressed(KeyEvent event) {
+    public boolean keyPressed(final KeyEvent event) {
         if(event.key() == InputConstants.KEY_TAB) {
             tabPressed = true;
             return true;
@@ -42,7 +42,7 @@ public abstract class __base_Screen extends Screen {
         }
     }
     @Override
-    public boolean keyReleased(KeyEvent event) {
+    public boolean keyReleased(final KeyEvent event) {
         if(event.key() == InputConstants.KEY_TAB) {
             tabPressed = false;
             return true;
@@ -61,8 +61,8 @@ public abstract class __base_Screen extends Screen {
     }
 
 
-    protected Button addButton(Txt label, Txt details, Consumer<Button> action, int x, int y, int width) {
-        Button r =
+    protected Button addButton(final Txt label, final Txt details, final Consumer<Button> action, final int x, final int y, final int width) {
+        final Button r =
             Button.builder(
                 label.get(),
                 b -> { action.accept(b); b.setFocused(false); }
