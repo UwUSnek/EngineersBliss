@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -97,8 +93,44 @@ public enum AltTextureFeature {
         Stream.of(
             Stream.of(Blocks.IRON_CHAIN),
             Blocks.COPPER_CHAIN.asList().stream(),
-            StreamSupport.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.ALL_HANGING_SIGNS).spliterator(), false).map(Holder::value),
-            StreamSupport.stream(BuiltInRegistries.BLOCK.getTagOrEmpty(BlockTags.LANTERNS).spliterator(), false).map(Holder::value)
+            Stream.of(
+                Blocks.LANTERN,
+                Blocks.SOUL_LANTERN,
+                Blocks.COPPER_LANTERN.unaffected(),
+                Blocks.COPPER_LANTERN.exposed(),
+                Blocks.COPPER_LANTERN.weathered(),
+                Blocks.COPPER_LANTERN.oxidized(),
+                Blocks.COPPER_LANTERN.waxed(),
+                Blocks.COPPER_LANTERN.waxedExposed(),
+                Blocks.COPPER_LANTERN.waxedWeathered(),
+                Blocks.COPPER_LANTERN.waxedOxidized()
+            ),
+            Stream.of(
+                Blocks.OAK_HANGING_SIGN,
+                Blocks.SPRUCE_HANGING_SIGN,
+                Blocks.BIRCH_HANGING_SIGN,
+                Blocks.JUNGLE_HANGING_SIGN,
+                Blocks.ACACIA_HANGING_SIGN,
+                Blocks.DARK_OAK_HANGING_SIGN,
+                Blocks.MANGROVE_HANGING_SIGN,
+                Blocks.CHERRY_HANGING_SIGN,
+                Blocks.PALE_OAK_HANGING_SIGN,
+                Blocks.BAMBOO_HANGING_SIGN,
+                Blocks.CRIMSON_HANGING_SIGN,
+                Blocks.WARPED_HANGING_SIGN,
+                Blocks.OAK_WALL_HANGING_SIGN,
+                Blocks.SPRUCE_WALL_HANGING_SIGN,
+                Blocks.BIRCH_WALL_HANGING_SIGN,
+                Blocks.JUNGLE_WALL_HANGING_SIGN,
+                Blocks.ACACIA_WALL_HANGING_SIGN,
+                Blocks.DARK_OAK_WALL_HANGING_SIGN,
+                Blocks.MANGROVE_WALL_HANGING_SIGN,
+                Blocks.CHERRY_WALL_HANGING_SIGN,
+                Blocks.PALE_OAK_WALL_HANGING_SIGN,
+                Blocks.BAMBOO_WALL_HANGING_SIGN,
+                Blocks.CRIMSON_WALL_HANGING_SIGN,
+                Blocks.WARPED_WALL_HANGING_SIGN
+            )
         ).flatMap(s -> s).toList()
     ),
     BARS_3D(true, //TODO IMPLEMENT

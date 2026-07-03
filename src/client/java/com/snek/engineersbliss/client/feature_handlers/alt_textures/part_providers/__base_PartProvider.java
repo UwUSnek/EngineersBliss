@@ -18,7 +18,7 @@ public abstract class __base_PartProvider {
     public abstract boolean shouldKeepVanilla(BlockState state);
 
 
-    protected static String getVariationSuffixFromDirection(final Direction direction) {
+    protected static String getVariantSuffixFromDirection(final Direction direction) {
         return switch(direction) {
             case NORTH -> "_n";
             case EAST  -> "_e";
@@ -27,7 +27,7 @@ public abstract class __base_PartProvider {
             default    -> "";
         };
     }
-    protected static String getVariationSuffixFromAxis(final Axis axis) {
+    protected static String getVariantSuffixFromAxis(final Axis axis) {
         return switch(axis) {
             case X  -> "_x";
             case Y  -> "_y";

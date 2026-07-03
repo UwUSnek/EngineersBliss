@@ -184,3 +184,7 @@
 
 
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
+
+
+- add a "about" screen that talks abotu the mod, basically just copy the readme.
+  - display my player skin in there too and name 

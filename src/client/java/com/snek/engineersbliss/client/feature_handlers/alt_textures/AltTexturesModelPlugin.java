@@ -30,6 +30,16 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedOxidizedCopperChainPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedWeatheredCopperChainPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WeatheredCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.CopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.ExposedCopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.NormalLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.OxidizedCopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.SoulLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedCopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedExposedCopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedOxidizedCopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedWeatheredCopperLanternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WeatheredCopperLanternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.ActivatorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.DetectorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.PoweredRailPartProvider;
@@ -105,7 +115,18 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new WaxedCopperChainPartProvider(),
             new WaxedExposedCopperChainPartProvider(),
             new WaxedWeatheredCopperChainPartProvider(),
-            new WaxedOxidizedCopperChainPartProvider()
+            new WaxedOxidizedCopperChainPartProvider(),
+
+            new NormalLanternPartProvider(),
+            new SoulLanternPartProvider(),
+            new CopperLanternPartProvider(),
+            new ExposedCopperLanternPartProvider(),
+            new WeatheredCopperLanternPartProvider(),
+            new OxidizedCopperLanternPartProvider(),
+            new WaxedCopperLanternPartProvider(),
+            new WaxedExposedCopperLanternPartProvider(),
+            new WaxedWeatheredCopperLanternPartProvider(),
+            new WaxedOxidizedCopperLanternPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }

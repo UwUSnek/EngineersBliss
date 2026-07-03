@@ -26,7 +26,7 @@ public class LadderPartProvider extends __base_PartProvider {
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         return AltTexturesHandler.getFeature(AltTextureFeature.LADDERS_3D) ?
-            List.of("ladder/3d/block" + getVariationSuffixFromDirection(state.getValue(LadderBlock.FACING))) :
+            List.of("ladder/3d/block" + getVariantSuffixFromDirection(state.getValue(LadderBlock.FACING))) :
             null
         ;
     }
