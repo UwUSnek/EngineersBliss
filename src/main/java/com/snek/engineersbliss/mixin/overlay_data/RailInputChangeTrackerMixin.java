@@ -44,7 +44,7 @@ public class RailInputChangeTrackerMixin {
         if(level == null || level.isClientSide()) return;
 
         // Calculate new data
-        int newSignal = RailInputDataResolver.calcPowerLevel(level, pos);
+        final int newSignal = RailInputDataResolver.calcPowerLevel(level, pos);
 
 
         // Return if input is identical to the last one. Update map otherwise

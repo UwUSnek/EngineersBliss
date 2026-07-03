@@ -6,10 +6,10 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 
 
 
@@ -63,17 +63,17 @@ public class AltTexturesScreen extends __base_Screen {
 
 
 
-    public static String getToggleText(final AltTextureFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    public static Txt getToggleText(final AltTextureFeature feature, final boolean state) {
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
     }
-    public static String getToggleText(final AltTextureFeature feature) {
+    public static Txt getToggleText(final AltTextureFeature feature) {
         return getToggleText(feature, AltTexturesHandler.getFeature(feature));
     }
 
 
     public static void toggleFeature(final AltTextureFeature feature, final Button b) {
-        boolean newState = !AltTexturesHandler.getFeature(feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
+        final boolean newState = !AltTexturesHandler.getFeature(feature);
+        b.setMessage(getToggleText(feature, newState).get());
         AltTexturesHandler.setFeature(feature, newState);
         MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
     }

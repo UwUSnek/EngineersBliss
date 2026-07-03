@@ -23,9 +23,10 @@ import java.util.regex.Pattern;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
@@ -174,9 +175,9 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        graphics.text(minecraft.font, Component.literal("Block"),   rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, Component.literal("Enable"),  rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, Component.literal("Isolate"), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(minecraft.font, new UiTxt("Block"  ).get(), rowLeft, headerY, 0xFFAAAAAA);
+        graphics.text(minecraft.font, new UiTxt("Enable" ).get(), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(minecraft.font, new UiTxt("Isolate").get(), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
@@ -189,9 +190,9 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 final Block block = hoveredEntry.block;
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
-                tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
+                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" " + BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
-                    tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
+                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" #" + tag.location()).gray().get().getVisualOrderText()))
                 );
                 graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
@@ -222,8 +223,8 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
         public Entry(final Block block) {
             this.block = block;
-            this.enableBox  = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
-            this.isolateBox = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
+            this.enableBox  = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 

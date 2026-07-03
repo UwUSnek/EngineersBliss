@@ -23,7 +23,7 @@ public class PlayerMovementLimitFixMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "shouldCheckPlayerMovement", at = @At("HEAD"), cancellable = true, require = 1)
-    private void shouldCheckPlayerMovement(boolean isFallFlying, CallbackInfoReturnable<Boolean> cir) {
+    private void shouldCheckPlayerMovement(final boolean isFallFlying, final CallbackInfoReturnable<Boolean> cir) {
         if(player.getAbilities().instabuild) {
             cir.setReturnValue(false);
         }

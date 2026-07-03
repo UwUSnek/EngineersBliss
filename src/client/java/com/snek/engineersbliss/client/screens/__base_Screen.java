@@ -3,34 +3,36 @@ package com.snek.engineersbliss.client.screens;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.network.chat.Component;
 
 
 
 
 public abstract class __base_Screen extends Screen {
-    public static final int BORDER_WIDTH = 10;
-    public static final int BORDER_HEIGHT = 4;
-    public static final int LIST_TOP = 32;
-    public static final int BUTTON_HEIGHT = 20;
+    public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
+    public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
+    public static final int LIST_TOP      = Layout.LIST_TOP;
+    public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
 
 
     protected __base_Screen() {
-        super(Component.literal(""));
+        super(new UiTxt().get());
     }
 
 
 
     protected boolean tabPressed = false;
     @Override
-    public boolean keyPressed(KeyEvent event) {
+    public boolean keyPressed(final KeyEvent event) {
         if(event.key() == InputConstants.KEY_TAB) {
             tabPressed = true;
             return true;
@@ -40,7 +42,7 @@ public abstract class __base_Screen extends Screen {
         }
     }
     @Override
-    public boolean keyReleased(KeyEvent event) {
+    public boolean keyReleased(final KeyEvent event) {
         if(event.key() == InputConstants.KEY_TAB) {
             tabPressed = false;
             return true;
@@ -59,9 +61,17 @@ public abstract class __base_Screen extends Screen {
     }
 
 
-    protected Button addButton(String label, String details, Consumer<Button> action, int x, int y, int width) {
-        Button r = Button.builder(Component.literal(label), b -> { action.accept(b); b.setFocused(false); }).size(width, Layout.BUTTON_HEIGHT).pos(x, y).build();
-        r.setTooltip(Tooltip.create(Component.literal(details)));
+    protected Button addButton(final Txt label, final Txt details, final Consumer<Button> action, final int x, final int y, final int width) {
+        final Button r =
+            Button.builder(
+                label.get(),
+                b -> { action.accept(b); b.setFocused(false); }
+            )
+            .size(width, BUTTON_HEIGHT)
+            .pos(x, y)
+            .tooltip(Tooltip.create(details.get()))
+            .build()
+        ;
         this.addRenderableWidget(r);
         return r;
     }

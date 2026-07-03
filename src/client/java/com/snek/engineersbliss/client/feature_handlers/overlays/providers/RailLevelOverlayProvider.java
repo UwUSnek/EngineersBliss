@@ -21,7 +21,7 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
 
 
     @Override
-    public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return
             OverlaysHandler.getFeature(OverlayFeature.RAIL_POWER_LEVELS) &&
             attachedData != null &&
@@ -32,7 +32,7 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
 
 
     @Override
-    public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public String calcTexturePath(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
 
         // Return unknown level sprite if server doesn't have the mod installed
         // ! Data constructor sets the output signal to -1 if the server doesn't have the mod installed.
@@ -51,7 +51,7 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
 
 
     @Override
-    public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public double calcVerticalOffset(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         final PoweredRailBlock rail = (PoweredRailBlock)state.getBlock();
         final RailShape shape = state.getValue(rail.getShapeProperty());
         return PIXEL_HEIGHT * (1d + (shape.isSlope() ? 8.25 : 0)) + 0.02;
@@ -59,7 +59,7 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
 
 
     @Override
-    public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public double calcWidth(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return 0.25;
     }
 
@@ -71,7 +71,7 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
 
 
     @Override
-    public @Nullable Vector3f calcPostRotation(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
+    public @Nullable Vector3f calcPostRotation(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData attachedData) {
         final PoweredRailBlock rail = (PoweredRailBlock)state.getBlock();
         final RailShape shape = state.getValue(rail.getShapeProperty());
 

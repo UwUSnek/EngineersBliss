@@ -3,7 +3,8 @@ package com.snek.engineersbliss.client.feature_handlers.creative_tweaks;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakServerFeature;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.ReachDistanceChangeRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
@@ -20,13 +21,13 @@ import net.minecraft.world.entity.player.Player;
 public class CreativeTweaksHandler {
     private CreativeTweaksHandler() { }
     private static final float DEFAULT_FLYING_SPEED = new Abilities().getFlyingSpeed();
-    private static long clientFeatureMask = CreativeTweakFeature.DEFAULT_FLAGS;
+    private static long clientFeatureMask = CreativeTweakServerFeature.DEFAULT_FLAGS;
 
 
 
 
 
-    public static void setFeature(final CreativeTweakFeature feature, boolean value) {
+    public static void setFeature(final CreativeTweakFeature feature, final boolean value) {
 
         // Update feature bit
         final long featureBit = feature.getFlagBit();
@@ -47,7 +48,7 @@ public class CreativeTweaksHandler {
      * ! This cannot be called by the server. Use CreativeTweaksServerHandler.serverPlayerHasFeature(Entity, CreativeTweakFeature) instead.
      */
     public static boolean clientPlayerHasFeature(final Object entity, final CreativeTweakFeature feature) {
-        if(entity instanceof Player player) {
+        if(entity instanceof final Player player) {
             if(feature.hasFlagBit(clientFeatureMask)) {
                 if(player.getAbilities().instabuild) {
                     return true;

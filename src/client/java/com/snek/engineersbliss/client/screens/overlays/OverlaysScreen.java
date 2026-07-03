@@ -3,10 +3,10 @@ package com.snek.engineersbliss.client.screens.overlays;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 
 
 
@@ -47,17 +47,17 @@ public class OverlaysScreen extends __base_Screen {
 
 
 
-    public static String getToggleText(final OverlayFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    public static Txt getToggleText(final OverlayFeature feature, final boolean state) {
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
     }
-    public static String getToggleText(final OverlayFeature feature) {
+    public static Txt getToggleText(final OverlayFeature feature) {
         return getToggleText(feature, OverlaysHandler.getFeature(feature));
     }
 
 
     public static void toggleFeature(final OverlayFeature feature, final Button b) {
-        boolean newState = !OverlaysHandler.getFeature(feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
+        final boolean newState = !OverlaysHandler.getFeature(feature);
+        b.setMessage(getToggleText(feature, newState).get());
         OverlaysHandler.setFeature(feature, newState);
     }
 }

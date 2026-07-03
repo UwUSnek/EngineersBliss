@@ -18,7 +18,7 @@ public final class ComparatorLevelOverlayProvider extends __base_TextureOverlayP
 
 
     @Override
-    public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return
             OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_POWER_LEVELS) &&
             state.is(Blocks.COMPARATOR)
@@ -27,7 +27,7 @@ public final class ComparatorLevelOverlayProvider extends __base_TextureOverlayP
 
 
     @Override
-    public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public String calcTexturePath(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
 
         // Return unknown level sprite if server doesn't have the mod installed
         // ! Data constructor sets the output signal to -1 if the server doesn't have the mod installed.
@@ -46,13 +46,13 @@ public final class ComparatorLevelOverlayProvider extends __base_TextureOverlayP
 
 
     @Override
-    public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public double calcVerticalOffset(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return PIXEL_HEIGHT * 2 + 0.02;
     }
 
 
     @Override
-    public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public double calcWidth(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return 0.25;
     }
 

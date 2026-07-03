@@ -22,7 +22,7 @@ public final class LightBlockOverlayProvider extends __base_TextureOverlayProvid
 
 
     @Override
-    public boolean shouldRender(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return
             OverlaysHandler.getFeature(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY) &&
             state.is(Blocks.LIGHT) &&
@@ -31,18 +31,18 @@ public final class LightBlockOverlayProvider extends __base_TextureOverlayProvid
     }
 
     @Override
-    public String calcTexturePath(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public String calcTexturePath(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         final int lightLevel = state.getValue(LightBlock.LEVEL);
         return "overlays/invisible_blocks/light_block/" + lightLevel + ".png";
     }
 
     @Override
-    public double calcVerticalOffset(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public double calcVerticalOffset(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return 0.5;
     }
 
     @Override
-    public double calcWidth(BlockState state, BlockPos pos, @Nullable __base_OverlayAttachedData attachedData) {
+    public double calcWidth(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return 0.5;
     }
 
@@ -52,7 +52,7 @@ public final class LightBlockOverlayProvider extends __base_TextureOverlayProvid
     }
 
     @Override
-    public float calcAnchor(BlockState state, BlockPos pos, __base_OverlayAttachedData data) {
+    public float calcAnchor(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData data) {
         return 0.5f;
     }
 }

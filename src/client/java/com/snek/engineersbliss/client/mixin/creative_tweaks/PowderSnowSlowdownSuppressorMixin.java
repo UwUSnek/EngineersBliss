@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.PowderSnowBlock;
@@ -28,7 +28,7 @@ public class PowderSnowSlowdownSuppressorMixin {
             target = "Lnet/minecraft/world/entity/Entity;makeStuckInBlock(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/Vec3;)V"
         )
     )
-    private void makeStuckInBlock(Entity entity, BlockState state, Vec3 speedMultiplier) {
+    private void makeStuckInBlock(final Entity entity, final BlockState state, final Vec3 speedMultiplier) {
         if(!CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_POWDER_SNOW_SLOWDOWN)) {
             entity.makeStuckInBlock(state, speedMultiplier);
         }

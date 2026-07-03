@@ -3,24 +3,25 @@ package com.snek.engineersbliss.client.screens.parts;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.snek.engineersbliss.client.utils.UiTxt;
+
 import net.minecraft.client.gui.components.AbstractSliderButton;
-import net.minecraft.network.chat.Component;
 
 
 
 
-public class SteppedSlider<T> extends AbstractSliderButton {
+public class UiSteppedSlider<T> extends AbstractSliderButton {
     private final String label;
     private final List<T> stepValues;
     private final Consumer<T> onApplyValue;
 
 
-    public SteppedSlider(
+    public UiSteppedSlider(
         final int x, final int y, final int w, final int h, final String label,
         final List<T> stepValues, final int defaultValueIndex,
         final Consumer<T> onApplyValue
     ) {
-        super(x, y, w, h, Component.empty(), indexToUnit(defaultValueIndex, stepValues.size()));
+        super(x, y, w, h, new UiTxt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
         this.label = label;
         this.stepValues = stepValues;
         this.onApplyValue = onApplyValue;
@@ -37,7 +38,7 @@ public class SteppedSlider<T> extends AbstractSliderButton {
 
     @Override
     protected void updateMessage() {
-        setMessage(Component.literal(label + ": " + getSelectedValue()));
+        setMessage(new UiTxt(label + ": " + getSelectedValue()).get());
     }
 
 
@@ -47,7 +48,7 @@ public class SteppedSlider<T> extends AbstractSliderButton {
     }
 
 
-    static double snap(double value, int steps) {
+    static double snap(final double value, int steps) {
         --steps;
         return Math.round(value * steps) / (double) steps;
     }

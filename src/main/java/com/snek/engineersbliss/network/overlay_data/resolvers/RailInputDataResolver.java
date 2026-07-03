@@ -113,18 +113,18 @@ public class RailInputDataResolver {
      * This is just a copy of Vanilla's own check but with a simpler logic
      */
     private static boolean isSameRailAndConnected(final Level level, final BlockPos pos, final RailShape prevShape, final PoweredRailBlock rail) {
-        BlockState state = level.getBlockState(pos);
+        final BlockState state = level.getBlockState(pos);
         if(!state.is(rail)) {
             return false;
         }
 
-        RailShape curShape = state.getValue(rail.getShapeProperty());
-        boolean prevEastWest =
+        final RailShape curShape = state.getValue(rail.getShapeProperty());
+        final boolean prevEastWest =
             prevShape == RailShape.EAST_WEST      ||
             prevShape == RailShape.ASCENDING_EAST ||
             prevShape == RailShape.ASCENDING_WEST
         ;
-        boolean curEastWest =
+        final boolean curEastWest =
             curShape == RailShape.EAST_WEST       ||
             curShape == RailShape.ASCENDING_EAST  ||
             curShape == RailShape.ASCENDING_WEST

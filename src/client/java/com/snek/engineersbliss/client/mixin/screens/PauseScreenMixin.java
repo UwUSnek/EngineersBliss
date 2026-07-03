@@ -12,6 +12,7 @@ import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.gui.components.Button;
@@ -53,7 +54,7 @@ public class PauseScreenMixin extends Screen {
 
 
     @Override
-    public boolean keyPressed(KeyEvent event) {
+    public boolean keyPressed(final KeyEvent event) {
         if(event.key() == InputConstants.KEY_R) {
             renderingButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
             return true;
@@ -139,9 +140,9 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    private Button addButton(String label, Supplier<Screen> screenFactory, int x, int y, int width) {
-        Button btn = Button.builder(
-            Component.literal(label),
+    private Button addButton(final String label, final Supplier<Screen> screenFactory, final int x, final int y, final int width) {
+        final Button btn = Button.builder(
+            new UiTxt(label).get(),
                 b -> {
                 minecraft.setScreen(screenFactory.get());
                 b.setFocused(false);

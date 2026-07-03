@@ -80,7 +80,7 @@ public class MinecraftUtils {
      * @param pos The position of the block.
      * @return The chunk position of the chunk.
      */
-    public static ChunkPos blockPosToChunk(BlockPos pos) {
+    public static ChunkPos blockPosToChunk(final BlockPos pos) {
         return new ChunkPos(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
     }
 

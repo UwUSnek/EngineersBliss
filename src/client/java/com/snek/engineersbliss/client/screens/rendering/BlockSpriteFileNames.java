@@ -16,7 +16,7 @@ public class BlockSpriteFileNames {
 
 
     public static List<String> getIdList() { return idList; }
-    private static final List<String> idList = new ArrayList(List.of(
+    private static final List<String> idList = new ArrayList<>(List.of(
         "stone",
         "granite",
         "polished_granite",
