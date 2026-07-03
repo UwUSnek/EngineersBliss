@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -227,7 +228,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                         }
                     }
                     else {
-                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", block.getName().getString());
+                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(block));
                         vanilla.collectParts(random, output);
                     }
                 }
