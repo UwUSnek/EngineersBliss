@@ -129,7 +129,9 @@ def build_atlas(name, font_path, fallback_path, upscale):
                 "ascent": round(main_ascent / scaled_cell * CELL),
                 "chars": grid_str
             },
-            {"type": "space", "advances": {" ": 5}}
+            {"type": "space", "advances": {" ": 5}},
+            {"type": "reference", "id": "minecraft:include/default"},
+            {"type": "reference", "id": "minecraft:include/unifont"}
         ]
     }
     with open(json_path, "w", encoding="utf-8") as f:
