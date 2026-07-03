@@ -47,7 +47,7 @@ public enum CreativeTweakServerFeature {
 
     // Name and properties
     private final long flagBit; //! Flag bit index is calculated from the order of declaration
-    private boolean _default;
+    private final boolean _default;
 
 
     // Getters and checks
@@ -64,6 +64,7 @@ public enum CreativeTweakServerFeature {
 
 
     private CreativeTweakServerFeature(final boolean _default) {
+        this._default = _default;
         this.flagBit = 1 << ordinal();
     }
 }
