@@ -3,7 +3,6 @@ package com.snek.engineersbliss.client.screens.overlays;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
-import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -49,7 +48,7 @@ public class OverlaysScreen extends __base_Screen {
 
 
     public static Txt getToggleText(final OverlayFeature feature, final boolean state) {
-        return new UiTxt(feature.getName() + ": " + (state ? "ON" : "OFF"));
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
     }
     public static Txt getToggleText(final OverlayFeature feature) {
         return getToggleText(feature, OverlaysHandler.getFeature(feature));

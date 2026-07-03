@@ -5,7 +5,6 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesH
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
-import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -65,7 +64,7 @@ public class AltTexturesScreen extends __base_Screen {
 
 
     public static Txt getToggleText(final AltTextureFeature feature, final boolean state) {
-        return new UiTxt(feature.getName() + ": " + (state ? "ON" : "OFF"));
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
     }
     public static Txt getToggleText(final AltTextureFeature feature) {
         return getToggleText(feature, AltTexturesHandler.getFeature(feature));
