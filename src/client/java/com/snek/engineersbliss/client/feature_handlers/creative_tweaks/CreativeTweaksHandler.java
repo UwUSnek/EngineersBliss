@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakServerFeature;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.ReachDistanceChangeRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
