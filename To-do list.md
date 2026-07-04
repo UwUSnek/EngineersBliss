@@ -188,3 +188,7 @@
 
 - add a "about" screen that talks abotu the mod, basically just copy the readme.
   - display my skin/drawing in there too and name
+
+
+- add images to the readme?
+  - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on

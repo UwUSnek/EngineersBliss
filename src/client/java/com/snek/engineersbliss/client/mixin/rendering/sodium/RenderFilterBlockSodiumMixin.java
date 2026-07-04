@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.mixin.rendering.sodium;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 
 import org.spongepowered.asm.mixin.injection.At;

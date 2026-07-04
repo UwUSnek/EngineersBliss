@@ -20,6 +20,10 @@ import net.minecraft.world.level.block.Blocks;
 
 
 public enum AltTextureFeature {
+    //! Beds are no longer block entities as of 26.3.
+    //! No point in adding it as a feature just to remove it after one version.
+
+
 
 
     MINIMAL_REDSTONE_WIRE(true,

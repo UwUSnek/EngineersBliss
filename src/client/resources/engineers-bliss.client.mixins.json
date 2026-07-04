@@ -44,7 +44,12 @@
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
         "rendering.CustomOutlinesMixin",
-        "rendering.InteractionFilterMixin"
+        "rendering.InteractionFilterMixin",
+
+        "alt_textures.ChestRenderingSuppressorMixin",
+        "alt_textures.AbstractSignRenderingSuppressorMixin",
+        "alt_textures.StandingSignRenderingSuppressorMixin",
+        "alt_textures.HangingSignRenderingSuppressorMixin"
     ],
     "injectors": {
         "defaultRequire": 1

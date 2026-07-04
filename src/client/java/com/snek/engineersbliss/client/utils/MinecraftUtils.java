@@ -18,10 +18,14 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
@@ -34,6 +38,31 @@ import net.minecraft.world.phys.AABB;
 public class MinecraftUtils {
     private MinecraftUtils() { }
 
+
+
+
+
+
+
+
+
+
+    /**
+     * Checks if the provided sign block entity contains any text at all.
+     * ! SignText already provides a hasMessage method, but it's not optimal.
+     * ! This is a manual implementation used for computational speed.
+     * @param blockEntity The text block entity.
+     * @return True if the sign contains text, false otherwise.
+     */
+    public static boolean signHasText(final SignBlockEntity blockEntity) {
+        for(final var msg : blockEntity.getFrontText().getMessages(false)) if(!componentIsBlank(msg)) return true;
+        for(final var msg : blockEntity.getBackText ().getMessages(false)) if(!componentIsBlank(msg)) return true;
+        return false;
+    }
+    private static boolean componentIsBlank(final Component msg) {
+        String collapsed = msg.tryCollapseToString();
+        return collapsed != null && collapsed.isEmpty();
+    }
 
 
 

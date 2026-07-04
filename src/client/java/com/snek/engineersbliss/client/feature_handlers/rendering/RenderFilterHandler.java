@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderersAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
@@ -183,15 +184,21 @@ public class RenderFilterHandler {
 
     /**
      * Checks if the specified block state should render, based on the current rendering filter settings.
+     * ! This also takes into account the static block entity model system:
+     * ! Block entities that are currently using a static model are considered to not have custom block entity rendering.
      * @param state The blockstate of the block to check.
-     * @return True if the block should render, false ot
+     * @return True if the block should render, false otherwise.
      */
     public static boolean shouldBlockRender(final BlockState state) {
         if(state == null) return false;
 
 
         //Check category rendering. Return false if disabled
-        final boolean hasBlockEntityRendering = state.hasBlockEntity() && blocksWithBlockEntityRendering.contains(state.getBlock());
+        final boolean hasBlockEntityRendering =
+            state.hasBlockEntity() &&
+            blocksWithBlockEntityRendering.contains(state.getBlock()) &&
+            !AltTexturesHandler.isUsingStaticModel(state)
+        ;
         if(
             !RenderFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty()  ||
             !RenderFilterHandler.getRenderBlockEntities() && hasBlockEntityRendering           ||
