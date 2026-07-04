@@ -17,6 +17,9 @@
   - ~~Alternative Barrier rendering~~
   - ~~Alternative Structure Void rendering~~
   - ~~Alternative Light Block rendering~~
+  - ~~Static Sign models~~
+  - ~~Static Chest models~~
+  - ~~Static Banner models~~
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~

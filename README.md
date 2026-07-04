@@ -95,7 +95,10 @@ It helps a lot :3
   - Consistent sloped Rails
   - Alternative Barrier rendering
   - Alternative Structure Void rendering
-  - Alternative Light Block rendering<br><br>
+  - Alternative Light Block rendering
+  - Static Sign models
+  - Static Chest models
+  - Static Banner models<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders
