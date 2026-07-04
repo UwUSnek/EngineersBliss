@@ -30,6 +30,17 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedOxidizedCopperChainPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedWeatheredCopperChainPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WeatheredCopperChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.CopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.EnderChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.ExposedCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.NormalChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.OxidizedCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.TrappedChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedExposedCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedOxidizedCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedWeatheredCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WeatheredCopperChestPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.CopperLanternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.ExposedCopperLanternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.NormalLanternPartProvider;
@@ -231,7 +242,19 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new      OakWallHangingSignPartProvider(),
             new  PaleOakWallHangingSignPartProvider(),
             new   SpruceWallHangingSignPartProvider(),
-            new   WarpedWallHangingSignPartProvider()
+            new   WarpedWallHangingSignPartProvider(),
+
+            new               NormalChestPartProvider(),
+            new                EnderChestPartProvider(),
+            new              TrappedChestPartProvider(),
+            new               CopperChestPartProvider(),
+            new        ExposedCopperChestPartProvider(),
+            new      WeatheredCopperChestPartProvider(),
+            new       OxidizedCopperChestPartProvider(),
+            new          WaxedCopperChestPartProvider(),
+            new   WaxedExposedCopperChestPartProvider(),
+            new WaxedWeatheredCopperChestPartProvider(),
+            new  WaxedOxidizedCopperChestPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }

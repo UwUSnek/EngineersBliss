@@ -176,6 +176,8 @@
 - render stats //TODO minecraft.getGpuUtilization()
 
 
+- add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
+- add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block
 
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
 
@@ -196,6 +198,5 @@
 - add images to the readme?
   - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on
 
-- add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
 
 - maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
