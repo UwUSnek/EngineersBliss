@@ -26,9 +26,14 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
         if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS)) {
             final String materialName = getSignMaterialName();
             final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION));
+
+            final String attachmentName =
+                (state.getValue(CeilingHangingSignBlock.ATTACHED).booleanValue() ? "narrow" : "wide") + "/all" + rotName
+                //! Rotation is always 0 when not "ATTACHED" as wide supports only snap to cardinal directions
+            ;
             return List.of(
                 ROOT + "/hanging_board/" + materialName  + rotName,
-                ROOT + "/hanging_ceiling_attachment/all" + rotName
+                ROOT + "/hanging_ceiling_attachment_" + attachmentName
             );
         }
         else {

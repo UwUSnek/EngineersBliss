@@ -197,3 +197,5 @@
   - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on
 
 - add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
+
+- maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
