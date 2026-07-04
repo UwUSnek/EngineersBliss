@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
+import com.snek.engineersbliss.client.mixin.alt_textures.SignTextStateCacheMixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -18,9 +20,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -54,14 +54,19 @@ public class MinecraftUtils {
      * @param blockEntity The text block entity.
      * @return True if the sign contains text, false otherwise.
      */
+    // public static boolean signHasText(final SignBlockEntity blockEntity) {
+    //     for(final var msg : blockEntity.getFrontText().getMessages(false)) if(!componentIsBlank(msg)) return true;
+    //     for(final var msg : blockEntity.getBackText ().getMessages(false)) if(!componentIsBlank(msg)) return true;
+    //     return false;
+    // }
     public static boolean signHasText(final SignBlockEntity blockEntity) {
-        for(final var msg : blockEntity.getFrontText().getMessages(false)) if(!componentIsBlank(msg)) return true;
-        for(final var msg : blockEntity.getBackText ().getMessages(false)) if(!componentIsBlank(msg)) return true;
-        return false;
+        return
+            ((SignTextStateCacheAccess)(Object) blockEntity.getFrontText()).engineersbliss$hasText() ||
+            ((SignTextStateCacheAccess)(Object) blockEntity.getBackText ()).engineersbliss$hasText()
+        ;
     }
     private static boolean componentIsBlank(final Component msg) {
-        String collapsed = msg.tryCollapseToString();
-        return collapsed != null && collapsed.isEmpty();
+        return msg.visit(s -> s.isEmpty() ? Optional.<Boolean>empty() : Optional.of(Boolean.TRUE)).isEmpty();
     }
 
 

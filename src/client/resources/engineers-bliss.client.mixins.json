@@ -46,10 +46,12 @@
         "rendering.CustomOutlinesMixin",
         "rendering.InteractionFilterMixin",
 
+        "alt_textures.BlockEntityDispatcherSuppressorMixin",
         "alt_textures.ChestRenderingSuppressorMixin",
         "alt_textures.AbstractSignRenderingSuppressorMixin",
         "alt_textures.StandingSignRenderingSuppressorMixin",
-        "alt_textures.HangingSignRenderingSuppressorMixin"
+        "alt_textures.HangingSignRenderingSuppressorMixin",
+        "alt_textures.SignTextStateCacheMixin"
     ],
     "injectors": {
         "defaultRequire": 1
