@@ -122,7 +122,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * This plugin implements dynamic models for specific blocks.
  * It registers custom models and textures during startup and fetches the right ones based on config settings when resolving the block state's model.
  */
-public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<Identifier>> {
+public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<AltTexturesModelPlugin.ModelEntry>> {
     private static final List<String>   PART_SUFFIXES_HORIZONTAL  = List.of("n", "e", "s", "w");
     private static final List<Quadrant> PART_QUADRANTS_HORIZONTAL = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
     private static final List<String>   PART_SUFFIXES_VERTICAL    = List.of("u", "d");
@@ -130,6 +130,10 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     private static final List<Quadrant> PART_XROT_AXIS            = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R90);
     private static final List<Quadrant> PART_YROT_AXIS            = List.of(Quadrant.R0, Quadrant.R0, Quadrant.R90);
     private static final List<String>   PART_SUFFIXES_AXIS        = List.of("y", "z", "x");
+
+    // Templates/Variants info
+    public record ModelEntry(Identifier id, @Nullable String suffixes) {}
+    private static final String GENERATE_MARKER_PREFIX = ".gen-";
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
 
 
@@ -237,40 +241,52 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
     //! Called by the prepatable model plugin system once the plugin is registered.
     //! Registed from the client initializer.
-    public static CompletableFuture<List<Identifier>> discoverModels(final PreparableReloadListener.SharedState sharedState, final Executor executor) {
+    public static CompletableFuture<List<ModelEntry>> discoverModels(final PreparableReloadListener.SharedState sharedState, final Executor executor) {
         return CompletableFuture.supplyAsync(() -> {
-            final List<Identifier> r = new ArrayList<>();
+            final List<ModelEntry> r = new ArrayList<>();
             final String root = "models/block";
-
-            // Find all json models using the resource manager. Filter out stuff not from this mod and non-json files
             final @NotNull ResourceManager resourceManager = sharedState.resourceManager();
-            resourceManager.listResources(
-                root,
-                id -> {
-                    return id.getNamespace().equals(EngineerSBliss.MOD_ID) && id.getPath().endsWith(".json");
-                }).keySet().forEach(id -> {
 
-                    // Skip models in the same directory as files named ".template"
-                    final @NotNull String path = id.getPath();
-                    final String dir  = path.substring(0, path.lastIndexOf('/') + 1);
-                    final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
-                    if(resourceManager.getResource(templateMarker).isPresent()) return;
+            resourceManager.listResources(root, id ->
+                id.getNamespace().equals(EngineerSBliss.MOD_ID) && id.getPath().endsWith(".json")
+            ).keySet().forEach(id -> {
+                final @NotNull String path = id.getPath();
+                final String dir = path.substring(0, path.lastIndexOf('/') + 1);
 
-                    // If the model is not a template, load it in the runtime map
-                    final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
-                    r.add(finalId);
-                    EngineerSBliss.LOGGER.info("Loaded dynamic custom model {}", finalId);
+                final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
+                if(resourceManager.getResource(templateMarker).isPresent()) return;
+
+                final String suffixes = findGenerateSuffixes(resourceManager, dir);
+                if(suffixes == null) {
+                    EngineerSBliss.LOGGER.error("Model directory {} doesn't define any variant.", dir);
                 }
-            );
+                else {
+                    final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
+                    r.add(new ModelEntry(finalId, suffixes));
+                    EngineerSBliss.LOGGER.info("Loaded dynamic custom model {} (variants: {})", finalId, suffixes);
+                }
+            });
             return r;
         }, executor);
     }
 
+    @Nullable
+    private static String findGenerateSuffixes(final ResourceManager resourceManager, final String dir) {
+        final String dirRoot = dir.substring(0, dir.length() - 1); // strip trailing '/'
+        for(final Identifier id : resourceManager.listResources(dirRoot, i ->
+            i.getNamespace().equals(EngineerSBliss.MOD_ID) &&
+            i.getPath().startsWith(dir) &&
+            i.getPath().substring(dir.length()).startsWith(GENERATE_MARKER_PREFIX)
+        ).keySet()) {
+            return id.getPath().substring(dir.length() + GENERATE_MARKER_PREFIX.length());
+        }
+        return null;
+    }
 
 
 
     @Override //! Called automatically. No need to manually call from the client initializer
-    public void initialize(final List<Identifier> modelIds, final Context initContext) {
+    public void initialize(final List<ModelEntry> modelEntries, final Context initContext) {
 
 
         // Register the custom models during startup
@@ -285,8 +301,8 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 @Override
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
                     model.resolveDependencies(resolver);
-                    for(final Identifier modelId : modelIds) {
-                        resolver.markDependency(modelId);
+                    for(final ModelEntry modelEntry : modelEntries) {
+                        resolver.markDependency(modelEntry.id());
                     }
                 }
 
@@ -314,37 +330,42 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
             // For each model ID
-            for(@NotNull final Identifier modelId : modelIds) {
+            for(final ModelEntry entry : modelEntries) {
+                final Identifier modelId  = entry.id();
+                final String     suffixes = entry.suffixes();
 
                 // Bake one model per horizontal direction
                 for(int i = 0; i < 4; ++i) {
+                    final String suffix = PART_SUFFIXES_HORIZONTAL.get(i);
+                    if(suffixes == null || !suffixes.contains(suffix)) continue;
                     final BlockStateModelPart part = new Variant(modelId)
                         .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
-                        .bake(beforeBakeContext.baker())
-                    ;
-                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_HORIZONTAL.get(i));
+                        .bake(beforeBakeContext.baker());
+                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
                     customModels.put(rotatedModelId, new SingleVariant(part));
                 }
 
                 // Bake up and down variants
                 for(int i = 0; i < 2; ++i) {
+                    final String suffix = PART_SUFFIXES_VERTICAL.get(i);
+                    if(suffixes == null || !suffixes.contains(suffix)) continue;
                     final BlockStateModelPart part = new Variant(modelId)
                         .withYRot(Quadrant.R180)
                         .withXRot(PART_QUADRANTS_VERTICAL.get(i))
-                        .bake(beforeBakeContext.baker())
-                    ;
-                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_VERTICAL.get(i));
+                        .bake(beforeBakeContext.baker());
+                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
                     customModels.put(rotatedModelId, new SingleVariant(part));
                 }
 
                 // Bake axis-aligned variants
                 for(int i = 0; i < 3; ++i) {
+                    final String suffix = PART_SUFFIXES_AXIS.get(i);
+                    if(suffixes == null || !suffixes.contains(suffix)) continue;
                     final BlockStateModelPart part = new Variant(modelId)
                         .withXRot(PART_XROT_AXIS.get(i))
                         .withYRot(PART_YROT_AXIS.get(i))
-                        .bake(beforeBakeContext.baker())
-                    ;
-                    final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES_AXIS.get(i));
+                        .bake(beforeBakeContext.baker());
+                    final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
                     customModels.put(axisModelId, new SingleVariant(part));
                 }
             }

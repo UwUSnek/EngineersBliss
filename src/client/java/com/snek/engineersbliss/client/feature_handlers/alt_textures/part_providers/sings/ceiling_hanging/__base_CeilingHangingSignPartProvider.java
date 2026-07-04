@@ -27,8 +27,8 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
             final String materialName = getSignMaterialName();
             final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION));
             return List.of(
-                ROOT + "/hanging_board/" + materialName                         + rotName,
-                ROOT + "/hanging_ceiling_attachment/hanging_ceiling_attachment" + rotName
+                ROOT + "/hanging_board/" + materialName  + rotName,
+                ROOT + "/hanging_ceiling_attachment/all" + rotName
             );
         }
         else {
