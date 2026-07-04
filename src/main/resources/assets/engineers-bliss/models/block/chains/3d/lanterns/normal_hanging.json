@@ -1,7 +1,0 @@
-{
-  "parent": "engineers-bliss:block/chains/3d/templates/hanging_lantern",
-  "textures": {
-    "chain":   "engineers-bliss:block/chains/3d/chains/iron",
-    "lantern": "engineers-bliss:block/chains/3d/lanterns/normal"
-  }
-}

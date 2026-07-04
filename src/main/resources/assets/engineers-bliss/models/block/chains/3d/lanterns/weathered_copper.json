@@ -1,7 +1,0 @@
-{
-  "parent": "engineers-bliss:block/chains/3d/templates/lantern",
-  "textures": {
-    "chain":   "engineers-bliss:block/chains/3d/chains/weathered_copper",
-    "lantern": "engineers-bliss:block/chains/3d/lanterns/weathered_copper"
-  }
-}

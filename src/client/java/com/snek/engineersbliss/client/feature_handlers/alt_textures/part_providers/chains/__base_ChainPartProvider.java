@@ -22,7 +22,7 @@ public abstract class __base_ChainPartProvider extends __base_PartProvider {
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         return AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ?
-            List.of("chains/3d/chains/" + getChainName() + getVariantSuffixFromAxis(state.getValue(ChainBlock.AXIS))) :
+            List.of("chains/3d/" + getChainName() + getVariantSuffixFromAxis(state.getValue(ChainBlock.AXIS))) :
             null
         ;
     }

@@ -23,7 +23,7 @@ public abstract class __base_LanternPartProvider extends __base_PartProvider {
     public @Nullable List<String> calcPartNames(final BlockState state) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D)) {
             final String lanternTypeName = state.getValue(LanternBlock.HANGING).booleanValue() ? "_hanging" : "";
-            return List.of("chains/3d/lanterns/" + getLanternName() + lanternTypeName + "_n");
+            return List.of("lanterns/3d/" + getLanternName() + lanternTypeName + "_n");
         }
         else {
             return null;
