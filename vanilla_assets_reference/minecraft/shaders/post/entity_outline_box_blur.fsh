@@ -22,7 +22,7 @@ void main() {
 
     vec4 blurred = vec4(0.0);
     float radius = 2.0;
-    for (float a = -radius + 0.5; a <= radius; a += 2.0) {
+    for(float a = -radius + 0.5; a <= radius; a += 2.0) {
         blurred += texture(InSampler, texCoord + sampleStep * a);
     }
     blurred += texture(InSampler, texCoord + sampleStep * radius) / 2.0;

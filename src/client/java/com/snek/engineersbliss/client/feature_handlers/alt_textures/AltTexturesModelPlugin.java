@@ -44,7 +44,55 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.DetectorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.PoweredRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.RailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.OakHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.AcaciaStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.BambooStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.BirchStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.CherryStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.CrimsonStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.DarkOakStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.JungleStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.MangroveStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.OakStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.PaleOakStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.SpruceStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.WarpedStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.AcaciaWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.BambooWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.BirchWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.CherryWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.CrimsonWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.DarkOakWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.JungleWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.MangroveWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.OakWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.PaleOakWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.SpruceWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.WarpedWallSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.AcaciaCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BambooCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BirchCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CherryCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CrimsonCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.DarkOakCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.JungleCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.MangroveCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.OakCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.PaleOakCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.SpruceCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.WarpedCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.AcaciaWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.BambooWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.BirchWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.CherryWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.CrimsonWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.DarkOakWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.JungleWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.MangroveWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.OakWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.PaleOakWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.SpruceWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.WarpedWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.__base_WallHangingSignPartProvider;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -94,42 +142,92 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
     static {
         for(final var provider : List.of(
-            new SlimeBlockPartProvider(),
-            new HoneyBlockPartProvider(),
+            new    SlimeBlockPartProvider(),
+            new    HoneyBlockPartProvider(),
             new MangroveRootsPartProvider(),
-            new ScaffoldingPartProvider(),
-            new RedstoneWirePartProvider(),
-            new LadderPartProvider(),
-            new VinesPartProvider(),
-            new GlowLichenPartProvider(),
+            new   ScaffoldingPartProvider(),
+            new  RedstoneWirePartProvider(),
+            new        LadderPartProvider(),
+            new         VinesPartProvider(),
+            new    GlowLichenPartProvider(),
 
-            new RailPartProvider(),
-            new PoweredRailPartProvider(),
+            new          RailPartProvider(),
+            new   PoweredRailPartProvider(),
             new ActivatorRailPartProvider(),
-            new DetectorRailPartProvider(),
+            new  DetectorRailPartProvider(),
 
-            new IronChainPartProvider(),
-            new CopperChainPartProvider(),
-            new ExposedCopperChainPartProvider(),
-            new WeatheredCopperChainPartProvider(),
-            new OxidizedCopperChainPartProvider(),
-            new WaxedCopperChainPartProvider(),
-            new WaxedExposedCopperChainPartProvider(),
+            new                 IronChainPartProvider(),
+            new               CopperChainPartProvider(),
+            new        ExposedCopperChainPartProvider(),
+            new      WeatheredCopperChainPartProvider(),
+            new       OxidizedCopperChainPartProvider(),
+            new          WaxedCopperChainPartProvider(),
+            new   WaxedExposedCopperChainPartProvider(),
             new WaxedWeatheredCopperChainPartProvider(),
-            new WaxedOxidizedCopperChainPartProvider(),
+            new  WaxedOxidizedCopperChainPartProvider(),
 
-            new NormalLanternPartProvider(),
-            new SoulLanternPartProvider(),
-            new CopperLanternPartProvider(),
-            new ExposedCopperLanternPartProvider(),
-            new WeatheredCopperLanternPartProvider(),
-            new OxidizedCopperLanternPartProvider(),
-            new WaxedCopperLanternPartProvider(),
-            new WaxedExposedCopperLanternPartProvider(),
+            new               NormalLanternPartProvider(),
+            new                 SoulLanternPartProvider(),
+            new               CopperLanternPartProvider(),
+            new        ExposedCopperLanternPartProvider(),
+            new      WeatheredCopperLanternPartProvider(),
+            new       OxidizedCopperLanternPartProvider(),
+            new          WaxedCopperLanternPartProvider(),
+            new   WaxedExposedCopperLanternPartProvider(),
             new WaxedWeatheredCopperLanternPartProvider(),
-            new WaxedOxidizedCopperLanternPartProvider(),
+            new  WaxedOxidizedCopperLanternPartProvider(),
 
-            new OakHangingSignPartProvider()
+            new   AcaciaStandingSignPartProvider(),
+            new   BambooStandingSignPartProvider(),
+            new    BirchStandingSignPartProvider(),
+            new   CherryStandingSignPartProvider(),
+            new  CrimsonStandingSignPartProvider(),
+            new  DarkOakStandingSignPartProvider(),
+            new   JungleStandingSignPartProvider(),
+            new MangroveStandingSignPartProvider(),
+            new      OakStandingSignPartProvider(),
+            new  PaleOakStandingSignPartProvider(),
+            new   SpruceStandingSignPartProvider(),
+            new   WarpedStandingSignPartProvider(),
+
+            new   AcaciaWallSignPartProvider(),
+            new   BambooWallSignPartProvider(),
+            new    BirchWallSignPartProvider(),
+            new   CherryWallSignPartProvider(),
+            new  CrimsonWallSignPartProvider(),
+            new  DarkOakWallSignPartProvider(),
+            new   JungleWallSignPartProvider(),
+            new MangroveWallSignPartProvider(),
+            new      OakWallSignPartProvider(),
+            new  PaleOakWallSignPartProvider(),
+            new   SpruceWallSignPartProvider(),
+            new   WarpedWallSignPartProvider(),
+
+            new   AcaciaCeilingHangingSignPartProvider(),
+            new   BambooCeilingHangingSignPartProvider(),
+            new    BirchCeilingHangingSignPartProvider(),
+            new   CherryCeilingHangingSignPartProvider(),
+            new  CrimsonCeilingHangingSignPartProvider(),
+            new  DarkOakCeilingHangingSignPartProvider(),
+            new   JungleCeilingHangingSignPartProvider(),
+            new MangroveCeilingHangingSignPartProvider(),
+            new      OakCeilingHangingSignPartProvider(),
+            new  PaleOakCeilingHangingSignPartProvider(),
+            new   SpruceCeilingHangingSignPartProvider(),
+            new   WarpedCeilingHangingSignPartProvider(),
+
+            new   AcaciaWallHangingSignPartProvider(),
+            new   BambooWallHangingSignPartProvider(),
+            new    BirchWallHangingSignPartProvider(),
+            new   CherryWallHangingSignPartProvider(),
+            new  CrimsonWallHangingSignPartProvider(),
+            new  DarkOakWallHangingSignPartProvider(),
+            new   JungleWallHangingSignPartProvider(),
+            new MangroveWallHangingSignPartProvider(),
+            new      OakWallHangingSignPartProvider(),
+            new  PaleOakWallHangingSignPartProvider(),
+            new   SpruceWallHangingSignPartProvider(),
+            new   WarpedWallHangingSignPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
@@ -219,7 +317,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             for(@NotNull final Identifier modelId : modelIds) {
 
                 // Bake one model per horizontal direction
-                for (int i = 0; i < 4; ++i) {
+                for(int i = 0; i < 4; ++i) {
                     final BlockStateModelPart part = new Variant(modelId)
                         .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
                         .bake(beforeBakeContext.baker())
@@ -229,7 +327,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 }
 
                 // Bake up and down variants
-                for (int i = 0; i < 2; ++i) {
+                for(int i = 0; i < 2; ++i) {
                     final BlockStateModelPart part = new Variant(modelId)
                         .withYRot(Quadrant.R180)
                         .withXRot(PART_QUADRANTS_VERTICAL.get(i))
@@ -240,7 +338,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 }
 
                 // Bake axis-aligned variants
-                for (int i = 0; i < 3; ++i) {
+                for(int i = 0; i < 3; ++i) {
                     final BlockStateModelPart part = new Variant(modelId)
                         .withXRot(PART_XROT_AXIS.get(i))
                         .withYRot(PART_YROT_AXIS.get(i))

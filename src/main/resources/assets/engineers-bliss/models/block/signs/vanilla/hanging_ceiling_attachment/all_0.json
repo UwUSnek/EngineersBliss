@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/signs/vanilla/templates/hanging_ceiling_attachment_0",
+  "textures": {
+    "atlas": "engineers-bliss:block/signs/vanilla/hanging/ceiling_attachment"
+  }
+}
