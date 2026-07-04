@@ -42,6 +42,7 @@ public class AltTexturesScreen extends __base_Screen {
         addButton(OverlaysScreen.getToggleText(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY),      OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY     .getDetails(), b -> OverlaysScreen.toggleFeature(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY,    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, BUTTON_WIDTH);
         addButton(               getToggleText(AltTextureFeature.STATIC_CHESTS),                AltTextureFeature.STATIC_CHESTS               .getDetails(), b ->                toggleFeature(AltTextureFeature.STATIC_CHESTS,              b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, BUTTON_WIDTH);
         addButton(               getToggleText(AltTextureFeature.STATIC_SIGNS),                 AltTextureFeature.STATIC_SIGNS                .getDetails(), b ->                toggleFeature(AltTextureFeature.STATIC_SIGNS,               b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, BUTTON_WIDTH);
+        addButton(               getToggleText(AltTextureFeature.STATIC_BANNERS),               AltTextureFeature.STATIC_BANNERS              .getDetails(), b ->                toggleFeature(AltTextureFeature.STATIC_BANNERS,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, BUTTON_WIDTH);
 
 
         // 3D //TODO add header

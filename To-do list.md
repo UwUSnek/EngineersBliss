@@ -200,3 +200,5 @@
 
 
 - maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
+
+- make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing

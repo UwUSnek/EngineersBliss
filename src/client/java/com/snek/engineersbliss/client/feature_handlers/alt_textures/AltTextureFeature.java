@@ -67,9 +67,9 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Chest models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance.\n"))
-            .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange())
-            .cat(new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red())
-            .cat(new UiTxt("This feature is not compatible with other static block entity model mods.").red())
+            .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange()) //FIXME remove once this is fixed
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         Groups.ALL_CHESTS
     ),
@@ -78,8 +78,18 @@ public enum AltTextureFeature {
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
             .cat(new UiTxt("The text will still be rendered dynamically, so signs will still be laggier than normal blocks, but way less than Vanilla's.\n").Orange())
-            .cat(new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red())
-            .cat(new UiTxt("This feature is not compatible with other static block entity model mods.").red())
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+        ,
+        Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
+    ),
+    STATIC_BANNERS(true,
+        () -> new UiTxt("Static Banner models"),
+        () -> new Txt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
+            .cat(new UiTxt("This breaks the fluttering animation banners have in Vanilla.\n").Orange())
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
     ),
@@ -224,6 +234,16 @@ public enum AltTextureFeature {
             Blocks.TRAPPED_CHEST,
             Blocks.ENDER_CHEST
         );
+    }
+
+
+
+
+
+
+    private static class Notices {
+        private static Txt RESOURCEPACK_COMPATIBILITY_NOTICE = new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red();
+        private static Txt MOD_COMPATIBILITY_NOTICE = new UiTxt("This feature is not compatible with other static block entity model mods.").red();
     }
 
 
