@@ -130,8 +130,8 @@ public enum OverlayFeature {
 
 
     // Getters and checks
-    public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()) :    name; }
-    public Txt getDetails() { return details == null ? (details = detailsSupplier.get()) : details; }
+    public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()).copy() :    name.copy(); }
+    public Txt getDetails() { return details == null ? (details = detailsSupplier.get()).copy() : details.copy(); }
     public boolean affects(final Block block) { return affectedBlocks.contains(block); }
     public List<Block> getAffectedBlocks() { return affectedBlocks; }
     public long getFlagBit() { return flagBit; }

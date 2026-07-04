@@ -255,8 +255,8 @@ public enum CreativeTweakFeature {
 
     // Getters and checks
     public CreativeTweakServerFeature getServerFeature() { return serverFeature; }
-    public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()) :    name; }
-    public Txt getDetails() { return details == null ? (details = detailsSupplier.get()) : details; }
+    public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()).copy() :    name.copy(); }
+    public Txt getDetails() { return details == null ? (details = detailsSupplier.get()).copy() : details.copy(); }
     public long getFlagBit() { return flagBit; }
     public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
     //! Defaults defined in CreativeTweakServerFeature
