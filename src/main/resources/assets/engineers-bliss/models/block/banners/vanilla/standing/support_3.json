@@ -1,0 +1,37 @@
+{
+	"format_version": "1.21.11",
+	"credit": "UwU_Snek",
+	"parent": "block/block",
+	"textures": {
+		"particle": "engineers-bliss:block/banners/vanilla/support",
+		"atlas": "engineers-bliss:block/banners/vanilla/support"
+	},
+	"elements": [
+		{
+			"from": [7.3333, 0, 7.3333],
+			"to": [8.6667, 28, 8.6667],
+			"rotation": {"x": 0, "y": -67.5, "z": 0, "origin": [8, 21.33333, 8.67015]},
+			"faces": {
+				"north": {"uv": [11.5, 0.5, 12, 11], "texture": "#atlas"},
+				"east": {"uv": [11, 0.5, 11.5, 11], "texture": "#atlas"},
+				"south": {"uv": [12.5, 0.5, 13, 11], "texture": "#atlas"},
+				"west": {"uv": [12, 0.5, 12.5, 11], "texture": "#atlas"},
+				"up": {"uv": [11.5, 0, 12, 0.5], "texture": "#atlas"},
+				"down": {"uv": [12, 0, 12.5, 0.5], "texture": "#atlas"}
+			}
+		},
+		{
+			"from": [1.3333, 28, 7.3333],
+			"to": [14.6667, 29.3333, 8.6667],
+			"rotation": {"x": 0, "y": -67.5, "z": 0, "origin": [8, 21.33333, 8.67015]},
+			"faces": {
+				"north": {"uv": [0.5, 11, 5.5, 11.5], "texture": "#atlas"},
+				"east": {"uv": [0, 11, 0.5, 11.5], "texture": "#atlas"},
+				"south": {"uv": [6, 11, 11, 11.5], "texture": "#atlas"},
+				"west": {"uv": [5.5, 11, 6, 11.5], "texture": "#atlas"},
+				"up": {"uv": [0.5, 10.5, 5.5, 11], "texture": "#atlas"},
+				"down": {"uv": [5.5, 10.5, 10.5, 11], "texture": "#atlas"}
+			}
+		}
+	]
+}

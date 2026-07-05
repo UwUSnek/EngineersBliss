@@ -10,6 +10,7 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import org.spongepowered.asm.mixin.injection.At;
 
+import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -45,17 +46,19 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                 cir.setReturnValue(null);
             }
         }
+        // LidBlockEntity covers all chest types
         if(blockEntity instanceof LidBlockEntity) {
             if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)) {
                 cir.setReturnValue(null);
             }
         }
-        if(blockEntity instanceof BannerBlockEntity) {
+        if(blockEntity instanceof BannerBlockEntity banner && !MinecraftUtils.bannerHasPatterns(banner)) {
+            BannerRenderer
             if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
                 cir.setReturnValue(null);
             }
         }
-        if(blockEntity instanceof DecoratedPotBlockEntity) {
+        if(blockEntity instanceof DecoratedPotBlockEntity pot && !MinecraftUtils.decoratedPotHasSherds(pot)) {
             if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
                 cir.setReturnValue(null);
             }

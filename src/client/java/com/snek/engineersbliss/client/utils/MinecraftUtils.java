@@ -25,6 +25,10 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DecoratedPotBlock;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.world.level.block.entity.PotDecorations;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -65,8 +69,21 @@ public class MinecraftUtils {
             ((SignTextStateCacheAccess)(Object) blockEntity.getBackText ()).engineersbliss$hasText()
         ;
     }
-    private static boolean componentIsBlank(final Component msg) {
-        return msg.visit(s -> s.isEmpty() ? Optional.<Boolean>empty() : Optional.of(Boolean.TRUE)).isEmpty();
+
+
+    public static boolean bannerHasPatterns(final BannerBlockEntity blockEntity) {
+        return !blockEntity.getPatterns().layers().isEmpty();
+    }
+
+
+    public static boolean decoratedPotHasSherds(final DecoratedPotBlockEntity blockEntity) {
+        final PotDecorations decorations = blockEntity.getDecorations();
+        return
+            !decorations.front().isEmpty() ||
+            !decorations.back ().isEmpty() ||
+            !decorations.right().isEmpty() ||
+            !decorations.left ().isEmpty()
+        ;
     }
 
 

@@ -27,6 +27,7 @@ public class AltTexturesScreen extends __base_Screen {
 
     @Override
     protected void init() {
+BannerRenderer
         // Visibility //TODO add header
         addButton(getToggleText(AltTextureFeature.MINIMAL_REDSTONE_WIRE),        AltTextureFeature.MINIMAL_REDSTONE_WIRE       .getDetails(), b -> toggleFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE,        b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.NO_REDSTONE_WIRE_PARTICLES),   AltTextureFeature.NO_REDSTONE_WIRE_PARTICLES  .getDetails(), b -> toggleFeature(AltTextureFeature.NO_REDSTONE_WIRE_PARTICLES,   b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
@@ -48,15 +49,14 @@ public class AltTexturesScreen extends __base_Screen {
         addButton(               getToggleText(AltTextureFeature.STATIC_BELLS),                 AltTextureFeature.STATIC_BELLS                .getDetails(), b ->                toggleFeature(AltTextureFeature.STATIC_BELLS,                b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 8, BUTTON_WIDTH);
         addButton(               getToggleText(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES),  AltTextureFeature.STATIC_COPPER_GOLEM_STATUES .getDetails(), b ->                toggleFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES, b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 1, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 9, BUTTON_WIDTH);
 
-
         // 3D //TODO add header
-        addButton(getToggleText(AltTextureFeature.REDSTONE_WIRE_3D),             AltTextureFeature.REDSTONE_WIRE_3D            .getDetails(), b -> toggleFeature(AltTextureFeature.REDSTONE_WIRE_3D,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.RAILS_3D),                     AltTextureFeature.RAILS_3D                    .getDetails(), b -> toggleFeature(AltTextureFeature.RAILS_3D,                     b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.LADDERS_3D),                   AltTextureFeature.LADDERS_3D                  .getDetails(), b -> toggleFeature(AltTextureFeature.LADDERS_3D,                   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.CHAINS_3D),                    AltTextureFeature.CHAINS_3D                   .getDetails(), b -> toggleFeature(AltTextureFeature.CHAINS_3D,                    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.BARS_3D),                      AltTextureFeature.BARS_3D                     .getDetails(), b -> toggleFeature(AltTextureFeature.BARS_3D,                      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.VINES_3D),                     AltTextureFeature.VINES_3D                    .getDetails(), b -> toggleFeature(AltTextureFeature.VINES_3D,                     b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.GLOW_LICHEN_3D),               AltTextureFeature.GLOW_LICHEN_3D              .getDetails(), b -> toggleFeature(AltTextureFeature.GLOW_LICHEN_3D,               b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.REDSTONE_WIRE_3D), AltTextureFeature.REDSTONE_WIRE_3D.getDetails(), b -> toggleFeature(AltTextureFeature.REDSTONE_WIRE_3D, b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.RAILS_3D),         AltTextureFeature.RAILS_3D        .getDetails(), b -> toggleFeature(AltTextureFeature.RAILS_3D,         b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.LADDERS_3D),       AltTextureFeature.LADDERS_3D      .getDetails(), b -> toggleFeature(AltTextureFeature.LADDERS_3D,       b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.CHAINS_3D),        AltTextureFeature.CHAINS_3D       .getDetails(), b -> toggleFeature(AltTextureFeature.CHAINS_3D,        b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.BARS_3D),          AltTextureFeature.BARS_3D         .getDetails(), b -> toggleFeature(AltTextureFeature.BARS_3D,          b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.VINES_3D),         AltTextureFeature.VINES_3D        .getDetails(), b -> toggleFeature(AltTextureFeature.VINES_3D,         b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, BUTTON_WIDTH);
+        addButton(getToggleText(AltTextureFeature.GLOW_LICHEN_3D),   AltTextureFeature.GLOW_LICHEN_3D  .getDetails(), b -> toggleFeature(AltTextureFeature.GLOW_LICHEN_3D,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, BUTTON_WIDTH);
     }
 
 

@@ -21,7 +21,10 @@ public abstract class __base_StandingBannerPartProvider extends __base_BannerPar
     public @Nullable List<String> calcPartNames(final BlockState state) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
             final String rotName = getVariantSuffixFromRotationIndex(state.getValue(BannerBlock.ROTATION));
-            return List.of("banners/vanilla/standing/" + getColorName() + rotName);
+            return List.of(
+                "banners/vanilla/standing/support"           + rotName,
+                "banners/vanilla/standing/" + getColorName() + rotName
+            );
         }
         else {
             return null;

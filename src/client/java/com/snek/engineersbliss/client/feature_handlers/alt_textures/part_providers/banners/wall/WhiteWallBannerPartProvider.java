@@ -10,7 +10,7 @@ public class WhiteWallBannerPartProvider extends __base_WallBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.WHITE_BANNER;
+        return Blocks.WHITE_WALL_BANNER;
     }
 
     @Override

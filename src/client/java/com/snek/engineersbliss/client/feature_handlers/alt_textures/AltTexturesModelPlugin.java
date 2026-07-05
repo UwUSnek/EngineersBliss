@@ -21,6 +21,38 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.BlackBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.BlueBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.BrownBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.CyanBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.GrayBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.GreenBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.LightBlueBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.LightGrayBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.LimeBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.MagentaBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.OrangeBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.PinkBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.PurpleBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.RedBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.WhiteBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.YellowBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.BlackWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.BlueWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.BrownWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.CyanWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.GrayWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.GreenWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.LightBlueWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.LightGrayWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.LimeWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.MagentaWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.OrangeWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.PinkWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.PurpleWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.RedWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.WhiteWallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.YellowWallBannerPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.CopperChainPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.ExposedCopperChainPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.IronChainPartProvider;
@@ -103,7 +135,6 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.PaleOakWallHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.SpruceWallHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.WarpedWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.__base_WallHangingSignPartProvider;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -254,11 +285,50 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new          WaxedCopperChestPartProvider(),
             new   WaxedExposedCopperChestPartProvider(),
             new WaxedWeatheredCopperChestPartProvider(),
-            new  WaxedOxidizedCopperChestPartProvider()
+            new  WaxedOxidizedCopperChestPartProvider(),
+
+            new     WhiteBannerPartProvider(),
+            new    OrangeBannerPartProvider(),
+            new   MagentaBannerPartProvider(),
+            new LightBlueBannerPartProvider(),
+            new    YellowBannerPartProvider(),
+            new      LimeBannerPartProvider(),
+            new      PinkBannerPartProvider(),
+            new      GrayBannerPartProvider(),
+            new LightGrayBannerPartProvider(),
+            new      CyanBannerPartProvider(),
+            new    PurpleBannerPartProvider(),
+            new      BlueBannerPartProvider(),
+            new     BrownBannerPartProvider(),
+            new     GreenBannerPartProvider(),
+            new       RedBannerPartProvider(),
+            new     BlackBannerPartProvider(),
+
+            new     WhiteWallBannerPartProvider(),
+            new    OrangeWallBannerPartProvider(),
+            new   MagentaWallBannerPartProvider(),
+            new LightBlueWallBannerPartProvider(),
+            new    YellowWallBannerPartProvider(),
+            new      LimeWallBannerPartProvider(),
+            new      PinkWallBannerPartProvider(),
+            new      GrayWallBannerPartProvider(),
+            new LightGrayWallBannerPartProvider(),
+            new      CyanWallBannerPartProvider(),
+            new    PurpleWallBannerPartProvider(),
+            new      BlueWallBannerPartProvider(),
+            new     BrownWallBannerPartProvider(),
+            new     GreenWallBannerPartProvider(),
+            new       RedWallBannerPartProvider(),
+            new     BlackWallBannerPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
     }
+
+
+
+
+
 
 
 
