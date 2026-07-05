@@ -31,6 +31,16 @@ public enum AltTextureFeature {
         () -> new UiTxt("Replaces the messy dust-like Redstone Wire texture with a simple monochrome line to make circuits more readable."),
         List.of(Blocks.REDSTONE_WIRE)
     ),
+    NO_REDSTONE_WIRE_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable Redstone Wire particles"),
+        () -> new UiTxt("Stops Redstone Wire from emitting particles when powered."),
+        List.of(Blocks.REDSTONE_WIRE)
+    ),
+    NO_CAMPFIRE_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable Campfire smoke"),
+        () -> new UiTxt("Stops Campfires and Soul Campfires from emitting smoke and ember particles."),
+        List.of(Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE)
+    ),
     TRANSPARENT_SLIME_BLOCK(true,
         () -> new UiTxt("Transparent Slime Blocks"),
         () -> new UiTxt("Replaces the texture of Slime Blocks with a less opaque version."),
@@ -51,6 +61,10 @@ public enum AltTextureFeature {
         () -> new UiTxt("Removes the woven bamboo part of the texture in the middle of Scaffolding blocks to improve visibility."),
         List.of(Blocks.SCAFFOLDING)
     ),
+
+
+
+
 
 
 
@@ -77,7 +91,7 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Sign models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
-            .cat(new UiTxt("The text will still be rendered dynamically, so signs will still be laggier than normal blocks, but way less than Vanilla's.\n").Orange())
+            .cat(new UiTxt("The text must be rendered dynamically, so static signs are laggier than normal blocks, but way less than Vanilla's.\n").Orange())
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
@@ -88,11 +102,57 @@ public enum AltTextureFeature {
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the fluttering animation banners have in Vanilla.\n").Orange())
+            .cat(new UiTxt("Pattern layers must be rendered dynamically, so static banners are laggier than normal blocks, but way less than Vanilla's. ").Orange())
+            .cat(new UiTxt("The more pattern layers that need to be rendered, the laggier it gets.\n").Orange())
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
-        Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
+        Stream.of(Groups.ALL_BANNERS.stream()).flatMap(s -> s).toList()
     ),
+    STATIC_DECORATED_POTS(true,
+        () -> new UiTxt("Static Decorated Pot models"),
+        () -> new Txt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
+            .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's. ").Orange())
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+        ,
+        List.of(Blocks.DECORATED_POT)
+    ),
+    STATIC_BELLS(true,
+        () -> new UiTxt("Static Bell models"),
+        () -> new Txt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Bells with a static model to improve performance.\n"))
+            .cat(new UiTxt("This breaks the swinging animation that plays in Vanilla when a bell is rung.\n").Orange())
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+        ,
+        List.of(Blocks.BELL)
+    ),
+    STATIC_CAMPFIRES(true,
+        () -> new UiTxt("Static Campfire models"),
+        () -> new Txt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Campfires and Soul Campfires with a static model to improve performance.\n"))
+            .cat(new UiTxt("Cooking food items must be rendered dynamically, so static campfires are laggier than normal blocks, but way less than Vanilla's. ").Orange())
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+        ,
+        List.of(Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE)
+    ),
+    STATIC_COPPER_GOLEM_STATUES(true,
+        () -> new UiTxt("Static Copper Golem Statue models"),
+        () -> new Txt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Copper Golem Statues with a static model to improve performance.\n"))
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+        ,
+        Stream.of(Groups.ALL_COPPER_GOLEM_STATUES.stream()).flatMap(s -> s).toList()
+    ),
+
+
+
+
+
 
 
 
@@ -150,11 +210,14 @@ public enum AltTextureFeature {
 
 
 
+
     /**
      * A class containing groups of blocks used by AltTextureFeature as lists.
+     * ! This MUST be updated manually as new blocks are added to affected categories.
+     *
      * ! This is required because Minecraft's tag registries are not available during static initialization.
      * ! The inner class pattern is also required:
-     * !     Defining these before enum constants is not allowed and defining them after them creates forward references, which are forbidden.
+     * !     Defining these before enum constants is not allowed and defining them after creates forward references, which are forbidden.
      */
     private static class Groups {
         private static final List<Block> ALL_LANTERNS = List.of(
@@ -234,6 +297,50 @@ public enum AltTextureFeature {
             Blocks.TRAPPED_CHEST,
             Blocks.ENDER_CHEST
         );
+        private static final List<Block> ALL_BANNERS = List.of(
+            Blocks.WHITE_BANNER,
+            Blocks.ORANGE_BANNER,
+            Blocks.MAGENTA_BANNER,
+            Blocks.LIGHT_BLUE_BANNER,
+            Blocks.YELLOW_BANNER,
+            Blocks.LIME_BANNER,
+            Blocks.PINK_BANNER,
+            Blocks.GRAY_BANNER,
+            Blocks.LIGHT_GRAY_BANNER,
+            Blocks.CYAN_BANNER,
+            Blocks.PURPLE_BANNER,
+            Blocks.BLUE_BANNER,
+            Blocks.BROWN_BANNER,
+            Blocks.GREEN_BANNER,
+            Blocks.RED_BANNER,
+            Blocks.BLACK_BANNER,
+            Blocks.WHITE_WALL_BANNER,
+            Blocks.ORANGE_WALL_BANNER,
+            Blocks.MAGENTA_WALL_BANNER,
+            Blocks.LIGHT_BLUE_WALL_BANNER,
+            Blocks.YELLOW_WALL_BANNER,
+            Blocks.LIME_WALL_BANNER,
+            Blocks.PINK_WALL_BANNER,
+            Blocks.GRAY_WALL_BANNER,
+            Blocks.LIGHT_GRAY_WALL_BANNER,
+            Blocks.CYAN_WALL_BANNER,
+            Blocks.PURPLE_WALL_BANNER,
+            Blocks.BLUE_WALL_BANNER,
+            Blocks.BROWN_WALL_BANNER,
+            Blocks.GREEN_WALL_BANNER,
+            Blocks.RED_WALL_BANNER,
+            Blocks.BLACK_WALL_BANNER
+        );
+        private static final List<Block> ALL_COPPER_GOLEM_STATUES = List.of(
+            Blocks.COPPER_GOLEM_STATUE,
+            Blocks.EXPOSED_COPPER_GOLEM_STATUE,
+            Blocks.WEATHERED_COPPER_GOLEM_STATUE,
+            Blocks.OXIDIZED_COPPER_GOLEM_STATUE,
+            Blocks.WAXED_COPPER_GOLEM_STATUE,
+            Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE,
+            Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE,
+            Blocks.WAXED_OXIDIZED_COPPER_GOLEM_STATUE
+        );
     }
 
 
@@ -302,3 +409,6 @@ public enum AltTextureFeature {
         }
     }
 }
+
+
+

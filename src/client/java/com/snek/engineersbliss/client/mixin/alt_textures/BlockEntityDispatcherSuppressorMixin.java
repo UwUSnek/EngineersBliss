@@ -11,9 +11,20 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.CopperGolemStatueBlockRenderer;
+import net.minecraft.client.renderer.blockentity.DecoratedPotRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.CopperGolemStatueBlock;
+import net.minecraft.world.level.block.DecoratedPotBlock;
+import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
+import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
+import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 
@@ -43,6 +54,31 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         }
         if(blockEntity instanceof LidBlockEntity) {
             if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)) {
+                cir.setReturnValue(null);
+            }
+        }
+        if(blockEntity instanceof BannerBlockEntity) {
+            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
+                cir.setReturnValue(null);
+            }
+        }
+        if(blockEntity instanceof DecoratedPotBlockEntity) {
+            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
+                cir.setReturnValue(null);
+            }
+        }
+        if(blockEntity instanceof BellBlockEntity) {
+            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)) {
+                cir.setReturnValue(null);
+            }
+        }
+        if(blockEntity instanceof CampfireBlockEntity) {
+            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CAMPFIRES)) {
+                cir.setReturnValue(null);
+            }
+        }
+        if(blockEntity instanceof CopperGolemStatueBlockEntity) {
+            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)) {
                 cir.setReturnValue(null);
             }
         }

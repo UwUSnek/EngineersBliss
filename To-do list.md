@@ -7,7 +7,8 @@
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
-  - Disable redstone wire particles
+  - Disable Redstone Wire particles
+  - Disable Campfire particles
   - ~~Transparent Slime Block~~
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
@@ -20,6 +21,10 @@
   - ~~Static Sign models~~
   - ~~Static Chest models~~
   - ~~Static Banner models~~
+  - static decorated pot models
+  - static bell models
+  - static campfire  models
+  - static copper golem statue models
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
@@ -208,3 +213,6 @@
 - add static bell models
 
 - banners: up to 16 layers displayed?
+
+
+- add some logo or something as blur background cutout?

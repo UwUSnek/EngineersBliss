@@ -87,6 +87,8 @@ It helps a lot :3
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire
+  - Disable Redstone Wire particles
+  - Disable Campfire particles
   - Disable redstone wire particles
   - Less opaque Slime Blocks
   - Less opaque Honey Blocks
@@ -98,7 +100,11 @@ It helps a lot :3
   - Alternative Light Block rendering
   - Static Sign models
   - Static Chest models
-  - Static Banner models<br><br>
+  - Static Banner models
+  - static decorated pot models
+  - static bell models
+  - static campfire  models
+  - static copper golem statue models<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders

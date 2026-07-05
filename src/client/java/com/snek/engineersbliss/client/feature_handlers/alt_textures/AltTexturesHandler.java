@@ -25,6 +25,7 @@ public class AltTexturesHandler {
 
     /**
      * Checks if the block of the specified block state is currently using a static model instead of its dynamic block entity rendering.
+     * ! This must be updated manually as block entity features are added/removed.
      * @param state The block state to check.
      * @return True if the block entity is using static rendering, false otherwise. Always false for non-block-entity blocks.
      */
@@ -38,7 +39,22 @@ public class AltTexturesHandler {
             ) && AltTextureFeature.STATIC_CHESTS.hasFlagBit(featureMask) ||
             (
                 state.is(BlockTags.ALL_SIGNS)
-            ) && AltTextureFeature.STATIC_SIGNS.hasFlagBit(featureMask)
+            ) && AltTextureFeature.STATIC_SIGNS.hasFlagBit(featureMask) ||
+            (
+                state.is(BlockTags.BANNERS)
+            ) && AltTextureFeature.STATIC_BANNERS.hasFlagBit(featureMask) ||
+            (
+                state.is(Blocks.DECORATED_POT)
+            ) && AltTextureFeature.STATIC_DECORATED_POTS.hasFlagBit(featureMask) ||
+            (
+                state.is(Blocks.BELL)
+            ) && AltTextureFeature.STATIC_BELLS.hasFlagBit(featureMask) ||
+            (
+                state.is(BlockTags.CAMPFIRES)
+            ) && AltTextureFeature.STATIC_CAMPFIRES.hasFlagBit(featureMask) ||
+            (
+                state.is(BlockTags.COPPER_GOLEM_STATUES)
+            ) && AltTextureFeature.STATIC_COPPER_GOLEM_STATUES.hasFlagBit(featureMask) ||
         );
     }
 }
