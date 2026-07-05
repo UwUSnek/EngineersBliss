@@ -202,3 +202,9 @@
 - maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
 
 - make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing
+
+
+- add static decorated pot models
+- add static bell models
+
+- banners: up to 16 layers displayed?
