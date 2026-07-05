@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing;
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall;
 
 import java.util.List;
 
@@ -9,19 +9,20 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesH
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.__base_BannerPartProvider;
 
 import net.minecraft.world.level.block.BannerBlock;
+import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 
 
 
-public abstract class __base_StandingBannerPartProvider extends __base_BannerPartProvider {
+public abstract class __base_WallBannerPartProvider extends __base_BannerPartProvider {
 
 
     @Override
     public @Nullable List<String> calcPartNames(final BlockState state) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
-            final String rotName = getVariantSuffixFromRotationIndex(state.getValue(BannerBlock.ROTATION));
-            return List.of("banners/vanilla/standing/" + getColorName() + rotName);
+            final String dirName = getVariantSuffixFromDirection(state.getValue(WallBannerBlock.FACING));
+            return List.of("banners/vanilla/wall/" + getColorName() + dirName);
         }
         else {
             return null;

@@ -50,11 +50,8 @@ public class AltTexturesHandler {
                 state.is(Blocks.BELL)
             ) && AltTextureFeature.STATIC_BELLS.hasFlagBit(featureMask) ||
             (
-                state.is(BlockTags.CAMPFIRES)
-            ) && AltTextureFeature.STATIC_CAMPFIRES.hasFlagBit(featureMask) ||
-            (
                 state.is(BlockTags.COPPER_GOLEM_STATUES)
-            ) && AltTextureFeature.STATIC_COPPER_GOLEM_STATUES.hasFlagBit(featureMask) ||
+            ) && AltTextureFeature.STATIC_COPPER_GOLEM_STATUES.hasFlagBit(featureMask)
         );
     }
 }

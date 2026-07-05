@@ -20,8 +20,23 @@ import net.minecraft.world.level.block.Blocks;
 
 
 public enum AltTextureFeature {
-    //! Beds are no longer block entities as of 26.3.
+
+    //! Vanilla Beds are no longer block entities as of 26.3.
     //! No point in adding it as a feature just to remove it after one version.
+
+
+    //! For whatever reason, Vanilla's Shelves are rendered properly: The block model is static, while held items are rendered dynamically.
+    //! No need to add it as a feature.
+
+
+    //! Same goes for Vanilla Campfires and Soul Campfires: The block model is static, while held items are rendered dynamically.
+    //! Campfires, however, are extremely laggy because of their particles. So they don't need static rendering, but they do need particle suppression.
+    //! This is what NO_CAMPFIRE_PARTICLES is for.
+
+
+    //! Vanilla Bells are rendered dynamically but the supports are static.
+    //! This is suboptimal, so STATIC_BELLS just replaces the whole thing with a fully static block model. Vanilla supports are discarded.
+    //TODO use vanilla supports as a guide for positioning
 
 
 
@@ -37,7 +52,7 @@ public enum AltTextureFeature {
         List.of(Blocks.REDSTONE_WIRE)
     ),
     NO_CAMPFIRE_PARTICLES(true, //TODO implement
-        () -> new UiTxt("Disable Campfire smoke"),
+        () -> new UiTxt("Disable Campfire particles"),
         () -> new UiTxt("Stops Campfires and Soul Campfires from emitting smoke and ember particles."),
         List.of(Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE)
     ),
@@ -128,16 +143,6 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         List.of(Blocks.BELL)
-    ),
-    STATIC_CAMPFIRES(true,
-        () -> new UiTxt("Static Campfire models"),
-        () -> new Txt()
-            .cat(new UiTxt("Replaces the costly real-time rendering of Campfires and Soul Campfires with a static model to improve performance.\n"))
-            .cat(new UiTxt("Cooking food items must be rendered dynamically, so static campfires are laggier than normal blocks, but way less than Vanilla's. ").Orange())
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
-        ,
-        List.of(Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE)
     ),
     STATIC_COPPER_GOLEM_STATUES(true,
         () -> new UiTxt("Static Copper Golem Statue models"),
@@ -366,7 +371,7 @@ public enum AltTextureFeature {
     private final Supplier<Txt> detailsSupplier;
     private Txt name    = null;
     private Txt details = null;
-    List<Block> affectedBlocks;
+    private final HashSet<Block> affectedBlocks;
     private final long flagBit; //! Flag bit index is calculated from the order of declaration
     private final boolean _default;
 
@@ -375,7 +380,7 @@ public enum AltTextureFeature {
     public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()).copy() :    name.copy(); }
     public Txt getDetails() { return details == null ? (details = detailsSupplier.get()).copy() : details.copy(); }
     public boolean affects(final Block block) { return affectedBlocks.contains(block); }
-    public List<Block> getAffectedBlocks() { return affectedBlocks; }
+    public Set<Block> getAffectedBlocks() { return affectedBlocks; }
     public long getFlagBit() { return flagBit; }
     public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
 
@@ -394,7 +399,7 @@ public enum AltTextureFeature {
         this._default = _default;
         this.nameSupplier    = nameSupplier;
         this.detailsSupplier = detailsSupplier;
-        this.affectedBlocks = affectedBlocks;
+        this.affectedBlocks = new HashSet<>(affectedBlocks);
         this.flagBit = 1 << ordinal();
     }
 

@@ -124,7 +124,7 @@ public enum OverlayFeature {
     private final Supplier<Txt> detailsSupplier;
     private Txt name    = null;
     private Txt details = null;
-    private final List<Block> affectedBlocks;
+    private final HashSet<Block> affectedBlocks;
     private final long flagBit; //! Flag bit index is calculated from the order of declaration
     private final boolean _default;
 
@@ -133,7 +133,7 @@ public enum OverlayFeature {
     public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()).copy() :    name.copy(); }
     public Txt getDetails() { return details == null ? (details = detailsSupplier.get()).copy() : details.copy(); }
     public boolean affects(final Block block) { return affectedBlocks.contains(block); }
-    public List<Block> getAffectedBlocks() { return affectedBlocks; }
+    public Set<Block> getAffectedBlocks() { return affectedBlocks; }
     public long getFlagBit() { return flagBit; }
     public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
 
@@ -152,7 +152,7 @@ public enum OverlayFeature {
         this._default = _default;
         this.nameSupplier    = nameSupplier;
         this.detailsSupplier = detailsSupplier;
-        this.affectedBlocks = affectedBlocks;
+        this.affectedBlocks = new HashSet<>(affectedBlocks);
         this.flagBit = 1 << ordinal();
     }
 

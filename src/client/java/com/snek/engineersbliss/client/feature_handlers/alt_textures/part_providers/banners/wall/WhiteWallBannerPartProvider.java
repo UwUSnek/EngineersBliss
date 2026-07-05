@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing;
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public class WhiteBannerPartProvider extends __base_StandingBannerPartProvider {
+public class WhiteWallBannerPartProvider extends __base_WallBannerPartProvider {
 
     @Override
     public Block getBlock() {

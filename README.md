@@ -103,7 +103,6 @@ It helps a lot :3
   - Static Banner models
   - static decorated pot models
   - static bell models
-  - static campfire  models
   - static copper golem statue models<br><br>
   - 3D Redstone Wire
   - 3D Rails
