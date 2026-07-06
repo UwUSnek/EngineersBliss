@@ -90,6 +90,10 @@ It helps a lot :3
   - Disable Redstone Wire particles
   - Disable Campfire particles
   - Disable redstone wire particles
+  - Disable Fire particles
+  - Disable Lava particles
+  - Disable Water Stream particles
+  - Disable drip particles
   - Less opaque Slime Blocks
   - Less opaque Honey Blocks
   - Unobstructive Mangrove Roots

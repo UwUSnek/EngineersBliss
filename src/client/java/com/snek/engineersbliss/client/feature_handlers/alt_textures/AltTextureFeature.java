@@ -56,6 +56,26 @@ public enum AltTextureFeature {
         () -> new UiTxt("Stops Campfires and Soul Campfires from emitting smoke and ember particles."),
         List.of(Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE)
     ),
+    NO_FIRE_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable Fire particles"),
+        () -> new UiTxt("Stops Fire and Soul Fire from emitting smoke and ember particles."),
+        List.of(Blocks.FIRE, Blocks.SOUL_FIRE)
+    ),
+    NO_LAVA_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable Lava particles"),
+        () -> new UiTxt("Stops Lava from emitting ember particles."),
+        List.of(Blocks.LAVA)
+    ),
+    NO_WATER_STREAM_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable Water Stream particles"),
+        () -> new UiTxt("Disables bubble and water splash particles emitted by items travelling in water streams."),
+        List.of() //FIXME idk how this is supposed to work with particles. ig no target block? any waterlogged block can trigger these particles
+    ),
+    NO_DRIP_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable drip particles"),
+        () -> new UiTxt("Disables dripping water and dripping lava particles emitted by full blocks with water or lava above them."),
+        List.of() //FIXME idk how this is supposed to work with particles. ig no target block? any waterlogged block can trigger these particles
+    ),
     TRANSPARENT_SLIME_BLOCK(true,
         () -> new UiTxt("Transparent Slime Blocks"),
         () -> new UiTxt("Replaces the texture of Slime Blocks with a less opaque version."),

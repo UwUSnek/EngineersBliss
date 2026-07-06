@@ -9,6 +9,10 @@
   - ~~Minimal Redstone Wire~~
   - Disable Redstone Wire particles
   - Disable Campfire particles
+  - Disable Fire particles
+  - Disable Lava particles
+  - Disable Water Stream particles
+  - Disable drip particles
   - ~~Transparent Slime Block~~
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
