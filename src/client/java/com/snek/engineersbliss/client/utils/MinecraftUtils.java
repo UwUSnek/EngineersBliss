@@ -76,14 +76,16 @@ public class MinecraftUtils {
     }
 
 
-    public static boolean decoratedPotHasSherds(final DecoratedPotBlockEntity blockEntity) {
-        final PotDecorations decorations = blockEntity.getDecorations();
+    public static boolean decoratedPotHasSherds(final PotDecorations decorations) {
         return
             !decorations.front().isEmpty() ||
             !decorations.back ().isEmpty() ||
             !decorations.right().isEmpty() ||
             !decorations.left ().isEmpty()
         ;
+    }
+    public static boolean decoratedPotHasSherds(final DecoratedPotBlockEntity blockEntity) {
+        return decoratedPotHasSherds(blockEntity.getDecorations());
     }
 
 

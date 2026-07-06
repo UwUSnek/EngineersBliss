@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DecoratedPotPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
@@ -142,6 +143,7 @@ import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.renderer.block.dispatch.SingleVariant;
 import net.minecraft.client.renderer.block.dispatch.Variant;
+import net.minecraft.client.renderer.blockentity.ShelfRenderer;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.sprite.Material;
@@ -187,6 +189,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     // A map containing the model part providers for each block
     private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
     static {
+        ShelfRenderer
         for(final var provider : List.of(
             new    SlimeBlockPartProvider(),
             new    HoneyBlockPartProvider(),
@@ -196,6 +199,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new        LadderPartProvider(),
             new         VinesPartProvider(),
             new    GlowLichenPartProvider(),
+            new  DecoratedPotPartProvider(),
 
             new          RailPartProvider(),
             new   PoweredRailPartProvider(),

@@ -51,7 +51,8 @@
         "alt_textures.AbstractSignRenderingSuppressorMixin",
         "alt_textures.StandingSignRenderingSuppressorMixin",
         "alt_textures.HangingSignRenderingSuppressorMixin",
-        "alt_textures.SignTextStateCacheMixin"
+        "alt_textures.SignTextStateCacheMixin",
+        "alt_textures.DecoratedPotRenderingSuppressorMixin"
     ],
     "injectors": {
         "defaultRequire": 1
