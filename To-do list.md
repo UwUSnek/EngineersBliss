@@ -25,9 +25,11 @@
   - ~~Static Sign models~~
   - ~~Static Chest models~~
   - ~~Static Banner models~~
-  - static decorated pot models
+  - ~~static decorated pot models~~
   - static bell models
   - static copper golem statue models
+  - Optimized Shelf rendering logic
+  - Optimized Campfire renering logic
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~

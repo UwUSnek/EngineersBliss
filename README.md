@@ -107,7 +107,9 @@ It helps a lot :3
   - Static Banner models
   - static decorated pot models
   - static bell models
-  - static copper golem statue models<br><br>
+  - static copper golem statue models
+  - Optimized Shelf rendering logic
+  - Optimized Campfire renering logic<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders

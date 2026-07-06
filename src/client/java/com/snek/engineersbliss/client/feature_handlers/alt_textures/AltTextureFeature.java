@@ -25,13 +25,10 @@ public enum AltTextureFeature {
     //! No point in adding it as a feature just to remove it after one version.
 
 
-    //! For whatever reason, Vanilla's Shelves are rendered properly: The block model is static, while held items are rendered dynamically.
-    //! No need to add it as a feature.
-
-
-    //! Same goes for Vanilla Campfires and Soul Campfires: The block model is static, while held items are rendered dynamically.
-    //! Campfires, however, are extremely laggy because of their particles. So they don't need static rendering, but they do need particle suppression.
-    //! This is what NO_CAMPFIRE_PARTICLES is for.
+    //! For whatever reason, Vanilla's Shelves and Campfires are rendered properly: The block model is static, while held items are rendered dynamically.
+    //! However, their rendering logic does a lot of extra preparation steps even when there are no items to render.
+    //! Campfires are also extremely laggy because of their particles.
+    //! These all get simple logic optimizations, while Campfires also get particle suppression.
 
 
     //! Vanilla Bells are rendered dynamically but the supports are static.
@@ -49,32 +46,32 @@ public enum AltTextureFeature {
     NO_REDSTONE_WIRE_PARTICLES(true, //TODO implement
         () -> new UiTxt("Disable Redstone Wire particles"),
         () -> new UiTxt("Stops Redstone Wire from emitting particles when powered."),
-        List.of(Blocks.REDSTONE_WIRE)
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
     NO_CAMPFIRE_PARTICLES(true, //TODO implement
         () -> new UiTxt("Disable Campfire particles"),
         () -> new UiTxt("Stops Campfires and Soul Campfires from emitting smoke and ember particles."),
-        List.of(Blocks.CAMPFIRE, Blocks.SOUL_CAMPFIRE)
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
     NO_FIRE_PARTICLES(true, //TODO implement
         () -> new UiTxt("Disable Fire particles"),
         () -> new UiTxt("Stops Fire and Soul Fire from emitting smoke and ember particles."),
-        List.of(Blocks.FIRE, Blocks.SOUL_FIRE)
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
     NO_LAVA_PARTICLES(true, //TODO implement
         () -> new UiTxt("Disable Lava particles"),
         () -> new UiTxt("Stops Lava from emitting ember particles."),
-        List.of(Blocks.LAVA)
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
     NO_WATER_STREAM_PARTICLES(true, //TODO implement
         () -> new UiTxt("Disable Water Stream particles"),
         () -> new UiTxt("Disables bubble and water splash particles emitted by items travelling in water streams."),
-        List.of() //FIXME idk how this is supposed to work with particles. ig no target block? any waterlogged block can trigger these particles
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
     NO_DRIP_PARTICLES(true, //TODO implement
         () -> new UiTxt("Disable drip particles"),
         () -> new UiTxt("Disables dripping water and dripping lava particles emitted by full blocks with water or lava above them."),
-        List.of() //FIXME idk how this is supposed to work with particles. ig no target block? any waterlogged block can trigger these particles
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
     TRANSPARENT_SLIME_BLOCK(true,
         () -> new UiTxt("Transparent Slime Blocks"),
@@ -117,7 +114,7 @@ public enum AltTextureFeature {
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange()) //FIXME remove once this is fixed
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         Groups.ALL_CHESTS
@@ -127,7 +124,7 @@ public enum AltTextureFeature {
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
             .cat(new UiTxt("The text must be rendered dynamically, so static signs are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
@@ -138,7 +135,7 @@ public enum AltTextureFeature {
             .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the fluttering animation banners have in Vanilla.\n").Orange())
             .cat(new UiTxt("This also breaks custom banner patterns. Instead, only the base color is displayed.\n").Orange())
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         Stream.of(Groups.ALL_BANNERS.stream()).flatMap(s -> s).toList()
@@ -147,8 +144,8 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Decorated Pot models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
-            .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's. ").yellow())
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         List.of(Blocks.DECORATED_POT)
@@ -158,7 +155,7 @@ public enum AltTextureFeature {
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Bells with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the swinging animation that plays in Vanilla when a bell is rung.\n").Orange())
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         List.of(Blocks.BELL)
@@ -167,10 +164,28 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Copper Golem Statue models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Copper Golem Statues with a static model to improve performance.\n"))
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
         Stream.of(Groups.ALL_COPPER_GOLEM_STATUES.stream()).flatMap(s -> s).toList()
+    ),
+    OPTIMIZED_SHELVES(true,
+        () -> new UiTxt("Optimized Shelf models"),
+        () -> new Txt()
+            .cat(new UiTxt("Optimizes shelf rendering logic to improve performance.\n"))
+            .cat(new UiTxt("This doesn't cause visual changes.\n"))
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+        ,
+        List.of() //! Feature doesn't change the model. No section refresh
+    ),
+    OPTIMIZED_CAMPFIRES(true,
+        () -> new UiTxt("Optimized Campfire models"),
+        () -> new Txt()
+            .cat(new UiTxt("Optimizes Campfire and Soul Campfire rendering logic to improve performance.\n"))
+            .cat(new UiTxt("This doesn't cause visual changes.\n"))
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+        ,
+        List.of() //! Feature doesn't change the model. No section refresh
     ),
 
 
@@ -373,7 +388,8 @@ public enum AltTextureFeature {
 
 
     private static class Notices {
-        private static Txt RESOURCEPACK_COMPATIBILITY_NOTICE = new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red();
+        private static Txt RESOURCEPACK_INCOMPATIBILITY_NOTICE = new UiTxt("This breaks custom textures and models defined by standard Resource Packs.\n").red();
+        private static Txt RESOURCEPACK_COMPATIBILITY_NOTICE = new UiTxt("This feature is compatible with Resource Packs.\n").green();
         private static Txt MOD_COMPATIBILITY_NOTICE = new UiTxt("This feature is not compatible with other static block entity model mods.").red();
     }
 
