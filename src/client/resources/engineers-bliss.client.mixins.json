@@ -52,7 +52,9 @@
         "alt_textures.StandingSignRenderingSuppressorMixin",
         "alt_textures.HangingSignRenderingSuppressorMixin",
         "alt_textures.SignTextStateCacheMixin",
-        "alt_textures.DecoratedPotRenderingSuppressorMixin"
+        "alt_textures.DecoratedPotRenderingSuppressorMixin",
+        "alt_textures.ShelfRenderingOptimizerMixin",
+        "alt_textures.CampfireRenderingOptimizerMixin"
     ],
     "injectors": {
         "defaultRequire": 1

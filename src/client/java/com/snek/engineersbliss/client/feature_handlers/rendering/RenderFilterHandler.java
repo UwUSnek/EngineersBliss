@@ -184,8 +184,7 @@ public class RenderFilterHandler {
 
     /**
      * Checks if the specified block state should render, based on the current rendering filter settings.
-     * ! This also takes into account the static block entity model system:
-     * ! Block entities that are currently using a static model are considered to not have custom block entity rendering.
+     * ! This doesn't takes into account the static block entity model system for performance and maintainability reasons.
      * @param state The blockstate of the block to check.
      * @return True if the block should render, false otherwise.
      */
@@ -194,11 +193,7 @@ public class RenderFilterHandler {
 
 
         //Check category rendering. Return false if disabled
-        final boolean hasBlockEntityRendering =
-            state.hasBlockEntity() &&
-            blocksWithBlockEntityRendering.contains(state.getBlock()) &&
-            !AltTexturesHandler.isUsingStaticModel(state)
-        ;
+        final boolean hasBlockEntityRendering = state.hasBlockEntity() && blocksWithBlockEntityRendering.contains(state.getBlock());
         if(
             !RenderFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty()  ||
             !RenderFilterHandler.getRenderBlockEntities() && hasBlockEntityRendering           ||

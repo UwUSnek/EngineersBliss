@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.BlockEntityUtils;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -51,7 +51,7 @@ public abstract class StandingSignRenderingSuppressorMixin  extends AbstractSign
         final CallbackInfo ci
     ) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS)) {
-            if(!MinecraftUtils.signHasText(blockEntity)) {
+            if(!BlockEntityUtils.signHasText(blockEntity)) {
                 ci.cancel();
             }
         }

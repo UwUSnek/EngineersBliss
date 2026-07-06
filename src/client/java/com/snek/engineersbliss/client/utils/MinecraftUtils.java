@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
-import com.snek.engineersbliss.client.mixin.alt_textures.SignTextStateCacheMixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
@@ -20,16 +18,10 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DecoratedPotBlock;
-import net.minecraft.world.level.block.entity.BannerBlockEntity;
-import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.world.level.block.entity.PotDecorations;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
@@ -39,56 +31,12 @@ import net.minecraft.world.phys.AABB;
 
 
 
+
+
+
+
 public class MinecraftUtils {
     private MinecraftUtils() { }
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Checks if the provided sign block entity contains any text at all.
-     * ! SignText already provides a hasMessage method, but it's not optimal.
-     * ! This is a manual implementation used for computational speed.
-     * @param blockEntity The text block entity.
-     * @return True if the sign contains text, false otherwise.
-     */
-    // public static boolean signHasText(final SignBlockEntity blockEntity) {
-    //     for(final var msg : blockEntity.getFrontText().getMessages(false)) if(!componentIsBlank(msg)) return true;
-    //     for(final var msg : blockEntity.getBackText ().getMessages(false)) if(!componentIsBlank(msg)) return true;
-    //     return false;
-    // }
-    public static boolean signHasText(final SignBlockEntity blockEntity) {
-        return
-            ((SignTextStateCacheAccess)(Object) blockEntity.getFrontText()).engineersbliss$hasText() ||
-            ((SignTextStateCacheAccess)(Object) blockEntity.getBackText ()).engineersbliss$hasText()
-        ;
-    }
-
-
-    public static boolean bannerHasPatterns(final BannerBlockEntity blockEntity) {
-        return !blockEntity.getPatterns().layers().isEmpty();
-    }
-
-
-    public static boolean decoratedPotHasSherds(final PotDecorations decorations) {
-        return
-            !decorations.front().isEmpty() ||
-            !decorations.back ().isEmpty() ||
-            !decorations.right().isEmpty() ||
-            !decorations.left ().isEmpty()
-        ;
-    }
-    public static boolean decoratedPotHasSherds(final DecoratedPotBlockEntity blockEntity) {
-        return decoratedPotHasSherds(blockEntity.getDecorations());
-    }
-
-
 
 
 

@@ -1,9 +1,7 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
-import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SignBlock;
-import net.minecraft.world.level.block.state.BlockState;
+
+
 
 public class AltTexturesHandler {
     private AltTexturesHandler() {}
@@ -19,39 +17,5 @@ public class AltTexturesHandler {
 
     public static boolean getFeature(final AltTextureFeature feature) {
         return feature.hasFlagBit(featureMask);
-    }
-
-
-
-    /**
-     * Checks if the block of the specified block state is currently using a static model instead of its dynamic block entity rendering.
-     * ! This must be updated manually as block entity features are added/removed.
-     * @param state The block state to check.
-     * @return True if the block entity is using static rendering, false otherwise. Always false for non-block-entity blocks.
-     */
-    public static boolean isUsingStaticModel(final BlockState state) {
-        return state.hasBlockEntity() && (
-            (
-                state.is(BlockTags.COPPER_CHESTS) ||
-                state.is(Blocks.CHEST)            ||
-                state.is(Blocks.TRAPPED_CHEST)    ||
-                state.is(Blocks.ENDER_CHEST)
-            ) && AltTextureFeature.STATIC_CHESTS.hasFlagBit(featureMask) ||
-            (
-                state.is(BlockTags.ALL_SIGNS)
-            ) && AltTextureFeature.STATIC_SIGNS.hasFlagBit(featureMask) ||
-            (
-                state.is(BlockTags.BANNERS)
-            ) && AltTextureFeature.STATIC_BANNERS.hasFlagBit(featureMask) ||
-            (
-                state.is(Blocks.DECORATED_POT)
-            ) && AltTextureFeature.STATIC_DECORATED_POTS.hasFlagBit(featureMask) ||
-            (
-                state.is(Blocks.BELL)
-            ) && AltTextureFeature.STATIC_BELLS.hasFlagBit(featureMask) ||
-            (
-                state.is(BlockTags.COPPER_GOLEM_STATUES)
-            ) && AltTextureFeature.STATIC_COPPER_GOLEM_STATUES.hasFlagBit(featureMask)
-        );
     }
 }

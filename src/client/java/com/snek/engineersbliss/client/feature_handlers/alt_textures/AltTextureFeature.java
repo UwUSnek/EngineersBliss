@@ -144,6 +144,7 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Decorated Pot models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
+            .cat(new UiTxt("This breaks the wobbling animation that plays in Vanilla when a Decorated Pot is right-clicked.\n").Orange())
             .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
@@ -154,7 +155,7 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Bell models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Bells with a static model to improve performance.\n"))
-            .cat(new UiTxt("This breaks the swinging animation that plays in Vanilla when a bell is rung.\n").Orange())
+            .cat(new UiTxt("This breaks the swinging animation that plays in Vanilla when a Bell is rung.\n").Orange())
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,

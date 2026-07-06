@@ -6,11 +6,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.BlockEntityUtils;
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.renderer.blockentity.BannerRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -42,7 +41,7 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
         if(blockEntity instanceof SignBlockEntity sign) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !MinecraftUtils.signHasText(sign)) {
+            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(sign)) {
                 cir.setReturnValue(null);
             }
         }
@@ -57,7 +56,7 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                 cir.setReturnValue(null);
             }
         }
-        if(blockEntity instanceof DecoratedPotBlockEntity pot && !MinecraftUtils.decoratedPotHasSherds(pot)) {
+        if(blockEntity instanceof DecoratedPotBlockEntity pot && !BlockEntityUtils.decoratedPotHasSherds(pot)) {
             if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
                 cir.setReturnValue(null);
             }

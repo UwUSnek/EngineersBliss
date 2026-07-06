@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.BlockEntityUtils;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -46,7 +46,7 @@ import net.minecraft.world.phys.Vec3;
 @Mixin(DecoratedPotRenderer.class)
 public abstract class DecoratedPotRenderingSuppressorMixin implements BlockEntityRenderer<DecoratedPotBlockEntity, DecoratedPotRenderState> {
 
-	@Shadow private SpriteGetter sprites;
+    @Shadow private SpriteGetter sprites;
     @Shadow private ModelPart frontSide;
     @Shadow private ModelPart backSide;
     @Shadow private ModelPart leftSide;
@@ -59,20 +59,20 @@ public abstract class DecoratedPotRenderingSuppressorMixin implements BlockEntit
 
     @SuppressWarnings("unused")
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-	private void extractRenderState(
-		final DecoratedPotBlockEntity blockEntity,
-		final DecoratedPotRenderState state,
-		final float partialTicks,
-		final Vec3 cameraPosition,
-		@Nullable final ModelFeatureRenderer.CrumblingOverlay breakProgress,
+    private void extractRenderState(
+        final DecoratedPotBlockEntity blockEntity,
+        final DecoratedPotRenderState state,
+        final float partialTicks,
+        final Vec3 cameraPosition,
+        @Nullable final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         final CallbackInfo ci
-	) {
+    ) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
-            if(MinecraftUtils.decoratedPotHasSherds(state.decorations)) {
+            if(BlockEntityUtils.decoratedPotHasSherds(state.decorations)) {
                 ci.cancel();
             }
         }
-	}
+    }
 
 
 
@@ -91,7 +91,7 @@ public abstract class DecoratedPotRenderingSuppressorMixin implements BlockEntit
     ) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
             final PotDecorations decorations = state.decorations;
-            if(MinecraftUtils.decoratedPotHasSherds(decorations)) {
+            if(BlockEntityUtils.decoratedPotHasSherds(decorations)) {
 
 
                 // Push pose. Same logic as vanilla but without the wobbling animation (static model can't wobble)

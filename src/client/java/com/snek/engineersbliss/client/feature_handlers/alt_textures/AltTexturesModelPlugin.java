@@ -189,7 +189,6 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     // A map containing the model part providers for each block
     private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
     static {
-        ShelfRenderer
         for(final var provider : List.of(
             new    SlimeBlockPartProvider(),
             new    HoneyBlockPartProvider(),
