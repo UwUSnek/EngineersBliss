@@ -20,6 +20,10 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 
 
 
+/**
+ * This mixin cancels sign model rendering when the static signs feature is active.
+ * Text rendering is always kept.
+ */
 @Mixin(AbstractSignRenderer.class)
 public abstract class AbstractSignRenderingSuppressorMixin {
 

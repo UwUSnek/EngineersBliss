@@ -52,7 +52,7 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                 cir.setReturnValue(null);
             }
         }
-        if(blockEntity instanceof BannerBlockEntity banner && !MinecraftUtils.bannerHasPatterns(banner)) {
+        if(blockEntity instanceof BannerBlockEntity banner) {
             if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
                 cir.setReturnValue(null);
             }

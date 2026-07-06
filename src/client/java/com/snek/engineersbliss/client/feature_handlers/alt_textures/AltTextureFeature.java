@@ -126,7 +126,7 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Sign models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
-            .cat(new UiTxt("The text must be rendered dynamically, so static signs are laggier than normal blocks, but way less than Vanilla's.\n").Orange())
+            .cat(new UiTxt("The text must be rendered dynamically, so static signs are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
@@ -137,8 +137,7 @@ public enum AltTextureFeature {
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the fluttering animation banners have in Vanilla.\n").Orange())
-            .cat(new UiTxt("Pattern layers must be rendered dynamically, so static banners are laggier than normal blocks, but way less than Vanilla's. ").Orange())
-            .cat(new UiTxt("The more pattern layers that need to be rendered, the laggier it gets.\n").Orange())
+            .cat(new UiTxt("This also breaks custom banner patterns. Instead, only the base color is displayed.\n").Orange())
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,
@@ -148,7 +147,7 @@ public enum AltTextureFeature {
         () -> new UiTxt("Static Decorated Pot models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
-            .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's. ").Orange())
+            .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's. ").yellow())
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
             .cat(Notices.MOD_COMPATIBILITY_NOTICE)
         ,

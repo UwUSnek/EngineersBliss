@@ -3,13 +3,14 @@
 	"credit": "UwU_Snek",
 	"parent": "block/block",
 	"textures": {
-		"particle": "#texture"
+		"particle": "#texture",
+		"texture": "#texture"
 	},
 	"elements": [
 		{
-			"from": [1.3333, 2.65544, 8.86728],
-			"to": [14.6667, 29.32204, 9.53388],
-			"rotation": {"x": -2.5, "y": -45, "z": 0, "origin": [8, 29.33333, 8.67015]},
+			"from": [1.47535, 2.65809, 8.72523],
+			"to": [14.80875, 29.32469, 9.39183],
+			"rotation": {"x": -2.5, "y": -45, "z": 0, "origin": [8.14205, 29.33598, 8.5281]},
 			"faces": {
 				"north": {"uv": [0.25, 0.25, 5.25, 10.25], "texture": "#texture"},
 				"east": {"uv": [0, 0.25, 0.25, 10.25], "texture": "#texture"},

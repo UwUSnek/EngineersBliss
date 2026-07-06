@@ -14,6 +14,10 @@ import net.minecraft.world.level.block.entity.SignText;
 
 
 
+/**
+ * This mixin caches information about the sign text.
+ * Specifically, it calculates whether the text is empty, and stores that in the text instance.
+ */
 @Mixin(SignText.class)
 public abstract class SignTextStateCacheMixin implements SignTextStateCacheAccess {
 
