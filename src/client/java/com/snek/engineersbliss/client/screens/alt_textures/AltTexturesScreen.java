@@ -27,11 +27,13 @@ public class AltTexturesScreen extends __base_Screen {
 
     @Override
     protected void init() {
-BannerRenderer
         // Visibility //TODO add header
         addButton(getToggleText(AltTextureFeature.MINIMAL_REDSTONE_WIRE),        AltTextureFeature.MINIMAL_REDSTONE_WIRE       .getDetails(), b -> toggleFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE,        b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.NO_REDSTONE_WIRE_PARTICLES),   AltTextureFeature.NO_REDSTONE_WIRE_PARTICLES  .getDetails(), b -> toggleFeature(AltTextureFeature.NO_REDSTONE_WIRE_PARTICLES,   b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.NO_CAMPFIRE_PARTICLES),        AltTextureFeature.NO_CAMPFIRE_PARTICLES       .getDetails(), b -> toggleFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES,        b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+        // addButton(getToggleText(AltTextureFeature.NO_FIRE_PARTICLES),        AltTextureFeature.NO_CAMPFIRE_PARTICLES       .getDetails(), b -> toggleFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES,        b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+        // addButton(getToggleText(AltTextureFeature.NO_LAVA_PARTICLES),        AltTextureFeature.NO_CAMPFIRE_PARTICLES       .getDetails(), b -> toggleFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES,        b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+        // addButton(getToggleText(AltTextureFeature.NO_WATER_STREAM_PARTICLES),        AltTextureFeature.NO_CAMPFIRE_PARTICLES       .getDetails(), b -> toggleFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES,        b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.TRANSPARENT_SLIME_BLOCK),      AltTextureFeature.TRANSPARENT_SLIME_BLOCK     .getDetails(), b -> toggleFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK,      b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.TRANSPARENT_HONEY_BLOCK),      AltTextureFeature.TRANSPARENT_HONEY_BLOCK     .getDetails(), b -> toggleFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK,      b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, BUTTON_WIDTH);
         addButton(getToggleText(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS), AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS.getDetails(), b -> toggleFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS, b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, BUTTON_WIDTH);
