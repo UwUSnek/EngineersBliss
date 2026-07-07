@@ -109,7 +109,7 @@ It helps a lot :3
   - static bell models
   - static copper golem statue models
   - Optimized Shelf rendering logic
-  - Optimized Campfire renering logic<br><br>
+  - Optimized Campfire rendering logic<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders

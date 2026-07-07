@@ -63,7 +63,9 @@
         "alt_textures.particle_suppressors.CampfireBlockEntityParticleSuppressorMixin",
         "alt_textures.particle_suppressors.CampfireBlockParticleSuppressorMixin",
         "alt_textures.particle_suppressors.LavaBlockParticleSuppressorMixin",
-        "alt_textures.particle_suppressors.BaseFireBlockParticleSuppressorMixin"
+        "alt_textures.particle_suppressors.BaseFireBlockParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.LavaDripParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.WaterDripParticleSuppressorMixin"
     ],
     "injectors": {
         "defaultRequire": 1

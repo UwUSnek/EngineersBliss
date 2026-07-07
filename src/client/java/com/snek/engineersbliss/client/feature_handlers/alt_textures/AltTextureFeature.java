@@ -48,17 +48,17 @@ public enum AltTextureFeature {
         () -> new UiTxt("Stops Redstone Wire from emitting particles when powered."),
         List.of() //! Feature doesn't change the model. No section refresh
     ),
-    NO_CAMPFIRE_PARTICLES(true, //TODO implement
+    NO_CAMPFIRE_PARTICLES(true,
         () -> new UiTxt("Disable Campfire particles"),
         () -> new UiTxt("Stops Campfires and Soul Campfires from emitting smoke and ember particles."),
         List.of() //! Feature doesn't change the model. No section refresh
     ),
-    NO_FIRE_PARTICLES(true, //TODO implement
+    NO_FIRE_PARTICLES(true,
         () -> new UiTxt("Disable Fire particles"),
         () -> new UiTxt("Stops Fire and Soul Fire from emitting smoke and ember particles."),
         List.of() //! Feature doesn't change the model. No section refresh
     ),
-    NO_LAVA_PARTICLES(true, //TODO implement
+    NO_LAVA_PARTICLES(true,
         () -> new UiTxt("Disable Lava particles"),
         () -> new UiTxt("Stops Lava from emitting ember particles."),
         List.of() //! Feature doesn't change the model. No section refresh

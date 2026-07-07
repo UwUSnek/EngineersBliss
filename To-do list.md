@@ -8,11 +8,11 @@
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
   - Disable Redstone Wire particles
-  - Disable Campfire particles
-  - Disable Fire particles
-  - Disable Lava particles
+  - ~~Disable Campfire particles~~
+  - ~~Disable Fire particles~~
+  - ~~Disable Lava particles~~
   - Disable Water Stream particles
-  - Disable drip particles
+  - ~~Disable drip particles~~
   - ~~Transparent Slime Block~~
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
@@ -28,8 +28,8 @@
   - ~~static decorated pot models~~
   - static bell models
   - static copper golem statue models
-  - Optimized Shelf rendering logic
-  - Optimized Campfire renering logic
+  - ~~Optimized Shelf rendering logic~~
+  - ~~Optimized Campfire rendering logic~~
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
@@ -109,7 +109,6 @@
   - ~~Disable overlay effect of Water~~
   - Disable overlay effect of Lava
   - Disable overlay effect of Nether Portals
-
 
 - **Property lookup**:
   - Quickly find blocks based on their properties
@@ -212,12 +211,6 @@
 - maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
 
 - make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing
-
-
-- add static decorated pot models
-- add static bell models
-
-- banners: up to 16 layers displayed?
 
 
 - add some logo or something as blur background cutout?
