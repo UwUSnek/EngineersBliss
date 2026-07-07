@@ -17,6 +17,25 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakSer
 
 public enum CreativeTweakFeature {
 
+    //! Sliders are not toggle features
+
+    NO_SIGN_GUI(CreativeTweakServerFeature.NO_SIGN_GUI,
+        () -> new UiTxt("Suppress Sign GUI"),
+        () -> new Txt()
+            .cat(new UiTxt("Stops the Edit Sign GUI from showing up after placing a Sign or Hanging Sign.\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
+    ),
+    OPEN_OBSTRUCTED_CONTAINERS(CreativeTweakServerFeature.OPEN_OBSTRUCTED_CONTAINERS,
+        () -> new UiTxt("Open obstructed containers"),
+        () -> new Txt()
+            .cat(new UiTxt("Lets you open Chests, Trapped Chests, Ender Chests and Copper Chests even when they are below a solid block.\n"))
+            .cat(new UiTxt("This also includes double chest variants.\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE).cat("\n")
+            .cat(Notices.MULTIPLAYER_NOTICE) //TODO actually check if this is not possible in multiplayer
+    ),
+
+
+
 
     PHASE_THROUGH_BLOCKS_FLY(CreativeTweakServerFeature.PHASE_THROUGH_BLOCKS_FLY,
         () -> new UiTxt("Phase through blocks"),
@@ -179,43 +198,43 @@ public enum CreativeTweakFeature {
         () -> new UiTxt("Disable item change animation"),
         () -> new Txt()
             .cat(new UiTxt("Disables the animation that plays when you select a different item or the item you are holding changes.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ), //TODO
     DISABLE_HAND_SWING_ANIMATION(CreativeTweakServerFeature.DISABLE_HAND_SWING_ANIMATION,
         () -> new UiTxt("Disable hand swing animation"),
         () -> new Txt()
             .cat(new UiTxt("Disables the animation that plays when you interact with or attack blocks or entities, or use certain items.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ), //TODO
     DISABLE_DIMENSION_CHANGE_SCREEN(CreativeTweakServerFeature.DISABLE_DIMENSION_CHANGE_SCREEN,
         () -> new UiTxt("Disable dimension change screen"),
         () -> new Txt()
             .cat(new UiTxt("Disables the loading screen that appears when changing dimensions.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ), //TODO
     DISABLE_WATER_FOV_CHANGE(CreativeTweakServerFeature.DISABLE_WATER_FOV_CHANGE,
         () -> new UiTxt("Disable Water FOV"),
         () -> new Txt()
             .cat(new UiTxt("Stops you from having reduced FOV while inside Water.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ), //TODO
     DISABLE_WATER_OVERLAY(CreativeTweakServerFeature.DISABLE_WATER_OVERLAY,
         () -> new UiTxt("Disable overlay effect of Water"),
         () -> new Txt()
             .cat(new UiTxt("Disables the overlay and tint effects that appear while inside Water.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ),
     DISABLE_LAVA_OVERLAY(CreativeTweakServerFeature.DISABLE_LAVA_OVERLAY,
         () -> new UiTxt("Disable overlay effect of Lava"),
         () -> new Txt()
             .cat(new UiTxt("Disables the overlay and tint effects that appear while inside Lava.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ), //TODO
     DISABLE_NETHER_PORTAL_OVERLAY(CreativeTweakServerFeature.DISABLE_NETHER_PORTAL_OVERLAY,
         () -> new UiTxt("Disable Nether Portal overlay"),
         () -> new Txt()
             .cat(new UiTxt("Disables the overlay effect that appears while inside Nether Portal blocks.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE)
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE)
     ); //TODO
 
 
@@ -226,7 +245,7 @@ public enum CreativeTweakFeature {
             "This only works while in Creative Mode and doesn't affect other entities."
         ).yellow();
 
-        public static final Txt CREATIVE_MODE_ENTITIES_PLAYERS_NOTICE = new UiTxt(
+        public static final Txt CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE = new UiTxt(
             "This only works while in Creative Mode and doesn't affect other players."
         ).yellow();
 

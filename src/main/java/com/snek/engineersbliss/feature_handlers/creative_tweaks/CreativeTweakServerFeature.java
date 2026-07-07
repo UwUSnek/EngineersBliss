@@ -9,8 +9,12 @@ package com.snek.engineersbliss.feature_handlers.creative_tweaks;
 
 public enum CreativeTweakServerFeature {
 
+    //! Sliders are not toggle features
+    NO_SIGN_GUI                    (false),
+    OPEN_OBSTRUCTED_CONTAINERS     (false),
+
     PHASE_THROUGH_BLOCKS_FLY       (true),
-    PHASE_THROUGH_ENTITIES         (true),
+    PHASE_THROUGH_ENTITIES         (false),
     DISABLE_FIRE_EFFECT            (true),
     DISABLE_FREEZING_EFFECT        (true),
     DISABLE_HONEY_JUMP             (true),
@@ -25,8 +29,8 @@ public enum CreativeTweakServerFeature {
     DISABLE_SLIME_SLOWDOWN         (true),
     DISABLE_SOULSAND_SLOWDOWN      (true),
     DISABLE_POWDER_SNOW_SLOWDOWN   (true),
-    DISABLE_WATER_SLOWDOWN         (true),
-    DISABLE_LAVA_SLOWDOWN          (true),
+    DISABLE_WATER_SLOWDOWN         (false),
+    DISABLE_LAVA_SLOWDOWN          (false),
     DISABLE_COBWEB_SLOWDOWN        (true),
     DISABLE_LADDER_SLOWDOWN        (true),
     DISABLE_VINES_SLOWDOWN         (true),
