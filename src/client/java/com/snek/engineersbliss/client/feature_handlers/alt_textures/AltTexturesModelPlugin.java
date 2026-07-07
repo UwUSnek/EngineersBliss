@@ -75,6 +75,14 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedOxidizedCopperChestPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedWeatheredCopperChestPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WeatheredCopperChestPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.CopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.ExposedCopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.OxidizedCopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedCopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedExposedCopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedOxidizedCopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedWeatheredCopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WeatheredCopperGolemStatuePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.CopperLanternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.ExposedCopperLanternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.NormalLanternPartProvider;
@@ -89,6 +97,18 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.DetectorRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.PoweredRailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.RailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.AcaciaCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BambooCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BirchCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CherryCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CrimsonCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.DarkOakCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.JungleCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.MangroveCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.OakCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.PaleOakCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.SpruceCeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.WarpedCeilingHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.AcaciaStandingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.BambooStandingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.BirchStandingSignPartProvider;
@@ -113,18 +133,6 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.PaleOakWallSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.SpruceWallSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.WarpedWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.AcaciaCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BambooCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BirchCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CherryCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CrimsonCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.DarkOakCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.JungleCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.MangroveCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.OakCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.PaleOakCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.SpruceCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.WarpedCeilingHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.AcaciaWallHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.BambooWallHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.BirchWallHangingSignPartProvider;
@@ -323,7 +331,16 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new     BrownWallBannerPartProvider(),
             new     GreenWallBannerPartProvider(),
             new       RedWallBannerPartProvider(),
-            new     BlackWallBannerPartProvider()
+            new     BlackWallBannerPartProvider(),
+
+            new               CopperGolemStatuePartProvider(),
+            new        ExposedCopperGolemStatuePartProvider(),
+            new      WeatheredCopperGolemStatuePartProvider(),
+            new       OxidizedCopperGolemStatuePartProvider(),
+            new          WaxedCopperGolemStatuePartProvider(),
+            new   WaxedExposedCopperGolemStatuePartProvider(),
+            new WaxedWeatheredCopperGolemStatuePartProvider(),
+            new  WaxedOxidizedCopperGolemStatuePartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
