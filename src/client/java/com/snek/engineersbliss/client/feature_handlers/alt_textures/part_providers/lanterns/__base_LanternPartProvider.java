@@ -20,7 +20,7 @@ public abstract class __base_LanternPartProvider extends __base_PartProvider {
     @Override
     public List<String> calcPartNames(final BlockState state) {
         final String lanternTypeName = state.getValue(LanternBlock.HANGING).booleanValue() ? "_hanging" : "";
-        return List.of("lanterns/3d/" + getLanternName() + lanternTypeName + "_n");
+        return List.of(String.format("lanterns/3d/%s%s_n", getLanternName(), lanternTypeName));
     }
 
 

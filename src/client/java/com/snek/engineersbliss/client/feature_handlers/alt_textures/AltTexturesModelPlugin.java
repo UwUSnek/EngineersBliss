@@ -448,14 +448,16 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     @Nullable
     private static String findGenerateSuffixes(final ResourceManager resourceManager, final String dir) {
         final String dirRoot = dir.substring(0, dir.length() - 1); // strip trailing '/'
-        for(final Identifier id : resourceManager.listResources(dirRoot, i ->
+        return resourceManager.listResources(dirRoot, i ->
             i.getNamespace().equals(EngineerSBliss.MOD_ID) &&
             i.getPath().startsWith(dir) &&
-            i.getPath().substring(dir.length()).startsWith(GENERATE_MARKER_PREFIX)
-        ).keySet()) {
-            return id.getPath().substring(dir.length() + GENERATE_MARKER_PREFIX.length());
-        }
-        return null;
+            i.getPath().startsWith(GENERATE_MARKER_PREFIX, dir.length())
+        )
+            .keySet().stream()
+            .findFirst()
+            .map(id -> id.getPath().substring(dir.length() + GENERATE_MARKER_PREFIX.length()))
+            .orElse(null)
+        ;
     }
 
 

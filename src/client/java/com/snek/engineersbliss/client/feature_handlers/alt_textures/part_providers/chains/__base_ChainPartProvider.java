@@ -19,7 +19,8 @@ public abstract class __base_ChainPartProvider extends __base_PartProvider {
 
     @Override
     public List<String> calcPartNames(final BlockState state) {
-        return List.of("chains/3d/" + getChainName() + getVariantSuffixFromAxis(state.getValue(ChainBlock.AXIS)));
+        final String axisName = getVariantSuffixFromAxis(state.getValue(ChainBlock.AXIS));
+        return List.of(String.format("chains/3d/%s%s", getChainName(), axisName));
     }
 
 

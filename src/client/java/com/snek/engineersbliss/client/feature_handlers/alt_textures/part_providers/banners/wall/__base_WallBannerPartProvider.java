@@ -17,8 +17,8 @@ public abstract class __base_WallBannerPartProvider extends __base_BannerPartPro
     public List<String> calcPartNames(final BlockState state) {
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallBannerBlock.FACING));
         return List.of(
-            "banners/vanilla/wall/support"           + dirName,
-            "banners/vanilla/wall/" + getColorName() + dirName
+            String.format("banners/vanilla/wall/support%s"           , dirName),
+            String.format("banners/vanilla/wall/%s%s", getColorName(), dirName)
         );
     }
 }

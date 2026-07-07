@@ -44,7 +44,7 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
         ;
 
         final boolean is3D = AltTexturesHandler.getFeature(AltTextureFeature.RAILS_3D);
-        return List.of("rails/consistent_sloped/" + (is3D ? "3d" : "2d") + "/" + getRailTypeName() + "/" + shapeName + poweredStateName + directionName);
+        return List.of(String.format("rails/consistent_sloped/%sd/%s/%s%s%s", is3D ? "3" : "2", getRailTypeName(), shapeName, poweredStateName, directionName));
     }
 
 

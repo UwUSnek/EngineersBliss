@@ -21,12 +21,12 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION));
 
         final String attachmentName =
-            (state.getValue(CeilingHangingSignBlock.ATTACHED).booleanValue() ? "narrow" : "wide") + "/all" + rotName
+            (state.getValue(CeilingHangingSignBlock.ATTACHED).booleanValue() ? "narrow" : "wide")
             //! Rotation is always 0 when not "ATTACHED" as wide supports only snap to cardinal directions
         ;
         return List.of(
-            ROOT + "/hanging_board/" + materialName  + rotName,
-            ROOT + "/hanging_ceiling_attachment_" + attachmentName
+            String.format("%s/hanging_board/%s%s",                  ROOT,   materialName, rotName),
+            String.format("%s/hanging_ceiling_attachment_%s/all%s", ROOT, attachmentName, rotName)
         );
     }
 }

@@ -19,6 +19,6 @@ public abstract class __base_StandingSignPartProvider extends __base_SignPartPro
     public List<String> calcPartNames(final BlockState state) {
         final String materialName = getSignMaterialName();
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(StandingSignBlock.ROTATION));
-        return List.of(ROOT + "/standing/" + materialName + rotName);
+        return List.of(String.format("%s/standing/%s%s", ROOT, materialName, rotName));
     }
 }

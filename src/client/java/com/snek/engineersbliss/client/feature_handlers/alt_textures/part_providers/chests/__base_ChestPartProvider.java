@@ -26,7 +26,7 @@ public abstract class __base_ChestPartProvider extends __base_PartProvider {
             case ChestType.LEFT   -> "left";
             case ChestType.RIGHT  -> "right";
         };
-        return List.of("chests/vanilla/" + sideName + "/" + getChestName() + dirName);
+        return List.of(String.format("chests/vanilla/%s/%s%s", sideName, getChestName(), dirName));
     }
 
 
