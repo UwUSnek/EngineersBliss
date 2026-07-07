@@ -61,7 +61,8 @@
         "alt_textures.renderer_optimizers.ShelfRenderingOptimizerMixin",
         "alt_textures.renderer_optimizers.CampfireRenderingOptimizerMixin",
         "alt_textures.particle_suppressors.CampfireBlockEntityParticleSuppressorMixin",
-        "alt_textures.particle_suppressors.CampfireBlockParticleSuppressorMixin"
+        "alt_textures.particle_suppressors.CampfireBlockParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.LavaBlockParticleSuppressorMixin"
     ],
     "injectors": {
         "defaultRequire": 1
