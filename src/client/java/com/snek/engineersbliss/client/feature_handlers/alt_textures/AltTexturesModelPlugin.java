@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.BellBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DecoratedPotPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
@@ -198,6 +199,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             new         VinesPartProvider(),
             new    GlowLichenPartProvider(),
             new  DecoratedPotPartProvider(),
+            new     BellBlockPartProvider(),
 
             new          RailPartProvider(),
             new   PoweredRailPartProvider(),

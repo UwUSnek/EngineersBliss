@@ -32,8 +32,7 @@ public enum AltTextureFeature {
 
 
     //! Vanilla Bells are rendered dynamically but the supports are static.
-    //! This is suboptimal, so STATIC_BELLS just replaces the whole thing with a fully static block model. Vanilla supports are discarded.
-    //TODO use vanilla supports as a guide for positioning
+    //! STATIC_BELLS simply replaces the bell part and keeps the Vanilla support.
 
 
 
