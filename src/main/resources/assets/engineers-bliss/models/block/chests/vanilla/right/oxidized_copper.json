@@ -1,6 +1,6 @@
 {
   "parent": "engineers-bliss:block/chests/vanilla/templates/right",
   "textures": {
-    "atlas": "engineers-bliss:block/chests/vanilla/right/oxidized_copper"
+    "texture": "engineers-bliss:block/chests/vanilla/right/oxidized_copper"
   }
 }

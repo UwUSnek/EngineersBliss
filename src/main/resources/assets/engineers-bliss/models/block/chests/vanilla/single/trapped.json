@@ -1,6 +1,6 @@
 {
   "parent": "engineers-bliss:block/chests/vanilla/templates/single",
   "textures": {
-    "atlas": "engineers-bliss:block/chests/vanilla/single/trapped"
+    "texture": "engineers-bliss:block/chests/vanilla/single/trapped"
   }
 }
