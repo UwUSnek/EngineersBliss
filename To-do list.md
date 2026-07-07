@@ -214,3 +214,13 @@
 
 
 - add some logo or something as blur background cutout?
+
+
+
+- add a "keybinds" section in creative tweaks
+  - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
+  - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
+
+
+- add a generic "hide all entities" toggle in rendering screen
+- add a generic "hide all particles" toggle in rendering screen

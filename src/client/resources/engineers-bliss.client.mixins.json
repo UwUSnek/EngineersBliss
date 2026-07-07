@@ -65,7 +65,11 @@
         "alt_textures.particle_suppressors.LavaBlockParticleSuppressorMixin",
         "alt_textures.particle_suppressors.BaseFireBlockParticleSuppressorMixin",
         "alt_textures.particle_suppressors.LavaDripParticleSuppressorMixin",
-        "alt_textures.particle_suppressors.WaterDripParticleSuppressorMixin"
+        "alt_textures.particle_suppressors.WaterDripParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.LeverDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.OreDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.RepeaterDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin"
     ],
     "injectors": {
         "defaultRequire": 1
