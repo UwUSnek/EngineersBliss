@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 
@@ -23,15 +21,17 @@ public class SlimeBlockPartProvider extends __base_PartProvider {
 
 
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK) ?
-            List.of("slime_block/transparent/block_n") :
-            null
-        ;
+    public List<String> calcPartNames(final BlockState state) {
+        return List.of("slime_block/transparent/block_n");
     }
 
+
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK);
+    }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK);
+        return !shouldUseCustom(state);
     }
 }

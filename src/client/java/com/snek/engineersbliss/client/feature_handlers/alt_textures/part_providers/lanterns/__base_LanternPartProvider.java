@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
@@ -20,18 +18,18 @@ public abstract class __base_LanternPartProvider extends __base_PartProvider {
 
 
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D)) {
-            final String lanternTypeName = state.getValue(LanternBlock.HANGING).booleanValue() ? "_hanging" : "";
-            return List.of("lanterns/3d/" + getLanternName() + lanternTypeName + "_n");
-        }
-        else {
-            return null;
-        }
+    public List<String> calcPartNames(final BlockState state) {
+        final String lanternTypeName = state.getValue(LanternBlock.HANGING).booleanValue() ? "_hanging" : "";
+        return List.of("lanterns/3d/" + getLanternName() + lanternTypeName + "_n");
     }
 
+
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D);
+    }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D);
+        return !shouldUseCustom(state);
     }
 }

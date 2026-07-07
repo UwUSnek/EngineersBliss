@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 
@@ -25,20 +23,19 @@ public class BellBlockPartProvider extends __base_PartProvider {
 
     //! Only the bell part needs to be made static. Supports are already static.
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)) {
-            final String dirName = getVariantSuffixFromDirection(state.getValue(BellBlock.FACING));
-            return List.of("bell/vanilla/bell" + dirName);
-        }
-        else {
-            return null;
-        }
+    public List<String> calcPartNames(final BlockState state) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(BellBlock.FACING));
+        return List.of("bell/vanilla/bell" + dirName);
     }
 
 
-    //! Always keep Vanilla's static supports
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS);
+    }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
         return true;
+        //! Always keep Vanilla's static supports
     }
 }

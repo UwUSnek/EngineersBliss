@@ -2,10 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.__base_BannerPartProvider;
 
 import net.minecraft.world.level.block.BannerBlock;
@@ -18,16 +14,11 @@ public abstract class __base_StandingBannerPartProvider extends __base_BannerPar
 
 
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
-            final String rotName = getVariantSuffixFromRotationIndex(state.getValue(BannerBlock.ROTATION));
-            return List.of(
-                "banners/vanilla/standing/support"           + rotName,
-                "banners/vanilla/standing/" + getColorName() + rotName
-            );
-        }
-        else {
-            return null;
-        }
+    public List<String> calcPartNames(final BlockState state) {
+        final String rotName = getVariantSuffixFromRotationIndex(state.getValue(BannerBlock.ROTATION));
+        return List.of(
+            "banners/vanilla/standing/support"           + rotName,
+            "banners/vanilla/standing/" + getColorName() + rotName
+        );
     }
 }

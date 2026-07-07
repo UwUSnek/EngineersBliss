@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 
@@ -25,17 +23,18 @@ public class DecoratedPotPartProvider extends __base_PartProvider {
 
 
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
-            final String dirName = getVariantSuffixFromDirection(state.getValue(DecoratedPotBlock.HORIZONTAL_FACING));
-            return List.of("decorated_pot/vanilla/block" + dirName);
-        }
-        else return null;
+    public List<String> calcPartNames(final BlockState state) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(DecoratedPotBlock.HORIZONTAL_FACING));
+        return List.of("decorated_pot/vanilla/block" + dirName);
     }
 
 
     @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS);
+    }
+    @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS);
+        return !shouldUseCustom(state);
     }
 }

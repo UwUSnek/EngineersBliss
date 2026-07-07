@@ -17,7 +17,11 @@ public abstract class __base_SignPartProvider extends __base_PartProvider {
 
 
     @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS);
+    }
+    @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS);
+        return !shouldUseCustom(state);
     }
 }

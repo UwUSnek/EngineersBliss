@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 
 import org.jetbrains.annotations.NotNull;
@@ -191,8 +193,67 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
-    // A map containing baked custom models. The runtime resolver fetches models from here.
-    private static final Map<Identifier, BlockStateModel> customModels = new HashMap<>();
+
+
+
+
+    // This contains all the discovered models for the current block
+    //! The type is called BlockStateModel and not BlockStateModelPart because Minecraft is goofy. It's a part, but it must be a BlockStateModel instance.
+    private static final Map<Identifier, BlockStateModel> customModelParts = new ConcurrentHashMap<>();
+
+
+
+
+    // A map containing all the assembled models for each possible BlockState. The runtime resolver fetches models from here
+    // This doesn't include the vanilla model.
+    // private static final List<BlockState> statesToPopulate = new ArrayList<>();
+    private static Map<BlockState, List<BlockStateModel>> customModelsForStates = new ConcurrentHashMap<>();
+
+
+    // /**
+    //  * A function that populates the map of complete models for known block states.
+    //  * This is called after all the blockstates have been analyzed and all custom model parts have been discovered, read, and assembled into complete models.
+    //  */
+    // private static void populateCustomModelsForStatesIfNeeded() {
+
+    //     // Create hash map container if this is the first call. Return otherwise
+    //     if(customModelsForStates != null) return;
+    //     customModelsForStates = new ConcurrentHashMap<>();
+    //     for(BlockState state : statesToPopulate) {
+
+    //         // Map the list of parts to the BlockState. This is what will be fetched during rendering
+    //         final __base_PartProvider partProvider = partProviders.get(state.getBlock());
+    //         final List<BlockStateModel> collectedParts = new ArrayList<>();
+    //         if(partProvider != null) {
+    //             final @Nullable List<String> partNames = partProvider.calcPartNames(state);
+    //             if(partNames != null) {
+    //                 for(final String partName : partNames) {
+    //                     final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
+    //                     final BlockStateModel custom = customModelParts.get(partId);
+    //                     //TODO use a local map instead of this thing, if this can be moved out of the model loop
+    //                     if(custom != null) {
+    //                         collectedParts.add(custom);
+    //                     }
+    //                     else {
+    //                         EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
+    //                         break;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         else {
+    //             EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(state.getBlock()));
+    //         }
+    //         customModelsForStates.put(state, collectedParts);
+    //     }
+    // }
+
+
+
+
+
+
+
 
     // A map containing the model part providers for each block
     private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
@@ -399,6 +460,10 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
+
+
+
+
     @Override //! Called automatically. No need to manually call from the client initializer
     public void initialize(final List<ModelEntry> modelEntries, final Context initContext) {
 
@@ -412,7 +477,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
             return new BlockStateModel.UnbakedRoot() {
-                @Override
+                @Override //TODO maybe move this out of unbaked root? idk how this even works
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
                     model.resolveDependencies(resolver);
                     for(final ModelEntry modelEntry : modelEntries) {
@@ -435,7 +500,12 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
+
+
+
+
         // This step yoinks the loaded custom model and stores a local reference to it so it can be used when needed
+        // It also builds the BlockState -> List<ModelPart> map for O(1) lookup
 
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
             final @NotNull BlockState state = beforeBakeContext.state();
@@ -444,7 +514,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
             // For each model ID
-            for(final ModelEntry entry : modelEntries) {
+            for(final ModelEntry entry : modelEntries) {//TODO maybe move this out of modifyBlockModelBeforeBake? idk how this even works
                 final Identifier modelId  = entry.id();
                 final String     suffixes = entry.suffixes();
 
@@ -456,7 +526,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                         .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
                         .bake(beforeBakeContext.baker());
                     final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
-                    customModels.put(rotatedModelId, new SingleVariant(part));
+                    customModelParts.put(rotatedModelId, new SingleVariant(part));
                 }
 
                 // Bake up and down variants
@@ -468,7 +538,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                         .withXRot(PART_QUADRANTS_VERTICAL.get(i))
                         .bake(beforeBakeContext.baker());
                     final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
-                    customModels.put(rotatedModelId, new SingleVariant(part));
+                    customModelParts.put(rotatedModelId, new SingleVariant(part));
                 }
 
                 // Bake axis-aligned variants
@@ -480,11 +550,18 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                         .withYRot(PART_YROT_AXIS.get(i))
                         .bake(beforeBakeContext.baker());
                     final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
-                    customModels.put(axisModelId, new SingleVariant(part));
+                    customModelParts.put(axisModelId, new SingleVariant(part));
                 }
             }
+
+
+            // Return the model
             return model;
         });
+
+
+
+
 
 
 
@@ -493,48 +570,68 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // The custom BlockStateModel applies a different model based on AltTexturesHandler's values
         // Particles and material flags are always vanilla, while the model parts are replaced by the custom model when needed
 
-        initContext.modifyBlockModelAfterBake().register((model, afterBakeContext) -> {
+        initContext.modifyBlockModelAfterBake().register((vanilla, afterBakeContext) -> {
             final @NotNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
-            if(!AltTextureFeature.hasFeature(block)) return model;
+            if(!AltTextureFeature.hasFeature(block)) return vanilla;
 
 
-            final @NotNull BlockStateModel vanilla = model;
             return new BlockStateModel() {
                 @Override
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {
+                    boolean keepVanilla = true;
 
-                    // Add custom parts
-                    final __base_PartProvider partProvider = partProviders.get(state.getBlock());
+
+                    // Compute and cache parts for this BlockState
+                    //! This must be done during the first instance of actual rendering workload
+                    //! because Minecraft itself loads models lazily. Trying to load all the parts before any rendering occurs would result in missing cache entries
+                    final __base_PartProvider partProvider = partProviders.get(block);
                     if(partProvider != null) {
-                        final @Nullable List<String> partNames = partProvider.calcPartNames(state);
-                        if(partNames != null) for(final String partName : partNames) {
-                            final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
-                            final BlockStateModel custom = customModels.get(partId);
-                            if(custom != null) {
-                                custom.collectParts(random, output);
+                        final List<BlockStateModel> cachedParts = customModelsForStates.computeIfAbsent(state, s -> {
+                        final List<BlockStateModel> collected = new ArrayList<>();
+                            final @Nullable List<String> partNames = partProvider.calcPartNames(s);
+                            if(partNames != null) {
+                                for(final String partName : partNames) {
+                                    final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
+                                    final BlockStateModel custom = customModelParts.get(partId);
+                                    if(custom != null) {
+                                        collected.add(custom);
+                                    }
+                                    else {
+                                        EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
+                                    }
+                                }
                             }
-                            else {
-                                EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
-                                vanilla.collectParts(random, output);
-                            }
-                        }
+                            return collected;
+                        });
 
-                        // Add the vanilla parts if needed
-                        if(partProvider.shouldKeepVanilla(state)) {
-                            vanilla.collectParts(random, output);
+
+
+                        // Add custom model parts if needed (list can be empty but never null)
+                        if(partProvider.shouldUseCustom(state)) {
+                            for(final BlockStateModel cachedPart : cachedParts) {
+                                cachedPart.collectParts(random, output);
+                            }
                         }
+                        keepVanilla = partProvider.shouldKeepVanilla(state);
                     }
                     else {
                         EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(block));
+                    }
+
+
+                    // Add vanilla part if needed
+                    if(keepVanilla) {
                         vanilla.collectParts(random, output);
                     }
                 }
+
 
                 @Override
                 public Material.Baked particleMaterial() {
                     return vanilla.particleMaterial();
                 }
+
 
                 @Override
                 public int materialFlags() {
@@ -544,9 +641,3 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         });
     }
 }
-
-
-
-//TODO reuse this plugin to hide filtered blocks?
-//TODO only if it can filter all the blocks and is called when rebuilding chunk sections/slices
-//TODO and if culling follows geometry outputted by the plugin
