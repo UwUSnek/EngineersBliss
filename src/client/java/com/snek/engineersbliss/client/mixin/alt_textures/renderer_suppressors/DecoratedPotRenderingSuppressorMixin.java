@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin.alt_textures;
+package com.snek.engineersbliss.client.mixin.alt_textures.renderer_suppressors;
 
 import java.util.Optional;
 

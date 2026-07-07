@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin.alt_textures;
+package com.snek.engineersbliss.client.mixin.alt_textures.renderer_suppressors;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
-import net.minecraft.client.renderer.blockentity.state.HangingSignRenderState;
+import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
+import net.minecraft.client.renderer.blockentity.state.StandingSignRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -27,13 +27,13 @@ import net.minecraft.world.phys.Vec3;
  * when the sign doesn't contain any text in either of its faces.
  * This further improves sign rendering performance.
  */
-@Mixin(HangingSignRenderer.class)
-public abstract class HangingSignRenderingSuppressorMixin extends AbstractSignRenderer<HangingSignRenderState> {
+@Mixin(StandingSignRenderer.class)
+public abstract class StandingSignRenderingSuppressorMixin  extends AbstractSignRenderer<StandingSignRenderState> {
 
 
     //! This exists so Java doesn't cry about the OOP stuff
     //! This is never actually called
-    protected HangingSignRenderingSuppressorMixin(BlockEntityRendererProvider.Context arg0) {
+    protected StandingSignRenderingSuppressorMixin(BlockEntityRendererProvider.Context arg0) {
         super(arg0);
     }
 
@@ -44,7 +44,7 @@ public abstract class HangingSignRenderingSuppressorMixin extends AbstractSignRe
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
     private void extractRenderState(
         final SignBlockEntity blockEntity,
-        final HangingSignRenderState state,
+        final StandingSignRenderState state,
         final float partialTicks,
         final Vec3 cameraPosition,
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
