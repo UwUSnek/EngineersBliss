@@ -87,7 +87,13 @@ It helps a lot :3
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire
+  - Disable Redstone Wire particles
+  - Disable Campfire particles
   - Disable redstone wire particles
+  - Disable Fire particles
+  - Disable Lava particles
+  - Disable Water Stream particles
+  - Disable drip particles
   - Less opaque Slime Blocks
   - Less opaque Honey Blocks
   - Unobstructive Mangrove Roots
@@ -95,7 +101,15 @@ It helps a lot :3
   - Consistent sloped Rails
   - Alternative Barrier rendering
   - Alternative Structure Void rendering
-  - Alternative Light Block rendering<br><br>
+  - Alternative Light Block rendering
+  - Static Sign models
+  - Static Chest models
+  - Static Banner models
+  - static decorated pot models
+  - static bell models
+  - static copper golem statue models
+  - Optimized Shelf rendering logic
+  - Optimized Campfire rendering logic<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders

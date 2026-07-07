@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 
@@ -24,15 +22,18 @@ public class ScaffoldingPartProvider extends __base_PartProvider {
 
 
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING) ?
-            List.of("scaffolding/unobstructive/" + (state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable") + "_n") :
-            null
-        ;
+    public List<String> calcPartNames(final BlockState state) {
+        final String stabilityName = state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable";
+        return List.of(String.format("scaffolding/unobstructive/%s_n", stabilityName));
     }
 
+
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING);
+    }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING);
+        return !shouldUseCustom(state);
     }
 }

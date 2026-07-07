@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 
@@ -24,15 +22,18 @@ public class LadderPartProvider extends __base_PartProvider {
 
 
     @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.LADDERS_3D) ?
-            List.of("ladder/3d/block" + getVariationSuffixFromDirection(state.getValue(LadderBlock.FACING))) :
-            null
-        ;
+    public List<String> calcPartNames(final BlockState state) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(LadderBlock.FACING));
+        return List.of(String.format("ladder/3d/block%s", dirName));
     }
 
+
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.LADDERS_3D);
+    }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.LADDERS_3D);
+        return !shouldUseCustom(state);
     }
 }

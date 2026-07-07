@@ -29,4 +29,11 @@ public class UiTxt extends Txt {
         rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_MEDIUM, textScale))));
         return rawText;
     }
+
+
+    @Override
+    public @NotNull Txt copy() {
+        rawText.setStyle(style);
+        return new UiTxt(rawText.copy(), _length);
+    }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/signs/vanilla/templates/hanging_board_2",
+  "textures": {
+    "atlas": "engineers-bliss:block/signs/vanilla/hanging/acacia"
+  }
+}

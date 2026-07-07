@@ -7,7 +7,12 @@
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
-  - Disable redstone wire particles
+  - Disable Redstone Wire particles
+  - ~~Disable Campfire particles~~
+  - ~~Disable Fire particles~~
+  - ~~Disable Lava particles~~
+  - Disable Water Stream particles
+  - ~~Disable drip particles~~
   - ~~Transparent Slime Block~~
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
@@ -17,6 +22,14 @@
   - ~~Alternative Barrier rendering~~
   - ~~Alternative Structure Void rendering~~
   - ~~Alternative Light Block rendering~~
+  - ~~Static Sign models~~
+  - ~~Static Chest models~~
+  - ~~Static Banner models~~
+  - ~~static decorated pot models~~
+  - static bell models
+  - static copper golem statue models
+  - ~~Optimized Shelf rendering logic~~
+  - ~~Optimized Campfire rendering logic~~
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
@@ -97,7 +110,6 @@
   - Disable overlay effect of Lava
   - Disable overlay effect of Nether Portals
 
-
 - **Property lookup**:
   - Quickly find blocks based on their properties
   - Find alternatives to existing blocks and replace them in-game
@@ -173,6 +185,8 @@
 - render stats //TODO minecraft.getGpuUtilization()
 
 
+- add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
+- add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block
 
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
 
@@ -184,3 +198,32 @@
 
 
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
+
+
+- add a "about" screen that talks abotu the mod, basically just copy the readme.
+  - display my skin/drawing in there too and name
+
+
+- add images to the readme?
+  - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on
+
+
+- maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
+
+- make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing
+
+
+- add some logo or something as blur background cutout?
+
+
+
+- add a "keybinds" section in creative tweaks
+  - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
+  - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
+
+
+- add a generic "hide all entities" toggle in rendering screen
+- add a generic "hide all particles" toggle in rendering screen
+
+
+- add static cushion models feature for the new versions. they are probably block entities, judging from how they behave

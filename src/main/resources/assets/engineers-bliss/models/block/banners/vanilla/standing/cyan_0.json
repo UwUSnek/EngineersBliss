@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/banners/vanilla/templates/standing_flag_0",
+  "textures": {
+    "texture": "engineers-bliss:block/banners/vanilla/cyan"
+  }
+}

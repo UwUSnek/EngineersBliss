@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/banners/vanilla/templates/wall_flag",
+  "textures": {
+    "texture": "engineers-bliss:block/banners/vanilla/purple"
+  }
+}

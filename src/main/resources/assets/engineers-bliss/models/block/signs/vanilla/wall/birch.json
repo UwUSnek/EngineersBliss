@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/signs/vanilla/templates/wall",
+  "textures": {
+    "atlas": "engineers-bliss:block/signs/vanilla/standing/birch"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/signs/vanilla/templates/hanging_wall_attachment",
+  "textures": {
+    "atlas": "engineers-bliss:block/signs/vanilla/hanging/cherry"
+  }
+}
