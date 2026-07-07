@@ -43,9 +43,9 @@ public enum AltTextureFeature {
         () -> new UiTxt("Replaces the messy dust-like Redstone Wire texture with a simple monochrome line to make circuits more readable."),
         List.of(Blocks.REDSTONE_WIRE)
     ),
-    NO_REDSTONE_WIRE_PARTICLES(true, //TODO implement
-        () -> new UiTxt("Disable Redstone Wire particles"),
-        () -> new UiTxt("Stops Redstone Wire from emitting particles when powered."),
+    NO_REDSTONE_DUST_PARTICLES(true, //TODO implement
+        () -> new UiTxt("Disable Redstone dust particles"),
+        () -> new UiTxt("Stops Levers, Redstone Wire, Redstone Torches, Redstone Ores, and Redstone Repeaters from emitting dust particles when powered."),
         List.of() //! Feature doesn't change the model. No section refresh
     ),
     NO_CAMPFIRE_PARTICLES(true,
