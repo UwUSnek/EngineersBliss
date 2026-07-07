@@ -359,7 +359,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 else {
                     final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
                     r.add(new ModelEntry(finalId, suffixes));
-                    EngineerSBliss.LOGGER.info("Loaded dynamic custom model {} (variants: {})", finalId, suffixes);
+                    EngineerSBliss.LOGGER.debug("Loaded dynamic custom model {} (variants: {})", finalId, suffixes);
                 }
             });
             return r;
