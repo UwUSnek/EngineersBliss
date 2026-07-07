@@ -25,13 +25,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public class RenderFilterBlockVanillaIndigoMixin {
 
 
-    @Inject(
-        method = "getBlockState",
-        at = @At("RETURN"),
-        cancellable = true
-    )
-    public void getBlockState(BlockPos pos, CallbackInfoReturnable<BlockState> cir) {
-        BlockState state = cir.getReturnValue();
+    @SuppressWarnings("unused")
+    @Inject(method = "getBlockState", at = @At("RETURN"), cancellable = true, require = 0)
+    private void getBlockState(final BlockPos pos, final CallbackInfoReturnable<BlockState> cir) {
+        final BlockState state = cir.getReturnValue();
 
         if(!RenderFilterHandler.shouldBlockRender(state)) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());

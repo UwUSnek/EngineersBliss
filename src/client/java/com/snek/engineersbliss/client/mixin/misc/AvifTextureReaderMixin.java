@@ -1,7 +1,9 @@
 package com.snek.engineersbliss.client.mixin.misc;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.snek.engineersbliss.client.utils.scheduler.Scheduler;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
+import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.screens.AvifTextureTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -18,7 +20,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -42,13 +45,32 @@ public class AvifTextureReaderMixin {
 
 
 
+    // Placeholder texture used while the actual textures load in
+    private static NativeImage LOADING_IMAGE;
+    static {
+        try(InputStream s = AvifTextureReaderMixin.class.getResourceAsStream("/assets/" + EngineerSBliss.MOD_ID + "/textures/gui/placeholder_texture.png")) {
+            LOADING_IMAGE = NativeImage.read(s);
+        }
+        catch(final IOException e) {
+            e.printStackTrace(); //TODO use proper logging
+        }
+    }
 
-    @Inject(method = "load", at = @At("HEAD"), cancellable = true)
+    private static NativeImage buildPlaceholderImage() {
+        final NativeImage copy = new NativeImage(LOADING_IMAGE.getWidth(), LOADING_IMAGE.getHeight(), false);
+        MemoryUtil.memCopy(LOADING_IMAGE.getPointer(), copy.getPointer(), LOADING_IMAGE.getWidth() * LOADING_IMAGE.getHeight() * 4L);
+        return copy;
+    }
+
+
+
+
+    @SuppressWarnings("unused")
+    @Inject(method = "load", at = @At("HEAD"), cancellable = true, require = 1)
     private static void load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
         if(!id.getPath().endsWith(".avif")) return;
 
-        NativeImage placeholder = new NativeImage(1, 1, false);
-        placeholder.setPixelABGR(0, 0, 0x00_00_00_00);
+        final NativeImage placeholder = buildPlaceholderImage();
         cir.setReturnValue(new TextureContents(placeholder, null));
 
         CompletableFuture.runAsync(() -> {
@@ -75,22 +97,23 @@ public class AvifTextureReaderMixin {
 
                 final TextureMetadataSection metadata = resource.metadata().getSection(TextureMetadataSection.TYPE).orElse(null);
 
-                Scheduler.run(() -> {
+                ClientScheduler.run(() -> {
                     final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
                     final IntBuffer ibuf = MemoryUtil.memIntBuffer(image.getPointer(), w * h);
                     for(int i = 0; i < pixels.length; i++) {
                         final int p = pixels[i];
                         ibuf.put(i, (p & 0xFF00FF00) | ((p & 0x00FF0000) >> 16) | ((p & 0x000000FF) << 16));
                     }
-                    AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
-                    if(tex instanceof ReloadableTexture reloadable) {
+                    final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
+                    if(tex instanceof final ReloadableTexture reloadable) {
                         reloadable.apply(new TextureContents(image, metadata));
+                        AvifTextureTracker.markLoaded(id);
                     }
                     else {
                         System.out.println("TEXTURE IS NOT RELOADABLE");//TODO use proper error reporting
                     }
                 });
-            } catch(Exception e) {
+            } catch(final Exception e) {
                 e.printStackTrace(); //TODO use proper error reporting
             }
         });

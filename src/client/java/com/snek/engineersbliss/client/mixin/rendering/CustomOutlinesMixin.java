@@ -43,12 +43,9 @@ public abstract class CustomOutlinesMixin {
 
 
 
-    @Inject(
-        method = "extractBlockOutline",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    public void extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    @SuppressWarnings("unused")
+    @Inject(method = "extractBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
+    private void extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
         if(!RenderFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
         if(RenderFilterHandler.getTargetHiddenBlocks()) return;
         customOutlineBlocks.clear();
@@ -94,12 +91,9 @@ public abstract class CustomOutlinesMixin {
 
 
 
-    @Inject(
-        method = "renderBlockOutline",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    public void renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    @SuppressWarnings("unused")
+    @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
+    private void renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
         if(!RenderFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
         if(RenderFilterHandler.getTargetHiddenBlocks()) return;
         if(customOutlineBlocks.isEmpty()) return;

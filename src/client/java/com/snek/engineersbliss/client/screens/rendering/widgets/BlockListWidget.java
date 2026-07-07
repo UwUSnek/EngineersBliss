@@ -19,12 +19,14 @@ import net.minecraft.world.level.lighting.LightEngine;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.regex.Pattern;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
@@ -52,12 +54,10 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
     final int rowItemHeight;
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
-    private final RenderingScreen screen;
 
 
-    public BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
+    public BlockListWidget(final Minecraft client, final int width, final int height, final int top, final int itemHeight) {
         super(client, width, height, top, itemHeight);
-        this.screen = screen;
         this.rowItemHeight = itemHeight;
 
         // Create list of all blocks
@@ -95,11 +95,11 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
 
-
+    private static final Pattern CLEAN_PATTERN = Pattern.compile("\\s*([&|#@])\\s*");
     public void filter(final String query) {
 
         // Remove spaces near operators and prefixes
-        final String cleanQuery = query.replaceAll("\\s*([&|#@])\\s*", "$1");
+        final String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
 
 
         // Iterate over or groups first, so or operators naturally end up with lower priority
@@ -147,7 +147,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         // Clear block list and load the filtered entries
         clear();
         for(final Block block : orResults) {
-            addEntry(new Entry(block, screen));
+            addEntry(new Entry(block));
         }
     }
 
@@ -175,9 +175,9 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        graphics.text(minecraft.font, Component.literal("Block"),   rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, Component.literal("Enable"),  rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, Component.literal("Isolate"), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(minecraft.font, new UiTxt("Block"  ).get(), rowLeft, headerY, 0xFFAAAAAA);
+        graphics.text(minecraft.font, new UiTxt("Enable" ).get(), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(minecraft.font, new UiTxt("Isolate").get(), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
@@ -190,9 +190,9 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 final Block block = hoveredEntry.block;
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
-                tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
+                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" " + BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
-                    tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
+                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" #" + tag.location()).gray().get().getVisualOrderText()))
                 );
                 graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
@@ -218,15 +218,13 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         private final Block block;
         private final Checkbox enableBox;
         private final Checkbox isolateBox;
-        private final RenderingScreen screen;
         public Block getBlock() { return block; }
 
 
-        public Entry(final Block block, final RenderingScreen screen) {
+        public Entry(final Block block) {
             this.block = block;
-            this.screen = screen;
-            this.enableBox  = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
-            this.isolateBox = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
+            this.enableBox  = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 

@@ -3,25 +3,73 @@
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
-
         "accessors.GameRendererAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",
 
+
         "shaders.JuliaSetShaderMixin",
 
-        "misc.WebpTextureReaderMixin",
+
         "misc.AvifTextureReaderMixin",
+
 
         "screens.PauseScreenMixin",
 
+
         "overlays.BlockstateChangeTrackerMixin",
+        "overlays.VanillaParticleSuppressor",
+
+
+        "creative_tweaks.SlimeFeaturesMixin",
+        "creative_tweaks.FrictionFeaturesMixin",
+        "creative_tweaks.SpeedFactorFeaturesMixin",
+        "creative_tweaks.PowderSnowSlowdownSuppressorMixin",
+        "creative_tweaks.SweetBerriesSlowdownSuppressorMixin",
+        "creative_tweaks.CobwebSlowdownSuppressorMixin",
+        "creative_tweaks.ScreenOverlayHiderMixin",
+        "creative_tweaks.BlockPhasingMixin",
+        "creative_tweaks.FluidSpeedMixin",
+        "creative_tweaks.FluidSpeedSprintFixMixin",
+        "creative_tweaks.CurrentDragSuppressorMixin",
+        "creative_tweaks.ClimbableSlowdownSuppressor",
+        "creative_tweaks.BedBounceSuppressorMixin",
+        "creative_tweaks.BubbleColumnsPushSuppressorMixin",
+        "creative_tweaks.client.ClientBlockPhasingMixin",
+        "creative_tweaks.client.ClientBlockPhasingPoseFixMixin",
+        "creative_tweaks.client.ClientBlockPhasingPacketFixMixin",
+        "creative_tweaks.client.ClientEntityPhasingMixin",
+        "creative_tweaks.client.ClientEntityPhasingMinecartMixin",
+        "creative_tweaks.client.ClientEntityPhasingBoatMixin",
+        "creative_tweaks.client.ClientFireEffectSuppressorMixin",
+        "creative_tweaks.client.ClientFreezeEffectSuppressorMixin",
+
 
         "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
         "rendering.RenderFilterLightMixin",
         "rendering.CustomOutlinesMixin",
+        "rendering.InteractionFilterMixin",
 
-        "interactions.InteractionFilterMixin"
+
+        "alt_textures.renderer_suppressors.BlockEntityDispatcherSuppressorMixin",
+        "alt_textures.renderer_suppressors.ChestRenderingSuppressorMixin",
+        "alt_textures.renderer_suppressors.AbstractSignRenderingSuppressorMixin",
+        "alt_textures.renderer_suppressors.StandingSignRenderingSuppressorMixin",
+        "alt_textures.renderer_suppressors.HangingSignRenderingSuppressorMixin",
+        "alt_textures.renderer_suppressors.SignTextStateCacheMixin",
+        "alt_textures.renderer_suppressors.DecoratedPotRenderingSuppressorMixin",
+        "alt_textures.renderer_optimizers.ShelfRenderingOptimizerMixin",
+        "alt_textures.renderer_optimizers.CampfireRenderingOptimizerMixin",
+        "alt_textures.particle_suppressors.CampfireBlockEntityParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.CampfireBlockParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.LavaBlockParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.BaseFireBlockParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.LavaDripParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.WaterDripParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.LeverDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.OreDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.RepeaterDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin"
     ],
     "injectors": {
         "defaultRequire": 1

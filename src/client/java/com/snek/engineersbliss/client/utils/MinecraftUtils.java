@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
@@ -28,11 +31,12 @@ import net.minecraft.world.phys.AABB;
 
 
 
+
+
+
+
 public class MinecraftUtils {
     private MinecraftUtils() { }
-
-
-
 
 
 
@@ -77,7 +81,7 @@ public class MinecraftUtils {
      * @param pos The position of the block.
      * @return The chunk position of the chunk.
      */
-    public static ChunkPos blockPosToChunk(BlockPos pos) {
+    public static ChunkPos blockPosToChunk(final BlockPos pos) {
         return new ChunkPos(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
     }
 
@@ -89,8 +93,8 @@ public class MinecraftUtils {
      @param chunk The chunk to check.
     */
     public static boolean isChunkVisible(final LevelChunk chunk) {
-        final var frustum = ((LevelRendererAccessor)Minecraft.getInstance().levelRenderer).getLevelRenderState().cameraRenderState.cullFrustum;
-        final ChunkPos chunkPos = chunk.getPos();
+        final @NotNull Frustum frustum = ((LevelRendererAccessor)Minecraft.getInstance().levelRenderer).getLevelRenderState().cameraRenderState.cullFrustum;
+        final @NotNull ChunkPos chunkPos = chunk.getPos();
         final double x0 = chunkPos.getMinBlockX();
         final double z0 = chunkPos.getMinBlockZ();
         return frustum.isVisible(new AABB(x0, chunk.getMinY(), z0, x0 + LevelChunkSection.SECTION_WIDTH, chunk.getMaxY(), z0 + LevelChunkSection.SECTION_WIDTH));
@@ -106,14 +110,14 @@ public class MinecraftUtils {
      * @param predicate The predicate that checks wheter a block triggers a section refresh. Return true to refresh, false to skip.
      */
     public static void refreshSectionsContaining(final Predicate<BlockState> predicate) {
-        final Minecraft minecraft = Minecraft.getInstance();
-        final LevelRenderer renderer = minecraft.levelRenderer;
+        final @NotNull Minecraft minecraft = Minecraft.getInstance();
+        final @NotNull LevelRenderer renderer = minecraft.levelRenderer;
         final int minY = minecraft.level.getMinSectionY();
-        for(final LevelChunk chunk : getLoadedChunks()) {
-            final LevelChunkSection[] sections = chunk.getSections();
-            final ChunkPos pos = chunk.getPos();
+        for(final @NotNull LevelChunk chunk : getLoadedChunks()) {
+            final @NotNull LevelChunkSection[] sections = chunk.getSections();
+            final @NotNull ChunkPos pos = chunk.getPos();
             for(int i = 0; i < sections.length; i++) {
-                final LevelChunkSection section = sections[i];
+                final @NotNull LevelChunkSection section = sections[i];
                 if(section == null || section.hasOnlyAir()) continue;
                 if(section.maybeHas(predicate)) {
                     renderer.setSectionDirty(pos.x(), minY + i, pos.z());
@@ -152,15 +156,15 @@ public class MinecraftUtils {
      * This doesn't update lighting.
      */
     public static void refreshRendering() {
-        final Minecraft minecraft = Minecraft.getInstance();
-        final LevelRenderer renderer = minecraft.levelRenderer;
+        final @NotNull Minecraft minecraft = Minecraft.getInstance();
+        final @NotNull LevelRenderer renderer = minecraft.levelRenderer;
         final int minY = minecraft.level.getMinSectionY();
-        for(final LevelChunk chunk : getLoadedChunks()) {
-            final LevelChunkSection[] sections = chunk.getSections();
-            final ChunkPos pos = chunk.getPos();
+        for(final @NotNull LevelChunk chunk : getLoadedChunks()) {
+            final @NotNull LevelChunkSection[] sections = chunk.getSections();
+            final @NotNull ChunkPos pos = chunk.getPos();
 
             for(int i = 0; i < sections.length; i++) {
-                final LevelChunkSection section = sections[i];
+                final @NotNull LevelChunkSection section = sections[i];
                 if(section == null || section.hasOnlyAir()) continue;
                 renderer.setSectionDirty(pos.x(), minY + i, pos.z());
             }
@@ -180,16 +184,18 @@ public class MinecraftUtils {
     public static int getLoadedChunkNumber() {
         int r = 0;
         final ClientLevel level = Minecraft.getInstance().level;
-        final ClientChunkCache cache = level.getChunkSource();
+        if(level != null) {
+            final @NotNull ClientChunkCache cache = level.getChunkSource();
 
-        final int centerX = level.players().get(0).chunkPosition().x();
-        final int centerZ = level.players().get(0).chunkPosition().z();
-        final int radius = Minecraft.getInstance().options.renderDistance().get();
+            final int centerX = level.players().get(0).chunkPosition().x();
+            final int centerZ = level.players().get(0).chunkPosition().z();
+            final int radius = Minecraft.getInstance().options.renderDistance().get();
 
-        for(int x = centerX - radius; x <= centerX + radius; x++) {
-            for(int z = centerZ - radius; z <= centerZ + radius; z++) {
-                final LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
-                if(chunk != null) ++r;
+            for(int x = centerX - radius; x <= centerX + radius; x++) {
+                for(int z = centerZ - radius; z <= centerZ + radius; z++) {
+                    final LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
+                    if(chunk != null) ++r;
+                }
             }
         }
         return r;
@@ -202,22 +208,23 @@ public class MinecraftUtils {
      * Creates a list containing the currently loaded chunks.
      * @return The list of loaded chunks
      */
-    public static List<LevelChunk> getLoadedChunks() {
+    public static @NotNull List<LevelChunk> getLoadedChunks() {
         final List<LevelChunk> r = new ArrayList<>();
         final ClientLevel level = Minecraft.getInstance().level;
-        final ClientChunkCache cache = level.getChunkSource();
+        if(level != null) {
+            final @NotNull ClientChunkCache cache = level.getChunkSource();
 
-        final int centerX = level.players().get(0).chunkPosition().x();
-        final int centerZ = level.players().get(0).chunkPosition().z();
-        final int radius = Minecraft.getInstance().options.renderDistance().get();
+            final int centerX = level.players().get(0).chunkPosition().x();
+            final int centerZ = level.players().get(0).chunkPosition().z();
+            final int radius = Minecraft.getInstance().options.renderDistance().get();
 
-        for(int x = centerX - radius; x <= centerX + radius; x++) {
-            for(int z = centerZ - radius; z <= centerZ + radius; z++) {
-                final LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
-                if(chunk != null) r.add(chunk);
+            for(int x = centerX - radius; x <= centerX + radius; x++) {
+                for(int z = centerZ - radius; z <= centerZ + radius; z++) {
+                    final LevelChunk chunk = cache.getChunk(x, z, ChunkStatus.FULL, false);
+                    if(chunk != null) r.add(chunk);
+                }
             }
         }
-
         return r;
     }
 
@@ -229,10 +236,10 @@ public class MinecraftUtils {
      * This can sometimes return false positives due to how Minecraft handles block pelettes.
      * @return The list of blocks in loaded chunks
      */
-    public static List<Block> calcLoadedBlockList() {
+    public static @NotNull List<Block> calcLoadedBlockList() {
         final Set<Block> r = new HashSet<>();
-        for(final LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
-            for(final LevelChunkSection section : chunk.getSections()) {
+        for(final @NotNull LevelChunk chunk : MinecraftUtils.getLoadedChunks()) {
+            for(final @NotNull LevelChunkSection section : chunk.getSections()) {
                 section.getStates().getAll(state -> {
                     final Block block = state.getBlock();
                     if(block != Blocks.AIR) r.add(block);

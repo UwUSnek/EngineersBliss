@@ -1,0 +1,71 @@
+{
+	"format_version": "1.21.11",
+	"credit": "UwU_Snek",
+	"parent": "block/block",
+	"textures": {
+		"chain": "#chain",
+        "particle": "#lantern",
+        "lantern": "#lantern"
+	},
+	"elements": [
+		{
+			"from": [5, 0, 5],
+			"to": [11, 7, 11],
+			"faces": {
+				"north": {"uv": [0, 2, 6, 9], "texture": "#lantern"},
+				"east": {"uv": [0, 2, 6, 9], "texture": "#lantern"},
+				"south": {"uv": [0, 2, 6, 9], "texture": "#lantern"},
+				"west": {"uv": [0, 2, 6, 9], "texture": "#lantern"},
+				"up": {"uv": [0, 9, 6, 15], "texture": "#lantern"},
+				"down": {"uv": [0, 9, 6, 15], "texture": "#lantern", "cullface": "down"}
+			}
+		},
+		{
+			"from": [6, 7, 6],
+			"to": [10, 9, 10],
+			"faces": {
+				"north": {"uv": [1, 0, 5, 2], "texture": "#lantern"},
+				"east": {"uv": [1, 0, 5, 2], "texture": "#lantern"},
+				"south": {"uv": [1, 0, 5, 2], "texture": "#lantern"},
+				"west": {"uv": [1, 0, 5, 2], "texture": "#lantern"},
+				"up": {"uv": [1, 10, 5, 14], "texture": "#lantern"}
+			}
+		},
+		{
+			"from": [6.875, 9, 7.625],
+			"to": [9.125, 11, 8.375],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [6, 14, 3, 16], "texture": "#chain"},
+				"east": {"uv": [5, 14, 6, 16], "texture": "#chain"},
+				"south": {"uv": [3, 14, 6, 16], "texture": "#chain"},
+				"west": {"uv": [3, 14, 4, 16], "texture": "#chain"},
+				"up": {"uv": [3, 14, 6, 15], "texture": "#chain"}
+			}
+		},
+		{
+			"name": "B",
+			"from": [8.07322, 10, 8.5],
+			"to": [7.32322, 9, 7.75],
+			"rotation": {"x": 0, "y": 135, "z": 0, "origin": [7.82322, 6, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#chain"},
+				"east": {"uv": [6, 16, 5, 15], "texture": "#chain"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#chain"},
+				"west": {"uv": [4, 16, 3, 15], "texture": "#chain"},
+				"up": {"uv": [0, 0, 0, 0], "texture": "#chain"}
+			}
+		}
+	],
+	"groups": [
+		0,
+		1,
+		{
+			"name": "chain",
+			"origin": [8, 4, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [2, 3]
+		}
+	]
+}
