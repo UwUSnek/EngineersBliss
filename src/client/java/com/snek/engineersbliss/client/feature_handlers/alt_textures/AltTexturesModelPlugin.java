@@ -12,6 +12,7 @@ import java.util.concurrent.Executor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.primitives.Chars;
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.BellBlockPartProvider;
@@ -176,17 +177,16 @@ import net.minecraft.world.level.block.state.BlockState;
  * This plugin implements dynamic models for specific blocks.
  * It registers custom models and textures during startup and fetches the right ones based on config settings when resolving the block state's model.
  */
-public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<AltTexturesModelPlugin.ModelEntry>> {
-    private static final List<String>   PART_SUFFIXES_HORIZONTAL  = List.of("n", "e", "s", "w");
-    private static final List<Quadrant> PART_QUADRANTS_HORIZONTAL = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
-    private static final List<String>   PART_SUFFIXES_VERTICAL    = List.of("u", "d");
-    private static final List<Quadrant> PART_QUADRANTS_VERTICAL   = List.of(Quadrant.R270, Quadrant.R90);
-    private static final List<Quadrant> PART_XROT_AXIS            = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R90);
-    private static final List<Quadrant> PART_YROT_AXIS            = List.of(Quadrant.R0, Quadrant.R0, Quadrant.R90);
-    private static final List<String>   PART_SUFFIXES_AXIS        = List.of("y", "z", "x");
+public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<Identifier, String>> {
+    private static final List<Character> PART_SUFFIXES_HORIZONTAL  = List.of('n', 'e', 's', 'w');
+    private static final List<Quadrant>  PART_QUADRANTS_HORIZONTAL = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
+    private static final List<Character> PART_SUFFIXES_VERTICAL    = List.of('u', 'd');
+    private static final List<Quadrant>  PART_QUADRANTS_VERTICAL   = List.of(Quadrant.R270, Quadrant.R90);
+    private static final List<Quadrant>  PART_XROT_AXIS            = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R90);
+    private static final List<Quadrant>  PART_YROT_AXIS            = List.of(Quadrant.R0, Quadrant.R0, Quadrant.R90);
+    private static final List<Character> PART_SUFFIXES_AXIS        = List.of('y', 'z', 'x');
 
     // Templates/Variants info
-    public record ModelEntry(Identifier id, @Nullable String suffixes) {}
     private static final String GENERATE_MARKER_PREFIX = ".gen-";
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
 
@@ -202,55 +202,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
     private static final Map<Identifier, BlockStateModel> customModelParts = new ConcurrentHashMap<>();
 
 
-
-
     // A map containing all the assembled models for each possible BlockState. The runtime resolver fetches models from here
     // This doesn't include the vanilla model.
-    // private static final List<BlockState> statesToPopulate = new ArrayList<>();
     private static Map<BlockState, List<BlockStateModel>> customModelsForStates = new ConcurrentHashMap<>();
-
-
-    // /**
-    //  * A function that populates the map of complete models for known block states.
-    //  * This is called after all the blockstates have been analyzed and all custom model parts have been discovered, read, and assembled into complete models.
-    //  */
-    // private static void populateCustomModelsForStatesIfNeeded() {
-
-    //     // Create hash map container if this is the first call. Return otherwise
-    //     if(customModelsForStates != null) return;
-    //     customModelsForStates = new ConcurrentHashMap<>();
-    //     for(BlockState state : statesToPopulate) {
-
-    //         // Map the list of parts to the BlockState. This is what will be fetched during rendering
-    //         final __base_PartProvider partProvider = partProviders.get(state.getBlock());
-    //         final List<BlockStateModel> collectedParts = new ArrayList<>();
-    //         if(partProvider != null) {
-    //             final @Nullable List<String> partNames = partProvider.calcPartNames(state);
-    //             if(partNames != null) {
-    //                 for(final String partName : partNames) {
-    //                     final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
-    //                     final BlockStateModel custom = customModelParts.get(partId);
-    //                     //TODO use a local map instead of this thing, if this can be moved out of the model loop
-    //                     if(custom != null) {
-    //                         collectedParts.add(custom);
-    //                     }
-    //                     else {
-    //                         EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
-    //                         break;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         else {
-    //             EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(state.getBlock()));
-    //         }
-    //         customModelsForStates.put(state, collectedParts);
-    //     }
-    // }
-
-
-
-
 
 
 
@@ -410,15 +364,38 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
+    private static List<String> trimVariationSuffixes(final List<String> names) {
+        final List<String> r = new ArrayList<>();
+        for(final String name : names) {
+            if(name.length() >= 2) {
+                final char y = name.charAt(name.length() - 2);
+                final char z = name.charAt(name.length() - 1);
+                if(
+                    y == '_' && (
+                        PART_SUFFIXES_HORIZONTAL.contains(z) ||
+                        PART_SUFFIXES_VERTICAL.contains(z) ||
+                        PART_SUFFIXES_AXIS.contains(z)
+                    )
+                ) {
+                    r.add(name.substring(0, name.length() - 2));
+                }
+                continue;
+            }
+            r.add(name);
+        }
+        return r;
+    }
+
+
 
 
 
 
     //! Called by the prepatable model plugin system once the plugin is registered.
     //! Registed from the client initializer.
-    public static CompletableFuture<List<ModelEntry>> discoverModels(final PreparableReloadListener.SharedState sharedState, final Executor executor) {
+    public static CompletableFuture<Map<Identifier, String>> discoverModels(final PreparableReloadListener.SharedState sharedState, final Executor executor) {
         return CompletableFuture.supplyAsync(() -> {
-            final List<ModelEntry> r = new ArrayList<>();
+            final Map<Identifier, String> r = new HashMap<>();
             final String root = "models/block";
             final @NotNull ResourceManager resourceManager = sharedState.resourceManager();
 
@@ -437,7 +414,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                 }
                 else {
                     final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
-                    r.add(new ModelEntry(finalId, suffixes));
+                    r.put(finalId, suffixes);
                     EngineerSBliss.LOGGER.debug("Loaded dynamic custom model {} (variants: {})", finalId, suffixes);
                 }
             });
@@ -467,7 +444,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
     @Override //! Called automatically. No need to manually call from the client initializer
-    public void initialize(final List<ModelEntry> modelEntries, final Context initContext) {
+    public void initialize(final Map<Identifier, String> requestedModelVariants, final Context initContext) {
 
 
         // Register the custom models during startup
@@ -479,11 +456,18 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
             return new BlockStateModel.UnbakedRoot() {
-                @Override //TODO maybe move this out of unbaked root? idk how this even works
+                @Override
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
+                    final __base_PartProvider partProvider = partProviders.get(block);
                     model.resolveDependencies(resolver);
-                    for(final ModelEntry modelEntry : modelEntries) {
-                        resolver.markDependency(modelEntry.id());
+                    if(partProvider != null) {
+                        final List<Identifier> ids = __base_PartProvider.calcPartIdsFromNames(trimVariationSuffixes(partProvider.calcPartNames(state)));
+                        for(final Identifier id : ids) {
+                            resolver.markDependency(id);
+                        }
+                    }
+                    else {
+                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(block));
                     }
                 }
 
@@ -507,7 +491,6 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
         // This step yoinks the loaded custom model and stores a local reference to it so it can be used when needed
-        // It also builds the BlockState -> List<ModelPart> map for O(1) lookup
 
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
             final @NotNull BlockState state = beforeBakeContext.state();
@@ -515,44 +498,47 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             if(!AltTextureFeature.hasFeature(block)) return model;
 
 
-            // For each model ID
-            for(final ModelEntry entry : modelEntries) {//TODO maybe move this out of modifyBlockModelBeforeBake? idk how this even works
-                final Identifier modelId  = entry.id();
-                final String     suffixes = entry.suffixes();
+            // For each model ID of this blockstate
+            final __base_PartProvider partProvider = partProviders.get(block);
+            if(partProvider != null) {
+                final List<Identifier> partIds = __base_PartProvider.calcPartIdsFromNames(trimVariationSuffixes(partProvider.calcPartNames(state)));
+                for(final Identifier partId : partIds) {
+                    final String variantSuffixes = requestedModelVariants.get(partId);
 
-                // Bake one model per horizontal direction
-                for(int i = 0; i < 4; ++i) {
-                    final String suffix = PART_SUFFIXES_HORIZONTAL.get(i);
-                    if(suffixes == null || !suffixes.contains(suffix)) continue;
-                    final BlockStateModelPart part = new Variant(modelId)
-                        .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
-                        .bake(beforeBakeContext.baker());
-                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
-                    customModelParts.put(rotatedModelId, new SingleVariant(part));
-                }
+                    // Bake one model per horizontal direction
+                    for(int i = 0; i < 4; ++i) {
+                        final String suffix = String.valueOf(PART_SUFFIXES_HORIZONTAL.get(i));
+                        if(variantSuffixes == null || !variantSuffixes.contains(suffix)) continue;
+                        final BlockStateModelPart part = new Variant(partId)
+                            .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
+                            .bake(beforeBakeContext.baker());
+                        final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, partId.getPath() + "_" + suffix);
+                        customModelParts.put(rotatedModelId, new SingleVariant(part));
+                    }
 
-                // Bake up and down variants
-                for(int i = 0; i < 2; ++i) {
-                    final String suffix = PART_SUFFIXES_VERTICAL.get(i);
-                    if(suffixes == null || !suffixes.contains(suffix)) continue;
-                    final BlockStateModelPart part = new Variant(modelId)
-                        .withYRot(Quadrant.R180)
-                        .withXRot(PART_QUADRANTS_VERTICAL.get(i))
-                        .bake(beforeBakeContext.baker());
-                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
-                    customModelParts.put(rotatedModelId, new SingleVariant(part));
-                }
+                    // Bake up and down variants
+                    for(int i = 0; i < 2; ++i) {
+                        final String suffix = String.valueOf(PART_SUFFIXES_VERTICAL.get(i));
+                        if(variantSuffixes == null || !variantSuffixes.contains(suffix)) continue;
+                        final BlockStateModelPart part = new Variant(partId)
+                            .withYRot(Quadrant.R180)
+                            .withXRot(PART_QUADRANTS_VERTICAL.get(i))
+                            .bake(beforeBakeContext.baker());
+                        final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, partId.getPath() + "_" + suffix);
+                        customModelParts.put(rotatedModelId, new SingleVariant(part));
+                    }
 
-                // Bake axis-aligned variants
-                for(int i = 0; i < 3; ++i) {
-                    final String suffix = PART_SUFFIXES_AXIS.get(i);
-                    if(suffixes == null || !suffixes.contains(suffix)) continue;
-                    final BlockStateModelPart part = new Variant(modelId)
-                        .withXRot(PART_XROT_AXIS.get(i))
-                        .withYRot(PART_YROT_AXIS.get(i))
-                        .bake(beforeBakeContext.baker());
-                    final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + suffix);
-                    customModelParts.put(axisModelId, new SingleVariant(part));
+                    // Bake axis-aligned variants
+                    for(int i = 0; i < 3; ++i) {
+                        final String suffix = String.valueOf(PART_SUFFIXES_AXIS.get(i));
+                        if(variantSuffixes == null || !variantSuffixes.contains(suffix)) continue;
+                        final BlockStateModelPart part = new Variant(partId)
+                            .withXRot(PART_XROT_AXIS.get(i))
+                            .withYRot(PART_YROT_AXIS.get(i))
+                            .bake(beforeBakeContext.baker());
+                        final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, partId.getPath() + "_" + suffix);
+                        customModelParts.put(axisModelId, new SingleVariant(part));
+                    }
                 }
             }
 
@@ -572,6 +558,8 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // The custom BlockStateModel applies a different model based on AltTexturesHandler's values
         // Particles and material flags are always vanilla, while the model parts are replaced by the custom model when needed
 
+        // This also builds the BlockState -> List<ModelPart> map for O(1) lookup on first call
+
         initContext.modifyBlockModelAfterBake().register((vanilla, afterBakeContext) -> {
             final @NotNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
@@ -590,18 +578,15 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                     final __base_PartProvider partProvider = partProviders.get(block);
                     if(partProvider != null) {
                         final List<BlockStateModel> cachedParts = customModelsForStates.computeIfAbsent(state, s -> {
-                        final List<BlockStateModel> collected = new ArrayList<>();
-                            final @Nullable List<String> partNames = partProvider.calcPartNames(s);
-                            if(partNames != null) {
-                                for(final String partName : partNames) {
-                                    final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
-                                    final BlockStateModel custom = customModelParts.get(partId);
-                                    if(custom != null) {
-                                        collected.add(custom);
-                                    }
-                                    else {
-                                        EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
-                                    }
+                            final List<BlockStateModel> collected = new ArrayList<>();
+
+                            for(final Identifier partId : partProvider.calcPartIds(s)) {
+                                final BlockStateModel custom = customModelParts.get(partId);
+                                if(custom != null) {
+                                    collected.add(custom);
+                                }
+                                else {
+                                    EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
                                 }
                             }
                             return collected;
@@ -617,9 +602,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
                         }
                         keepVanilla = partProvider.shouldKeepVanilla(state);
                     }
-                    else {
-                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(block));
-                    }
+                    //! No need to print the missing part provider error here. Previous steps already did that
 
 
                     // Add vanilla part if needed

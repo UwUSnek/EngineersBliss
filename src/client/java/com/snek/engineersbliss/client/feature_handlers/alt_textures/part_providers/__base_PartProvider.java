@@ -1,9 +1,13 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.snek.engineersbliss.EngineerSBliss;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -15,6 +19,19 @@ public abstract class __base_PartProvider {
     public abstract List<String> calcPartNames(BlockState state);
     public abstract boolean shouldUseCustom(BlockState state);
     public abstract boolean shouldKeepVanilla(BlockState state);
+
+
+
+    public final List<Identifier> calcPartIds(final BlockState state) {
+        return calcPartIdsFromNames(calcPartNames(state));
+    }
+    public static final List<Identifier> calcPartIdsFromNames(List<String> partNames) {
+        final List<Identifier> r = new ArrayList<>();
+        for(final String name : partNames) {
+            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
+        }
+        return r;
+    }
 
 
 

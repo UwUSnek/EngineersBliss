@@ -224,3 +224,6 @@
 
 - add a generic "hide all entities" toggle in rendering screen
 - add a generic "hide all particles" toggle in rendering screen
+
+
+- add static cushion models feature for the new versions. they are probably block entities, judging from how they behave
