@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_CeilingHangingSignPartProvider extends __base_SignPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
         final String materialName = getSignMaterialName();
-        final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION));
+        final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION), suffix);
 
         final String attachmentName =
             (state.getValue(CeilingHangingSignBlock.ATTACHED).booleanValue() ? "narrow" : "wide")

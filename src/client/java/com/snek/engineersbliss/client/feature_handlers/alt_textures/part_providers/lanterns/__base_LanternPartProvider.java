@@ -18,9 +18,9 @@ public abstract class __base_LanternPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
         final String lanternTypeName = state.getValue(LanternBlock.HANGING).booleanValue() ? "_hanging" : "";
-        return List.of(String.format("lanterns/3d/%s%s_n", getLanternName(), lanternTypeName));
+        return List.of(String.format("lanterns/3d/%s%s%s", getLanternName(), lanternTypeName, getSingleVariantSuffix(suffix)));
     }
 
 

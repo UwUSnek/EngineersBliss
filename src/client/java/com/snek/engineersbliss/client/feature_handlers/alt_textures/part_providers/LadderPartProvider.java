@@ -22,8 +22,8 @@ public class LadderPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
-        final String dirName = getVariantSuffixFromDirection(state.getValue(LadderBlock.FACING));
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(LadderBlock.FACING), suffix);
         return List.of(String.format("ladder/3d/block%s", dirName));
     }
 

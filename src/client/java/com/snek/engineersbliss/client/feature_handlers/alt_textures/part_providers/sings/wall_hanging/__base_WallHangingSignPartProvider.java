@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_WallHangingSignPartProvider extends __base_SignPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
         final String materialName = getSignMaterialName();
-        final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING));
+        final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING), suffix);
         return List.of(
             String.format("%s/hanging_board/%s_0%s",         ROOT, materialName, dirName),
             String.format("%s/hanging_wall_attachment/%s%s", ROOT, materialName, dirName)

@@ -25,14 +25,14 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
 
         //! Sloped shape names have the format "ascending_<direction>" so this uses that directly by removing "ascending_" as that matches the json file names perfectly.
         //! Non-sloped shape names already match json models so no changes are needed there. This includes curved normal rails.
         //! All shape names are already lowercase.
         final @NotNull RailShape shape = state.getValue(((BaseRailBlock)state.getBlock()).getShapeProperty());
         final String shapeName = shape.isSlope() ? "raised" : (CURVED_SHAPES.contains(shape) ? "corner" : "flat");
-        final String directionName = switch(shape) {
+        final String directionName = !suffix ? "" : switch(shape) {
             case ASCENDING_NORTH, NORTH_SOUTH, NORTH_EAST -> "_n";
             case ASCENDING_EAST,  EAST_WEST,   SOUTH_EAST -> "_e";
             case ASCENDING_SOUTH,              SOUTH_WEST -> "_s";

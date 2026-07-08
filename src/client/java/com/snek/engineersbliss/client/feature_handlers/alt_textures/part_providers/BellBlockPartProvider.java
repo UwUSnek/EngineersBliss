@@ -23,8 +23,8 @@ public class BellBlockPartProvider extends __base_PartProvider {
 
     //! Only the bell part needs to be made static. Supports are already static.
     @Override
-    public List<String> calcPartNames(final BlockState state) {
-        final String dirName = getVariantSuffixFromDirection(state.getValue(BellBlock.FACING));
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(BellBlock.FACING), suffix);
         return List.of(String.format("bell/vanilla/bell%s", dirName));
     }
 

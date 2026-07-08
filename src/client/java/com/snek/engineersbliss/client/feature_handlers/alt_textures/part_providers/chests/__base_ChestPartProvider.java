@@ -19,8 +19,8 @@ public abstract class __base_ChestPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
-        final String dirName = getVariantSuffixFromDirection(state.getValue(ChestBlock.FACING));
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(ChestBlock.FACING), suffix);
         final String sideName = switch(state.getValue(ChestBlock.TYPE)) {
             case ChestType.SINGLE -> "single";
             case ChestType.LEFT   -> "left";

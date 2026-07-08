@@ -18,8 +18,8 @@ public abstract class __base_CopperGolemStatuePartProvider extends __base_PartPr
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
-        final String dirName = getVariantSuffixFromDirection(state.getValue(CopperGolemStatueBlock.FACING));
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(CopperGolemStatueBlock.FACING), suffix);
         final String poseName = state.getValue(CopperGolemStatueBlock.POSE).getSerializedName();
         return List.of(String.format("copper_golem_statues/vanilla/%s/%s%s", poseName, getGolemName(), dirName));
     }

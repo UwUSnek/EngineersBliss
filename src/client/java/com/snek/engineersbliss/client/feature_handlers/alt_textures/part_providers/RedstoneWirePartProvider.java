@@ -27,7 +27,7 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
         final List<String> r = new ArrayList<>();
         final boolean is3d = AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D);
         final String wireModelDir = String.format("redstone_wire/minimal/%sd", is3d ? "3" : "2");
@@ -40,24 +40,24 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
 
         // Central dot
         if(n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE) {
-            r.add(String.format("%s/large_dot_n", wireModelDir));
+            r.add(String.format("%s/large_dot%s", wireModelDir, getSingleVariantSuffix(suffix)));
         }
         else if(
             n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
             e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
             s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
             w != RedstoneSide.NONE && n != RedstoneSide.NONE
-        ) r.add(String.format("%s/dot_n", wireModelDir));
+        ) r.add(String.format("%s/dot%s", wireModelDir, getSingleVariantSuffix(suffix)));
 
         // Side connections
-        if(n == RedstoneSide.SIDE) r.add(String.format("%s/down_n", wireModelDir));
-        if(e == RedstoneSide.SIDE) r.add(String.format("%s/down_e", wireModelDir));
-        if(s == RedstoneSide.SIDE) r.add(String.format("%s/down_s", wireModelDir));
-        if(w == RedstoneSide.SIDE) r.add(String.format("%s/down_w", wireModelDir));
-        if(n == RedstoneSide.UP)   r.add(String.format("%s/up_n", wireModelDir));
-        if(e == RedstoneSide.UP)   r.add(String.format("%s/up_e", wireModelDir));
-        if(s == RedstoneSide.UP)   r.add(String.format("%s/up_s", wireModelDir));
-        if(w == RedstoneSide.UP)   r.add(String.format("%s/up_w", wireModelDir));
+        if(n == RedstoneSide.SIDE) r.add(String.format("%s/down%s", wireModelDir, suffix ? "_n" : ""));
+        if(e == RedstoneSide.SIDE) r.add(String.format("%s/down%s", wireModelDir, suffix ? "_e" : ""));
+        if(s == RedstoneSide.SIDE) r.add(String.format("%s/down%s", wireModelDir, suffix ? "_s" : ""));
+        if(w == RedstoneSide.SIDE) r.add(String.format("%s/down%s", wireModelDir, suffix ? "_w" : ""));
+        if(n == RedstoneSide.UP)   r.add(String.format("%s/up%s",   wireModelDir, suffix ? "_n" : ""));
+        if(e == RedstoneSide.UP)   r.add(String.format("%s/up%s",   wireModelDir, suffix ? "_e" : ""));
+        if(s == RedstoneSide.UP)   r.add(String.format("%s/up%s",   wireModelDir, suffix ? "_s" : ""));
+        if(w == RedstoneSide.UP)   r.add(String.format("%s/up%s",   wireModelDir, suffix ? "_w" : ""));
 
         return r;
     }

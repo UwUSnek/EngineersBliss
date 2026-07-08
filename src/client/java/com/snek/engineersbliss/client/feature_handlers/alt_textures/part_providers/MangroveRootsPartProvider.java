@@ -22,8 +22,8 @@ public class MangroveRootsPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
-        return List.of("mangrove_roots/unobstructive/block_n");
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+        return List.of("mangrove_roots/unobstructive/block" + getSingleVariantSuffix(suffix));
     }
 
 

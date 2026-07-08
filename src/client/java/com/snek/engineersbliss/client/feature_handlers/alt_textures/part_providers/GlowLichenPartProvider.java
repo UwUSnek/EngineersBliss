@@ -24,15 +24,15 @@ public class GlowLichenPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
-        final List r = new ArrayList<>();
-        final String root = "glow_lichen/3d/block_";
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.NORTH)).booleanValue()) r.add(root + "n");
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.EAST )).booleanValue()) r.add(root + "e");
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.SOUTH)).booleanValue()) r.add(root + "s");
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.WEST )).booleanValue()) r.add(root + "w");
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.UP   )).booleanValue()) r.add(root + "u");
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.DOWN )).booleanValue()) r.add(root + "d");
+    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+        final List<String> r = new ArrayList<>();
+        final String root = "glow_lichen/3d/block";
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.NORTH)).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_n" : ""));
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.EAST )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_e" : ""));
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.SOUTH)).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_s" : ""));
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.WEST )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_w" : ""));
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.UP   )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_u" : ""));
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.DOWN )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_d" : ""));
         return r;
     }
 
