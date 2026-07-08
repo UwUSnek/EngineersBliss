@@ -226,8 +226,4 @@
 - add a generic "hide all particles" toggle in rendering screen
 
 
-- add static cushion models feature for the new versions. they are probably block entities, judging from how they behave
-
-
-
 - static lectern models? or optimized, idk

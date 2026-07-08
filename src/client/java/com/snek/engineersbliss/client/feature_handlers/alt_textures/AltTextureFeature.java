@@ -224,7 +224,7 @@ public enum AltTextureFeature {
             .cat(new UiTxt("This also affects the chains in Lanterns, Copper Lanterns, and Hanging Signs.\n").yellow())
             .cat(new UiTxt("3D Hanging Sign chains require [Static Sign Models]").yellow())
         ,
-        Stream.of(Stream.of(Blocks.IRON_CHAIN), Blocks.COPPER_CHAIN.asList().stream(), Groups.ALL_LANTERNS.stream(), Groups.ALL_SIGNS.stream()).flatMap(s -> s).toList()
+        Stream.of(Stream.of(Blocks.IRON_CHAIN), Blocks.COPPER_CHAIN.asList().stream(), Groups.ALL_LANTERNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
     ),
     BARS_3D(true, //TODO IMPLEMENT
         () -> new UiTxt("3D Bars"),

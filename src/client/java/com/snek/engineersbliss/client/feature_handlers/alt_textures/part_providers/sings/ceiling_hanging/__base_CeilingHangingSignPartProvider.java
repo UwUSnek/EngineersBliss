@@ -2,6 +2,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.__base_SignPartProvider;
 
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
@@ -20,13 +22,14 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
         final String materialName = getSignMaterialName();
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION), suffix);
 
+        final String chainType = AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? "3d" : "vanilla";
         final String attachmentName =
             (state.getValue(CeilingHangingSignBlock.ATTACHED).booleanValue() ? "narrow" : "wide")
             //! Rotation is always 0 when not "ATTACHED" as wide supports only snap to cardinal directions
         ;
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s%s",                    materialName, rotName),
-            String.format("hanging_signs/vanilla/ceiling_attachment_%s/all%s", attachmentName, rotName)
+            String.format("hanging_signs/vanilla/board/%s%s",                          materialName, rotName),
+            String.format("hanging_signs/%s/ceiling_attachment_%s/all%s", chainType, attachmentName, rotName)
         );
     }
 }
