@@ -227,3 +227,12 @@
 
 
 - static lectern models? or optimized, idk
+
+
+- add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
+
+
+
+- add scrolling items in inventories with the scroll wheel
+- add moving all the items into and out of your inventory with ctrl+shift+click
+  - this goes in the keybinds screen too
