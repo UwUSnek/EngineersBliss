@@ -25,8 +25,8 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
             //! Rotation is always 0 when not "ATTACHED" as wide supports only snap to cardinal directions
         ;
         return List.of(
-            String.format("%s/hanging_board/%s%s",                  ROOT,   materialName, rotName),
-            String.format("%s/hanging_ceiling_attachment_%s/all%s", ROOT, attachmentName, rotName)
+            String.format("hanging_signs/vanilla/board/%s%s",                    materialName, rotName),
+            String.format("hanging_signs/vanilla/ceiling_attachment_%s/all%s", attachmentName, rotName)
         );
     }
 }

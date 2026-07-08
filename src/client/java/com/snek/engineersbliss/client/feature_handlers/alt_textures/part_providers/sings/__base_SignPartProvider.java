@@ -10,9 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 public abstract class __base_SignPartProvider extends __base_PartProvider {
-    protected static String ROOT = "signs/vanilla";
-
-
     protected abstract String getSignMaterialName();
 
 

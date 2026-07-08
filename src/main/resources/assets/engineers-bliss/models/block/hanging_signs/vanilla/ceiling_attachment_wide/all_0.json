@@ -1,0 +1,46 @@
+{
+	"format_version": "1.21.11",
+	"credit": "UwU_Snek",
+	"textures": {
+		"2": "engineers-bliss:block/hanging_signs/vanilla/ceiling_attachment_wide",
+		"particle": "engineers-bliss:block/hanging_signs/vanilla/ceiling_attachment_wide"
+	},
+	"elements": [
+		{
+			"from": [1.5, 10, 8],
+			"to": [4.5, 16, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [3, 13, 8]},
+			"faces": {
+				"north": {"uv": [0, 3, 0.75, 6], "texture": "#2"},
+				"south": {"uv": [0.75, 3, 0, 6], "texture": "#2"}
+			}
+		},
+		{
+			"from": [1.5, 10, 8],
+			"to": [4.5, 16, 8],
+			"rotation": {"x": 180, "y": 45, "z": 180, "origin": [3, 13, 8]},
+			"faces": {
+				"north": {"uv": [1.5, 3, 2.25, 6], "texture": "#2"},
+				"south": {"uv": [2.25, 3, 1.5, 6], "texture": "#2"}
+			}
+		},
+		{
+			"from": [11.5, 10, 8],
+			"to": [14.5, 16, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [13, 13, 8]},
+			"faces": {
+				"north": {"uv": [0, 3, 0.75, 6], "texture": "#2"},
+				"south": {"uv": [0.75, 3, 0, 6], "texture": "#2"}
+			}
+		},
+		{
+			"from": [11.5, 10, 8],
+			"to": [14.5, 16, 8],
+			"rotation": {"x": 180, "y": 45, "z": 180, "origin": [13, 13, 8]},
+			"faces": {
+				"north": {"uv": [1.5, 3, 2.25, 6], "texture": "#2"},
+				"south": {"uv": [2.25, 3, 1.5, 6], "texture": "#2"}
+			}
+		}
+	]
+}

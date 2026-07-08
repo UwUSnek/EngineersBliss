@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/hanging_signs/vanilla/templates/board_2",
+  "textures": {
+    "texture": "engineers-bliss:block/hanging_signs/vanilla/jungle"
+  }
+}

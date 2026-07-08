@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/hanging_signs/vanilla/templates/wall_attachment",
+  "textures": {
+    "texture": "engineers-bliss:block/hanging_signs/vanilla/dark_oak"
+  }
+}

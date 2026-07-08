@@ -20,8 +20,8 @@ public abstract class __base_WallHangingSignPartProvider extends __base_SignPart
         final String materialName = getSignMaterialName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING), suffix);
         return List.of(
-            String.format("%s/hanging_board/%s_0%s",         ROOT, materialName, dirName),
-            String.format("%s/hanging_wall_attachment/%s%s", ROOT, materialName, dirName)
+            String.format("hanging_signs/vanilla/board/%s_0%s",         materialName, dirName),
+            String.format("hanging_signs/vanilla/wall_attachment/%s%s", materialName, dirName)
         );
     }
 }

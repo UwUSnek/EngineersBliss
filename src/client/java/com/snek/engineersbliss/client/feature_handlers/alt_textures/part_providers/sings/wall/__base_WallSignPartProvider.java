@@ -19,6 +19,6 @@ public abstract class __base_WallSignPartProvider extends __base_SignPartProvide
     public List<String> calcPartNames(final BlockState state, final boolean suffix) {
         final String materialName = getSignMaterialName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallSignBlock.FACING), suffix);
-        return List.of(String.format("%s/wall/%s%s", ROOT, materialName, dirName));
+        return List.of(String.format("signs/vanilla/wall/%s%s", materialName, dirName));
     }
 }

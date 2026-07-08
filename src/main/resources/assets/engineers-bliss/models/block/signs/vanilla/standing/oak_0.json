@@ -1,6 +1,6 @@
 {
   "parent": "engineers-bliss:block/signs/vanilla/templates/standing_0",
   "textures": {
-    "atlas": "engineers-bliss:block/signs/vanilla/standing/oak"
+    "texture": "engineers-bliss:block/signs/vanilla/oak"
   }
 }
