@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails;
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public class DetectorRailPartProvider extends __base_RailPartProvider {
+public class DetectorRailPartProvider extends __base_PowerableRailPartProvider {
 
     @Override
     public Block getBlock() {

@@ -2,9 +2,9 @@
 	"format_version": "1.21.11",
 	"credit": "UwU_Snek",
 	"textures": {
-		"2": "engineers-bliss:block/hanging_signs/vanilla/acacia",
+		"2": "#texture",
 		"3": "engineers-bliss:block/chains/3d/iron",
-		"particle": "engineers-bliss:block/hanging_signs/vanilla/acacia"
+		"particle": "#texture"
 	},
 	"elements": [
 		{

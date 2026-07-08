@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests;
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public class WaxedExposedCopperChestPartProvider extends __base_ChestPartProvider {
+public class WaxedExposedCopperChestPartProvider extends __base_DoublableChestPartProvider {
 
     @Override
     public Block getBlock() {

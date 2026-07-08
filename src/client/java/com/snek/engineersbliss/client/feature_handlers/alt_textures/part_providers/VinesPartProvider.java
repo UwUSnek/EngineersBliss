@@ -22,18 +22,25 @@ public class VinesPartProvider extends __base_PartProvider {
     }
 
 
+
+
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+    public List<String> calcPartNames(final BlockState state) {
         final List<String> r = new ArrayList<>();
         final String root = "vines/3d/block";
-        if(state.getValue(VineBlock.NORTH).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_n" : ""));
-        if(state.getValue(VineBlock.EAST ).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_e" : ""));
-        if(state.getValue(VineBlock.SOUTH).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_s" : ""));
-        if(state.getValue(VineBlock.WEST ).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_w" : ""));
-        if(state.getValue(VineBlock.UP   ).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_u" : ""));
+        if(state.getValue(VineBlock.NORTH).booleanValue()) r.add(root + "_n");
+        if(state.getValue(VineBlock.EAST ).booleanValue()) r.add(root + "_e");
+        if(state.getValue(VineBlock.SOUTH).booleanValue()) r.add(root + "_s");
+        if(state.getValue(VineBlock.WEST ).booleanValue()) r.add(root + "_w");
+        if(state.getValue(VineBlock.UP   ).booleanValue()) r.add(root + "_u");
         //! Vines can't have faces on top sufaces of blocks. No Down part needed.
         return r;
     }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of("vines/3d/block");
+    }
+
 
 
     @Override

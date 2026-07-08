@@ -18,13 +18,22 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_WallHangingSignPartProvider extends __base_SignPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+    public List<String> calcPartNames(final BlockState state) {
         final String materialName = getSignMaterialName();
-        final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING), suffix);
+        final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING));
         final String chainType = AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? "3d" : "vanilla";
         return List.of(
             String.format("hanging_signs/vanilla/board/%s_0%s",               materialName, dirName),
             String.format("hanging_signs/%s/wall_attachment/%s%s", chainType, materialName, dirName)
+        );
+    }
+    @Override
+    public List<String> calcDependencyNames() {
+        final String materialName = getSignMaterialName();
+        return List.of(
+            String.format("hanging_signs/vanilla/board/%s_0",         materialName),
+            String.format("hanging_signs/vanilla/wall_attachment/%s", materialName),
+            String.format("hanging_signs/3d/wall_attachment/%s",      materialName)
         );
     }
 }

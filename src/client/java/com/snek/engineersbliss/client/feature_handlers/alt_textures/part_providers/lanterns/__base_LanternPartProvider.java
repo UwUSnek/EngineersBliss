@@ -17,11 +17,24 @@ public abstract class __base_LanternPartProvider extends __base_PartProvider {
     protected abstract String getLanternName();
 
 
+
+
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+    public List<String> calcPartNames(final BlockState state) {
+        final String lanternName = getLanternName();
         final String lanternTypeName = state.getValue(LanternBlock.HANGING).booleanValue() ? "_hanging" : "";
-        return List.of(String.format("lanterns/3d/%s%s%s", getLanternName(), lanternTypeName, getSingleVariantSuffix(suffix)));
+        return List.of(String.format("lanterns/3d/%s%s%s", lanternName, lanternTypeName, getSingleVariantSuffix()));
     }
+    @Override
+    public List<String> calcDependencyNames() {
+        final String lanternName = getLanternName();
+        return List.of(
+            String.format("lanterns/3d/%s",         lanternName),
+            String.format("lanterns/3d/%s_hanging", lanternName)
+        );
+    }
+
+
 
 
     @Override

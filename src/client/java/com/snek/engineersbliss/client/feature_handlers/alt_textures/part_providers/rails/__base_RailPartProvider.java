@@ -25,14 +25,15 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+    public List<String> calcPartNames(final BlockState state) {
 
         //! Sloped shape names have the format "ascending_<direction>" so this uses that directly by removing "ascending_" as that matches the json file names perfectly.
         //! Non-sloped shape names already match json models so no changes are needed there. This includes curved normal rails.
         //! All shape names are already lowercase.
+        final String railName = getRailTypeName();
         final @NotNull RailShape shape = state.getValue(((BaseRailBlock)state.getBlock()).getShapeProperty());
         final String shapeName = shape.isSlope() ? "raised" : (CURVED_SHAPES.contains(shape) ? "corner" : "flat");
-        final String directionName = !suffix ? "" : switch(shape) {
+        final String directionName = switch(shape) {
             case ASCENDING_NORTH, NORTH_SOUTH, NORTH_EAST -> "_n";
             case ASCENDING_EAST,  EAST_WEST,   SOUTH_EAST -> "_e";
             case ASCENDING_SOUTH,              SOUTH_WEST -> "_s";
@@ -44,8 +45,9 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
         ;
 
         final boolean is3D = AltTexturesHandler.getFeature(AltTextureFeature.RAILS_3D);
-        return List.of(String.format("rails/consistent_sloped/%sd/%s/%s%s%s", is3D ? "3" : "2", getRailTypeName(), shapeName, poweredStateName, directionName));
+        return List.of(String.format("rails/consistent_sloped/%sd/%s/%s%s%s", is3D ? "3" : "2", railName, shapeName, poweredStateName, directionName));
     }
+    //! Dependencies are defined by subclasses
 
 
 

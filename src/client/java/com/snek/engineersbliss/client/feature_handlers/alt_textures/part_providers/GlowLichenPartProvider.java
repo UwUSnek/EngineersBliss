@@ -23,17 +23,23 @@ public class GlowLichenPartProvider extends __base_PartProvider {
     }
 
 
+
+
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+    public List<String> calcPartNames(final BlockState state) {
         final List<String> r = new ArrayList<>();
         final String root = "glow_lichen/3d/block";
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.NORTH)).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_n" : ""));
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.EAST )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_e" : ""));
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.SOUTH)).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_s" : ""));
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.WEST )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_w" : ""));
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.UP   )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_u" : ""));
-        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.DOWN )).booleanValue()) r.add(String.format("%s%s", root, suffix ? "_d" : ""));
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.NORTH)).booleanValue()) r.add(root + "_n");
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.EAST )).booleanValue()) r.add(root + "_e");
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.SOUTH)).booleanValue()) r.add(root + "_s");
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.WEST )).booleanValue()) r.add(root + "_w");
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.UP   )).booleanValue()) r.add(root + "_u");
+        if(state.getValue(MultifaceBlock.getFaceProperty(Direction.DOWN )).booleanValue()) r.add(root + "_d");
         return r;
+    }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of("glow_lichen/3d/block");
     }
 
 

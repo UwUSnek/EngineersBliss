@@ -20,10 +20,18 @@ public class HoneyBlockPartProvider extends __base_PartProvider {
     }
 
 
+
+
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
-        return List.of("honey_block/transparent/block" + getSingleVariantSuffix(suffix));
+    public List<String> calcPartNames(final BlockState state) {
+        return List.of("honey_block/transparent/block" + getSingleVariantSuffix());
     }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of("honey_block/transparent/block");
+    }
+
+
 
 
     @Override

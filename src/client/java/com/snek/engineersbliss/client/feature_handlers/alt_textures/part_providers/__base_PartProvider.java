@@ -17,7 +17,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class __base_PartProvider {
     public abstract Block getBlock();
-    public abstract List<String> calcPartNames(BlockState state, final boolean suffix);
+    public abstract List<String> calcDependencyNames();
+    public abstract List<String> calcPartNames(BlockState state);
     public abstract boolean shouldUseCustom(BlockState state);
     public abstract boolean shouldKeepVanilla(BlockState state);
 
@@ -26,26 +27,35 @@ public abstract class __base_PartProvider {
     /**
      * Calculates all the IDs of the Json model parts required to display the provided BlockState.
      * @param state The BlockState.
-     * @param suffix Whether to add the rotation/orientation suffixes.
-     *      All models stored in memory have suffixes. Raw, concrete Json files don't.
-     *      Passing false will also make the function run a deduplication step after calculating the IDs.
      */
-    public final List<Identifier> calcPartIds(final BlockState state, final boolean suffix) {
+    public final List<Identifier> calcPartIds(final BlockState state) {
         final List<Identifier> r = new ArrayList<>();
-        for(final String name : calcPartNames(state, suffix)) {
+        for(final String name : calcPartNames(state)) {
             r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
         }
-        return suffix ? r : r.stream().distinct().toList();
+        return r;
+    }
+
+
+    /**
+     * Calculates all the IDs of the actual Json models this block's custom models depend on.
+     */
+    public final List<Identifier> calcDependencyIds() {
+        final List<Identifier> r = new ArrayList<>();
+        for(final String name : calcDependencyNames()) {
+            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
+        }
+        return r;
     }
 
 
 
 
-    protected static String getSingleVariantSuffix(final boolean suffix) {
-        return suffix ? "_n" : "";
+    @SuppressWarnings("java:S3400")
+    protected static String getSingleVariantSuffix() {
+        return "_n";
     }
-    protected static String getVariantSuffixFromDirection(final Direction direction, final boolean suffix) {
-        if(!suffix) return "";
+    protected static String getVariantSuffixFromDirection(final Direction direction) {
         return switch(direction) {
             case NORTH -> "_n";
             case EAST  -> "_e";
@@ -54,8 +64,7 @@ public abstract class __base_PartProvider {
             default    -> "";
         };
     }
-    protected static String getVariantSuffixFromAxis(final Axis axis, final boolean suffix) {
-        if(!suffix) return "";
+    protected static String getVariantSuffixFromAxis(final Axis axis) {
         return switch(axis) {
             case X  -> "_x";
             case Y  -> "_y";
@@ -63,7 +72,7 @@ public abstract class __base_PartProvider {
             default -> "";
         };
     }
-    protected String getVariantSuffixFromRotationIndex(final int rotation, final boolean suffix) {
+    protected String getVariantSuffixFromRotationIndex(final int rotation) {
         final int quadrantRotation = rotation % 4;
         final int quadrantIndex    = rotation / 4;
         final Direction direction = switch(quadrantIndex) {
@@ -72,6 +81,6 @@ public abstract class __base_PartProvider {
             case 2  -> Direction.SOUTH;
             default -> Direction.WEST; //! 3, no other value is possible here
         };
-        return "_" + quadrantRotation + getVariantSuffixFromDirection(direction, suffix);
+        return "_" + quadrantRotation + getVariantSuffixFromDirection(direction);
     }
 }

@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings;
 
+import java.util.List;
+
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;

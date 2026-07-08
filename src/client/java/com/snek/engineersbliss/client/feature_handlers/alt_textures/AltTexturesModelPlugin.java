@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import com.google.common.primitives.Chars;
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.BellBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DecoratedPotPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
@@ -25,14 +26,15 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.*;
@@ -113,7 +115,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new  DecoratedPotPartProvider(),
             new     BellBlockPartProvider(),
 
-            new          RailPartProvider(),
+            new    NormalRailPartProvider(),
             new   PoweredRailPartProvider(),
             new ActivatorRailPartProvider(),
             new  DetectorRailPartProvider(),
@@ -327,7 +329,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                     final __base_PartProvider partProvider = partProviders.get(block);
                     model.resolveDependencies(resolver);
                     if(partProvider != null) {
-                        for(final Identifier id : partProvider.calcPartIds(state, false)) {
+                        for(final Identifier id : partProvider.calcDependencyIds()) {
                             resolver.markDependency(id);
                         }
                     }
@@ -366,7 +368,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             // For each model ID of this blockstate
             final __base_PartProvider partProvider = partProviders.get(block);
             if(partProvider != null) {
-                for(final Identifier partId : partProvider.calcPartIds(state, false)) {
+                for(final Identifier partId : partProvider.calcDependencyIds()) {
                     final String variantSuffixes = requestedModelVariants.get(partId);
 
                     // Bake one model per horizontal direction
@@ -444,7 +446,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                         final List<BlockStateModel> cachedParts = customModelsForStates.computeIfAbsent(state, s -> {
                             final List<BlockStateModel> collected = new ArrayList<>();
 
-                            for(final Identifier partId : partProvider.calcPartIds(s, true)) {
+                            for(final Identifier partId : partProvider.calcPartIds(s)) {
                                 final BlockStateModel custom = customModelParts.get(partId);
                                 if(custom != null) {
                                     collected.add(custom);

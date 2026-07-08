@@ -18,9 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_CeilingHangingSignPartProvider extends __base_SignPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state, final boolean suffix) {
+    public List<String> calcPartNames(final BlockState state) {
         final String materialName = getSignMaterialName();
-        final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION), suffix);
+        final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION));
 
         final String chainType = AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? "3d" : "vanilla";
         final String attachmentName =
@@ -30,6 +30,26 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
         return List.of(
             String.format("hanging_signs/vanilla/board/%s%s",                          materialName, rotName),
             String.format("hanging_signs/%s/ceiling_attachment_%s/all%s", chainType, attachmentName, rotName)
+        );
+    }
+    @Override
+    public List<String> calcDependencyNames() {
+        final String materialName = getSignMaterialName();
+        return List.of(
+            String.format("hanging_signs/vanilla/board/%s_0", materialName),
+            String.format("hanging_signs/vanilla/board/%s_1", materialName),
+            String.format("hanging_signs/vanilla/board/%s_2", materialName),
+            String.format("hanging_signs/vanilla/board/%s_3", materialName),
+            "hanging_signs/vanilla/ceiling_attachment_narrow/all_0",
+            "hanging_signs/vanilla/ceiling_attachment_narrow/all_1",
+            "hanging_signs/vanilla/ceiling_attachment_narrow/all_2",
+            "hanging_signs/vanilla/ceiling_attachment_narrow/all_3",
+            "hanging_signs/vanilla/ceiling_attachment_wide/all_0",
+            "hanging_signs/3d/ceiling_attachment_narrow/all_0",
+            "hanging_signs/3d/ceiling_attachment_narrow/all_1",
+            "hanging_signs/3d/ceiling_attachment_narrow/all_2",
+            "hanging_signs/3d/ceiling_attachment_narrow/all_3",
+            "hanging_signs/3d/ceiling_attachment_wide/all_0"
         );
     }
 }
