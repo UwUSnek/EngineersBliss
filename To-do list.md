@@ -7,7 +7,7 @@
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
-  - Disable Redstone Wire particles
+  - ~~Disable Redstone Wire particles~~
   - ~~Disable Campfire particles~~
   - ~~Disable Fire particles~~
   - ~~Disable Lava particles~~
@@ -26,15 +26,16 @@
   - ~~Static Chest models~~
   - ~~Static Banner models~~
   - ~~static decorated pot models~~
-  - static bell models
-  - static copper golem statue models
+  - ~~static bell models~~
+  - ~~static copper golem statue models~~
+  - ~~static lectern models~~
   - ~~Optimized Shelf rendering logic~~
   - ~~Optimized Campfire rendering logic~~
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
   - ~~3D Ladders~~
-  - 3D Iron Chains & Copper Chains
+  - ~~3D Iron Chains & Copper Chains~~
   - 3D Iron Bars & Copper Bars
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
