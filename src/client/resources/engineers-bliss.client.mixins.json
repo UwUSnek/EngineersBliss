@@ -37,6 +37,7 @@
         "creative_tweaks.BubbleColumnsPushSuppressorMixin",
         "creative_tweaks.HoneyBlockFeaturesMixin",
         "creative_tweaks.JumpFactorFeaturesMixin",
+        "creative_tweaks.HandSwingAnimationSuppressorMixin",
         "creative_tweaks.client.ClientBlockPhasingMixin",
         "creative_tweaks.client.ClientBlockPhasingPoseFixMixin",
         "creative_tweaks.client.ClientBlockPhasingPacketFixMixin",
