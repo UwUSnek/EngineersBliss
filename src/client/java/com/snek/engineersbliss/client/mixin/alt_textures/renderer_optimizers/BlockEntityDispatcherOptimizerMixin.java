@@ -16,22 +16,23 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 
 
 
 /**
- * This mixin is not required, but it helps improve performance of static block entity models.
- * It cancels all the preparation steps done before block entity data is submitted and things are rendered.
- * This gains a few FPS. Sometimes.
- * ! This is only separate from BlockEntityDispatcherOptimizerMixin to improve code structure and readability.
+ * This mixin blocks all dynamic rendering logic from certain half-block-entities when not needed.
+ * This also skips the distance check and render state creation, significantly improving FPS.
+ * ! This is only separate from BlockEntityDispatcherSuppressorMixin to improve code structure and readability.
  */
 @Mixin(BlockEntityRenderDispatcher.class)
-public abstract class BlockEntityDispatcherSuppressorMixin {
+public abstract class BlockEntityDispatcherOptimizerMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
@@ -42,23 +43,11 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
         switch((Object)this) {
-            case SignBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)
+            case CampfireBlockEntity e when
+                AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_CAMPFIRES) && BlockEntityUtils.campfireHasItems(e)
                 -> cir.setReturnValue(null);
-            case LidBlockEntity e when //! LidBlockEntity covers all chest types
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)
-                -> cir.setReturnValue(null);
-            case BannerBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)
-                -> cir.setReturnValue(null);
-            case DecoratedPotBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS) && !BlockEntityUtils.decoratedPotHasSherds(e)
-                -> cir.setReturnValue(null);
-            case BellBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)
-                -> cir.setReturnValue(null);
-            case CopperGolemStatueBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)
+            case ShelfBlockEntity e when
+                AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_SHELVES) && BlockEntityUtils.shelfHasItems(e)
                 -> cir.setReturnValue(null);
             default -> {}
         }

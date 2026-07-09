@@ -1,9 +1,11 @@
 package com.snek.engineersbliss.client.utils;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.PotDecorations;
 import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -22,6 +24,17 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 public class BlockEntityUtils {
     private BlockEntityUtils() {}
 
+
+
+
+    /**
+     * Checks if the provided lectern block entity is holding a book.
+     * @param blockEntity The lectern block entity.
+     * @return True if the lectern contains a book, false otherwise.
+     */
+    public static boolean campfireHasItems(final LecternBlockEntity blockEntity) {
+        return blockEntity.getBlockState().getValue(LecternBlock.HAS_BOOK);
+    }
 
 
 
