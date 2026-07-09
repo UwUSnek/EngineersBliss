@@ -4,11 +4,12 @@ import java.util.List;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
-import com.snek.engineersbliss.client.screens.parts.SteppedSlider;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.screens.parts.UiSteppedSlider;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 
 
 
@@ -31,18 +32,21 @@ public class CreativeTweaksScreen extends __base_Screen {
 
 
         //TODO name header: Player properties
-        addRenderableWidget(new SteppedSlider<Float>(
+        addRenderableWidget(new UiSteppedSlider<Float>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH, BUTTON_HEIGHT,
             "Flying speed", List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0, CreativeTweaksHandler::onFlyingSpeedChange
         ));
-        addRenderableWidget(new SteppedSlider<Float>(
+        addRenderableWidget(new UiSteppedSlider<Float>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH, BUTTON_HEIGHT,
             "Reach distance", List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0, CreativeTweaksHandler::onReachDistanceChange
         ));
-        addRenderableWidget(new SteppedSlider<Integer>(
+        addRenderableWidget(new UiSteppedSlider<Integer>(
             BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH, BUTTON_HEIGHT,
-            "Interaction radius", List.of(1, 2, 3, 4, 5, 10, 20), 0, CreativeTweaksHandler::onInteractionRadiusChanged
+            "Interaction radius", List.of(1, 2, 3, 4, 5, 10, 20, 50), 0, CreativeTweaksHandler::onInteractionRadiusChanged
         ));
+        addButton(getToggleText(CreativeTweakFeature.NO_SIGN_GUI),                     CreativeTweakFeature.NO_SIGN_GUI                    .getDetails(), b -> toggleFeature(CreativeTweakFeature.NO_SIGN_GUI,                     b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 0, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  3, BUTTON_WIDTH);
+        addButton(getToggleText(CreativeTweakFeature.OPEN_OBSTRUCTED_CONTAINERS),      CreativeTweakFeature.OPEN_OBSTRUCTED_CONTAINERS     .getDetails(), b -> toggleFeature(CreativeTweakFeature.OPEN_OBSTRUCTED_CONTAINERS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 0, LIST_TOP + (BORDER_HEIGHT + BUTTON_HEIGHT) *  4, BUTTON_WIDTH);
+
 
 
         //TODO name header: World interactions
@@ -85,17 +89,17 @@ public class CreativeTweaksScreen extends __base_Screen {
 
 
 
-    public String getToggleText(final CreativeTweakFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    public static Txt getToggleText(final CreativeTweakFeature feature, final boolean state) {
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
     }
-    public String getToggleText(final CreativeTweakFeature feature) {
-        return getToggleText(feature, CreativeTweaksHandler.clientPlayerHasFeature(minecraft.player, feature));
+    public static Txt getToggleText(final CreativeTweakFeature feature) {
+        return getToggleText(feature, CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature));
     }
 
 
-    public void toggleFeature(final CreativeTweakFeature feature, final Button b) {
-        boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(minecraft.player, feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
+    public static void toggleFeature(final CreativeTweakFeature feature, final Button b) {
+        final boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
+        b.setMessage(getToggleText(feature, newState).get());
         CreativeTweaksHandler.setFeature(feature, newState);
     }
 }

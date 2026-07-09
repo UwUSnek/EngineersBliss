@@ -5,23 +5,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jspecify.annotations.NonNull;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ActivatorRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DetectorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.BellBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DecoratedPotPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LecternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.PoweredRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RailPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.bars.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.*;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -32,6 +49,7 @@ import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -50,28 +68,196 @@ import net.minecraft.world.level.block.state.BlockState;
  * This plugin implements dynamic models for specific blocks.
  * It registers custom models and textures during startup and fetches the right ones based on config settings when resolving the block state's model.
  */
-public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List<Identifier>> {
-    private static final List<String>   PART_SUFFIXES  = List.of("n", "e", "s", "w");
-    private static final List<Quadrant> PART_QUADRANTS = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
+public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<Identifier, String>> {
+    private static final List<Character> PART_SUFFIXES_HORIZONTAL  = List.of('n', 'e', 's', 'w');
+    private static final List<Quadrant>  PART_QUADRANTS_HORIZONTAL = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R180, Quadrant.R270);
+    private static final List<Character> PART_SUFFIXES_VERTICAL    = List.of('u', 'd');
+    private static final List<Quadrant>  PART_QUADRANTS_VERTICAL   = List.of(Quadrant.R270, Quadrant.R90);
+    private static final List<Quadrant>  PART_XROT_AXIS            = List.of(Quadrant.R0, Quadrant.R90, Quadrant.R90);
+    private static final List<Quadrant>  PART_YROT_AXIS            = List.of(Quadrant.R0, Quadrant.R0, Quadrant.R90);
+    private static final List<Character> PART_SUFFIXES_AXIS        = List.of('y', 'z', 'x');
+
+    // Templates/Variants info
+    private static final String GENERATE_MARKER_PREFIX = ".gen-";
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
 
 
-    // A map containing baked custom models. The runtime resolver fetches models from here.
-    private static final Map<Identifier, BlockStateModel> customModels = new HashMap<>();
+
+
+
+
+
+
+    // This contains all the discovered models for the current block
+    //! The type is called BlockStateModel and not BlockStateModelPart because Minecraft is goofy. It's a part, but it must be a BlockStateModel instance.
+    private static final Map<Identifier, BlockStateModel> customModelParts = new ConcurrentHashMap<>();
+
+
+    // A map containing all the assembled models for each possible BlockState. The runtime resolver fetches models from here
+    // This doesn't include the vanilla model.
+    private static Map<BlockState, ModelSet> cachedModelSets = new ConcurrentHashMap<>();
+
+
+
 
     // A map containing the model part providers for each block
     private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
     static {
         for(final var provider : List.of(
-            new SlimeBlockPartProvider(),
-            new HoneyBlockPartProvider(),
+            new    SlimeBlockPartProvider(),
+            new    HoneyBlockPartProvider(),
             new MangroveRootsPartProvider(),
-            new ScaffoldingPartProvider(),
-            new RedstoneWirePartProvider(),
-            new RailPartProvider(),
-            new PoweredRailPartProvider(),
+            new   ScaffoldingPartProvider(),
+            new  RedstoneWirePartProvider(),
+            new        LadderPartProvider(),
+            new         VinesPartProvider(),
+            new    GlowLichenPartProvider(),
+            new  DecoratedPotPartProvider(),
+            new     BellBlockPartProvider(),
+            new       LecternPartProvider(),
+
+            new    NormalRailPartProvider(),
+            new   PoweredRailPartProvider(),
             new ActivatorRailPartProvider(),
-            new DetectorRailPartProvider()
+            new  DetectorRailPartProvider(),
+
+            new                 IronChainPartProvider(),
+            new               CopperChainPartProvider(),
+            new        ExposedCopperChainPartProvider(),
+            new      WeatheredCopperChainPartProvider(),
+            new       OxidizedCopperChainPartProvider(),
+            new          WaxedCopperChainPartProvider(),
+            new   WaxedExposedCopperChainPartProvider(),
+            new WaxedWeatheredCopperChainPartProvider(),
+            new  WaxedOxidizedCopperChainPartProvider(),
+
+            new               NormalLanternPartProvider(),
+            new                 SoulLanternPartProvider(),
+            new               CopperLanternPartProvider(),
+            new        ExposedCopperLanternPartProvider(),
+            new      WeatheredCopperLanternPartProvider(),
+            new       OxidizedCopperLanternPartProvider(),
+            new          WaxedCopperLanternPartProvider(),
+            new   WaxedExposedCopperLanternPartProvider(),
+            new WaxedWeatheredCopperLanternPartProvider(),
+            new  WaxedOxidizedCopperLanternPartProvider(),
+
+            new   AcaciaStandingSignPartProvider(),
+            new   BambooStandingSignPartProvider(),
+            new    BirchStandingSignPartProvider(),
+            new   CherryStandingSignPartProvider(),
+            new  CrimsonStandingSignPartProvider(),
+            new  DarkOakStandingSignPartProvider(),
+            new   JungleStandingSignPartProvider(),
+            new MangroveStandingSignPartProvider(),
+            new      OakStandingSignPartProvider(),
+            new  PaleOakStandingSignPartProvider(),
+            new   SpruceStandingSignPartProvider(),
+            new   WarpedStandingSignPartProvider(),
+
+            new   AcaciaWallSignPartProvider(),
+            new   BambooWallSignPartProvider(),
+            new    BirchWallSignPartProvider(),
+            new   CherryWallSignPartProvider(),
+            new  CrimsonWallSignPartProvider(),
+            new  DarkOakWallSignPartProvider(),
+            new   JungleWallSignPartProvider(),
+            new MangroveWallSignPartProvider(),
+            new      OakWallSignPartProvider(),
+            new  PaleOakWallSignPartProvider(),
+            new   SpruceWallSignPartProvider(),
+            new   WarpedWallSignPartProvider(),
+
+            new   AcaciaCeilingHangingSignPartProvider(),
+            new   BambooCeilingHangingSignPartProvider(),
+            new    BirchCeilingHangingSignPartProvider(),
+            new   CherryCeilingHangingSignPartProvider(),
+            new  CrimsonCeilingHangingSignPartProvider(),
+            new  DarkOakCeilingHangingSignPartProvider(),
+            new   JungleCeilingHangingSignPartProvider(),
+            new MangroveCeilingHangingSignPartProvider(),
+            new      OakCeilingHangingSignPartProvider(),
+            new  PaleOakCeilingHangingSignPartProvider(),
+            new   SpruceCeilingHangingSignPartProvider(),
+            new   WarpedCeilingHangingSignPartProvider(),
+
+            new   AcaciaWallHangingSignPartProvider(),
+            new   BambooWallHangingSignPartProvider(),
+            new    BirchWallHangingSignPartProvider(),
+            new   CherryWallHangingSignPartProvider(),
+            new  CrimsonWallHangingSignPartProvider(),
+            new  DarkOakWallHangingSignPartProvider(),
+            new   JungleWallHangingSignPartProvider(),
+            new MangroveWallHangingSignPartProvider(),
+            new      OakWallHangingSignPartProvider(),
+            new  PaleOakWallHangingSignPartProvider(),
+            new   SpruceWallHangingSignPartProvider(),
+            new   WarpedWallHangingSignPartProvider(),
+
+            new               NormalChestPartProvider(),
+            new                EnderChestPartProvider(),
+            new              TrappedChestPartProvider(),
+            new               CopperChestPartProvider(),
+            new        ExposedCopperChestPartProvider(),
+            new      WeatheredCopperChestPartProvider(),
+            new       OxidizedCopperChestPartProvider(),
+            new          WaxedCopperChestPartProvider(),
+            new   WaxedExposedCopperChestPartProvider(),
+            new WaxedWeatheredCopperChestPartProvider(),
+            new  WaxedOxidizedCopperChestPartProvider(),
+
+            new     WhiteBannerPartProvider(),
+            new    OrangeBannerPartProvider(),
+            new   MagentaBannerPartProvider(),
+            new LightBlueBannerPartProvider(),
+            new    YellowBannerPartProvider(),
+            new      LimeBannerPartProvider(),
+            new      PinkBannerPartProvider(),
+            new      GrayBannerPartProvider(),
+            new LightGrayBannerPartProvider(),
+            new      CyanBannerPartProvider(),
+            new    PurpleBannerPartProvider(),
+            new      BlueBannerPartProvider(),
+            new     BrownBannerPartProvider(),
+            new     GreenBannerPartProvider(),
+            new       RedBannerPartProvider(),
+            new     BlackBannerPartProvider(),
+
+            new     WhiteWallBannerPartProvider(),
+            new    OrangeWallBannerPartProvider(),
+            new   MagentaWallBannerPartProvider(),
+            new LightBlueWallBannerPartProvider(),
+            new    YellowWallBannerPartProvider(),
+            new      LimeWallBannerPartProvider(),
+            new      PinkWallBannerPartProvider(),
+            new      GrayWallBannerPartProvider(),
+            new LightGrayWallBannerPartProvider(),
+            new      CyanWallBannerPartProvider(),
+            new    PurpleWallBannerPartProvider(),
+            new      BlueWallBannerPartProvider(),
+            new     BrownWallBannerPartProvider(),
+            new     GreenWallBannerPartProvider(),
+            new       RedWallBannerPartProvider(),
+            new     BlackWallBannerPartProvider(),
+
+            new               CopperGolemStatuePartProvider(),
+            new        ExposedCopperGolemStatuePartProvider(),
+            new      WeatheredCopperGolemStatuePartProvider(),
+            new       OxidizedCopperGolemStatuePartProvider(),
+            new          WaxedCopperGolemStatuePartProvider(),
+            new   WaxedExposedCopperGolemStatuePartProvider(),
+            new WaxedWeatheredCopperGolemStatuePartProvider(),
+            new  WaxedOxidizedCopperGolemStatuePartProvider(),
+
+            new                 IronBarsPartProvider(),
+            new               CopperBarsPartProvider(),
+            new        ExposedCopperBarsPartProvider(),
+            new      WeatheredCopperBarsPartProvider(),
+            new       OxidizedCopperBarsPartProvider(),
+            new          WaxedCopperBarsPartProvider(),
+            new   WaxedExposedCopperBarsPartProvider(),
+            new WaxedWeatheredCopperBarsPartProvider(),
+            new  WaxedOxidizedCopperBarsPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
@@ -79,48 +265,71 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
+
+
+
+
+
     //! Called by the prepatable model plugin system once the plugin is registered.
     //! Registed from the client initializer.
-    public static CompletableFuture<List<Identifier>> discoverModels(PreparableReloadListener.SharedState sharedState, Executor executor) {
+    public static CompletableFuture<Map<Identifier, String>> discoverModels(final PreparableReloadListener.SharedState sharedState, final Executor executor) {
         return CompletableFuture.supplyAsync(() -> {
-            final List<Identifier> r = new ArrayList<>();
+            final Map<Identifier, String> r = new HashMap<>();
             final String root = "models/block";
+            final @NotNull ResourceManager resourceManager = sharedState.resourceManager();
 
-            // Find all json models using the resource manager. Filter out stuff not from this mod and non-json files
-            final @NonNull ResourceManager resourceManager = sharedState.resourceManager();
-            resourceManager.listResources(
-                root,
-                id -> {
-                    return id.getNamespace().equals(EngineerSBliss.MOD_ID) && id.getPath().endsWith(".json");
-                }).keySet().forEach(id -> {
+            resourceManager.listResources(root, id ->
+                id.getNamespace().equals(EngineerSBliss.MOD_ID) && id.getPath().endsWith(".json")
+            ).keySet().forEach(id -> {
+                final @NotNull String path = id.getPath();
+                final String dir = path.substring(0, path.lastIndexOf('/') + 1);
 
-                    // Skip models in the same directory as files named ".template"
-                    final String path = id.getPath();
-                    final String dir  = path.substring(0, path.lastIndexOf('/') + 1);
-                    final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
-                    if(resourceManager.getResource(templateMarker).isPresent()) return;
+                final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
+                if(resourceManager.getResource(templateMarker).isPresent()) return;
 
-                    // If the model is not a template, load it in the runtime map
-                    final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
-                    r.add(finalId);
-                    EngineerSBliss.LOGGER.info("Loaded dynamic custom model {}", finalId);
+                final String suffixes = findGenerateSuffixes(resourceManager, dir);
+                if(suffixes == null) {
+                    EngineerSBliss.LOGGER.error("Model directory {} doesn't define any variant.", dir);
                 }
-            );
+                else {
+                    final Identifier finalId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, path.substring("models/".length(), path.length() - ".json".length()));
+                    r.put(finalId, suffixes);
+                    EngineerSBliss.LOGGER.debug("Loaded dynamic custom model {} (variants: {})", finalId, suffixes);
+                }
+            });
             return r;
         }, executor);
+    }
+
+    @Nullable
+    private static String findGenerateSuffixes(final ResourceManager resourceManager, final String dir) {
+        final String dirRoot = dir.substring(0, dir.length() - 1); // strip trailing '/'
+        return resourceManager.listResources(dirRoot, i ->
+            i.getNamespace().equals(EngineerSBliss.MOD_ID) &&
+            i.getPath().startsWith(dir) &&
+            i.getPath().startsWith(GENERATE_MARKER_PREFIX, dir.length())
+        )
+            .keySet().stream()
+            .findFirst()
+            .map(id -> id.getPath().substring(dir.length() + GENERATE_MARKER_PREFIX.length()))
+            .orElse(null)
+        ;
     }
 
 
 
 
+
+
+
     @Override //! Called automatically. No need to manually call from the client initializer
-    public void initialize(List<Identifier> modelIds, Context initContext) {
+    public void initialize(final Map<Identifier, String> requestedModelVariants, final Context initContext) {
 
 
         // Register the custom models during startup
         // Minecraft needs to know about all the models and textures beforehand in order to use them for rendering
         initContext.modifyBlockModelOnLoad().register((model, onLoadContext) -> {
-            final @NonNull BlockState state = onLoadContext.state();
+            final @NotNull BlockState state = onLoadContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
@@ -128,9 +337,15 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
             return new BlockStateModel.UnbakedRoot() {
                 @Override
                 public void resolveDependencies(final ResolvableModel.Resolver resolver) {
+                    final __base_PartProvider partProvider = partProviders.get(block);
                     model.resolveDependencies(resolver);
-                    for(Identifier modelId : modelIds) {
-                        resolver.markDependency(modelId);
+                    if(partProvider != null) {
+                        for(final Identifier id : partProvider.calcDependencyIds()) {
+                            resolver.markDependency(id);
+                        }
+                    }
+                    else {
+                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", BuiltInRegistries.BLOCK.getKey(block));
                     }
                 }
 
@@ -149,26 +364,69 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
 
 
 
+
+
+
+
         // This step yoinks the loaded custom model and stores a local reference to it so it can be used when needed
 
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
-            final @NonNull BlockState state = beforeBakeContext.state();
+            final @NotNull BlockState state = beforeBakeContext.state();
             final Block block = state.getBlock();
             if(!AltTextureFeature.hasFeature(block)) return model;
 
 
-            // For each model ID
-            for(Identifier modelId : modelIds) {
+            // For each model ID of this blockstate
+            final __base_PartProvider partProvider = partProviders.get(block);
+            if(partProvider != null) {
+                for(final Identifier partId : partProvider.calcDependencyIds()) {
+                    final String variantSuffixes = requestedModelVariants.get(partId);
 
-                // Bake one model per direction and store it locally
-                for(int i = 0; i < 4; ++i) {
-                    final BlockStateModelPart part = new Variant(modelId).withYRot(PART_QUADRANTS.get(i)).bake(beforeBakeContext.baker());
-                    final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelId.getPath() + "_" + PART_SUFFIXES.get(i));
-                    customModels.put(rotatedModelId, new SingleVariant(part));
+                    // Bake one model per horizontal direction
+                    for(int i = 0; i < 4; ++i) {
+                        final String suffix = String.valueOf(PART_SUFFIXES_HORIZONTAL.get(i));
+                        if(variantSuffixes == null || !variantSuffixes.contains(suffix)) continue;
+                        final BlockStateModelPart part = new Variant(partId)
+                            .withYRot(PART_QUADRANTS_HORIZONTAL.get(i))
+                            .bake(beforeBakeContext.baker());
+                        final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, partId.getPath() + "_" + suffix);
+                        customModelParts.put(rotatedModelId, new SingleVariant(part));
+                    }
+
+                    // Bake up and down variants
+                    for(int i = 0; i < 2; ++i) {
+                        final String suffix = String.valueOf(PART_SUFFIXES_VERTICAL.get(i));
+                        if(variantSuffixes == null || !variantSuffixes.contains(suffix)) continue;
+                        final BlockStateModelPart part = new Variant(partId)
+                            .withYRot(Quadrant.R180)
+                            .withXRot(PART_QUADRANTS_VERTICAL.get(i))
+                            .bake(beforeBakeContext.baker());
+                        final Identifier rotatedModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, partId.getPath() + "_" + suffix);
+                        customModelParts.put(rotatedModelId, new SingleVariant(part));
+                    }
+
+                    // Bake axis-aligned variants
+                    for(int i = 0; i < 3; ++i) {
+                        final String suffix = String.valueOf(PART_SUFFIXES_AXIS.get(i));
+                        if(variantSuffixes == null || !variantSuffixes.contains(suffix)) continue;
+                        final BlockStateModelPart part = new Variant(partId)
+                            .withXRot(PART_XROT_AXIS.get(i))
+                            .withYRot(PART_YROT_AXIS.get(i))
+                            .bake(beforeBakeContext.baker());
+                        final Identifier axisModelId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, partId.getPath() + "_" + suffix);
+                        customModelParts.put(axisModelId, new SingleVariant(part));
+                    }
                 }
             }
+
+
+            // Return the model
             return model;
         });
+
+
+
+
 
 
 
@@ -177,48 +435,69 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         // The custom BlockStateModel applies a different model based on AltTexturesHandler's values
         // Particles and material flags are always vanilla, while the model parts are replaced by the custom model when needed
 
-        initContext.modifyBlockModelAfterBake().register((model, afterBakeContext) -> {
-            final @NonNull BlockState state = afterBakeContext.state();
+        // This also builds the BlockState -> List<ModelPart> map for O(1) lookup on first call
+
+        initContext.modifyBlockModelAfterBake().register((vanilla, afterBakeContext) -> {
+            final @NotNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
-            if(!AltTextureFeature.hasFeature(block)) return model;
+            if(!AltTextureFeature.hasFeature(block)) return vanilla;
 
 
-            final @NonNull BlockStateModel vanilla = model;
             return new BlockStateModel() {
                 @Override
                 public void collectParts(final RandomSource random, final List<BlockStateModelPart> output) {
+                    boolean keepVanilla = true;
 
-                    // Add custom parts
-                    final __base_PartProvider partProvider = partProviders.get(state.getBlock());
+
+                    // Compute and cache parts for this BlockState
+                    //! This must be done during the first instance of actual rendering workload
+                    //! because Minecraft itself loads models lazily. Trying to load all the parts before any rendering occurs would result in missing cache entries
+                    final __base_PartProvider partProvider = partProviders.get(block);
                     if(partProvider != null) {
-                        final @Nullable List<String> partNames = partProvider.calcPartNames(state);
-                        if(partNames != null) for(final String partName : partNames) {
-                            final Identifier partId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + partName);
-                            final BlockStateModel custom = customModels.get(partId);
-                            if(custom != null) {
-                                custom.collectParts(random, output);
-                            }
-                            else {
-                                EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
-                                vanilla.collectParts(random, output);
-                            }
-                        }
+                        final ModelSet cachedModelSetsForState = cachedModelSets.computeIfAbsent(state, s -> {
+                            final ModelSet r = new ModelSet();
+                            for(int i = 0; i < partProvider.getModelSetNumber(); ++i) {
+                                final ArrayList<BlockStateModel> collected = new ArrayList<>();
 
-                        // Add the vanilla parts if needed
-                        if(partProvider.shouldKeepVanilla(state)) {
-                            vanilla.collectParts(random, output);
+                                for(final Identifier partId : partProvider.calcPartIds(s, i)) {
+                                    final BlockStateModel custom = customModelParts.get(partId);
+                                    if(custom != null) {
+                                        collected.add(custom);
+                                    }
+                                    else {
+                                        EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
+                                    }
+                                }
+                                r.add(collected);
+                            }
+                            return r;
+                        });
+
+
+
+                        // Add custom model parts if needed (list can be empty but never null)
+                        if(partProvider.shouldUseCustom(state)) {
+                            for(final BlockStateModel cachedPart : cachedModelSetsForState.get(partProvider.calcCurrentModelSetIndex())) {
+                                cachedPart.collectParts(random, output);
+                            }
                         }
+                        keepVanilla = partProvider.shouldKeepVanilla(state);
                     }
-                    else {
-                        EngineerSBliss.LOGGER.error("Part provider for block {} is unavailable", block.getName().getString());
+                    //! No need to print the missing part provider error here. Previous steps already did that
+
+
+                    // Add vanilla part if needed
+                    if(keepVanilla) {
                         vanilla.collectParts(random, output);
                     }
                 }
+
 
                 @Override
                 public Material.Baked particleMaterial() {
                     return vanilla.particleMaterial();
                 }
+
 
                 @Override
                 public int materialFlags() {
@@ -228,9 +507,3 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<List
         });
     }
 }
-
-
-
-//TODO reuse this plugin to hide filtered blocks?
-//TODO only if it can filter all the blocks and is called when rebuilding chunk sections/slices
-//TODO and if culling follows geometry outputted by the plugin

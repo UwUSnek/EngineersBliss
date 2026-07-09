@@ -1,0 +1,147 @@
+{
+  "credit": "UwU_Snek",
+  "format_version": "1.21.11",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "#texture",
+    "texture": "#texture"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0.001,
+        7
+      ],
+      "to": [
+        9,
+        0.501,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7,
+            7,
+            9,
+            8
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            8,
+            7,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            7,
+            8,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            7,
+            7,
+            8,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "from": [
+        7,
+        15.499,
+        7
+      ],
+      "to": [
+        9,
+        15.999,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7,
+            7,
+            9,
+            8
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            8,
+            7,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            7,
+            8,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            7,
+            7,
+            8,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#texture"
+        }
+      }
+    }
+  ]
+}

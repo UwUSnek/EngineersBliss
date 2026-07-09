@@ -10,7 +10,7 @@ public class AltTexturesHandler {
 
 
 
-    public static void setFeature(final AltTextureFeature feature, boolean value) {
+    public static void setFeature(final AltTextureFeature feature, final boolean value) {
         final long featureBit = feature.getFlagBit();
         if(value) featureMask |= featureBit; else featureMask &= ~featureBit;
     }

@@ -3,10 +3,10 @@ package com.snek.engineersbliss.client.screens.overlays;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.screens.__base_Screen;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 
 
 
@@ -34,11 +34,6 @@ public class OverlaysScreen extends __base_Screen {
         addButton(getToggleText(OverlayFeature.COMPARATOR_LOGIC_SNIPPET),      OverlayFeature.COMPARATOR_LOGIC_SNIPPET     .getDetails(), b -> toggleFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
         addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE),    OverlayFeature.REDSTONE_WIRE_POWER_SOURCE   .getDetails(), b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE,    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
         addButton(getToggleText(OverlayFeature.RAIL_POWER_SOURCE),             OverlayFeature.RAIL_POWER_SOURCE            .getDetails(), b -> toggleFeature(OverlayFeature.RAIL_POWER_SOURCE,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
-
-        // Invisible blocks
-        addButton(getToggleText(OverlayFeature.BETTER_BARRIER_DISPLAY),        OverlayFeature.BETTER_BARRIER_DISPLAY       .getDetails(), b -> toggleFeature(OverlayFeature.BETTER_BARRIER_DISPLAY,        b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY), OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY.getDetails(), b -> toggleFeature(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY, b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY),    OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY   .getDetails(), b -> toggleFeature(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY,    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
     }
 
 
@@ -52,17 +47,17 @@ public class OverlaysScreen extends __base_Screen {
 
 
 
-    public String getToggleText(final OverlayFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    public static Txt getToggleText(final OverlayFeature feature, final boolean state) {
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
     }
-    public String getToggleText(final OverlayFeature feature) {
+    public static Txt getToggleText(final OverlayFeature feature) {
         return getToggleText(feature, OverlaysHandler.getFeature(feature));
     }
 
 
-    public void toggleFeature(final OverlayFeature feature, final Button b) {
-        boolean newState = !OverlaysHandler.getFeature(feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
+    public static void toggleFeature(final OverlayFeature feature, final Button b) {
+        final boolean newState = !OverlaysHandler.getFeature(feature);
+        b.setMessage(getToggleText(feature, newState).get());
         OverlaysHandler.setFeature(feature, newState);
     }
 }

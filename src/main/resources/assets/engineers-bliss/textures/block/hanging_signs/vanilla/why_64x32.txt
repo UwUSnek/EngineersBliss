@@ -1,0 +1,8 @@
+
+Minecraft uses 64x32 textures for signs, even though there is absolutely no need to.
+The entire texture fits in a 32x32 image.
+
+Engineer's bliss uses the same 64x32 format with identical UVs to make it easier to update the textures
+in case Mojang decides to change them in the future.
+
+The file size difference is negligible.

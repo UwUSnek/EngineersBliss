@@ -28,9 +28,9 @@ public class ServerBlockPhasingPacketFixMixin {
     @SuppressWarnings("unused")
     @Inject(method = "isEntityCollidingWithAnythingNew", at = @At("HEAD"), cancellable = true, require = 1)
     private void isEntityCollidingWithAnythingNew(
-        LevelReader level, Entity entity, AABB oldAABB,
-        double newX, double newY, double newZ,
-        CallbackInfoReturnable<Boolean> cir
+        final LevelReader level, final Entity entity, final AABB oldAABB,
+        final double newX, final double newY, final double newZ,
+        final CallbackInfoReturnable<Boolean> cir
     ) {
         if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(entity)) {
             cir.setReturnValue(false);

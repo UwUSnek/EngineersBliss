@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -22,7 +22,7 @@ public class BedBounceSuppressorMixin {
         method = "updateEntityMovementAfterFallOn",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
-    private boolean isSuppressingBounce(Entity entity, BlockGetter level, Entity entityRef) {
+    private boolean isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_BED_BOUNCE)) {
             return true;
         }

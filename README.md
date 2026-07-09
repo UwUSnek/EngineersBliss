@@ -1,6 +1,6 @@
 # Engineer's Bliss
 
-A **rendering** and **utility** mod for Redstone Engineers.<br>
+A **rendering**, **optimization**, and **utility** mod for Redstone Engineers.<br>
 :3
 
 <br>
@@ -8,8 +8,8 @@ A **rendering** and **utility** mod for Redstone Engineers.<br>
 Engineer's Bliss focuses on improving the experience of designing Vanilla Redstone machines
 through a multitude of tools and custom items and blocks.
 
-These include anything from overlays and fast clicking to automatic circuit analysis tools,
-custom items, render filters and an in-game block property lookup tool.
+These include anything from overlays and optimized block entities to automatic circuit analysis tools,
+custom items, and render filters.
 
 <br>
 
@@ -86,11 +86,31 @@ It helps a lot :3
   - Player model rendering in the pause menu
   <br><br>
 - **Alternative textures**:
-  - Less opaque Slime Block texture
-  - Less opaque Honey Block texture
-  - Unobstructive Mangrove Roots texture
-  - Unobstructive Scaffolding texture
-  - Minimal Redstone Wire texture
+  - Minimal Redstone Wire
+  - Disable Redstone Wire particles
+  - Disable Campfire particles
+  - Disable redstone wire particles
+  - Disable Fire particles
+  - Disable Lava particles
+  - Disable Water Stream particles
+  - Disable drip particles
+  - Less opaque Slime Blocks
+  - Less opaque Honey Blocks
+  - Unobstructive Mangrove Roots
+  - Unobstructive Scaffoldings<br><br>
+  - Consistent sloped Rails
+  - Alternative Barrier rendering
+  - Alternative Structure Void rendering
+  - Alternative Light Block rendering
+  - Static Sign models
+  - Static Chest models
+  - Static Banner models
+  - static decorated pot models
+  - static bell models
+  - static copper golem statue models
+  - static lectern models
+  - Optimized Shelf rendering logic
+  - Optimized Campfire rendering logic<br><br>
   - 3D Redstone Wire
   - 3D Rails
   - 3D Ladders
@@ -98,8 +118,6 @@ It helps a lot :3
   - 3D Iron Bars & Copper Bars
   - 3D Vines
   - 3D Glow Lichen
-  - 3D Doors
-  - 3D Trapdoors
   <br><br>
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -183,9 +201,9 @@ It helps a lot :3
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
-  - Water Current Sponge
-  - Lava Current Sponge
   - Item Sink (storage block with infinite capacity)
+  - 0 Friction blocks
+  - ∞ Friction blocks
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item

@@ -6,22 +6,42 @@
   - ~~Custom block outlines~~
 
 - **Alternative textures**
+  - ~~Minimal Redstone Wire~~
+  - ~~Disable Redstone Wire particles~~
+  - ~~Disable Campfire particles~~
+  - ~~Disable Fire particles~~
+  - ~~Disable Lava particles~~
+  - Disable Water Stream particles
+  - ~~Disable drip particles~~
   - ~~Transparent Slime Block~~
   - ~~Transparent Honey Block~~
   - ~~Unobstructive Mangrove Roots~~
   - ~~Unobstructive Scaffolding~~
-  - ~~Minimal Redstone Wire~~
+  
+  - ~~Consistent sloped rails~~
+  - ~~Alternative Barrier rendering~~
+  - ~~Alternative Structure Void rendering~~
+  - ~~Alternative Light Block rendering~~
+  - ~~Static Sign models~~
+  - ~~Static Chest models~~
+  - ~~Static Banner models~~
+  - ~~static decorated pot models~~
+  - ~~static bell models~~
+  - ~~static copper golem statue models~~
+  - ~~static lectern models~~
+  - ~~Optimized Shelf rendering logic~~
+  - ~~Optimized Campfire rendering logic~~
+
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
-  - 3D Ladders
-  - 3D Iron Chains & Copper Chains
-  - 3D Iron Bars & Copper Bars
-  - 3D Vines
-  - 3D Glow Lichen
-  - 3D Doors
-  - 3D Trapdoors
+  - ~~3D Ladders~~
+  - ~~3D Iron Chains & Copper Chains~~
+  - ~~3D Iron Bars & Copper Bars~~
+  - ~~3D Vines~~
+  - ~~3D Glow Lichen~~
   - Player model rendering in the pause menu //TODO add this to the readme if possible
-  - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
+    - Display player name above model
+    - Display customizable title under the name
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -45,7 +65,6 @@
   - Copy and move groups around or across worlds
 
 - **Gameplay tweaks**:
-  - Disable redstone wire particles
   - Disable fluid flushing
   - Disable block gravity
   - Disable explosion block and entity damage
@@ -79,7 +98,7 @@
   - ~~Disable being slowed down by powder snow~~
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - ~~Disable being moved by Water and Lava currents~~
-  - Disable being dragged by Bubble Columns
+  - ~~Disable being dragged by Bubble Columns~~
 
   - Disable item change animation
   - Disable hand swing animation
@@ -90,7 +109,6 @@
   - ~~Disable overlay effect of Water~~
   - Disable overlay effect of Lava
   - Disable overlay effect of Nether Portals
-
 
 - **Property lookup**:
   - Quickly find blocks based on their properties
@@ -113,9 +131,9 @@
 - **Custom blocks and items**
   - Infinite item sources
   - Rate counter hoppers
-  - Water Current Sponge
-  - Lava Current Sponge
   - Item Sink (storage block with infinite capacity)
+  - 0 Friction blocks
+  - ∞ Friction blocks
   - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
   - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
   - [Vanilla Item] Name Tag item with Custom Name //TODO meant for name tagging mobs (makes them persistent). add to item lore
@@ -167,6 +185,8 @@
 - render stats //TODO minecraft.getGpuUtilization()
 
 
+- add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
+- add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block
 
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
 
@@ -174,3 +194,51 @@
 
 - add cool redstone mechanism overlay in front of the main menu screen
 - add cool small redstone mechanism overlay in the pause menu
+
+
+
+- maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
+
+
+- add a "about" screen that talks abotu the mod, basically just copy the readme.
+  - display my skin/drawing in there too and name
+
+
+- add images to the readme?
+  - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on
+
+
+- maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
+
+- make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing
+
+
+- add some logo or something as blur background cutout?
+
+
+
+- add a "keybinds" section in creative tweaks
+  - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
+  - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
+
+
+- add a generic "hide all entities" toggle in rendering screen
+- add a generic "hide all particles" toggle in rendering screen
+
+
+- static lectern models? or optimized, idk
+
+
+- add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
+
+
+
+- add scrolling items in inventories with the scroll wheel
+- add moving all the items into and out of your inventory with ctrl+shift+click
+  - this goes in the keybinds screen too
+
+
+- add world stats
+  - number of regions
+  - number of generated chunks
+  - size of the world directory

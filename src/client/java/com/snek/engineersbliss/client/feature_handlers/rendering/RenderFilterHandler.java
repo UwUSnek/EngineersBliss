@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderersAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
@@ -140,8 +143,8 @@ public class RenderFilterHandler {
      * This will freeze the game for a few ticks/seconds/minutes depending on machine's specs.
      */
     public static void recalculateLight() {
-        final Minecraft minecraft = Minecraft.getInstance();
-        final ClientLevel level = minecraft.level;
+        final @NotNull Minecraft minecraft = Minecraft.getInstance();
+        final @NotNull ClientLevel level = minecraft.level;
         if(level == null) return;
 
         final LevelLightEngine lightEngine = level.getChunkSource().getLightEngine();
@@ -181,8 +184,9 @@ public class RenderFilterHandler {
 
     /**
      * Checks if the specified block state should render, based on the current rendering filter settings.
+     * ! This doesn't takes into account the static block entity model system for performance and maintainability reasons.
      * @param state The blockstate of the block to check.
-     * @return True if the block should render, false ot
+     * @return True if the block should render, false otherwise.
      */
     public static boolean shouldBlockRender(final BlockState state) {
         if(state == null) return false;

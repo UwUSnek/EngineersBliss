@@ -61,6 +61,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Log library loading
-        EngineerSBliss.LOGGER.info("Engineer's Bliss client loaded :3");
+        EngineerSBliss.LOGGER.info(EngineerSBliss.MOD_NAME + " client loaded :3");
     }
 }

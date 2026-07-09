@@ -60,7 +60,7 @@ void main() {
     try_insert(texture(CloudsSampler, texCoord), texture(CloudsDepthSampler, texCoord).r);
 
     vec3 texelAccum = color_layers[0].rgb;
-    for (int ii = 1; ii < active_layers; ++ii) {
+    for(int ii = 1; ii < active_layers; ++ii) {
         texelAccum = blend(texelAccum, color_layers[ii]);
     }
 

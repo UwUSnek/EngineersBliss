@@ -40,3 +40,10 @@ public class ClientRateLimiter {
         return ClientScheduler.getTickNum() >= cooldownEnd;
     }
 }
+
+
+
+//TODO replace with a proper frameworklib dependency (maybe add client version of this to the lib?)
+//TODO replace with a proper frameworklib dependency (maybe add client version of this to the lib?)
+//TODO replace with a proper frameworklib dependency (maybe add client version of this to the lib?)
+//TODO replace with a proper frameworklib dependency (maybe add client version of this to the lib?)

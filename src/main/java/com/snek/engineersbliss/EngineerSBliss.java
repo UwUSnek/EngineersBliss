@@ -20,8 +20,9 @@ import com.snek.engineersbliss.utils.scheduler.ServerScheduler;
 
 
 public class EngineerSBliss implements ModInitializer {
-    public static final String MOD_ID = "engineers-bliss";
-    public static final Logger LOGGER = LoggerFactory.getLogger("Engineer's Bliss");
+    public static final String MOD_ID   = "engineers-bliss";
+    public static final String MOD_NAME = "Engineer's Bliss";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
 
     @Override
@@ -51,6 +52,6 @@ public class EngineerSBliss implements ModInitializer {
 
 
         // Log library loading
-        LOGGER.info("Engineer's Bliss server loaded :3");
+        LOGGER.info(MOD_NAME + " server loaded :3");
     }
 }

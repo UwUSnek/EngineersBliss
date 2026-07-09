@@ -55,12 +55,12 @@ public abstract class __base_TextureOverlayProvider extends __base_OverlayProvid
      * @param pos The position of the block.
      * @return The rotation expressed as euler angles, in radians, or null if no additional rotation should be applied.
      */
-    public @Nullable Vector3f calcPostRotation(BlockState state, BlockPos pos, __base_OverlayAttachedData attachedData) {
+    public @Nullable Vector3f calcPostRotation(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData attachedData) {
         return null;
     }
 
 
-    public float calcAnchor(BlockState state, BlockPos pos, __base_OverlayAttachedData data) {
+    public float calcAnchor(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData data) {
         return 0f;
     }
 }
