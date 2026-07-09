@@ -11,7 +11,6 @@ import com.snek.engineersbliss.client.utils.BlockEntityUtils;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.world.level.block.entity.EnchantingTableBlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -28,9 +26,8 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 
 /**
- * This mixin is not required, but it helps improve performance of static block entity models.
- * It cancels all the preparation steps done before block entity data is submitted and things are rendered.
- * This gains a few FPS. Sometimes.
+ * This mixins cancels the dynamic rendering of disabled block entities before any data is computed, skipping the entire pipeline.
+ * This is the most efficient way to cancel block entity rendering.
  * ! This is only separate from BlockEntityDispatcherOptimizerMixin to improve code structure and readability.
  */
 @SuppressWarnings("java:S6916")
@@ -39,7 +36,7 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-    private void tryExtractRenderState(
+    private void eb$tryExtractRenderState(
         final BlockEntity blockEntity,
         final float partialTicks,
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,

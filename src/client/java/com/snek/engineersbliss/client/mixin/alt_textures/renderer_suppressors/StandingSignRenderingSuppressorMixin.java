@@ -42,7 +42,7 @@ public abstract class StandingSignRenderingSuppressorMixin  extends AbstractSign
 
     @SuppressWarnings("unused")
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-    private void extractRenderState(
+    private void eb$extractRenderState(
         final SignBlockEntity blockEntity,
         final StandingSignRenderState state,
         final float partialTicks,

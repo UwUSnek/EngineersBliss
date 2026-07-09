@@ -102,7 +102,7 @@ public class PauseScreenMixin extends Screen {
 
 
     @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
-    public void init(final CallbackInfo ci) {
+    public void eb$init(final CallbackInfo ci) {
         final int buttonWidth = 100;
         final int gap = 16;
 
@@ -116,23 +116,23 @@ public class PauseScreenMixin extends Screen {
                 final int x2 = x1 - buttonWidth - gap;
                 final int y = first.getY();
 
-                blockPropertiesButton = addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
-                groupsButton          = addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
-                containerToolsButton  = addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
-                gameplayTweaksButton  = addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-                creativeTweaksButton  = addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
+                blockPropertiesButton = eb$addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
+                groupsButton          = eb$addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
+                containerToolsButton  = eb$addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
+                gameplayTweaksButton  = eb$addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
+                creativeTweaksButton  = eb$addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
                 //FIXME add a BIG disclaimer to "gameplay tweaks" screen that says it changes game mechanics
                 //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
                 //FIXME move no particles to alternative texture maybe?
                 //FIXME move visible block overlays to alternative texture maybe?
 
-                renderingButton       = addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
-                overlaysButton        = addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
-                altTexturesButton     = addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
-                mufflerButton         = addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-                actionHistory         = addButton("[U] Action History",   AltTexturesScreen::new, x2, y + BUTTON_SPACING * 4, buttonWidth); //FIXME
+                renderingButton       = eb$addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
+                overlaysButton        = eb$addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
+                altTexturesButton     = eb$addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
+                mufflerButton         = eb$addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
+                actionHistory         = eb$addButton("[U] Action History",   AltTexturesScreen::new, x2, y + BUTTON_SPACING * 4, buttonWidth); //FIXME
 
-                addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
+                eb$addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
             })
         ;
     }
@@ -140,7 +140,7 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    private Button addButton(final String label, final Supplier<Screen> screenFactory, final int x, final int y, final int width) {
+    private Button eb$addButton(final String label, final Supplier<Screen> screenFactory, final int x, final int y, final int width) {
         final Button btn = Button.builder(
             new UiTxt(label).get(),
                 b -> {

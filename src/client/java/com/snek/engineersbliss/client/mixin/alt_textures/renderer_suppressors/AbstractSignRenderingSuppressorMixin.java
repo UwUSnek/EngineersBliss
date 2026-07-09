@@ -15,7 +15,6 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 
@@ -31,7 +30,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "submitSign", at = @At("HEAD"), cancellable = true, require = 1)
-	private void submitSign(
+	private void eb$submitSign(
 		final PoseStack poseStack,
 		final int lightCoords,
 		final WoodType type,

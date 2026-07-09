@@ -73,8 +73,8 @@ public class BlockEntityUtils {
      */
     public static boolean signHasText(final SignBlockEntity blockEntity) {
         return
-            ((SignTextStateCacheAccess)(Object) blockEntity.getFrontText()).engineersbliss$hasText() ||
-            ((SignTextStateCacheAccess)(Object) blockEntity.getBackText ()).engineersbliss$hasText()
+            ((SignTextStateCacheAccess)(Object) blockEntity.getFrontText()).eb$hasText() ||
+            ((SignTextStateCacheAccess)(Object) blockEntity.getBackText ()).eb$hasText()
         ;
     }
 

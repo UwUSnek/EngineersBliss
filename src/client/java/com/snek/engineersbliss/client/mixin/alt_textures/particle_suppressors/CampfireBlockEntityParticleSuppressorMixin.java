@@ -27,7 +27,7 @@ public class CampfireBlockEntityParticleSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "particleTick", at = @At("HEAD"), cancellable = true, require = 1)
-	private static void particleTick(final Level level, final BlockPos pos, final BlockState state, final CampfireBlockEntity entity, final CallbackInfo ci) {
+	private static void eb$particleTick(final Level level, final BlockPos pos, final BlockState state, final CampfireBlockEntity entity, final CallbackInfo ci) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES)) {
             ci.cancel();
         }

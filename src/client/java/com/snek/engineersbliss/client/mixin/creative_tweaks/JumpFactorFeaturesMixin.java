@@ -20,32 +20,24 @@ import net.minecraft.world.level.block.Blocks;
 
 
 @Mixin(Entity.class)
-public class SpeedFactorFeaturesMixin {
+public class JumpFactorFeaturesMixin {
     @Unique
-    private static final float DEFAULT_SPEED_FACTOR = Blocks.STONE.getSpeedFactor();
-
+    private static final float DEFAULT_JUMP_FACTOR = Blocks.STONE.getJumpFactor();
 
 
 
 
     @SuppressWarnings("unused")
     @Redirect(
-        method = "getBlockSpeedFactor",
-        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getSpeedFactor()F")
+        method = "getBlockJumpFactor",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getJumpFactor()F")
     )
     private float eb$getBlockSpeedFactor(final Block block) {
         if(block == Blocks.HONEY_BLOCK) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN)) {
-                return DEFAULT_SPEED_FACTOR;
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_HONEY_JUMP)) {
+                return DEFAULT_JUMP_FACTOR;
             }
         }
-        if(block == Blocks.SOUL_SAND) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_SOULSAND_SLOWDOWN)) {
-                return DEFAULT_SPEED_FACTOR;
-            }
-        }
-        //! Slime Block uses custom Friction instead of SpeedFactor
-        //! Ice Blocks   use custom Friction instead of SpeedFactor
         return block.getSpeedFactor();
     }
 }

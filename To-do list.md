@@ -90,8 +90,8 @@
   - ~~Phase through blocks while flying~~
   - ~~Phase through entities~~
   - ~~Disable bouncing on Slime Blocks~~
-  - Disable not being able to jump from Honey Blocks
-  - Disable sliding on the sides of Honey Blocks
+  - ~~Disable not being able to jump from Honey Blocks~~
+  - ~~Disable sliding on the sides of Honey Blocks~~
   - ~~Disable being slowed down by Slime Blocks~~
   - ~~Disable being slowed down by Honey Blocks~~
   - ~~Disable being slowed down by Soul Sand~~

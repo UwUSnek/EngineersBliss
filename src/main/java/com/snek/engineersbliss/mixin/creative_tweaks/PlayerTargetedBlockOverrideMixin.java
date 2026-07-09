@@ -27,7 +27,7 @@ public class PlayerTargetedBlockOverrideMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "getPlayerPOVHitResult", at = @At("HEAD"), cancellable = true, require = 1)
-    private static void overrideGetPlayerPOVHitResult(final Level level, final Player player, final ClipContext.Fluid fluid, final CallbackInfoReturnable<BlockHitResult> cir) {
+    private static void eb$overrideGetPlayerPOVHitResult(final Level level, final Player player, final ClipContext.Fluid fluid, final CallbackInfoReturnable<BlockHitResult> cir) {
         final BlockPos override = CreativeTweaksServerHandler.getPickOverride();
         if(override != null) {
             final Vec3 center = Vec3.atCenterOf(override);

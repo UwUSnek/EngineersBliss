@@ -21,22 +21,22 @@ import net.minecraft.world.level.block.entity.SignText;
 @Mixin(SignText.class)
 public abstract class SignTextStateCacheMixin implements SignTextStateCacheAccess {
 
-    @Unique private boolean engineersbliss$dirty = true;
-    @Unique private boolean engineersbliss$cache;
+    @Unique private boolean eb$dirty = true;
+    @Unique private boolean eb$cache;
 
     @Shadow public abstract Component[] getMessages(boolean filtered);
 
     @Override
-    public boolean engineersbliss$hasText() {
-        if (engineersbliss$dirty) {
-            engineersbliss$cache = compute();
-            engineersbliss$dirty = false;
+    public boolean eb$hasText() {
+        if (eb$dirty) {
+            eb$cache = eb$compute();
+            eb$dirty = false;
         }
-        return engineersbliss$cache;
+        return eb$cache;
     }
 
     @Unique
-    private boolean compute() {
+    private boolean eb$compute() {
         for(final var msg : getMessages(false)) {
             if(msg.visit(s -> s.isEmpty() ? Optional.<Boolean>empty() : Optional.of(Boolean.TRUE)).isPresent()) return true;
         }

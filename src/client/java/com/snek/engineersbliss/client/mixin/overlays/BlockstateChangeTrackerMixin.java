@@ -20,7 +20,7 @@ public class BlockstateChangeTrackerMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "sendBlockUpdated", at = @At("RETURN"))
-	private void sendBlockUpdated(
+	private void eb$sendBlockUpdated(
         final BlockPos pos,
         final BlockState old,
         final BlockState current,

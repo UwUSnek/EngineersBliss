@@ -17,6 +17,7 @@ import com.snek.engineersbliss.client.mixin.accessors.GameRendererAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.resources.Identifier;
 
@@ -42,7 +43,7 @@ public abstract class JuliaSetShaderMixin {
         cancellable = false,
         require = 1
     )
-    private void onAfterGuiRender(final DeltaTracker deltaTracker, final boolean advanceGameTime, final CallbackInfo ci) {
+    private void eb$endFrame(final DeltaTracker deltaTracker, final boolean advanceGameTime, final CallbackInfo ci) {
 
         // Return and reset screen if current screen is not a julia renderer
         final Minecraft mc = Minecraft.getInstance();
@@ -50,6 +51,7 @@ public abstract class JuliaSetShaderMixin {
             lastScreen = null;
             return;
         }
+
 
         // If it is and it has just been opened, update the shader index and screen instance reference
         if(screen != lastScreen) {

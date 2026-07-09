@@ -32,7 +32,7 @@ public abstract class BlockEntityDispatcherOptimizerMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-    private void tryExtractRenderState(
+    private void eb$tryExtractRenderState(
         final BlockEntity blockEntity,
         final float partialTicks,
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
