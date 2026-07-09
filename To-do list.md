@@ -7,7 +7,7 @@
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
-  - Disable Redstone Wire particles
+  - ~~Disable Redstone Wire particles~~
   - ~~Disable Campfire particles~~
   - ~~Disable Fire particles~~
   - ~~Disable Lava particles~~
@@ -26,15 +26,16 @@
   - ~~Static Chest models~~
   - ~~Static Banner models~~
   - ~~static decorated pot models~~
-  - static bell models
-  - static copper golem statue models
+  - ~~static bell models~~
+  - ~~static copper golem statue models~~
+  - ~~static lectern models~~
   - ~~Optimized Shelf rendering logic~~
   - ~~Optimized Campfire rendering logic~~
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
   - ~~3D Ladders~~
-  - 3D Iron Chains & Copper Chains
+  - ~~3D Iron Chains & Copper Chains~~
   - 3D Iron Bars & Copper Bars
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
@@ -226,4 +227,19 @@
 - add a generic "hide all particles" toggle in rendering screen
 
 
-- add static cushion models feature for the new versions. they are probably block entities, judging from how they behave
+- static lectern models? or optimized, idk
+
+
+- add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
+
+
+
+- add scrolling items in inventories with the scroll wheel
+- add moving all the items into and out of your inventory with ctrl+shift+click
+  - this goes in the keybinds screen too
+
+
+- add world stats
+  - number of regions
+  - number of generated chunks
+  - size of the world directory

@@ -6,148 +6,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.primitives.Chars;
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.BellBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DecoratedPotPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LecternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.BlackBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.BlueBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.BrownBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.CyanBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.GrayBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.GreenBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.LightBlueBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.LightGrayBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.LimeBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.MagentaBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.OrangeBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.PinkBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.PurpleBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.RedBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.WhiteBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.YellowBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.BlackWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.BlueWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.BrownWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.CyanWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.GrayWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.GreenWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.LightBlueWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.LightGrayWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.LimeWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.MagentaWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.OrangeWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.PinkWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.PurpleWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.RedWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.WhiteWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.YellowWallBannerPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.CopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.ExposedCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.IronChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.OxidizedCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedExposedCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedOxidizedCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WaxedWeatheredCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.WeatheredCopperChainPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.CopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.EnderChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.ExposedCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.NormalChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.OxidizedCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.TrappedChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedExposedCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedOxidizedCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WaxedWeatheredCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.WeatheredCopperChestPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.CopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.ExposedCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.OxidizedCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedExposedCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedOxidizedCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WaxedWeatheredCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.WeatheredCopperGolemStatuePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.CopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.ExposedCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.NormalLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.OxidizedCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.SoulLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedExposedCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedOxidizedCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WaxedWeatheredCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.WeatheredCopperLanternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.ActivatorRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.DetectorRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.PoweredRailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.RailPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.AcaciaCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BambooCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.BirchCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CherryCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.CrimsonCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.DarkOakCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.JungleCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.MangroveCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.OakCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.PaleOakCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.SpruceCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.WarpedCeilingHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.AcaciaStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.BambooStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.BirchStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.CherryStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.CrimsonStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.DarkOakStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.JungleStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.MangroveStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.OakStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.PaleOakStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.SpruceStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.WarpedStandingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.AcaciaWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.BambooWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.BirchWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.CherryWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.CrimsonWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.DarkOakWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.JungleWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.MangroveWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.OakWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.PaleOakWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.SpruceWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.WarpedWallSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.AcaciaWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.BambooWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.BirchWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.CherryWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.CrimsonWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.DarkOakWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.JungleWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.MangroveWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.OakWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.PaleOakWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.SpruceWallHangingSignPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.WarpedWallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.bars.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.*;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -204,7 +95,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
 
     // A map containing all the assembled models for each possible BlockState. The runtime resolver fetches models from here
     // This doesn't include the vanilla model.
-    private static Map<BlockState, List<BlockStateModel>> customModelsForStates = new ConcurrentHashMap<>();
+    private static Map<BlockState, ModelSet> cachedModelSets = new ConcurrentHashMap<>();
 
 
 
@@ -223,8 +114,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new    GlowLichenPartProvider(),
             new  DecoratedPotPartProvider(),
             new     BellBlockPartProvider(),
+            new       LecternPartProvider(),
 
-            new          RailPartProvider(),
+            new    NormalRailPartProvider(),
             new   PoweredRailPartProvider(),
             new ActivatorRailPartProvider(),
             new  DetectorRailPartProvider(),
@@ -355,36 +247,23 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new          WaxedCopperGolemStatuePartProvider(),
             new   WaxedExposedCopperGolemStatuePartProvider(),
             new WaxedWeatheredCopperGolemStatuePartProvider(),
-            new  WaxedOxidizedCopperGolemStatuePartProvider()
+            new  WaxedOxidizedCopperGolemStatuePartProvider(),
+
+            new                 IronBarsPartProvider(),
+            new               CopperBarsPartProvider(),
+            new        ExposedCopperBarsPartProvider(),
+            new      WeatheredCopperBarsPartProvider(),
+            new       OxidizedCopperBarsPartProvider(),
+            new          WaxedCopperBarsPartProvider(),
+            new   WaxedExposedCopperBarsPartProvider(),
+            new WaxedWeatheredCopperBarsPartProvider(),
+            new  WaxedOxidizedCopperBarsPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }
     }
 
 
-
-
-    private static List<String> trimVariationSuffixes(final List<String> names) {
-        final List<String> r = new ArrayList<>();
-        for(final String name : names) {
-            if(name.length() >= 2) {
-                final char y = name.charAt(name.length() - 2);
-                final char z = name.charAt(name.length() - 1);
-                if(
-                    y == '_' && (
-                        PART_SUFFIXES_HORIZONTAL.contains(z) ||
-                        PART_SUFFIXES_VERTICAL.contains(z) ||
-                        PART_SUFFIXES_AXIS.contains(z)
-                    )
-                ) {
-                    r.add(name.substring(0, name.length() - 2));
-                }
-                continue;
-            }
-            r.add(name);
-        }
-        return r;
-    }
 
 
 
@@ -461,8 +340,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                     final __base_PartProvider partProvider = partProviders.get(block);
                     model.resolveDependencies(resolver);
                     if(partProvider != null) {
-                        final List<Identifier> ids = __base_PartProvider.calcPartIdsFromNames(trimVariationSuffixes(partProvider.calcPartNames(state)));
-                        for(final Identifier id : ids) {
+                        for(final Identifier id : partProvider.calcDependencyIds()) {
                             resolver.markDependency(id);
                         }
                     }
@@ -501,8 +379,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             // For each model ID of this blockstate
             final __base_PartProvider partProvider = partProviders.get(block);
             if(partProvider != null) {
-                final List<Identifier> partIds = __base_PartProvider.calcPartIdsFromNames(trimVariationSuffixes(partProvider.calcPartNames(state)));
-                for(final Identifier partId : partIds) {
+                for(final Identifier partId : partProvider.calcDependencyIds()) {
                     final String variantSuffixes = requestedModelVariants.get(partId);
 
                     // Bake one model per horizontal direction
@@ -577,26 +454,30 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                     //! because Minecraft itself loads models lazily. Trying to load all the parts before any rendering occurs would result in missing cache entries
                     final __base_PartProvider partProvider = partProviders.get(block);
                     if(partProvider != null) {
-                        final List<BlockStateModel> cachedParts = customModelsForStates.computeIfAbsent(state, s -> {
-                            final List<BlockStateModel> collected = new ArrayList<>();
+                        final ModelSet cachedModelSetsForState = cachedModelSets.computeIfAbsent(state, s -> {
+                            final ModelSet r = new ModelSet();
+                            for(int i = 0; i < partProvider.getModelSetNumber(); ++i) {
+                                final ArrayList<BlockStateModel> collected = new ArrayList<>();
 
-                            for(final Identifier partId : partProvider.calcPartIds(s)) {
-                                final BlockStateModel custom = customModelParts.get(partId);
-                                if(custom != null) {
-                                    collected.add(custom);
+                                for(final Identifier partId : partProvider.calcPartIds(s, i)) {
+                                    final BlockStateModel custom = customModelParts.get(partId);
+                                    if(custom != null) {
+                                        collected.add(custom);
+                                    }
+                                    else {
+                                        EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
+                                    }
                                 }
-                                else {
-                                    EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
-                                }
+                                r.add(collected);
                             }
-                            return collected;
+                            return r;
                         });
 
 
 
                         // Add custom model parts if needed (list can be empty but never null)
                         if(partProvider.shouldUseCustom(state)) {
-                            for(final BlockStateModel cachedPart : cachedParts) {
+                            for(final BlockStateModel cachedPart : cachedModelSetsForState.get(partProvider.calcCurrentModelSetIndex())) {
                                 cachedPart.collectParts(random, output);
                             }
                         }

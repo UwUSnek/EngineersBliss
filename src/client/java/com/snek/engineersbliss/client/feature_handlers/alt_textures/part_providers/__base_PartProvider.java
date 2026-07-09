@@ -16,18 +16,33 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class __base_PartProvider {
     public abstract Block getBlock();
-    public abstract List<String> calcPartNames(BlockState state);
+    public abstract List<String> calcDependencyNames();
+    public abstract List<String> calcPartNames(BlockState state, final int modelSetIndex);
     public abstract boolean shouldUseCustom(BlockState state);
     public abstract boolean shouldKeepVanilla(BlockState state);
 
 
 
-    public final List<Identifier> calcPartIds(final BlockState state) {
-        return calcPartIdsFromNames(calcPartNames(state));
-    }
-    public static final List<Identifier> calcPartIdsFromNames(List<String> partNames) {
+    /**
+     * Calculates all the IDs of the Json model parts required to display the provided BlockState.
+     * @param state The BlockState.
+     * @param modelSetIndex The index of the model set to generate calculate part IDs for.
+     */
+    public final List<Identifier> calcPartIds(final BlockState state, final int modelSetIndex) {
         final List<Identifier> r = new ArrayList<>();
-        for(final String name : partNames) {
+        for(final String name : calcPartNames(state, modelSetIndex)) {
+            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
+        }
+        return r;
+    }
+
+
+    /**
+     * Calculates all the IDs of the actual Json models this block's model sets depend on.
+     */
+    public final List<Identifier> calcDependencyIds() {
+        final List<Identifier> r = new ArrayList<>();
+        for(final String name : calcDependencyNames()) {
             r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
         }
         return r;
@@ -36,6 +51,10 @@ public abstract class __base_PartProvider {
 
 
 
+    @SuppressWarnings("java:S3400")
+    protected static String getSingleVariantSuffix() {
+        return "_n";
+    }
     protected static String getVariantSuffixFromDirection(final Direction direction) {
         return switch(direction) {
             case NORTH -> "_n";
@@ -63,5 +82,24 @@ public abstract class __base_PartProvider {
             default -> Direction.WEST; //! 3, no other value is possible here
         };
         return "_" + quadrantRotation + getVariantSuffixFromDirection(direction);
+    }
+
+
+
+
+    /**
+     * Returns the amount of possible models for each possible BlockState of the affected block, aka model sets.
+     * @return The total number of model sets.
+     */
+    public int getModelSetNumber() {
+        return 1;
+    }
+
+    /**
+     * Calculates the index of the model set to use based on the currently active features.
+     * @return The index of the model set to use.
+     */
+    public int calcCurrentModelSetIndex() {
+        return 0;
     }
 }
