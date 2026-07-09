@@ -1,4 +1,5 @@
 {
+  "credit": "UwU_Snek",
   "parent": "engineers-bliss:block/hanging_signs/3d/templates/wall_attachment",
   "textures": {
     "texture": "engineers-bliss:block/hanging_signs/vanilla/dark_oak"

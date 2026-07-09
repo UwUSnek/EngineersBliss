@@ -1,4 +1,5 @@
 {
+  "credit": "UwU_Snek",
   "parent": "engineers-bliss:block/signs/vanilla/templates/standing_3",
   "textures": {
     "texture": "engineers-bliss:block/signs/vanilla/cherry"

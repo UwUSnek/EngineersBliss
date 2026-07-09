@@ -1,90 +1,90 @@
 {
-	"format_version": "1.21.11",
-	"credit": "UwU_Snek",
-	"textures": {
-		"1": "#texture",
-		"particle": "#texture"
-	},
-	"elements": [
-		{
-			"from": [
-				0,
-				4.333,
-				14.334
-			],
-			"to": [
-				16,
-				12.333,
-				15.668
-			],
-			"rotation": {
-				"x": 0,
-				"y": -180,
-				"z": 0,
-				"origin": [
-					8,
-					8.333,
-					15.001
-				]
-			},
-			"faces": {
-				"north": {
-					"uv": [
-						7,
-						1,
-						13,
-						7
-					],
-					"texture": "#1"
-				},
-				"east": {
-					"uv": [
-						0,
-						1,
-						0.5,
-						7
-					],
-					"texture": "#1",
-					"cullface": "east"
-				},
-				"south": {
-					"uv": [
-						0.5,
-						1,
-						6.5,
-						7
-					],
-					"texture": "#1"
-				},
-				"west": {
-					"uv": [
-						6.5,
-						1,
-						7,
-						7
-					],
-					"texture": "#1",
-					"cullface": "west"
-				},
-				"up": {
-					"uv": [
-						0.5,
-						0,
-						6.5,
-						1
-					],
-					"texture": "#1"
-				},
-				"down": {
-					"uv": [
-						6.5,
-						0,
-						12.5,
-						1
-					],
-					"texture": "#1"
-				}
-			}
-		}
-	]
+  "credit": "UwU_Snek",
+  "format_version": "1.21.11",
+  "textures": {
+    "1": "#texture",
+    "particle": "#texture"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        4.333,
+        14.334
+      ],
+      "to": [
+        16,
+        12.333,
+        15.668
+      ],
+      "rotation": {
+        "x": 0,
+        "y": -180,
+        "z": 0,
+        "origin": [
+          8,
+          8.333,
+          15.001
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            7,
+            1,
+            13,
+            7
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            0,
+            1,
+            0.5,
+            7
+          ],
+          "texture": "#1",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            0.5,
+            1,
+            6.5,
+            7
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            6.5,
+            1,
+            7,
+            7
+          ],
+          "texture": "#1",
+          "cullface": "west"
+        },
+        "up": {
+          "uv": [
+            0.5,
+            0,
+            6.5,
+            1
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            6.5,
+            0,
+            12.5,
+            1
+          ],
+          "texture": "#1"
+        }
+      }
+    }
+  ]
 }
