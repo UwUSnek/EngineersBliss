@@ -33,7 +33,7 @@ public class SpeedFactorFeaturesMixin {
         method = "getBlockSpeedFactor",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getSpeedFactor()F")
     )
-    private float getBlockSpeedFactor(final Block block) {
+    private float eb$getBlockSpeedFactor(final Block block) {
         if(block == Blocks.HONEY_BLOCK) {
             if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_HONEY_SLOWDOWN)) {
                 return DEFAULT_SPEED_FACTOR;

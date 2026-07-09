@@ -33,7 +33,7 @@ public class CampfireBlockParticleSuppressorMixin {
         ),
         require = 1
     )
-    private void redirectAnimateTickParticle(
+    private void eb$animateTick(
         final Level level,
         final ParticleOptions particle,
         final double x, final double y, final double z,
@@ -50,7 +50,7 @@ public class CampfireBlockParticleSuppressorMixin {
     // Block makeParticles (called by dowse function)
     @SuppressWarnings("unused")
     @Inject(method = "makeParticles", at = @At("HEAD"), cancellable = true, require = 1)
-	private static void makeParticles(
+	private static void eb$makeParticles(
         final Level level,
         final BlockPos pos,
         final boolean isSignalFire,

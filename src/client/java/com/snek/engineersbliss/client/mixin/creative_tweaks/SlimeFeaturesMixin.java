@@ -24,7 +24,7 @@ public class SlimeFeaturesMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "stepOn", at = @At("HEAD"), cancellable = true)
-    private void stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity, final CallbackInfo ci) {
+    private void eb$stepOn(final Level level, final BlockPos pos, final BlockState onState, final Entity entity, final CallbackInfo ci) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_SLOWDOWN)) {
             ci.cancel();
         }
@@ -36,7 +36,7 @@ public class SlimeFeaturesMixin {
         method = "updateEntityMovementAfterFallOn",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
-    private boolean isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
+    private boolean eb$isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SLIME_BOUNCE)) {
             return true;
         }

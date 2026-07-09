@@ -24,7 +24,7 @@ public class WaterDripParticleSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "getDripParticle", at = @At("HEAD"), cancellable = true, require = 1)
-	private void getDripParticle(final CallbackInfoReturnable<ParticleOptions> cir) {
+	private void eb$getDripParticle(final CallbackInfoReturnable<ParticleOptions> cir) {
         if(AltTexturesHandler.getFeature(AltTextureFeature.NO_DRIP_PARTICLES)) {
             cir.setReturnValue(null);
         }

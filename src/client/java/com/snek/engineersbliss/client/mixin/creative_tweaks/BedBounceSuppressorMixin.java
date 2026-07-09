@@ -22,7 +22,7 @@ public class BedBounceSuppressorMixin {
         method = "updateEntityMovementAfterFallOn",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
-    private boolean isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
+    private boolean eb$isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_BED_BOUNCE)) {
             return true;
         }

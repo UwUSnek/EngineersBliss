@@ -28,7 +28,7 @@ public class WireDustParticleSuppressorMixin {
     //! Redstone Wire only has particles in its animateTick logic so it can get away with a simple inject
     @SuppressWarnings("unused")
     @Inject(method = "animateTick", at = @At("HEAD"), cancellable = true, require = 1)
-	private void animateTick(
+	private void eb$animateTick(
         final BlockState state,
         final Level level,
         final BlockPos pos,

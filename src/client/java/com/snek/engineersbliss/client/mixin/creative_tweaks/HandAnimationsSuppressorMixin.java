@@ -29,7 +29,7 @@ public class HandAnimationsSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "swingArm", at = @At("HEAD"), cancellable = true, require = 1)
-    private void engineersBliss$swingArm(final float attack, final PoseStack poseStack, final int invert, final HumanoidArm arm, final CallbackInfo ci) {
+    private void eb$swingArm(final float attack, final PoseStack poseStack, final int invert, final HumanoidArm arm, final CallbackInfo ci) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION)) {
             ci.cancel();
         }
@@ -51,7 +51,7 @@ public class HandAnimationsSuppressorMixin {
             ordinal = 0
         )
     )
-    private float engineersBliss$swapAnimationScaleMainHand(float original) {
+    private float eb$swapAnimationScaleMainHand(float original) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION)) {
             return 0.0F;
         }
@@ -71,7 +71,7 @@ public class HandAnimationsSuppressorMixin {
             ordinal = 1
         )
     )
-    private float engineersBliss$swapAnimationScaleOffHand(float original) {
+    private float eb$swapAnimationScaleOffHand(float original) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION)) {
             return 0.0F;
         }
@@ -84,7 +84,7 @@ public class HandAnimationsSuppressorMixin {
     //! This forces the item to change instantly instead of waiting for an animation that doesn't exist anymore
     @SuppressWarnings("unused")
     @ModifyReturnValue(method = "shouldInstantlyReplaceVisibleItem", at = @At("RETURN"), require = 1)
-    private boolean engineersBliss$shouldInstantlyReplaceVisibleItem(boolean original) {
+    private boolean eb$shouldInstantlyReplaceVisibleItem(boolean original) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION)) {
             return true;
         }

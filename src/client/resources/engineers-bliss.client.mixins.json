@@ -55,7 +55,6 @@
 
 
         "alt_textures.renderer_suppressors.BlockEntityDispatcherSuppressorMixin",
-        "alt_textures.renderer_suppressors.ChestRenderingSuppressorMixin",
         "alt_textures.renderer_suppressors.AbstractSignRenderingSuppressorMixin",
         "alt_textures.renderer_suppressors.StandingSignRenderingSuppressorMixin",
         "alt_textures.renderer_suppressors.HangingSignRenderingSuppressorMixin",

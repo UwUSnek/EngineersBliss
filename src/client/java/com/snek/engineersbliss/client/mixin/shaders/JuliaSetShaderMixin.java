@@ -43,7 +43,7 @@ public abstract class JuliaSetShaderMixin {
         cancellable = false,
         require = 1
     )
-    private void onAfterGuiRender(final DeltaTracker deltaTracker, final boolean advanceGameTime, final CallbackInfo ci) {
+    private void eb$endFrame(final DeltaTracker deltaTracker, final boolean advanceGameTime, final CallbackInfo ci) {
 
         // Return and reset screen if current screen is not a julia renderer
         final Minecraft mc = Minecraft.getInstance();

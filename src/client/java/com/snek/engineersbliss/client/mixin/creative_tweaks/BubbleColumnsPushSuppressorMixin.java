@@ -19,15 +19,17 @@ public class BubbleColumnsPushSuppressorMixin {
     private BubbleColumnsPushSuppressorMixin() {}
 
 
+    @SuppressWarnings("unused")
     @Inject(method = "handleOnAboveBubbleColumn", at = @At("HEAD"), cancellable = true, require = 1)
-    private static void handleOnAboveBubbleColumn(final Entity entity, final boolean dragDown, final BlockPos pos, final CallbackInfo ci) {
+    private static void eb$handleOnAboveBubbleColumn(final Entity entity, final boolean dragDown, final BlockPos pos, final CallbackInfo ci) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_BUBBLE_COLUMN_DRAG)) {
             ci.cancel();
         }
     }
 
+    @SuppressWarnings("unused")
     @Inject(method = "handleOnInsideBubbleColumn", at = @At("HEAD"), cancellable = true, require = 1)
-    private static void handleOnInsideBubbleColumn(final Entity entity, final boolean dragDown, final CallbackInfo ci) {
+    private static void eb$handleOnInsideBubbleColumn(final Entity entity, final boolean dragDown, final CallbackInfo ci) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_BUBBLE_COLUMN_DRAG)) {
             ci.cancel();
         }

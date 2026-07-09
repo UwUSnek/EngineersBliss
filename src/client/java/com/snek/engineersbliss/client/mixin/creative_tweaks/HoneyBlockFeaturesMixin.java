@@ -21,7 +21,7 @@ public class HoneyBlockFeaturesMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "doSlideMovement", at = @At("HEAD"), cancellable = true, require = 1)
-    private void doSlideMovement(final Entity entity, CallbackInfo ci) {
+    private void eb$doSlideMovement(final Entity entity, CallbackInfo ci) {
         if(CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_HONEY_SLIDING)) {
             ci.cancel();
         }

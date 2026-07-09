@@ -20,7 +20,7 @@ public class CurrentDragSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "isPushedByFluid", at = @At("RETURN"), cancellable = true, require = 1)
-    private void isPushedByFluid(final CallbackInfoReturnable<Boolean> cir) {
+    private void eb$isPushedByFluid(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {
             if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_CURRENT_DRAG)) {
                 cir.setReturnValue(false);

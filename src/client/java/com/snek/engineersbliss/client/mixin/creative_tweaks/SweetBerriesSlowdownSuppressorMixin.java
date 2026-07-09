@@ -28,7 +28,7 @@ public class SweetBerriesSlowdownSuppressorMixin {
             target = "Lnet/minecraft/world/entity/Entity;makeStuckInBlock(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/phys/Vec3;)V"
         )
     )
-    private void makeStuckInBlock(final Entity entity, final BlockState state, final Vec3 speedMultiplier) {
+    private void eb$makeStuckInBlock(final Entity entity, final BlockState state, final Vec3 speedMultiplier) {
         if(!CreativeTweaksHandler.clientPlayerHasFeature(entity, CreativeTweakFeature.DISABLE_SWEET_BERRIES_SLOWDOWN)) {
             entity.makeStuckInBlock(state, speedMultiplier);
         }

@@ -32,7 +32,7 @@ public class JumpFactorFeaturesMixin {
         method = "getBlockJumpFactor",
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;getJumpFactor()F")
     )
-    private float getBlockSpeedFactor(final Block block) {
+    private float eb$getBlockSpeedFactor(final Block block) {
         if(block == Blocks.HONEY_BLOCK) {
             if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_HONEY_JUMP)) {
                 return DEFAULT_JUMP_FACTOR;

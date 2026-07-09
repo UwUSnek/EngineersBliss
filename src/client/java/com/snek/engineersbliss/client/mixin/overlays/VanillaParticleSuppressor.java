@@ -23,7 +23,7 @@ public class VanillaParticleSuppressor {
 
     @SuppressWarnings("unused")
     @Inject(method = "getMarkerParticleTarget", at = @At("HEAD"), cancellable = true, require = 1)
-	private void getMarkerParticleTarget(final CallbackInfoReturnable<Block> cir) {
+	private void eb$getMarkerParticleTarget(final CallbackInfoReturnable<Block> cir) {
         if(OverlaysHandler.getFeature(OverlayFeature.BETTER_BARRIER_DISPLAY)) {
             final @NotNull ItemStack stack = Minecraft.getInstance().player.getMainHandItem();
             if(stack.getItem() == Items.BARRIER) cir.setReturnValue(null);
