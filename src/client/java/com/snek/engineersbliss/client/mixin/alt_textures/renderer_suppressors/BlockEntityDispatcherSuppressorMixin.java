@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
  * This gains a few FPS. Sometimes.
  * ! This is only separate from BlockEntityDispatcherOptimizerMixin to improve code structure and readability.
  */
+@SuppressWarnings("java:S6916")
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class BlockEntityDispatcherSuppressorMixin {
 
@@ -41,25 +42,37 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
-        switch((Object)this) {
-            case SignBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)
-                -> cir.setReturnValue(null);
-            case LidBlockEntity e when //! LidBlockEntity covers all chest types
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)
-                -> cir.setReturnValue(null);
-            case BannerBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)
-                -> cir.setReturnValue(null);
-            case DecoratedPotBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS) && !BlockEntityUtils.decoratedPotHasSherds(e)
-                -> cir.setReturnValue(null);
-            case BellBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)
-                -> cir.setReturnValue(null);
-            case CopperGolemStatueBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)
-                -> cir.setReturnValue(null);
+        switch(blockEntity) {
+            case SignBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case LidBlockEntity e -> { //! LidBlockEntity covers all chest types
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case BannerBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case DecoratedPotBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS) && !BlockEntityUtils.decoratedPotHasSherds(e)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case BellBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case CopperGolemStatueBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)) {
+                    cir.setReturnValue(null);
+                }
+            }
             default -> {}
         }
     }

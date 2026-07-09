@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.mixin.alt_textures.renderer_suppressors;
+package com.snek.engineersbliss.client.mixin.alt_textures.renderer_optimizers;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,15 +13,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.world.level.block.entity.BannerBlockEntity;
-import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
-import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
-import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
-import net.minecraft.world.level.block.entity.LidBlockEntity;
+import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.ShelfBlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 
 
@@ -31,6 +26,7 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
  * This also skips the distance check and render state creation, significantly improving FPS.
  * ! This is only separate from BlockEntityDispatcherSuppressorMixin to improve code structure and readability.
  */
+@SuppressWarnings("java:S6916")
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class BlockEntityDispatcherOptimizerMixin {
 
@@ -42,13 +38,22 @@ public abstract class BlockEntityDispatcherOptimizerMixin {
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
-        switch((Object)this) {
-            case CampfireBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_CAMPFIRES) && BlockEntityUtils.campfireHasItems(e)
-                -> cir.setReturnValue(null);
-            case ShelfBlockEntity e when
-                AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_SHELVES) && BlockEntityUtils.shelfHasItems(e)
-                -> cir.setReturnValue(null);
+        switch(blockEntity) {
+            case CampfireBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_CAMPFIRES) && !BlockEntityUtils.campfireHasItems(e)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case ShelfBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_SHELVES) && !BlockEntityUtils.shelfHasItems(e)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case LecternBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_LECTERNS) && !BlockEntityUtils.lecternHasBook(e)) {
+                    cir.setReturnValue(null);
+                }
+            }
             default -> {}
         }
     }

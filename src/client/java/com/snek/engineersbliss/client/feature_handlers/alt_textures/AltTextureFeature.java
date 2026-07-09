@@ -188,6 +188,15 @@ public enum AltTextureFeature {
         ,
         List.of() //! Feature doesn't change the model. No section refresh
     ),
+    OPTIMIZED_LECTERNS(true,
+        () -> new UiTxt("Optimized Lectern models"),
+        () -> new Txt()
+            .cat(new UiTxt("Optimizes Lectern rendering logic to improve performance.\n"))
+            .cat(new UiTxt("This doesn't cause visual changes.\n"))
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+        ,
+        List.of() //! Feature doesn't change the model. No section refresh
+    ),
 
 
 

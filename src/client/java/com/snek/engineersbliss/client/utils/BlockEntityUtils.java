@@ -32,7 +32,7 @@ public class BlockEntityUtils {
      * @param blockEntity The lectern block entity.
      * @return True if the lectern contains a book, false otherwise.
      */
-    public static boolean campfireHasItems(final LecternBlockEntity blockEntity) {
+    public static boolean lecternHasBook(final LecternBlockEntity blockEntity) {
         return blockEntity.getBlockState().getValue(LecternBlock.HAS_BOOK);
     }
 
