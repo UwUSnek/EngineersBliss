@@ -22,6 +22,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
@@ -30,7 +31,10 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.player.Player;
 
 
@@ -238,7 +242,7 @@ public class PauseScreenMixin extends Screen {
 
     @Inject(method = "extractRenderState", at = @At("TAIL"), cancellable = false, require = 1)
 	public void eb$extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a, CallbackInfo ci) {
-        Player player = Minecraft.getInstance().player;
+        LocalPlayer player = Minecraft.getInstance().player;
         if(player == null) return;
 
 
@@ -256,6 +260,30 @@ public class PauseScreenMixin extends Screen {
         // Draw player model
         PlayerMannequin model = PlayerMannequin.getMannequin();
         InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0F, mouseX, mouseY, model);
+
+
+        // Calculate text dimensions and position
+        final Font font = Minecraft.getInstance().font;
+        int textCenterX = (x0 + x1) / 2;
+        int nameY = clusterTop - 32;
+        int titleY = nameY + font.lineHeight + 2;
+
+
+        // Calculate play time //! Send a stats update request to the server. This is required to update the playtime value
+        Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS)); //FIXME cache and compare to the latest timestamp
+        final int ticks = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
+        int totalSeconds = ticks / 20;
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+        String playtime = String.format("%dh %dm %ds", hours, minutes, seconds);
+
+
+        // Draw player name an title
+        final Component playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name())).getBold();
+        final Component playTime   = new UiTxt(String.format("Played for %s", playtime)).get();
+        graphics.centeredText(font, playerName, textCenterX,  nameY, 0xFFFFC200);
+        graphics.centeredText(font, playTime,   textCenterX, titleY, 0xFFDDDDDD);
     }
 
 

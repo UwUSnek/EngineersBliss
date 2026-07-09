@@ -24,11 +24,24 @@ public class UiTxt extends Txt {
     public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; }
 
 
-    @Override
-    public @NotNull Component get() {
-        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_MEDIUM, textScale))));
+
+
+    public @NotNull Component get(final String fontName) {
+        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(fontName, textScale))));
         return rawText;
     }
+    @Override
+    public @NotNull Component get() {
+        return get(Layout.FONT_NAME_UI_MEDIUM);
+    }
+    public @NotNull Component getBold() {
+        return get(Layout.FONT_NAME_UI_BOLD);
+    }
+    public @NotNull Component getLight() {
+        return get(Layout.FONT_NAME_UI_LIGHT);
+    }
+
+
 
 
     @Override
