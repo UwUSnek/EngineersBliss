@@ -27,6 +27,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.bars.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
@@ -246,7 +247,17 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new          WaxedCopperGolemStatuePartProvider(),
             new   WaxedExposedCopperGolemStatuePartProvider(),
             new WaxedWeatheredCopperGolemStatuePartProvider(),
-            new  WaxedOxidizedCopperGolemStatuePartProvider()
+            new  WaxedOxidizedCopperGolemStatuePartProvider(),
+
+            new                 IronBarsPartProvider(),
+            new               CopperBarsPartProvider(),
+            new        ExposedCopperBarsPartProvider(),
+            new      WeatheredCopperBarsPartProvider(),
+            new       OxidizedCopperBarsPartProvider(),
+            new          WaxedCopperBarsPartProvider(),
+            new   WaxedExposedCopperBarsPartProvider(),
+            new WaxedWeatheredCopperBarsPartProvider(),
+            new  WaxedOxidizedCopperBarsPartProvider()
         )){
             partProviders.put(provider.getBlock(), provider);
         }

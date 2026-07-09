@@ -1,0 +1,6 @@
+{
+  "parent": "engineers-bliss:block/bars/3d/templates/post_ends",
+  "textures": {
+    "texture": "engineers-bliss:block/bars/3d/weathered_copper"
+  }
+}
