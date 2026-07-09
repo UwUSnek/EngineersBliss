@@ -170,6 +170,15 @@ public enum AltTextureFeature {
         ,
         Stream.of(Groups.ALL_COPPER_GOLEM_STATUES.stream()).flatMap(s -> s).toList()
     ),
+    STATIC_LECTERNS(true,
+        () -> new UiTxt("Static Lectern models"),
+        () -> new Txt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Lecterns with a static model to improve performance.\n"))
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE)
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+        ,
+        List.of(Blocks.LECTERN)
+    ),
     OPTIMIZED_SHELVES(true,
         () -> new UiTxt("Optimized Shelf models"),
         () -> new Txt()
@@ -183,15 +192,6 @@ public enum AltTextureFeature {
         () -> new UiTxt("Optimized Campfire models"),
         () -> new Txt()
             .cat(new UiTxt("Optimizes Campfire and Soul Campfire rendering logic to improve performance.\n"))
-            .cat(new UiTxt("This doesn't cause visual changes.\n"))
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
-        ,
-        List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    OPTIMIZED_LECTERNS(true,
-        () -> new UiTxt("Optimized Lectern models"),
-        () -> new Txt()
-            .cat(new UiTxt("Optimizes Lectern rendering logic to improve performance.\n"))
             .cat(new UiTxt("This doesn't cause visual changes.\n"))
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
         ,

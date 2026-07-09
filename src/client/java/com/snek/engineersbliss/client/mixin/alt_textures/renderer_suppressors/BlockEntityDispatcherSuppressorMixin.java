@@ -11,6 +11,7 @@ import com.snek.engineersbliss.client.utils.BlockEntityUtils;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
@@ -18,6 +19,8 @@ import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.world.level.block.entity.EnchantingTableBlockEntity;
+import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 
@@ -70,6 +73,11 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
             }
             case CopperGolemStatueBlockEntity e -> {
                 if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case LecternBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_LECTERNS)) {
                     cir.setReturnValue(null);
                 }
             }

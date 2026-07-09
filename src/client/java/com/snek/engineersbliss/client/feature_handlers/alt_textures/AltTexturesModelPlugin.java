@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.primitives.Chars;
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
@@ -21,6 +19,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LecternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
@@ -114,6 +113,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new    GlowLichenPartProvider(),
             new  DecoratedPotPartProvider(),
             new     BellBlockPartProvider(),
+            new       LecternPartProvider(),
 
             new    NormalRailPartProvider(),
             new   PoweredRailPartProvider(),

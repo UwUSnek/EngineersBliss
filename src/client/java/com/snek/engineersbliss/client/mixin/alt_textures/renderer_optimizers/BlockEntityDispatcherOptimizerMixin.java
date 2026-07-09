@@ -49,11 +49,6 @@ public abstract class BlockEntityDispatcherOptimizerMixin {
                     cir.setReturnValue(null);
                 }
             }
-            case LecternBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_LECTERNS) && !BlockEntityUtils.lecternHasBook(e)) {
-                    cir.setReturnValue(null);
-                }
-            }
             default -> {}
         }
     }
