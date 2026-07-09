@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.utils;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,13 +12,18 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +43,36 @@ import net.minecraft.world.phys.AABB;
 
 public class MinecraftUtils {
     private MinecraftUtils() { }
+
+
+
+    public static void register() {
+        ClientPlayConnectionEvents.JOIN      .register((listener, sender, client) -> fetchPlaytime());
+        ClientPlayConnectionEvents.DISCONNECT.register((listener,         client) -> invalidatePlaytimeData());
+    }
+
+
+
+
+    // Playtime tracking
+    private static int playtimeAtRequest = 0;
+    private static long playtimeRequestTime = 0;
+    public static void fetchPlaytime() {
+        Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
+        playtimeRequestTime = Clock.systemUTC().millis();
+    }
+    public static void invalidatePlaytimeData() {
+        playtimeAtRequest = 0;
+        playtimeRequestTime = 0;
+    }
+    public static long getPlaytimeMs() {
+        final LocalPlayer player = Minecraft.getInstance().player;
+        if(playtimeAtRequest == 0) playtimeAtRequest = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
+        final long curTime = Clock.systemUTC().millis();
+        final long timeElapsed = curTime - playtimeRequestTime;
+        return playtimeAtRequest * (1000 / 20) + timeElapsed;
+    }
+
 
 
 

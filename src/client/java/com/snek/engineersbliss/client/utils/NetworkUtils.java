@@ -22,7 +22,7 @@ public class NetworkUtils {
      * Initializes this utility class and registers relevant listeners.
      * This must be called in the mod's client init function.
      */
-    public static void init() {
+    public static void register() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             _serverHasMod = ClientPlayNetworking.getReceived().contains(ComparatorUpdatePayload.TYPE.id());
         });

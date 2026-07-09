@@ -8,6 +8,7 @@ import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiv
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
@@ -31,7 +32,8 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Initialize utility classes
-        NetworkUtils.init();
+        NetworkUtils.register();
+        MinecraftUtils.register();
 
 
         // Register WebP ImageIO reader

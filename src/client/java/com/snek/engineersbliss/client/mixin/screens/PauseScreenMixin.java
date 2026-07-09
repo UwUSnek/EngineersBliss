@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.mixin.screens;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +18,7 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
@@ -33,9 +34,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.entity.player.Player;
 
 
 
@@ -269,19 +267,17 @@ public class PauseScreenMixin extends Screen {
         int titleY = nameY + font.lineHeight + 2;
 
 
-        // Calculate play time //! Send a stats update request to the server. This is required to update the playtime value
-        Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS)); //FIXME cache and compare to the latest timestamp
-        final int ticks = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
-        int totalSeconds = ticks / 20;
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
+        // Calculate play time
+        final long ms = MinecraftUtils.getPlaytimeMs();
+        final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
+        final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
+        final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
         String playtime = String.format("%dh %dm %ds", hours, minutes, seconds);
 
 
         // Draw player name an title
         final Component playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name())).getBold();
-        final Component playTime   = new UiTxt(String.format("Played for %s", playtime)).get();
+        final Component playTime   = new UiTxt(String.format("Playtime: %s", playtime)).get();
         graphics.centeredText(font, playerName, textCenterX,  nameY, 0xFFFFC200);
         graphics.centeredText(font, playTime,   textCenterX, titleY, 0xFFDDDDDD);
     }
