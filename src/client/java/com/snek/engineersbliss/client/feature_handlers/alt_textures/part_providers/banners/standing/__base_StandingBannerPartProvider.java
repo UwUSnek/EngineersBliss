@@ -14,7 +14,7 @@ public abstract class __base_StandingBannerPartProvider extends __base_BannerPar
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String colorName = getColorName();
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(BannerBlock.ROTATION));
         return List.of(

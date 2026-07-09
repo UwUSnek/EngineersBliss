@@ -20,7 +20,7 @@ public abstract class __base_CopperGolemStatuePartProvider extends __base_PartPr
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String golemName = getGolemName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(CopperGolemStatueBlock.FACING));
         final String poseName = state.getValue(CopperGolemStatueBlock.POSE).getSerializedName();

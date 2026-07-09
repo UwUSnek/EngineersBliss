@@ -24,7 +24,7 @@ public class ScaffoldingPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String stabilityName = state.getValue(ScaffoldingBlock.BOTTOM).booleanValue() ? "unstable" : "stable";
         return List.of(String.format("scaffolding/unobstructive/%s%s", stabilityName, getSingleVariantSuffix()));
     }

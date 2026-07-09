@@ -20,12 +20,12 @@ import net.minecraft.world.level.block.state.properties.RailShape;
 public abstract class __base_RailPartProvider extends __base_PartProvider {
     protected abstract String getRailTypeName();
     private static final List<RailShape> CURVED_SHAPES = List.of(RailShape.NORTH_EAST, RailShape.NORTH_WEST, RailShape.SOUTH_EAST, RailShape.SOUTH_WEST);
-
+    private static final List<String> railPathForSet = List.of("2d", "3d");
 
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
 
         //! Sloped shape names have the format "ascending_<direction>" so this uses that directly by removing "ascending_" as that matches the json file names perfectly.
         //! Non-sloped shape names already match json models so no changes are needed there. This includes curved normal rails.
@@ -40,12 +40,11 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
             case ASCENDING_WEST,               NORTH_WEST -> "_w";
         };
         final String poweredStateName = state.getBlock() != Blocks.RAIL ?
-            state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off" :
+            (state.getValue(BlockStateProperties.POWERED).booleanValue() ? "_on" : "_off") :
             ""
         ;
 
-        final boolean is3D = AltTexturesHandler.getFeature(AltTextureFeature.RAILS_3D);
-        return List.of(String.format("rails/consistent_sloped/%sd/%s/%s%s%s", is3D ? "3" : "2", railName, shapeName, poweredStateName, directionName));
+        return List.of(String.format("rails/consistent_sloped/%s/%s/%s%s%s", railPathForSet.get(modelSetIndex), railName, shapeName, poweredStateName, directionName));
     }
     //! Dependencies are defined by subclasses
 
@@ -62,5 +61,17 @@ public abstract class __base_RailPartProvider extends __base_PartProvider {
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
         return !shouldUseCustom(state);
+    }
+
+
+
+
+    @Override
+    public int getModelSetNumber() {
+        return 2;
+    }
+    @Override
+    public int calcCurrentModelSetIndex() {
+        return AltTexturesHandler.getFeature(AltTextureFeature.RAILS_3D) ? 1 : 0;
     }
 }

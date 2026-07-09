@@ -95,7 +95,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
 
     // A map containing all the assembled models for each possible BlockState. The runtime resolver fetches models from here
     // This doesn't include the vanilla model.
-    private static Map<BlockState, List<BlockStateModel>> customModelsForStates = new ConcurrentHashMap<>();
+    private static Map<BlockState, ModelSet> cachedModelSets = new ConcurrentHashMap<>();
 
 
 
@@ -443,26 +443,30 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                     //! because Minecraft itself loads models lazily. Trying to load all the parts before any rendering occurs would result in missing cache entries
                     final __base_PartProvider partProvider = partProviders.get(block);
                     if(partProvider != null) {
-                        final List<BlockStateModel> cachedParts = customModelsForStates.computeIfAbsent(state, s -> {
-                            final List<BlockStateModel> collected = new ArrayList<>();
+                        final ModelSet cachedModelSetsForState = cachedModelSets.computeIfAbsent(state, s -> {
+                            final ModelSet r = new ModelSet();
+                            for(int i = 0; i < partProvider.getModelSetNumber(); ++i) {
+                                final ArrayList<BlockStateModel> collected = new ArrayList<>();
 
-                            for(final Identifier partId : partProvider.calcPartIds(s)) {
-                                final BlockStateModel custom = customModelParts.get(partId);
-                                if(custom != null) {
-                                    collected.add(custom);
+                                for(final Identifier partId : partProvider.calcPartIds(s, i)) {
+                                    final BlockStateModel custom = customModelParts.get(partId);
+                                    if(custom != null) {
+                                        collected.add(custom);
+                                    }
+                                    else {
+                                        EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
+                                    }
                                 }
-                                else {
-                                    EngineerSBliss.LOGGER.error("Baked dynamic model part {} is unavailable", partId);
-                                }
+                                r.add(collected);
                             }
-                            return collected;
+                            return r;
                         });
 
 
 
                         // Add custom model parts if needed (list can be empty but never null)
                         if(partProvider.shouldUseCustom(state)) {
-                            for(final BlockStateModel cachedPart : cachedParts) {
+                            for(final BlockStateModel cachedPart : cachedModelSetsForState.get(partProvider.calcCurrentModelSetIndex())) {
                                 cachedPart.collectParts(random, output);
                             }
                         }

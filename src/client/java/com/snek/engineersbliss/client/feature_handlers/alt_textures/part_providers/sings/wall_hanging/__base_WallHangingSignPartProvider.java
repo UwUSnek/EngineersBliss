@@ -16,15 +16,17 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 public abstract class __base_WallHangingSignPartProvider extends __base_SignPartProvider {
+    private static final List<String> chainPathForSet = List.of("vanilla", "3d");
+
+
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String materialName = getSignMaterialName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING));
-        final String chainType = AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? "3d" : "vanilla";
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s_0%s",               materialName, dirName),
-            String.format("hanging_signs/%s/wall_attachment/%s%s", chainType, materialName, dirName)
+            String.format("hanging_signs/vanilla/board/%s_0%s",                                        materialName, dirName),
+            String.format("hanging_signs/%s/wall_attachment/%s%s", chainPathForSet.get(modelSetIndex), materialName, dirName)
         );
     }
     @Override
@@ -35,5 +37,17 @@ public abstract class __base_WallHangingSignPartProvider extends __base_SignPart
             String.format("hanging_signs/vanilla/wall_attachment/%s", materialName),
             String.format("hanging_signs/3d/wall_attachment/%s",      materialName)
         );
+    }
+
+
+
+
+    @Override
+    public int getModelSetNumber() {
+        return 2;
+    }
+    @Override
+    public int calcCurrentModelSetIndex() {
+        return AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? 1 : 0;
     }
 }

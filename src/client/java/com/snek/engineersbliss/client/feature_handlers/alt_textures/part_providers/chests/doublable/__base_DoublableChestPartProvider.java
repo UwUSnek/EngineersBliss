@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 public abstract class __base_DoublableChestPartProvider extends __base_ChestPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String chestName = getChestName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(ChestBlock.FACING));
         final String sideName = switch(state.getValue(ChestBlock.TYPE)) {

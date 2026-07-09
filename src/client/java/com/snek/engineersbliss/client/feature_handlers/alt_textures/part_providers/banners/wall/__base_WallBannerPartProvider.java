@@ -14,7 +14,7 @@ public abstract class __base_WallBannerPartProvider extends __base_BannerPartPro
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String colorName = getColorName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallBannerBlock.FACING));
         return List.of(

@@ -236,3 +236,9 @@
 - add scrolling items in inventories with the scroll wheel
 - add moving all the items into and out of your inventory with ctrl+shift+click
   - this goes in the keybinds screen too
+
+
+- add world stats
+  - number of regions
+  - number of generated chunks
+  - size of the world directory

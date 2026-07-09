@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import com.snek.engineersbliss.EngineerSBliss;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_PartProvider {
     public abstract Block getBlock();
     public abstract List<String> calcDependencyNames();
-    public abstract List<String> calcPartNames(BlockState state);
+    public abstract List<String> calcPartNames(BlockState state, final int modelSetIndex);
     public abstract boolean shouldUseCustom(BlockState state);
     public abstract boolean shouldKeepVanilla(BlockState state);
 
@@ -27,10 +26,11 @@ public abstract class __base_PartProvider {
     /**
      * Calculates all the IDs of the Json model parts required to display the provided BlockState.
      * @param state The BlockState.
+     * @param modelSetIndex The index of the model set to generate calculate part IDs for.
      */
-    public final List<Identifier> calcPartIds(final BlockState state) {
+    public final List<Identifier> calcPartIds(final BlockState state, final int modelSetIndex) {
         final List<Identifier> r = new ArrayList<>();
-        for(final String name : calcPartNames(state)) {
+        for(final String name : calcPartNames(state, modelSetIndex)) {
             r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
         }
         return r;
@@ -38,7 +38,7 @@ public abstract class __base_PartProvider {
 
 
     /**
-     * Calculates all the IDs of the actual Json models this block's custom models depend on.
+     * Calculates all the IDs of the actual Json models this block's model sets depend on.
      */
     public final List<Identifier> calcDependencyIds() {
         final List<Identifier> r = new ArrayList<>();
@@ -82,5 +82,24 @@ public abstract class __base_PartProvider {
             default -> Direction.WEST; //! 3, no other value is possible here
         };
         return "_" + quadrantRotation + getVariantSuffixFromDirection(direction);
+    }
+
+
+
+
+    /**
+     * Returns the amount of possible models for each possible BlockState of the affected block, aka model sets.
+     * @return The total number of model sets.
+     */
+    public int getModelSetNumber() {
+        return 1;
+    }
+
+    /**
+     * Calculates the index of the model set to use based on the currently active features.
+     * @return The index of the model set to use.
+     */
+    public int calcCurrentModelSetIndex() {
+        return 0;
     }
 }

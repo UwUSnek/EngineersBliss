@@ -25,7 +25,7 @@ public class VinesPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final List<String> r = new ArrayList<>();
         final String root = "vines/3d/block";
         if(state.getValue(VineBlock.NORTH).booleanValue()) r.add(root + "_n");

@@ -26,7 +26,7 @@ public class GlowLichenPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final List<String> r = new ArrayList<>();
         final String root = "glow_lichen/3d/block";
         if(state.getValue(MultifaceBlock.getFaceProperty(Direction.NORTH)).booleanValue()) r.add(root + "_n");

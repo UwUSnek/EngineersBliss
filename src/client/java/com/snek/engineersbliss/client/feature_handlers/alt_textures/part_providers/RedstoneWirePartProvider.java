@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.RedstoneSide;
 
 
 public class RedstoneWirePartProvider extends __base_PartProvider {
+    private static final List<String> wirePathForSet = List.of("2d", "3d");
 
 
     @Override
@@ -27,10 +28,9 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final List<String> r = new ArrayList<>();
-        final boolean is3d = AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D);
-        final String wireModelDir = String.format("redstone_wire/minimal/%sd", is3d ? "3" : "2");
+        final String wireModelDir = String.format("redstone_wire/minimal/%s", wirePathForSet.get(modelSetIndex));
 
         final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
         final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
@@ -88,5 +88,17 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
         return !shouldUseCustom(state);
+    }
+
+
+
+
+    @Override
+    public int getModelSetNumber() {
+        return 2;
+    }
+    @Override
+    public int calcCurrentModelSetIndex() {
+        return AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D) ? 1 : 0;
     }
 }

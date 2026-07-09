@@ -20,7 +20,7 @@ public abstract class __base_ChestPartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String chestName = getChestName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(ChestBlock.FACING));
         return List.of(String.format("chests/vanilla/single/%s%s", chestName, dirName));

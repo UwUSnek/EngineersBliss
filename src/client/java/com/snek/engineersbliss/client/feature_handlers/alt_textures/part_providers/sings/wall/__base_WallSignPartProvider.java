@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_WallSignPartProvider extends __base_SignPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String materialName = getSignMaterialName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallSignBlock.FACING));
         return List.of(String.format("signs/vanilla/wall/%s%s", materialName, dirName));

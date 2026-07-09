@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class __base_StandingSignPartProvider extends __base_SignPartProvider {
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String materialName = getSignMaterialName();
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(StandingSignBlock.ROTATION));
         return List.of(String.format("signs/vanilla/standing/%s%s", materialName, rotName));

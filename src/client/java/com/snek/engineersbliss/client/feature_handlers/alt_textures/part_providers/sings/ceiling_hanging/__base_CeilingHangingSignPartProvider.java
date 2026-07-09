@@ -16,20 +16,22 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 public abstract class __base_CeilingHangingSignPartProvider extends __base_SignPartProvider {
+    private static final List<String> chainPathForSet = List.of("vanilla", "3d");
+
+
+
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String materialName = getSignMaterialName();
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(CeilingHangingSignBlock.ROTATION));
-
-        final String chainType = AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? "3d" : "vanilla";
         final String attachmentName =
             (state.getValue(CeilingHangingSignBlock.ATTACHED).booleanValue() ? "narrow" : "wide")
             //! Rotation is always 0 when not "ATTACHED" as wide supports only snap to cardinal directions
         ;
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s%s",                          materialName, rotName),
-            String.format("hanging_signs/%s/ceiling_attachment_%s/all%s", chainType, attachmentName, rotName)
+            String.format("hanging_signs/vanilla/board/%s%s",                                                   materialName, rotName),
+            String.format("hanging_signs/%s/ceiling_attachment_%s/all%s", chainPathForSet.get(modelSetIndex), attachmentName, rotName)
         );
     }
     @Override
@@ -51,5 +53,17 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
             "hanging_signs/3d/ceiling_attachment_narrow/all_3",
             "hanging_signs/3d/ceiling_attachment_wide/all_0"
         );
+    }
+
+
+
+
+    @Override
+    public int getModelSetNumber() {
+        return 2;
+    }
+    @Override
+    public int calcCurrentModelSetIndex() {
+        return AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? 1 : 0;
     }
 }
