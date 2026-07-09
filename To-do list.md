@@ -36,13 +36,12 @@
   - ~~3D Rails~~
   - ~~3D Ladders~~
   - ~~3D Iron Chains & Copper Chains~~
-  - 3D Iron Bars & Copper Bars
+  - ~~3D Iron Bars & Copper Bars~~
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
   - Player model rendering in the pause menu //TODO add this to the readme if possible
     - Display player name above model
     - Display customizable title under the name
-  - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -99,7 +98,7 @@
   - ~~Disable being slowed down by powder snow~~
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - ~~Disable being moved by Water and Lava currents~~
-  - Disable being dragged by Bubble Columns
+  - ~~Disable being dragged by Bubble Columns~~
 
   - Disable item change animation
   - Disable hand swing animation
