@@ -1,8 +1,13 @@
 package com.snek.engineersbliss.client.mixin.screens;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.function.Supplier;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,16 +17,21 @@ import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
+import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 
 
 
@@ -43,6 +53,17 @@ public class PauseScreenMixin extends Screen {
     private static Button altTexturesButton;
     private static Button mufflerButton;
     private static Button actionHistory;
+
+
+    // Vanilla button dimensions and position. Calculated before any custom element is added.
+    private static int clusterCenterY;
+    private static int clusterCenterX;
+    private static int clusterSizeX;
+    private static int clusterSizeY;
+    private static int clusterLeft;
+    private static int clusterRight;
+    private static int clusterTop;
+    private static int clusterBottom;
 
 
     protected PauseScreenMixin(final Component title) {
@@ -101,41 +122,145 @@ public class PauseScreenMixin extends Screen {
 
 
 
+
+
+
+
+    /**
+     * Computes the center X of the bounding box containing all vanilla buttons.
+     */
+    @Unique
+    private OptionalInt eb$getButtonClusterCenterX() {
+        List<Button> buttons = new ArrayList<>();
+        for(final var e : this.children()) if(e instanceof Button button) buttons.add(button);
+        if(buttons.isEmpty()) return OptionalInt.empty();
+
+        int minX = buttons.stream().mapToInt(Button::getX).min().orElseThrow();
+        int maxX = buttons.stream().mapToInt(b -> b.getX() + b.getWidth()).max().orElseThrow();
+
+        return OptionalInt.of((minX + maxX) / 2);
+    }
+
+    /**
+     * Computes the width of the bounding box containing all vanilla buttons.
+     */
+    @Unique
+    private OptionalInt eb$getButtonClusterWidth() {
+        List<Button> buttons = new ArrayList<>();
+        for(final var e : this.children()) if(e instanceof Button button) buttons.add(button);
+        if(buttons.isEmpty()) return OptionalInt.empty();
+        int minX = buttons.stream().mapToInt(Button::getX).min().orElseThrow();
+        int maxX = buttons.stream().mapToInt(b -> b.getX() + b.getWidth()).max().orElseThrow();
+        return OptionalInt.of(maxX - minX);
+    }
+
+    /**
+     * Computes the height of the bounding box containing all vanilla buttons.
+     */
+    @Unique
+    private OptionalInt eb$getButtonClusterHeight() {
+        List<Button> buttons = new ArrayList<>();
+        for(final var e : this.children()) if(e instanceof Button button) buttons.add(button);
+        if(buttons.isEmpty()) return OptionalInt.empty();
+        int minY = buttons.stream().mapToInt(Button::getY).min().orElseThrow();
+        int maxY = buttons.stream().mapToInt(b -> b.getY() + b.getHeight()).max().orElseThrow();
+        return OptionalInt.of(maxY - minY);
+    }
+
+    /**
+     * Computes the center Y of the bounding box containing all vanilla buttons.
+     */
+    @Unique
+    private OptionalInt eb$getButtonClusterCenterY() {
+        List<Button> buttons = new ArrayList<>();
+        for(final var e : this.children()) if(e instanceof Button button) buttons.add(button);
+        if(buttons.isEmpty()) return OptionalInt.empty();
+
+        int minY = buttons.stream().mapToInt(Button::getY).min().orElseThrow();
+        int maxY = buttons.stream().mapToInt(b -> b.getY() + b.getHeight()).max().orElseThrow();
+
+        return OptionalInt.of((minY + maxY) / 2);
+    }
+
+
+
+
+
+
+
+
     @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
     public void eb$init(final CallbackInfo ci) {
+        clusterCenterX = eb$getButtonClusterCenterX().getAsInt();
+        clusterCenterY = eb$getButtonClusterCenterY().getAsInt();
+        clusterSizeX   = eb$getButtonClusterWidth().getAsInt();
+        clusterSizeY   = eb$getButtonClusterHeight().getAsInt();
+        clusterLeft    = clusterCenterX - clusterSizeX / 2;
+        clusterRight   = clusterCenterX + clusterSizeX / 2;
+        clusterTop     = clusterCenterY - clusterSizeY / 2;
+        clusterBottom  = clusterCenterY + clusterSizeY / 2;
+
+
+
+
         final int buttonWidth = 100;
         final int gap = 16;
 
-        // find the first vanilla button's Y and add custom buttons based on that value
-        this.children().stream()
-            .filter(Button.class::isInstance)
-            .map(w -> (Button) w)
-            .findFirst()
-            .ifPresent(first -> {
-                final int x1 = first.getX() - buttonWidth - gap;
-                final int x2 = x1 - buttonWidth - gap;
-                final int y = first.getY();
+        final int x1 = clusterLeft - buttonWidth - gap;
+        final int x2 = x1 - buttonWidth - gap;
+        final int y = clusterTop;
 
-                blockPropertiesButton = eb$addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
-                groupsButton          = eb$addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
-                containerToolsButton  = eb$addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
-                gameplayTweaksButton  = eb$addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-                creativeTweaksButton  = eb$addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
-                //FIXME add a BIG disclaimer to "gameplay tweaks" screen that says it changes game mechanics
-                //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
-                //FIXME move no particles to alternative texture maybe?
-                //FIXME move visible block overlays to alternative texture maybe?
+        blockPropertiesButton = eb$addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
+        groupsButton          = eb$addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
+        containerToolsButton  = eb$addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
+        gameplayTweaksButton  = eb$addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
+        creativeTweaksButton  = eb$addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
+        //FIXME add a BIG disclaimer to "gameplay tweaks" screen that says it changes game mechanics
+        //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
+        //FIXME move no particles to alternative texture maybe?
+        //FIXME move visible block overlays to alternative texture maybe?
 
-                renderingButton       = eb$addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
-                overlaysButton        = eb$addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
-                altTexturesButton     = eb$addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
-                mufflerButton         = eb$addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-                actionHistory         = eb$addButton("[U] Action History",   AltTexturesScreen::new, x2, y + BUTTON_SPACING * 4, buttonWidth); //FIXME
+        renderingButton       = eb$addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
+        overlaysButton        = eb$addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
+        altTexturesButton     = eb$addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
+        mufflerButton         = eb$addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
+        actionHistory         = eb$addButton("[U] Action History",   AltTexturesScreen::new, x2, y + BUTTON_SPACING * 4, buttonWidth); //FIXME
 
-                eb$addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
-            })
-        ;
+        eb$addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
     }
+
+
+
+
+
+
+
+
+    @Inject(method = "extractRenderState", at = @At("TAIL"), cancellable = false, require = 1)
+	public void eb$extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a, CallbackInfo ci) {
+        Player player = Minecraft.getInstance().player;
+        if(player == null) return;
+
+
+        // Calculate dimensions and position
+        int modelScale = 64;
+        int boxSize = Math.max(width, height);
+        int heightDiff = boxSize - clusterSizeY;
+        int widthDiff = boxSize - clusterSizeX;
+        int x0 = clusterRight - widthDiff / 2 + BUTTON_MARGIN;
+        int x1 = x0 + boxSize;
+        int y0 = clusterTop - heightDiff / 2;
+        int y1 = y0 + boxSize;
+
+
+        // Draw player model
+        PlayerMannequin model = PlayerMannequin.getMannequin();
+        InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0F, mouseX, mouseY, model);
+    }
+
+
+
+
 
 
 
