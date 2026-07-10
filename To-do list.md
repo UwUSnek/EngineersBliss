@@ -166,10 +166,19 @@
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey
   - [Vanilla block & entity] Armor Stand with arms
+  - [Vanilla entity] TNTs with higher explosion strength
+  - [Vanilla entity] Ender Dragon Spawn Egg
+  - [Vanilla entity] Wither Spawn Egg
 
 
 
 - disable punching end crystals? //TODO maybe? idk, very niche
+
+
+
+
+
+
 
 
 
