@@ -23,11 +23,12 @@ public class UiButton extends Button {
     @Override
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         final Font font = Minecraft.getInstance().font;
-        graphics.fill(getX(), getY(), getX() + width, getY() + height, Layout.bgColor);
 
-        final int lineHeight = font.lineHeight;
         final int textX = getX() + Layout.textMarginPx;
-        final int textY = getY() + (height - lineHeight) / 2;
-        graphics.text(font, this.message, textX, textY, Layout.fgColor);
+        final int textY = getY() + (height - font.lineHeight) / 2;
+        final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor;
+        final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
+        graphics.fill(getX(), getY(), getX() + width, getY() + height, bgColor);
+        graphics.text(font, this.message, textX, textY, fgColor);
     }
 }

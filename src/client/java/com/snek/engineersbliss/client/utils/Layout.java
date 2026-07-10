@@ -20,6 +20,8 @@ public class Layout {
 
     public static int bgColor = 0x80000000;
     public static int fgColor = 0xFFEEEEEE;
+    public static int bgColorActive = 0x80777777;
+    public static int fgColorActive = 0xFFFFFFFF;
     public static int textMarginPx = 4;
 
     public static final int BORDER_WIDTH = 10;

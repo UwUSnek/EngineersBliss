@@ -5,6 +5,7 @@ import com.snek.engineersbliss.utils.Txt;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.MouseButtonEvent;
 
 
 
@@ -22,5 +23,10 @@ public class UiSpacer extends AbstractWidget {
     @Override
     protected void updateWidgetNarration(NarrationElementOutput output) {
         // Empty
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        return false;
     }
 }
