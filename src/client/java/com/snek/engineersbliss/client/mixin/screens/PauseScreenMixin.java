@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
@@ -220,7 +221,8 @@ public class PauseScreenMixin extends Screen {
 
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(EngineerSBliss.MOD_NAME).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Rendering
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);

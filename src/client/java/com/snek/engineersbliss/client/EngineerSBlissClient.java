@@ -15,14 +15,26 @@ import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
+import net.fabricmc.loader.api.FabricLoader;
 
 
 
 
 public class EngineerSBlissClient implements ClientModInitializer {
+    private static String modVersion = "";
+    public  static String getModVersion() { return modVersion; }
+
+
 
     @Override
     public void onInitializeClient() {
+
+        // Set mod version string
+        modVersion = FabricLoader.getInstance()
+            .getModContainer(EngineerSBliss.MOD_ID)
+            .map(container -> container.getMetadata().getVersion().getFriendlyString())
+            .orElse("")
+        ;
 
 
         // Register scheduler
