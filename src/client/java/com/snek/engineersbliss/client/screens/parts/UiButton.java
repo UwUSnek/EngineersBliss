@@ -12,8 +12,6 @@ import net.minecraft.client.gui.components.Button;
 
 
 public class UiButton extends Button {
-    private int fgColor = 0xFFEEEEEE;
-    private int textMarginPx = 4;
 
 
 
@@ -28,8 +26,8 @@ public class UiButton extends Button {
         graphics.fill(getX(), getY(), getX() + width, getY() + height, Layout.bgColor);
 
         final int lineHeight = font.lineHeight;
-        final int textX = getX() + textMarginPx;
+        final int textX = getX() + Layout.textMarginPx;
         final int textY = getY() + (height - lineHeight) / 2;
-        graphics.text(font, this.message, textX, textY, fgColor);
+        graphics.text(font, this.message, textX, textY, Layout.fgColor);
     }
 }

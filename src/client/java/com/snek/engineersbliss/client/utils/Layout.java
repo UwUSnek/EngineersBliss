@@ -19,11 +19,15 @@ public class Layout {
 
 
     public static int bgColor = 0x80000000;
+    public static int fgColor = 0xFFEEEEEE;
+    public static int textMarginPx = 4;
 
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 2;
     public static final int LIST_TOP = 32;
     public static final int BUTTON_HEIGHT = 16;
+
+    public static final int HEADER_HEIGHT = 24;
 
     public static final String FONT_NAME_UI_LIGHT  = "ui_light";
     public static final String FONT_NAME_UI_MEDIUM = "ui_medium";

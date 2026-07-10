@@ -31,10 +31,31 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         super(Minecraft.getInstance(), width, height, y, itemHeight);
         setX(x);
     }
+    @Override
+    protected boolean entriesCanBeSelected() {
+        return false;
+    }
+
+
+
 
     public void addWidget(AbstractWidget widget) {
         this.addEntry(new Entry(widget));
     }
+    public void addWidget(AbstractWidget widget, final int height) {
+        this.addEntry(new Entry(widget), height);
+    }
+    public void addWidgetAndSpacer(AbstractWidget widget, final int marginBottom) {
+        this.addEntry(new Entry(widget));
+        this.addWidget(new UiSpacer(), marginBottom);
+    }
+    public void addWidgetAndSpacers(AbstractWidget widget, final int marginTop, final int marginBottom) {
+        this.addWidget(new UiSpacer(), marginTop);
+        addWidgetAndSpacer(widget, marginBottom);
+    }
+
+
+
 
     @Override
     public int getRowWidth() {
@@ -47,17 +68,11 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
     }
 
     @Override
-    public int getNextY() {
-        int y = this.__custom_getFirstEntryY() - (int)this.scrollAmount();
-        for(final Entry child : this.children()) {
-            y += child.getHeight();
-        }
-        return y;
-    }
-    private int __custom_getFirstEntryY() {
-        return this.getY();
-        //! Vanilla's getFirstEntryY adds 2px for absolutely no reason
-        //! And it cannot be changed bc its private
+    public double scrollAmount() {
+        return super.scrollAmount() + 2.0;
+        //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its private.
+        //! So scrollAmount add 2px from to re-align the elemtns.
+        //! In Vanilla, getFirstEntryY is always used with scrollAmount.
     }
 
 
@@ -76,6 +91,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
             widget.setX(getX());
             widget.setY(getY());
             widget.setWidth(getWidth());
+            widget.setHeight(getHeight());
             widget.extractRenderState(graphics, mouseX, mouseY, a);
         }
 

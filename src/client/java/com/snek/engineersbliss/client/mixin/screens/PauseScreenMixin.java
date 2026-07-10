@@ -13,12 +13,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
+import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.UiSpacer;
+import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -215,36 +219,36 @@ public class PauseScreenMixin extends Screen {
 
 
 
-        leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT);
-        leftSidebar.addWidget(eb$createButton("[P] Block Properties", RenderingScreen::new));
-        leftSidebar.addWidget(eb$createButton("[G] Groups",           RenderingScreen::new));
-        leftSidebar.addWidget(eb$createButton("[C] Container tools",  RenderingScreen::new));
-        leftSidebar.addWidget(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new));
-        leftSidebar.addWidget(eb$createButton("[Y] Creative tweaks",  CreativeTweaksScreen::new));
+        leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(EngineerSBliss.MOD_NAME).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+
+            // Rendering
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[R] Render filter",    RenderingScreen  ::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[O] Overlays",         OverlaysScreen   ::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[T] Alt textures",     AltTexturesScreen::new), Layout.BORDER_HEIGHT);
+
+            // Tools
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[U] Action history",   RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[P] Block Properties", RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[G] Block Groups",     RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[C] Container tools",  RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[I] Custom items",     RenderingScreen::new), Layout.BORDER_HEIGHT);
+
+            // QoL
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[M] Sound muffler",    RenderingScreen::new), Layout.BORDER_HEIGHT);
+        }
         addRenderableWidget(leftSidebar);
 
-        final int buttonWidth = 100;
-        final int gap = 16;
 
-        final int x1 = clusterLeft - buttonWidth - gap;
-        final int x2 = x1 - buttonWidth - gap;
-        final int y = clusterTop;
-
-        // blockPropertiesButton = eb$addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
-        // groupsButton          = eb$addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
-        // containerToolsButton  = eb$addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
-        // gameplayTweaksButton  = eb$addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-        // creativeTweaksButton  = eb$addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
         //FIXME add a BIG disclaimer to "gameplay tweaks" screen that says it changes game mechanics
         //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
         //FIXME move no particles to alternative texture maybe?
         //FIXME move visible block overlays to alternative texture maybe?
 
-        renderingButton       = eb$addButton("[R] Rendering",        RenderingScreen  ::new, x2, y + BUTTON_SPACING * 0, buttonWidth);
-        overlaysButton        = eb$addButton("[O] Overlays",         OverlaysScreen   ::new, x2, y + BUTTON_SPACING * 1, buttonWidth);
-        altTexturesButton     = eb$addButton("[T] Alt textures",     AltTexturesScreen::new, x2, y + BUTTON_SPACING * 2, buttonWidth);
-        mufflerButton         = eb$addButton("[M] Muffler",          AltTexturesScreen::new, x2, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-        actionHistory         = eb$addButton("[U] Action History",   AltTexturesScreen::new, x2, y + BUTTON_SPACING * 4, buttonWidth); //FIXME
 
         eb$addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
     }
