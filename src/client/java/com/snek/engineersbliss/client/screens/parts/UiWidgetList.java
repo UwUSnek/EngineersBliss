@@ -38,12 +38,26 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
     @Override
     public int getRowWidth() {
-        return this.width - 20;
+        return this.width;
     }
 
     @Override
     protected void extractListBackground(final GuiGraphicsExtractor graphics) {
         graphics.fill(getX(), getY(), getX() + width, getY() + height, Layout.bgColor);
+    }
+
+    @Override
+    public int getNextY() {
+        int y = this.__custom_getFirstEntryY() - (int)this.scrollAmount();
+        for(final Entry child : this.children()) {
+            y += child.getHeight();
+        }
+        return y;
+    }
+    private int __custom_getFirstEntryY() {
+        return this.getY();
+        //! Vanilla's getFirstEntryY adds 2px for absolutely no reason
+        //! And it cannot be changed bc its private
     }
 
 
@@ -67,37 +81,37 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-            return false;
+            return widget.mouseClicked(event, doubleClick);
         }
 
         @Override
         public boolean mouseReleased(final MouseButtonEvent event) {
-            return false;
+            return widget.mouseReleased(event);
         }
 
         @Override
         public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-            return false;
+            return widget.mouseDragged(event, dx, dy);
         }
 
         @Override
         public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
-            return false;
+            return widget.mouseScrolled(x, y, scrollX, scrollY);
         }
 
         @Override
         public boolean keyPressed(final KeyEvent event) {
-            return false;
+            return widget.keyPressed(event);
         }
 
         @Override
         public boolean keyReleased(final KeyEvent event) {
-            return false;
+            return keyReleased(event);
         }
 
         @Override
         public boolean charTyped(final CharacterEvent event) {
-            return false;
+            return charTyped(event);
         }
     }
 
