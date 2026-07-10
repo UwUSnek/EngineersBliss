@@ -12,17 +12,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
-import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
 import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
-import com.snek.engineersbliss.client.screens.parts.UiSpacer;
 import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -37,9 +34,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 
@@ -51,18 +47,6 @@ public class PauseScreenMixin extends Screen {
     private static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
     private static final int BUTTON_MARGIN = Layout.BORDER_HEIGHT;
     private static final int BUTTON_SPACING = BUTTON_HEIGHT + BUTTON_MARGIN;
-
-    private static Button blockPropertiesButton;
-    private static Button groupsButton;
-    private static Button containerToolsButton;
-    private static Button gameplayTweaksButton;
-    private static Button creativeTweaksButton;
-
-    private static Button renderingButton;
-    private static Button overlaysButton;
-    private static Button altTexturesButton;
-    private static Button mufflerButton;
-    private static Button actionHistory;
 
 
     // Vanilla button dimensions and position. Calculated before any custom element is added.
@@ -77,9 +61,7 @@ public class PauseScreenMixin extends Screen {
 
 
     private static UiWidgetList leftSidebar;
-    private static UiWidgetList rightSidebar;
     private static final float leftSidebarWidth = 0.25f;
-    private static final float rightSidebarWidth = 0.25f;
 
 
 
@@ -92,49 +74,18 @@ public class PauseScreenMixin extends Screen {
 
 
 
+
     @Override
     public boolean keyPressed(final KeyEvent event) {
-        if(event.key() == InputConstants.KEY_R) {
-            renderingButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_O) {
-            overlaysButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_G) {
-            groupsButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_T) {
-            altTexturesButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_P) {
-            blockPropertiesButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_M) {
-            mufflerButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_C) {
-            containerToolsButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_X) {
-            gameplayTweaksButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_Y) {
-            creativeTweaksButton.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        if(event.key() == InputConstants.KEY_U) {
-            actionHistory.onClick(new MouseButtonEvent(0, 0, new MouseButtonInfo(0, 0)), false);
-            return true;
-        }
-        return super.keyPressed(event);
+        boolean r = false;
+        for(final var c : children()) r = r || c.keyPressed(event);
+        return r;
+    }
+    @Override
+    public boolean charTyped(CharacterEvent event) {
+        boolean r = false;
+        for(final var c : children()) r = r || c.charTyped(event);
+        return r;
     }
 
 
@@ -226,22 +177,22 @@ public class PauseScreenMixin extends Screen {
 
             // Rendering
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[R] Render filter",    RenderingScreen  ::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[O] Overlays",         OverlaysScreen   ::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[T] Alt textures",     AltTexturesScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[R] Render filter",    RenderingScreen  ::new, 'R'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[O] Overlays",         OverlaysScreen   ::new, 'O'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[T] Alt textures",     AltTexturesScreen::new, 'T'), Layout.BORDER_HEIGHT);
 
             // Tools
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[U] Action history",   RenderingScreen::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[P] Block Properties", RenderingScreen::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[G] Block Groups",     RenderingScreen::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[C] Container tools",  RenderingScreen::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[I] Custom items",     RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[U] Action history",   RenderingScreen::new, 'U'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[P] Block Properties", RenderingScreen::new, 'P'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[G] Block Groups",     RenderingScreen::new, 'G'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[C] Container tools",  RenderingScreen::new, 'C'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[I] Custom items",     RenderingScreen::new, 'I'), Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[M] Sound muffler",    RenderingScreen::new), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new, 'X'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("[M] Sound muffler",    RenderingScreen::new, 'M'), Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 
@@ -251,8 +202,11 @@ public class PauseScreenMixin extends Screen {
         //FIXME move no particles to alternative texture maybe?
         //FIXME move visible block overlays to alternative texture maybe?
 
-
-        eb$addButton("??", JuliaSetScreen::new, width - BUTTON_HEIGHT - BUTTON_MARGIN, height - BUTTON_HEIGHT - BUTTON_MARGIN, BUTTON_HEIGHT);
+        final Button juliaScreenButton = eb$createButton("??", JuliaSetScreen::new, '\0');
+        addRenderableWidget(juliaScreenButton);
+        juliaScreenButton.setSize(BUTTON_HEIGHT, BUTTON_HEIGHT);
+        juliaScreenButton.setX(width  - BUTTON_HEIGHT - BUTTON_MARGIN);
+        juliaScreenButton.setY(height - BUTTON_HEIGHT - BUTTON_MARGIN);
     }
 
 
@@ -323,12 +277,10 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    private Button eb$createButton(final String label, final Supplier<Screen> screenFactory) {
-        final UiButton r = new UiButton(50, 50, 50, BUTTON_HEIGHT, new UiTxt(label), b -> {
+    private Button eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind) {
+        return new UiButton(50, 50, 50, BUTTON_HEIGHT, new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
-        });
-        return r;
-        // return this.addRenderableWidget(r);
+        }, keybind);
     }
 }

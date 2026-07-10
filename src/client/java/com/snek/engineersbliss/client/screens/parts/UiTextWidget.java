@@ -20,24 +20,15 @@ public class UiTextWidget extends AbstractWidget {
     final int color;
 
     public UiTextWidget(final Txt label, final TextAlignment alignment, final int color) {
-        super(50, 50, 50, 50, new Txt().get());
-        this.label = label.get();
-        this.alignment = alignment;
-        this.color = color;
+        this(50, 50, 50, 50, label, alignment, color);
     }
 
     public UiTextWidget(final int x, final int y, final int w, final int h, final Txt label, final TextAlignment alignment, final int color) {
-        super(x, y, w, h, new Txt().get());
-        this.label = label.get();
-        this.alignment = alignment;
-        this.color = color;
+        this(x, y, w, h, label.get(), alignment, color);
     }
 
     public UiTextWidget(final Component label, final TextAlignment alignment, final int color) {
-        super(50, 50, 50, 50, new Txt().get());
-        this.label = label;
-        this.alignment = alignment;
-        this.color = color;
+        this(50, 50, 50, 50, label, alignment, color);
     }
 
     public UiTextWidget(final int x, final int y, final int w, final int h, final Component label, final TextAlignment alignment, final int color) {

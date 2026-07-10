@@ -36,6 +36,19 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return false;
     }
 
+    @Override
+    public boolean keyPressed(final KeyEvent event) {
+        boolean r = false;
+        for(final Entry c : children()) r = r || c.keyPressed(event);
+        return r;
+    }
+    @Override
+    public boolean charTyped(CharacterEvent event) {
+        boolean r = false;
+        for(final Entry c : children()) r = r || c.charTyped(event);
+        return r;
+    }
+
 
 
 
@@ -122,12 +135,12 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
         @Override
         public boolean keyReleased(final KeyEvent event) {
-            return keyReleased(event);
+            return widget.keyReleased(event);
         }
 
         @Override
         public boolean charTyped(final CharacterEvent event) {
-            return charTyped(event);
+            return widget.charTyped(event);
         }
     }
 
