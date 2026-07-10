@@ -1,12 +1,10 @@
 package com.snek.engineersbliss.client.screens.parts;
 
 import com.mojang.authlib.GameProfile;
-import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.PlayerModelPart;
 
 

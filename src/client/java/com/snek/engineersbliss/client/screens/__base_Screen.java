@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.screens;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
@@ -62,16 +63,11 @@ public abstract class __base_Screen extends Screen {
 
 
     protected Button addButton(final Txt label, final Txt details, final Consumer<Button> action, final int x, final int y, final int width) {
-        final Button r =
-            Button.builder(
-                label.get(),
-                b -> { action.accept(b); b.setFocused(false); }
-            )
-            .size(width, BUTTON_HEIGHT)
-            .pos(x, y)
-            .tooltip(Tooltip.create(details.get()))
-            .build()
-        ;
+        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
+            action.accept(b);
+            b.setFocused(false);
+        });
+        r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;
     }

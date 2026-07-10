@@ -18,6 +18,9 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
+import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
@@ -40,8 +43,8 @@ import net.minecraft.network.chat.Component;
 
 @Mixin(PauseScreen.class)
 public class PauseScreenMixin extends Screen {
-    private static final int BUTTON_HEIGHT = 20;
-    private static final int BUTTON_MARGIN = 4;
+    private static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
+    private static final int BUTTON_MARGIN = Layout.BORDER_HEIGHT;
     private static final int BUTTON_SPACING = BUTTON_HEIGHT + BUTTON_MARGIN;
 
     private static Button blockPropertiesButton;
@@ -66,6 +69,14 @@ public class PauseScreenMixin extends Screen {
     private static int clusterRight;
     private static int clusterTop;
     private static int clusterBottom;
+
+
+    private static UiWidgetList leftSidebar;
+    private static UiWidgetList rightSidebar;
+    private static final float leftSidebarWidth = 0.25f;
+    private static final float rightSidebarWidth = 0.25f;
+
+
 
 
     protected PauseScreenMixin(final Component title) {
@@ -204,6 +215,13 @@ public class PauseScreenMixin extends Screen {
 
 
 
+        leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT);
+        leftSidebar.addWidget(eb$createButton("[P] Block Properties", RenderingScreen::new));
+        leftSidebar.addWidget(eb$createButton("[G] Groups",           RenderingScreen::new));
+        leftSidebar.addWidget(eb$createButton("[C] Container tools",  RenderingScreen::new));
+        leftSidebar.addWidget(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new));
+        leftSidebar.addWidget(eb$createButton("[Y] Creative tweaks",  CreativeTweaksScreen::new));
+        addRenderableWidget(leftSidebar);
 
         final int buttonWidth = 100;
         final int gap = 16;
@@ -212,11 +230,11 @@ public class PauseScreenMixin extends Screen {
         final int x2 = x1 - buttonWidth - gap;
         final int y = clusterTop;
 
-        blockPropertiesButton = eb$addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
-        groupsButton          = eb$addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
-        containerToolsButton  = eb$addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
-        gameplayTweaksButton  = eb$addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
-        creativeTweaksButton  = eb$addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
+        // blockPropertiesButton = eb$addButton("[P] Block Properties", RenderingScreen::new, x1, y + BUTTON_SPACING * 0, buttonWidth); //FIXME
+        // groupsButton          = eb$addButton("[G] Groups",           RenderingScreen::new, x1, y + BUTTON_SPACING * 1, buttonWidth); //FIXME
+        // containerToolsButton  = eb$addButton("[C] Container tools",  RenderingScreen::new, x1, y + BUTTON_SPACING * 2, buttonWidth); //FIXME
+        // gameplayTweaksButton  = eb$addButton("[X] Gameplay tweaks",  RenderingScreen::new, x1, y + BUTTON_SPACING * 3, buttonWidth); //FIXME
+        // creativeTweaksButton  = eb$addButton("[Y] Creative tweaks",  CreativeTweaksScreen::new, x1, y + BUTTON_SPACING * 4, buttonWidth);
         //FIXME add a BIG disclaimer to "gameplay tweaks" screen that says it changes game mechanics
         //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
         //FIXME move no particles to alternative texture maybe?
@@ -290,15 +308,21 @@ public class PauseScreenMixin extends Screen {
 
 
     private Button eb$addButton(final String label, final Supplier<Screen> screenFactory, final int x, final int y, final int width) {
-        final Button btn = Button.builder(
-            new UiTxt(label).get(),
-                b -> {
-                minecraft.setScreen(screenFactory.get());
-                b.setFocused(false);
-            })
-            .bounds(x, y, width, BUTTON_HEIGHT)
-            .build()
-        ;
-        return this.addRenderableWidget(btn);
+        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, new UiTxt(label), b -> {
+            minecraft.setScreen(screenFactory.get());
+            b.setFocused(false);
+        });
+        return this.addRenderableWidget(r);
+    } //TODO remove if not used
+
+
+
+    private Button eb$createButton(final String label, final Supplier<Screen> screenFactory) {
+        final UiButton r = new UiButton(50, 50, 50, BUTTON_HEIGHT, new UiTxt(label), b -> {
+            minecraft.setScreen(screenFactory.get());
+            b.setFocused(false);
+        });
+        return r;
+        // return this.addRenderableWidget(r);
     }
 }
