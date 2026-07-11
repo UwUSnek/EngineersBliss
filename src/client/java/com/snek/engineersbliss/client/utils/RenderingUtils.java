@@ -29,8 +29,8 @@ public class RenderingUtils {
         graphics.pose().pushMatrix();
         graphics.pose().scale(textScale, textScale);
         switch(textAlignment) {
-            case LEFT:   { graphics.        text(font, (dropShadow ? text.copy().noShadow() : text).get(), (int)(x / textScale), (int)(y / textScale), color); break; }
-            case CENTER: { graphics.centeredText(font, (dropShadow ? text.copy().noShadow() : text).get(), (int)(x / textScale), (int)(y / textScale), color); break; }
+            case LEFT:   { graphics.        text(font, (dropShadow ? text : text.copy().noShadow()).get(), (int)(x / textScale), (int)(y / textScale), color); break; }
+            case CENTER: { graphics.centeredText(font, (dropShadow ? text : text.copy().noShadow()).get(), (int)(x / textScale), (int)(y / textScale), color); break; }
         }
         graphics.pose().popMatrix();
     }
@@ -38,9 +38,9 @@ public class RenderingUtils {
         extractTxt(graphics, text, x, y, color, TextAlignment.LEFT);
     }
     public static void extractTxt(GuiGraphicsExtractor graphics, final Txt text, final int x, final int y, final int color, final TextAlignment textAlignment) {
-        extractTxt(graphics, text, x, y, color, textAlignment, true);
+        extractTxt(graphics, text, x, y, color, textAlignment, false);
     }
     public void extractTxt(GuiGraphicsExtractor graphics, final Txt text, final int x, final int y, final int color) {
-        extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, true);
+        extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, false);
     }
 }

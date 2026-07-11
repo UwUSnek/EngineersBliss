@@ -76,6 +76,7 @@ public class UiButton extends Button {
 
     @Override
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        final boolean usingSprite = bgSpriteId != null;
 
 
         // Draw black background //! Always drawn
@@ -84,7 +85,7 @@ public class UiButton extends Button {
             graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
         }
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
-        if(bgSpriteId != null) {
+        if(usingSprite) {
             final int spriteWidth = bgSpriteWidth == 0 ? getHeight() : bgSpriteWidth;
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth, getHeight());
             if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
@@ -96,7 +97,7 @@ public class UiButton extends Button {
         final int textX = getX() + Layout.textMarginPx;
         final int textY = getY() + (height - font.lineHeight) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment);
+        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, usingSprite);
     }
 
 
