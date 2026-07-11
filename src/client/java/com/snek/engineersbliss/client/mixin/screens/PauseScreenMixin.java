@@ -173,16 +173,16 @@ public class PauseScreenMixin extends Screen {
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Rendering
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[R] Render filter",    RenderingScreen  ::new, 'R'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[O] Overlays",         OverlaysScreen   ::new, 'O'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[T] Alt textures",     AltTexturesScreen::new, 'T'), Layout.BORDER_HEIGHT);
 
             // Tools
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[U] Action history",   RenderingScreen::new, 'U'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[P] Block Properties", RenderingScreen::new, 'P'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[G] Block Groups",     RenderingScreen::new, 'G'), Layout.BORDER_HEIGHT);
@@ -190,7 +190,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidgetAndSpacer(eb$createButton("[I] Custom items",     RenderingScreen::new, 'I'), Layout.BORDER_HEIGHT);
 
             // QoL
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new, 'X'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[M] Sound muffler",    RenderingScreen::new, 'M'), Layout.BORDER_HEIGHT);
         }

@@ -77,7 +77,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
     @Override
     protected void extractListBackground(final GuiGraphicsExtractor graphics) {
-        graphics.fill(getX(), getY(), getX() + width, getY() + height, Layout.bgColor);
+        graphics.fill(getX(), getY(), getX() + width, getY() + height, Layout.bgColorSolid);
     }
 
     @Override

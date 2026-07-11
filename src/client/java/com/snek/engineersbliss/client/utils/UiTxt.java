@@ -12,11 +12,13 @@ import net.minecraft.network.chat.MutableComponent;
 
 public class UiTxt extends Txt {
     private final float textScale;
+    public float getTextScale() { return textScale; }
 
-    public UiTxt()                                  { super();  textScale = 1; }
-    public UiTxt(final @NotNull String           s) { super(s); textScale = 1; }
-    public UiTxt(final @NotNull MutableComponent s) { super(s); textScale = 1; }
-    public UiTxt(final @NotNull Component        s) { super(s); textScale = 1; }
+
+    public UiTxt()                                  { this(   1); }
+    public UiTxt(final @NotNull String           s) { this(s, 1); }
+    public UiTxt(final @NotNull MutableComponent s) { this(s, 1); }
+    public UiTxt(final @NotNull Component        s) { this(s, 1); }
 
     public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; }
     public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; }
@@ -27,7 +29,7 @@ public class UiTxt extends Txt {
 
 
     public @NotNull Component get(final String fontName) {
-        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(fontName, textScale))));
+        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(fontName, textScale))).withoutShadow());
         return rawText.copy();
     }
     @Override

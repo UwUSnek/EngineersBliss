@@ -2,7 +2,6 @@ package com.snek.engineersbliss.client.screens.alt_textures;
 
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
@@ -28,16 +27,6 @@ public class AltTexturesScreen extends __base_Screen {
     public AltTexturesScreen() {
         super();
     }
-    @Override
-    public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        float blurRadius = this.minecraft.options.getMenuBackgroundBlurriness();
-        if(blurRadius >= 1.0F) {
-            final int sidebarWidth = (int)(width * LEFT_SIDEBAR_WIDTH);
-            graphics.enableScissor(sidebarWidth, 0, width, height);
-            graphics.blurBeforeThisStratum();
-            graphics.disableScissor();
-        }
-    }
 
 
 
@@ -48,10 +37,10 @@ public class AltTexturesScreen extends __base_Screen {
 
         leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = "Alternative Textures";
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Visibility
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Visibility"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Visibility", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.MINIMAL_REDSTONE_WIRE),         AltTextureFeature.MINIMAL_REDSTONE_WIRE       .getDetails(), b -> toggleFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE,        b), '\0'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.NO_REDSTONE_DUST_PARTICLES),    AltTextureFeature.NO_REDSTONE_DUST_PARTICLES  .getDetails(), b -> toggleFeature(AltTextureFeature.NO_REDSTONE_DUST_PARTICLES,   b), '\0'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.NO_CAMPFIRE_PARTICLES),         AltTextureFeature.NO_CAMPFIRE_PARTICLES       .getDetails(), b -> toggleFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES,        b), '\0'), Layout.BORDER_HEIGHT);
@@ -65,7 +54,7 @@ public class AltTexturesScreen extends __base_Screen {
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING),     AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING   .getDetails(), b -> toggleFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING,    b), '\0'), Layout.BORDER_HEIGHT);
 
             // Fixes
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Fixes & performance"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Fixes & performance", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(               getToggleText(AltTextureFeature.CONSISTENT_SLOPED_RAILS),      AltTextureFeature.CONSISTENT_SLOPED_RAILS     .getDetails(), b ->                toggleFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS,     b), '\0'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(OverlaysScreen.getToggleText(OverlayFeature.BETTER_BARRIER_DISPLAY),          OverlayFeature.BETTER_BARRIER_DISPLAY         .getDetails(), b -> OverlaysScreen.toggleFeature(OverlayFeature.BETTER_BARRIER_DISPLAY,         b), '\0'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(OverlaysScreen.getToggleText(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY),   OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY  .getDetails(), b -> OverlaysScreen.toggleFeature(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY,  b), '\0'), Layout.BORDER_HEIGHT);
@@ -81,7 +70,7 @@ public class AltTexturesScreen extends __base_Screen {
             leftSidebar.addWidgetAndSpacer(createButton(               getToggleText(AltTextureFeature.OPTIMIZED_CAMPFIRES),          AltTextureFeature.OPTIMIZED_CAMPFIRES         .getDetails(), b ->                toggleFeature(AltTextureFeature.OPTIMIZED_CAMPFIRES,         b), '\0'), Layout.BORDER_HEIGHT);
 
             // 3D models
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("3D models"), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("3D models", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.REDSTONE_WIRE_3D), AltTextureFeature.REDSTONE_WIRE_3D.getDetails(), b -> toggleFeature(AltTextureFeature.REDSTONE_WIRE_3D, b), '\0'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.RAILS_3D),         AltTextureFeature.RAILS_3D        .getDetails(), b -> toggleFeature(AltTextureFeature.RAILS_3D,         b), '\0'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createButton(getToggleText(AltTextureFeature.LADDERS_3D),       AltTextureFeature.LADDERS_3D      .getDetails(), b -> toggleFeature(AltTextureFeature.LADDERS_3D,       b), '\0'), Layout.BORDER_HEIGHT);
