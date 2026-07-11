@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -111,89 +110,89 @@ public enum AltTextureFeature {
     ),
     STATIC_CHESTS(true,
         () -> new UiTxt("Static Chest models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange()) //FIXME remove once this is fixed
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Groups.ALL_CHESTS
     ),
     STATIC_SIGNS(true,
         () -> new UiTxt("Static Sign models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
             .cat(new UiTxt("The text must be rendered dynamically, so static signs are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
     ),
     STATIC_BANNERS(true,
         () -> new UiTxt("Static Banner models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the fluttering animation banners have in Vanilla.\n").Orange())
             .cat(new UiTxt("This also breaks custom banner patterns. Instead, only the base color is displayed.\n").Orange())
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Stream.of(Groups.ALL_BANNERS.stream()).flatMap(s -> s).toList()
     ),
     STATIC_DECORATED_POTS(true,
         () -> new UiTxt("Static Decorated Pot models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the wobbling animation that plays in Vanilla when a Decorated Pot is right-clicked.\n").Orange())
             .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         List.of(Blocks.DECORATED_POT)
     ),
     STATIC_BELLS(true,
         () -> new UiTxt("Static Bell models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Bells with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the swinging animation that plays in Vanilla when a Bell is rung.\n").Orange())
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         List.of(Blocks.BELL)
     ),
     STATIC_COPPER_GOLEM_STATUES(true,
         () -> new UiTxt("Static Copper Golem Statue models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Copper Golem Statues with a static model to improve performance.\n"))
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Stream.of(Groups.ALL_COPPER_GOLEM_STATUES.stream()).flatMap(s -> s).toList()
     ),
     STATIC_LECTERNS(true,
         () -> new UiTxt("Static Lectern models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Lecterns with a static model to improve performance.\n"))
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         List.of(Blocks.LECTERN)
     ),
     OPTIMIZED_SHELVES(true,
         () -> new UiTxt("Optimized Shelf models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Optimizes shelf rendering logic to improve performance.\n"))
             .cat(new UiTxt("This doesn't cause visual changes.\n"))
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE.get())
         ,
         List.of() //! Feature doesn't change the model. No section refresh
     ),
     OPTIMIZED_CAMPFIRES(true,
         () -> new UiTxt("Optimized Campfire models"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Optimizes Campfire and Soul Campfire rendering logic to improve performance.\n"))
             .cat(new UiTxt("This doesn't cause visual changes.\n"))
-            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE)
+            .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE.get())
         ,
         List.of() //! Feature doesn't change the model. No section refresh
     ),
@@ -208,7 +207,7 @@ public enum AltTextureFeature {
 
     REDSTONE_WIRE_3D(true,
         () -> new UiTxt("3D Redstone Wire"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Redstone Wire with a three-dimensional model.\n"))
             .cat(new UiTxt("Implies [Minimal Redstone Wire]").yellow())
         ,
@@ -216,7 +215,7 @@ public enum AltTextureFeature {
     ),
     RAILS_3D(true,
         () -> new UiTxt("3D Rails"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Rails, Powered Rails, Activator Rails, and Detector Rails with a three-dimensional model.\n"))
             .cat(new UiTxt("Implies [Consistent sloped Rails]").yellow())
         ,
@@ -229,7 +228,7 @@ public enum AltTextureFeature {
     ),
     CHAINS_3D(true, //TODO IMPLEMENT //FIXME change 3d model of hanging signs and lanterns too (and all copper lanterns)
         () -> new UiTxt("3D Chains"),
-        () -> new UiTxt()
+        () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Iron Chains and Copper Chains with a three-dimensional model.\n"))
             .cat(new UiTxt("This also affects the chains in Lanterns, Copper Lanterns, and Hanging Signs.\n").yellow())
             .cat(new UiTxt("3D Hanging Sign chains require [Static Sign Models]").yellow())
@@ -398,9 +397,15 @@ public enum AltTextureFeature {
 
 
     private static class Notices {
-        private static Txt RESOURCEPACK_INCOMPATIBILITY_NOTICE = new UiTxt("This breaks custom textures and models defined by standard Resource Packs.").red();
-        private static Txt RESOURCEPACK_COMPATIBILITY_NOTICE = new UiTxt("This feature is compatible with Resource Packs.").green();
-        private static Txt MOD_COMPATIBILITY_NOTICE = new UiTxt("This feature is not compatible with other static block entity model mods.").red();
+        private static Supplier<Txt> RESOURCEPACK_INCOMPATIBILITY_NOTICE = () -> new UiTxt(
+            "This breaks custom textures and models defined by standard Resource Packs.").red()
+        ;
+        private static Supplier<Txt> RESOURCEPACK_COMPATIBILITY_NOTICE = () -> new UiTxt(
+            "This feature is compatible with Resource Packs.").green()
+        ;
+        private static Supplier<Txt> MOD_COMPATIBILITY_NOTICE = () -> new UiTxt(
+            "This feature is not compatible with other static block entity model mods.").red()
+        ;
     }
 
 
@@ -414,16 +419,14 @@ public enum AltTextureFeature {
     //! Txt values are computed lazily as they depend on the Minecraft window and cannot be calculated during static initialization
     private final Supplier<Txt> nameSupplier;
     private final Supplier<Txt> detailsSupplier;
-    private Txt name    = null;
-    private Txt details = null;
     private final HashSet<Block> affectedBlocks;
     private final long flagBit; //! Flag bit index is calculated from the order of declaration
     private final boolean _default;
 
 
-    // Getters and checks
-    public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()).copy() :    name.copy(); }
-    public Txt getDetails() { return details == null ? (details = detailsSupplier.get()).copy() : details.copy(); }
+    // Getters and checks //! Name and details must be recomputed as they depend on the GUI scale option
+    public Txt getName   () { return nameSupplier.get(); }
+    public Txt getDetails() { return detailsSupplier.get(); }
     public boolean affects(final Block block) { return affectedBlocks.contains(block); }
     public Set<Block> getAffectedBlocks() { return affectedBlocks; }
     public long getFlagBit() { return flagBit; }
