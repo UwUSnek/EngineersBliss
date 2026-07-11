@@ -28,7 +28,7 @@ public class UiTxt extends Txt {
 
     public @NotNull Component get(final String fontName) {
         rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(fontName, textScale))));
-        return rawText;
+        return rawText.copy();
     }
     @Override
     public @NotNull Component get() {

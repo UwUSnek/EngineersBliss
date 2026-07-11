@@ -282,7 +282,7 @@ public class Txt {
      */
     public @NotNull Component get() {
         rawText.setStyle(style);
-        return rawText;
+        return rawText.copy();
     }
 
     /**

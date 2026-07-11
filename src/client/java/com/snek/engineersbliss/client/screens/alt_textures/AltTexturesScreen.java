@@ -27,6 +27,16 @@ public class AltTexturesScreen extends __base_Screen {
     public AltTexturesScreen() {
         super();
     }
+    @Override
+    public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
+        float blurRadius = this.minecraft.options.getMenuBackgroundBlurriness();
+        if(blurRadius >= 1.0F) {
+            final int sidebarWidth = (int)(width * LEFT_SIDEBAR_WIDTH);
+            graphics.enableScissor(sidebarWidth, 0, width, height);
+            graphics.blurBeforeThisStratum();
+            graphics.disableScissor();
+        }
+    }
 
 
 
