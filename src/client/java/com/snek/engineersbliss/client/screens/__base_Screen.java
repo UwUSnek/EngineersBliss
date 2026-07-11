@@ -2,12 +2,17 @@ package com.snek.engineersbliss.client.screens;
 
 import java.util.function.Consumer;
 
+import org.lwjgl.glfw.GLFW;
+
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
@@ -34,12 +39,28 @@ public abstract class __base_Screen extends Screen {
     protected boolean tabPressed = false;
     @Override
     public boolean keyPressed(final KeyEvent event) {
-        if(event.key() == InputConstants.KEY_TAB) {
-            tabPressed = true;
-            return true;
-        }
-        else {
-            return super.keyPressed(event);
+        switch(event.key()) {
+            case InputConstants.KEY_TAB: {
+                tabPressed = true;
+                return true;
+            }
+            case InputConstants.KEY_ADD: {
+                Minecraft client = Minecraft.getInstance();
+                final OptionInstance<Integer> option = client.options.guiScale();
+                option.set(option.get() + 1);
+                client.resizeGui();
+                return true;
+            }
+            case GLFW.GLFW_KEY_KP_SUBTRACT: {
+                Minecraft client = Minecraft.getInstance();
+                final OptionInstance<Integer> option = client.options.guiScale();
+                option.set(option.get() - 1);
+                client.resizeGui();
+                return true;
+            }
+            default: {
+                return super.keyPressed(event);
+            }
         }
     }
     @Override

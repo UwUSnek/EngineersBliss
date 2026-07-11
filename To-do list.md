@@ -254,3 +254,6 @@
 
 
 - 3am water that extends normal water fluid but has shaders
+
+- displays tab/+/- default keybinds in UIs
+- displays add these to the pause menu too somehow
