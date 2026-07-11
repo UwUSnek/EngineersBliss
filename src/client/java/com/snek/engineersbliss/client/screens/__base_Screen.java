@@ -110,7 +110,7 @@ public abstract class __base_Screen extends Screen {
 
     @Override
 	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        //! No background
+        this.extractBlurredBackground(graphics);
     }
 
 
