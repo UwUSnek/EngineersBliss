@@ -20,6 +20,7 @@ import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
 import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.UiSpacer;
 import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -173,15 +174,17 @@ public class PauseScreenMixin extends Screen {
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).getBold(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Rendering
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[R] Render filter",    RenderingScreen  ::new, 'R'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[O] Overlays",         OverlaysScreen   ::new, 'O'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[T] Alt textures",     AltTexturesScreen::new, 'T'), Layout.BORDER_HEIGHT);
 
             // Tools
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[U] Action history",   RenderingScreen::new, 'U'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[P] Block Properties", RenderingScreen::new, 'P'), Layout.BORDER_HEIGHT);
@@ -190,6 +193,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidgetAndSpacer(eb$createButton("[I] Custom items",     RenderingScreen::new, 'I'), Layout.BORDER_HEIGHT);
 
             // QoL
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new, 'X'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("[M] Sound muffler",    RenderingScreen::new, 'M'), Layout.BORDER_HEIGHT);
@@ -241,8 +245,8 @@ public class PauseScreenMixin extends Screen {
         // Calculate text dimensions and position
         final Font font = Minecraft.getInstance().font;
         int textCenterX = (x0 + x1) / 2;
-        int nameY = clusterTop - 32;
-        int titleY = nameY + font.lineHeight + 2;
+        int nameY = clusterTop - 48;
+        int titleY = nameY + Layout.HEADER_HEIGHT + 2;
 
 
         // Calculate play time
@@ -254,7 +258,7 @@ public class PauseScreenMixin extends Screen {
 
 
         // Draw player name an title
-        final Component playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name())).getBold();
+        final Component playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont().get();
         final Component playTime   = new UiTxt(String.format("Playtime: %s", playtime)).get();
         graphics.centeredText(font, playerName, textCenterX,  nameY, 0xFFFFC200);
         graphics.centeredText(font, playTime,   textCenterX, titleY, 0xFFDDDDDD);

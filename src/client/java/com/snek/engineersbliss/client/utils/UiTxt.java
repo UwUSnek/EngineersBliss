@@ -20,27 +20,25 @@ public class UiTxt extends Txt {
     public UiTxt(final @NotNull MutableComponent s) { this(s, 1); }
     public UiTxt(final @NotNull Component        s) { this(s, 1); }
 
-    public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; }
-    public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; }
-    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; }
-    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; }
+    public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; withMediumFont(); }
+    public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; withMediumFont(); }
+    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; withMediumFont(); }
+    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; withMediumFont(); }
 
 
 
 
-    public @NotNull Component get(final String fontName) {
-        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(fontName, textScale))).withoutShadow());
-        return rawText.copy();
+    public @NotNull UiTxt withMediumFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_MEDIUM, textScale)));
+        return this;
     }
-    @Override
-    public @NotNull Component get() {
-        return get(Layout.FONT_NAME_UI_MEDIUM);
+    public @NotNull UiTxt withBoldFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_BOLD, textScale)));
+        return this;
     }
-    public @NotNull Component getBold() {
-        return get(Layout.FONT_NAME_UI_BOLD);
-    }
-    public @NotNull Component getLight() {
-        return get(Layout.FONT_NAME_UI_LIGHT);
+    public @NotNull UiTxt withLightFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_LIGHT, textScale)));
+        return this;
     }
 
 

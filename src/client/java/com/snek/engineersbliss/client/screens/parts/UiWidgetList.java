@@ -58,13 +58,25 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
     public void addWidget(AbstractWidget widget, final int height) {
         this.addEntry(new Entry(widget), height);
     }
+
+
     public void addWidgetAndSpacer(AbstractWidget widget, final int marginBottom) {
         this.addEntry(new Entry(widget));
         this.addWidget(new UiSpacer(), marginBottom);
     }
+    public void addWidgetAndSpacer(AbstractWidget widget, final int height, final int marginBottom) {
+        this.addEntry(new Entry(widget), height);
+        this.addWidget(new UiSpacer(), marginBottom);
+    }
+
+
     public void addWidgetAndSpacers(AbstractWidget widget, final int marginTop, final int marginBottom) {
         this.addWidget(new UiSpacer(), marginTop);
-        addWidgetAndSpacer(widget, marginBottom);
+        this.addWidgetAndSpacer(widget, marginBottom);
+    }
+    public void addWidgetAndSpacers(AbstractWidget widget, final int height, final int marginTop, final int marginBottom) {
+        this.addWidget(new UiSpacer(), marginTop);
+        this.addWidgetAndSpacer(widget, height, marginBottom);
     }
 
 
@@ -77,7 +89,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
     @Override
     protected void extractListBackground(final GuiGraphicsExtractor graphics) {
-        graphics.fill(getX(), getY(), getX() + width, getY() + height, Layout.bgColorSolid);
+        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorSolid);
     }
 
     @Override

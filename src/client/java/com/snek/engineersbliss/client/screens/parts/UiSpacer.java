@@ -11,13 +11,25 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 
 public class UiSpacer extends AbstractWidget {
-    public UiSpacer() {
+    private final int bgColor;
+
+
+    public UiSpacer(final int bgColor) {
         super(50, 50, 50, 50, new Txt().get());
+        this.bgColor = bgColor;
     }
+    public UiSpacer() {
+        this(0x00000000);
+    }
+
+
+
 
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        // Empty
+        if((bgColor & 0xFF000000) != 0) {
+            graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
+        }
     }
 
     @Override

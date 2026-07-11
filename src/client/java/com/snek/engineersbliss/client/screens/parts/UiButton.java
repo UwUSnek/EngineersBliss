@@ -64,7 +64,7 @@ public class UiButton extends Button {
         final int textY = getY() + (height - font.lineHeight) / 2;
         final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
-        graphics.fill(getX(), getY(), getX() + width, getY() + height, bgColor);
+        graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
 
 
         graphics.pose().pushMatrix();
