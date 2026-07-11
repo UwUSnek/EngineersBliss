@@ -40,6 +40,7 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -173,6 +174,7 @@ public class PauseScreenMixin extends Screen {
 
 
 
+        final Identifier bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "test");
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
             leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
@@ -180,24 +182,24 @@ public class PauseScreenMixin extends Screen {
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[R] Render filter",    RenderingScreen  ::new, 'R'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[O] Overlays",         OverlaysScreen   ::new, 'O'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[T] Alt textures",     AltTexturesScreen::new, 'T'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Render filter",    RenderingScreen  ::new, 'R').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Overlays",         OverlaysScreen   ::new, 'O').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Alt textures",     AltTexturesScreen::new, 'T').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
 
             // Tools
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[U] Action history",   RenderingScreen::new, 'U'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[P] Block Properties", RenderingScreen::new, 'P'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[G] Block Groups",     RenderingScreen::new, 'G'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[C] Container tools",  RenderingScreen::new, 'C'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[I] Custom items",     RenderingScreen::new, 'I'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Action history",   RenderingScreen::new, 'U').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Block Properties", RenderingScreen::new, 'P').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Block Groups",     RenderingScreen::new, 'G').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Container tools",  RenderingScreen::new, 'C').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Custom items",     RenderingScreen::new, 'I').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[X] Gameplay tweaks",  RenderingScreen::new, 'X'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("[M] Sound muffler",    RenderingScreen::new, 'M'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Gameplay tweaks",  RenderingScreen::new, 'X').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("  Sound muffler",    RenderingScreen::new, 'M').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 
@@ -268,7 +270,7 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    private Button eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind) {
+    private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind) {
         return new UiButton(new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);

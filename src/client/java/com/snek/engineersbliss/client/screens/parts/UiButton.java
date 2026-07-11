@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.screens.parts;
 
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import com.snek.engineersbliss.client.utils.Layout;
@@ -12,6 +13,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -20,6 +23,7 @@ public class UiButton extends Button {
     private final Txt label;
     private char key;
     private final TextAlignment alignment;
+    private @Nullable Identifier bgSpriteId;
 
 
 
@@ -30,6 +34,7 @@ public class UiButton extends Button {
         this.key = key;
         this.alignment = alignment;
         this.label = label;
+        this.bgSpriteId = null;
     }
     public UiButton(final Txt label, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
         this(50, 50, 50, 50, label, onPress, key);
@@ -56,17 +61,34 @@ public class UiButton extends Button {
     }
 
 
+    public UiButton withSpriteBg(final Identifier id) {
+        bgSpriteId = id;
+        return this;
+    }
+
+
 
 
     @Override
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        final Font font = Minecraft.getInstance().font;
 
+
+        // Draw background
+        if(bgSpriteId == null) {
+            final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor;
+            graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
+        }
+        else {
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), getHeight(), getHeight());
+            if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
+        }
+
+
+        // Draw label
+        final Font font = Minecraft.getInstance().font;
         final int textX = getX() + Layout.textMarginPx;
         final int textY = getY() + (height - font.lineHeight) / 2;
-        final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
-        graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment);
     }
 
