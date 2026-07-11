@@ -21,8 +21,14 @@ public class UiButton extends Button {
         super(x, y, width, height, message.get(), onPress, DEFAULT_NARRATION);
         this.key = key;
     }
+    public UiButton(final Txt message, final Button.OnPress onPress, final char key) {
+        this(50, 50, 50, 50, message, onPress, key);
+    }
     public UiButton(final int x, final int y, final int width, final int height, final Txt message, final Button.OnPress onPress) {
         this(x, y, width, height, message, onPress, '\0');
+    }
+    public UiButton(final Txt message, final Button.OnPress onPress) {
+        this(50, 50, 50, 50, message, onPress);
     }
 
 

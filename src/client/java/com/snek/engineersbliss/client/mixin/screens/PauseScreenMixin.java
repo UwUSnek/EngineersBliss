@@ -264,21 +264,8 @@ public class PauseScreenMixin extends Screen {
 
 
 
-
-
-
-    private Button eb$addButton(final String label, final Supplier<Screen> screenFactory, final int x, final int y, final int width) {
-        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, new UiTxt(label), b -> {
-            minecraft.setScreen(screenFactory.get());
-            b.setFocused(false);
-        });
-        return this.addRenderableWidget(r);
-    } //TODO remove if not used
-
-
-
     private Button eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind) {
-        return new UiButton(50, 50, 50, BUTTON_HEIGHT, new UiTxt(label), b -> {
+        return new UiButton(new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
         }, keybind);

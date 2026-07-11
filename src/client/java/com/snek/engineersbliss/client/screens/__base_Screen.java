@@ -91,6 +91,14 @@ public abstract class __base_Screen extends Screen {
         r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;
+    }//TODO remove
+    protected Button createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind) {
+        final Button r = new UiButton(label, b -> {
+            action.accept(b);
+            b.setFocused(false);
+        }, keybind);
+        r.setTooltip(Tooltip.create(details.get()));
+        return r;
     }
 
 
