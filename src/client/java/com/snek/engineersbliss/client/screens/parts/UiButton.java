@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.screens.parts;
 import org.lwjgl.glfw.GLFW;
 
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -16,41 +17,42 @@ import net.minecraft.client.input.CharacterEvent;
 
 
 public class UiButton extends Button {
+    private final Txt label;
     private char key;
     private final TextAlignment alignment;
-    private float textScale = 1f;
 
 
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt message, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
-        super(x, y, width, height, message.get(), onPress, DEFAULT_NARRATION);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
+        //! Pass empty text to super and store a custom Txt isntance locally
+        super(x, y, width, height, new Txt().get(), onPress, DEFAULT_NARRATION);
         this.key = key;
         this.alignment = alignment;
-        if(message instanceof UiTxt uiTxt) textScale = uiTxt.getTextScale();
+        this.label = label;
     }
-    public UiButton(final Txt message, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
-        this(50, 50, 50, 50, message, onPress, key);
+    public UiButton(final Txt label, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
+        this(50, 50, 50, 50, label, onPress, key);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt message, final Button.OnPress onPress, final TextAlignment alignment) {
-        this(x, y, width, height, message, onPress, '\0');
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress, final TextAlignment alignment) {
+        this(x, y, width, height, label, onPress, '\0');
     }
-    public UiButton(final Txt message, final Button.OnPress onPress, final TextAlignment alignment) {
-        this(50, 50, 50, 50, message, onPress);
+    public UiButton(final Txt label, final Button.OnPress onPress, final TextAlignment alignment) {
+        this(50, 50, 50, 50, label, onPress);
     }
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt message, final Button.OnPress onPress, final char key) {
-        this(x, y, width, height, message, onPress, key, TextAlignment.LEFT);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress, final char key) {
+        this(x, y, width, height, label, onPress, key, TextAlignment.LEFT);
     }
-    public UiButton(final Txt message, final Button.OnPress onPress, final char key) {
-        this(50, 50, 50, 50, message, onPress, key, TextAlignment.LEFT);
+    public UiButton(final Txt label, final Button.OnPress onPress, final char key) {
+        this(50, 50, 50, 50, label, onPress, key, TextAlignment.LEFT);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt message, final Button.OnPress onPress) {
-        this(x, y, width, height, message, onPress, '\0', TextAlignment.LEFT);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress) {
+        this(x, y, width, height, label, onPress, '\0', TextAlignment.LEFT);
     }
-    public UiButton(final Txt message, final Button.OnPress onPress) {
-        this(50, 50, 50, 50, message, onPress, TextAlignment.LEFT);
+    public UiButton(final Txt label, final Button.OnPress onPress) {
+        this(50, 50, 50, 50, label, onPress, TextAlignment.LEFT);
     }
 
 
@@ -65,15 +67,7 @@ public class UiButton extends Button {
         final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
-
-
-        graphics.pose().pushMatrix();
-        graphics.pose().scale(textScale, textScale);
-        switch(alignment) {
-            case LEFT:   { graphics.        text(font, message, (int)(textX / textScale), (int)(textY / textScale), fgColor); break; }
-            case CENTER: { graphics.centeredText(font, message, (int)(textX / textScale), (int)(textY / textScale), fgColor); break; }
-        }
-        graphics.pose().popMatrix();
+        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment);
     }
 
 

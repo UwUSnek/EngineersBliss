@@ -25,6 +25,7 @@ import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
@@ -246,7 +247,7 @@ public class PauseScreenMixin extends Screen {
         final Font font = Minecraft.getInstance().font;
         int textCenterX = (x0 + x1) / 2;
         int nameY = clusterTop - 48;
-        int titleY = nameY + Layout.HEADER_HEIGHT + 2;
+        int titleY = nameY + (int)(font.lineHeight * Layout.HEADER_SCALE) + 2;
 
 
         // Calculate play time
@@ -254,14 +255,13 @@ public class PauseScreenMixin extends Screen {
         final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
         final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
-        String playtime = String.format("%dh %dm %ds", hours, minutes, seconds);
 
 
         // Draw player name an title
-        final Component playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont().get();
-        final Component playTime   = new UiTxt(String.format("Playtime: %s", playtime)).get();
-        graphics.centeredText(font, playerName, textCenterX,  nameY, 0xFFFFC200);
-        graphics.centeredText(font, playTime,   textCenterX, titleY, 0xFFDDDDDD);
+        final UiTxt playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont();
+        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds));
+        RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER);
+        RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER);
     }
 
 
