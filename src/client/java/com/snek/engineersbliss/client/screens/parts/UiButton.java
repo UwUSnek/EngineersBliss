@@ -24,6 +24,7 @@ public class UiButton extends Button {
     private char key;
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
+    private int bgSpriteWidth; //! 0 means copy height
 
 
 
@@ -62,7 +63,11 @@ public class UiButton extends Button {
 
 
     public UiButton withSpriteBg(final Identifier id) {
-        bgSpriteId = id;
+        return withSpriteBg(id, 0); //! 0 means copy height
+    }
+    public UiButton withSpriteBg(final Identifier id, final int width) {
+        this.bgSpriteId = id;
+        this.bgSpriteWidth = width;
         return this;
     }
 
@@ -73,13 +78,15 @@ public class UiButton extends Button {
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
 
-        // Draw background
-        if(bgSpriteId == null) {
+        // Draw black background //! Always drawn
+        {
             final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor;
             graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
         }
-        else {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), getHeight(), getHeight());
+        // Draw background sprite if present, on top of the default background so the shape of the button is preserved
+        if(bgSpriteId != null) {
+            final int spriteWidth = bgSpriteWidth == 0 ? getHeight() : bgSpriteWidth;
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth, getHeight());
             if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
         }
 

@@ -6,6 +6,7 @@ import java.util.OptionalInt;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -174,7 +175,6 @@ public class PauseScreenMixin extends Screen {
 
 
 
-        final Identifier bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "test");
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
             leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
@@ -182,24 +182,24 @@ public class PauseScreenMixin extends Screen {
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Render filter",    RenderingScreen  ::new, 'R').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Overlays",         OverlaysScreen   ::new, 'O').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Alt textures",     AltTexturesScreen::new, 'T').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Render filter",    RenderingScreen  ::new, 'R', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",         OverlaysScreen   ::new, 'O', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",     AltTexturesScreen::new, 'T', "test"), Layout.BORDER_HEIGHT);
 
             // Tools
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Action history",   RenderingScreen::new, 'U').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Block Properties", RenderingScreen::new, 'P').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Block Groups",     RenderingScreen::new, 'G').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Container tools",  RenderingScreen::new, 'C').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Custom items",     RenderingScreen::new, 'I').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     RenderingScreen::new, 'I', "test"), Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Gameplay tweaks",  RenderingScreen::new, 'X').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("  Sound muffler",    RenderingScreen::new, 'M').withSpriteBg(bgSpriteId), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new, 'X', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new, 'M', "test"), Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 
@@ -209,7 +209,7 @@ public class PauseScreenMixin extends Screen {
         //FIXME move no particles to alternative texture maybe?
         //FIXME move visible block overlays to alternative texture maybe?
 
-        final Button juliaScreenButton = eb$createButton("??", JuliaSetScreen::new, '\0');
+        final Button juliaScreenButton = eb$createButton("??", JuliaSetScreen::new, '\0', null);
         addRenderableWidget(juliaScreenButton);
         juliaScreenButton.setSize(BUTTON_HEIGHT, BUTTON_HEIGHT);
         juliaScreenButton.setX(width  - BUTTON_HEIGHT - BUTTON_MARGIN);
@@ -270,10 +270,11 @@ public class PauseScreenMixin extends Screen {
 
 
 
-    private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind) {
+    private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind, final @Nullable String spriteName) {
+        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
         return new UiButton(new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
-        }, keybind);
+        }, keybind).withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4);
     }
 }
