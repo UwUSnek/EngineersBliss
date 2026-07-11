@@ -47,6 +47,6 @@ public class UiTxt extends Txt {
     @Override
     public @NotNull Txt copy() {
         rawText.setStyle(style);
-        return new UiTxt(rawText.copy(), _length);
+        return new UiTxt(rawText.copy(), textScale);
     }
 }
