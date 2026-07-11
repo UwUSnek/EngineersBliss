@@ -10,7 +10,7 @@ import numpy as np
 
 
 
-PRODUCTION_RENDERING = False    # Enables high res supersampling and png optimization when True. Drastically increases rendering time
+PRODUCTION_RENDERING = True     # Enables high res supersampling and png optimization when True. Drastically increases rendering time
 MINECRAFT_SIZE = 8              # The font size used by minecraft
 CELL = 10                       # The size of the cell containing a glyph that's MINECRAFT_SIZE pixels tall
 COLS = 20                       # Atlas PNG width in glyphs
@@ -81,7 +81,7 @@ def build_atlas(name, font_path, fallback_path, scale):
 
     # Supersampling multiplier. This improves antialiasing
     #! It also makes some character not aligned to pixel boundaries so this is disabled in lower resolutions
-    SUPER_SAMPLING = 32 if PRODUCTION_RENDERING else 4
+    SUPER_SAMPLING = 32 if PRODUCTION_RENDERING else 2
     if scale <= 1:
         SUPER_SAMPLING = 1
 
