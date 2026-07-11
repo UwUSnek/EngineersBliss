@@ -25,6 +25,7 @@ public class UiButton extends Button {
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
     private int bgSpriteWidth; //! 0 means copy height
+    private int labelOffset;
 
 
 
@@ -63,11 +64,15 @@ public class UiButton extends Button {
 
 
     public UiButton withSpriteBg(final Identifier id) {
-        return withSpriteBg(id, 0); //! 0 means copy height
+        return withSpriteBg(id, 0);
     }
     public UiButton withSpriteBg(final Identifier id, final int width) {
+        return withSpriteBg(id, width, Layout.textMarginPx);
+    }
+    public UiButton withSpriteBg(final Identifier id, final int width, final int labelOffset) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
+        this.labelOffset = labelOffset;
         return this;
     }
 
@@ -94,7 +99,7 @@ public class UiButton extends Button {
 
         // Draw label
         final Font font = Minecraft.getInstance().font;
-        final int textX = getX() + Layout.textMarginPx;
+        final int textX = getX() + labelOffset;
         final int textY = getY() + (height - font.lineHeight) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, usingSprite);
