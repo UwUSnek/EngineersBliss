@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.screens.alt_textures;
 
-import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;

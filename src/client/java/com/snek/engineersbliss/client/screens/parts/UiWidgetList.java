@@ -88,6 +88,16 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         //! In Vanilla, getFirstEntryY is always used with scrollAmount.
     }
 
+    @Override
+    protected int scrollBarX() {
+        return width;
+    }
+
+    @Override
+    public int scrollbarWidth() {
+        return 2;
+    }
+
 
 
 
