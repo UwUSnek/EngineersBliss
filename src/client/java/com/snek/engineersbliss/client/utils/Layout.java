@@ -35,14 +35,12 @@ public class Layout {
     public static final int   HEADER_HEIGHT = 24;
     public static final float HEADER_SCALE  = 1.5f;
 
-    public static final String FONT_NAME_UI_LIGHT  = "ui_light";
-    public static final String FONT_NAME_UI_MEDIUM = "ui_medium";
-    public static final String FONT_NAME_UI_BOLD   = "ui_bold";
-    // public static final String FONT_NAME_CODE_LIGHT //TODO
-    // public static final String FONT_NAME_CODE_MEDIUM //TODO
-    // public static final String FONT_NAME_CODE_BOLD //TODO
+    public static final String FONT_NAME_UI_LIGHT    = "ui_light";
+    public static final String FONT_NAME_UI_REGULAR  = "ui_regular";
+    public static final String FONT_NAME_UI_BOLD     = "ui_bold";
+    public static final String FONT_NAME_MONO_MEDIUM = "mono_medium";
 
-    private static int FONT_MAX_SCALE = 4;
+    private static int FONT_MAX_SCALE = 10;
 
 
 
@@ -64,7 +62,7 @@ public class Layout {
      * ! Available providers are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
      * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
      * @param scale The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
-     *              This is clamped between 0.25 and 4 and rounded to the nearest multiple of 0.25 units.
+     *              This is clamped between 0.25 and 10 and rounded to the nearest multiple of 0.25 units.
      *              For pixel-perfect rendering, ensure the text size is a multiple of 0.25 units (4px minecraft text height)
      * @return The ID of the font provider.
      */
@@ -104,7 +102,7 @@ public class Layout {
      * ! Available fonts are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
      * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
      * @param scale The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
-     *              This is clamped between 0.25 and 4 and rounded to the nearest multiple of 0.25 units.
+     *              This is clamped between 0.25 and 10 and rounded to the nearest multiple of 0.25 units.
      *              For pixel-perfect rendering, ensure the text size is a multiple of 0.25 units (4px minecraft text height)
      * @return The style.
      */

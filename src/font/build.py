@@ -10,13 +10,16 @@ import numpy as np
 
 
 
-PRODUCTION_RENDERING = True     # Enables high res supersampling and png optimization when True. Drastically increases rendering time
+PRODUCTION_RENDERING = False     # Enables high res supersampling and png optimization when True. Drastically increases rendering time
 MINECRAFT_SIZE = 8              # The font size used by minecraft
 CELL = 10                       # The size of the cell containing a glyph that's MINECRAFT_SIZE pixels tall
 COLS = 20                       # Atlas PNG width in glyphs
-SCALES = [ 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4 ]
+SCALES = [
+    0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5,
+    5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10,
+]
 
-#! Scales go up to 4 to minimize jar file size.
+#! Scales go up to 10 to minimize jar file size.
 #! Font atlases are huge and higher resolutions are exponentially larger.
 
 #! Scale 0.25 is essentially just single pixels but that's expected with such a small font size.
@@ -47,10 +50,18 @@ def is_visible(ch, font):
 
 
 
-#! Custom resize improves alpha in lower resolutions. Sometimes. Marginally. Kind of.
-def resize_glyph(glyph_img, target_size):
+# This custom resize improves alpha in lower resolutions by normalizing it to 255 before rendering.
+# This stops lighter fonts from becoming transparent when rendered at lower resolutions
+# The strength is controlled by the curve_strength parameter
+def resize_glyph(glyph_img, target_size, curve_strength=3.5):
     a = glyph_img.split()[-1]
     a_resized = a.resize(target_size, Image.LANCZOS)
+
+    arr = np.array(a_resized, dtype=np.float32) / 255.0
+    arr = 1 - (1 - arr) ** curve_strength
+    arr = (arr * 255).clip(0, 255).astype(np.uint8)
+    a_resized = Image.fromarray(arr, "L")
+
     white = Image.new("L", target_size, 255)
     return Image.merge("RGBA", (white, white, white, a_resized))
 # NEAREST

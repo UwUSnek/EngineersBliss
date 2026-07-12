@@ -29,7 +29,7 @@ public class UiTxt extends Txt {
 
 
     public @NotNull UiTxt withMediumFont() {
-        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_MEDIUM, textScale)));
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_REGULAR, textScale)));
         return this;
     }
     public @NotNull UiTxt withBoldFont() {

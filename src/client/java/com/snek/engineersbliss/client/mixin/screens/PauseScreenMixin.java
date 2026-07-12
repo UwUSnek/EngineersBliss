@@ -272,7 +272,7 @@ public class PauseScreenMixin extends Screen {
 
 
         // Draw player name an title
-        final UiTxt playerName = new UiTxt(String.format(" %s ", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont();
+        final UiTxt playerName = new UiTxt(String.format("> %s <", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont();
         final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds));
         RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER, true);
         RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER, true);
