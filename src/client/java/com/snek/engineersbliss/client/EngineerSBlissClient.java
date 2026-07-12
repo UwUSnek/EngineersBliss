@@ -48,12 +48,6 @@ public class EngineerSBlissClient implements ClientModInitializer {
         MinecraftUtils.register();
 
 
-        // Register WebP ImageIO reader
-        IIORegistry.getDefaultInstance().registerServiceProvider(
-            new com.luciad.imageio.webp.WebPImageReaderSpi()
-        );
-
-
         // Initialize resource plugin for alt textures handler
         PreparableModelLoadingPlugin.register(
             AltTexturesModelPlugin::discoverModels,

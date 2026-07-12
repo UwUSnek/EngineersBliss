@@ -14,6 +14,8 @@ group = project.maven_group
 
 repositories {
     maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://jitpack.io" }
+    mavenCentral()
 }
 
 
@@ -38,7 +40,6 @@ dependencies {
     // Dependencies
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    implementation include("org.sejda.imageio:webp-imageio:0.1.6")
     implementation include("com.github.gotson.nightmonkeys:imageio-heif:1.1.0")
 
     // Optional dependencies
