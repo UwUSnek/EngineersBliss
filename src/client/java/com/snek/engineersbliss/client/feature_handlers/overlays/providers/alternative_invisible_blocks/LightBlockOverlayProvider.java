@@ -10,6 +10,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LightBlock;
@@ -23,10 +24,12 @@ public final class LightBlockOverlayProvider extends __base_TextureOverlayProvid
 
     @Override
     public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
+        final Player player = Minecraft.getInstance().player;
+        if(player == null) return false;
         return
             OverlaysHandler.getFeature(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY) &&
             state.is(Blocks.LIGHT) &&
-            Minecraft.getInstance().player.getMainHandItem().getItem() == (Items.LIGHT)
+            player.getMainHandItem().getItem() == (Items.LIGHT)
         ;
     }
 

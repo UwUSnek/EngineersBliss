@@ -67,6 +67,7 @@ public class MinecraftUtils {
     }
     public static long getPlaytimeMs() {
         final LocalPlayer player = Minecraft.getInstance().player;
+        if(player == null) return 0;
         if(playtimeAtRequest == 0) playtimeAtRequest = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
         final long curTime = Clock.systemUTC().millis();
         final long timeElapsed = curTime - playtimeRequestTime;

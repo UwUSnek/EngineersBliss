@@ -57,7 +57,7 @@ public class CreativeTweaksHandler {
         return false;
     }
     public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
-        return clientPlayerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && Minecraft.getInstance().player.getAbilities().flying;
+        return clientPlayerHasFeature(entity, CreativeTweakFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 
 
@@ -66,8 +66,10 @@ public class CreativeTweaksHandler {
 
     public static void onFlyingSpeedChange(final Float value) {
         final @NotNull Player player = Minecraft.getInstance().player;
-        if(!player.getAbilities().instabuild) return;
-        player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
+        if(player != null) {
+            if(!player.getAbilities().instabuild) return;
+            player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
+        }
     }
 
 
