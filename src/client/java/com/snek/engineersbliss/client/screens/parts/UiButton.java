@@ -88,17 +88,16 @@ public class UiButton extends Button {
 
 
         // Draw black background //! Always drawn
-        // {
-            // final int bgColor = isHovered() ? Layout.bgColorActive : Layout.bgColor; //TODO remove
-            graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColor);
-            // graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor); //TODO remove
-        // }
+        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColor);
+
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(usingSprite) {
             final int spriteWidth = bgSpriteWidth == 0 ? getHeight() : bgSpriteWidth;
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth, getHeight());
-            if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
         }
+
+        // Draw hover highlight
+        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
 
 
         // Draw label
