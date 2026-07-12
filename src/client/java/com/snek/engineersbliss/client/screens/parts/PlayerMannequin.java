@@ -28,6 +28,9 @@ public class PlayerMannequin extends AbstractClientPlayer {
     @Override
     public boolean isModelPartShown(PlayerModelPart part) { return true; }
 
+    @Override
+    public boolean shouldShowName() { return false; }
+
 
 
 
