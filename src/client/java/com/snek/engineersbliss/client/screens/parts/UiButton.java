@@ -3,7 +3,6 @@ package com.snek.engineersbliss.client.screens.parts;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -16,6 +15,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 
@@ -24,7 +24,8 @@ import net.minecraft.resources.Identifier;
 public class UiButton extends Button {
     private static final int KEYBIND_BADGE_WIDTH = 16;
 
-    private final Txt label;
+    private Txt label;
+    private float labelScale;
     private char key;
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
@@ -40,6 +41,7 @@ public class UiButton extends Button {
         this.key = key;
         this.alignment = alignment;
         this.label = label;
+        this.labelScale = (label instanceof UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;
         this.bgSpriteId = null;
         this.labelOffset = Layout.textMarginPx;
     }
@@ -130,5 +132,12 @@ public class UiButton extends Button {
         else {
             return super.charTyped(event);
         }
+    }
+
+
+    @Override
+    public void setMessage(Component message) {
+        super.setMessage(message);
+        label = new UiTxt(message, labelScale);
     }
 }
