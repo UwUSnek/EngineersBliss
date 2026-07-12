@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
+import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
@@ -182,24 +183,25 @@ public class PauseScreenMixin extends Screen {
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Render filter",    RenderingScreen  ::new, 'R', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",         OverlaysScreen   ::new, 'O', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",     AltTexturesScreen::new, 'T', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Render filter",    RenderingScreen  ::new, 'R', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",         OverlaysScreen   ::new, 'O', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",     AltTexturesScreen::new, 'T', "pause_screen/test"), Layout.BORDER_HEIGHT);
 
             // Tools
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     RenderingScreen::new, 'I', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     RenderingScreen::new, 'I', "pause_screen/test"), Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new, 'X', "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new, 'M', "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Creative tweaks",  CreativeTweaksScreen::new, 'Y', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new,      'X', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new,      'M', "pause_screen/test"), Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 

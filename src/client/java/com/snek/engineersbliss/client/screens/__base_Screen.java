@@ -2,11 +2,14 @@ package com.snek.engineersbliss.client.screens;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
@@ -18,6 +21,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -92,14 +96,20 @@ public abstract class __base_Screen extends Screen {
         this.addRenderableWidget(r);
         return r;
     }//TODO remove
-    protected Button createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind) {
-        final Button r = new UiButton(label, b -> {
-            action.accept(b);
-            b.setFocused(false);
-        }, keybind);
+
+
+
+
+
+    protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName) {
+        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
+        final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT);
+        r.withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
         r.setTooltip(Tooltip.create(details.get()));
         return r;
     }
+
+
 
 
     @Override

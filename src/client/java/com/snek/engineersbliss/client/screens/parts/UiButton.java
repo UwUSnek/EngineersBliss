@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.parts;
 
+import java.util.function.Consumer;
+
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
@@ -30,36 +32,37 @@ public class UiButton extends Button {
 
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         //! Pass empty text to super and store a custom Txt isntance locally
-        super(x, y, width, height, new Txt().get(), onPress, DEFAULT_NARRATION);
+        super(x, y, width, height, new Txt().get(), b -> pressCallback.accept((UiButton)b), DEFAULT_NARRATION);
         this.key = key;
         this.alignment = alignment;
         this.label = label;
         this.bgSpriteId = null;
+        this.labelOffset = Layout.textMarginPx;
     }
-    public UiButton(final Txt label, final Button.OnPress onPress, final char key, final TextAlignment alignment) {
-        this(50, 50, 50, 50, label, onPress, key);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+        this(50, 50, 50, 50, label, pressCallback, key, alignment);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress, final TextAlignment alignment) {
-        this(x, y, width, height, label, onPress, '\0');
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+        this(x, y, width, height, label, pressCallback, '\0', alignment);
     }
-    public UiButton(final Txt label, final Button.OnPress onPress, final TextAlignment alignment) {
-        this(50, 50, 50, 50, label, onPress);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+        this(50, 50, 50, 50, label, pressCallback, alignment);
     }
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress, final char key) {
-        this(x, y, width, height, label, onPress, key, TextAlignment.LEFT);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key) {
+        this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final Txt label, final Button.OnPress onPress, final char key) {
-        this(50, 50, 50, 50, label, onPress, key, TextAlignment.LEFT);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key) {
+        this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Button.OnPress onPress) {
-        this(x, y, width, height, label, onPress, '\0', TextAlignment.LEFT);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback) {
+        this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
     }
-    public UiButton(final Txt label, final Button.OnPress onPress) {
-        this(50, 50, 50, 50, label, onPress, TextAlignment.LEFT);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback) {
+        this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
     }
 
 
@@ -67,7 +70,7 @@ public class UiButton extends Button {
         return withSpriteBg(id, 0);
     }
     public UiButton withSpriteBg(final Identifier id, final int width) {
-        return withSpriteBg(id, width, Layout.textMarginPx);
+        return withSpriteBg(id, width, labelOffset);
     }
     public UiButton withSpriteBg(final Identifier id, final int width, final int labelOffset) {
         this.bgSpriteId = id;
