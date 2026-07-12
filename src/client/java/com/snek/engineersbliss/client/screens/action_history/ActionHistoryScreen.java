@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens.alt_textures;
+package com.snek.engineersbliss.client.screens.action_history;
 
 import org.jetbrains.annotations.Nullable;
 
