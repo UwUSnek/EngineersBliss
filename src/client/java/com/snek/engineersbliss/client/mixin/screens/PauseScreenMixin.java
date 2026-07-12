@@ -211,6 +211,16 @@ public class PauseScreenMixin extends Screen {
         //FIXME move no particles to alternative texture maybe?
         //FIXME move visible block overlays to alternative texture maybe?
 
+
+        // About section
+        final Button aboutButton = eb$createButton("About", RenderingScreen::new, '\0', "pause_screen/test");
+        addRenderableWidget(aboutButton);
+        aboutButton.setSize((int)(width * leftSidebarWidth), BUTTON_HEIGHT);
+        aboutButton.setX(0);
+        aboutButton.setY(height - BUTTON_HEIGHT - BUTTON_MARGIN);
+
+
+        // Julia set
         final Button juliaScreenButton = eb$createButton("??", JuliaSetScreen::new, '\0', null);
         addRenderableWidget(juliaScreenButton);
         juliaScreenButton.setSize(BUTTON_HEIGHT, BUTTON_HEIGHT);

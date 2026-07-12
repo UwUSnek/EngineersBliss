@@ -86,7 +86,8 @@ public abstract class __base_Screen extends Screen {
         return false;
     }
 
-
+    //TODO remove. this is the old version, still used by RenderingScreen
+    //TODO remove. this is the old version, still used by RenderingScreen
     protected Button addButton(final Txt label, final Txt details, final Consumer<Button> action, final int x, final int y, final int width) {
         final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
@@ -95,11 +96,7 @@ public abstract class __base_Screen extends Screen {
         r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;
-    }//TODO remove
-
-
-
-
+    }
 
     protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
