@@ -20,15 +20,15 @@ public class UiTxt extends Txt {
     public UiTxt(final @NotNull MutableComponent s) { this(s, 1); }
     public UiTxt(final @NotNull Component        s) { this(s, 1); }
 
-    public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; withMediumFont(); }
-    public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; withMediumFont(); }
-    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; withMediumFont(); }
-    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; withMediumFont(); }
+    public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
 
 
 
 
-    public @NotNull UiTxt withMediumFont() {
+    public @NotNull UiTxt withRegularFont() {
         style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_REGULAR, textScale)));
         return this;
     }
@@ -38,6 +38,10 @@ public class UiTxt extends Txt {
     }
     public @NotNull UiTxt withLightFont() {
         style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_LIGHT, textScale)));
+        return this;
+    }
+    public @NotNull UiTxt withMonoFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_MONO_MEDIUM, textScale)));
         return this;
     }
 

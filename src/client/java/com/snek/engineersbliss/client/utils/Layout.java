@@ -20,6 +20,7 @@ public class Layout {
 
     public static int bgColor        = 0x80151515;
     public static int fgColor        = 0xFFEEEEEE;
+    public static int fgColorHint    = 0xAABBBBBB;
     public static int bgColorActive  = 0x80777777;
     public static int fgColorActive  = 0xFFFFFFFF;
     public static int bgColorSolid   = 0xAA111111;

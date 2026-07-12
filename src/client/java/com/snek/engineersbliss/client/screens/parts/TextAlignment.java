@@ -1,6 +1,8 @@
 package com.snek.engineersbliss.client.screens.parts;
 
 public enum TextAlignment {
+    LEFT,
     CENTER,
-    LEFT
+    RIGHT,
+    CENTER_ANCHORED,
 }

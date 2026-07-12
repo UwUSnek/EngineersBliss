@@ -44,7 +44,7 @@ public class UiTextWidget extends AbstractWidget {
         final Font font = Minecraft.getInstance().font;
         final int x = getX() + Layout.textMarginPx;
         final int y = getY() + (height - font.lineHeight) / 2;
-        RenderingUtils.extractTxt(graphics, label, x, y, color, alignment);
+        RenderingUtils.extractTxt(graphics, label, x, y, color, alignment, width);
     }
 
     @Override

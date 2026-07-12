@@ -22,6 +22,8 @@ import net.minecraft.resources.Identifier;
 
 
 public class UiButton extends Button {
+    private static final int KEYBIND_BADGE_WIDTH = 16;
+
     private final Txt label;
     private char key;
     private final TextAlignment alignment;
@@ -93,7 +95,7 @@ public class UiButton extends Button {
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(usingSprite) {
             final int spriteWidth = bgSpriteWidth == 0 ? getHeight() : bgSpriteWidth;
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth, getHeight());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
         }
 
         // Draw hover highlight
@@ -105,7 +107,15 @@ public class UiButton extends Button {
         final int textX = getX() + labelOffset;
         final int textY = getY() + (height - font.lineHeight) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, usingSprite);
+        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, width, usingSprite);
+
+
+        // Draw keybind if present
+        if(key != '\0') {
+            final UiTxt keybindText = new UiTxt(String.valueOf(key)).withMonoFont();
+            final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_BADGE_WIDTH / 2;
+            RenderingUtils.extractTxt(graphics, keybindText, keybindX, textY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
+        }
     }
 
 
