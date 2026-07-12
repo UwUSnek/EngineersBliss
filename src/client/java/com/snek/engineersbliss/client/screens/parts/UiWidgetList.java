@@ -110,6 +110,16 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return 2;
     }
 
+    //! Override lets clicks through when they don't hit a sub element
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        final boolean r = super.isMouseOver(mouseX, mouseY);
+        if(r) for(final var c : children()) {
+            if(c.isMouseOver(mouseX, mouseY)) return true;
+        }
+        return false;
+    }
+
 
 
 
