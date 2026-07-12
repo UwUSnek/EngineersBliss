@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
@@ -83,6 +84,12 @@ public class PauseScreenMixin extends Screen {
     @Override
     public boolean keyPressed(final KeyEvent event) {
         boolean r = false;
+        if(event.isEscape()) {
+            if(shouldCloseOnEsc()) {
+                onClose();
+                return true;
+            }
+        }
         for(final var c : children()) r = r || c.keyPressed(event);
         return r;
     }
