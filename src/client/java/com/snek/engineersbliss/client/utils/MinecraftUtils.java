@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -49,6 +50,8 @@ public class MinecraftUtils {
     public static void register() {
         ClientPlayConnectionEvents.JOIN      .register((listener, sender, client) -> fetchPlaytime());
         ClientPlayConnectionEvents.DISCONNECT.register((listener,         client) -> invalidatePlaytimeData());
+
+        LevelRenderEvents.START_MAIN.register(context -> checkPauseTransition());
     }
 
 
@@ -57,20 +60,41 @@ public class MinecraftUtils {
     // Playtime tracking
     private static int playtimeAtRequest = 0;
     private static long playtimeRequestTime = 0;
+    private static long pausedAccumMs = 0;
+    private static long pauseStartTime = 0;
+    private static boolean wasPaused = false;
+
     public static void fetchPlaytime() {
         Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
         playtimeRequestTime = Clock.systemUTC().millis();
+        pausedAccumMs = 0;
+        wasPaused = false;
     }
+
     public static void invalidatePlaytimeData() {
         playtimeAtRequest = 0;
         playtimeRequestTime = 0;
+        pausedAccumMs = 0;
+        wasPaused = false;
     }
+
+    private static void checkPauseTransition() {
+        final boolean paused = Minecraft.getInstance().isPaused();
+        final long now = Clock.systemUTC().millis();
+        if(paused && !wasPaused) pauseStartTime = now;
+        if(!paused && wasPaused) pausedAccumMs += now - pauseStartTime;
+        wasPaused = paused;
+    }
+
     public static long getPlaytimeMs() {
         final LocalPlayer player = Minecraft.getInstance().player;
         if(player == null) return 0;
         if(playtimeAtRequest == 0) playtimeAtRequest = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
+
         final long curTime = Clock.systemUTC().millis();
-        final long timeElapsed = curTime - playtimeRequestTime;
+        long timeElapsed = curTime - playtimeRequestTime - pausedAccumMs;
+        if(wasPaused) timeElapsed -= (curTime - pauseStartTime); // still-open pause window
+
         return playtimeAtRequest * (1000 / 20) + timeElapsed;
     }
 
