@@ -3,7 +3,8 @@ package com.snek.engineersbliss.client.mixin.misc;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.screens.AvifTextureTracker;
+import com.snek.engineersbliss.client.utils.avif_textures.AvifAtlasMetadataSection;
+import com.snek.engineersbliss.client.utils.avif_textures.AvifTextureTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -95,7 +96,16 @@ public class AvifTextureReaderMixin {
                     pixels = ((DataBufferInt) argb.getRaster().getDataBuffer()).getData();
                 }
 
-                final TextureMetadataSection metadata = resource.metadata().getSection(TextureMetadataSection.TYPE).orElse(null);
+
+                // Read Minecraft Metadata and custom Engineer's Bliss AVIF Metadata
+                final TextureMetadataSection    metadata = resource.metadata().getSection(  TextureMetadataSection.TYPE).orElse(null);
+                final AvifAtlasMetadataSection atlasMeta = resource.metadata().getSection(AvifAtlasMetadataSection.TYPE).orElse(null);
+
+                //! Cache for later lookup
+                if(atlasMeta != null) {
+                    AvifTextureTracker.registerAtlas(id, atlasMeta);
+                }
+
 
                 ClientScheduler.run(() -> {
                     final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
