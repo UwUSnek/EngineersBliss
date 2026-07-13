@@ -43,7 +43,7 @@ public class BlockRenderer {
 
 
 
-
+//FIXME use new avif system
     /**
      * Renders an animated block spritesheet on the provided Graphics.
      * The default size is 16px.
