@@ -10,6 +10,8 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;

@@ -204,6 +204,8 @@ It helps a lot :3
   - Item Sink (storage block with infinite capacity)
   - 0 Friction blocks
   - ∞ Friction blocks
+  - Green Screen block
+  - Blue Screen block
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item

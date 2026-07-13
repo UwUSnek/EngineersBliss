@@ -134,6 +134,8 @@
   - Item Sink (storage block with infinite capacity)
   - 0 Friction blocks
   - ∞ Friction blocks
+  - ~~Green Screen block~~
+  - ~~Blue Screen block~~
   - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
   - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
   - [Vanilla Item] Name Tag item with Custom Name //TODO meant for name tagging mobs (makes them persistent). add to item lore

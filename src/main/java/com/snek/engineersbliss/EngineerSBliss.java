@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
 import com.snek.engineersbliss.network.creative_tweaks.CreativeTweakRequestReceiver;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
@@ -33,6 +35,11 @@ public class EngineerSBliss implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register(_server -> {
             ServerScheduler.tick();
         });
+
+
+        // Initialize custom items
+        CustomItemHandler.init();
+        ModCreativeTab.register();
 
 
         // Register server feature handlers
