@@ -38,7 +38,7 @@ public class UiButton extends Button {
     public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         //! Pass empty text to super and store a custom Txt isntance locally
         super(x, y, width, height, new Txt().get(), b -> pressCallback.accept((UiButton)b), DEFAULT_NARRATION);
-        this.key = key;
+        this.key = Character.toLowerCase(key);
         this.alignment = alignment;
         this.label = label;
         this.labelScale = (label instanceof UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;

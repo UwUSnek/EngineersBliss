@@ -15,12 +15,16 @@ import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.client.utils.avif_textures.AvifTextureTracker;
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -28,6 +32,8 @@ import net.minecraft.client.gui.components.Button;
 public class CreativeTweaksScreen extends __base_Screen {
     private static UiWidgetList leftSidebar;
     private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
+    private static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
+    private static final float PREVIEW_WIDTH = 0.25f;
 
 
 
@@ -121,6 +127,29 @@ public class CreativeTweaksScreen extends __base_Screen {
             '\0',
             "creative_tweaks/" + spriteName
         );
+    }
+
+
+    @Override
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
+
+
+        final int w = (int)(width * PREVIEW_WIDTH);
+        final int h = w;
+        final int x = (width  - w) / 2;
+        final int y = (height - h) / 2;
+        final String atlasPath = "textures/gui/feature_previews/creative_tweaks/disable_fire_effect_off_0.avif"; //FIXME
+        final Identifier atlasId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPath);
+
+        graphics.fill(x, y, x + w, y + h, Layout.bgColorSolid);
+        if(!AvifTextureTracker.isTextureReady(atlasId)) {
+            graphics.blit(atlasId, x, y, x + w, y + h, 0f, 1f, 0f, 1f);
+        }
+        else {
+            final float[] uv = AvifTextureTracker.getUV(atlasId, 0, System.currentTimeMillis());
+            graphics.blit(atlasId, x, y, x + w, y + h, uv[0], uv[1], uv[2], uv[3]);
+        }
     }
 
 

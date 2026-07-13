@@ -78,10 +78,10 @@ def build_atlas(frames_chunk: np.ndarray, cols: int) -> Image.Image:
 def write_mcmeta(avif_path: Path, cols: int, rows: int, frame_count: int, fps: int) -> dict:
     meta = {
         "avif_atlas": {
-            "atlas_cols": cols,
-            "atlas_rows": rows,
-            "sheet_width": SOURCE_SIZE,
-            "sheet_height": SOURCE_SIZE,
+            "atlas_cols": 1,
+            "atlas_rows": 1,
+            "sheet_width": cols * SOURCE_SIZE,
+            "sheet_height": rows * SOURCE_SIZE,
             "frame_width": SOURCE_SIZE,
             "frame_height": SOURCE_SIZE,
             "frame_count": frame_count,
