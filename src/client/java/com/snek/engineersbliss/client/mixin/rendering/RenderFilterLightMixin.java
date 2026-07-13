@@ -18,8 +18,8 @@ import net.minecraft.world.level.lighting.LightEngine;
 @Mixin(LightEngine.class)
 public class RenderFilterLightMixin {
 
-    @Inject(method = "getOpacity", at = @At("HEAD"), cancellable = true)
-    public void getOpacity(final BlockState state, final CallbackInfoReturnable<Integer> cir) {
+    @Inject(method = "getOpacity", at = @At("HEAD"), cancellable = true, require = 1)
+    public void eb$getOpacity(final BlockState state, final CallbackInfoReturnable<Integer> cir) {
 
         if(!RenderFilterHandler.shouldBlockRender(state)) {
             cir.setReturnValue(1);

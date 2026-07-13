@@ -2,30 +2,34 @@ package com.snek.engineersbliss.client.screens.rendering;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.__base_PauseScreen;
+import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.screens.parts.UiEditBox;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
 
-public class RenderingScreen extends __base_PauseScreen {
+public class RenderingScreen extends __base_Screen {
+    @SuppressWarnings("java:S1450")
     private int panelWidthCenter;
+    @SuppressWarnings("java:S1450")
     private int panelWidthSide;
+    @SuppressWarnings("java:S1450")
     private int halfButtonWidth;
 
 
-    private EditBox searchField;
+    private UiEditBox searchField;
     private BlockListWidget blockList;
 
 
@@ -41,7 +45,7 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
     @Override
-    public boolean keyPressed(KeyEvent event) {
+    public boolean keyPressed(final KeyEvent event) {
         if(!searchField.isFocused()) {
             if(event.key() == InputConstants.KEY_O) {
                 toggleRenderBlockOutlines(renderBlockOutlinesButton);
@@ -66,7 +70,7 @@ public class RenderingScreen extends __base_PauseScreen {
 
     //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+    public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
         searchField.setFocused(searchField.isHovered());
         return super.mouseClicked(event, doubleClick);
     }
@@ -88,34 +92,62 @@ public class RenderingScreen extends __base_PauseScreen {
 
         // Left sidebar
 
-        searchField = new EditBox(this.font, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, Component.literal("Search..."));
-        searchField.setHint(Component.literal("Search..."));
+        searchField = new UiEditBox(BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiTxt("Search...").get());
+        searchField.setHint(new UiTxt("Search...").get());
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));
         searchField.setX(BORDER_WIDTH);
         this.addRenderableWidget(searchField);
 
-        addButton(getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()), this::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
+        addButton(
+            getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()),
+            new UiTxt("Toggle targeting hidden blocks"),
+            RenderingScreen::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+        );
 
 
 
 
         // Right sidebar
 
-        addButton("Reset filters",     this::resetFilters,     this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP,                                   panelWidthSide);
-        addButton("Recalculate light", this::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide);
+        addButton(
+            new UiTxt("Reset filters"),
+            new UiTxt("Reset all rendering filters to their default state."),
+            this::resetFilters, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP, panelWidthSide
+        );
+        addButton(
+            new UiTxt("Recalculate light"),
+            new UiTxt("Recalculate all the light. This is a very resource intensive process that might take many seconds or minutes depending on your hardware."),
+            RenderingScreen::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+        );
 
-        renderBlockOutlinesButton = addButton(getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()), this::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide);
-        renderBlocksButton        = addButton(getToggleText_renderBlocks       (RenderFilterHandler.getRenderBlocks()),        this::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide);
-        renderBlockEntitiesButton = addButton(getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()), this::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide);
-        renderFluidsButton        = addButton(getToggleText_renderFluids       (RenderFilterHandler.getRenderFluids()),        this::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide);
+        renderBlockOutlinesButton = addButton(
+            getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()),
+            new UiTxt("Toggle whether block outlines should be rendered at all"),
+            RenderingScreen::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
+        );
+        renderBlocksButton = addButton(
+            getToggleText_renderBlocks(RenderFilterHandler.getRenderBlocks()),
+            new UiTxt("Toggle whether blocks without custom block entity rendering should be rendered at all."),
+            RenderingScreen::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
+        );
+        renderBlockEntitiesButton = addButton(
+            getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()),
+            new UiTxt("Toggle whether blocks with custom block entity rendering should be rendered at all."),
+            RenderingScreen::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
+        );
+        renderFluidsButton = addButton(
+            getToggleText_renderFluids(RenderFilterHandler.getRenderFluids()),
+            new UiTxt("Toggle whether fluids should be rendered at all."),
+            RenderingScreen::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
+        );
 
 
 
 
         // Main list
         //! This needs to be rendered last to let tooltips show on top of right side buttons
-        blockList = new BlockListWidget(this.minecraft, this, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
+        blockList = new BlockListWidget(this.minecraft, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
         blockList.setX(panelWidthSide + BORDER_WIDTH * 2);
         this.addRenderableWidget(blockList);
         blockList.filter("");
@@ -142,35 +174,37 @@ public class RenderingScreen extends __base_PauseScreen {
             "|", "Search either of two strings"
         };
         for(int i = 0; i < syntaxInstructions.length / 2; i++) {
-            graphics.text(this.font, syntaxInstructions[i * 2],     BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
-            graphics.text(this.font, syntaxInstructions[i * 2 + 1], BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(syntaxInstructions[i * 2    ]).get(), BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(syntaxInstructions[i * 2 + 1]).get(), BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
         }
 
 
         // Draw render stats
         final ClientLevel level = Minecraft.getInstance().level;
-        final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-        final int rightTextX = this.width - panelWidthSide;
-        final int lightProgress = RenderFilterHandler.getLightRecalcProgress();
-        final int lightMax = RenderFilterHandler.getLightRecalcMax();
-        final String[] renderStats = {
-            "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
-            "Loaded chunks: ", String.format("%,d", loadedChunkNum),
-            "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
-        };
+        if(level != null) {
+            final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
+            final int rightTextX = this.width - panelWidthSide;
+            final int lightProgress = RenderFilterHandler.getLightRecalcProgress();
+            final int lightMax = RenderFilterHandler.getLightRecalcMax();
+            final String[] renderStats = {
+                "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
+                "Loaded chunks: ", String.format("%,d", loadedChunkNum),
+                "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
+            };
 
-        graphics.text(this.font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[2], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[4], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
-        int rightTextPrefixWidth = 0;
-        for(int i = 0; i < renderStats.length; i += 2) {
-            final int w = this.font.width(renderStats[i]);
-            if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
+            graphics.text(this.font, new UiTxt(renderStats[0]).get(), rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[2]).get(), rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[4]).get(), rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            int rightTextPrefixWidth = 0;
+            for(int i = 0; i < renderStats.length; i += 2) {
+                final int w = this.font.width(renderStats[i]);
+                if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
+            }
+
+            graphics.text(this.font, new UiTxt(renderStats[1]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[3]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(this.font, new UiTxt(renderStats[5]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
         }
-
-        graphics.text(this.font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
-        graphics.text(this.font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
     }
 
 
@@ -192,67 +226,67 @@ public class RenderingScreen extends __base_PauseScreen {
 
 
 
-    public void recalculateLight(final Button b) {
+    public static void recalculateLight(final Button b) {
         RenderFilterHandler.recalculateLight();
     }
 
 
 
-    public String getToggleText_targetHiddenBlocks(final boolean state) {
-        return "Target hidden blocks: " + (state ? "YES" : "NO");
+    public static Txt getToggleText_targetHiddenBlocks(final boolean state) {
+        return new UiTxt("Target hidden blocks: " + (state ? "ON" : "OFF"));
     }
-    public void toggleTargetHiddenBlocks(final Button b) {
-        boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
+    public static void toggleTargetHiddenBlocks(final Button b) {
+        final boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
         RenderFilterHandler.setTargetHiddenBlocks(newState);
-        b.setMessage(Component.literal(getToggleText_targetHiddenBlocks(newState)));
+        b.setMessage(getToggleText_targetHiddenBlocks(newState).get());
     }
 
 
-    public String getToggleText_renderBlockOutlines(final boolean state) {
-        return "[O] Render block outlines: " + (state ? "YES" : "NO");
+    public static Txt getToggleText_renderBlockOutlines(final boolean state) {
+        return new UiTxt("[O] Render block outlines: " + (state ? "ON" : "OFF"));
     }
-    public void toggleRenderBlockOutlines(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
+    public static void toggleRenderBlockOutlines(final Button b) {
+        final boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
         RenderFilterHandler.setRenderBlockOutlines(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderBlockOutlines(newState)));
+        b.setMessage(getToggleText_renderBlockOutlines(newState).get());
     }
 
 
-    public String getToggleText_renderBlocks(final boolean state) {
-        return "[B] Render blocks: " + (state ? "YES" : "NO");
+    public static Txt getToggleText_renderBlocks(final boolean state) {
+        return new UiTxt("[B] Render blocks: " + (state ? "ON" : "OFF"));
     }
-    public void toggleRenderBlocks(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderBlocks();
+    public static void toggleRenderBlocks(final Button b) {
+        final boolean newState = !RenderFilterHandler.getRenderBlocks();
         RenderFilterHandler.setRenderBlocks(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderBlocks(newState)));
+        b.setMessage(getToggleText_renderBlocks(newState).get());
     }
 
 
-    public String getToggleText_renderBlockEntities(final boolean state) {
-        return "[E] Render block entities: " + (state ? "YES" : "NO");
+    public static Txt getToggleText_renderBlockEntities(final boolean state) {
+        return new UiTxt("[E] Render block entities: " + (state ? "ON" : "OFF"));
     }
-    public void toggleRenderBlockEntities(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderBlockEntities();
+    public static void toggleRenderBlockEntities(final Button b) {
+        final boolean newState = !RenderFilterHandler.getRenderBlockEntities();
         RenderFilterHandler.setRenderBlockEntities(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderBlockEntities(newState)));
+        b.setMessage(getToggleText_renderBlockEntities(newState).get());
     }
 
 
-    public String getToggleText_renderFluids(final boolean state) {
-        return "[F] Render fluids: " + (state ? "YES" : "NO");
+    public static Txt getToggleText_renderFluids(final boolean state) {
+        return new UiTxt("[F] Render fluids: " + (state ? "ON" : "OFF"));
     }
-    public void toggleRenderFluids(final Button b) {
-        boolean newState = !RenderFilterHandler.getRenderFluids();
+    public static void toggleRenderFluids(final Button b) {
+        final boolean newState = !RenderFilterHandler.getRenderFluids();
         RenderFilterHandler.setRenderFluids(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(Component.literal(getToggleText_renderFluids(newState)));
+        b.setMessage(getToggleText_renderFluids(newState).get());
     }
 }
 

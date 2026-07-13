@@ -1,0 +1,46 @@
+{
+  "credit": "UwU_Snek",
+  "format_version": "1.21.11",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "engineers-bliss:block/redstone_wire/minimal/large_dot",
+    "line": "engineers-bliss:block/redstone_wire/minimal/large_dot"
+  },
+  "elements": [
+    {
+      "from": [
+        5,
+        0.251,
+        5
+      ],
+      "to": [
+        11,
+        0.251,
+        11
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#line",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [
+            5,
+            5,
+            11,
+            11
+          ],
+          "texture": "#line",
+          "tintindex": 0
+        }
+      }
+    }
+  ]
+}

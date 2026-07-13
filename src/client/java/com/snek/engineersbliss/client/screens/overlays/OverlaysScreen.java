@@ -1,18 +1,28 @@
 package com.snek.engineersbliss.client.screens.overlays;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.screens.__base_PauseScreen;
+import com.snek.engineersbliss.client.screens.__base_Screen;
+import com.snek.engineersbliss.client.screens.parts.TextAlignment;
+import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.UiSpacer;
+import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
+import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 
 
 
 
-public class OverlaysScreen extends __base_PauseScreen {
-    private static final int BUTTON_WIDTH = 200;
+public class OverlaysScreen extends __base_Screen {
+    private static UiWidgetList leftSidebar;
+    private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
 
 
     public OverlaysScreen() {
@@ -25,16 +35,44 @@ public class OverlaysScreen extends __base_PauseScreen {
     @Override
     protected void init() {
 
-        // Power levels  //TODO add header
-        addButton(getToggleText(OverlayFeature.COMPARATOR_POWER_LEVELS,      OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_POWER_LEVELS)),      b -> toggleFeature(OverlayFeature.COMPARATOR_POWER_LEVELS,      b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS)),   b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,   b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.RAIL_POWER_LEVELS,            OverlaysHandler.getFeature(OverlayFeature.RAIL_POWER_LEVELS)),            b -> toggleFeature(OverlayFeature.RAIL_POWER_LEVELS,            b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
 
-        // Logic
-        addButton(getToggleText(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,     OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET)),     b -> toggleFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,     b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE,   OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE)),   b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE,   b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.RAIL_POWER_SOURCE,            OverlaysHandler.getFeature(OverlayFeature.RAIL_POWER_SOURCE)),            b -> toggleFeature(OverlayFeature.RAIL_POWER_SOURCE,            b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+        leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT); {
+            final String titleString = "Overlays";
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+
+            // Power levels
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Power levels", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.COMPARATOR_POWER_LEVELS,    "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS, "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.RAIL_POWER_LEVELS,          "test"), Layout.BORDER_HEIGHT);
+
+            // Logic
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Block logic", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,   "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE, "test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.RAIL_POWER_SOURCE,          "test"), Layout.BORDER_HEIGHT);
+        }
+        addRenderableWidget(leftSidebar);
     }
+
+
+    public static UiButton createOverlayFeatureButton(final OverlayFeature feature, final @Nullable String spriteName) {
+        return createButton(
+            getToggleText(feature),
+            feature.getDetails(),
+            b -> toggleFeature(feature, b),
+            '\0',
+            "overlays/" + spriteName
+        );
+    }
+
+
+
+
+
+
 
 
     @Override
@@ -47,15 +85,17 @@ public class OverlaysScreen extends __base_PauseScreen {
 
 
 
-    public String getToggleText(final OverlayFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
+    public static Txt getToggleText(final OverlayFeature feature, final boolean state) {
+        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
+    }
+    public static Txt getToggleText(final OverlayFeature feature) {
+        return getToggleText(feature, OverlaysHandler.getFeature(feature));
     }
 
 
-    public void toggleFeature(final OverlayFeature feature, final Button b) {
-        boolean newState = !OverlaysHandler.getFeature(feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
+    public static void toggleFeature(final OverlayFeature feature, final Button b) {
+        final boolean newState = !OverlaysHandler.getFeature(feature);
+        b.setMessage(getToggleText(feature, newState).get());
         OverlaysHandler.setFeature(feature, newState);
-        // MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks()); //TODO might be needed? idk yet
     }
 }

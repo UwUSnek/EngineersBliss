@@ -2,8 +2,6 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 
@@ -22,16 +20,26 @@ public class HoneyBlockPartProvider extends __base_PartProvider {
     }
 
 
-    @Override
-    public @Nullable List<String> calcPartNames(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK) ?
-            List.of("honey_block/transparent/block_n") :
-            null
-        ;
-    }
+
 
     @Override
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
+        return List.of("honey_block/transparent/block" + getSingleVariantSuffix());
+    }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of("honey_block/transparent/block");
+    }
+
+
+
+
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK);
+    }
+    @Override
     public boolean shouldKeepVanilla(final BlockState state) {
-        return !AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK);
+        return !shouldUseCustom(state);
     }
 }
