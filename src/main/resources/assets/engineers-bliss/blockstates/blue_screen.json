@@ -1,5 +1,5 @@
 {
     "variants": {
-        "": { "model": "engineers-bliss:block/custom/green_screen" }
+        "": { "model": "engineers-bliss:custom_block/green_screen" }
     }
 }

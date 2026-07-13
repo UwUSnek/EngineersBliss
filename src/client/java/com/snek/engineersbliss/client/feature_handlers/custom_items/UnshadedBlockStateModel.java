@@ -94,7 +94,7 @@ public class UnshadedBlockStateModel implements BlockStateModel {
         final MutableMesh mutableMesh = Renderer.get().mutableMesh();
         final QuadEmitter emitter = mutableMesh.emitter();
 
-        for (final Direction dir : Direction.values()) {
+        for(final Direction dir : Direction.values()) {
             emitter.square(dir, 0, 0, 1, 1, 0);
             emitter.materialBake(bakedMaterial, MutableQuadView.BAKE_LOCK_UV);
             emitter.chunkLayer(ChunkSectionLayer.SOLID);
@@ -102,7 +102,6 @@ public class UnshadedBlockStateModel implements BlockStateModel {
             emitter.diffuseShade(false);
             emitter.emit();
         }
-
         mesh = mutableMesh.immutableCopy();
     }
 
