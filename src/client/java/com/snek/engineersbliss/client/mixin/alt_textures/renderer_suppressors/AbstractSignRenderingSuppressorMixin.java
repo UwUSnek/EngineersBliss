@@ -30,7 +30,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "submitSign", at = @At("HEAD"), cancellable = true, require = 1)
-	private void submitSign(
+	private void eb$submitSign(
 		final PoseStack poseStack,
 		final int lightCoords,
 		final WoodType type,

@@ -225,6 +225,7 @@ public class Txt {
     public @NotNull Txt noItalic       () { style = style.withItalic       (false); return this; }
     public @NotNull Txt noObfuscated   () { style = style.withObfuscated   (false); return this; }
     public @NotNull Txt noStrikethrough() { style = style.withStrikethrough(false); return this; }
+    public @NotNull Txt noShadow       () { style = style.withoutShadow    ();      return this; }
 
 
 
@@ -282,7 +283,7 @@ public class Txt {
      */
     public @NotNull Component get() {
         rawText.setStyle(style);
-        return rawText;
+        return rawText.copy();
     }
 
     /**

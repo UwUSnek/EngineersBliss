@@ -12,28 +12,45 @@ import net.minecraft.network.chat.MutableComponent;
 
 public class UiTxt extends Txt {
     private final float textScale;
-
-    public UiTxt()                                  { super();  textScale = 1; }
-    public UiTxt(final @NotNull String           s) { super(s); textScale = 1; }
-    public UiTxt(final @NotNull MutableComponent s) { super(s); textScale = 1; }
-    public UiTxt(final @NotNull Component        s) { super(s); textScale = 1; }
-
-    public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; }
-    public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; }
-    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; }
-    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; }
+    public float getTextScale() { return textScale; }
 
 
-    @Override
-    public @NotNull Component get() {
-        rawText.setStyle(style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_MEDIUM, textScale))));
-        return rawText;
+    public UiTxt()                                  { this(   1); }
+    public UiTxt(final @NotNull String           s) { this(s, 1); }
+    public UiTxt(final @NotNull MutableComponent s) { this(s, 1); }
+    public UiTxt(final @NotNull Component        s) { this(s, 1); }
+
+    public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
+
+
+
+
+    public @NotNull UiTxt withRegularFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_REGULAR, textScale)));
+        return this;
     }
+    public @NotNull UiTxt withBoldFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_BOLD, textScale)));
+        return this;
+    }
+    public @NotNull UiTxt withLightFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_UI_LIGHT, textScale)));
+        return this;
+    }
+    public @NotNull UiTxt withMonoFont() {
+        style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_MONO_MEDIUM, textScale)));
+        return this;
+    }
+
+
 
 
     @Override
     public @NotNull Txt copy() {
         rawText.setStyle(style);
-        return new UiTxt(rawText.copy(), _length);
+        return new UiTxt(rawText.copy(), textScale);
     }
 }

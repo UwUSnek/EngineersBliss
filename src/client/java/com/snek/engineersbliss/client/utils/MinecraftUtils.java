@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.utils;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,13 +12,19 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +44,60 @@ import net.minecraft.world.phys.AABB;
 
 public class MinecraftUtils {
     private MinecraftUtils() { }
+
+
+
+    public static void register() {
+        ClientPlayConnectionEvents.JOIN      .register((listener, sender, client) -> fetchPlaytime());
+        ClientPlayConnectionEvents.DISCONNECT.register((listener,         client) -> invalidatePlaytimeData());
+
+        LevelRenderEvents.START_MAIN.register(context -> checkPauseTransition());
+    }
+
+
+
+
+    // Playtime tracking
+    private static int playtimeAtRequest = 0;
+    private static long playtimeRequestTime = 0;
+    private static long pausedAccumMs = 0;
+    private static long pauseStartTime = 0;
+    private static boolean wasPaused = false;
+
+    public static void fetchPlaytime() {
+        Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
+        playtimeRequestTime = Clock.systemUTC().millis();
+        pausedAccumMs = 0;
+        wasPaused = false;
+    }
+
+    public static void invalidatePlaytimeData() {
+        playtimeAtRequest = 0;
+        playtimeRequestTime = 0;
+        pausedAccumMs = 0;
+        wasPaused = false;
+    }
+
+    private static void checkPauseTransition() {
+        final boolean paused = Minecraft.getInstance().isPaused();
+        final long now = Clock.systemUTC().millis();
+        if(paused && !wasPaused) pauseStartTime = now;
+        if(!paused && wasPaused) pausedAccumMs += now - pauseStartTime;
+        wasPaused = paused;
+    }
+
+    public static long getPlaytimeMs() {
+        final LocalPlayer player = Minecraft.getInstance().player;
+        if(player == null) return 0;
+        if(playtimeAtRequest == 0) playtimeAtRequest = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
+
+        final long curTime = Clock.systemUTC().millis();
+        long timeElapsed = curTime - playtimeRequestTime - pausedAccumMs;
+        if(wasPaused) timeElapsed -= (curTime - pauseStartTime); // still-open pause window
+
+        return playtimeAtRequest * (1000 / 20) + timeElapsed;
+    }
+
 
 
 

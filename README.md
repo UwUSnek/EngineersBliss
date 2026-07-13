@@ -1,6 +1,6 @@
 # Engineer's Bliss
 
-A **rendering** and **utility** mod for Redstone Engineers.<br>
+A **rendering**, **optimization**, and **utility** mod for Redstone Engineers.<br>
 :3
 
 <br>
@@ -8,8 +8,8 @@ A **rendering** and **utility** mod for Redstone Engineers.<br>
 Engineer's Bliss focuses on improving the experience of designing Vanilla Redstone machines
 through a multitude of tools and custom items and blocks.
 
-These include anything from overlays and fast clicking to automatic circuit analysis tools,
-custom items, render filters and an in-game block property lookup tool.
+These include anything from overlays and optimized block entities to automatic circuit analysis tools,
+custom items, and render filters.
 
 <br>
 
@@ -108,6 +108,7 @@ It helps a lot :3
   - static decorated pot models
   - static bell models
   - static copper golem statue models
+  - static lectern models
   - Optimized Shelf rendering logic
   - Optimized Campfire rendering logic<br><br>
   - 3D Redstone Wire
@@ -203,6 +204,8 @@ It helps a lot :3
   - Item Sink (storage block with infinite capacity)
   - 0 Friction blocks
   - ∞ Friction blocks
+  - Green Screen block
+  - Blue Screen block
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
@@ -232,3 +235,6 @@ It helps a lot :3
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey
   - [Vanilla block & entity] Armor Stand with arms
+  - [Vanilla entity] TNTs with higher explosion strength
+  - [Vanilla entity] Ender Dragon Spawn Egg
+  - [Vanilla entity] Wither Spawn Egg

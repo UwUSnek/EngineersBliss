@@ -56,7 +56,7 @@ public class AvifTextureReaderMixin {
         }
     }
 
-    private static NativeImage buildPlaceholderImage() {
+    private static NativeImage eb$buildPlaceholderImage() {
         final NativeImage copy = new NativeImage(LOADING_IMAGE.getWidth(), LOADING_IMAGE.getHeight(), false);
         MemoryUtil.memCopy(LOADING_IMAGE.getPointer(), copy.getPointer(), LOADING_IMAGE.getWidth() * LOADING_IMAGE.getHeight() * 4L);
         return copy;
@@ -67,10 +67,10 @@ public class AvifTextureReaderMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "load", at = @At("HEAD"), cancellable = true, require = 1)
-    private static void load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
+    private static void eb$load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
         if(!id.getPath().endsWith(".avif")) return;
 
-        final NativeImage placeholder = buildPlaceholderImage();
+        final NativeImage placeholder = eb$buildPlaceholderImage();
         cir.setReturnValue(new TextureContents(placeholder, null));
 
         CompletableFuture.runAsync(() -> {

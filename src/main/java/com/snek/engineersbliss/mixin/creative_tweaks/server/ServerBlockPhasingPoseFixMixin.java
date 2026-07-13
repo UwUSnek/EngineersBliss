@@ -23,7 +23,7 @@ public class ServerBlockPhasingPoseFixMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At("HEAD"), cancellable = true, require = 1)
-    private void canPlayerFitWithinBlocksAndEntitiesWhen(final Pose newPose, final CallbackInfoReturnable<Boolean> cir) {
+    private void eb$canPlayerFitWithinBlocksAndEntitiesWhen(final Pose newPose, final CallbackInfoReturnable<Boolean> cir) {
         if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(true);
         }

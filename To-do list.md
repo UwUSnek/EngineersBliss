@@ -7,7 +7,7 @@
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
-  - Disable Redstone Wire particles
+  - ~~Disable Redstone Wire particles~~
   - ~~Disable Campfire particles~~
   - ~~Disable Fire particles~~
   - ~~Disable Lava particles~~
@@ -26,22 +26,22 @@
   - ~~Static Chest models~~
   - ~~Static Banner models~~
   - ~~static decorated pot models~~
-  - static bell models
-  - static copper golem statue models
+  - ~~static bell models~~
+  - ~~static copper golem statue models~~
+  - ~~static lectern models~~
   - ~~Optimized Shelf rendering logic~~
   - ~~Optimized Campfire rendering logic~~
 
   - ~~3D Redstone Wire~~
   - ~~3D Rails~~
   - ~~3D Ladders~~
-  - 3D Iron Chains & Copper Chains
-  - 3D Iron Bars & Copper Bars
+  - ~~3D Iron Chains & Copper Chains~~
+  - ~~3D Iron Bars & Copper Bars~~
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
   - Player model rendering in the pause menu //TODO add this to the readme if possible
     - Display player name above model
     - Display customizable title under the name
-  - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -90,15 +90,15 @@
   - ~~Phase through blocks while flying~~
   - ~~Phase through entities~~
   - ~~Disable bouncing on Slime Blocks~~
-  - Disable not being able to jump from Honey Blocks
-  - Disable sliding on the sides of Honey Blocks
+  - ~~Disable not being able to jump from Honey Blocks~~
+  - ~~Disable sliding on the sides of Honey Blocks~~
   - ~~Disable being slowed down by Slime Blocks~~
   - ~~Disable being slowed down by Honey Blocks~~
   - ~~Disable being slowed down by Soul Sand~~
   - ~~Disable being slowed down by powder snow~~
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - ~~Disable being moved by Water and Lava currents~~
-  - Disable being dragged by Bubble Columns
+  - ~~Disable being dragged by Bubble Columns~~
 
   - Disable item change animation
   - Disable hand swing animation
@@ -134,6 +134,8 @@
   - Item Sink (storage block with infinite capacity)
   - 0 Friction blocks
   - ∞ Friction blocks
+  - ~~Green Screen block~~
+  - ~~Blue Screen block~~
   - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
   - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
   - [Vanilla Item] Name Tag item with Custom Name //TODO meant for name tagging mobs (makes them persistent). add to item lore
@@ -166,10 +168,19 @@
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey
   - [Vanilla block & entity] Armor Stand with arms
+  - [Vanilla entity] TNTs with higher explosion strength
+  - [Vanilla entity] Ender Dragon Spawn Egg
+  - [Vanilla entity] Wither Spawn Egg
 
 
 
 - disable punching end crystals? //TODO maybe? idk, very niche
+
+
+
+
+
+
 
 
 
@@ -226,4 +237,25 @@
 - add a generic "hide all particles" toggle in rendering screen
 
 
-- add static cushion models feature for the new versions. they are probably block entities, judging from how they behave
+- static lectern models? or optimized, idk
+
+
+- add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
+
+
+
+- add scrolling items in inventories with the scroll wheel
+- add moving all the items into and out of your inventory with ctrl+shift+click
+  - this goes in the keybinds screen too
+
+
+- add world stats
+  - number of regions
+  - number of generated chunks
+  - size of the world directory
+
+
+- 3am water that extends normal water fluid but has shaders
+
+- displays tab/+/- default keybinds in UIs
+- displays add these to the pause menu too somehow

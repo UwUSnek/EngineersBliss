@@ -59,7 +59,7 @@ public abstract class DecoratedPotRenderingSuppressorMixin implements BlockEntit
 
     @SuppressWarnings("unused")
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-    private void extractRenderState(
+    private void eb$extractRenderState(
         final DecoratedPotBlockEntity blockEntity,
         final DecoratedPotRenderState state,
         final float partialTicks,
@@ -82,7 +82,7 @@ public abstract class DecoratedPotRenderingSuppressorMixin implements BlockEntit
         method = "submit(Lnet/minecraft/client/renderer/blockentity/state/DecoratedPotRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V",
         at = @At("HEAD"), cancellable = true, require = 1
     )
-    private void submit(
+    private void eb$submit(
         final DecoratedPotRenderState state,
         final PoseStack poseStack,
         final SubmitNodeCollector submitNodeCollector,

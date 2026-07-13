@@ -2,16 +2,26 @@ package com.snek.engineersbliss.client.screens;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
+
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -33,12 +43,28 @@ public abstract class __base_Screen extends Screen {
     protected boolean tabPressed = false;
     @Override
     public boolean keyPressed(final KeyEvent event) {
-        if(event.key() == InputConstants.KEY_TAB) {
-            tabPressed = true;
-            return true;
-        }
-        else {
-            return super.keyPressed(event);
+        switch(event.key()) {
+            case InputConstants.KEY_TAB: {
+                tabPressed = true;
+                return true;
+            }
+            case InputConstants.KEY_ADD: {
+                Minecraft client = Minecraft.getInstance();
+                final OptionInstance<Integer> option = client.options.guiScale();
+                option.set(option.get() + 1);
+                client.resizeGui();
+                return true;
+            }
+            case GLFW.GLFW_KEY_KP_SUBTRACT: {
+                Minecraft client = Minecraft.getInstance();
+                final OptionInstance<Integer> option = client.options.guiScale();
+                option.set(option.get() - 1);
+                client.resizeGui();
+                return true;
+            }
+            default: {
+                return super.keyPressed(event);
+            }
         }
     }
     @Override
@@ -60,21 +86,27 @@ public abstract class __base_Screen extends Screen {
         return false;
     }
 
-
+    //TODO remove. this is the old version, still used by RenderingScreen
+    //TODO remove. this is the old version, still used by RenderingScreen
     protected Button addButton(final Txt label, final Txt details, final Consumer<Button> action, final int x, final int y, final int width) {
-        final Button r =
-            Button.builder(
-                label.get(),
-                b -> { action.accept(b); b.setFocused(false); }
-            )
-            .size(width, BUTTON_HEIGHT)
-            .pos(x, y)
-            .tooltip(Tooltip.create(details.get()))
-            .build()
-        ;
+        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
+            action.accept(b);
+            b.setFocused(false);
+        });
+        r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;
     }
+
+    protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName) {
+        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
+        final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT);
+        r.withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+        r.setTooltip(Tooltip.create(details.get()));
+        return r;
+    }
+
+
 
 
     @Override
@@ -85,7 +117,7 @@ public abstract class __base_Screen extends Screen {
 
     @Override
 	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        //! No background
+        this.extractBlurredBackground(graphics);
     }
 
 

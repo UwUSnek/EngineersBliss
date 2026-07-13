@@ -6,22 +6,39 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
+import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
+import net.fabricmc.loader.api.FabricLoader;
 
 
 
 
 public class EngineerSBlissClient implements ClientModInitializer {
+    private static String modVersion = "";
+    public  static String getModVersion() { return modVersion; }
+
+
 
     @Override
     public void onInitializeClient() {
+
+        // Set mod version string
+        modVersion = FabricLoader.getInstance()
+            .getModContainer(EngineerSBliss.MOD_ID)
+            .map(container -> container.getMetadata().getVersion().getFriendlyString())
+            .orElse("")
+        ;
 
 
         // Register scheduler
@@ -31,13 +48,13 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Initialize utility classes
-        NetworkUtils.init();
+        NetworkUtils.register();
+        MinecraftUtils.register();
 
 
-        // Register WebP ImageIO reader
-        IIORegistry.getDefaultInstance().registerServiceProvider(
-            new com.luciad.imageio.webp.WebPImageReaderSpi()
-        );
+        // Initialize custom items
+        //! Item and block registration is done on the server side
+        ModelLoadingPlugin.register(new UnshadedBlockModelPlugin());
 
 
         // Initialize resource plugin for alt textures handler

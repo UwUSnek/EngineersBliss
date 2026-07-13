@@ -40,7 +40,7 @@ public class RailInputChangeTrackerMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "updateState", at = @At("HEAD"), cancellable = false, require = 1)
-	private void updateState(final BlockState state, final Level level, final BlockPos pos, final Block block, final CallbackInfo ci) {
+	private void eb$updateState(final BlockState state, final Level level, final BlockPos pos, final Block block, final CallbackInfo ci) {
         if(level == null || level.isClientSide()) return;
 
         // Calculate new data

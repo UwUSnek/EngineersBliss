@@ -27,7 +27,7 @@ public class LeverDustParticleSuppressorMixin {
     //! Levers have a "makeParticle" static method all particle logic is delegated to, so it can get away with a simple inject
     @SuppressWarnings("unused")
     @Inject(method = "makeParticle", at = @At("HEAD"), cancellable = true, require = 1)
-    private static void makeParticle(
+    private static void eb$makeParticle(
         final BlockState state,
         final LevelAccessor level,
         final BlockPos pos,

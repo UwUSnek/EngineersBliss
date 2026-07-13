@@ -10,6 +10,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,10 +23,12 @@ public final class StructureVoidOverlayProvider extends __base_TextureOverlayPro
 
     @Override
     public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
+        final Player player = Minecraft.getInstance().player;
+        if(player == null) return false;
         return
             OverlaysHandler.getFeature(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY) &&
             state.is(Blocks.STRUCTURE_VOID) &&
-            Minecraft.getInstance().player.getMainHandItem().getItem() == (Items.STRUCTURE_VOID)
+            player.getMainHandItem().getItem() == (Items.STRUCTURE_VOID)
         ;
     }
 

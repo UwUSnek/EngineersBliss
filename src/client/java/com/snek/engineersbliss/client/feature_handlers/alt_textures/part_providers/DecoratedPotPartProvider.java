@@ -22,11 +22,19 @@ public class DecoratedPotPartProvider extends __base_PartProvider {
     }
 
 
+
+
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String dirName = getVariantSuffixFromDirection(state.getValue(DecoratedPotBlock.HORIZONTAL_FACING));
         return List.of(String.format("decorated_pot/vanilla/block%s", dirName));
     }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of("decorated_pot/vanilla/block");
+    }
+
+
 
 
     @Override

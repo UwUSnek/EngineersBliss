@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
+import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 
@@ -25,51 +26,59 @@ import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 
 /**
- * This mixin is not required, but it helps improve performance of static block entity models.
- * It cancels all the preparation steps done before block entity data is submitted and things are rendered.
- * This gains a few FPS. Sometimes.
+ * This mixins cancels the dynamic rendering of disabled block entities before any data is computed, skipping the entire pipeline.
+ * This is the most efficient way to cancel block entity rendering.
+ * ! This is only separate from BlockEntityDispatcherOptimizerMixin to improve code structure and readability.
  */
+@SuppressWarnings("java:S6916")
 @Mixin(BlockEntityRenderDispatcher.class)
 public abstract class BlockEntityDispatcherSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "tryExtractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-    private void tryExtractRenderState(
+    private void eb$tryExtractRenderState(
         final BlockEntity blockEntity,
         final float partialTicks,
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
-        if(blockEntity instanceof SignBlockEntity sign) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(sign)) {
-                cir.setReturnValue(null);
+        switch(blockEntity) {
+            case SignBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
+                    cir.setReturnValue(null);
+                }
             }
-        }
-        // LidBlockEntity covers all chest types
-        if(blockEntity instanceof LidBlockEntity) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)) {
-                cir.setReturnValue(null);
+            case LidBlockEntity e -> { //! LidBlockEntity covers all chest types
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)) {
+                    cir.setReturnValue(null);
+                }
             }
-        }
-        if(blockEntity instanceof BannerBlockEntity banner) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
-                cir.setReturnValue(null);
+            case BannerBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
+                    cir.setReturnValue(null);
+                }
             }
-        }
-        if(blockEntity instanceof DecoratedPotBlockEntity pot && !BlockEntityUtils.decoratedPotHasSherds(pot)) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS)) {
-                cir.setReturnValue(null);
+            case DecoratedPotBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS) && !BlockEntityUtils.decoratedPotHasSherds(e)) {
+                    cir.setReturnValue(null);
+                }
             }
-        }
-        if(blockEntity instanceof BellBlockEntity) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)) {
-                cir.setReturnValue(null);
+            case BellBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)) {
+                    cir.setReturnValue(null);
+                }
             }
-        }
-        if(blockEntity instanceof CopperGolemStatueBlockEntity) {
-            if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)) {
-                cir.setReturnValue(null);
+            case CopperGolemStatueBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)) {
+                    cir.setReturnValue(null);
+                }
             }
+            case LecternBlockEntity e -> {
+                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_LECTERNS)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            default -> {}
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.snek.engineersbliss;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 
@@ -8,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
 import com.snek.engineersbliss.network.creative_tweaks.CreativeTweakRequestReceiver;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
 import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
@@ -33,6 +36,11 @@ public class EngineerSBliss implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register(_server -> {
             ServerScheduler.tick();
         });
+
+
+        // Initialize custom items
+        CustomItemHandler.init();
+        ModCreativeTab.register();
 
 
         // Register server feature handlers

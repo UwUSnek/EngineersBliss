@@ -1,4 +1,5 @@
 {
+  "credit": "UwU_Snek",
   "parent": "engineers-bliss:block/chains/3d/templates/chain",
   "textures": {
     "texture": "engineers-bliss:block/chains/3d/exposed_copper"

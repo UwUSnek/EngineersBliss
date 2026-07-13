@@ -20,7 +20,7 @@ public class ServerEntityPhasingBoatMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "push", at = @At("HEAD"), cancellable = true, require = 1)
-    private void push(final Entity entity, final CallbackInfo ci) {
+    private void eb$push(final Entity entity, final CallbackInfo ci) {
         if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakServerFeature.PHASE_THROUGH_ENTITIES)) {
             ci.cancel();
         }

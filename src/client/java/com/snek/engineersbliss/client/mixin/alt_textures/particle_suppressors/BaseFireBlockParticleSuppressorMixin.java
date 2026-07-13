@@ -31,7 +31,7 @@ public class BaseFireBlockParticleSuppressorMixin {
         ),
         require = 1
     )
-    private void addParticle(
+    private void eb$addParticle(
         final Level level,
         final ParticleOptions particle,
         final double x, final double y, final double z,

@@ -27,7 +27,7 @@ public class ClientBlockPhasingPacketFixMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "isEntityCollidingWithAnythingNew", at = @At("HEAD"), cancellable = true, require = 1)
-    private void isEntityCollidingWithAnythingNew(
+    private void eb$isEntityCollidingWithAnythingNew(
         final LevelReader level, final Entity entity, final AABB oldAABB,
         final double newX, final double newY, final double newZ,
         final CallbackInfoReturnable<Boolean> cir

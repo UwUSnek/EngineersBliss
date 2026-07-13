@@ -17,11 +17,21 @@ public abstract class __base_ChainPartProvider extends __base_PartProvider {
     protected abstract String getChainName();
 
 
+
+
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
+        final String chainName = getChainName();
         final String axisName = getVariantSuffixFromAxis(state.getValue(ChainBlock.AXIS));
-        return List.of(String.format("chains/3d/%s%s", getChainName(), axisName));
+        return List.of(String.format("chains/3d/%s%s", chainName, axisName));
     }
+    @Override
+    public List<String> calcDependencyNames() {
+        final String chainName = getChainName();
+        return List.of(String.format("chains/3d/%s", chainName));
+    }
+
+
 
 
     @Override

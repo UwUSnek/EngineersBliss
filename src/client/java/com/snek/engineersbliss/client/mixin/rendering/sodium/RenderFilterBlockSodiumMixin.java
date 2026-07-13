@@ -29,7 +29,7 @@ public class RenderFilterBlockSodiumMixin {
         cancellable = true,
         require = 0
     )
-    private void getBlockState(final int blockX, final int blockY, final int blockZ, final CallbackInfoReturnable<BlockState> cir) {
+    private void eb$getBlockState(final int blockX, final int blockY, final int blockZ, final CallbackInfoReturnable<BlockState> cir) {
         final BlockState state = cir.getReturnValue();
 
         if(!RenderFilterHandler.shouldBlockRender(state)) {

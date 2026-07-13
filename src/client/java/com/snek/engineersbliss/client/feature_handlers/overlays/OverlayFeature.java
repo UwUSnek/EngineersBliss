@@ -27,7 +27,7 @@ public enum OverlayFeature {
         () -> new Txt()
             .cat(new UiTxt("Displays the power level of powered Activator Rails and Powered Rails.\n"))
             .cat(new UiTxt("This follows Minecraft Vanilla's quirky rail update logic, so the displayed power levels might at times seem counterintuitive.\n"))
-            .cat(Notices.MULTIPLAYER_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE.get())
         ,
         List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)
     ),
@@ -36,7 +36,7 @@ public enum OverlayFeature {
         () -> new Txt()
             .cat(new UiTxt("Displays the output power level of Comparators.\n"))
             .cat(new UiTxt("Unlike other power level overlays, this is also shown on Comparators with output 0.\n"))
-            .cat(Notices.MULTIPLAYER_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE.get())
         ,
         List.of(Blocks.COMPARATOR)
     ),
@@ -48,7 +48,7 @@ public enum OverlayFeature {
         () -> new UiTxt("Comparator logic snippet"),
         () -> new Txt()
             .cat(new UiTxt("Displays the logic Comparators use to calculate their output signal as an expression.\n"))
-            .cat(Notices.MULTIPLAYER_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE.get())
         ,
         List.of(Blocks.COMPARATOR)
     ), //TODO implement these as custom arrows
@@ -56,7 +56,7 @@ public enum OverlayFeature {
         () -> new UiTxt("Redstone Wire power source"),
         () -> new Txt()
             .cat(new UiTxt("Shows arrows connecting each Redstone Wire to the blocks that are currently powering it.\n"))
-            .cat(Notices.MULTIPLAYER_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE.get())
         ,
         List.of(Blocks.REDSTONE_WIRE)
     ), //TODO implement these as custom arrows
@@ -64,7 +64,7 @@ public enum OverlayFeature {
         () -> new UiTxt("Rail power source"),
         () -> new Txt()
             .cat(new UiTxt("Shows arrows connecting each Activator Rail and Powered Rail to the block that is currently powering it.\n"))
-            .cat(Notices.MULTIPLAYER_NOTICE)
+            .cat(Notices.MULTIPLAYER_NOTICE.get())
         ,
         List.of(Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL)
     ), //TODO implement these as custom arrows
@@ -76,7 +76,7 @@ public enum OverlayFeature {
         () -> new UiTxt("Better Barrier display"),
         () -> new Txt()
             .cat(new UiTxt("Removes the Vanilla Barrier particles that spawn when holding a Barrier item, replacing them with a proper overlay.\n"))
-            .cat(Notices.OVERLAY_PROS_NOTICE)
+            .cat(Notices.OVERLAY_PROS_NOTICE.get())
         ,
         List.of(Blocks.BARRIER)
     ),
@@ -85,7 +85,7 @@ public enum OverlayFeature {
         () -> new Txt()
             .cat(new UiTxt("Displays placed Structure Void blocks while holding a Structure Void item, similarly to how Barriers work in Minecraft Vanilla, "))
             .cat(new UiTxt("but instead of particles, this uses a proper overlay.\n"))
-            .cat(Notices.OVERLAY_PROS_NOTICE)
+            .cat(Notices.OVERLAY_PROS_NOTICE.get())
         ,
         List.of(Blocks.STRUCTURE_VOID)
     ),
@@ -93,7 +93,7 @@ public enum OverlayFeature {
         () -> new UiTxt("Better Light Block display"),
         () -> new Txt()
             .cat(new UiTxt("Removes the Vanilla Light particles that spawn when holding a Light item, replacing them with a proper overlay.\n"))
-            .cat(Notices.OVERLAY_PROS_NOTICE)
+            .cat(Notices.OVERLAY_PROS_NOTICE.get())
         ,
         List.of(Blocks.LIGHT)
     );
@@ -102,11 +102,11 @@ public enum OverlayFeature {
 
 
     private class Notices {
-        public static final Txt OVERLAY_PROS_NOTICE = new UiTxt(
+        public static final Supplier<Txt> OVERLAY_PROS_NOTICE = () -> new UiTxt(
             "Overlays are shown and removed instantly, don't have a view distance limit and can be seen through walls."
         ).green();
 
-        public static final Txt MULTIPLAYER_NOTICE = new UiTxt(
+        public static final Supplier<Txt> MULTIPLAYER_NOTICE = () -> new UiTxt(
             "This overlay isn't available on servers without the " + EngineerSBliss.MOD_NAME + " mod installed."
         ).red();
     }
@@ -122,16 +122,14 @@ public enum OverlayFeature {
     //! Txt values are computed lazily as they depend on the Minecraft window and cannot be calculated during static initialization
     private final Supplier<Txt> nameSupplier;
     private final Supplier<Txt> detailsSupplier;
-    private Txt name    = null;
-    private Txt details = null;
     private final HashSet<Block> affectedBlocks;
     private final long flagBit; //! Flag bit index is calculated from the order of declaration
     private final boolean _default;
 
 
-    // Getters and checks
-    public Txt getName   () { return name    == null ? (name    =    nameSupplier.get()).copy() :    name.copy(); }
-    public Txt getDetails() { return details == null ? (details = detailsSupplier.get()).copy() : details.copy(); }
+    // Getters and checks //! Name and details must be recomputed as they depend on the GUI scale option
+    public Txt getName   () { return nameSupplier.get(); }
+    public Txt getDetails() { return detailsSupplier.get(); }
     public boolean affects(final Block block) { return affectedBlocks.contains(block); }
     public Set<Block> getAffectedBlocks() { return affectedBlocks; }
     public long getFlagBit() { return flagBit; }

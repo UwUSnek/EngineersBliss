@@ -2,16 +2,30 @@ from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
 from concurrent.futures import ProcessPoolExecutor
 import json, math, os, subprocess, shutil
+import numpy as np
 
 
 
 
-SIZE = 8
-CELL = 10
-COLS = 20  # atlas width in glyphs
-SCALES = [ 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5 ]
-#! Scales go up to 5 to minimize jar file.
+
+
+
+PRODUCTION_RENDERING = True     # Enables high res supersampling and png optimization when True. Drastically increases rendering time
+MINECRAFT_SIZE = 8              # The font size used by minecraft
+CELL = 10                       # The size of the cell containing a glyph that's MINECRAFT_SIZE pixels tall
+COLS = 20                       # Atlas PNG width in glyphs
+SCALES = [
+    0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4, 4.25, 4.5, 4.75, 5,
+    5.25, 5.5, 5.75, 6, 6.25, 6.5, 6.75, 7, 7.25, 7.5, 7.75, 8, 8.25, 8.5, 8.75, 9, 9.25, 9.5, 9.75, 10,
+]
+
+#! Scales go up to 10 to minimize jar file size.
 #! Font atlases are huge and higher resolutions are exponentially larger.
+
+#! Scale 0.25 is essentially just single pixels but that's expected with such a small font size.
+#! It looks right, it's just expectedly not readable. No need to remove it. The PNG is tiny anyway.
+
+
 
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -36,6 +50,29 @@ def is_visible(ch, font):
 
 
 
+# This custom resize improves alpha in lower resolutions by normalizing it to 255 before rendering.
+# This stops lighter fonts from becoming transparent when rendered at lower resolutions
+# The strength is controlled by the curve_strength parameter
+def resize_glyph(glyph_img, target_size, curve_strength=3.5):
+    a = glyph_img.split()[-1]
+    a_resized = a.resize(target_size, Image.LANCZOS)
+
+    arr = np.array(a_resized, dtype=np.float32) / 255.0
+    arr = 1 - (1 - arr) ** curve_strength
+    arr = (arr * 255).clip(0, 255).astype(np.uint8)
+    a_resized = Image.fromarray(arr, "L")
+
+    white = Image.new("L", target_size, 255)
+    return Image.merge("RGBA", (white, white, white, a_resized))
+# NEAREST
+# BOX
+# BILINEAR
+# HAMMING
+# BICUBIC
+# LANCZOS
+
+
+
 
 if shutil.which("oxipng") is None:
     print("Oxipng not found on PATH")
@@ -51,7 +88,15 @@ def optimize_png(path):
 
 
 
-def build_atlas(name, font_path, fallback_path, upscale):
+def build_atlas(name, font_path, fallback_path, scale):
+
+    # Supersampling multiplier. This improves antialiasing
+    #! It also makes some character not aligned to pixel boundaries so this is disabled in lower resolutions
+    SUPER_SAMPLING = 64 if PRODUCTION_RENDERING else 2
+    if scale <= 1:
+        SUPER_SAMPLING = 1
+
+
     ttf = TTFont(font_path, lazy=True)
     cmap = ttf.getBestCmap()
     fallback_ttf = TTFont(fallback_path, lazy=True)
@@ -66,17 +111,19 @@ def build_atlas(name, font_path, fallback_path, upscale):
     codepoints = sorted(glyph_source)
 
 
-    scaled_size = round(upscale * SIZE)
-    scaled_cell = round(upscale * CELL)
-    png_name  = f"{name}_{upscale}x.png"
-    json_name = f"{name}_{upscale}x.json"
+    #! Weird calculations keep the ratio constant
+    scaled_cell = round(scale * CELL)
+    scaled_size = round(scaled_cell * (MINECRAFT_SIZE / CELL))
+
+    png_name  = f"{name}_{scale}x.png"
+    json_name = f"{name}_{scale}x.json"
     png_path  = os.path.join(OUTPUT_PNG_DIR, png_name)
     json_path = os.path.join(OUTPUT_JSON_DIR, json_name)
 
 
-    # Fetch fonts and store chars
-    font_main = ImageFont.truetype(font_path, scaled_size)
-    font_fallback = ImageFont.truetype(fallback_path, scaled_size)
+    # Fetch fonts and store chars. Render at higher resolution for supersampling
+    font_main     = ImageFont.truetype(    font_path, scaled_size * SUPER_SAMPLING)
+    font_fallback = ImageFont.truetype(fallback_path, scaled_size * SUPER_SAMPLING)
     def font_for(cp):
         return font_main if glyph_source[cp] == font_path else font_fallback
     chars = [c for c in codepoints if is_visible(c, font_for(c))]
@@ -85,7 +132,7 @@ def build_atlas(name, font_path, fallback_path, upscale):
     # Calculate font ascents
     main_ascent, _ = font_main.getmetrics()
     fallback_ascent, _ = font_fallback.getmetrics()
-    y_offset = main_ascent - fallback_ascent  # add this when drawing fallback glyphs
+    y_offset = main_ascent - fallback_ascent
 
 
     # Pad to full rows (required by minecraft)
@@ -96,6 +143,8 @@ def build_atlas(name, font_path, fallback_path, upscale):
 
 
     # Render atlas
+    print(f"Rendering { len(chars) }x{ scaled_cell * SUPER_SAMPLING }² pixels  ", end="")
+    print(f"[{ name } { scale }x], atlas is { COLS }x{ rows } cells -> { png_name }, { json_name }")
     img = Image.new("RGBA", (COLS * scaled_cell, rows * scaled_cell), (0, 0, 0, 0))
     for row, line in enumerate(grid_str):
         for col, ch in enumerate(line):
@@ -106,17 +155,23 @@ def build_atlas(name, font_path, fallback_path, upscale):
                 y = row * scaled_cell
                 glyph_local_y = y_offset if font is font_fallback else 0
 
-                glyph_img = Image.new("RGBA", (scaled_cell, scaled_cell), (0, 0, 0, 0))
-                ImageDraw.Draw(glyph_img).text((0, glyph_local_y), ch, font=font, fill=(255, 255, 255, 255))
+                # Render supersampled glyph image, then scale it down
+                glyph_img = Image.new("RGBA", (scaled_cell * SUPER_SAMPLING, scaled_cell * SUPER_SAMPLING), (0, 0, 0, 0))
+                ImageDraw.Draw(glyph_img).text((0, glyph_local_y), ch, font=font, fill=(255,255,255,255))
+                glyph_img = resize_glyph(glyph_img, (scaled_cell, scaled_cell))
                 img.paste(glyph_img, (x, y), glyph_img)
 
     # Glyphs are pure white. Converting to LA (grayscale + alpha) allows for better compression
     # Optimization step further reduces the png's file using Oxipng
     img = img.convert("LA")
     img.save(png_path, optimize=True)
-    optimize_png(png_path)
-    #! ^ This halves the final size of the PNGs, but it also makes the process some ~1500 times slower.
+
+    #! This halves the final size of the PNGs, but it also makes the process some ~1500 times slower.
     #! Only enable the optimize_png step if rendering for production. Testing fonts can be done without it.
+    if PRODUCTION_RENDERING:
+        optimize_png(png_path)
+
+
 
 
     # Write JSON
@@ -126,7 +181,7 @@ def build_atlas(name, font_path, fallback_path, upscale):
                 "type": "bitmap",
                 "file": f"engineers-bliss:font/{ png_name }",
                 "height": CELL,
-                "ascent": round(main_ascent / scaled_cell * CELL),
+                "ascent": round(main_ascent / (scaled_cell * SUPER_SAMPLING) * CELL),
                 "chars": grid_str
             },
             {"type": "space", "advances": {" ": 5}},
@@ -136,9 +191,6 @@ def build_atlas(name, font_path, fallback_path, upscale):
     }
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(provider, f, ensure_ascii=False, indent=2)
-
-
-    print(f"[{ name } { upscale }x] { len(codepoints) } codepoints, { len(chars) } rendered, atlas is { COLS }x{ rows } cells -> { png_name }, { json_name }")
 
 
 

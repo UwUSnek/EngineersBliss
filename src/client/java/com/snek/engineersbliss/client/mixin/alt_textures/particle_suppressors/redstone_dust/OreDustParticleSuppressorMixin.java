@@ -27,7 +27,7 @@ public class OreDustParticleSuppressorMixin {
     //! Similarly to levers, Ores have a "makeParticle" static method all particle logic is delegated to, so they can get away with a simple inject
     @SuppressWarnings("unused")
     @Inject(method = "spawnParticles", at = @At("HEAD"), cancellable = true, require = 1)
-	private static void spawnParticles(
+	private static void eb$spawnParticles(
         final Level level,
         final BlockPos pos,
         final CallbackInfo ci

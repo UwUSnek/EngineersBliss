@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.RedstoneSide;
 
 
 public class RedstoneWirePartProvider extends __base_PartProvider {
+    private static final List<String> wirePathForSet = List.of("2d", "3d");
 
 
     @Override
@@ -27,10 +28,9 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
 
 
     @Override
-    public List<String> calcPartNames(final BlockState state) {
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final List<String> r = new ArrayList<>();
-        final boolean is3d = AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D);
-        final String wireModelDir = String.format("redstone_wire/minimal/%sd", is3d ? "3" : "2");
+        final String wireModelDir = String.format("redstone_wire/minimal/%s", wirePathForSet.get(modelSetIndex));
 
         final RedstoneSide n = state.getValue(RedStoneWireBlock.NORTH);
         final RedstoneSide e = state.getValue(RedStoneWireBlock.EAST);
@@ -40,26 +40,39 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
 
         // Central dot
         if(n == RedstoneSide.NONE && e == RedstoneSide.NONE && s == RedstoneSide.NONE && w == RedstoneSide.NONE) {
-            r.add(String.format("%s/large_dot_n", wireModelDir));
+            r.add(String.format("%s/large_dot%s", wireModelDir, getSingleVariantSuffix()));
         }
         else if(
             n != RedstoneSide.NONE && e != RedstoneSide.NONE ||
             e != RedstoneSide.NONE && s != RedstoneSide.NONE ||
             s != RedstoneSide.NONE && w != RedstoneSide.NONE ||
             w != RedstoneSide.NONE && n != RedstoneSide.NONE
-        ) r.add(String.format("%s/dot_n", wireModelDir));
+        ) r.add(String.format("%s/dot%s", wireModelDir, getSingleVariantSuffix()));
 
         // Side connections
-        if(n == RedstoneSide.SIDE) r.add(String.format("%s/down_n", wireModelDir));
-        if(e == RedstoneSide.SIDE) r.add(String.format("%s/down_e", wireModelDir));
-        if(s == RedstoneSide.SIDE) r.add(String.format("%s/down_s", wireModelDir));
-        if(w == RedstoneSide.SIDE) r.add(String.format("%s/down_w", wireModelDir));
-        if(n == RedstoneSide.UP)   r.add(String.format("%s/up_n", wireModelDir));
-        if(e == RedstoneSide.UP)   r.add(String.format("%s/up_e", wireModelDir));
-        if(s == RedstoneSide.UP)   r.add(String.format("%s/up_s", wireModelDir));
-        if(w == RedstoneSide.UP)   r.add(String.format("%s/up_w", wireModelDir));
+        if(n == RedstoneSide.SIDE) r.add(wireModelDir + "/down_n");
+        if(e == RedstoneSide.SIDE) r.add(wireModelDir + "/down_e");
+        if(s == RedstoneSide.SIDE) r.add(wireModelDir + "/down_s");
+        if(w == RedstoneSide.SIDE) r.add(wireModelDir + "/down_w");
+        if(n == RedstoneSide.UP)   r.add(wireModelDir + "/up_n");
+        if(e == RedstoneSide.UP)   r.add(wireModelDir + "/up_e");
+        if(s == RedstoneSide.UP)   r.add(wireModelDir + "/up_s");
+        if(w == RedstoneSide.UP)   r.add(wireModelDir + "/up_w");
 
         return r;
+    }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of(
+            "redstone_wire/minimal/2d/large_dot",
+            "redstone_wire/minimal/2d/dot",
+            "redstone_wire/minimal/2d/up",
+            "redstone_wire/minimal/2d/down",
+            "redstone_wire/minimal/3d/large_dot",
+            "redstone_wire/minimal/3d/dot",
+            "redstone_wire/minimal/3d/up",
+            "redstone_wire/minimal/3d/down"
+        );
     }
 
 
@@ -75,5 +88,17 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
         return !shouldUseCustom(state);
+    }
+
+
+
+
+    @Override
+    public int getModelSetNumber() {
+        return 2;
+    }
+    @Override
+    public int calcCurrentModelSetIndex() {
+        return AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D) ? 1 : 0;
     }
 }

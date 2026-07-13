@@ -18,7 +18,7 @@ public class ServerFireEffectSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "fireImmune", at = @At("RETURN"), cancellable = true, require = 1)
-	private void fireImmune(final CallbackInfoReturnable<Boolean> cir) {
+	private void eb$fireImmune(final CallbackInfoReturnable<Boolean> cir) {
         if(!cir.getReturnValueZ()) {
             if(CreativeTweaksServerHandler.serverPlayerHasFeature(this, CreativeTweakServerFeature.DISABLE_FIRE_EFFECT)) {
                 cir.setReturnValue(true);

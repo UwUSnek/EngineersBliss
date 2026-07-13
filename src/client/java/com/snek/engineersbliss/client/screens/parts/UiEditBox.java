@@ -15,7 +15,7 @@ public class UiEditBox extends EditBox {
         super(Minecraft.getInstance().font, x, y, width, height, narration);
         this.setTextShadow(false);
         this.addFormatter((text, offset) ->
-            FormattedCharSequence.forward(text, Layout.textStyleForScale(Layout.FONT_NAME_UI_MEDIUM))
+            FormattedCharSequence.forward(text, Layout.textStyleForScale(Layout.FONT_NAME_UI_REGULAR))
         );
     }
 }
