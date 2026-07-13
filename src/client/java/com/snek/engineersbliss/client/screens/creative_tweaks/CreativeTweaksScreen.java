@@ -137,18 +137,28 @@ public class CreativeTweaksScreen extends __base_Screen {
 
         final int w = (int)(width * PREVIEW_WIDTH);
         final int h = w;
-        final int x = (width  - w) / 2;
-        final int y = (height - h) / 2;
-        final String atlasPath = "textures/gui/feature_previews/creative_tweaks/disable_fire_effect_off_0.avif"; //FIXME
-        final Identifier atlasId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPath);
+        final int xOff = (width  - w) / 2 - w / 2 ;
+        final int xOn  = (width  - w) / 2 + w / 2 ;
+        final int y    = (height - h) / 2;
+        final String atlasPathOff = "textures/gui/feature_previews/creative_tweaks/disable_fire_effect_off_0.avif"; //FIXME
+        final String atlasPathOn  = "textures/gui/feature_previews/creative_tweaks/disable_fire_effect_on_0.avif"; //FIXME
+        final Identifier atlasIdOff = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff);
+        final Identifier atlasIdOn  = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn);
 
-        graphics.fill(x, y, x + w, y + h, Layout.bgColorSolid);
-        if(!AvifTextureTracker.isTextureReady(atlasId)) {
-            graphics.blit(atlasId, x, y, x + w, y + h, 0f, 1f, 0f, 1f);
+        // graphics.fill(x, y, x + w, y + h, Layout.bgColorSolid);
+        if(!AvifTextureTracker.isTextureReady(atlasIdOff)) {
+            graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, 0f, 1f, 0f, 1f);
         }
         else {
-            final float[] uv = AvifTextureTracker.getUV(atlasId, 0, System.currentTimeMillis());
-            graphics.blit(atlasId, x, y, x + w, y + h, uv[0], uv[1], uv[2], uv[3]);
+            final float[] uvOff = AvifTextureTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
+            graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
+        }
+        if(!AvifTextureTracker.isTextureReady(atlasIdOn)) {
+            graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, 0f, 1f, 0f, 1f);
+        }
+        else {
+            final float[] uvOn  = AvifTextureTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
+            graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, uvOn[0], uvOn[1], uvOn[2], uvOn[3]);
         }
     }
 
