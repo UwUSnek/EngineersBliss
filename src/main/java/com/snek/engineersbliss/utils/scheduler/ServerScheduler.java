@@ -1,7 +1,7 @@
 package com.snek.engineersbliss.utils.scheduler;
 
 import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,8 @@ public final class ServerScheduler {
 
     private static long tickNum = 0;
     private static long tickTaskIndex = 0;
-    private static final @NotNull PriorityQueue<@NotNull __base_TaskHandler> taskQueue = new PriorityQueue<>(
+    private static final @NotNull PriorityBlockingQueue<@NotNull __base_TaskHandler> taskQueue = new PriorityBlockingQueue<>(
+        512, // High default capacity. Parameter is required. Negligible performance impact
         Comparator.comparingLong(e -> (e.getTargetTick() << 31) | e.getTaskIndex())
     );
 
