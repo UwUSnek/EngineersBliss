@@ -8,7 +8,7 @@ from PIL import Image
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PATTERN_INPUT_DIR   = SCRIPT_DIR / "source_masks"
-OUTPUT_DIR_TEXTURES = SCRIPT_DIR / "../main/resources/assets/engineers-bliss/textures" / "block/banners/vanilla"
+OUTPUT_DIR_TEXTURES = SCRIPT_DIR / "../../main/resources/assets/engineers-bliss/textures" / "block/banners/vanilla"
 
 
 CREDIT = "UwU_Snek"
@@ -28,7 +28,6 @@ PATTERNS = [
 
 
 # The names of all existing dyes in Minecraft
-#! These MUST match the color IDs BannerBlockEntity uses internally.
 #! This should technically be updated manually but they are never adding new colors :skull: no updating needed here.
 COLORS = {
     "white":      (249, 255, 254),

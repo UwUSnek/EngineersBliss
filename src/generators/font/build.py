@@ -33,8 +33,8 @@ MAIN_DIR = os.path.join(SCRIPT_DIR, "main")
 FALLBACK_DIR = os.path.join(SCRIPT_DIR, "fallback")
 
 
-OUTPUT_PNG_DIR  = os.path.join(SCRIPT_DIR, "..", "main", "resources", "assets", "engineers-bliss", "textures", "font")
-OUTPUT_JSON_DIR = os.path.join(SCRIPT_DIR, "..", "main", "resources", "assets", "engineers-bliss", "font")
+OUTPUT_PNG_DIR  = os.path.join(SCRIPT_DIR, "..", "..", "main", "resources", "assets", "engineers-bliss", "textures", "font")
+OUTPUT_JSON_DIR = os.path.join(SCRIPT_DIR, "..", "..", "main", "resources", "assets", "engineers-bliss", "font")
 os.makedirs(OUTPUT_PNG_DIR, exist_ok=True)
 os.makedirs(OUTPUT_JSON_DIR, exist_ok=True)
 
@@ -92,6 +92,7 @@ def build_atlas(name, font_path, fallback_path, scale):
 
     # Supersampling multiplier. This improves antialiasing
     #! It also makes some character not aligned to pixel boundaries so this is disabled in lower resolutions
+    #! 64 is overkill but its fine it doesnt rly matter
     SUPER_SAMPLING = 64 if PRODUCTION_RENDERING else 2
     if scale <= 1:
         SUPER_SAMPLING = 1
@@ -115,8 +116,8 @@ def build_atlas(name, font_path, fallback_path, scale):
     scaled_cell = round(scale * CELL)
     scaled_size = round(scaled_cell * (MINECRAFT_SIZE / CELL))
 
-    png_name  = f"{name}_{scale}x.png"
-    json_name = f"{name}_{scale}x.json"
+    png_name  = f"{ name }_{ scale }x.png"
+    json_name = f"{ name }_{ scale }x.json"
     png_path  = os.path.join(OUTPUT_PNG_DIR, png_name)
     json_path = os.path.join(OUTPUT_JSON_DIR, json_name)
 
@@ -184,9 +185,9 @@ def build_atlas(name, font_path, fallback_path, scale):
                 "ascent": round(main_ascent / (scaled_cell * SUPER_SAMPLING) * CELL),
                 "chars": grid_str
             },
-            {"type": "space", "advances": {" ": 5}},
-            {"type": "reference", "id": "minecraft:include/default"},
-            {"type": "reference", "id": "minecraft:include/unifont"}
+            { "type": "space", "advances": { " ": 5 } },
+            { "type": "reference", "id": "minecraft:include/default" },
+            { "type": "reference", "id": "minecraft:include/unifont" }
         ]
     }
     with open(json_path, "w", encoding="utf-8") as f:
