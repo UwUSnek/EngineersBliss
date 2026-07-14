@@ -147,20 +147,29 @@ public class CreativeTweaksScreen extends __base_Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+
+        // Handle tab and normal element rendering
+        if(tabPressed) return;
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
 
+        // Calculate feature preview position
         final int w = (int)(width * PREVIEW_WIDTH);
         final int h = w;
         final int xOff = (width  - w) / 2 - w / 2 ;
         final int xOn  = (width  - w) / 2 + w / 2 ;
         final int y    = (height - h) / 2;
+
+
+        // Find the hovered feature and calculate the remaining preview data
         final String atlasPathOff = "textures/gui/feature_previews/creative_tweaks/disable_fire_effect_off_0.avif"; //FIXME
         final String atlasPathOn  = "textures/gui/feature_previews/creative_tweaks/disable_fire_effect_on_0.avif"; //FIXME
         final Identifier atlasIdOff = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff);
         final Identifier atlasIdOn  = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn);
 
-        // graphics.fill(x, y, x + w, y + h, Layout.bgColorSolid);
+//TODO name of the feature at the top. also ON/OFF
+//TODO description at the bottom
+        // Render the feature preview
         if(!AvifTextureTracker.isTextureReady(atlasIdOff)) {
             graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, 0f, 1f, 0f, 1f);
         }
