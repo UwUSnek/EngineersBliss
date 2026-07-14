@@ -83,7 +83,7 @@ public abstract class __base_Screen extends Screen {
 
     @Override
     public boolean isPauseScreen() {
-        return false;
+        return true;
     }
 
     //TODO remove. this is the old version, still used by RenderingScreen
@@ -111,7 +111,7 @@ public abstract class __base_Screen extends Screen {
 
     @Override
     public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        //! No blurred background
+        graphics.blurBeforeThisStratum();
     }
 
 
