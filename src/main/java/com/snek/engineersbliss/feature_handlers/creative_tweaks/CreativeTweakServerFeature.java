@@ -17,7 +17,7 @@ public enum CreativeTweakServerFeature {
     PHASE_THROUGH_ENTITIES         (false),
     DISABLE_FIRE_EFFECT            (true),
     DISABLE_FREEZING_EFFECT        (true),
-    DISABLE_HONEY_JUMP             (true),
+    FIX_HONEY_JUMP             (true),
     DISABLE_HONEY_SLIDING          (true),
     DISABLE_SLIME_BOUNCE           (true),
     DISABLE_BED_BOUNCE             (true),

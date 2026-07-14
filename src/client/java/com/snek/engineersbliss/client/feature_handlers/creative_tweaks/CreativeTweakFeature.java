@@ -65,7 +65,7 @@ public enum CreativeTweakFeature {
             .cat(new UiTxt("This also disables the Freezing overlay and the FOV decrease that are normally applied when the player is freezing.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get())
     ),
-    DISABLE_HONEY_JUMP(CreativeTweakServerFeature.DISABLE_HONEY_JUMP,
+    FIX_HONEY_JUMP(CreativeTweakServerFeature.FIX_HONEY_JUMP,
         () -> new UiTxt("Fix Honey Block jump"),
         () -> new Txt()
             .cat(new UiTxt("Lets you jump while standing on Honey Blocks.\n"))

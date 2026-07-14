@@ -96,7 +96,8 @@ public class AltTexturesScreen extends __base_Screen {
             feature.getDetails(),
             b -> toggleFeature(feature, b),
             '\0',
-            "alt_textures/" + spriteName
+            "alt_textures/" + spriteName,
+            feature.name().toLowerCase()
         );
     }
 

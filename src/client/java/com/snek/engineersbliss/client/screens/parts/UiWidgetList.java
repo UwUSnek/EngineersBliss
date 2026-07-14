@@ -49,6 +49,12 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return r;
     }
 
+    //! For whatever reason, AbstractSelectionList's getHovered is PROTECTED but also FINAL??? so it cannot be called by external classes.
+    //! This lets external code access the hovered entry without iterating all the children.
+    public Entry getHoveredEntry() {
+        return super.getHovered();
+    }
+
 
 
 
@@ -129,6 +135,10 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
         public Entry(AbstractWidget widget) {
             this.widget = widget;
+        }
+
+        public AbstractWidget getWidget() {
+            return widget;
         }
 
         @Override

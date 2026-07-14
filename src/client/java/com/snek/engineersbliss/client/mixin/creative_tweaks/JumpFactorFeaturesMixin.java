@@ -34,7 +34,7 @@ public class JumpFactorFeaturesMixin {
     )
     private float eb$getBlockSpeedFactor(final Block block) {
         if(block == Blocks.HONEY_BLOCK) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_HONEY_JUMP)) {
+            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.FIX_HONEY_JUMP)) {
                 return DEFAULT_JUMP_FACTOR;
             }
         }
