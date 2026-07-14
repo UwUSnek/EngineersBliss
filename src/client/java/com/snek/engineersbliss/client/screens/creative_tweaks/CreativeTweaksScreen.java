@@ -162,8 +162,9 @@ public class CreativeTweaksScreen extends __base_Screen {
 
 
         // Calculate feature preview position
+        final float ratio = 9f / 4f; //! Vertical 4:9 for 1080x480 (1920/4) resolution
         final int w = (int)(width * PREVIEW_WIDTH);
-        final int h = w;
+        final int h = (int)(w * ratio);
         final int xOff = (width  - w) / 2 - w / 2 ;
         final int xOn  = (width  - w) / 2 + w / 2 ;
         final int y    = (height - h) / 2;

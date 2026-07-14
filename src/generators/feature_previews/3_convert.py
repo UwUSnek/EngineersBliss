@@ -1,54 +1,56 @@
 import json
-import os
-import subprocess
 import shutil
+import subprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 import numpy as np
 from PIL import Image
 
-TARGET_RESOLUTION = 480
+from utils import MAX_WORKERS, decode_rawvideo, find_input_files, run
+from utils import ffprobe_info as _ffprobe_info
+
+
+
+TARGET_RESOLUTION = 1080     # Size of the longer edge of the output frame
 INDIR = "2_even"
 OUTDIR = "3_converted"
 TMPDIR = "3_converted/_tmp"
 
 MAX_ATLAS_DIM = 16384
-QUALITY = 16          # avif CRF, lower = better quality/bigger file
+QUALITY = 16                # AVIF CRF, lower = better quality/bigger file
 TARGET_FPS = 12
-MAX_WORKERS = max(1, (os.cpu_count() or 4) - 1)
 
 
-def run(cmd):
-    return subprocess.run(cmd, check=True, capture_output=True)
+
+
+
+
 
 
 def ffprobe_info(path: Path):
-    cmd = [
-        "ffprobe", "-v", "error", "-select_streams", "v:0",
-        "-show_entries", "stream=r_frame_rate,width,height",
-        "-of", "json", str(path),
-    ]
-    data = json.loads(run(cmd).stdout)
-    stream = data["streams"][0]
-    num, den = stream["r_frame_rate"].split("/")
-    fps = round(float(num) / float(den))
-    return fps, stream["width"], stream["height"]
+    info = _ffprobe_info(path)
+    return round(info["fps"]), info["width"], info["height"]
+
+
+
+
+def target_dimensions(width: int, height: int, long_edge: int):
+    if width >= height:
+        out_w = long_edge
+        out_h = max(1, round(long_edge * height / width))
+    else:
+        out_h = long_edge
+        out_w = max(1, round(long_edge * width / height))
+    return out_w, out_h
+
+
 
 
 def decode_frames(path: Path, width: int, height: int) -> np.ndarray:
-    cmd = [
-        "ffmpeg", "-v", "error", "-nostdin", "-i", str(path),
-        "-pix_fmt", "rgba",
-        "-f", "rawvideo", "-",
-    ]
-    raw = subprocess.run(cmd, check=True, capture_output=True).stdout
-    frame_size = width * height * 4
-    n = len(raw) // frame_size
-    if n == 0:
-        return np.zeros((0, height, width, 4), dtype=np.uint8)
-    arr = np.frombuffer(raw[: n * frame_size], dtype=np.uint8)
-    return arr.reshape(n, height, width, 4).copy()
+    return decode_rawvideo(path, width, height, copy=True)
+
+
 
 
 def resample_to_target_fps(frames: np.ndarray, src_fps: int, target_fps: int) -> np.ndarray:
@@ -61,9 +63,11 @@ def resample_to_target_fps(frames: np.ndarray, src_fps: int, target_fps: int) ->
     return frames[idx]
 
 
-def resize_premultiplied(rgba: np.ndarray, size: int) -> np.ndarray:
+
+
+def resize_premultiplied(rgba: np.ndarray, out_w: int, out_h: int) -> np.ndarray:
     n = rgba.shape[0]
-    out = np.empty((n, size, size, 4), dtype=np.uint8)
+    out = np.empty((n, out_h, out_w, 4), dtype=np.uint8)
     rgb = rgba[..., :3].astype(np.float32)
     a = rgba[..., 3:4].astype(np.float32) / 255.0
     premult = rgb * a
@@ -73,10 +77,10 @@ def resize_premultiplied(rgba: np.ndarray, size: int) -> np.ndarray:
         alpha_img = Image.fromarray(rgba[i, ..., 3])
 
         premult_r = np.asarray(
-            premult_img.resize((size, size), Image.LANCZOS)
+            premult_img.resize((out_w, out_h), Image.LANCZOS)
         ).astype(np.float32)
         alpha_r = np.asarray(
-            alpha_img.resize((size, size), Image.LANCZOS)
+            alpha_img.resize((out_w, out_h), Image.LANCZOS)
         ).astype(np.float32)
 
         alpha_safe = np.where(alpha_r > 1.0, alpha_r, 255.0)  # avoid div by ~0
@@ -88,36 +92,55 @@ def resize_premultiplied(rgba: np.ndarray, size: int) -> np.ndarray:
     return out
 
 
-def atlas_capacity():
-    per_side = MAX_ATLAS_DIM // TARGET_RESOLUTION
-    return per_side, per_side * per_side
 
 
-def grid_for(n: int, max_cols: int) -> int:
-    cols = min(max_cols, max(1, int(np.ceil(np.sqrt(n)))))
-    return cols
+def atlas_capacity(frame_w: int, frame_h: int):
+    """Max cols/rows/frames-per-atlas for a given cell size."""
+    max_cols = max(1, MAX_ATLAS_DIM // frame_w)
+    max_rows = max(1, MAX_ATLAS_DIM // frame_h)
+    return max_cols, max_rows, max_cols * max_rows
 
 
-def build_atlas(frames_chunk: np.ndarray, cols: int) -> Image.Image:
+
+
+def grid_for(n, max_cols, max_rows, frame_w, frame_h):
+    """Finds the column number that creates the most square grid for the provided frame dimensions."""
+    best_cols, best_score = 1, float("inf")
+    for cols in range(1, max_cols + 1):
+        rows = int(np.ceil(n / cols))
+        if rows > max_rows:
+            continue
+        sheet_w, sheet_h = cols * frame_w, rows * frame_h
+        score = abs(sheet_w - sheet_h)
+        if score < best_score:
+            best_cols, best_score = cols, score
+    return best_cols
+
+
+
+
+def build_atlas(frames_chunk: np.ndarray, cols: int, frame_w: int, frame_h: int) -> Image.Image:
     n = frames_chunk.shape[0]
     rows = (n + cols - 1) // cols
-    canvas = np.zeros((rows * TARGET_RESOLUTION, cols * TARGET_RESOLUTION, 4), dtype=np.uint8)
+    canvas = np.zeros((rows * frame_h, cols * frame_w, 4), dtype=np.uint8)
     for i in range(n):
         r, c = divmod(i, cols)
-        y, x = r * TARGET_RESOLUTION, c * TARGET_RESOLUTION
-        canvas[y:y + TARGET_RESOLUTION, x:x + TARGET_RESOLUTION] = frames_chunk[i]
+        y, x = r * frame_h, c * frame_w
+        canvas[y:y + frame_h, x:x + frame_w] = frames_chunk[i]
     return Image.fromarray(canvas, mode="RGBA")
 
 
-def write_mcmeta(avif_path: Path, cols: int, rows: int, frame_count: int, fps: int) -> dict:
+
+
+def write_mcmeta(avif_path: Path, cols: int, rows: int, frame_count: int, fps: int, frame_w: int, frame_h: int) -> dict:
     meta = {
         "avif_atlas": {
             "atlas_cols": 1,
             "atlas_rows": 1,
-            "sheet_width": cols * TARGET_RESOLUTION,
-            "sheet_height": rows * TARGET_RESOLUTION,
-            "frame_width": TARGET_RESOLUTION,
-            "frame_height": TARGET_RESOLUTION,
+            "sheet_width": cols * frame_w,
+            "sheet_height": rows * frame_h,
+            "frame_width": frame_w,
+            "frame_height": frame_h,
             "frame_count": frame_count,
             "fps": fps,
         }
@@ -125,6 +148,8 @@ def write_mcmeta(avif_path: Path, cols: int, rows: int, frame_count: int, fps: i
     mcmeta_path = avif_path.with_suffix(avif_path.suffix + ".mcmeta")
     mcmeta_path.write_text(json.dumps(meta))
     return meta
+
+
 
 
 def encode_avif(png_path: Path, avif_path: Path):
@@ -138,8 +163,18 @@ def encode_avif(png_path: Path, avif_path: Path):
     run(cmd)
 
 
-def process_file(path: Path, outdir: Path, tmpdir: Path, max_cols: int, capacity: int):
-    log = [f"\n{ path.name }"]
+
+
+def safe_tmp_stem(rel_no_ext: Path) -> str:
+    # Flatten relative path into a collision safe filename for the tmp directory
+    return "__".join(rel_no_ext.parts)
+
+
+
+
+def process_file(path: Path, input_dir: Path, outdir: Path, tmpdir: Path):
+    rel = path.relative_to(input_dir)
+    log = [f"\n{ rel }"]
     try:
         src_fps, width, height = ffprobe_info(path)
     except Exception as e:
@@ -162,21 +197,29 @@ def process_file(path: Path, outdir: Path, tmpdir: Path, max_cols: int, capacity
         log.append(f"  resampled { n } -> { frames.shape[0] } frames ({ src_fps } -> { TARGET_FPS } fps)")
     n = frames.shape[0]
 
-    rgba = resize_premultiplied(frames, TARGET_RESOLUTION)   # downscale, alpha from source
+    out_w, out_h = target_dimensions(width, height, TARGET_RESOLUTION)
+    log.append(f"  { width }x{ height } -> { out_w }x{ out_h } (aspect ratio preserved)")
+    rgba = resize_premultiplied(frames, out_w, out_h)   # downscale, alpha from source
+
+    max_cols, max_rows, capacity = atlas_capacity(out_w, out_h)
+
+    out_subdir = outdir / rel.parent
+    out_subdir.mkdir(parents=True, exist_ok=True)
+    tmp_stem = safe_tmp_stem(rel.with_suffix(""))
 
     for chunk_idx, start in enumerate(range(0, n, capacity)):
         chunk = rgba[start:start + capacity]
-        cols = grid_for(chunk.shape[0], max_cols)
+        cols = grid_for(chunk.shape[0], max_cols, max_rows, out_w, out_h)
         chunk_rows = (chunk.shape[0] + cols - 1) // cols
-        atlas = build_atlas(chunk, cols)
+        atlas = build_atlas(chunk, cols, out_w, out_h)
 
-        png_path = tmpdir / f"{ path.stem }_{ chunk_idx }.png"
-        avif_path = outdir / f"{ path.stem }_{ chunk_idx }.avif"
+        png_path = tmpdir / f"{ tmp_stem }_{ chunk_idx }.png"
+        avif_path = out_subdir / f"{ path.stem }_{ chunk_idx }.avif"
 
         atlas.save(png_path)
         try:
             encode_avif(png_path, avif_path)
-            meta = write_mcmeta(avif_path, cols, chunk_rows, chunk.shape[0], TARGET_FPS)
+            meta = write_mcmeta(avif_path, cols, chunk_rows, chunk.shape[0], TARGET_FPS, out_w, out_h)
             log.append(f"  wrote { avif_path } ({ chunk.shape[0] } frames, { cols } cols)")
             log.append(f"  mcmeta: { json.dumps(meta['avif_atlas']) }")
         except subprocess.CalledProcessError as e:
@@ -187,12 +230,14 @@ def process_file(path: Path, outdir: Path, tmpdir: Path, max_cols: int, capacity
     return "\n".join(log)
 
 
+
+
 def main():
     input_dir = Path(INDIR)
-    mov_files = sorted({ *input_dir.glob("*.mov"), *input_dir.glob("*.MOV") })
+    mov_files = find_input_files(input_dir)
 
     if not mov_files:
-        print("No .mov files found in trimmed/.")
+        print(f"No .mov files found in { INDIR }/")
         return
 
     outdir = Path(OUTDIR)
@@ -200,17 +245,17 @@ def main():
     tmpdir = Path(TMPDIR)
     tmpdir.mkdir(parents=True, exist_ok=True)
 
-    max_cols, capacity = atlas_capacity()
-
     with ProcessPoolExecutor(max_workers=MAX_WORKERS) as ex:
         futures = {
-            ex.submit(process_file, path, outdir, tmpdir, max_cols, capacity): path
+            ex.submit(process_file, path, input_dir, outdir, tmpdir): path
             for path in mov_files
         }
         for fut in as_completed(futures):
             print(fut.result())
 
     shutil.rmtree(tmpdir, ignore_errors=True)
+
+
 
 
 if __name__ == "__main__":

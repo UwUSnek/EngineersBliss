@@ -45,3 +45,6 @@ src/generators/*.mov
 src/generators/*.mp4
 src/generators/*.png
 src/generators/*.avif
+
+# Python cache
+__pycache__
