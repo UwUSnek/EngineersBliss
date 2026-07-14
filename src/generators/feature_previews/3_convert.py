@@ -1,23 +1,22 @@
 import json
+import os
 import subprocess
 import shutil
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 import numpy as np
 from PIL import Image
 
 TARGET_RESOLUTION = 480
-INDIR = "trimmed"
-OUTDIR = "converted"
-TMPDIR = "converted/_tmp"
+INDIR = "2_even"
+OUTDIR = "3_converted"
+TMPDIR = "3_converted/_tmp"
 
 MAX_ATLAS_DIM = 16384
 QUALITY = 16          # avif CRF, lower = better quality/bigger file
 TARGET_FPS = 12
-
-KEY_COLOR = np.array([0, 255, 0], dtype=np.int16)
-KEY_THRESHOLD_LOW = 60
-KEY_THRESHOLD_HIGH = 120
+MAX_WORKERS = max(1, (os.cpu_count() or 4) - 1)
 
 
 def run(cmd):
@@ -39,17 +38,17 @@ def ffprobe_info(path: Path):
 
 def decode_frames(path: Path, width: int, height: int) -> np.ndarray:
     cmd = [
-        "ffmpeg", "-v", "error", "-i", str(path),
-        "-pix_fmt", "rgb24",
+        "ffmpeg", "-v", "error", "-nostdin", "-i", str(path),
+        "-pix_fmt", "rgba",
         "-f", "rawvideo", "-",
     ]
     raw = subprocess.run(cmd, check=True, capture_output=True).stdout
-    frame_size = width * height * 3
+    frame_size = width * height * 4
     n = len(raw) // frame_size
     if n == 0:
-        return np.zeros((0, height, width, 3), dtype=np.uint8)
+        return np.zeros((0, height, width, 4), dtype=np.uint8)
     arr = np.frombuffer(raw[: n * frame_size], dtype=np.uint8)
-    return arr.reshape(n, height, width, 3).copy()
+    return arr.reshape(n, height, width, 4).copy()
 
 
 def resample_to_target_fps(frames: np.ndarray, src_fps: int, target_fps: int) -> np.ndarray:
@@ -62,33 +61,7 @@ def resample_to_target_fps(frames: np.ndarray, src_fps: int, target_fps: int) ->
     return frames[idx]
 
 
-def key_out_green(frames: np.ndarray) -> np.ndarray:
-    n, h, w = frames.shape[:3]
-    f = frames.astype(np.float32)
-    r, g, b = f[..., 0], f[..., 1], f[..., 2]
-
-    diff = f - KEY_COLOR
-    dist = np.sqrt(np.sum(diff * diff, axis=-1))
-
-    alpha = np.clip(
-        (dist - KEY_THRESHOLD_LOW) / (KEY_THRESHOLD_HIGH - KEY_THRESHOLD_LOW),
-        0.0, 1.0,
-    )
-
-    spill = np.clip(g - np.maximum(r, b), 0, None)
-    g_fixed = g - spill * (1.0 - alpha)
-
-    rgba = np.empty((n, h, w, 4), dtype=np.uint8)
-    rgba[..., 0] = np.clip(r, 0, 255).astype(np.uint8)
-    rgba[..., 1] = np.clip(g_fixed, 0, 255).astype(np.uint8)
-    rgba[..., 2] = np.clip(b, 0, 255).astype(np.uint8)
-    rgba[..., 3] = np.clip(alpha * 255, 0, 255).astype(np.uint8)
-    return rgba
-
-
 def resize_premultiplied(rgba: np.ndarray, size: int) -> np.ndarray:
-
-    # Scaling before keying blends green into the edges so keying must be done first
     n = rgba.shape[0]
     out = np.empty((n, size, size, 4), dtype=np.uint8)
     rgb = rgba[..., :3].astype(np.float32)
@@ -106,7 +79,7 @@ def resize_premultiplied(rgba: np.ndarray, size: int) -> np.ndarray:
             alpha_img.resize((size, size), Image.LANCZOS)
         ).astype(np.float32)
 
-        alpha_safe = np.where(alpha_r > 1.0, alpha_r, 255.0)  # avoid div-by-~0
+        alpha_safe = np.where(alpha_r > 1.0, alpha_r, 255.0)  # avoid div by ~0
         rgb_out = np.clip(premult_r * 255.0 / alpha_safe[..., None], 0, 255)
 
         out[i, ..., :3] = rgb_out.astype(np.uint8)
@@ -121,7 +94,6 @@ def atlas_capacity():
 
 
 def grid_for(n: int, max_cols: int) -> int:
-    """Pick a near-square column count for n frames, capped at max_cols."""
     cols = min(max_cols, max(1, int(np.ceil(np.sqrt(n)))))
     return cols
 
@@ -135,6 +107,7 @@ def build_atlas(frames_chunk: np.ndarray, cols: int) -> Image.Image:
         y, x = r * TARGET_RESOLUTION, c * TARGET_RESOLUTION
         canvas[y:y + TARGET_RESOLUTION, x:x + TARGET_RESOLUTION] = frames_chunk[i]
     return Image.fromarray(canvas, mode="RGBA")
+
 
 def write_mcmeta(avif_path: Path, cols: int, rows: int, frame_count: int, fps: int) -> dict:
     meta = {
@@ -165,6 +138,55 @@ def encode_avif(png_path: Path, avif_path: Path):
     run(cmd)
 
 
+def process_file(path: Path, outdir: Path, tmpdir: Path, max_cols: int, capacity: int):
+    log = [f"\n{ path.name }"]
+    try:
+        src_fps, width, height = ffprobe_info(path)
+    except Exception as e:
+        log.append(f"  ffprobe failed, skipping: { e }")
+        return "\n".join(log)
+
+    try:
+        frames = decode_frames(path, width, height)
+    except Exception as e:
+        log.append(f"  decode failed, skipping: { e }")
+        return "\n".join(log)
+
+    n = frames.shape[0]
+    if n == 0:
+        log.append("  no frames decoded, skipping.")
+        return "\n".join(log)
+
+    frames = resample_to_target_fps(frames, src_fps, TARGET_FPS)
+    if frames.shape[0] != n:
+        log.append(f"  resampled { n } -> { frames.shape[0] } frames ({ src_fps } -> { TARGET_FPS } fps)")
+    n = frames.shape[0]
+
+    rgba = resize_premultiplied(frames, TARGET_RESOLUTION)   # downscale, alpha from source
+
+    for chunk_idx, start in enumerate(range(0, n, capacity)):
+        chunk = rgba[start:start + capacity]
+        cols = grid_for(chunk.shape[0], max_cols)
+        chunk_rows = (chunk.shape[0] + cols - 1) // cols
+        atlas = build_atlas(chunk, cols)
+
+        png_path = tmpdir / f"{ path.stem }_{ chunk_idx }.png"
+        avif_path = outdir / f"{ path.stem }_{ chunk_idx }.avif"
+
+        atlas.save(png_path)
+        try:
+            encode_avif(png_path, avif_path)
+            meta = write_mcmeta(avif_path, cols, chunk_rows, chunk.shape[0], TARGET_FPS)
+            log.append(f"  wrote { avif_path } ({ chunk.shape[0] } frames, { cols } cols)")
+            log.append(f"  mcmeta: { json.dumps(meta['avif_atlas']) }")
+        except subprocess.CalledProcessError as e:
+            log.append(f"  avif encode failed: { e.stderr.decode(errors='ignore') }")
+        finally:
+            png_path.unlink(missing_ok=True)
+
+    return "\n".join(log)
+
+
 def main():
     input_dir = Path(INDIR)
     mov_files = sorted({ *input_dir.glob("*.mov"), *input_dir.glob("*.MOV") })
@@ -180,52 +202,13 @@ def main():
 
     max_cols, capacity = atlas_capacity()
 
-    for path in mov_files:
-        print(f"\n{ path.name }")
-        try:
-            src_fps, width, height = ffprobe_info(path)
-        except Exception as e:
-            print(f"  ffprobe failed, skipping: { e }")
-            continue
-
-        try:
-            frames = decode_frames(path, width, height)
-        except Exception as e:
-            print(f"  decode failed, skipping: { e }")
-            continue
-
-        n = frames.shape[0]
-        if n == 0:
-            print("  no frames decoded, skipping.")
-            continue
-
-        frames = resample_to_target_fps(frames, src_fps, TARGET_FPS)
-        if frames.shape[0] != n:
-            print(f"  resampled { n } -> { frames.shape[0] } frames ({ src_fps } -> { TARGET_FPS } fps)")
-        n = frames.shape[0]
-
-        rgba = key_out_green(frames)                          # key at original resolution
-        rgba = resize_premultiplied(rgba, TARGET_RESOLUTION)   # downscale
-
-        for chunk_idx, start in enumerate(range(0, n, capacity)):
-            chunk = rgba[start:start + capacity]
-            cols = grid_for(chunk.shape[0], max_cols)
-            chunk_rows = (chunk.shape[0] + cols - 1) // cols
-            atlas = build_atlas(chunk, cols)
-
-            png_path = tmpdir / f"{ path.stem }_{ chunk_idx }.png"
-            avif_path = outdir / f"{ path.stem }_{ chunk_idx }.avif"
-
-            atlas.save(png_path)
-            try:
-                encode_avif(png_path, avif_path)
-                meta = write_mcmeta(avif_path, cols, chunk_rows, chunk.shape[0], TARGET_FPS)
-                print(f"  wrote { avif_path } ({ chunk.shape[0] } frames, { cols } cols)")
-                print(f"  mcmeta: { json.dumps(meta['avif_atlas']) }")
-            except subprocess.CalledProcessError as e:
-                print(f"  avif encode failed: { e.stderr.decode(errors='ignore') }")
-            finally:
-                png_path.unlink(missing_ok=True)
+    with ProcessPoolExecutor(max_workers=MAX_WORKERS) as ex:
+        futures = {
+            ex.submit(process_file, path, outdir, tmpdir, max_cols, capacity): path
+            for path in mov_files
+        }
+        for fut in as_completed(futures):
+            print(fut.result())
 
     shutil.rmtree(tmpdir, ignore_errors=True)
 
