@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 
@@ -43,6 +45,17 @@ import java.util.concurrent.CompletableFuture;
 @Mixin(TextureContents.class)
 public class AvifTextureReaderMixin {
     private AvifTextureReaderMixin() {}
+
+
+
+    private static final ExecutorService AVIF_DECODE_POOL = Executors.newFixedThreadPool(
+        Math.max(2, Runtime.getRuntime().availableProcessors() - 1),
+        r -> {
+            Thread t = new Thread(r, "eb-avif-decode");
+            t.setDaemon(true);
+            return t;
+        }
+    );
 
 
 
@@ -77,7 +90,7 @@ public class AvifTextureReaderMixin {
         CompletableFuture.runAsync(() -> {
             try {
                 final Resource resource = resourceManager.getResourceOrThrow(id);
-                final BufferedImage buffered;
+                BufferedImage buffered;
                 try(InputStream is = resource.open()) {
                     buffered = ImageIO.read(is);
                 }
@@ -87,13 +100,15 @@ public class AvifTextureReaderMixin {
                 final int h = buffered.getHeight();
                 final int[] pixels;
                 if(buffered.getType() == BufferedImage.TYPE_INT_ARGB) {
-                    pixels = ((DataBufferInt) buffered.getRaster().getDataBuffer()).getData().clone();
+                    pixels = ((DataBufferInt) buffered.getRaster().getDataBuffer()).getData();
+                    buffered = null;
                 }
                 else {
-                    final BufferedImage argb = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage argb = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
                     final Graphics2D g = argb.createGraphics();
                     try { g.drawImage(buffered, 0, 0, null); } finally { g.dispose(); }
                     pixels = ((DataBufferInt) argb.getRaster().getDataBuffer()).getData();
+                    argb = null;
                 }
 
 
@@ -126,6 +141,6 @@ public class AvifTextureReaderMixin {
             } catch(final Exception e) {
                 e.printStackTrace(); //TODO use proper error reporting
             }
-        });
+        }, AVIF_DECODE_POOL);
     }
 }
