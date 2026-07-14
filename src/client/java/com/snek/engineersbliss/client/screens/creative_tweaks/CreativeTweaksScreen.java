@@ -31,6 +31,7 @@ import net.minecraft.resources.Identifier;
 
 public class CreativeTweaksScreen extends __base_Screen {
     private static UiWidgetList leftSidebar;
+    private static UiWidgetList rightSidebar;
     private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
     private static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
     private static final float PREVIEW_WIDTH = 0.25f;
@@ -116,6 +117,20 @@ public class CreativeTweaksScreen extends __base_Screen {
             leftSidebar.addWidgetAndSpacer(createCreativeTweakFeatureButton(CreativeTweakFeature.DISABLE_NETHER_PORTAL_OVERLAY,   "test"), Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
+
+
+
+
+
+
+
+
+        final int rightSidebarWidth = (int)(width * RIGHT_SIDEBAR_WIDTH);
+        rightSidebar = new UiWidgetList(rightSidebarWidth, height, width - rightSidebarWidth, 0, BUTTON_HEIGHT); {
+            final String titleString = "TEST //TODO remove";
+            rightSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        }
+        addRenderableWidget(rightSidebar);
     }
 
 
