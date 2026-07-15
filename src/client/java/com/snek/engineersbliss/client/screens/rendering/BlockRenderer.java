@@ -54,15 +54,15 @@ public class BlockRenderer {
             return;
         }
 
-        final int atlasIdx = blockIdx / SHEETS_PER_ATLAS;
-        final int localIdx = blockIdx % SHEETS_PER_ATLAS;
-        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".png");
+        // final int atlasIdx = blockIdx / SHEETS_PER_ATLAS;
+        // final int localIdx = blockIdx % SHEETS_PER_ATLAS;
+        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
 
         if(!TextureAtlasTracker.isTextureReady(textureId)) {
             graphics.blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
         }
         else {
-            final float[] uv = TextureAtlasTracker.getUV(textureId, localIdx, System.currentTimeMillis());
+            final float[] uv = TextureAtlasTracker.getUV(textureId, blockIdx, System.currentTimeMillis());
             graphics.blit(textureId, x, y, x + size, y + size, uv[0], uv[1], uv[2], uv[3]);
         }
     }

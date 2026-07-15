@@ -107,7 +107,12 @@ def quantize_png(png_path: Path):
         "--output", str(png_path),
         str(png_path),
     ]
-    run(cmd)
+    try:
+        run(cmd)
+    except RuntimeError as e:
+        # 99 means pngquant couldn't meet quality requirements. It's not a real error
+        if "exit status 99" not in str(e):
+            raise
 
 
 
