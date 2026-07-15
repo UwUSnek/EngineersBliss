@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.avif_textures;
+package com.snek.engineersbliss.client.utils.texture_atlases;
 
 import java.util.Map;
 import java.util.Set;
@@ -14,15 +14,15 @@ import net.minecraft.resources.Identifier;
 
 
 /**
- * A class that keeps track of loaded AVIF textures.
+ * A class that keeps track of loaded texture atlases and their metadata.
  * This can be used by other classes to know if the returned texture is a placeholder or the one they requested.
- * ! This class depends on the AvifTextureReader mixin.
+ * ! This class depends on the AsyncTextureLoader mixin.
  */
-public class AvifTextureTracker {
-    private AvifTextureTracker() {}
+public class TextureAtlasTracker {
+    private TextureAtlasTracker() {}
 
     private static final Set<Identifier> loadedTextures = ConcurrentHashMap.newKeySet();
-    private static final Map<Identifier, AvifAtlasMetadataSection> loadedTexturesMeta = new ConcurrentHashMap<>();
+    private static final Map<Identifier, AtlasMetadataSection> loadedTexturesMeta = new ConcurrentHashMap<>();
 
 
 
@@ -35,10 +35,10 @@ public class AvifTextureTracker {
     }
 
 
-    public static void registerAtlas(final Identifier id, final AvifAtlasMetadataSection meta) {
+    public static void registerAtlas(final Identifier id, final AtlasMetadataSection meta) {
         loadedTexturesMeta.put(id, meta);
     }
-    public static AvifAtlasMetadataSection getAtlasMeta(final Identifier id) {
+    public static AtlasMetadataSection getAtlasMeta(final Identifier id) {
         return loadedTexturesMeta.get(id);
     }
 
@@ -46,7 +46,7 @@ public class AvifTextureTracker {
 
 
     public static float[] getUV(Identifier atlasId, int localSheetIdx, long timeMillis) {
-        final AvifAtlasMetadataSection meta = getAtlasMeta(atlasId);
+        final AtlasMetadataSection meta = getAtlasMeta(atlasId);
         if(meta == null) return new float[]{0f, 1f, 0f, 1f};
 
         final int sheetCol = localSheetIdx % meta.atlasCols();

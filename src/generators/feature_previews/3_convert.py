@@ -78,7 +78,7 @@ def build_atlas(frames_chunk: np.ndarray, cols: int, frame_w: int, frame_h: int)
 
 def write_mcmeta(png_path: Path, cols: int, rows: int, frame_count: int, fps: int, frame_w: int, frame_h: int) -> dict:
     meta = {
-        "avif_atlas": { #TODO rename this to something non-avif since it's not strictly avif-specific
+        "engineers-bliss.atlas": {
             "atlas_cols": 1,
             "atlas_rows": 1,
             "sheet_width": cols * frame_w,
@@ -158,7 +158,7 @@ def process_file(path: Path, input_dir: Path, outdir: Path):
         meta = write_mcmeta(png_path, cols, chunk_rows, chunk.shape[0], fps, width, height)
         size_kb = png_path.stat().st_size / 1024
         log.append(f"  wrote { png_path } ({ chunk.shape[0] } frames, { cols } cols, {size_kb:.1f} KiB)")
-        log.append(f"  mcmeta: { json.dumps(meta['avif_atlas']) }")
+        log.append(f"  mcmeta: { json.dumps(meta['engineers-bliss.atlas']) }")
 
     return "\n".join(log)
 

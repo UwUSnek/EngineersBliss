@@ -2,7 +2,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.avif_textures.AvifTextureTracker;
+import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -29,8 +29,8 @@ public class BlockRenderer {
     private static final int ATLAS_COLS = 8;
     private static final int ATLAS_ROWS = 8;
     private static final int SHEETS_PER_ATLAS = ATLAS_COLS * ATLAS_ROWS;
-    //TODO this stuff could be moved to the avif tracker using a suffix _n system but that's kinda complicated
-    //TODO and also large sprite sheets are supposed use that? these are not large sprite sheets but atlases of sprite sheets which is different.
+    //TODO this stuff could be moved to the atlas tracker using a suffix _n system but that's kinda complicated
+    //TODO and also large sprite sheets are supposed to use that? these are not large sprite sheets but atlases of sprite sheets which is different.
     //TODO different math? probably?
 
 
@@ -58,11 +58,11 @@ public class BlockRenderer {
         final int localIdx = blockIdx % SHEETS_PER_ATLAS;
         final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".png");
 
-        if(!AvifTextureTracker.isTextureReady(textureId)) {
+        if(!TextureAtlasTracker.isTextureReady(textureId)) {
             graphics.blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
         }
         else {
-            final float[] uv = AvifTextureTracker.getUV(textureId, localIdx, System.currentTimeMillis());
+            final float[] uv = TextureAtlasTracker.getUV(textureId, localIdx, System.currentTimeMillis());
             graphics.blit(textureId, x, y, x + size, y + size, uv[0], uv[1], uv[2], uv[3]);
         }
     }

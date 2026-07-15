@@ -15,7 +15,7 @@ import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.avif_textures.AvifTextureTracker;
+import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
@@ -196,18 +196,18 @@ public class CreativeTweaksScreen extends __base_Screen {
                 // Render the feature preview
                 final Identifier atlasIdOff = hoveredPreviewAtlasIds[0];
                 final Identifier atlasIdOn  = hoveredPreviewAtlasIds[1];
-                if(!AvifTextureTracker.isTextureReady(atlasIdOff)) {
+                if(!TextureAtlasTracker.isTextureReady(atlasIdOff)) {
                     graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, 0f, 1f, 0f, 1f);
                 }
                 else {
-                    final float[] uvOff = AvifTextureTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
+                    final float[] uvOff = TextureAtlasTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
                     graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
                 }
-                if(!AvifTextureTracker.isTextureReady(atlasIdOn)) {
+                if(!TextureAtlasTracker.isTextureReady(atlasIdOn)) {
                     graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, 0f, 1f, 0f, 1f);
                 }
                 else {
-                    final float[] uvOn  = AvifTextureTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
+                    final float[] uvOn  = TextureAtlasTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
                     graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, uvOn[0], uvOn[1], uvOn[2], uvOn[3]);
                 }
             }
