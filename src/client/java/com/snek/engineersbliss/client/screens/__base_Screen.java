@@ -83,7 +83,7 @@ public abstract class __base_Screen extends Screen {
 
     @Override
     public boolean isPauseScreen() {
-        return false;
+        return true;
     }
 
     //TODO remove. this is the old version, still used by RenderingScreen
@@ -92,15 +92,15 @@ public abstract class __base_Screen extends Screen {
         final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);
-        });
+        }, null);
         r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;
     }
 
-    protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName) {
+    protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName, final @Nullable String featureId) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
-        final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT);
+        final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT, featureId);
         r.withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
         r.setTooltip(Tooltip.create(details.get()));
         return r;
@@ -111,7 +111,7 @@ public abstract class __base_Screen extends Screen {
 
     @Override
     public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        //! No blurred background
+        graphics.blurBeforeThisStratum();
     }
 
 

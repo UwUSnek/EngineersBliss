@@ -259,3 +259,6 @@
 
 - displays tab/+/- default keybinds in UIs
 - displays add these to the pause menu too somehow
+
+
+- maybe add a "center crossair" feature in alt textures? Vanilla's crossair isnt centered

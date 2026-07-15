@@ -22,8 +22,8 @@ public class UiTxt extends Txt {
 
     public UiTxt(                                   final float textScale) { super();  this.textScale = textScale; withRegularFont(); }
     public UiTxt(final @NotNull String           s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
-    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
-    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; withRegularFont(); }
+    public UiTxt(final @NotNull MutableComponent s, final float textScale) { super(s); this.textScale = textScale; withFont(s.getStyle().getFont()); }
+    public UiTxt(final @NotNull Component        s, final float textScale) { super(s); this.textScale = textScale; withFont(s.getStyle().getFont()); }
 
 
 
@@ -44,6 +44,10 @@ public class UiTxt extends Txt {
         style = style.withFont(new FontDescription.Resource(Layout.getFontIdForScale(Layout.FONT_NAME_MONO_MEDIUM, textScale)));
         return this;
     }
+    public @NotNull UiTxt withFont(final FontDescription font) {
+        style = style.withFont(font);
+        return this;
+    }
 
 
 
@@ -51,6 +55,6 @@ public class UiTxt extends Txt {
     @Override
     public @NotNull Txt copy() {
         rawText.setStyle(style);
-        return new UiTxt(rawText.copy(), textScale);
+        return new UiTxt(rawText.copy(), textScale).withFont(style.getFont());
     }
 }

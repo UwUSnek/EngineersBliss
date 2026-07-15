@@ -26,6 +26,7 @@ public class UiButton extends Button {
 
     private Txt label;
     private float labelScale;
+    private String featureId;
     private char key;
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
@@ -34,39 +35,46 @@ public class UiButton extends Button {
 
 
 
+    public @Nullable String getFeatureId() {
+        return featureId;
+    }
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+
+
+
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment, final @Nullable String featureId) {
         //! Pass empty text to super and store a custom Txt isntance locally
         super(x, y, width, height, new Txt().get(), b -> pressCallback.accept((UiButton)b), DEFAULT_NARRATION);
-        this.key = key;
+        this.key = Character.toLowerCase(key);
         this.alignment = alignment;
         this.label = label;
         this.labelScale = (label instanceof UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;
+        this.featureId = featureId;
         this.bgSpriteId = null;
         this.labelOffset = Layout.textMarginPx;
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        this(50, 50, 50, 50, label, pressCallback, key, alignment);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment, final @Nullable String featureId) {
+        this(50, 50, 50, 50, label, pressCallback, key, alignment, featureId);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(x, y, width, height, label, pressCallback, '\0', alignment);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment, final @Nullable String featureId) {
+        this(x, y, width, height, label, pressCallback, '\0', alignment, featureId);
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(50, 50, 50, 50, label, pressCallback, alignment);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment, final @Nullable String featureId) {
+        this(50, 50, 50, 50, label, pressCallback, alignment, featureId);
     }
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key) {
-        this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final @Nullable String featureId) {
+        this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT, featureId);
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key) {
-        this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key, final @Nullable String featureId) {
+        this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT, featureId);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback) {
-        this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final @Nullable String featureId) {
+        this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT, featureId);
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback) {
-        this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
+    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final @Nullable String featureId) {
+        this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT, featureId);
     }
 
 

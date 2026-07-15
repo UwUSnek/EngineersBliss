@@ -235,8 +235,8 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
             // Block icon and name
-            BlockRenderer.renderBlockIcon(graphics, block, this.getContentX(), midY - 8);
-            BlockRenderer.renderBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
+            BlockRenderer.extractBlockIcon(graphics, block, this.getContentX(), midY - 8);
+            BlockRenderer.extractBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
 
 
             // Checkboxes

@@ -64,7 +64,8 @@ public class OverlaysScreen extends __base_Screen {
             feature.getDetails(),
             b -> toggleFeature(feature, b),
             '\0',
-            "overlays/" + spriteName
+            "overlays/" + spriteName,
+            feature.name().toLowerCase()
         );
     }
 

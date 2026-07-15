@@ -45,6 +45,12 @@ public class RenderingScreen extends __base_Screen {
 
 
     @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+
+    @Override
     public boolean keyPressed(final KeyEvent event) {
         if(!searchField.isFocused()) {
             if(event.key() == InputConstants.KEY_O) {
