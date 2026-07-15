@@ -165,9 +165,11 @@ public class CreativeTweaksScreen extends __base_Screen {
         final float ratio = 9f / 4f; //! Vertical 4:9 for 1080x480 (1920/4) resolution
         final int w = (int)(width * PREVIEW_WIDTH);
         final int h = (int)(w * ratio);
+        final int hPlaceholder = w;
         final int xOff = (width  - w) / 2 - w / 2 ;
         final int xOn  = (width  - w) / 2 + w / 2 ;
         final int y    = (height - h) / 2;
+        final int yPlaceholder = (height - hPlaceholder) / 2;
 
 
         // Find the hovered feature and calculate the remaining preview data
@@ -197,14 +199,14 @@ public class CreativeTweaksScreen extends __base_Screen {
                 final Identifier atlasIdOff = hoveredPreviewAtlasIds[0];
                 final Identifier atlasIdOn  = hoveredPreviewAtlasIds[1];
                 if(!TextureAtlasTracker.isTextureReady(atlasIdOff)) {
-                    graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, 0f, 1f, 0f, 1f);
+                    graphics.blit(atlasIdOff, xOff, yPlaceholder, xOff + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
                 }
                 else {
                     final float[] uvOff = TextureAtlasTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
                     graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
                 }
                 if(!TextureAtlasTracker.isTextureReady(atlasIdOn)) {
-                    graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, 0f, 1f, 0f, 1f);
+                    graphics.blit(atlasIdOn,  xOn, yPlaceholder, xOn + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
                 }
                 else {
                     final float[] uvOn  = TextureAtlasTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
