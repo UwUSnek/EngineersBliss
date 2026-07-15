@@ -21,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -28,6 +30,7 @@ import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.IntBuffer;
+import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,6 +51,7 @@ public class AvifTextureReaderMixin {
 
 
 
+    // Worker Thread pool
     private static final ExecutorService AVIF_DECODE_POOL = Executors.newFixedThreadPool(
         Math.max(2, Runtime.getRuntime().availableProcessors() - 1),
         r -> {
@@ -56,6 +60,28 @@ public class AvifTextureReaderMixin {
             return t;
         }
     );
+
+
+    // One ImageReader per worker thread, insted of calling ImageIO.read every time. This improves performance.
+    private static final ThreadLocal<ImageReader> AVIF_READER = ThreadLocal.withInitial(() -> {
+        final Iterator<ImageReader> it = ImageIO.getImageReadersBySuffix("avif");
+        if(!it.hasNext()) {
+            throw new IllegalStateException("No ImageReader registered for suffix 'avif'");
+        }
+        return it.next();
+    });
+
+    // Helper function to decode an input stream into an image using the thread-local reader
+    private static BufferedImage eb$decode(final InputStream is) throws IOException {
+        final ImageReader reader = AVIF_READER.get();
+        try(ImageInputStream iis = ImageIO.createImageInputStream(is)) {
+            reader.setInput(iis, true, true);
+            return reader.read(0);
+        }
+        finally {
+            reader.reset(); //! Clear the reader's state
+        }
+    }
 
 
 
@@ -70,11 +96,17 @@ public class AvifTextureReaderMixin {
         }
     }
 
+
+    // Creates a copy of the placeholder image. Images are cached on the GPU and the object is freed the first time they are used.
     private static NativeImage eb$buildPlaceholderImage() {
         final NativeImage copy = new NativeImage(LOADING_IMAGE.getWidth(), LOADING_IMAGE.getHeight(), false);
         MemoryUtil.memCopy(LOADING_IMAGE.getPointer(), copy.getPointer(), LOADING_IMAGE.getWidth() * LOADING_IMAGE.getHeight() * 4L);
         return copy;
     }
+
+
+
+
 
 
 
@@ -92,7 +124,7 @@ public class AvifTextureReaderMixin {
                 final Resource resource = resourceManager.getResourceOrThrow(id);
                 BufferedImage buffered;
                 try(InputStream is = resource.open()) {
-                    buffered = ImageIO.read(is);
+                    buffered = eb$decode(is);
                 }
                 if(buffered == null) return;
 
@@ -107,6 +139,7 @@ public class AvifTextureReaderMixin {
                     BufferedImage argb = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
                     final Graphics2D g = argb.createGraphics();
                     try { g.drawImage(buffered, 0, 0, null); } finally { g.dispose(); }
+                    buffered = null;
                     pixels = ((DataBufferInt) argb.getRaster().getDataBuffer()).getData();
                     argb = null;
                 }
@@ -122,19 +155,22 @@ public class AvifTextureReaderMixin {
                 }
 
 
+                // Convert pixels to a format java can use
+                final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
+                final IntBuffer ibuf = MemoryUtil.memIntBuffer(image.getPointer(), w * h);
+                for(int i = 0; i < pixels.length; i++) {
+                    final int p = pixels[i];
+                    ibuf.put(i, (p & 0xFF00FF00) | ((p & 0x00FF0000) >> 16) | ((p & 0x000000FF) << 16));
+                }
+
                 ClientScheduler.run(() -> {
-                    final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
-                    final IntBuffer ibuf = MemoryUtil.memIntBuffer(image.getPointer(), w * h);
-                    for(int i = 0; i < pixels.length; i++) {
-                        final int p = pixels[i];
-                        ibuf.put(i, (p & 0xFF00FF00) | ((p & 0x00FF0000) >> 16) | ((p & 0x000000FF) << 16));
-                    }
                     final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
                     if(tex instanceof final ReloadableTexture reloadable) {
                         reloadable.apply(new TextureContents(image, metadata));
                         AvifTextureTracker.markLoaded(id);
                     }
                     else {
+                        image.close(); //! Nobody will consume it - avoid leaking the native buffer
                         System.out.println("TEXTURE IS NOT RELOADABLE");//TODO use proper error reporting
                     }
                 });
