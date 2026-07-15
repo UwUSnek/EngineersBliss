@@ -40,7 +40,10 @@ dependencies {
     // Dependencies
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    implementation include("com.github.gotson.nightmonkeys:imageio-heif:1.1.0")
+    // implementation ("com.github.meiMingle:jxlatte:main-mavenize-SNAPSHOT")
+    //! Extremely slow but works on all systems and doesnt require external libraries
+    //TODO maybe use this to unpack texture files and store them locally as unoptimized pngs?
+    //TODO or just keep the optimized PNGs if they arent too big. ~500mb jar is acceptable.
 
     // Optional dependencies
     compileOnly "maven.modrinth:sodium:mc26.1.1-0.8.9-fabric"

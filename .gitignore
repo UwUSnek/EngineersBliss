@@ -41,10 +41,16 @@ src/generators/**/*.mov
 src/generators/**/*.mp4
 src/generators/**/*.png
 src/generators/**/*.avif
+src/generators/**/*.jxl
+src/generators/**/*.mcmeta
+
 src/generators/*.mov
 src/generators/*.mp4
 src/generators/*.png
 src/generators/*.avif
+src/generators/*.jxl
+src/generators/*.mcmeta
+
 
 # Python cache
 __pycache__

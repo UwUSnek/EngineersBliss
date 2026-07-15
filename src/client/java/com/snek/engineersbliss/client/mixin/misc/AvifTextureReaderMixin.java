@@ -20,35 +20,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.IntBuffer;
-import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-
-
-
-
-
 /**
- * A mixin that adds support for textures of AVIF image format.
- * Textures are loaded asynchronously. A placeholder texture is returned while waiting.
+ * A mixin that adds support for asynchronous texture loading and sprite sheet atlases.
+ * A placeholder texture is returned while waiting.
  */
 @Mixin(TextureContents.class)
 public class AvifTextureReaderMixin {
     private AvifTextureReaderMixin() {}
-
 
 
     // Worker Thread pool
@@ -60,29 +45,6 @@ public class AvifTextureReaderMixin {
             return t;
         }
     );
-
-
-    // One ImageReader per worker thread, insted of calling ImageIO.read every time. This improves performance.
-    private static final ThreadLocal<ImageReader> AVIF_READER = ThreadLocal.withInitial(() -> {
-        final Iterator<ImageReader> it = ImageIO.getImageReadersBySuffix("avif");
-        if(!it.hasNext()) {
-            throw new IllegalStateException("No ImageReader registered for suffix 'avif'");
-        }
-        return it.next();
-    });
-
-    // Helper function to decode an input stream into an image using the thread-local reader
-    private static BufferedImage eb$decode(final InputStream is) throws IOException {
-        final ImageReader reader = AVIF_READER.get();
-        try(ImageInputStream iis = ImageIO.createImageInputStream(is)) {
-            reader.setInput(iis, true, true);
-            return reader.read(0);
-        }
-        finally {
-            reader.reset(); //! Clear the reader's state
-        }
-    }
-
 
 
     // Placeholder texture used while the actual textures load in
@@ -105,63 +67,29 @@ public class AvifTextureReaderMixin {
     }
 
 
-
-
-
-
-
-
     @SuppressWarnings("unused")
     @Inject(method = "load", at = @At("HEAD"), cancellable = true, require = 1)
     private static void eb$load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
-        if(!id.getPath().endsWith(".avif")) return;
+        final Resource resource = resourceManager.getResourceOrThrow(id);
+        final AvifAtlasMetadataSection atlasMeta = resource.metadata().getSection(AvifAtlasMetadataSection.TYPE).orElse(null);
+
+        // Not one of our animated sheets -> let vanilla handle it untouched, synchronously
+        if(atlasMeta == null) return;
+
+        AvifTextureTracker.registerAtlas(id, atlasMeta);
 
         final NativeImage placeholder = eb$buildPlaceholderImage();
         cir.setReturnValue(new TextureContents(placeholder, null));
 
         CompletableFuture.runAsync(() -> {
             try {
-                final Resource resource = resourceManager.getResourceOrThrow(id);
-                BufferedImage buffered;
+                final TextureMetadataSection metadata = resource.metadata().getSection(TextureMetadataSection.TYPE).orElse(null);
+
+                final NativeImage image;
                 try(InputStream is = resource.open()) {
-                    buffered = eb$decode(is);
+                    image = NativeImage.read(is); //! Closed by the apply call
                 }
-                if(buffered == null) return;
-
-                final int w = buffered.getWidth();
-                final int h = buffered.getHeight();
-                final int[] pixels;
-                if(buffered.getType() == BufferedImage.TYPE_INT_ARGB) {
-                    pixels = ((DataBufferInt) buffered.getRaster().getDataBuffer()).getData();
-                    buffered = null;
-                }
-                else {
-                    BufferedImage argb = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-                    final Graphics2D g = argb.createGraphics();
-                    try { g.drawImage(buffered, 0, 0, null); } finally { g.dispose(); }
-                    buffered = null;
-                    pixels = ((DataBufferInt) argb.getRaster().getDataBuffer()).getData();
-                    argb = null;
-                }
-
-
-                // Read Minecraft Metadata and custom Engineer's Bliss AVIF Metadata
-                final TextureMetadataSection    metadata = resource.metadata().getSection(  TextureMetadataSection.TYPE).orElse(null);
-                final AvifAtlasMetadataSection atlasMeta = resource.metadata().getSection(AvifAtlasMetadataSection.TYPE).orElse(null);
-
-                //! Cache for later lookup
-                if(atlasMeta != null) {
-                    AvifTextureTracker.registerAtlas(id, atlasMeta);
-                }
-
-
-                // Convert pixels to a format java can use
-                final NativeImage image = new NativeImage(w, h, false); //! Closed by the apply call
-                final IntBuffer ibuf = MemoryUtil.memIntBuffer(image.getPointer(), w * h);
-                for(int i = 0; i < pixels.length; i++) {
-                    final int p = pixels[i];
-                    ibuf.put(i, (p & 0xFF00FF00) | ((p & 0x00FF0000) >> 16) | ((p & 0x000000FF) << 16));
-                }
+                if(image == null) return;
 
                 ClientScheduler.run(() -> {
                     final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);

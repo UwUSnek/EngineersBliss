@@ -182,8 +182,8 @@ public class CreativeTweaksScreen extends __base_Screen {
                 if(button != lastHoveredButton) {
                     lastHoveredButton = button;
                     final String fatureId = button.getFeatureId();
-                    final String atlasPathOff = String.format("textures/gui/feature_previews/creative_tweaks/%s_off_0.avif", fatureId); //FIXME indices
-                    final String atlasPathOn  = String.format("textures/gui/feature_previews/creative_tweaks/%s_on_0.avif",  fatureId); //FIXME indices
+                    final String atlasPathOff = String.format("textures/gui/feature_previews/creative_tweaks/%s_off_0.png", fatureId); //FIXME indices
+                    final String atlasPathOn  = String.format("textures/gui/feature_previews/creative_tweaks/%s_on_0.png",  fatureId); //FIXME indices
                     hoveredPreviewAtlasIds = new Identifier[] {
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff),
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn)

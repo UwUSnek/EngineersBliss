@@ -82,12 +82,8 @@ def process_pair(rel_dir: Path, base: str, states: dict, input_dir: Path, outdir
     label = str(rel_dir / base) if str(rel_dir) != "." else base
     log = [f"\n{ label }  ({ on_path.name } / { off_path.name })"]
 
-    try:
-        on_info = ffprobe_stream_info(on_path)
-        off_info = ffprobe_stream_info(off_path)
-    except Exception as e:
-        log.append(f"  ffprobe failed, skipping pair: { e }")
-        return "\n".join(log)
+    on_info = ffprobe_stream_info(on_path)
+    off_info = ffprobe_stream_info(off_path)
 
     on_dur, off_dur = on_info["duration"], off_info["duration"]
     target_duration = max(on_dur, off_dur)
@@ -98,20 +94,17 @@ def process_pair(rel_dir: Path, base: str, states: dict, input_dir: Path, outdir
     on_dst = out_subdir / on_path.name
     off_dst = out_subdir / off_path.name
 
-    try:
-        if abs(on_dur - off_dur) < 1e-3:
-            copy_video(on_path, on_dst)
-            copy_video(off_path, off_dst)
-        elif on_dur < off_dur:
-            pad_video(on_path, on_dst, on_info, target_duration)
-            copy_video(off_path, off_dst)
-            log.append(f"  padded { on_path.name } to match { off_path.name }")
-        else:
-            pad_video(off_path, off_dst, off_info, target_duration)
-            copy_video(on_path, on_dst)
-            log.append(f"  padded { off_path.name } to match { on_path.name }")
-    except subprocess.CalledProcessError as e:
-        log.append(f"  ffmpeg failed: { e.stderr.decode(errors='ignore') }")
+    if abs(on_dur - off_dur) < 1e-3:
+        copy_video(on_path, on_dst)
+        copy_video(off_path, off_dst)
+    elif on_dur < off_dur:
+        pad_video(on_path, on_dst, on_info, target_duration)
+        copy_video(off_path, off_dst)
+        log.append(f"  padded { on_path.name } to match { off_path.name }")
+    else:
+        pad_video(off_path, off_dst, off_info, target_duration)
+        copy_video(on_path, on_dst)
+        log.append(f"  padded { off_path.name } to match { on_path.name }")
 
     return "\n".join(log)
 

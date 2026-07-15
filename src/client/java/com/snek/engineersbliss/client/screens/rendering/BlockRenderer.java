@@ -56,7 +56,7 @@ public class BlockRenderer {
 
         final int atlasIdx = blockIdx / SHEETS_PER_ATLAS;
         final int localIdx = blockIdx % SHEETS_PER_ATLAS;
-        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".avif");
+        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".png");
 
         if(!AvifTextureTracker.isTextureReady(textureId)) {
             graphics.blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
