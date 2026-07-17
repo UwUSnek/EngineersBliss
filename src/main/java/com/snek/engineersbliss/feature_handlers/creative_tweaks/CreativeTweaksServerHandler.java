@@ -3,6 +3,7 @@ package com.snek.engineersbliss.feature_handlers.creative_tweaks;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,6 @@ import net.minecraft.world.phys.Vec3;
 public class CreativeTweaksServerHandler {
     private CreativeTweaksServerHandler() {}
     public static final int DEFAULT_INTERACTION_RADIUS = 1;
-
     private static final float DEFAULT_REACH = 4.5f; //FIXME get this from somewhere instead of hard coding it
     private static final Identifier REACH_MODIFIER_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "creative_tweaks.reach");
 
@@ -46,14 +46,16 @@ public class CreativeTweaksServerHandler {
     public static @Nullable BlockPos getPickOverride() { return pickOverride; }
 
 
-    private static final Map<UUID, Long> toggleFeatureMasks = new HashMap<>();
-    public static void updateToggleFeatures(final Player player, final long featureMask) {
-        toggleFeatureMasks.put(player.getUUID(), featureMask);
-    }
-    public static long getToggleFeatures(final Player player) {
-        final Long r = toggleFeatureMasks.get(player.getUUID());
-        return r == null ? CreativeTweakServerFeature.DEFAULT_FLAGS : r;
-    }
+    // // private static final Map<UUID, Long> toggleFeatureMasks = new HashMap<>();
+
+    // private static final Map<UUID, CreativeTweaksServerFeatureSetData> featureData = new ConcurrentHashMap<>();
+    // public static <T> void updateToggleFeatures(final Player player, final String id, final T value) {
+    //     featureData.put(player.getUUID(), );
+    // }
+    // public static long getToggleFeatures(final Player player) {
+    //     final Long r = toggleFeatureMasks.get(player.getUUID());
+    //     return r == null ? CreativeTweakServerFeatureSet.DEFAULT_FLAGS : r;
+    // }
 
 
 
@@ -182,31 +184,5 @@ public class CreativeTweaksServerHandler {
 
         // Return PASS, letting vanilla click the original block
         return InteractionResult.PASS;
-    }
-
-
-
-
-
-
-
-
-    /**
-     * Checks if a player has the specified feature toggled ON.
-     * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakServerFeature) instead.
-     */
-    public static boolean serverPlayerHasFeature(final Object entity, final CreativeTweakServerFeature feature) {
-        if(entity instanceof final Player player) {
-            final long featureMask = getToggleFeatures(player);
-            if(feature.hasFlagBit(featureMask)) {
-                if(player.getAbilities().instabuild) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
-        return serverPlayerHasFeature(entity, CreativeTweakServerFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }

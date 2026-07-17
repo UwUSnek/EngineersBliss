@@ -8,13 +8,20 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.snek.engineersbliss.feature_handlers.ServerFeaturePlayerData;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTextureServerFeatureSet;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
-import com.snek.engineersbliss.network.creative_tweaks.CreativeTweakRequestReceiver;
-import com.snek.engineersbliss.network.creative_tweaks.payloads.CreativeTweaksToggleFeaturesUpdateRequestPayload;
-import com.snek.engineersbliss.network.creative_tweaks.payloads.InteractionRadiusChangeRequestPayload;
-import com.snek.engineersbliss.network.creative_tweaks.payloads.ReachDistanceChangeRequestPayload;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlayServerFeatureSet;
+import com.snek.engineersbliss.network.features.ServerFeatureSync;
+import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.IntFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.LongFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
 import com.snek.engineersbliss.network.overlay_data.payloads.RailUpdatePayload;
 import com.snek.engineersbliss.utils.scheduler.ServerScheduler;
@@ -43,6 +50,13 @@ public class EngineerSBliss implements ModInitializer {
         ModCreativeTab.register();
 
 
+        // Register feature sets and initialize the feature system
+        CreativeTweakServerFeatureSet.INSTANCE.init();
+        AltTextureServerFeatureSet.INSTANCE.init();
+        OverlayServerFeatureSet.INSTANCE.init();
+        __base_ServerFeature.finalizeSetInits();
+
+
         // Register server feature handlers
         CreativeTweaksServerHandler.register();
 
@@ -53,10 +67,12 @@ public class EngineerSBliss implements ModInitializer {
 
 
         // Register client->server network payloads
-        PayloadTypeRegistry.serverboundPlay().register(               ReachDistanceChangeRequestPayload.TYPE,                ReachDistanceChangeRequestPayload.CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(           InteractionRadiusChangeRequestPayload.TYPE,            InteractionRadiusChangeRequestPayload.CODEC);
-        PayloadTypeRegistry.serverboundPlay().register(CreativeTweaksToggleFeaturesUpdateRequestPayload.TYPE, CreativeTweaksToggleFeaturesUpdateRequestPayload.CODEC);
-        CreativeTweakRequestReceiver.register();
+        PayloadTypeRegistry.serverboundPlay().register(  BoolFeatureUpdateRequestPayload.TYPE,   BoolFeatureUpdateRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register( FloatFeatureUpdateRequestPayload.TYPE,  FloatFeatureUpdateRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(DoubleFeatureUpdateRequestPayload.TYPE, DoubleFeatureUpdateRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(   IntFeatureUpdateRequestPayload.TYPE,    IntFeatureUpdateRequestPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(  LongFeatureUpdateRequestPayload.TYPE,   LongFeatureUpdateRequestPayload.CODEC);
+        ServerFeatureSync.register();
 
 
         // Log library loading

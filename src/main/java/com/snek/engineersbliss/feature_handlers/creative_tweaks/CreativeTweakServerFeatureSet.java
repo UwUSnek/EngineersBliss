@@ -1,0 +1,113 @@
+package com.snek.engineersbliss.feature_handlers.creative_tweaks;
+
+import java.util.List;
+
+import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
+import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
+
+
+
+
+
+
+
+
+public class CreativeTweakServerFeatureSet extends __base_ServerFeatureSet {
+    public static CreativeTweakServerFeatureSet INSTANCE = new CreativeTweakServerFeatureSet("creative_tweaks", "Creative Tweaks");
+
+    private CreativeTweakServerFeatureSet(final String id, final String displayName) {
+        super(id, displayName);
+    }
+
+
+
+
+    public static ServerSteppedFeature<Float> FLYING_SPEED = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
+        "flying_speed",
+        "Flying speed",
+        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0
+    ));
+    public static ServerSteppedFeature<Float> INTERACTION_DISTANCE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
+        "reach_distance",
+        "Reach distance",
+        List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0
+    ));
+    public static ServerSteppedFeature<Integer> INTERACTION_RADIUS = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
+        "interaction_radius",
+        "Interaction radius",
+        List.of(1, 2, 3, 4, 5, 10, 20, 50), 0
+    ));
+    public static ServerToggleFeature NO_SIGN_GUI = INSTANCE.registerFeature(new ServerToggleFeature(
+        "no_sign_gui",
+        "Disable Sign GUI",
+        false
+    ));
+    public static ServerToggleFeature OPEN_OBSTRUCTED_CONTAINERS = INSTANCE.registerFeature(new ServerToggleFeature(
+        "open_obstructed_containers",
+        "Open obstructed containers",
+        false
+    ));
+
+
+
+
+    public static final ServerToggleFeature PHASE_THROUGH_BLOCKS_FLY        = INSTANCE.registerFeature(new ServerToggleFeature("phase_through_blocks_fly",        "Phase through blocks fly",        true));
+    public static final ServerToggleFeature PHASE_THROUGH_ENTITIES          = INSTANCE.registerFeature(new ServerToggleFeature("phase_through_entities",          "Phase through entities",          false));
+    public static final ServerToggleFeature DISABLE_FIRE_EFFECT             = INSTANCE.registerFeature(new ServerToggleFeature("disable_fire_effect",             "Disable fire effect",             true));
+    public static final ServerToggleFeature DISABLE_FREEZING_EFFECT         = INSTANCE.registerFeature(new ServerToggleFeature("disable_freezing_effect",         "Disable freezing effect",         true));
+    public static final ServerToggleFeature FIX_HONEY_JUMP                  = INSTANCE.registerFeature(new ServerToggleFeature("fix_honey_jump",                  "Fix Honey jump",                  true));
+    public static final ServerToggleFeature DISABLE_HONEY_SLIDING           = INSTANCE.registerFeature(new ServerToggleFeature("disable_honey_sliding",           "Disable Honey sliding",           true));
+    public static final ServerToggleFeature DISABLE_SLIME_BOUNCE            = INSTANCE.registerFeature(new ServerToggleFeature("disable_slime_bounce",            "Disable Slime bounce",            true));
+    public static final ServerToggleFeature DISABLE_BED_BOUNCE              = INSTANCE.registerFeature(new ServerToggleFeature("disable_bed_bounce",              "Disable Bed bounce",              true));
+    public static final ServerToggleFeature DISABLE_ICE_SLIDING             = INSTANCE.registerFeature(new ServerToggleFeature("disable_ice_sliding",             "Disable Ice sliding",             true));
+    public static final ServerToggleFeature DISABLE_CURRENT_DRAG            = INSTANCE.registerFeature(new ServerToggleFeature("disable_current_drag",            "Disable current drag",            true));
+    public static final ServerToggleFeature DISABLE_BUBBLE_COLUMN_DRAG      = INSTANCE.registerFeature(new ServerToggleFeature("disable_bubble_column_drag",      "Disable Bubble Column drag",      true));
+
+    public static final ServerToggleFeature DISABLE_HONEY_SLOWDOWN          = INSTANCE.registerFeature(new ServerToggleFeature("disable_honey_slowdown",          "Disable Honey slowdown",          true));
+    public static final ServerToggleFeature DISABLE_SLIME_SLOWDOWN          = INSTANCE.registerFeature(new ServerToggleFeature("disable_slime_slowdown",          "Disable Slime slowdown",          true));
+    public static final ServerToggleFeature DISABLE_SOULSAND_SLOWDOWN       = INSTANCE.registerFeature(new ServerToggleFeature("disable_soulsand_slowdown",       "Disable Soulsand slowdown",       true));
+    public static final ServerToggleFeature DISABLE_POWDER_SNOW_SLOWDOWN    = INSTANCE.registerFeature(new ServerToggleFeature("disable_powder_snow_slowdown",    "Disable Powder Snow slowdown",    true));
+    public static final ServerToggleFeature DISABLE_WATER_SLOWDOWN          = INSTANCE.registerFeature(new ServerToggleFeature("disable_water_slowdown",          "Disable Water slowdown",          false));
+    public static final ServerToggleFeature DISABLE_LAVA_SLOWDOWN           = INSTANCE.registerFeature(new ServerToggleFeature("disable_lava_slowdown",           "Disable Lava slowdown",           false));
+    public static final ServerToggleFeature DISABLE_COBWEB_SLOWDOWN         = INSTANCE.registerFeature(new ServerToggleFeature("disable_cobweb_slowdown",         "Disable Cobweb slowdown",         true));
+    public static final ServerToggleFeature DISABLE_LADDER_SLOWDOWN         = INSTANCE.registerFeature(new ServerToggleFeature("disable_ladder_slowdown",         "Disable Ladder slowdown",         true));
+    public static final ServerToggleFeature DISABLE_VINES_SLOWDOWN          = INSTANCE.registerFeature(new ServerToggleFeature("disable_vines_slowdown",          "Disable Vines slowdown",          true));
+    public static final ServerToggleFeature DISABLE_TWISTING_VINES_SLOWDOWN = INSTANCE.registerFeature(new ServerToggleFeature("disable_twisting_vines_slowdown", "Disable Twisting Vines slowdown", true));
+    public static final ServerToggleFeature DISABLE_WEEPING_VINES_SLOWDOWN  = INSTANCE.registerFeature(new ServerToggleFeature("disable_weeping_vines_slowdown",  "Disable Weeping Vines slowdown",  true));
+    public static final ServerToggleFeature DISABLE_SWEET_BERRIES_SLOWDOWN  = INSTANCE.registerFeature(new ServerToggleFeature("disable_sweet_berries_slowdown",  "Disable Sweet Berries slowdown",  true));
+
+    public static final ServerToggleFeature DISABLE_ITEM_CHANGE_ANIMATION   = INSTANCE.registerFeature(new ServerToggleFeature("disable_item_change_animation",   "Disable item change animation",   false));
+    public static final ServerToggleFeature DISABLE_HAND_SWING_ANIMATION    = INSTANCE.registerFeature(new ServerToggleFeature("disable_hand_swing_animation",    "Disable hand swing animation",    false));
+    public static final ServerToggleFeature DISABLE_DIMENSION_CHANGE_SCREEN = INSTANCE.registerFeature(new ServerToggleFeature("disable_dimension_change_screen", "Disable dimension change screen", true));
+    public static final ServerToggleFeature DISABLE_WATER_FOV_CHANGE        = INSTANCE.registerFeature(new ServerToggleFeature("disable_water_fov_change",        "Disable Water fov change",        true));
+    public static final ServerToggleFeature DISABLE_WATER_OVERLAY           = INSTANCE.registerFeature(new ServerToggleFeature("disable_water_overlay",           "Disable Water overlay",           true));
+    public static final ServerToggleFeature DISABLE_LAVA_OVERLAY            = INSTANCE.registerFeature(new ServerToggleFeature("disable_lava_overlay",            "Disable Lava overlay",            true));
+    public static final ServerToggleFeature DISABLE_NETHER_PORTAL_OVERLAY   = INSTANCE.registerFeature(new ServerToggleFeature("disable_nether_portal_overlay",   "Disable Nether Portal overlay",   true));
+
+
+//TODO remove old system stuff
+
+    // // Name and properties
+    // private final long flagBit; //! Flag bit index is calculated from the order of declaration
+    // private final boolean _default;
+
+
+    // // Getters and checks
+    // public long getFlagBit() { return flagBit; }
+    // public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
+
+
+    // public static long DEFAULT_FLAGS = 0;
+    // static {
+    //     for(final var feature : values()) {
+    //         if(feature._default) DEFAULT_FLAGS |= feature.getFlagBit();
+    //     }
+    // }
+
+
+    // private CreativeTweakServerFeature(final boolean _default) {
+    //     this._default = _default;
+    //     this.flagBit = 1 << ordinal();
+    // }
+}
