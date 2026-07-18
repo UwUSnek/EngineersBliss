@@ -8,7 +8,7 @@ package com.snek.engineersbliss.feature_handlers.base;
  */
 public class ServerToggleFeature extends __base_ServerFeature<Boolean> {
 
-    public ServerToggleFeature(final String id, final String displayName, final boolean defaultValue) {
-        super(id, displayName, defaultValue);
+    public ServerToggleFeature(final String id, final boolean defaultValue) {
+        super(id, defaultValue);
     }
 }

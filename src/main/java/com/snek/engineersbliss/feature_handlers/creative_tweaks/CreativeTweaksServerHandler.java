@@ -3,7 +3,6 @@ package com.snek.engineersbliss.feature_handlers.creative_tweaks;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -44,18 +43,6 @@ public class CreativeTweaksServerHandler {
     private static final Map<UUID, Integer> interactionRadii = new HashMap<>();
     private static @Nullable BlockPos pickOverride = null;
     public static @Nullable BlockPos getPickOverride() { return pickOverride; }
-
-
-    // // private static final Map<UUID, Long> toggleFeatureMasks = new HashMap<>();
-
-    // private static final Map<UUID, CreativeTweaksServerFeatureSetData> featureData = new ConcurrentHashMap<>();
-    // public static <T> void updateToggleFeatures(final Player player, final String id, final T value) {
-    //     featureData.put(player.getUUID(), );
-    // }
-    // public static long getToggleFeatures(final Player player) {
-    //     final Long r = toggleFeatureMasks.get(player.getUUID());
-    //     return r == null ? CreativeTweakServerFeatureSet.DEFAULT_FLAGS : r;
-    // }
 
 
 

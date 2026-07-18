@@ -19,11 +19,10 @@ import com.snek.engineersbliss.EngineerSBliss;
 public abstract class __base_ServerFeature<T> {
 
 
-    // A string ID used for resources and logging, and a numerical ID for fast lookup and network packets.
+    // A numerical ID for fast lookup and network packets.
     //! The index is calculated automatically on server initialization.
     //! This is deterministic, so the indices calculated by the server always match the ones calculated by the clients
     //! (as long as they are running the same version of the mod), as each client feature requires a corresponding server feature.
-    protected final String id;
     protected int index = -1;
     private static final List<__base_ServerFeature<?>> registered = new ArrayList<>();
     public static final List<__base_ServerFeature<?>> getAllFeatures() { return registered; }
@@ -39,21 +38,19 @@ public abstract class __base_ServerFeature<T> {
 
 
 
-    // The name and default value of the feature
-    protected final String displayName;
+    // The ID and default value of the feature
+    protected final String id;
     protected final T defaultValue;
 
 
     // Getters
     public String getId() { return id; }
-    public String getDisplayName() { return displayName; }
     public T getDefault() { return defaultValue; }
     public int getIndex() { return index; }
 
 
-    protected __base_ServerFeature(final String id, final String displayName, final T defaultValue) {
+    protected __base_ServerFeature(final String id, final T defaultValue) {
         this.id = id;
-        this.displayName = displayName;
         this.defaultValue = defaultValue;
     }
 

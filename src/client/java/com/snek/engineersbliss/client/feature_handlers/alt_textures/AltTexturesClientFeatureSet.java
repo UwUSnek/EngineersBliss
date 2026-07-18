@@ -2,10 +2,11 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
 import com.snek.engineersbliss.utils.Txt;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
+import com.snek.engineersbliss.client.feature_handlers.base.ClientBlockFeature;
+import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -19,79 +20,81 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public enum AltTextureFeature {
-
-    //! Vanilla Beds are no longer block entities as of 26.3.
-    //! No point in adding it as a feature just to remove it after one version.
-
-
-    //! For whatever reason, Vanilla's Shelves and Campfires are rendered properly: The block model is static, while held items are rendered dynamically.
-    //! However, their rendering logic does a lot of extra preparation steps even when there are no items to render.
-    //! Campfires are also extremely laggy because of their particles.
-    //! These all get simple logic optimizations, while Campfires also get particle suppression.
-
-
-    //! Vanilla Bells are rendered dynamically but the supports are static.
-    //! STATIC_BELLS simply replaces the bell part and keeps the Vanilla support.
+public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltTexturesServerFeatureSet> {
+    public static final AltTexturesClientFeatureSet INSTANCE = new AltTexturesClientFeatureSet();
+    private AltTexturesClientFeatureSet() {
+        super(AltTexturesServerFeatureSet.INSTANCE, () -> new UiTxt("Alternative Textures"));
+    }
 
 
 
 
-    MINIMAL_REDSTONE_WIRE(true,
+    public static final ClientBlockFeature<?> MINIMAL_REDSTONE_WIRE = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.MINIMAL_REDSTONE_WIRE,
         () -> new UiTxt("Minimal Redstone Wire"),
         () -> new UiTxt("Replaces the messy dust-like Redstone Wire texture with a simple monochrome line to make circuits more readable."),
         List.of(Blocks.REDSTONE_WIRE)
-    ),
-    NO_REDSTONE_DUST_PARTICLES(true, //TODO implement
+    );
+    public static final ClientBlockFeature<?> NO_REDSTONE_DUST_PARTICLES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.NO_REDSTONE_DUST_PARTICLES,
         () -> new UiTxt("Disable Redstone dust particles"),
         () -> new UiTxt("Stops Levers, Redstone Wire, Redstone Torches, Redstone Ores, and Redstone Repeaters from emitting dust particles when powered."),
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    NO_CAMPFIRE_PARTICLES(true,
+    );
+    public static final ClientBlockFeature<?> NO_CAMPFIRE_PARTICLES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.NO_CAMPFIRE_PARTICLES,
         () -> new UiTxt("Disable Campfire particles"),
         () -> new UiTxt("Stops Campfires and Soul Campfires from emitting smoke and ember particles."),
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    NO_FIRE_PARTICLES(true,
+    );
+    public static final ClientBlockFeature<?> NO_FIRE_PARTICLES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.NO_FIRE_PARTICLES,
         () -> new UiTxt("Disable Fire particles"),
         () -> new UiTxt("Stops Fire and Soul Fire from emitting smoke and ember particles."),
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    NO_LAVA_PARTICLES(true,
+    );
+    public static final ClientBlockFeature<?> NO_LAVA_PARTICLES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.NO_LAVA_PARTICLES,
         () -> new UiTxt("Disable Lava particles"),
         () -> new UiTxt("Stops Lava from emitting ember particles."),
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    NO_WATER_STREAM_PARTICLES(true, //TODO implement
+    );
+    public static final ClientBlockFeature<?> NO_WATER_STREAM_PARTICLES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.NO_WATER_STREAM_PARTICLES,
         () -> new UiTxt("Disable Water Stream particles"),
         () -> new UiTxt("Disables bubble and water splash particles emitted by items travelling in water streams."),
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    NO_DRIP_PARTICLES(true, //TODO implement
+    );
+    public static final ClientBlockFeature<?> NO_DRIP_PARTICLES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.NO_DRIP_PARTICLES,
         () -> new UiTxt("Disable drip particles"),
         () -> new UiTxt("Disables dripping water and dripping lava particles emitted by full blocks with water or lava above them."),
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    TRANSPARENT_SLIME_BLOCK(true,
+    );
+    public static final ClientBlockFeature<?> TRANSPARENT_SLIME_BLOCK = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.TRANSPARENT_SLIME_BLOCK,
         () -> new UiTxt("Transparent Slime Blocks"),
         () -> new UiTxt("Replaces the texture of Slime Blocks with a less opaque version."),
         List.of(Blocks.SLIME_BLOCK)
-    ),
-    TRANSPARENT_HONEY_BLOCK(true,
+    );
+    public static final ClientBlockFeature<?> TRANSPARENT_HONEY_BLOCK = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.TRANSPARENT_HONEY_BLOCK,
         () -> new UiTxt("Transparent Honey Blocks"),
         () -> new UiTxt("Replaces the texture of Honey Blocks with a less opaque version."),
         List.of(Blocks.HONEY_BLOCK)
-    ),
-    UNOBSTRUCTIVE_MANGROVE_ROOTS(true,
+    );
+    public static final ClientBlockFeature<?> UNOBSTRUCTIVE_MANGROVE_ROOTS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.UNOBSTRUCTIVE_MANGROVE_ROOTS,
         () -> new UiTxt("Unobstructive Mangrove Roots"),
         () -> new UiTxt("Removes the central diagonal textures present inside of Mangrove Roots to improve visibility."),
         List.of(Blocks.MANGROVE_ROOTS)
-    ),
-    UNOBSTRUCTIVE_SCAFFOLDING(true,
+    );
+    public static final ClientBlockFeature<?> UNOBSTRUCTIVE_SCAFFOLDING = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.UNOBSTRUCTIVE_SCAFFOLDING,
         () -> new UiTxt("Unobstructive Scaffolding"),
         () -> new UiTxt("Removes the woven bamboo part of the texture in the middle of Scaffolding blocks to improve visibility."),
         List.of(Blocks.SCAFFOLDING)
-    ),
+    );
 
 
 
@@ -100,25 +103,28 @@ public enum AltTextureFeature {
 
 
 
-    CONSISTENT_SLOPED_RAILS(true,
+    public static final ClientBlockFeature<?> CONSISTENT_SLOPED_RAILS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.CONSISTENT_SLOPED_RAILS,
         () -> new UiTxt("Consistent sloped Rails"),
         () -> new UiTxt(
             "Minecraft Vanilla stretches the 1:1 textures of Rails, Powered Rails, Activator Rails and Detector Rails to 1:√2 to fit the length of sloped shapes.\n" +
             "This toggle replaces the stretched textures with a properly sized model, keeping rails visually consistent across all shapes."
         ),
         List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)
-    ),
-    STATIC_CHESTS(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_CHESTS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_CHESTS,
         () -> new UiTxt("Static Chest models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance.\n"))
-            .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange()) //FIXME remove once this is fixed
+            .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange())
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Groups.ALL_CHESTS
-    ),
-    STATIC_SIGNS(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_SIGNS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_SIGNS,
         () -> new UiTxt("Static Sign models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
@@ -127,8 +133,9 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Stream.of(Groups.ALL_SIGNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
-    ),
-    STATIC_BANNERS(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_BANNERS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_BANNERS,
         () -> new UiTxt("Static Banner models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
@@ -138,8 +145,9 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Stream.of(Groups.ALL_BANNERS.stream()).flatMap(s -> s).toList()
-    ),
-    STATIC_DECORATED_POTS(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_DECORATED_POTS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_DECORATED_POTS,
         () -> new UiTxt("Static Decorated Pot models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
@@ -149,8 +157,9 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         List.of(Blocks.DECORATED_POT)
-    ),
-    STATIC_BELLS(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_BELLS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_BELLS,
         () -> new UiTxt("Static Bell models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Bells with a static model to improve performance.\n"))
@@ -159,8 +168,9 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         List.of(Blocks.BELL)
-    ),
-    STATIC_COPPER_GOLEM_STATUES(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_COPPER_GOLEM_STATUES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_COPPER_GOLEM_STATUES,
         () -> new UiTxt("Static Copper Golem Statue models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Copper Golem Statues with a static model to improve performance.\n"))
@@ -168,8 +178,9 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         Stream.of(Groups.ALL_COPPER_GOLEM_STATUES.stream()).flatMap(s -> s).toList()
-    ),
-    STATIC_LECTERNS(true,
+    );
+    public static final ClientBlockFeature<?> STATIC_LECTERNS = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.STATIC_LECTERNS,
         () -> new UiTxt("Static Lectern models"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Lecterns with a static model to improve performance.\n"))
@@ -177,8 +188,9 @@ public enum AltTextureFeature {
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
         ,
         List.of(Blocks.LECTERN)
-    ),
-    OPTIMIZED_SHELVES(true,
+    );
+    public static final ClientBlockFeature<?> OPTIMIZED_SHELVES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.OPTIMIZED_SHELVES,
         () -> new UiTxt("Optimized Shelf models"),
         () -> new Txt()
             .cat(new UiTxt("Optimizes shelf rendering logic to improve performance.\n"))
@@ -186,8 +198,9 @@ public enum AltTextureFeature {
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE.get())
         ,
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
-    OPTIMIZED_CAMPFIRES(true,
+    );
+    public static final ClientBlockFeature<?> OPTIMIZED_CAMPFIRES = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.OPTIMIZED_CAMPFIRES,
         () -> new UiTxt("Optimized Campfire models"),
         () -> new Txt()
             .cat(new UiTxt("Optimizes Campfire and Soul Campfire rendering logic to improve performance.\n"))
@@ -195,7 +208,7 @@ public enum AltTextureFeature {
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE.get())
         ,
         List.of() //! Feature doesn't change the model. No section refresh
-    ),
+    );
 
 
 
@@ -205,28 +218,32 @@ public enum AltTextureFeature {
 
 
 
-    REDSTONE_WIRE_3D(true,
+    public static final ClientBlockFeature<?> REDSTONE_WIRE_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.REDSTONE_WIRE_3D,
         () -> new UiTxt("3D Redstone Wire"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Redstone Wire with a three-dimensional model.\n"))
             .cat(new UiTxt("Implies [Minimal Redstone Wire]").yellow())
         ,
         List.of(Blocks.REDSTONE_WIRE)
-    ),
-    RAILS_3D(true,
+    );
+    public static final ClientBlockFeature<?> RAILS_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.RAILS_3D,
         () -> new UiTxt("3D Rails"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Rails, Powered Rails, Activator Rails, and Detector Rails with a three-dimensional model.\n"))
             .cat(new UiTxt("Implies [Consistent sloped Rails]").yellow())
         ,
         List.of(Blocks.RAIL, Blocks.POWERED_RAIL, Blocks.ACTIVATOR_RAIL, Blocks.DETECTOR_RAIL)
-    ),
-    LADDERS_3D(true, //TODO IMPLEMENT
+    );
+    public static final ClientBlockFeature<?> LADDERS_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.LADDERS_3D,
         () -> new UiTxt("3D Ladders"),
         () -> new UiTxt("Replaces the default flat texture of Ladders with a three-dimensional model."),
         List.of(Blocks.LADDER)
-    ),
-    CHAINS_3D(true, //TODO IMPLEMENT //FIXME change 3d model of hanging signs and lanterns too (and all copper lanterns)
+    );
+    public static final ClientBlockFeature<?> CHAINS_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.CHAINS_3D,
         () -> new UiTxt("3D Chains"),
         () -> new Txt()
             .cat(new UiTxt("Replaces the default flat texture of Iron Chains and Copper Chains with a three-dimensional model.\n"))
@@ -234,18 +251,21 @@ public enum AltTextureFeature {
             .cat(new UiTxt("3D Hanging Sign chains require [Static Sign Models]").yellow())
         ,
         Stream.of(Stream.of(Blocks.IRON_CHAIN), Blocks.COPPER_CHAIN.asList().stream(), Groups.ALL_LANTERNS.stream(), Groups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
-    ),
-    BARS_3D(true, //TODO IMPLEMENT
+    );
+    public static final ClientBlockFeature<?> BARS_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.BARS_3D,
         () -> new UiTxt("3D Bars"),
         () -> new UiTxt("Replaces the default flat texture of Iron Bars and Copper Bars with a three-dimensional model."),
         Stream.concat(Stream.of(Blocks.IRON_BARS), Blocks.COPPER_BARS.asList().stream()).toList()
-    ),
-    VINES_3D(true, //TODO IMPLEMENT
+    );
+    public static final ClientBlockFeature<?> VINES_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.VINES_3D,
         () -> new UiTxt("3D Vines"),
         () -> new UiTxt("Replaces the default flat texture of Vines with a three-dimensional model."),
         List.of(Blocks.VINE)
-    ),
-    GLOW_LICHEN_3D(true, //TODO IMPLEMENT
+    );
+    public static final ClientBlockFeature<?> GLOW_LICHEN_3D = new ClientBlockFeature<>(
+        AltTexturesServerFeatureSet.GLOW_LICHEN_3D,
         () -> new UiTxt("3D Glow Lichen"),
         () -> new UiTxt("Replaces the default flat texture of Glow Lichen with a three-dimensional model."),
         List.of(Blocks.GLOW_LICHEN)
@@ -406,60 +426,6 @@ public enum AltTextureFeature {
         private static Supplier<Txt> MOD_COMPATIBILITY_NOTICE = () -> new UiTxt(
             "This feature is not compatible with other static block entity model mods.").red()
         ;
-    }
-
-
-
-
-
-
-
-
-    // Feature name and properties
-    //! Txt values are computed lazily as they depend on the Minecraft window and cannot be calculated during static initialization
-    private final Supplier<Txt> nameSupplier;
-    private final Supplier<Txt> detailsSupplier;
-    private final HashSet<Block> affectedBlocks;
-    private final long flagBit; //! Flag bit index is calculated from the order of declaration
-    private final boolean _default;
-
-
-    // Getters and checks //! Name and details must be recomputed as they depend on the GUI scale option
-    public Txt getName   () { return nameSupplier.get(); }
-    public Txt getDetails() { return detailsSupplier.get(); }
-    public boolean affects(final Block block) { return affectedBlocks.contains(block); }
-    public Set<Block> getAffectedBlocks() { return affectedBlocks; }
-    public long getFlagBit() { return flagBit; }
-    public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
-
-
-
-    public static long DEFAULT_FLAGS = 0;
-    static {
-        for(final var feature : values()) {
-            if(feature._default) DEFAULT_FLAGS |= feature.getFlagBit();
-        }
-    }
-
-
-    // Constructor
-    private AltTextureFeature(final boolean _default, final Supplier<Txt> nameSupplier, final Supplier<Txt> detailsSupplier, final List<Block> affectedBlocks) {
-        this._default = _default;
-        this.nameSupplier    = nameSupplier;
-        this.detailsSupplier = detailsSupplier;
-        this.affectedBlocks = new HashSet<>(affectedBlocks);
-        this.flagBit = 1 << ordinal();
-    }
-
-
-    // List of blocks with features - used during block model registration
-    private static final Set<Block> blocksWithFeatures = new HashSet<>();
-    public static Set<Block> getBlocksWithFeatures() { return blocksWithFeatures; }
-    public static boolean hasFeature(final Block block) { return blocksWithFeatures.contains(block); }
-    static {
-        for(final AltTextureFeature feature : values()) {
-            blocksWithFeatures.addAll(feature.affectedBlocks);
-        }
     }
 }
 

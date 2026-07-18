@@ -31,7 +31,6 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 public class OverlaysHandler {
     private OverlaysHandler() {}
-    private static long _featureMask = OverlayFeature.DEFAULT_FLAGS;
 
 
 
@@ -51,27 +50,6 @@ public class OverlaysHandler {
 
 
 
-    /**
-     * Sets a new value for the specified feature.
-     * @param feature The feature.
-     * @param value The new value.
-     */
-    public static void setFeature(final OverlayFeature feature, final boolean value) {
-        final long featureBit = feature.getFlagBit();
-        if(value) _featureMask |= featureBit; else _featureMask &= ~featureBit;
-    }
-
-    /***
-     * Fetches the current value of the specified feature.
-     * @param feature The feature.
-     * @return The current value.
-     */
-    public static boolean getFeature(final OverlayFeature feature) {
-        return feature.hasFlagBit(_featureMask);
-    }
-
-
-
 
 
 
@@ -80,7 +58,7 @@ public class OverlaysHandler {
     //! Map is initially created with capacity 5000, while internal maps depend entirely on their contents.
     //! Outer map stays allocated for the entire lifetime of the client to improve performance on level changes.
     private static final Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> featureWorldMap = HashMap.newHashMap(5000);
-    public static Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> getFeatureWorldMap() { return featureWorldMap; }
+    public  static       Map<ChunkPos, Map<BlockPos, Pair<Long, @Nullable __base_OverlayAttachedData>>> getFeatureWorldMap() { return featureWorldMap; }
 
 
     // A map that specifies the proper attached data type for each Block

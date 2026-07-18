@@ -16,8 +16,8 @@ public class ServerSteppedFeature<T> extends __base_ServerFeature<Integer> {
     public List<T> getValues() { return values; }
 
 
-    public ServerSteppedFeature(final String id, final String displayName, final List<T> values, final int defaultIndex) {
-        super(id, displayName, defaultIndex);
+    public ServerSteppedFeature(final String id, final List<T> values, final int defaultIndex) {
+        super(id, defaultIndex);
         this.values = values;
     }
 }

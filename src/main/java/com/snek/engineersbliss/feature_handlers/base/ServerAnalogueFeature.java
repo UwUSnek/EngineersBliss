@@ -14,8 +14,8 @@ public class ServerAnalogueFeature<T> extends __base_ServerFeature<T> {
     public T getMax() { return max; }
 
 
-    public ServerAnalogueFeature(final String id, final String displayName, final T min, final T max, final T defaultValue) {
-        super(id, displayName, defaultValue);
+    public ServerAnalogueFeature(final String id, final T min, final T max, final T defaultValue) {
+        super(id, defaultValue);
         this.min = min;
         this.max = max;
     }

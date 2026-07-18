@@ -13,9 +13,11 @@ import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 
 /**
- * A simple container for the current state of all features of a connected player.
+ * A simple container for the current state of all features of a player.
+ * ! Servers keep one of these for each connected player.
+ * ! Clients keep their own independent local copy.
  */
-public class ServerFeaturePlayerData {
+public class FeaturePlayerData {
     private List<Object> values = null;
 
 

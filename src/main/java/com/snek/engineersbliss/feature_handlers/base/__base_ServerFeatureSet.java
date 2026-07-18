@@ -16,19 +16,16 @@ import com.snek.engineersbliss.EngineerSBliss;
  */
 public abstract class __base_ServerFeatureSet {
     protected final String id;
-    protected final String displayName;
     protected final List<__base_ServerFeature<?>> features;
     protected boolean initialized = false;
 
 
     public String getId() { return id; }
-    public String getDisplayName() { return displayName; }
     public List<__base_ServerFeature<?>> getFeatures() { return features; }
 
 
-    protected __base_ServerFeatureSet(final String id, final String displayName) {
+    protected __base_ServerFeatureSet(final String id) {
         this.id = id;
-        this.displayName = displayName;
         this.features = new ArrayList<>();
     }
     protected <F extends __base_ServerFeature<?>> F registerFeature(final F feature) {
@@ -47,7 +44,7 @@ public abstract class __base_ServerFeatureSet {
      */
     public void init() {
         if(initialized) {
-            EngineerSBliss.LOGGER.error("init function of feature set {} called twice", displayName, new Throwable());
+            EngineerSBliss.LOGGER.error("init function of feature set {} called twice", getId(), new Throwable());
         }
         else {
             // No-op. This only starts the static initializer.
