@@ -19,6 +19,15 @@ import com.snek.engineersbliss.EngineerSBliss;
 public abstract class __base_ServerFeature<T> {
 
 
+    // The feature set that defines this feature. This is set during feature registration.
+    //! This works like a tree node's parent parameter.
+    private __base_ServerFeatureSet featureSet;
+    public __base_ServerFeatureSet getFeatureSet() { return featureSet; }
+    public void setFeatureSet(final __base_ServerFeatureSet featureSet) { this.featureSet = featureSet; }
+
+
+
+
     // A numerical ID for fast lookup and network packets.
     //! The index is calculated automatically on server initialization.
     //! This is deterministic, so the indices calculated by the server always match the ones calculated by the clients
@@ -30,8 +39,11 @@ public abstract class __base_ServerFeature<T> {
 
     /**
      * Must be called by the feature set whenever a new feature is registered.
+     * @param feature The feature to register.
+     * @param featureSet The feature set that is registering this feature.
      */
-    public static <F extends __base_ServerFeature<?>> void onRegisterFeature(final F feature) {
+    public static <F extends __base_ServerFeature<?>> void onRegisterFeature(final F feature, final __base_ServerFeatureSet featureSet) {
+        feature.setFeatureSet(featureSet);
         registered.add(feature);
     }
 

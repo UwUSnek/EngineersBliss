@@ -3,8 +3,7 @@ package com.snek.engineersbliss.feature_handlers.overlays;
 import java.util.List;
 
 import com.snek.engineersbliss.feature_handlers.base.ServerBlockToggleFeature;
-import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
-import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerBlockFeatureSet;
 
 import net.minecraft.world.level.block.Blocks;
 
@@ -15,7 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public class OverlaysServerFeatureSet extends __base_ServerFeatureSet {
+public class OverlaysServerFeatureSet extends __base_ServerBlockFeatureSet {
     public static final OverlaysServerFeatureSet INSTANCE = new OverlaysServerFeatureSet();
     private OverlaysServerFeatureSet() { super("overlays"); }
 

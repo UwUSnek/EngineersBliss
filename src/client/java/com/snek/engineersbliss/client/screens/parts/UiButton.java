@@ -26,65 +26,57 @@ public class UiButton extends Button {
 
     private Txt label;
     private float labelScale;
-    private String featureId;
     private char key;
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
-    private int bgSpriteWidth; //! 0 means copy height
-    private int labelOffset;
-
-
-
-    public @Nullable String getFeatureId() {
-        return featureId;
-    }
+    private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
+    private float labelOffset;   // Label offset from the left edge, compared to the height. 0 means no offset.
 
 
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment, final @Nullable String featureId) {
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         //! Pass empty text to super and store a custom Txt isntance locally
-        super(x, y, width, height, new Txt().get(), b -> pressCallback.accept((UiButton)b), DEFAULT_NARRATION);
+        super(x, y, width, height, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
         this.key = Character.toLowerCase(key);
         this.alignment = alignment;
         this.label = label;
         this.labelScale = (label instanceof UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;
-        this.featureId = featureId;
         this.bgSpriteId = null;
         this.labelOffset = Layout.textMarginPx;
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment, final @Nullable String featureId) {
-        this(50, 50, 50, 50, label, pressCallback, key, alignment, featureId);
+    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+        this(50, 50, 50, 50, label, pressCallback, key, alignment);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment, final @Nullable String featureId) {
-        this(x, y, width, height, label, pressCallback, '\0', alignment, featureId);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+        this(x, y, width, height, label, pressCallback, '\0', alignment);
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final TextAlignment alignment, final @Nullable String featureId) {
-        this(50, 50, 50, 50, label, pressCallback, alignment, featureId);
+    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+        this(50, 50, 50, 50, label, pressCallback, alignment);
     }
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final char key, final @Nullable String featureId) {
-        this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT, featureId);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+        this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final char key, final @Nullable String featureId) {
-        this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT, featureId);
+    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+        this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final Consumer<UiButton> pressCallback, final @Nullable String featureId) {
-        this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT, featureId);
+    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback) {
+        this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
     }
-    public UiButton(final Txt label, final Consumer<UiButton> pressCallback, final @Nullable String featureId) {
-        this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT, featureId);
+    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback) {
+        this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
     }
 
 
     public UiButton withSpriteBg(final Identifier id) {
         return withSpriteBg(id, 0);
     }
-    public UiButton withSpriteBg(final Identifier id, final int width) {
+    public UiButton withSpriteBg(final Identifier id, final float width) {
         return withSpriteBg(id, width, labelOffset);
     }
-    public UiButton withSpriteBg(final Identifier id, final int width, final int labelOffset) {
+    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffset) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
         this.labelOffset = labelOffset;
@@ -104,8 +96,8 @@ public class UiButton extends Button {
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(usingSprite) {
-            final int spriteWidth = bgSpriteWidth == 0 ? getHeight() : bgSpriteWidth;
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
+            final int spriteWidth = (int)(height * bgSpriteWidth);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, height);
         }
 
         // Draw hover highlight
@@ -114,7 +106,7 @@ public class UiButton extends Button {
 
         // Draw label
         final Font font = Minecraft.getInstance().font;
-        final int textX = getX() + labelOffset;
+        final int textX = getX() + (int)(height * labelOffset);
         final int textY = getY() + (height - font.lineHeight) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, width, usingSprite);

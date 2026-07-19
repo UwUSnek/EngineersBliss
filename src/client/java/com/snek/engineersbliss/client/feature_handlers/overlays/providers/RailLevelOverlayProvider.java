@@ -4,7 +4,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
@@ -26,7 +25,7 @@ public final class RailLevelOverlayProvider extends __base_TextureOverlayProvide
         return
             ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.RAIL_POWER_LEVELS) &&
             attachedData != null &&
-            OverlaysClientFeatureSet.RAIL_POWER_LEVELS.affects(state.getBlock()) &&
+            OverlaysServerFeatureSet.RAIL_POWER_LEVELS.affects(state.getBlock()) &&
             ((RailAttachedData)attachedData).getInput() != 0 //! Exclude 0 but include -1 as that's the fallback unknown level value
         ;
     }

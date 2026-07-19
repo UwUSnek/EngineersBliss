@@ -9,6 +9,7 @@ import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
+import com.snek.engineersbliss.client.screens.parts.UiFeatureButton;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
@@ -35,7 +36,15 @@ import net.minecraft.resources.Identifier;
 
 
 
-public abstract class __base_UiFeatureSetScreen<S extends __base_ClientFeatureSet<?>> extends __base_UiScreen {
+
+
+
+
+/**
+ * A special __base_UiScreen that can properly handle UiFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
+ * It comes with left and a right sidebars and a feature previews.
+ */
+public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
 
     // Elements and layout
     protected static UiWidgetList leftSidebar;
@@ -52,10 +61,8 @@ public abstract class __base_UiFeatureSetScreen<S extends __base_ClientFeatureSe
 
 
     // Parent feature set and constructor
-    protected final S featureSet;
-    protected __base_UiFeatureSetScreen(S featureSet) {
+    protected __base_UiFeatureSetScreen() {
         super();
-        this.featureSet = featureSet;
     }
 
 
@@ -72,18 +79,6 @@ public abstract class __base_UiFeatureSetScreen<S extends __base_ClientFeatureSe
         final int rightSidebarWidth = (int)(width * RIGHT_SIDEBAR_WIDTH);
         rightSidebar = new UiWidgetList(rightSidebarWidth, height, width - rightSidebarWidth, 0, BUTTON_HEIGHT);
         addRenderableWidget(rightSidebar);
-    }
-
-
-    public static UiButton createCreativeTweakFeatureButton(final CreativeTweakFeature feature, final @Nullable String spriteName) {
-        return createButton(
-            getToggleText(feature),
-            feature.getDetails(),
-            b -> toggleFeature(feature, b),
-            '\0',
-            "creative_tweaks/" + spriteName,
-            feature.name().toLowerCase()
-        );
     }
 
 
@@ -121,13 +116,15 @@ public abstract class __base_UiFeatureSetScreen<S extends __base_ClientFeatureSe
         }
         else {
             final AbstractWidget widget = entry.getWidget();
-            if(widget instanceof UiButton button) {
+            //TODO maybe draw one preview for each setting step? or something like that? idk yet
+            if(widget instanceof UiFeatureButton button) {
                 if(button != lastHoveredButton) {
                     lastHoveredButton = button;
-                    final String featureSetId = featureSet.getServerSet().getId();
-                    final String fatureId = button.getFeatureId();
-                    final String atlasPathOff = String.format("textures/gui/feature_previews/%s/%s_off_0.png", featureSetId, fatureId); //FIXME indices
-                    final String atlasPathOn  = String.format("textures/gui/feature_previews/%s/%s_on_0.png",  featureSetId, fatureId); //FIXME indices
+                    final __base_ServerFeature<?> serverFeature = button.getServerFeature();
+                    final String featureSetId = serverFeature.getFeatureSet().getId();
+                    final String fatureId = serverFeature.getId();
+                    final String atlasPathOff = String.format("textures/gui/feature_previews/%s/%s_off_0.png", featureSetId, fatureId); //FIXME indices?
+                    final String atlasPathOn  = String.format("textures/gui/feature_previews/%s/%s_on_0.png",  featureSetId, fatureId); //FIXME indices?
                     hoveredPreviewAtlasIds = new Identifier[] {
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff),
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn)
@@ -156,54 +153,5 @@ public abstract class __base_UiFeatureSetScreen<S extends __base_ClientFeatureSe
                 }
             }
         }
-    }
-
-
-
-
-
-
-
-
-    /**
-     * Creates a Txt with format "<feature_name>: [ON/OFF]" based on the provided state.
-     * @param feature The toggle feature.
-     * @param state The state to display. True for ON, false for OFF.
-     * @return The created Txt.
-     */
-    public static Txt getToggleText(final ClientFeature<? extends ServerToggleFeature> feature, final boolean state) {
-        return feature.calcName().cat(": " + (state ? "ON" : "OFF"));
-    }
-
-
-    /**
-     * Creates a Txt with format "<feature_name>: [ON/OFF]" based on the current client-side state of the specified feature.
-     * @param feature The toggle feature.
-     * @return The created Txt.
-     */
-    public static Txt getToggleText(final ClientFeature<? extends ServerToggleFeature> feature) {
-        final __base_ServerFeature serverFeature = feature.getServerFeature();
-        if(serverFeature instanceof ServerToggleFeature stf) {
-            return getToggleText(feature, ClientFeatureSync.getFeatureB(stf));
-        }
-        else {
-            EngineerSBliss.LOGGER.error("getToggleText called on a server feature of non-toggle type: {}", serverFeature.getId(), new Throwable());
-            return new Txt();
-        }
-    }
-
-
-    /**
-     * Toggles a toggle feature and its button.
-     * @param feature The toggle feature to toggle.
-     * @param b
-     */
-    //FIXME remove and move all the logic to UiToggleFeatureButton
-    //FIXME add a custom UiSteppedFeatureSlider
-    //FIXME add a custom UiAnalogueFeatureSlider
-    public static void toggleFeature(final ClientFeature<?> feature, final Button b) {
-        final boolean newState = !CreativeTweaksClientHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
-        b.setMessage(getToggleText(feature, newState).get());
-        CreativeTweaksClientHandler.setFeature(feature, newState);
     }
 }

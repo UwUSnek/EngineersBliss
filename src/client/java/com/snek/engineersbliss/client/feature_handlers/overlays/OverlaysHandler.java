@@ -8,11 +8,13 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.RailAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
+import com.snek.engineersbliss.feature_handlers.base.__base_BlockFeatureInterface;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
@@ -108,22 +110,28 @@ public class OverlaysHandler {
 
     /**
      * Calculates the flags of the specified block based on the current settings, the block's state and its surroundings.
-     * @param state The current blockstate of the block. Redundant but helps performance.
-     * @return A long value whose bits represent the features that are currently active on the block, or 0 if the block doesn't have any available feature.
+     * @param state The current blockstate of the block. Redundant but helps performance if already available.
+     * @return A BitSet value whose bits represent the features that are currently active on the block.
+     *     Blocks not affected by any Overlay feature return null.
      */
-    public static long calcFeatureFlags(final BlockState state) {
-        long r = 0;
-
+    public static @Nullable BitSet calcFeatureFlags(final BlockState state) {
         final Block block = state.getBlock();
-        for(final __base_ServerFeature feature : OverlaysServerFeatureSet.INSTANCE.getFeatures()) {
-            if(feature.affects(block) && getFeature(feature)) {
-                r |= feature.getFlagBit();
+        if(OverlaysServerFeatureSet.INSTANCE.affects(block)) {
+            final BitSet r = new BitSet(__base_ServerFeature.getAllFeatures().size());
+            for(final __base_ServerFeature<?> feature : OverlaysServerFeatureSet.INSTANCE.getFeatures()) {
+                if(feature instanceof ServerToggleFeature) {
+                    if(feature instanceof __base_BlockFeatureInterface blockFeature) {
+                        if(blockFeature.affects(block) && ClientFeatureSync.getFeatureB((ServerToggleFeature)blockFeature)) {
+                            r.set(feature.getIndex());
+                        }
+                    }
+                }
             }
+            return r;
         }
-        return r;
-    }
-    public static long updateFeatureFlags(final long mask, final long flag, final boolean featureState) {
-        return featureState ? mask | flag : mask & ~flag;
+        else {
+            return null;
+        }
     }
 
 
@@ -141,8 +149,8 @@ public class OverlaysHandler {
         final var chunkFeatureMask = featureWorldMap.computeIfAbsent(MinecraftUtils.blockPosToChunk(pos), k -> new HashMap<>());
 
         // Calculate new flags and put/remove the entry depending on the value
-        final long newFlags = calcFeatureFlags(newState);
-        if(newFlags != 0) {
+        final BitSet newFlags = calcFeatureFlags(newState);
+        if(newFlags != null) {
             chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, newState)));
         }
         else {
@@ -192,7 +200,7 @@ public class OverlaysHandler {
                 final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
 
                 // If the section contains blocks with features
-                if(!section.hasOnlyAir() && section.maybeHas(state -> OverlayFeature.hasFeature(state.getBlock()))) {
+                if(!section.hasOnlyAir() && section.maybeHas(state -> OverlaysServerFeatureSet.INSTANCE.affects(state.getBlock()))) {
 
                     // For each block in the section
                     for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
@@ -203,11 +211,11 @@ public class OverlaysHandler {
                                 final Block block = state.getBlock();
 
                                 //If the block has features
-                                if(OverlayFeature.hasFeature(block)) {
+                                if(OverlaysServerFeatureSet.INSTANCE.affects(block)) {
 
                                     // Calculate all flags and put them in the map if not empty
-                                    final long newFlags = calcFeatureFlags(state);
-                                    if(newFlags != 0) {
+                                    final BitSet newFlags = calcFeatureFlags(state);
+                                    if(newFlags != null) {
                                         chunkFeatureMask.put(pos, Pair.from(newFlags, createAttachedData(level, pos, state)));
                                     }
                                 }

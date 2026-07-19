@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -30,13 +30,14 @@ public class VanillaParticleSuppressor {
             cir.setReturnValue(null);
             return;
         }
-        if(OverlaysHandler.getFeature(OverlayFeature.BETTER_BARRIER_DISPLAY)) {
+        if(ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_BARRIER_DISPLAY)) {
             final @NotNull ItemStack stack = player.getMainHandItem();
             if(stack.getItem() == Items.BARRIER) cir.setReturnValue(null);
         }
-        if(OverlaysHandler.getFeature(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY)) {
+        if(ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_LIGHT_BLOCK_DISPLAY)) {
             final @NotNull ItemStack stack = player.getMainHandItem();
             if(stack.getItem() == Items.LIGHT) cir.setReturnValue(null);
         }
+        //! Structure voids don't emit any particle in Vanilla. No need to block that.
     }
 }

@@ -3,6 +3,8 @@ package com.snek.engineersbliss.feature_handlers.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.EngineerSBliss;
 
 
@@ -28,9 +30,9 @@ public abstract class __base_ServerFeatureSet {
         this.id = id;
         this.features = new ArrayList<>();
     }
-    protected <F extends __base_ServerFeature<?>> F registerFeature(final F feature) {
+    protected <F extends __base_ServerFeature<?>> F registerFeature(final @NotNull F feature) {
         features.add(feature);
-        __base_ServerFeature.onRegisterFeature(feature);
+        __base_ServerFeature.onRegisterFeature(feature, this);
         return feature;
     }
 
