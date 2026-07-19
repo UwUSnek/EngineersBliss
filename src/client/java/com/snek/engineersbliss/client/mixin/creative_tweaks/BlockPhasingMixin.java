@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ public class BlockPhasingMixin {
     @SuppressWarnings("unused")
     @Inject(method = "suffocatesAt", at = @At("HEAD"), cancellable = true, require = 1)
 	private void eb$suffocatesAt(final BlockPos pos, final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(this)) {
+        if(ClientFeatureSync.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(false);
         }
     }

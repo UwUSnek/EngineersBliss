@@ -20,7 +20,7 @@ public class ServerFreezeEffectSuppressorMixin {
     @Inject(method = "canFreeze", at = @At("RETURN"), cancellable = true, require = 1)
 	private void eb$canFreeze(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {
-            if(ServerFeatureSync.serverPlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_FREEZING_EFFECT)) {
+            if(ServerFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_FREEZING_EFFECT)) {
                 cir.setReturnValue(false);
             }
         }

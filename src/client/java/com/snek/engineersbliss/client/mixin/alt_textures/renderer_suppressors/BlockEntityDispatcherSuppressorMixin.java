@@ -4,9 +4,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.utils.BlockEntityUtils;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -44,37 +44,37 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
     ) {
         switch(blockEntity) {
             case SignBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
                     cir.setReturnValue(null);
                 }
             }
             case LidBlockEntity e -> { //! LidBlockEntity covers all chest types
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_CHESTS)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_CHESTS)) {
                     cir.setReturnValue(null);
                 }
             }
             case BannerBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BANNERS)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BANNERS)) {
                     cir.setReturnValue(null);
                 }
             }
             case DecoratedPotBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS) && !BlockEntityUtils.decoratedPotHasSherds(e)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_DECORATED_POTS) && !BlockEntityUtils.decoratedPotHasSherds(e)) {
                     cir.setReturnValue(null);
                 }
             }
             case BellBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_BELLS)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BELLS)) {
                     cir.setReturnValue(null);
                 }
             }
             case CopperGolemStatueBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_COPPER_GOLEM_STATUES)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_COPPER_GOLEM_STATUES)) {
                     cir.setReturnValue(null);
                 }
             }
             case LecternBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_LECTERNS)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_LECTERNS)) {
                     cir.setReturnValue(null);
                 }
             }

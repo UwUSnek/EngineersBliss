@@ -2,10 +2,8 @@ package com.snek.engineersbliss.client.screens.alt_textures;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.screens.__base_Screen;
+import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
@@ -23,7 +21,7 @@ import net.minecraft.client.gui.components.Button;
 
 
 
-public class AltTexturesScreen extends __base_Screen {
+public class AltTexturesScreen extends __base_UiScreen {
     private static UiWidgetList leftSidebar;
     private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
 

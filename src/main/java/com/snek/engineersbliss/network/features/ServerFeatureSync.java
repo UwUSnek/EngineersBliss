@@ -42,6 +42,22 @@ public class ServerFeatureSync {
     public static <T> T getFeature(final Player player, final __base_ServerFeature<T> feature) {
         return getPlayerData(player).getValue(feature);
     }
+    public static boolean getFeatureB(final Player player, final __base_ServerFeature<Boolean> feature) {
+        return getPlayerData(player).getValue(feature);
+    }
+    public static int getFeatureI(final Player player, final __base_ServerFeature<Integer> feature) {
+        return getPlayerData(player).getValue(feature);
+    }
+    public static long getFeatureL(final Player player, final __base_ServerFeature<Long> feature) {
+        return getPlayerData(player).getValue(feature);
+    }
+    public static Float getFeatureF(final Player player, final __base_ServerFeature<Float> feature) {
+        return getPlayerData(player).getValue(feature);
+    }
+    public static double getFeatureD(final Player player, final __base_ServerFeature<Double> feature) {
+        return getPlayerData(player).getValue(feature);
+    }
+
 
     //! Private because other stuff shouldn't change the server's feature states. Only the packet receiver can (this class).
     private static <T> void setFeature(final Player player, final __base_ServerFeature<T> feature, final T value) {

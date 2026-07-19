@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.mixin.creative_tweaks;
 
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -34,7 +34,7 @@ public class JumpFactorFeaturesMixin {
     )
     private float eb$getBlockSpeedFactor(final Block block) {
         if(block == Blocks.HONEY_BLOCK) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.FIX_HONEY_JUMP)) {
+            if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.FIX_HONEY_JUMP)) {
                 return DEFAULT_JUMP_FACTOR;
             }
         }

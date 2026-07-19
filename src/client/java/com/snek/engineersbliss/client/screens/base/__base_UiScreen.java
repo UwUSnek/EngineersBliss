@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens;
+package com.snek.engineersbliss.client.screens.base;
 
 import java.util.function.Consumer;
 
@@ -26,7 +26,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public abstract class __base_Screen extends Screen {
+public abstract class __base_UiScreen extends Screen {
     public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
     public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
     public static final int LIST_TOP      = Layout.LIST_TOP;
@@ -34,7 +34,7 @@ public abstract class __base_Screen extends Screen {
 
 
 
-    protected __base_Screen() {
+    protected __base_UiScreen() {
         super(new UiTxt().get());
     }
 

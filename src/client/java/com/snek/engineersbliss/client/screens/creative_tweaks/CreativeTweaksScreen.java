@@ -1,12 +1,15 @@
 package com.snek.engineersbliss.client.screens.creative_tweaks;
 
+import static com.snek.engineersbliss.client.screens.base.__base_UiFeatureSetScreen.hoveredPreviewAtlasIds;
+import static com.snek.engineersbliss.client.screens.base.__base_UiFeatureSetScreen.lastHoveredButton;
+
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.screens.__base_Screen;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
+import com.snek.engineersbliss.client.screens.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
 import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.screens.parts.UiSpacer;
@@ -16,9 +19,8 @@ import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
@@ -30,18 +32,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class CreativeTweaksScreen extends __base_Screen {
-
-    // Elements and layout
-    private static UiWidgetList leftSidebar;
-    private static UiWidgetList rightSidebar;
-    private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
-    private static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
-    private static final float PREVIEW_WIDTH = 0.25f;
-
-    // Hover data cache
-    private static Identifier[] hoveredPreviewAtlasIds = null;
-    private static UiButton lastHoveredButton = null;
+public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
 
 
@@ -54,9 +45,11 @@ public class CreativeTweaksScreen extends __base_Screen {
 
     @Override
     protected void init() {
+        super.init();
 
 
-        leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT); {
+
+        {
             final String titleString = "Creative Tweaks";
             leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
@@ -65,15 +58,23 @@ public class CreativeTweaksScreen extends __base_Screen {
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Player properties", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidget(new UiSteppedSlider<Float>(
                 0, 0, 0, 0,
-                "Flying speed", List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0, CreativeTweaksHandler::onFlyingSpeedChange
+                "Flying speed", CreativeTweaksServerFeatureSet.FLYING_SPEED.getValues(),
+                CreativeTweaksServerFeatureSet.FLYING_SPEED.getDefault(),
+                CreativeTweaksClientHandler::onFlyingSpeedChange
             ));
             leftSidebar.addWidget(new UiSteppedSlider<Float>(
                 0, 0, 0, 0,
-                "Reach distance", List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0, CreativeTweaksHandler::onReachDistanceChange
+                "Reach distance",
+                CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE.getValues(),
+                CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE.getDefault(),
+                CreativeTweaksClientHandler::onReachDistanceChange
             ));
             leftSidebar.addWidget(new UiSteppedSlider<Integer>(
                 0, 0, 0, 0,
-                "Interaction radius", List.of(1, 2, 3, 4, 5, 10, 20, 50), 0, CreativeTweaksHandler::onInteractionRadiusChanged
+                "Interaction radius",
+                CreativeTweaksServerFeatureSet.INTERACTION_RADIUS.getValues(),
+                CreativeTweaksServerFeatureSet.INTERACTION_RADIUS.getDefault(),
+                CreativeTweaksClientHandler::onInteractionRadiusChanged
             ));
 
             leftSidebar.addWidgetAndSpacer(createCreativeTweakFeatureButton(CreativeTweakFeature.NO_SIGN_GUI,                "test"), Layout.BORDER_HEIGHT);
@@ -123,117 +124,13 @@ public class CreativeTweaksScreen extends __base_Screen {
             leftSidebar.addWidgetAndSpacer(createCreativeTweakFeatureButton(CreativeTweakFeature.DISABLE_LAVA_OVERLAY,            "test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(createCreativeTweakFeatureButton(CreativeTweakFeature.DISABLE_NETHER_PORTAL_OVERLAY,   "test"), Layout.BORDER_HEIGHT);
         }
-        addRenderableWidget(leftSidebar);
 
 
 
 
-
-
-
-
-        final int rightSidebarWidth = (int)(width * RIGHT_SIDEBAR_WIDTH);
-        rightSidebar = new UiWidgetList(rightSidebarWidth, height, width - rightSidebarWidth, 0, BUTTON_HEIGHT); {
+        {
             final String titleString = "TEST //TODO remove";
             rightSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         }
-        addRenderableWidget(rightSidebar);
-    }
-
-
-    public static UiButton createCreativeTweakFeatureButton(final CreativeTweakFeature feature, final @Nullable String spriteName) {
-        return createButton(
-            getToggleText(feature),
-            feature.getDetails(),
-            b -> toggleFeature(feature, b),
-            '\0',
-            "creative_tweaks/" + spriteName,
-            feature.name().toLowerCase()
-        );
-    }
-
-
-    @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-
-        // Handle tab and normal element rendering
-        if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, a);
-
-
-        // Calculate feature preview position
-        final float ratio = 9f / 4f; //! Vertical 4:9 for 1080x480 (1920/4) resolution
-        final int w = (int)(width * PREVIEW_WIDTH);
-        final int h = (int)(w * ratio);
-        final int hPlaceholder = w;
-        final int xOff = (width  - w) / 2 - w / 2 ;
-        final int xOn  = (width  - w) / 2 + w / 2 ;
-        final int y    = (height - h) / 2;
-        final int yPlaceholder = (height - hPlaceholder) / 2;
-
-
-        // Find the hovered feature and calculate the remaining preview data
-        final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
-        if(entry == null) {
-            hoveredPreviewAtlasIds = null;
-            lastHoveredButton = null;
-        }
-        else {
-            final AbstractWidget widget = entry.getWidget();
-            if(widget instanceof UiButton button) {
-                if(button != lastHoveredButton) {
-                    lastHoveredButton = button;
-                    final String fatureId = button.getFeatureId();
-                    final String atlasPathOff = String.format("textures/gui/feature_previews/creative_tweaks/%s_off_0.png", fatureId); //FIXME indices
-                    final String atlasPathOn  = String.format("textures/gui/feature_previews/creative_tweaks/%s_on_0.png",  fatureId); //FIXME indices
-                    hoveredPreviewAtlasIds = new Identifier[] {
-                        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff),
-                        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn)
-                    };
-                }
-
-
-        //TODO name of the feature at the top. also ON/OFF
-        //TODO description at the bottom
-                // Render the feature preview
-                final Identifier atlasIdOff = hoveredPreviewAtlasIds[0];
-                final Identifier atlasIdOn  = hoveredPreviewAtlasIds[1];
-                if(!TextureAtlasTracker.isTextureReady(atlasIdOff)) {
-                    graphics.blit(atlasIdOff, xOff, yPlaceholder, xOff + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
-                }
-                else {
-                    final float[] uvOff = TextureAtlasTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
-                    graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
-                }
-                if(!TextureAtlasTracker.isTextureReady(atlasIdOn)) {
-                    graphics.blit(atlasIdOn,  xOn, yPlaceholder, xOn + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
-                }
-                else {
-                    final float[] uvOn  = TextureAtlasTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
-                    graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, uvOn[0], uvOn[1], uvOn[2], uvOn[3]);
-                }
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-    public static Txt getToggleText(final CreativeTweakFeature feature, final boolean state) {
-        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
-    }
-    public static Txt getToggleText(final CreativeTweakFeature feature) {
-        return getToggleText(feature, CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature));
-    }
-
-
-    public static void toggleFeature(final CreativeTweakFeature feature, final Button b) {
-        final boolean newState = !CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, feature);
-        b.setMessage(getToggleText(feature, newState).get());
-        CreativeTweaksHandler.setFeature(feature, newState);
     }
 }

@@ -7,8 +7,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -34,7 +35,7 @@ public class ScreenOverlayHiderMixin {
     @SuppressWarnings("unused")
     @Inject(method = "getViewBlockingState", at = @At("HEAD"), cancellable = true, require = 1)
     private static void eb$getViewBlockingState(final Player player, final CallbackInfoReturnable<BlockState> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(player)) {
+        if(ClientFeatureSync.shouldPlayerPhaseThroughBlocks(player)) {
             cir.setReturnValue(null);
         }
     }
@@ -43,7 +44,7 @@ public class ScreenOverlayHiderMixin {
     @SuppressWarnings("unused")
     @Inject(method = "renderWater", at = @At("HEAD"), cancellable = true, require = 1)
 	private static void eb$renderWater(final Minecraft minecraft, final PoseStack poseStack, final MultiBufferSource bufferSource, final CallbackInfo ci) {
-        if(CreativeTweaksHandler.clientPlayerHasFeature(minecraft.player, CreativeTweakFeature.DISABLE_WATER_OVERLAY)) {
+        if(ClientFeatureSync.creativePlayerHasFeature(minecraft.player, CreativeTweaksServerFeatureSet.DISABLE_WATER_OVERLAY)) {
             ci.cancel();
         }
     }

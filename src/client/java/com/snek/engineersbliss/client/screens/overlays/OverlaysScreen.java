@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.screens.__base_Screen;
+import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
 import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.screens.parts.UiSpacer;
@@ -20,7 +20,7 @@ import net.minecraft.client.gui.components.Button;
 
 
 
-public class OverlaysScreen extends __base_Screen {
+public class OverlaysScreen extends __base_UiScreen {
     private static UiWidgetList leftSidebar;
     private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
 

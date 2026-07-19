@@ -4,7 +4,15 @@ import com.snek.engineersbliss.feature_handlers.FeaturePlayerData;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
+import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.IntFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.features.payloads.LongFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.utils.NetworkUtils;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.world.entity.player.Player;
 
 
@@ -28,6 +36,22 @@ public class ClientFeatureSync {
     public static <T> T getFeature(final __base_ServerFeature<T> feature) {
         return playerData.getValue(feature);
     }
+    public static boolean getFeatureB(final __base_ServerFeature<Boolean> feature) {
+        return playerData.getValue(feature);
+    }
+    public static int getFeatureI(final __base_ServerFeature<Integer> feature) {
+        return playerData.getValue(feature);
+    }
+    public static long getFeatureL(final __base_ServerFeature<Long> feature) {
+        return playerData.getValue(feature);
+    }
+    public static Float getFeatureF(final __base_ServerFeature<Float> feature) {
+        return playerData.getValue(feature);
+    }
+    public static double getFeatureD(final __base_ServerFeature<Double> feature) {
+        return playerData.getValue(feature);
+    }
+
 
     /**
      * Sets a feature to the specified value.
@@ -35,6 +59,24 @@ public class ClientFeatureSync {
      */
     public static <T> void setFeature(final __base_ServerFeature<T> feature, final T value) {
         playerData.setValue(feature, value);
+
+        // Send an update packet to the server
+        // ! Checking for changes here is pointless as any setFeature call is triggered by a feature change.
+        //! (Buttons and sliders can only change to a value they aren't already holding).
+        if(NetworkUtils.serverHasMod()) {
+            sendFeatureUpdatePacket(feature, value);
+        }
+    }
+
+    private static <T> void sendFeatureUpdatePacket(final __base_ServerFeature<T> feature, final T value) {
+        switch(value) {
+            case Boolean n -> ClientPlayNetworking.send(new BoolFeatureUpdateRequestPayload  (feature.getIndex(), n));
+            case Integer n -> ClientPlayNetworking.send(new IntFeatureUpdateRequestPayload   (feature.getIndex(), n));
+            case Long    n -> ClientPlayNetworking.send(new LongFeatureUpdateRequestPayload  (feature.getIndex(), n));
+            case Float   n -> ClientPlayNetworking.send(new FloatFeatureUpdateRequestPayload (feature.getIndex(), n));
+            case Double  n -> ClientPlayNetworking.send(new DoubleFeatureUpdateRequestPayload(feature.getIndex(), n));
+            default -> EngineerSBliss.LOGGER.error("Invalid feature type {}", value.getClass().getName(), new Throwable());
+        }
     }
 
 
@@ -66,5 +108,8 @@ public class ClientFeatureSync {
     }
     public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
         return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
+    }
+    public static boolean shouldPlayerPhaseThroughEntities(final Object entity) {
+        return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_ENTITIES);
     }
 }

@@ -2,9 +2,9 @@ package com.snek.engineersbliss.client.screens.rendering;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.__base_Screen;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
 import com.snek.engineersbliss.client.screens.parts.UiEditBox;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
-public class RenderingScreen extends __base_Screen {
+public class RenderingScreen extends __base_UiScreen {
     @SuppressWarnings("java:S1450")
     private int panelWidthCenter;
     @SuppressWarnings("java:S1450")
