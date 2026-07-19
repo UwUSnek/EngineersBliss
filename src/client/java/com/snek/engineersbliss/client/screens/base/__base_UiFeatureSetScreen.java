@@ -1,36 +1,16 @@
 package com.snek.engineersbliss.client.screens.base;
 
-import java.util.function.Consumer;
-
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.screens.parts.UiFeatureButton;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
-import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
-import com.snek.engineersbliss.client.screens.parts.TextAlignment;
-import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
-import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
-import com.snek.engineersbliss.utils.Txt;
 
-import net.caffeinemc.mods.sodium.client.gui.widgets.AbstractWidget;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.resources.Identifier;
 
 

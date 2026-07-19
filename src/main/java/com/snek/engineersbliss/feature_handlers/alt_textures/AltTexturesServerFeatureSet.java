@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import com.snek.engineersbliss.feature_handlers.BlockGroups;
 import com.snek.engineersbliss.feature_handlers.base.ServerBlockToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
-import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerBlockFeatureSet;
 
 import net.minecraft.world.level.block.Blocks;
 
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
+public class AltTexturesServerFeatureSet extends __base_ServerBlockFeatureSet {
     public static final AltTexturesServerFeatureSet INSTANCE = new AltTexturesServerFeatureSet();
     private AltTexturesServerFeatureSet() { super("alt_textures"); }
 

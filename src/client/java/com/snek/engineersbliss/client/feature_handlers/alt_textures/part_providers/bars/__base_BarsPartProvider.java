@@ -3,8 +3,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 import java.util.ArrayList;
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
 
 import net.minecraft.world.level.block.CrossCollisionBlock;
@@ -64,7 +64,7 @@ public abstract class __base_BarsPartProvider extends __base_PartProvider {
 
     @Override
     public boolean shouldUseCustom(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.BARS_3D);
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.BARS_3D);
     }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {
