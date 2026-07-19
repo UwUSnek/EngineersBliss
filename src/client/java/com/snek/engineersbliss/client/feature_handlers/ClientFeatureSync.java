@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.feature_handlers;
 
 import com.snek.engineersbliss.feature_handlers.FeaturePlayerData;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
+import com.snek.engineersbliss.feature_handlers.base.__base_BlockFeatureInterface;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
@@ -10,6 +11,7 @@ import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateReque
 import com.snek.engineersbliss.network.features.payloads.IntFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.LongFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -53,12 +55,21 @@ public class ClientFeatureSync {
     }
 
 
+
+
     /**
      * Sets a feature to the specified value.
      * This also updates the local feature data cache and sends a feature update packet to the server.
      */
     public static <T> void setFeature(final __base_ServerFeature<T> feature, final T value) {
         playerData.setValue(feature, value);
+
+
+        // Refresh chunks if needed
+        if(feature instanceof __base_BlockFeatureInterface blockFeature) {
+            MinecraftUtils.refreshSectionsContaining(blockFeature.getAffectedBlocks());
+        }
+
 
         // Send an update packet to the server
         // ! Checking for changes here is pointless as any setFeature call is triggered by a feature change.

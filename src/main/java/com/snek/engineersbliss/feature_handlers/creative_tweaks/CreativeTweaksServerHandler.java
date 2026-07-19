@@ -12,7 +12,6 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -52,8 +51,8 @@ public class CreativeTweaksServerHandler {
      * @param player The player.
      * @param value The new interaction radius, in blocks.
      */
-    public static void updateInteractionRadius(final ServerPlayer player, final int value) {
-        if(!player.getAbilities().instabuild) return;
+    public static void updateInteractionRadius(final Player player, final int value) {
+        if(!player.isCreative()) return;
         interactionRadii.put(player.getUUID(), value);
     }
 
@@ -65,8 +64,8 @@ public class CreativeTweaksServerHandler {
      * @param player The player.
      * @param value The new reach distance, in blocks.
      */
-    public static void updateReachDistance(final ServerPlayer player, final double value) {
-        if(!player.getAbilities().instabuild) return;
+    public static void updateInteractionDistance(final Player player, final double value) {
+        if(!player.isCreative()) return;
 
 
         final var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
@@ -105,7 +104,7 @@ public class CreativeTweaksServerHandler {
     @SuppressWarnings("java:S3516")
     private static boolean beforeBlockBreak(final Level level, final Player player, final BlockPos pos, final BlockState blockState, @Nullable final BlockEntity blockEntity) {
         if(level.isClientSide()) return true;
-        if(!player.getAbilities().instabuild) return true;
+        if(!player.isCreative()) return true;
 
 
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
@@ -136,7 +135,7 @@ public class CreativeTweaksServerHandler {
     private static boolean processingCustomPlace = false;
     private static InteractionResult afterBlockUse(final Player player, final Level level, final InteractionHand hand, final BlockHitResult blockHitResult) {
         if(level.isClientSide()) return InteractionResult.PASS;
-        if(!player.getAbilities().instabuild) return InteractionResult.PASS;
+        if(!player.isCreative()) return InteractionResult.PASS;
 
 
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break

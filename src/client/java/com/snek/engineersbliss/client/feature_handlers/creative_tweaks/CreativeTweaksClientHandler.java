@@ -15,10 +15,10 @@ public class CreativeTweaksClientHandler {
     private static final float DEFAULT_FLYING_SPEED = new Abilities().getFlyingSpeed();
 
 
-    public static void onFlyingSpeedChange(final Float value) {
+    public static void onFlyingSpeedChange(final Integer index, final Float value) {
         final @NotNull Player player = Minecraft.getInstance().player;
         if(player != null) {
-            if(!player.getAbilities().instabuild) return;
+            if(!player.isCreative()) return;
             player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
         }
     }

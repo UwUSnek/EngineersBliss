@@ -1,6 +1,12 @@
 package com.snek.engineersbliss.feature_handlers.base;
 
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.entity.player.Player;
 
 
 
@@ -17,7 +23,10 @@ public class ServerSteppedFeature<T> extends __base_ServerFeature<Integer> {
 
 
     public ServerSteppedFeature(final String id, final List<T> values, final int defaultIndex) {
-        super(id, defaultIndex);
+        this(id, values, defaultIndex, null);
+    }
+    public ServerSteppedFeature(final String id, final List<T> values, final int defaultIndex, final @Nullable BiConsumer<Player, Integer> afterChangeCallback) {
+        super(id, defaultIndex, afterChangeCallback);
         this.values = values;
     }
 }

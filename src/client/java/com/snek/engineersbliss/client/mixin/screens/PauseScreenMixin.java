@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
@@ -290,12 +289,12 @@ public class PauseScreenMixin extends Screen {
 
 
 
-
+//TODO remove. use the new system or something, idk
     private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind, final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
         return new UiButton(new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
-        }, keybind, null).withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+        }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, 1f);
     }
 }

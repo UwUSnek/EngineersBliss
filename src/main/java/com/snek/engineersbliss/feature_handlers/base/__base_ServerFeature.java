@@ -3,8 +3,13 @@ package com.snek.engineersbliss.feature_handlers.base;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.BiConsumer;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
+
+import net.minecraft.world.entity.player.Player;
 
 
 
@@ -19,8 +24,16 @@ import com.snek.engineersbliss.EngineerSBliss;
 public abstract class __base_ServerFeature<T> {
 
 
+
+    // A callback called when the feature is changed by the client. Can be null.
+    private final @Nullable BiConsumer<Player, T> afterChangeCallback;
+    public @Nullable BiConsumer<Player, T> getAfterChangeCallback() { return afterChangeCallback; }
+
+
+
+
     // The feature set that defines this feature. This is set during feature registration.
-    //! This works like a tree node's parent parameter.
+    //! This works like a tree node's parent reference.
     private __base_ServerFeatureSet featureSet;
     public __base_ServerFeatureSet getFeatureSet() { return featureSet; }
     public void setFeatureSet(final __base_ServerFeatureSet featureSet) { this.featureSet = featureSet; }
@@ -59,11 +72,22 @@ public abstract class __base_ServerFeature<T> {
     public String getId() { return id; }
     public T getDefault() { return defaultValue; }
     public int getIndex() { return index; }
+    // public abstract String getValueAsString(); //TODO remove if not used
 
 
     protected __base_ServerFeature(final String id, final T defaultValue) {
+        this(id, defaultValue, null);
+    }
+    protected __base_ServerFeature(final String id, final T defaultValue, final @Nullable BiConsumer<Player, T> afterChangeCallback) {
         this.id = id;
         this.defaultValue = defaultValue;
+        this.afterChangeCallback = afterChangeCallback;
+    }
+
+
+
+    public void onChange(final Player player, final T newValue) {
+        if(afterChangeCallback != null) afterChangeCallback.accept(player, newValue);
     }
 
 

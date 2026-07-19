@@ -3,7 +3,11 @@ package com.snek.engineersbliss.feature_handlers.base;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 
 
@@ -23,7 +27,10 @@ public class ServerBlockSteppedFeature<T> extends ServerSteppedFeature<T> implem
 
 
     public ServerBlockSteppedFeature(final String id, final List<T> values, final int defaultIndex, final List<Block> affectedBlocks) {
-        super(id, values, defaultIndex);
+        this(id, values, defaultIndex, affectedBlocks, null);
+    }
+    public ServerBlockSteppedFeature(final String id, final List<T> values, final int defaultIndex, final List<Block> affectedBlocks, final @Nullable BiConsumer<Player, Integer> afterChangeCallback) {
+        super(id, values, defaultIndex, afterChangeCallback);
         this.affectedBlocks.addAll(affectedBlocks);
     }
 }

@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -97,7 +98,7 @@ public abstract class __base_UiScreen extends Screen {
         final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);
-        }, null);
+        }, TextAlignment.CENTER);
         r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;

@@ -1,10 +1,10 @@
-package com.snek.engineersbliss.network.features;
+package com.snek.engineersbliss.feature_handlers;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.snek.engineersbliss.feature_handlers.FeaturePlayerData;
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
@@ -80,17 +80,22 @@ public class ServerFeatureSync {
         }
         return false;
     }
+
+
     /**
      * Checks if a creative mode player has the specified toggle feature set to TRUE.
      * Returns false if the entity is not a Player or is not in Creative Mode or the feature is not a toggle feature.
      * ! This doesn't work when called by the client on a dedicated server. Use ClientFeatureSync.creativePlayerHasFeature(__base_ServerFeature) instead.
      */
+    @SuppressWarnings("unchecked")
     public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature) {
         if(feature instanceof ServerToggleFeature) {
             return creativePlayerHasFeature(entity, (__base_ServerFeature<Boolean>)feature, true);
         }
         return false;
     }
+
+
     public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
         return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
@@ -98,41 +103,48 @@ public class ServerFeatureSync {
 
 
 
+
+
+
     public static void register() {
-        ServerPlayNetworking.registerGlobalReceiver(BoolFeatureUpdateRequestPayload.TYPE, (payload, context) -> {
-            ServerScheduler.run(() -> setFeature(
-                context.player(),
-                (__base_ServerFeature<Boolean>)__base_ServerFeature.getAllFeatures().get(payload.id()),
-                (Boolean)payload.value()
-            ));
-        });
-        ServerPlayNetworking.registerGlobalReceiver(IntFeatureUpdateRequestPayload.TYPE, (payload, context) -> {
-            ServerScheduler.run(() -> setFeature(
-                context.player(),
-                (__base_ServerFeature<Integer>)__base_ServerFeature.getAllFeatures().get(payload.id()),
-                (Integer)payload.value()
-            ));
-        });
-        ServerPlayNetworking.registerGlobalReceiver(LongFeatureUpdateRequestPayload.TYPE, (payload, context) -> {
-            ServerScheduler.run(() -> setFeature(
-                context.player(),
-                (__base_ServerFeature<Long>)__base_ServerFeature.getAllFeatures().get(payload.id()),
-                (Long)payload.value()
-            ));
-        });
-        ServerPlayNetworking.registerGlobalReceiver(FloatFeatureUpdateRequestPayload.TYPE, (payload, context) -> {
-            ServerScheduler.run(() -> setFeature(
-                context.player(),
-                (__base_ServerFeature<Float>)__base_ServerFeature.getAllFeatures().get(payload.id()),
-                (Float)payload.value()
-            ));
-        });
-        ServerPlayNetworking.registerGlobalReceiver(DoubleFeatureUpdateRequestPayload.TYPE, (payload, context) -> {
-            ServerScheduler.run(() -> setFeature(
-                context.player(),
-                (__base_ServerFeature<Double>)__base_ServerFeature.getAllFeatures().get(payload.id()),
-                (Double)payload.value()
-            ));
+        ServerPlayNetworking.registerGlobalReceiver(  BoolFeatureUpdateRequestPayload.TYPE, (payload, context) -> handleFeatureUpdateRequest(payload.id(), payload.value(), context));
+        ServerPlayNetworking.registerGlobalReceiver(   IntFeatureUpdateRequestPayload.TYPE, (payload, context) -> handleFeatureUpdateRequest(payload.id(), payload.value(), context));
+        ServerPlayNetworking.registerGlobalReceiver(  LongFeatureUpdateRequestPayload.TYPE, (payload, context) -> handleFeatureUpdateRequest(payload.id(), payload.value(), context));
+        ServerPlayNetworking.registerGlobalReceiver( FloatFeatureUpdateRequestPayload.TYPE, (payload, context) -> handleFeatureUpdateRequest(payload.id(), payload.value(), context));
+        ServerPlayNetworking.registerGlobalReceiver(DoubleFeatureUpdateRequestPayload.TYPE, (payload, context) -> handleFeatureUpdateRequest(payload.id(), payload.value(), context));
+    }
+
+
+    //! Packet receivers need extra checks to ensure the server doesn't crash for modified packets or a version mismatch
+    @SuppressWarnings("unchecked")
+    private static <T> void handleFeatureUpdateRequest(int id, T newValue, ServerPlayNetworking.Context context) {
+        System.out.println("0000");
+        ServerScheduler.run(() -> {
+            System.out.println("AAAA");
+            final Player player = context.player();
+            try {
+                System.out.println("BBBB");
+                final __base_ServerFeature<T> feature = (__base_ServerFeature<T>)__base_ServerFeature.getAllFeatures().get(id);
+                setFeature(player, feature, newValue);
+                final var callback = feature.getAfterChangeCallback();
+                if(callback != null) callback.accept(player, newValue);
+                EngineerSBliss.LOGGER.info(
+                    "Player {} changed their {} feature to {}",
+                    player.getName(), feature.getId(), getFeature(player, feature)
+                );
+            }
+            catch(ClassCastException e) {
+                EngineerSBliss.LOGGER.error(
+                    "Received feature update packet from {} with bad type. Feature ID: {}. {}",
+                    player.getName().getString(), id, e.getMessage(), e
+                );
+            }
+            catch(IndexOutOfBoundsException e) {
+                EngineerSBliss.LOGGER.error(
+                    "Received feature update packet from {} for unknown ID #{}. {}",
+                    player.getName().getString(), id, e.getMessage(), e
+                );
+            }
         });
     }
 }

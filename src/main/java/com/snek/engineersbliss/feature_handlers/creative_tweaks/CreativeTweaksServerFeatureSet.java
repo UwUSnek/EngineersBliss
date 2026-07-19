@@ -26,11 +26,13 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static ServerSteppedFeature<Float> INTERACTION_DISTANCE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "reach_distance",
-        List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0
+        List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0,
+        CreativeTweaksServerHandler::updateInteractionDistance
     ));
     public static ServerSteppedFeature<Integer> INTERACTION_RADIUS = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
         "interaction_radius",
-        List.of(1, 2, 3, 4, 5, 10, 20, 50), 0
+        List.of(1, 2, 3, 4, 5, 10, 20, 50), 0,
+        CreativeTweaksServerHandler::updateInteractionRadius
     ));
     public static ServerToggleFeature NO_SIGN_GUI = INSTANCE.registerFeature(new ServerToggleFeature(
         "no_sign_gui",

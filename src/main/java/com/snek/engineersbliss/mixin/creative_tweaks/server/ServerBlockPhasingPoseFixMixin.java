@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.network.features.ServerFeatureSync;
+import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;

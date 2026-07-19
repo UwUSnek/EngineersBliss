@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.network.features.ServerFeatureSync;
+import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 
 import org.spongepowered.asm.mixin.injection.At;
 

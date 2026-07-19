@@ -6,7 +6,6 @@ import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiFeatureButton;
 import com.snek.engineersbliss.client.screens.parts.UiSpacer;
 import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
-import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -14,8 +13,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 public class OverlaysScreen extends __base_UiFeatureSetScreen {
-    private static UiWidgetList leftSidebar;
-    private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
 
 
     public OverlaysScreen() {
@@ -27,9 +24,10 @@ public class OverlaysScreen extends __base_UiFeatureSetScreen {
 
     @Override
     protected void init() {
+        super.init();
 
 
-        leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT); {
+        {
             final String titleString = "Overlays";
             leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
@@ -47,6 +45,5 @@ public class OverlaysScreen extends __base_UiFeatureSetScreen {
             leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_SOURCE), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.RAIL_POWER_SOURCE),          Layout.BORDER_HEIGHT);
         }
-        addRenderableWidget(leftSidebar);
     }
 }

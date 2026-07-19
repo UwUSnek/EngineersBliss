@@ -1,7 +1,7 @@
 package com.snek.engineersbliss.client.screens.parts;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -16,18 +16,18 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 public class UiSteppedSlider<T> extends AbstractSliderButton {
     private final Txt label;
     private final List<T> stepValues;
-    private final Consumer<T> onApplyValue;
+    private final BiConsumer<Integer, T> afterChangeCallback;
 
 
     public UiSteppedSlider(
         final int x, final int y, final int w, final int h, final Txt label,
         final List<T> stepValues, final int defaultValueIndex,
-        final @Nullable Consumer<T> onApplyValue
+        final @Nullable BiConsumer<Integer, T> afterChangeCallback
     ) {
         super(x, y, w, h, new UiTxt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
         this.label = label;
         this.stepValues = stepValues;
-        this.onApplyValue = onApplyValue;
+        this.afterChangeCallback = afterChangeCallback;
         updateMessage();
     }
 
@@ -47,7 +47,10 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
 
     @Override
     protected void applyValue() {
-        if(onApplyValue != null) onApplyValue.accept(getSelectedValue());
+        if(afterChangeCallback != null) {
+            final int selectedIndex = unitToIndex(value);
+            afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
+        }
     }
 
 

@@ -3,7 +3,11 @@ package com.snek.engineersbliss.feature_handlers.base;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 
 
@@ -23,7 +27,10 @@ public class ServerBlockToggleFeature extends ServerToggleFeature implements __b
 
 
     public ServerBlockToggleFeature(final String id, final boolean defaultValue, final List<Block> affectedBlocks) {
-        super(id, defaultValue);
+        this(id, defaultValue, affectedBlocks, null);
+    }
+    public ServerBlockToggleFeature(final String id, final boolean defaultValue, final List<Block> affectedBlocks, final @Nullable BiConsumer<Player, Boolean> afterChangeCallback) {
+        super(id, defaultValue, afterChangeCallback);
         this.affectedBlocks.addAll(affectedBlocks);
     }
 

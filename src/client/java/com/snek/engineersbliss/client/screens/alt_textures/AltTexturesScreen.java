@@ -19,8 +19,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 public class AltTexturesScreen extends __base_UiFeatureSetScreen {
-    private static UiWidgetList leftSidebar;
-    private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
 
 
     public AltTexturesScreen() {
@@ -32,9 +30,10 @@ public class AltTexturesScreen extends __base_UiFeatureSetScreen {
 
     @Override
     protected void init() {
+        super.init();
 
 
-        leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT); {
+        {
             final String titleString = "Alternative Textures";
             leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
@@ -81,6 +80,5 @@ public class AltTexturesScreen extends __base_UiFeatureSetScreen {
             leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.VINES_3D),                                Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.GLOW_LICHEN_3D),                          Layout.BORDER_HEIGHT);
         }
-        addRenderableWidget(leftSidebar);
     }
 }
