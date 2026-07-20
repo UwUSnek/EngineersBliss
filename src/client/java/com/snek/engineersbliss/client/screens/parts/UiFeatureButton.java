@@ -63,13 +63,12 @@ public class UiFeatureButton extends UiButton {
         }
 
 
-        // Set up sprite and tooltip
+        // Set up sprite
         if(serverFeature != null) {
             final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
             final Identifier bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath);
-            this.withSpriteBg(bgSpriteId, 4f, 1f);
+            this.withSpriteBg(bgSpriteId, 1f, 1f);
         }
-        this.setTooltip(Tooltip.create(clientFeature.calcDesc().get()));
     }
 
 

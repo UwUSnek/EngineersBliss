@@ -1,8 +1,9 @@
 package com.snek.engineersbliss.client.screens.parts;
 
+import java.util.List;
+
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
-import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
@@ -11,30 +12,41 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Component;
 
 
 
 
+/**
+ * A custom widget capable of rendering text with the specified scale, alignment, and color, and wrap lines based on the element's width.
+ */
 public class UiTextWidget extends AbstractWidget {
-    final Txt label;
-    float textScale = 1f;
-    final TextAlignment alignment;
-    final int color;
+    private Txt label;
+    private List<Txt> cachedLines; //! Wrapped lines
+    private final TextAlignment alignment;
+    private final int color;
+    private final boolean wrapLines;
 
 
 
 
     public UiTextWidget(final Txt label, final TextAlignment alignment, final int color) {
-        this(50, 50, 50, 50, label, alignment, color);
+        this(0, 0, 0, 0, label, alignment, color, false);
     }
 
     public UiTextWidget(final int x, final int y, final int w, final int h, final Txt label, final TextAlignment alignment, final int color) {
+        this(x, y, w, h, label, alignment, color, false);
+    }
+
+    public UiTextWidget(final Txt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
+        this(0, 0, 0, 0, label, alignment, color, wrapLines);
+    }
+
+    public UiTextWidget(final int x, final int y, final int w, final int h, final Txt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
         super(x, y, w, h, new Txt().get());
-        this.label = label;
         this.alignment = alignment;
         this.color = color;
-        if(label instanceof UiTxt uiTxt) textScale = uiTxt.getTextScale();
+        this.wrapLines = wrapLines;
+        setLabel(label);; //! Call setLabel to initialized cachedLines
     }
 
 
@@ -44,8 +56,16 @@ public class UiTextWidget extends AbstractWidget {
         final Font font = Minecraft.getInstance().font;
         final int x = getX() + Layout.textMarginPx;
         final int y = getY() + (height - font.lineHeight) / 2;
-        RenderingUtils.extractTxt(graphics, label, x, y, color, alignment, width);
+
+        int curLineNum = 0;
+        for(final Txt l : cachedLines) {
+            RenderingUtils.extractTxt(graphics, l, x, y + font.lineHeight * curLineNum, color, alignment, width);
+            ++curLineNum;
+        }
     }
+
+
+
 
     @Override
     protected void updateWidgetNarration(NarrationElementOutput output) {
@@ -55,5 +75,29 @@ public class UiTextWidget extends AbstractWidget {
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         return false;
+    }
+
+    public void setLabel(final Txt newLabel) {
+        label = newLabel;
+        recalculateLines();
+    }
+
+
+
+    //! Recalculate lines when the width changes
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
+        recalculateLines();
+    }
+
+
+    protected void recalculateLines() {
+        if(wrapLines) {
+            cachedLines = RenderingUtils.wrapLines(label, width);
+        }
+        else {
+            cachedLines = List.of(label);
+        }
     }
 }

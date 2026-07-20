@@ -3,11 +3,17 @@ package com.snek.engineersbliss.client.screens.base;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.screens.parts.TextAlignment;
 import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.screens.parts.UiFeatureButton;
+import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
 import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
+import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -29,8 +35,11 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
     // Elements and layout
     protected static UiWidgetList leftSidebar;
     protected static UiWidgetList rightSidebar;
+    protected static UiTextWidget descriptionWidget;
     public static final float LEFT_SIDEBAR_WIDTH = 0.25f;
     public static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
+    public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH - 0.01f;
+    public static final float DESCRIPTION_HEIGHT = 0.2f;
     public static final float PREVIEW_WIDTH = 0.25f;
 
     // Hover data cache
@@ -59,6 +68,16 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         final int rightSidebarWidth = (int)(width * RIGHT_SIDEBAR_WIDTH);
         rightSidebar = new UiWidgetList(rightSidebarWidth, height, width - rightSidebarWidth, 0, BUTTON_HEIGHT);
         addRenderableWidget(rightSidebar);
+
+
+        final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
+        final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
+        final int descriptionX = (width - descriptionWidth) / 2;
+        descriptionWidget = new UiTextWidget(
+            descriptionX, height - descriptionHeight, descriptionWidth, descriptionHeight,
+            new Txt(), TextAlignment.LEFT, Layout.fgColor, true
+        );
+        addRenderableWidget(descriptionWidget);
     }
 
 
@@ -72,9 +91,11 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
-        // Handle tab and normal element rendering
+
+        // Handle tab
         if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, a);
+
+
 
 
         // Calculate feature preview position
@@ -88,11 +109,14 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         final int yPlaceholder = (height - hPlaceholder) / 2;
 
 
+
+
         // Find the hovered feature and calculate the remaining preview data
         final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
         if(entry == null) {
             hoveredPreviewAtlasIds = null;
             lastHoveredButton = null;
+            descriptionWidget.setLabel(new Txt());
         }
         else {
             final AbstractWidget widget = entry.getWidget();
@@ -109,29 +133,48 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff),
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn)
                     };
+
+                    // Update description text
+                    final Txt description = button.getClientFeature().calcDesc();
+                    descriptionWidget.setLabel(description);
                 }
 
 
-        //TODO name of the feature at the top. also ON/OFF
-        //TODO description at the bottom
+                // Render ON/OFF text
+                {
+                    final int scale = 5;
+                    final int textOffX = xOff + w / 2;
+                    final int textOnX  = xOn  + w / 2;
+                    final int textY    = minecraft.font.lineHeight * scale;
+                    RenderingUtils.extractTxt(graphics, new UiTxt("OFF", scale).withBoldFont(), textOffX, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+                    RenderingUtils.extractTxt(graphics, new UiTxt("ON",  scale).withBoldFont(), textOnX,  textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+                }
+
+
                 // Render the feature preview
-                final Identifier atlasIdOff = hoveredPreviewAtlasIds[0];
-                final Identifier atlasIdOn  = hoveredPreviewAtlasIds[1];
-                if(!TextureAtlasTracker.isTextureReady(atlasIdOff)) {
-                    graphics.blit(atlasIdOff, xOff, yPlaceholder, xOff + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
-                }
-                else {
-                    final float[] uvOff = TextureAtlasTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
-                    graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
-                }
-                if(!TextureAtlasTracker.isTextureReady(atlasIdOn)) {
-                    graphics.blit(atlasIdOn,  xOn, yPlaceholder, xOn + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
-                }
-                else {
-                    final float[] uvOn  = TextureAtlasTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
-                    graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, uvOn[0], uvOn[1], uvOn[2], uvOn[3]);
+                {
+                    final Identifier atlasIdOff = hoveredPreviewAtlasIds[0];
+                    final Identifier atlasIdOn  = hoveredPreviewAtlasIds[1];
+                    if(!TextureAtlasTracker.isTextureReady(atlasIdOff)) {
+                        graphics.blit(atlasIdOff, xOff, yPlaceholder, xOff + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+                    }
+                    else {
+                        final float[] uvOff = TextureAtlasTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
+                        graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
+                    }
+                    if(!TextureAtlasTracker.isTextureReady(atlasIdOn)) {
+                        graphics.blit(atlasIdOn,  xOn, yPlaceholder, xOn + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+                    }
+                    else {
+                        final float[] uvOn  = TextureAtlasTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
+                        graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, uvOn[0], uvOn[1], uvOn[2], uvOn[3]);
+                    }
                 }
             }
         }
+
+
+        // Normal element rendering
+        super.extractRenderState(graphics, mouseX, mouseY, a);
     }
 }
