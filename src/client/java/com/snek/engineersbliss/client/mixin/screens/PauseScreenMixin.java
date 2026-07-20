@@ -197,6 +197,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "pause_screen/action_history"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  RenderingScreen::new, 'V', "pause_screen/version_control"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "pause_screen/test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "pause_screen/test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "pause_screen/test"), Layout.BORDER_HEIGHT);
