@@ -73,7 +73,13 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
         final T newValue,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback
     ) {
+
+        // Set feature and send packets to the server
         ClientFeatureSync.setFeature(feature, newIndex);
-        if (afterChangeCallback != null) afterChangeCallback.accept(newIndex, newValue);
+
+        // Call Slider UI callback
+        if(afterChangeCallback != null) afterChangeCallback.accept(newIndex, newValue);
+
+        //! Feature change callback is called by the server when packets are received
     }
 }

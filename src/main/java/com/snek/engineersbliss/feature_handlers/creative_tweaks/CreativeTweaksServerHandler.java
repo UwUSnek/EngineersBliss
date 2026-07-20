@@ -46,33 +46,25 @@ public class CreativeTweaksServerHandler {
 
 
 
-    /**
-     * Updates the configured interaction radius for the specified player.
-     * @param player The player.
-     * @param value The new interaction radius, in blocks.
-     */
-    public static void updateInteractionRadius(final Player player, final int value) {
+    public static void updateInteractionRadius(final Player player, final int valueIndex) {
         if(!player.isCreative()) return;
-        interactionRadii.put(player.getUUID(), value);
+        final int newValue = CreativeTweaksServerFeatureSet.INTERACTION_RADIUS.getValues().get(valueIndex);
+        interactionRadii.put(player.getUUID(), newValue);
     }
 
 
 
 
-    /**
-     * Updates the reach distance attribute for the specified player.
-     * @param player The player.
-     * @param value The new reach distance, in blocks.
-     */
-    public static void updateInteractionDistance(final Player player, final double value) {
+    public static void updateInteractionDistance(final Player player, final int valueIndex) {
         if(!player.isCreative()) return;
 
 
+        final float newValue = CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE.getValues().get(valueIndex);
         final var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
         if(blockAttr != null) {
             blockAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
-                value - DEFAULT_REACH,
+                newValue - DEFAULT_REACH,
                 AttributeModifier.Operation.ADD_VALUE
             ));
         }
@@ -80,7 +72,7 @@ public class CreativeTweaksServerHandler {
         if(entityAttr != null) {
             entityAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
-                value - DEFAULT_REACH,
+                newValue - DEFAULT_REACH,
                 AttributeModifier.Operation.ADD_VALUE
             ));
         }

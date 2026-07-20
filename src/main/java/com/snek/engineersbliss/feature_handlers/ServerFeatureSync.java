@@ -118,19 +118,16 @@ public class ServerFeatureSync {
     //! Packet receivers need extra checks to ensure the server doesn't crash for modified packets or a version mismatch
     @SuppressWarnings("unchecked")
     private static <T> void handleFeatureUpdateRequest(int id, T newValue, ServerPlayNetworking.Context context) {
-        System.out.println("0000");
         ServerScheduler.run(() -> {
-            System.out.println("AAAA");
             final Player player = context.player();
             try {
-                System.out.println("BBBB");
                 final __base_ServerFeature<T> feature = (__base_ServerFeature<T>)__base_ServerFeature.getAllFeatures().get(id);
                 setFeature(player, feature, newValue);
                 final var callback = feature.getAfterChangeCallback();
                 if(callback != null) callback.accept(player, newValue);
                 EngineerSBliss.LOGGER.info(
-                    "Player {} changed their {} feature to {}",
-                    player.getName(), feature.getId(), getFeature(player, feature)
+                    "Player {} changed their {} feature to {}.",
+                    player.getName().getString(), feature.getId(), getFeature(player, feature)
                 );
             }
             catch(ClassCastException e) {

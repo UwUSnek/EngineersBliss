@@ -72,7 +72,8 @@ public abstract class __base_ServerFeature<T> {
     public String getId() { return id; }
     public T getDefault() { return defaultValue; }
     public int getIndex() { return index; }
-    // public abstract String getValueAsString(); //TODO remove if not used
+
+
 
 
     protected __base_ServerFeature(final String id, final T defaultValue) {
@@ -82,12 +83,6 @@ public abstract class __base_ServerFeature<T> {
         this.id = id;
         this.defaultValue = defaultValue;
         this.afterChangeCallback = afterChangeCallback;
-    }
-
-
-
-    public void onChange(final Player player, final T newValue) {
-        if(afterChangeCallback != null) afterChangeCallback.accept(player, newValue);
     }
 
 
