@@ -1,15 +1,12 @@
-package com.snek.engineersbliss.client.screens;
+package com.snek.engineersbliss.client.screens.base;
 
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.screens.parts.TextAlignment;
+import com.snek.engineersbliss.client.screens.parts.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
@@ -21,12 +18,21 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
-import net.minecraft.resources.Identifier;
 
 
 
 
-public abstract class __base_Screen extends Screen {
+
+
+
+
+
+/**
+ * The base class for any screen of the Engineer's Bliss mod.
+ * Screens come with +/- GUI Scale keybinds, Tab keybind to hide the screen, and a blurred background.
+ * By default, all screens pause the game.
+ */
+public abstract class __base_UiScreen extends Screen {
     public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
     public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
     public static final int LIST_TOP      = Layout.LIST_TOP;
@@ -34,7 +40,7 @@ public abstract class __base_Screen extends Screen {
 
 
 
-    protected __base_Screen() {
+    protected __base_UiScreen() {
         super(new UiTxt().get());
     }
 
@@ -92,18 +98,23 @@ public abstract class __base_Screen extends Screen {
         final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);
-        }, null);
+        }, TextAlignment.CENTER);
         r.setTooltip(Tooltip.create(details.get()));
         this.addRenderableWidget(r);
         return r;
     }
 
-    protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName, final @Nullable String featureId) {
-        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
-        final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT, featureId);
-        r.withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
-        r.setTooltip(Tooltip.create(details.get()));
-        return r;
+    // protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName, final @Nullable String featureId) {
+    //     final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
+    //     final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT, featureId);
+    //     r.withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+    //     r.setTooltip(Tooltip.create(details.get()));
+    //     return r;
+    // }
+    @Override
+    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+        if(tabPressed) return;
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
 
 

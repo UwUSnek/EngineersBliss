@@ -14,6 +14,9 @@ import net.minecraft.client.resources.metadata.texture.TextureMetadataSection;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -46,7 +49,7 @@ public class AsyncTextureLoaderMixin {
     private static final ExecutorService DECODE_TREAD_POOL = Executors.newFixedThreadPool(
         Math.max(2, Runtime.getRuntime().availableProcessors() - 1),
         r -> {
-            Thread t = new Thread(r, "eb-png-decode");
+            final @NotNull Thread t = new Thread(r, "eb-png-decode");
             t.setDaemon(true);
             return t;
         }
@@ -59,8 +62,8 @@ public class AsyncTextureLoaderMixin {
         try(InputStream s = AsyncTextureLoaderMixin.class.getResourceAsStream("/assets/" + EngineerSBliss.MOD_ID + "/textures/gui/placeholder_texture.png")) {
             LOADING_IMAGE = NativeImage.read(s);
         }
-        catch(final IOException e) {
-            e.printStackTrace(); //TODO use proper logging
+        catch(final @NotNull IOException e) {
+            EngineerSBliss.LOGGER.error("Could not load placeholder texture. {}", e.getMessage(), new Throwable());
         }
     }
 
@@ -78,7 +81,7 @@ public class AsyncTextureLoaderMixin {
     @SuppressWarnings("unused")
     @Inject(method = "load", at = @At("HEAD"), cancellable = true, require = 1)
     private static void eb$load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
-        final Resource resource = resourceManager.getResourceOrThrow(id);
+        final @NotNull Resource resource = resourceManager.getResourceOrThrow(id);
         final AtlasMetadataSection atlasMeta = resource.metadata().getSection(AtlasMetadataSection.TYPE).orElse(null);
 
         // Not one of our animated sheets -> let vanilla handle it untouched, synchronously
@@ -91,27 +94,28 @@ public class AsyncTextureLoaderMixin {
 
         CompletableFuture.runAsync(() -> {
             try {
-                final TextureMetadataSection metadata = resource.metadata().getSection(TextureMetadataSection.TYPE).orElse(null);
-
                 final NativeImage image;
                 try(InputStream is = resource.open()) {
                     image = NativeImage.read(is); //! Closed by the apply call
                 }
-                if(image == null) return;
-
-                ClientScheduler.run(() -> {
-                    final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
-                    if(tex instanceof final ReloadableTexture reloadable) {
-                        reloadable.apply(new TextureContents(image, metadata)); //! Apply call closes the resource
-                        TextureAtlasTracker.markLoaded(id);
-                    }
-                    else {
-                        image.close(); //! Manually close the image if it cannot be used
-                        System.out.println("TEXTURE IS NOT RELOADABLE");//TODO use proper error reporting
-                    }
-                });
-            } catch(final Exception e) {
-                e.printStackTrace(); //TODO use proper error reporting
+                if(image != null) {
+                    final @Nullable TextureMetadataSection metadata = resource.metadata().getSection(TextureMetadataSection.TYPE).orElse(null);
+                    ClientScheduler.run(() -> {
+                        final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
+                        if(tex instanceof final @NotNull ReloadableTexture reloadable) {
+                            reloadable.apply(new TextureContents(image, metadata)); //! Apply call closes the resource
+                            TextureAtlasTracker.markLoaded(id);
+                        }
+                        else {
+                            //! Idk why it wouldn't be reloadable, but this checks for it. Just in acase.
+                            image.close(); //! Manually close the image if it cannot be used
+                            EngineerSBliss.LOGGER.error("Texture {} is not reloadable.", id, new Throwable());
+                        }
+                    });
+                }
+            }
+            catch(final @NotNull IOException e) {
+                EngineerSBliss.LOGGER.error("Could not load texture {}. {}", id, e.getMessage(), new Throwable());
             }
         }, DECODE_TREAD_POOL);
     }

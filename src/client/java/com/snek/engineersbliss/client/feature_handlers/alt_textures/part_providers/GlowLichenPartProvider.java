@@ -3,8 +3,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 import java.util.ArrayList;
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
@@ -47,7 +47,7 @@ public class GlowLichenPartProvider extends __base_PartProvider {
 
     @Override
     public boolean shouldUseCustom(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.GLOW_LICHEN_3D);
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.GLOW_LICHEN_3D);
     }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {

@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -41,7 +41,7 @@ public class ScaffoldingPartProvider extends __base_PartProvider {
 
     @Override
     public boolean shouldUseCustom(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING);
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.UNOBSTRUCTIVE_SCAFFOLDING);
     }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {

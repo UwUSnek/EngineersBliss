@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -39,7 +39,7 @@ public class DecoratedPotPartProvider extends __base_PartProvider {
 
     @Override
     public boolean shouldUseCustom(final BlockState state) {
-        return AltTexturesHandler.getFeature(AltTextureFeature.STATIC_DECORATED_POTS);
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_DECORATED_POTS);
     }
     @Override
     public boolean shouldKeepVanilla(final BlockState state) {

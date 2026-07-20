@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweakServerFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
+import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
@@ -21,7 +21,7 @@ public class ServerEntityPhasingMinecartMixin {
     @SuppressWarnings("unused")
     @Inject(method = "push", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$push(final Entity entity, final CallbackInfo ci) {
-        if(CreativeTweaksServerHandler.serverPlayerHasFeature(entity, CreativeTweakServerFeature.PHASE_THROUGH_ENTITIES)) {
+        if(ServerFeatureSync.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_ENTITIES)) {
             ci.cancel();
         }
     }

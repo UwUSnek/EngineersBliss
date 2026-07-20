@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -32,7 +32,7 @@ public class ClientBlockPhasingPacketFixMixin {
         final double newX, final double newY, final double newZ,
         final CallbackInfoReturnable<Boolean> cir
     ) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(entity)) {
+        if(ClientFeatureSync.shouldPlayerPhaseThroughBlocks(entity)) {
             cir.setReturnValue(false);
         }
     }

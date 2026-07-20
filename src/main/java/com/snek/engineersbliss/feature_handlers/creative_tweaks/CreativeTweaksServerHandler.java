@@ -12,7 +12,6 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -36,7 +35,6 @@ import net.minecraft.world.phys.Vec3;
 public class CreativeTweaksServerHandler {
     private CreativeTweaksServerHandler() {}
     public static final int DEFAULT_INTERACTION_RADIUS = 1;
-
     private static final float DEFAULT_REACH = 4.5f; //FIXME get this from somewhere instead of hard coding it
     private static final Identifier REACH_MODIFIER_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "creative_tweaks.reach");
 
@@ -46,45 +44,27 @@ public class CreativeTweaksServerHandler {
     public static @Nullable BlockPos getPickOverride() { return pickOverride; }
 
 
-    private static final Map<UUID, Long> toggleFeatureMasks = new HashMap<>();
-    public static void updateToggleFeatures(final Player player, final long featureMask) {
-        toggleFeatureMasks.put(player.getUUID(), featureMask);
-    }
-    public static long getToggleFeatures(final Player player) {
-        final Long r = toggleFeatureMasks.get(player.getUUID());
-        return r == null ? CreativeTweakServerFeature.DEFAULT_FLAGS : r;
-    }
 
 
-
-
-    /**
-     * Updates the configured interaction radius for the specified player.
-     * @param player The player.
-     * @param value The new interaction radius, in blocks.
-     */
-    public static void updateInteractionRadius(final ServerPlayer player, final int value) {
-        if(!player.getAbilities().instabuild) return;
-        interactionRadii.put(player.getUUID(), value);
+    public static void updateInteractionRadius(final Player player, final int valueIndex) {
+        if(!player.isCreative()) return;
+        final int newValue = CreativeTweaksServerFeatureSet.INTERACTION_RADIUS.getValues().get(valueIndex);
+        interactionRadii.put(player.getUUID(), newValue);
     }
 
 
 
 
-    /**
-     * Updates the reach distance attribute for the specified player.
-     * @param player The player.
-     * @param value The new reach distance, in blocks.
-     */
-    public static void updateReachDistance(final ServerPlayer player, final double value) {
-        if(!player.getAbilities().instabuild) return;
+    public static void updateInteractionDistance(final Player player, final int valueIndex) {
+        if(!player.isCreative()) return;
 
 
+        final float newValue = CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE.getValues().get(valueIndex);
         final var blockAttr = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
         if(blockAttr != null) {
             blockAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
-                value - DEFAULT_REACH,
+                newValue - DEFAULT_REACH,
                 AttributeModifier.Operation.ADD_VALUE
             ));
         }
@@ -92,7 +72,7 @@ public class CreativeTweaksServerHandler {
         if(entityAttr != null) {
             entityAttr.addOrUpdateTransientModifier(new AttributeModifier(
                 REACH_MODIFIER_ID,
-                value - DEFAULT_REACH,
+                newValue - DEFAULT_REACH,
                 AttributeModifier.Operation.ADD_VALUE
             ));
         }
@@ -116,7 +96,7 @@ public class CreativeTweaksServerHandler {
     @SuppressWarnings("java:S3516")
     private static boolean beforeBlockBreak(final Level level, final Player player, final BlockPos pos, final BlockState blockState, @Nullable final BlockEntity blockEntity) {
         if(level.isClientSide()) return true;
-        if(!player.getAbilities().instabuild) return true;
+        if(!player.isCreative()) return true;
 
 
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
@@ -147,7 +127,7 @@ public class CreativeTweaksServerHandler {
     private static boolean processingCustomPlace = false;
     private static InteractionResult afterBlockUse(final Player player, final Level level, final InteractionHand hand, final BlockHitResult blockHitResult) {
         if(level.isClientSide()) return InteractionResult.PASS;
-        if(!player.getAbilities().instabuild) return InteractionResult.PASS;
+        if(!player.isCreative()) return InteractionResult.PASS;
 
 
         // Break all blocks in a radius, only if the current event was not triggered by a custom radius block break
@@ -182,31 +162,5 @@ public class CreativeTweaksServerHandler {
 
         // Return PASS, letting vanilla click the original block
         return InteractionResult.PASS;
-    }
-
-
-
-
-
-
-
-
-    /**
-     * Checks if a player has the specified feature toggled ON.
-     * ! This doesn't work when called by the client on a dedicated server. Use CreativeTweaksHandler.clientPlayerHasFeature(CreativeTweakServerFeature) instead.
-     */
-    public static boolean serverPlayerHasFeature(final Object entity, final CreativeTweakServerFeature feature) {
-        if(entity instanceof final Player player) {
-            final long featureMask = getToggleFeatures(player);
-            if(feature.hasFlagBit(featureMask)) {
-                if(player.getAbilities().instabuild) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
-        return serverPlayerHasFeature(entity, CreativeTweakServerFeature.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 }
