@@ -9,27 +9,34 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.network.chat.Component;
+
+
+
+
 
 
 
 
 public class UiSteppedSlider<T> extends AbstractSliderButton {
-    private final Txt label;
+    private UiTxt label;
     private final List<T> stepValues;
     private final BiConsumer<Integer, T> afterChangeCallback;
 
 
     public UiSteppedSlider(
-        final int x, final int y, final int w, final int h, final Txt label,
+        final int x, final int y, final int w, final int h, final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback
     ) {
-        super(x, y, w, h, new UiTxt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
+        super(x, y, w, h, new Txt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
         this.label = label;
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
         updateMessage();
     }
+
+
 
 
     public static double indexToUnit(final int   index, final int size) { return (double)index / size;  }
@@ -39,10 +46,26 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
     public T getSelectedValue() { return stepValues.get(unitToIndex(value)); }
 
 
+
+
     @Override
     protected void updateMessage() {
-        setMessage(label.copy().cat(": " + getSelectedValue()).get());
+        super.setMessage(label.copy().cat(": " + getSelectedValue()).get());
     }
+    @Override
+    public void setMessage(Component message) {
+        throw new UnsupportedOperationException("Use .setLabel(label) instead");
+    }
+    public void setLabel(final Component label) {
+        super.setMessage(label);
+        this.label = new UiTxt(label);
+    }
+    public void setLabel(final UiTxt label) {
+        super.setMessage(label.get());
+        this.label = (UiTxt)label.copy();
+    }
+
+
 
 
     @Override

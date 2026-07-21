@@ -2,17 +2,17 @@ package com.snek.engineersbliss.client.ui.widgets;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.CharacterEvent;
@@ -26,8 +26,7 @@ import net.minecraft.resources.Identifier;
 public class UiButton extends Button {
     private static final int KEYBIND_BADGE_WIDTH = 16;
 
-    private Txt label;
-    private float labelScale;
+    private UiTxt label;
     private char key;
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
@@ -37,37 +36,36 @@ public class UiButton extends Button {
 
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        //! Pass empty text to super and store a custom Txt isntance locally
+    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+        //! Pass empty text to super and store a custom UiTxt isntance locally
         super(x, y, width, height, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
         this.key = Character.toLowerCase(key);
         this.alignment = alignment;
         this.label = label;
-        this.labelScale = (label instanceof UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;
         this.bgSpriteId = null;
         this.labelOffset = Layout.textMarginPx;
     }
-    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         this(50, 50, 50, 50, label, pressCallback, key, alignment);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
         this(x, y, width, height, label, pressCallback, '\0', alignment);
     }
-    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
         this(50, 50, 50, 50, label, pressCallback, alignment);
     }
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
         this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
         this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final Txt label, final @Nullable Consumer<UiButton> pressCallback) {
+    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
         this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
     }
-    public UiButton(final Txt label, final @Nullable Consumer<UiButton> pressCallback) {
+    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
         this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
     }
 
@@ -107,16 +105,16 @@ public class UiButton extends Button {
 
 
         // Draw label
-        final Font font = Fonts.monospace();
+        final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + (int)(height * labelOffset);
-        final int textY = getY() + (height - font.lineHeight) / 2;
+        final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, width, usingSprite);
 
 
         // Draw keybind if present
         if(key != '\0') {
-            final UiTxt keybindText = new UiTxt(String.valueOf(key)).withMonoFont();
+            final UiTxt keybindText = new UiTxt(String.valueOf(key), Fonts.mono.medium);
             final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_BADGE_WIDTH / 2;
             RenderingUtils.extractTxt(graphics, keybindText, keybindX, textY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
         }
@@ -139,7 +137,12 @@ public class UiButton extends Button {
 
     @Override
     public void setMessage(Component message) {
-        super.setMessage(message);
-        label = new UiTxt(message, labelScale);
+        throw new UnsupportedOperationException("Use .setLabel(label) instead.");
+    }
+    public void setLabel(Component label) {
+        this.label = new UiTxt(label);
+    }
+    public void setLabel(UiTxt label) {
+        this.label = (UiTxt)label.copy();
     }
 }

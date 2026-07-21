@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.feature_handlers.overlays.renderer;
 
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -21,10 +22,14 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.BarrierOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.LightBlockOverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.alternative_invisible_blocks.StructureVoidOverlayProvider;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_OverlayProvider;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextOverlayProvider;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -87,6 +92,7 @@ public final class OverlayRenderer {
 
     private static void draw(final LevelRenderContext context) {
         final Minecraft client = Minecraft.getInstance();
+        final @NotNull FontFamily fontFamily = Fonts.mono.medium;
         final Level level = client.level;
         if(level == null || client.player == null) return;
 
@@ -191,8 +197,8 @@ public final class OverlayRenderer {
                             }
                             else if(provider instanceof final __base_TextOverlayProvider p) {
                                 final String text = p.calcText(state, pos, attachedData);
-                                final Font font = client.font;
-                                final float textWidth = font.width(text);
+                                final ScaledFont scaledFont = Fonts.mono.medium.get(1f);
+                                final float textWidth = scaledFont.calcWidth(text);
 
                                 // Create pose stack
                                 final PoseStack matrices = new PoseStack();
@@ -229,7 +235,7 @@ public final class OverlayRenderer {
                                 context.submitNodeCollector().submitText(
                                     matrices,
                                     -textWidth / 2f, -4f,
-                                    Component.literal(text).getVisualOrderText(),
+                                    new UiTxt(text, fontFamily, 1f).get().getVisualOrderText(),
                                     false,
                                     Font.DisplayMode.SEE_THROUGH,
                                     0xF000F0,

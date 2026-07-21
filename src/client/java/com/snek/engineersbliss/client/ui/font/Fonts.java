@@ -33,13 +33,13 @@ public class Fonts {
 
 
 
-    // All Font instances by name. One instance for each scale.
+    // All ScaledFont instances by name. One instance for each scale.
     //! Scale advanced by FONT_SCALE_STEP each index.
-    //! Default font is stored in the Minecraft instance.
-    private static final List<@Nullable Font> monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Font>    uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Font>  uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Font>     uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static            @Nullable ScaledFont      defaultFont = null;
+    private static final List<@Nullable ScaledFont> monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable ScaledFont>    uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable ScaledFont>  uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable ScaledFont>     uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
 
 
@@ -50,7 +50,12 @@ public class Fonts {
      */
     public static final class _default {
         private _default() {}
-        public static FontFamily medium = (final float scaleMultiplier) -> { return Minecraft.getInstance().font; };
+        public static FontFamily medium = (final float scaleMultiplier) -> {
+            if(defaultFont == null) {
+                defaultFont = new ScaledFont();
+            }
+            return defaultFont;
+        };
     }
 
     /**
@@ -66,9 +71,9 @@ public class Fonts {
      */
     public static final class ui {
         private ui() {}
-        public static FontFamily   light = (final float scaleMultiplier) -> { return createFontIfNeeded(uiLightFonts,    "ui_light",    scaleMultiplier); };
-        public static FontFamily regular = (final float scaleMultiplier) -> { return createFontIfNeeded(uiRegularFonts,  "ui_regular",  scaleMultiplier); };
-        public static FontFamily    bold = (final float scaleMultiplier) -> { return createFontIfNeeded(uiBoldFonts,     "ui_bold",     scaleMultiplier); };
+        public static FontFamily   light = (final float scaleMultiplier) -> { return createFontIfNeeded(uiLightFonts,   "ui_light",   scaleMultiplier); };
+        public static FontFamily regular = (final float scaleMultiplier) -> { return createFontIfNeeded(uiRegularFonts, "ui_regular", scaleMultiplier); };
+        public static FontFamily    bold = (final float scaleMultiplier) -> { return createFontIfNeeded(uiBoldFonts,    "ui_bold",    scaleMultiplier); };
     }
 
 
@@ -84,11 +89,12 @@ public class Fonts {
      * @param fontList The list to fetch the font instance from.
      * @param fontName The name of the font (used to create the instance).
      * @param scaleMultiplier The scale multiplier.
-     * @return The existing or newly created Font instance.
+     * @return The existing or newly created ScaledFont instance.
      */
-    private static final Font createFontIfNeeded(final List<@Nullable Font> fontList, final String fontName, final float scaleMultiplier) {
-        final int fontIndex = getFontIndexForScale(scaleMultiplier);
-        final @Nullable Font requestedFont = fontList.get(fontIndex);
+    private static final ScaledFont createFontIfNeeded(final List<@Nullable ScaledFont> fontList, final String fontName, final float scaleMultiplier) {
+        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        final int fontIndex = getFontIndexForScale(scaleMultiplier, guiScale);
+        final @Nullable ScaledFont requestedFont = fontList.get(fontIndex);
         if(requestedFont != null) {
             return requestedFont;
         }
@@ -96,7 +102,7 @@ public class Fonts {
 
             // Fetch default provider from Minecraft and create a custom font description
             final Font.Provider defaultProvider = ((FontAccessor)Minecraft.getInstance().font).getProvider();
-            final FontDescription fontDescription = new FontDescription.Resource(getFontIdForScale(fontName, scaleMultiplier));
+            final FontDescription fontDescription = new FontDescription.Resource(getFontIdForScale(fontName, scaleMultiplier, guiScale));
 
             // Create the custom font provider.
             //! This returns custom glyphs but default effect.
@@ -109,8 +115,8 @@ public class Fonts {
                 }
             };
 
-            // Create the new Font instance and update the list, then return it
-            final Font r = new Font(provider);
+            // Create the new ScaledFont instance and update the list, then return it
+            final ScaledFont r = new ScaledFont(provider, 0f, guiScale * scaleMultiplier, fontDescription);
             fontList.set(fontIndex, r);
             return r;
         }
@@ -122,34 +128,14 @@ public class Fonts {
     /**
      * Calculates the index of the font instance in its containing list based on the current GUI Scale option and the provided scale multiplier.
      * @param scaleMultiplier The scale multiplier.
+     * @param guiScale The current GUI Scale option value.
      * @return The index of the optimal font instance.
      */
-    public static int getFontIndexForScale(final float scaleMultiplier) { //TODO make private if not strictly needed by other classes
-        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+    private static int getFontIndexForScale(final float scaleMultiplier, final float guiScale) {
 
         // Snap to nearest 0.25 increment, clamped between 0.25 and FONT_MAX_SIZE, then convert to index
         return Math.clamp(Math.round(guiScale * scaleMultiplier * FONT_UNIT_RATIO), 1, FONT_SIZES_NUMBER) - 1;
     }
-
-
-
-
-
-
-
-
-
-
-    // /**
-    //  * Fetches the ID of the font provider of the specified font that is most optimal for rendering text of default size.
-    //  * This takes into account the current GUI Scale option.
-    //  * ! Available providers are the ones bundled with the mod. Specifying a non-existent font will cause the client to crash.
-    //  * @param baseName The name of the font to fetch. This doesn't include the scale or the file extension.
-    //  * @return The ID of the font provider.
-    //  */
-    // public static Identifier getFontIdForScale(final String baseName) { //TODO make private if not strictly needed by other classes
-    //     return getFontIdForScale(baseName, 1);
-    // }
 
 
 
@@ -162,10 +148,10 @@ public class Fonts {
      * @param scaleMultiplier The scale factor. This should match the size of the text you intend to display relative to the default size (scale 1).
      *              This is clamped between 0.25 and 10 and rounded to the nearest multiple of 0.25 units.
      *              For pixel-perfect rendering, ensure the text size is a multiple of 0.25 units (4px minecraft text height)
+     * @param guiScale The current GUI Scale option value.
      * @return The ID of the font provider.
      */
-    public static Identifier getFontIdForScale(final String baseName, final float scaleMultiplier) { //TODO make private if not strictly needed by other classes
-        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+    private static Identifier getFontIdForScale(final String baseName, final float scaleMultiplier, final float guiScale) {
 
         // Snap to nearest 0.25 increment, clamped between 0.25 and FONT_MAX_SIZE
         float snapped = Math.round(guiScale * scaleMultiplier * FONT_UNIT_RATIO) / FONT_UNIT_RATIO;

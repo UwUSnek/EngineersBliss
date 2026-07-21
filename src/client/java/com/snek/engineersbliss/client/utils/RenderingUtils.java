@@ -3,16 +3,13 @@ package com.snek.engineersbliss.client.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
-import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FontDescription;
 
 
 
@@ -30,7 +27,7 @@ public class RenderingUtils {
     public static void extractTxt(
         final GuiGraphicsExtractor graphics,
         final Component text,
-        final float textScale,
+        final ScaledFont scaledFont,
         final int x, final int y,
         final int color,
         final TextAlignment textAlignment,
@@ -38,8 +35,8 @@ public class RenderingUtils {
     ) {
 
         // Retrieve font and text scale, apply drop shadow option
-        final Font font = Minecraft.getInstance().font;
-        final float stringWidth = font.width(text) * textScale; //! Width of the string in screen space
+        final float textScale = scaledFont.getScale();
+        final float stringWidth = scaledFont.calcWidth(text); //! Width of the string in screen space
 
 
         // Compute x and y positions (calculate in screen space, resize to scaled coords)
@@ -54,34 +51,32 @@ public class RenderingUtils {
         // Draw scaled text
         graphics.pose().pushMatrix();
         graphics.pose().scale(textScale, textScale);
-        graphics.text(font, text, _x, _y, color);
+        graphics.text(scaledFont.getFont(), text, _x, _y, color);
         graphics.pose().popMatrix();
     }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final Component text, final float textScale, final int x, final int y, final int color) {
-        extractTxt(graphics, text, textScale, x, y, color, TextAlignment.LEFT, 0);
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final Component text, final ScaledFont scaledFont, final int x, final int y, final int color) {
+        extractTxt(graphics, text, scaledFont, x, y, color, TextAlignment.LEFT, 0);
     }
 
 
 
 
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final Txt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
-        final float textScale = (text instanceof final UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
+        final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final Component componentText = (dropShadow ? text : text.copy().noShadow()).get();
-        extractTxt(graphics, componentText, textScale, x, y, color, textAlignment, elmWidth);
+        extractTxt(graphics, componentText, scaledFont, x, y, color, textAlignment, elmWidth);
     }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final Txt text, final int x, final int y, final int color, final boolean dropShadow) {
-        final float textScale = (text instanceof final UiTxt uiTxt) ? uiTxt.getTextScale() : 1f;
-        final Component componentText = (dropShadow ? text : text.copy().noShadow()).get();
-        extractTxt(graphics, componentText, textScale, x, y, color);
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
+        extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, 0, dropShadow);
     }
 
 
 
 
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final Txt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
         extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, false);
     }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final Txt text, final int x, final int y, final int color) {
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color) {
         extractTxt(graphics, text, x, y, color, false);
     }
 
@@ -95,27 +90,29 @@ public class RenderingUtils {
 
 
     /**
-     * Wraps the provided Txt so each line never goes past the width limit.
+     * Wraps the provided UiTxt so each line never goes past the width limit.
      * @param text The text to wrap.
      * @param maxWidth The maximum width of a line.
-     * @return A list of Txt, each containing the formatted characters in a line.
+     * @return A list of UiTxt, each containing the formatted characters in a line.
      */
-    public static List<Txt> wrapLines(final Txt text, final int maxWidth) {
-        final Font font = Minecraft.getInstance().font;
-        final boolean isUiTxt = text instanceof UiTxt;
-        final float textScale = isUiTxt ? ((UiTxt)text).getTextScale() : 1f;
-        final @Nullable FontDescription customFont = isUiTxt ? ((UiTxt)text).getFont() : null;
-        final List<Txt> lines = new ArrayList<>();
-        final String raw = text.getString();
+    public static List<UiTxt> wrapLines(final UiTxt text, final int maxWidth) {
+
+
+        // Create line list and calculate data
+        final @NotNull ScaledFont scaledFont = text.getScaledFont();
+        final @NotNull List<UiTxt> lines = new ArrayList<>();
+        final @NotNull String raw = text.getString();
         final int len = raw.length();
         int lineStart = 0;
         int lastSpace = -1;
 
+
+        // Split lines
         for(int i = 0; i < len; i++) {
             final char c = raw.charAt(i);
 
             if(c == '\n') {
-                lines.add(text.substring(lineStart, i));
+                lines.add((UiTxt)text.substring(lineStart, i));
                 lineStart = i + 1;
                 lastSpace = -1;
                 continue;
@@ -125,12 +122,13 @@ public class RenderingUtils {
                 lastSpace = i;
             }
 
-            if(font.width(raw.substring(lineStart, i + 1)) * textScale > maxWidth) {
-                if (lastSpace >= lineStart) {
-                    lines.add(text.substring(lineStart, lastSpace));
+            if(scaledFont.calcWidth(raw.substring(lineStart, i + 1)) > maxWidth) {
+                if(lastSpace >= lineStart) {
+                    lines.add((UiTxt)text.substring(lineStart, lastSpace));
                     lineStart = lastSpace + 1;
-                } else {
-                    lines.add(text.substring(lineStart, i));
+                }
+                else {
+                    lines.add((UiTxt)text.substring(lineStart, i));
                     lineStart = i;
                 }
                 lastSpace = -1;
@@ -138,20 +136,10 @@ public class RenderingUtils {
         }
 
         if(lineStart < len) {
-            lines.add(text.substring(lineStart, len));
+            lines.add((UiTxt)text.substring(lineStart, len));
         }
 
 
-        // Re-add font scale if needed
-        if(isUiTxt) {
-            final List<Txt> fixedLines = new ArrayList<>(lines.size());
-            for(final Txt line : lines) {
-                fixedLines.add(new UiTxt(line.get(), textScale).withFont(customFont));
-            }
-            return fixedLines;
-        }
-        else {
-            return lines;
-        }
+        return lines;
     }
 }

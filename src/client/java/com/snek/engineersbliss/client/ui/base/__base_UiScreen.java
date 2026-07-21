@@ -14,7 +14,6 @@ import com.snek.engineersbliss.utils.Txt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -94,7 +93,7 @@ public abstract class __base_UiScreen extends Screen {
 
     //TODO remove. this is the old version, still used by RenderingScreen
     //TODO remove. this is the old version, still used by RenderingScreen
-    protected Button addButton(final Txt label, final Txt details, final Consumer<Button> action, final int x, final int y, final int width) {
+    protected UiButton addButton(final UiTxt label, final UiTxt details, final Consumer<UiButton> action, final int x, final int y, final int width) {
         final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);

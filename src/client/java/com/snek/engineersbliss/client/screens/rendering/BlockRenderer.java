@@ -1,10 +1,13 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
+import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -141,7 +144,8 @@ public class BlockRenderer {
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
 
-        graphics.text(Minecraft.getInstance().font, new UiTxt(block.getName(), scale).get().getVisualOrderText(), 0, 0, color);
+        final @NotNull FontFamily fontFamily = Fonts.ui.regular;
+        graphics.text(fontFamily.get(scale).getFont(), new UiTxt(block.getName(), fontFamily, scale).get().getVisualOrderText(), 0, 0, color);
 
         // Pop pose
         graphics.pose().popMatrix();

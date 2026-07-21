@@ -20,6 +20,7 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.PlayerMannequin;
 import com.snek.engineersbliss.client.ui.widgets.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
@@ -32,7 +33,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
@@ -183,7 +183,7 @@ public class PauseScreenMixin extends Screen {
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
@@ -265,23 +265,20 @@ public class PauseScreenMixin extends Screen {
         }
 
 
-        // Calculate text dimensions and position
-        final Font font = Minecraft.getInstance().font;
-        int textCenterX = (x0 + x1) / 2;
-        int nameY = clusterTop - 48;
-        int titleY = nameY + (int)(font.lineHeight * Layout.HEADER_SCALE) + 2;
-
-
         // Calculate play time
         final long ms = MinecraftUtils.getPlaytimeMs();
         final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
         final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
 
+        // Calculate text dimensions and position
+        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()), Fonts.ui.bold, Layout.HEADER_SCALE);
+        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds));
+        int textCenterX = (x0 + x1) / 2;
+        int nameY = clusterTop - 48;
+        int titleY = nameY + playerName.getScaledFont().getLineHeight() + 2;
 
         // Draw player name an title
-        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont();
-        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds));
         RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
         RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
     }
@@ -289,7 +286,7 @@ public class PauseScreenMixin extends Screen {
 
 
 
-//TODO remove. use the new system or something, idk
+    //TODO remove. use the new system or something, idk
     private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind, final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
         return new UiButton(new UiTxt(label), b -> {

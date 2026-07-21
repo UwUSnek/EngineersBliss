@@ -1,10 +1,14 @@
 package com.snek.engineersbliss.client.ui.base;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
@@ -14,7 +18,6 @@ import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
-import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -71,9 +74,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         // Add left sidebar
         leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT);
         addRenderableWidget(leftSidebar);
-        final Txt titleText = featureSet.calcName();
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-
+        final UiTxt titleText = featureSet.calcName();
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
 
         // Add right sidebar
@@ -90,11 +92,11 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
         descriptionNameWidget = new UiTextWidget(
             descriptionX, height - descriptionHeight - descriptionNameHeight, descriptionWidth, descriptionNameHeight,
-            new Txt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         );
         descriptionWidget = new UiTextWidget(
             descriptionX, height - descriptionHeight, descriptionWidth, descriptionHeight,
-            new Txt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         );
         addRenderableWidget(descriptionNameWidget);
         addRenderableWidget(descriptionWidget);
@@ -156,7 +158,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                     descriptionNameWidget.setBgColor(Layout.bgColorSolid);
 
                     // Update description text
-                    final Txt description = button.getClientFeature().calcDesc();
+                    final UiTxt description = button.getClientFeature().calcDesc();
                     descriptionWidget.setLabel(description);
                     descriptionWidget.setBgColor(Layout.bgColorSolid);
                 }
@@ -165,11 +167,13 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                 // Render ON/OFF text
                 {
                     final int scale = 5;
+                    final @NotNull FontFamily fontFamily = Fonts.ui.bold;
+                    final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
                     final int textOffX = xOff + w / 2;
                     final int textOnX  = xOn  + w / 2;
-                    final int textY    = minecraft.font.lineHeight * scale;
-                    RenderingUtils.extractTxt(graphics, new UiTxt("OFF", scale).withBoldFont(), textOffX, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
-                    RenderingUtils.extractTxt(graphics, new UiTxt("ON",  scale).withBoldFont(), textOnX,  textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+                    final int textY    = scaledFont.getLineHeight();
+                    RenderingUtils.extractTxt(graphics, new UiTxt("OFF", fontFamily, scale), textOffX, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+                    RenderingUtils.extractTxt(graphics, new UiTxt("ON",  fontFamily, scale), textOnX,  textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
                 }
 
 
@@ -196,18 +200,18 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
             else {
                 hoveredPreviewAtlasIds = null;
                 lastHoveredButton = null;
-                descriptionNameWidget.setLabel(new Txt());
+                descriptionNameWidget.setLabel(new UiTxt());
                 descriptionNameWidget.setBgColor(0x0);
-                descriptionWidget.setLabel(new Txt());
+                descriptionWidget.setLabel(new UiTxt());
                 descriptionWidget.setBgColor(0x0);
             }
         }
         else {
             hoveredPreviewAtlasIds = null;
             lastHoveredButton = null;
-            descriptionNameWidget.setLabel(new Txt());
+            descriptionNameWidget.setLabel(new UiTxt());
             descriptionNameWidget.setBgColor(0x0);
-            descriptionWidget.setLabel(new Txt());
+            descriptionWidget.setLabel(new UiTxt());
             descriptionWidget.setBgColor(0x0);
         }
 

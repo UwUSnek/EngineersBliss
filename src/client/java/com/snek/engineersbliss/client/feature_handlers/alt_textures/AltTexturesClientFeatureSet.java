@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures;
 
-import com.snek.engineersbliss.utils.Txt;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
@@ -15,6 +14,7 @@ import java.util.function.Supplier;
 
 
 
+@SuppressWarnings("java:S1905")
 public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltTexturesServerFeatureSet> {
     public static final AltTexturesClientFeatureSet INSTANCE = new AltTexturesClientFeatureSet();
     private AltTexturesClientFeatureSet() {
@@ -98,7 +98,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_CHESTS = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_CHESTS,
         () -> new UiTxt("Static Chest models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Chests, Trapped Chests, and Ender Chests with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the opening and closing animations.\n").Orange())
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
@@ -107,7 +107,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_SIGNS = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_SIGNS,
         () -> new UiTxt("Static Sign models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Signs and Hanging Signs with a static model to improve performance.\n"))
             .cat(new UiTxt("The text must be rendered dynamically, so static signs are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
@@ -116,7 +116,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_BANNERS = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_BANNERS,
         () -> new UiTxt("Static Banner models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Banners with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the fluttering animation banners have in Vanilla.\n").Orange())
             .cat(new UiTxt("This also breaks custom banner patterns. Instead, only the base color is displayed.\n").Orange())
@@ -126,7 +126,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_DECORATED_POTS = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_DECORATED_POTS,
         () -> new UiTxt("Static Decorated Pot models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Decorated Pots with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the wobbling animation that plays in Vanilla when a Decorated Pot is right-clicked.\n").Orange())
             .cat(new UiTxt("Sides customized with Sherds (not the default brick) must be rendered dynamically, so static decorated pots are laggier than normal blocks, but way less than Vanilla's.\n").yellow())
@@ -136,7 +136,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_BELLS = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_BELLS,
         () -> new UiTxt("Static Bell models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Bells with a static model to improve performance.\n"))
             .cat(new UiTxt("This breaks the swinging animation that plays in Vanilla when a Bell is rung.\n").Orange())
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
@@ -145,7 +145,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_COPPER_GOLEM_STATUES = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_COPPER_GOLEM_STATUES,
         () -> new UiTxt("Static Copper Golem Statue models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Copper Golem Statues with a static model to improve performance.\n"))
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
@@ -153,7 +153,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> STATIC_LECTERNS = new ClientFeature<>(
         AltTexturesServerFeatureSet.STATIC_LECTERNS,
         () -> new UiTxt("Static Lectern models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Lecterns with a static model to improve performance.\n"))
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
@@ -161,7 +161,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> OPTIMIZED_SHELVES = new ClientFeature<>(
         AltTexturesServerFeatureSet.OPTIMIZED_SHELVES,
         () -> new UiTxt("Optimized Shelf models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Optimizes shelf rendering logic to improve performance.\n"))
             .cat(new UiTxt("This doesn't cause visual changes.\n"))
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE.get())
@@ -169,7 +169,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> OPTIMIZED_CAMPFIRES = new ClientFeature<>(
         AltTexturesServerFeatureSet.OPTIMIZED_CAMPFIRES,
         () -> new UiTxt("Optimized Campfire models"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Optimizes Campfire and Soul Campfire rendering logic to improve performance.\n"))
             .cat(new UiTxt("This doesn't cause visual changes.\n"))
             .cat(Notices.RESOURCEPACK_COMPATIBILITY_NOTICE.get())
@@ -186,14 +186,14 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> REDSTONE_WIRE_3D = new ClientFeature<>(
         AltTexturesServerFeatureSet.REDSTONE_WIRE_3D,
         () -> new UiTxt("3D Redstone Wire"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the default flat texture of Redstone Wire with a three-dimensional model.\n"))
             .cat(new UiTxt("Implies [Minimal Redstone Wire]").yellow())
     );
     public static final ClientFeature<?> RAILS_3D = new ClientFeature<>(
         AltTexturesServerFeatureSet.RAILS_3D,
         () -> new UiTxt("3D Rails"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the default flat texture of Rails, Powered Rails, Activator Rails, and Detector Rails with a three-dimensional model.\n"))
             .cat(new UiTxt("Implies [Consistent sloped Rails]").yellow())
     );
@@ -205,7 +205,7 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
     public static final ClientFeature<?> CHAINS_3D = new ClientFeature<>(
         AltTexturesServerFeatureSet.CHAINS_3D,
         () -> new UiTxt("3D Chains"),
-        () -> new Txt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the default flat texture of Iron Chains and Copper Chains with a three-dimensional model.\n"))
             .cat(new UiTxt("This also affects the chains in Lanterns, Copper Lanterns, and Hanging Signs.\n").yellow())
             .cat(new UiTxt("3D Hanging Sign chains require [Static Sign Models]").yellow())
@@ -241,13 +241,13 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
 
 
     private static class Notices {
-        private static Supplier<Txt> RESOURCEPACK_INCOMPATIBILITY_NOTICE = () -> new UiTxt(
+        private static Supplier<UiTxt> RESOURCEPACK_INCOMPATIBILITY_NOTICE = () -> (UiTxt)new UiTxt(
             "This breaks custom textures and models defined by standard Resource Packs.").red()
         ;
-        private static Supplier<Txt> RESOURCEPACK_COMPATIBILITY_NOTICE = () -> new UiTxt(
+        private static Supplier<UiTxt> RESOURCEPACK_COMPATIBILITY_NOTICE = () -> (UiTxt)new UiTxt(
             "This feature is compatible with Resource Packs.").green()
         ;
-        private static Supplier<Txt> MOD_COMPATIBILITY_NOTICE = () -> new UiTxt(
+        private static Supplier<UiTxt> MOD_COMPATIBILITY_NOTICE = () -> (UiTxt)new UiTxt(
             "This feature is not compatible with other static block entity model mods.").red()
         ;
     }

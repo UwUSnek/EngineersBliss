@@ -8,6 +8,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -45,7 +46,7 @@ public class UiFeatureButton extends UiButton {
         // Call superconstructor in a safe way
         final boolean isToggleFeature = (feature.getServerFeature() instanceof ServerToggleFeature);
         final ServerToggleFeature _serverFeature = isToggleFeature ? (ServerToggleFeature)feature.getServerFeature() : null;
-        final Txt                 _text          = isToggleFeature ? getToggleText(feature, _serverFeature) : new Txt();
+        final UiTxt               _text          = isToggleFeature ? getToggleText(feature, _serverFeature) : new UiTxt();
         final Consumer<UiButton>  _pressCallback = isToggleFeature ? b -> onClick((UiFeatureButton)b, afterPressCallback) : null;
         super(x, y, w, h, _text, _pressCallback, '\0', TextAlignment.LEFT);
         this.clientFeature = feature;
@@ -76,28 +77,28 @@ public class UiFeatureButton extends UiButton {
 
     public static void onClick(final UiFeatureButton b, final @Nullable Consumer<UiButton> afterPressCallback) {
         final boolean newState = !ClientFeatureSync.getFeatureB(b.getServerFeature());
-        b.setMessage(getToggleText(b.getClientFeature(), newState).get());
+        b.setLabel(getToggleText(b.getClientFeature(), newState));
         ClientFeatureSync.setFeature(b.getServerFeature(), newState);
         if(afterPressCallback != null) afterPressCallback.accept(b);
         b.setFocused(false);
     }
 
     /**
-     * Creates a Txt with format "<feature_name>: [ON/OFF]" based on the provided state.
+     * Creates a UiTxt with format "<feature_name>: [ON/OFF]" based on the provided state.
      * @param feature The toggle feature.
      * @param state The state to display. True for ON, false for OFF.
-     * @return The created Txt.
+     * @return The created UiTxt.
      */
-    public static Txt getToggleText(final ClientFeature<?> feature, final boolean state) {
-        return feature.calcName().cat(": " + (state ? "ON" : "OFF"));
+    public static UiTxt getToggleText(final ClientFeature<?> feature, final boolean state) {
+        return (UiTxt)feature.calcName().cat(": " + (state ? "ON" : "OFF"));
     }
 
     /**
-     * Creates a Txt with format "<feature_name>: [ON/OFF]" based on the current client-side state of the specified feature.
+     * Creates a UiTxt with format "<feature_name>: [ON/OFF]" based on the current client-side state of the specified feature.
      * @param feature The toggle feature.
-     * @return The created Txt.
+     * @return The created UiTxt.
      */
-    public static Txt getToggleText(final ClientFeature<?> feature, final ServerToggleFeature stf) {
+    public static UiTxt getToggleText(final ClientFeature<?> feature, final ServerToggleFeature stf) {
         return getToggleText(feature, ClientFeatureSync.getFeatureB(stf));
     }
 }

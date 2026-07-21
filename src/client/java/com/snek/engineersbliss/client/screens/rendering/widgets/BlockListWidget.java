@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Checkbox;
@@ -11,6 +12,8 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -149,17 +152,15 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+        final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
 
         // draw header above list
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        // graphics.text(minecraft.font, new UiTxt("Block"  ).get(), rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(Fonts.monospace(), "Block"  , rowLeft, headerY, 0xFFAAAAAA);
-        // graphics.text(minecraft.font, new UiTxt("Enable" ).get(), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(Fonts.monospace(), "Enable" , rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        // graphics.text(minecraft.font, new UiTxt("Isolate").get(), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
-        graphics.text(Fonts.monospace(), "Isolate", rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Block"  , rowLeft, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Enable" , rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Isolate", rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
@@ -176,7 +177,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
                     tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" #" + tag.location()).gray().get().getVisualOrderText()))
                 );
-                graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+                graphics.tooltip(font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
         }
     }
@@ -204,9 +205,10 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
         public Entry(final Block block) {
+            final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
             this.block = block;
-            this.enableBox  = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
-            this.isolateBox = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
+            this.enableBox  = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 

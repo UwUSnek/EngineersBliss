@@ -4,6 +4,7 @@ import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeT
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.UiSteppedFeatureSlider;
@@ -92,7 +93,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
         {
             final String titleString = "TEST //TODO remove";
-            rightSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            rightSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         }
     }
 }
