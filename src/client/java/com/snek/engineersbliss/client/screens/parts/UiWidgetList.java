@@ -16,6 +16,8 @@ import net.minecraft.client.renderer.RenderPipelines;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import com.snek.engineersbliss.client.mixin.accessors.AbstractScrollAreaAccessor;
 import com.snek.engineersbliss.client.utils.Layout;
 
 
@@ -31,6 +33,10 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         super(Minecraft.getInstance(), width, height, y, itemHeight);
         setX(x);
     }
+
+
+
+
     @Override
     protected boolean entriesCanBeSelected() {
         return false;
@@ -47,6 +53,11 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         boolean r = false;
         for(final Entry c : children()) r = r || c.charTyped(event);
         return r;
+    }
+
+    @Override
+    protected double scrollRate() {
+        return super.scrollRate() * 2d;
     }
 
     //! For whatever reason, AbstractSelectionList's getHovered is PROTECTED but also FINAL??? so it cannot be called by external classes.
@@ -88,27 +99,71 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
 
 
-    @Override
-    public int getRowWidth() {
-        return this.width;
-    }
+
+
 
     @Override
     protected void extractListBackground(final GuiGraphicsExtractor graphics) {
         graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorSolid);
     }
 
+
+
+
+
+    //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its private.
+    //! So scrollAmount add 2px from to re-align the elemtns.
+    //! In Vanilla, getFirstEntryY is always used with scrollAmount.
+    //! setScrollAmount compensates for scrollAmount so scrolling down doesn't get messed up.
     @Override
     public double scrollAmount() {
         return super.scrollAmount() + 2.0;
-        //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its private.
-        //! So scrollAmount add 2px from to re-align the elemtns.
-        //! In Vanilla, getFirstEntryY is always used with scrollAmount.
+    }
+    @Override
+    public void setScrollAmount(double scrollAmount) {
+        super.setScrollAmount(scrollAmount - 2.0);
+    }
+
+
+
+    @Override
+    protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
+        int scrollBarX     = this.scrollBarX();
+        int scrollerHeight = this.scrollerHeight();
+        int scrollerY      = this.scrollBarY();
+        int barWidth       = this.scrollbarWidth();
+
+
+        // If there are hidden elements
+        if(scrollable()) {
+
+            // Draw track
+            graphics.fill(scrollBarX, getY(), scrollBarX + barWidth, getBottom(), Layout.bgColorSolid);
+
+            // Draw thumb
+            final boolean hovered = isOverScrollbar(mouseX, mouseY);
+            final int thumbColor = hovered ? Layout.fgColor : Layout.bgColorActive | 0xFF000000;
+            graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, thumbColor);
+            if(isOverScrollbar(mouseX, mouseY)) {
+                graphics.requestCursor(((AbstractScrollAreaAccessor)this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+
+                // Draw hover overlay
+                graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.bgColorActive);
+            }
+        }
+    }
+
+
+
+
+    @Override
+    public int getRowWidth() {
+        return this.width - this.scrollbarWidth();
     }
 
     @Override
     protected int scrollBarX() {
-        return width;
+        return getX() + width - scrollbarWidth();
     }
 
     @Override
@@ -119,9 +174,11 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
     //! Override lets clicks through when they don't hit a sub element
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        final boolean r = super.isMouseOver(mouseX, mouseY);
-        if(r) for(final var c : children()) {
-            if(c.isMouseOver(mouseX, mouseY)) return true;
+        if(super.isMouseOver(mouseX, mouseY)) {
+            if(this.isOverScrollbar(mouseX, mouseY)) return true;
+            else for(final var c : children()) {
+                if(c.isMouseOver(mouseX, mouseY)) return true;
+            }
         }
         return false;
     }
