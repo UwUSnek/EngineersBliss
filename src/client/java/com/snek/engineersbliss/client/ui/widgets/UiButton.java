@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -106,7 +107,7 @@ public class UiButton extends Button {
 
 
         // Draw label
-        final Font font = Minecraft.getInstance().font;
+        final Font font = Fonts.monospace();
         final int textX = getX() + (int)(height * labelOffset);
         final int textY = getY() + (height - font.lineHeight) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;

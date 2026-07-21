@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
+import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
@@ -153,9 +154,12 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        graphics.text(minecraft.font, new UiTxt("Block"  ).get(), rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, new UiTxt("Enable" ).get(), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, new UiTxt("Isolate").get(), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        // graphics.text(minecraft.font, new UiTxt("Block"  ).get(), rowLeft, headerY, 0xFFAAAAAA);
+        graphics.text(Fonts.monospace(), "Block"  , rowLeft, headerY, 0xFFAAAAAA);
+        // graphics.text(minecraft.font, new UiTxt("Enable" ).get(), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(Fonts.monospace(), "Enable" , rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        // graphics.text(minecraft.font, new UiTxt("Isolate").get(), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(Fonts.monospace(), "Isolate", rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
