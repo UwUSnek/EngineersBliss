@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens.parts;
+package com.snek.engineersbliss.client.ui.widgets;
 
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.AbstractWidget;

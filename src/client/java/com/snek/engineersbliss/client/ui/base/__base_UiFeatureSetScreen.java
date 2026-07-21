@@ -1,13 +1,14 @@
-package com.snek.engineersbliss.client.screens.base;
+package com.snek.engineersbliss.client.ui.base;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.screens.parts.TextAlignment;
-import com.snek.engineersbliss.client.screens.parts.UiButton;
-import com.snek.engineersbliss.client.screens.parts.UiFeatureButton;
-import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
-import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.widgets.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -15,7 +16,6 @@ import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.utils.Txt;
 
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.resources.Identifier;
@@ -53,8 +53,10 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
 
 
     // Parent feature set and constructor
-    protected __base_UiFeatureSetScreen() {
+    protected final __base_ClientFeatureSet<?> featureSet;
+    protected __base_UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
         super();
+        this.featureSet = featureSet;
     }
 
 
@@ -69,6 +71,9 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         // Add left sidebar
         leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT);
         addRenderableWidget(leftSidebar);
+        final Txt titleText = featureSet.calcName();
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+
 
 
         // Add right sidebar

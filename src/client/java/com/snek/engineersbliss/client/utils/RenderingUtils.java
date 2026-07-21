@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.screens.parts.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;

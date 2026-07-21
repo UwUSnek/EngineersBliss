@@ -1,9 +1,10 @@
-package com.snek.engineersbliss.client.screens.parts;
+package com.snek.engineersbliss.client.ui.widgets;
 
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;

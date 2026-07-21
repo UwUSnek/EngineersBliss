@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens.parts;
+package com.snek.engineersbliss.client.ui.widgets;
 
 import com.snek.engineersbliss.client.utils.Layout;
 

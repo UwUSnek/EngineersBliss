@@ -3,9 +3,9 @@ package com.snek.engineersbliss.client.screens.rendering;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.widgets.UiEditBox;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
-import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
-import com.snek.engineersbliss.client.screens.parts.UiEditBox;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 

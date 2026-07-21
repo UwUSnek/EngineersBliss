@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens.parts;
+package com.snek.engineersbliss.client.ui.data_types;
 
 public enum TextAlignmentY {
     TOP,

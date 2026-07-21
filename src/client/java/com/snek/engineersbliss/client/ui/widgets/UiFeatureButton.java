@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.screens.parts;
+package com.snek.engineersbliss.client.ui.widgets;
 
 import java.util.function.Consumer;
 
@@ -7,10 +7,10 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.utils.Txt;
 
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.resources.Identifier;
 
 
@@ -100,15 +100,4 @@ public class UiFeatureButton extends UiButton {
     public static Txt getToggleText(final ClientFeature<?> feature, final ServerToggleFeature stf) {
         return getToggleText(feature, ClientFeatureSync.getFeatureB(stf));
     }
-
-
-    // /**
-    //  * Toggles a toggle feature and its button.
-    //  * @param feature The toggle feature to toggle.
-    //  * @param b
-    //  */
-    // //FIXME remove and move all the logic to UiToggleFeatureButton
-    // //FIXME add a custom UiSteppedFeatureSlider
-    // //FIXME add a custom UiAnalogueFeatureSlider
-    // public static void toggleFeature(final ClientFeature<?> feature, final Button b) {
 }

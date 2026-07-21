@@ -19,12 +19,12 @@ import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
-import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
-import com.snek.engineersbliss.client.screens.parts.TextAlignment;
-import com.snek.engineersbliss.client.screens.parts.UiButton;
-import com.snek.engineersbliss.client.screens.parts.UiSpacer;
-import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
-import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.widgets.PlayerMannequin;
+import com.snek.engineersbliss.client.ui.widgets.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -51,7 +51,6 @@ import net.minecraft.resources.Identifier;
 public class PauseScreenMixin extends Screen {
     private static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
     private static final int BUTTON_MARGIN = Layout.BORDER_HEIGHT;
-    private static final int BUTTON_SPACING = BUTTON_HEIGHT + BUTTON_MARGIN;
 
 
     // Vanilla button dimensions and position. Calculated before any custom element is added.
