@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui.font;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -34,25 +35,45 @@ public class Fonts {
 
     // All Font instances by name. One instance for each scale.
     //! Scale advanced by FONT_SCALE_STEP each index.
-    private static final List<@Nullable Font> monoMediumFonts = new ArrayList<>(FONT_SIZES_NUMBER);
-    private static final List<@Nullable Font>    uiLightFonts = new ArrayList<>(FONT_SIZES_NUMBER);
-    private static final List<@Nullable Font>  uiRegularFonts = new ArrayList<>(FONT_SIZES_NUMBER);
-    private static final List<@Nullable Font>     uiBoldFonts = new ArrayList<>(FONT_SIZES_NUMBER);
+    //! Default font is stored in the Minecraft instance.
+    private static final List<@Nullable Font> monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Font>    uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Font>  uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Font>     uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
 
 
 
-    // Font getters
+    /**
+     * The default font.
+     * This usually maps to the pixellated Minecraft font, but resourcepacks can override it.
+     */
+    public static final class _default {
+        private _default() {}
+        public static FontFamily medium = (final float scaleMultiplier) -> { return Minecraft.getInstance().font; };
+    }
+
+    /**
+     * A monospace font. All characters have the same width.
+     */
     public static final class mono {
         private mono() {}
-        public static Font  medium(final float scaleMultiplier) { return createFontIfNeeded(monoMediumFonts, "mono_medium", scaleMultiplier); }
+        public static FontFamily medium = (final float scaleMultiplier) -> { return createFontIfNeeded(monoMediumFonts, "mono_medium", scaleMultiplier); };
     }
+
+    /**
+     * The default font for Engineer's Bliss UIs. Not monospace.
+     */
     public static final class ui {
         private ui() {}
-        public static Font   light(final float scaleMultiplier) { return createFontIfNeeded(uiLightFonts,    "ui_light",    scaleMultiplier); }
-        public static Font regular(final float scaleMultiplier) { return createFontIfNeeded(uiRegularFonts,  "ui_regular",  scaleMultiplier); }
-        public static Font    bold(final float scaleMultiplier) { return createFontIfNeeded(uiBoldFonts,     "ui_bold",     scaleMultiplier); }
+        public static FontFamily   light = (final float scaleMultiplier) -> { return createFontIfNeeded(uiLightFonts,    "ui_light",    scaleMultiplier); };
+        public static FontFamily regular = (final float scaleMultiplier) -> { return createFontIfNeeded(uiRegularFonts,  "ui_regular",  scaleMultiplier); };
+        public static FontFamily    bold = (final float scaleMultiplier) -> { return createFontIfNeeded(uiBoldFonts,     "ui_bold",     scaleMultiplier); };
     }
+
+
+
+
 
 
 
