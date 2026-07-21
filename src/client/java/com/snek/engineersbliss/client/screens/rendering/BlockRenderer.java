@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 
@@ -144,8 +145,9 @@ public class BlockRenderer {
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
 
-        final @NotNull FontFamily fontFamily = Fonts.ui.regular;
-        graphics.text(fontFamily.get(scale).getFont(), new UiTxt(block.getName(), fontFamily, scale).get().getVisualOrderText(), 0, 0, color);
+        // Draw name
+        final @NotNull UiTxt text = new UiTxt(block.getName(), Fonts.ui.bold, scale);
+        RenderingUtils.extractTxt(graphics, text, 0, 0, color, false);
 
         // Pop pose
         graphics.pose().popMatrix();

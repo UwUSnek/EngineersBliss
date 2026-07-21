@@ -176,11 +176,7 @@ public class RenderingScreen extends __base_UiScreen {
         if(tabPressed) return;
 
         super.extractRenderState(graphics, mouseX, mouseY, delta);
-        graphics.centeredText(font, this.title, this.width / 2, 20, 0xFFFFFFFF);
-//FIXME
-//FIXME
-//FIXME
-//FIXME
+
 
         // Draw find syntax instructions
         final String[] syntaxInstructions = {
