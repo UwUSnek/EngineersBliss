@@ -156,6 +156,8 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
 
 
+    //TODO something's wrong here, it seems like the scrollbar is wider than it should be and the row widths is also a few pixels more than it should be.
+    //TODO the elements get cut by a few pixels on the right side when the scroll bar is visible
     @Override
     public int getRowWidth() {
         return this.width - this.scrollbarWidth();

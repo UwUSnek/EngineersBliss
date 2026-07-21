@@ -15,6 +15,7 @@ import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.resources.Identifier;
@@ -36,10 +37,12 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
     protected static UiWidgetList leftSidebar;
     protected static UiWidgetList rightSidebar;
     protected static UiTextWidget descriptionWidget;
+    protected static UiTextWidget descriptionNameWidget;
     public static final float LEFT_SIDEBAR_WIDTH = 0.25f;
     public static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
-    public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH - 0.01f;
-    public static final float DESCRIPTION_HEIGHT = 0.2f;
+    public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH;
+    public static final float DESCRIPTION_HEIGHT = 0.15f;
+    public static final float DESCRIPTION_NAME_HEIGHT = 0.05f;
     public static final float PREVIEW_WIDTH = 0.25f;
 
     // Hover data cache
@@ -62,21 +65,33 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
     protected void init() {
         super.init();
 
+
+        // Add left sidebar
         leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT);
         addRenderableWidget(leftSidebar);
 
+
+        // Add right sidebar
         final int rightSidebarWidth = (int)(width * RIGHT_SIDEBAR_WIDTH);
         rightSidebar = new UiWidgetList(rightSidebarWidth, height, width - rightSidebarWidth, 0, BUTTON_HEIGHT);
         addRenderableWidget(rightSidebar);
 
 
+        // Add description name and text elements
+        //! Preview is added dynamically
         final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
-        final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
         final int descriptionX = (width - descriptionWidth) / 2;
+        final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
+        final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
+        descriptionNameWidget = new UiTextWidget(
+            descriptionX, height - descriptionHeight - descriptionNameHeight, descriptionWidth, descriptionNameHeight,
+            new Txt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+        );
         descriptionWidget = new UiTextWidget(
             descriptionX, height - descriptionHeight, descriptionWidth, descriptionHeight,
-            new Txt(), TextAlignment.LEFT, Layout.fgColor, true
+            new Txt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         );
+        addRenderableWidget(descriptionNameWidget);
         addRenderableWidget(descriptionWidget);
     }
 
@@ -98,31 +113,27 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
 
 
 
-        // Calculate feature preview position
-        final float ratio = 9f / 4f; //! Vertical 4:9 for 1080x480 (1920/4) resolution
-        final int w = (int)(width * PREVIEW_WIDTH);
-        final int h = (int)(w * ratio);
-        final int hPlaceholder = w;
-        final int xOff = (width  - w) / 2 - w / 2 ;
-        final int xOn  = (width  - w) / 2 + w / 2 ;
-        final int y    = (height - h) / 2;
-        final int yPlaceholder = (height - hPlaceholder) / 2;
-
-
-
-
         // Find the hovered feature and calculate the remaining preview data
         final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
-        if(entry == null) {
-            hoveredPreviewAtlasIds = null;
-            lastHoveredButton = null;
-            descriptionWidget.setLabel(new Txt());
-        }
-        else {
+        if(entry != null) {
+
+
+            // Calculate feature preview position
+            final float ratio = 9f / 4f; //! Vertical 4:9 for 1080x480 (1920/4) resolution
+            final int w = (int)(width * PREVIEW_WIDTH);
+            final int h = (int)(w * ratio);
+            final int hPlaceholder = w;
+            final int xOff = (width  - w) / 2 - w / 2 ;
+            final int xOn  = (width  - w) / 2 + w / 2 ;
+            final int y    = (height - h) / 2;
+            final int yPlaceholder = (height - hPlaceholder) / 2;
+
+
+            // Draw preview based on element type
             final AbstractWidget widget = entry.getWidget();
-            //TODO maybe draw one preview for each setting step? or something like that? idk yet
             if(widget instanceof UiFeatureButton button) {
                 if(button != lastHoveredButton) {
+                    //TODO maybe draw one preview for each setting step? or something like that? idk yet
                     lastHoveredButton = button;
                     final __base_ServerFeature<?> serverFeature = button.getServerFeature();
                     final String featureSetId = serverFeature.getFeatureSet().getId();
@@ -134,9 +145,15 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                         Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn)
                     };
 
+                    // Update description name text
+                    final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), 2f);
+                    descriptionNameWidget.setLabel(descriptionName);
+                    descriptionNameWidget.setBgColor(Layout.bgColorSolid);
+
                     // Update description text
                     final Txt description = button.getClientFeature().calcDesc();
                     descriptionWidget.setLabel(description);
+                    descriptionWidget.setBgColor(Layout.bgColorSolid);
                 }
 
 
@@ -171,6 +188,22 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                     }
                 }
             }
+            else {
+                hoveredPreviewAtlasIds = null;
+                lastHoveredButton = null;
+                descriptionNameWidget.setLabel(new Txt());
+                descriptionNameWidget.setBgColor(0x0);
+                descriptionWidget.setLabel(new Txt());
+                descriptionWidget.setBgColor(0x0);
+            }
+        }
+        else {
+            hoveredPreviewAtlasIds = null;
+            lastHoveredButton = null;
+            descriptionNameWidget.setLabel(new Txt());
+            descriptionNameWidget.setBgColor(0x0);
+            descriptionWidget.setLabel(new Txt());
+            descriptionWidget.setBgColor(0x0);
         }
 
 
