@@ -41,10 +41,10 @@ public class UiTxt extends Txt {
     public UiTxt(final @NotNull MutableComponent s, final FontFamily fontFamily) { this(s, fontFamily, 1f); }
     public UiTxt(final @NotNull Component        s, final FontFamily fontFamily) { this(s, fontFamily, 1f); }
 
-    public UiTxt(                                   final float scale) { this(   Fonts.ui.regular, scale); }
-    public UiTxt(final @NotNull String           s, final float scale) { this(s, Fonts.ui.regular, scale); }
-    public UiTxt(final @NotNull MutableComponent s, final float scale) { this(s, Fonts.ui.regular, scale); }
-    public UiTxt(final @NotNull Component        s, final float scale) { this(s, Fonts.ui.regular, scale); }
+    public UiTxt(                                   final float scale) { this(   Fonts.ui.light, scale); }
+    public UiTxt(final @NotNull String           s, final float scale) { this(s, Fonts.ui.light, scale); }
+    public UiTxt(final @NotNull MutableComponent s, final float scale) { this(s, Fonts.ui.light, scale); }
+    public UiTxt(final @NotNull Component        s, final float scale) { this(s, Fonts.ui.light, scale); }
 
     public UiTxt(                                   final FontFamily fontFamily, final float scale) { super( ); this.fontFamily = fontFamily; this.scale = scale; }
     public UiTxt(final @NotNull String           s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }

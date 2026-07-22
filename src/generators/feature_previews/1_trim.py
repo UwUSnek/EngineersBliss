@@ -32,6 +32,10 @@ LOOP_TARGET_PAIRS = [
         "creative_tweaks/disable_bubble_column_drag_on.mov",
         "creative_tweaks/disable_bubble_column_drag_off.mov"
     ),
+    (
+        "creative_tweaks/disable_freezing_effect_on.mov",
+        "creative_tweaks/disable_freezing_effect_off.mov"
+    ),
 ]
 
 

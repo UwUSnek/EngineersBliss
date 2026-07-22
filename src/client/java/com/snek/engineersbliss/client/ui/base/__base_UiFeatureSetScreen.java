@@ -77,7 +77,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         addRenderableWidget(leftSidebar);
         final UiTxt titleText = featureSet.calcName();
         leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.getString().toLowerCase(), Fonts.mono.medium, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), Fonts.ui.light, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
 
         // Add right sidebar
