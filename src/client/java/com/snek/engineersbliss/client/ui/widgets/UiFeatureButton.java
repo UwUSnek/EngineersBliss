@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.ui.widgets;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
@@ -10,7 +11,7 @@ import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
-import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.resources.Identifier;
 
@@ -41,35 +42,29 @@ public class UiFeatureButton extends UiButton {
     public UiFeatureButton(final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
         this(x, y, w, h, feature, null);
     }
+
+
     public UiFeatureButton(final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
 
-        // Call superconstructor in a safe way
-        final boolean isToggleFeature = (feature.getServerFeature() instanceof ServerToggleFeature);
-        final ServerToggleFeature _serverFeature = isToggleFeature ? (ServerToggleFeature)feature.getServerFeature() : null;
-        final UiTxt               _text          = isToggleFeature ? getToggleText(feature, _serverFeature) : new UiTxt();
-        final Consumer<UiButton>  _pressCallback = isToggleFeature ? b -> onClick((UiFeatureButton)b, afterPressCallback) : null;
-        super(x, y, w, h, _text, _pressCallback, '\0', TextAlignment.LEFT);
-        this.clientFeature = feature;
-        this.serverFeature = _serverFeature;
-
-
-        // Log error if needed
-        if(!isToggleFeature) {
-            EngineerSBliss.LOGGER.error(
-                "{} created with a server feature of incompatible type: {}",
-                getClass().getName(),
-                feature.getServerFeature().getId(),
-                new Throwable()
+        // Throw exception if not a ServerToggleFeature
+        final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();
+        if(!(genericServerFeature instanceof ServerToggleFeature)) {
+            throw new IllegalArgumentException(
+                "UiFeatureButton created with a server feature of incompatible type: " +
+                genericServerFeature.getClass().getName()
             );
         }
 
+        // Proceed with normal initialization
+        final ServerToggleFeature _serverFeature = (ServerToggleFeature)genericServerFeature;
+        super(x, y, w, h, getToggleText(feature, _serverFeature), b -> onClick((UiFeatureButton)b, afterPressCallback), '\0', TextAlignment.LEFT);
+        this.clientFeature = feature;
+        this.serverFeature = _serverFeature;
 
         // Set up sprite
-        if(serverFeature != null) {
-            final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
-            final Identifier bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath);
-            this.withSpriteBg(bgSpriteId, 1f, 1f);
-        }
+        final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
+        final Identifier bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath);
+        this.withSpriteBg(bgSpriteId, 1f, 1f);
     }
 
 

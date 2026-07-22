@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.mixin.accessors.FontAccessor;
+import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GlyphSource;
 import net.minecraft.client.gui.font.glyphs.EffectGlyph;
 import net.minecraft.network.chat.FontDescription;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 
 
@@ -24,7 +27,7 @@ import net.minecraft.resources.Identifier;
 
 
 public class Fonts {
-    private static final int   FONT_MAX_SIZE  = 10;                                                 // Maximum available font size
+    private static final int   FONT_MAX_SIZE   = 10;                                                // Maximum available font size
     private static final float FONT_SCALE_STEP = 0.25f;                                             // Increment between adjacent font sizes
     private static final float FONT_UNIT_RATIO = 1f / FONT_SCALE_STEP;                              // The inverse of the step
     private static final int   FONT_SIZES_NUMBER = Math.round(FONT_MAX_SIZE * FONT_UNIT_RATIO);     // The number of available sizes for a font
@@ -33,53 +36,49 @@ public class Fonts {
 
 
 
-    // All ScaledFont instances by name. One instance for each scale.
+    // All Font instances by name. One instance for each scale.
     //! Scale advanced by FONT_SCALE_STEP each index.
-    private static            @Nullable ScaledFont      defaultFont = null;
-    private static final List<@Nullable ScaledFont> monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable ScaledFont>    uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable ScaledFont>  uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable ScaledFont>     uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static       List<@Nullable Pair<Font, FontDescription>>    defaultFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>> monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>    uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>  uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>     uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
 
 
 
-    /**
-     * The default font.
-     * This usually maps to the pixellated Minecraft font, but resourcepacks can override it.
-     */
+    /** The default font. This usually maps to the pixellated Minecraft font, but resourcepacks can override it. */
     public static final class _default {
         private _default() {}
-        public static FontFamily medium = (final float scaleMultiplier) -> {
-            if(defaultFont == null) {
-                defaultFont = new ScaledFont();
-            }
-            return defaultFont;
-        };
+        public static FontFamily medium = (final float scaleMultiplier) -> createScaledFont(defaultFonts, null, scaleMultiplier);
     }
 
-    /**
-     * A monospace font. All characters have the same width.
-     */
+    /** A monospace font. All characters have the same width. */
     public static final class mono {
         private mono() {}
-        public static FontFamily medium = (final float scaleMultiplier) -> { return createFontIfNeeded(monoMediumFonts, "mono_medium", scaleMultiplier); };
+        public static FontFamily medium = (final float scaleMultiplier) -> createScaledFont(monoMediumFonts, "mono_medium", scaleMultiplier);
     }
 
-    /**
-     * The default font for Engineer's Bliss UIs. Not monospace.
-     */
+    /** The default font for Engineer's Bliss UIs. Not monospace. */
     public static final class ui {
         private ui() {}
-        public static FontFamily   light = (final float scaleMultiplier) -> { return createFontIfNeeded(uiLightFonts,   "ui_light",   scaleMultiplier); };
-        public static FontFamily regular = (final float scaleMultiplier) -> { return createFontIfNeeded(uiRegularFonts, "ui_regular", scaleMultiplier); };
-        public static FontFamily    bold = (final float scaleMultiplier) -> { return createFontIfNeeded(uiBoldFonts,    "ui_bold",    scaleMultiplier); };
+        public static FontFamily   light = (final float scaleMultiplier) -> createScaledFont(uiLightFonts,   "ui_light",   scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(uiRegularFonts, "ui_regular", scaleMultiplier);
+        public static FontFamily    bold = (final float scaleMultiplier) -> createScaledFont(uiBoldFonts,    "ui_bold",    scaleMultiplier);
     }
 
 
 
 
 
+
+
+
+    private static ScaledFont createScaledFont(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier) {
+        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        final @NotNull Pair<Font, FontDescription> font = createFontIfNeeded(fontList, fontName, scaleMultiplier, guiScale);
+        return new ScaledFont(null, font.getFirst(), scaleMultiplier, guiScale * scaleMultiplier, font.getSecond());
+    }
 
 
 
@@ -87,26 +86,28 @@ public class Fonts {
      * Tries to fetch the correct font based on the provided name and scale multiplier and the current GUI Scale option.
      * Creates the font instance if it's not already available.
      * @param fontList The list to fetch the font instance from.
-     * @param fontName The name of the font (used to create the instance).
+     * @param fontName The name of the font (used to create the instance). Uses the default Minecraft font if null.
      * @param scaleMultiplier The scale multiplier.
-     * @return The existing or newly created ScaledFont instance.
+     * @return The existing or newly created Font instance and its FontDescription.
      */
-    private static final ScaledFont createFontIfNeeded(final List<@Nullable ScaledFont> fontList, final String fontName, final float scaleMultiplier) {
-        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+    private static Pair<Font, FontDescription> createFontIfNeeded(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier, final float guiScale) {
         final int fontIndex = getFontIndexForScale(scaleMultiplier, guiScale);
-        final @Nullable ScaledFont requestedFont = fontList.get(fontIndex);
+        final @Nullable Pair<Font, FontDescription> requestedFont = fontList.get(fontIndex);
         if(requestedFont != null) {
             return requestedFont;
         }
         else {
 
             // Fetch default provider from Minecraft and create a custom font description
-            final Font.Provider defaultProvider = ((FontAccessor)Minecraft.getInstance().font).getProvider();
-            final FontDescription fontDescription = new FontDescription.Resource(getFontIdForScale(fontName, scaleMultiplier, guiScale));
+            final @NotNull Font.Provider defaultProvider = ((FontAccessor)Minecraft.getInstance().font).getProvider();
+            final @NotNull FontDescription fontDescription = fontName == null
+                ? Style.EMPTY.getFont()
+                : new FontDescription.Resource(getFontIdForScale(fontName, scaleMultiplier, guiScale))
+            ;
 
             // Create the custom font provider.
             //! This returns custom glyphs but default effect.
-            Font.Provider provider = new Font.Provider() {
+            final @NotNull Font.Provider provider = new Font.Provider() {
                 @Override public GlyphSource glyphs(final FontDescription font) {
                     return defaultProvider.glyphs(fontDescription);
                 }
@@ -115,8 +116,8 @@ public class Fonts {
                 }
             };
 
-            // Create the new ScaledFont instance and update the list, then return it
-            final ScaledFont r = new ScaledFont(provider, 0f, guiScale * scaleMultiplier, fontDescription);
+            // Create the new Font instance and update the list, then return it
+            final @NotNull Pair<Font, FontDescription> r = Pair.from(new Font(provider), fontDescription);
             fontList.set(fontIndex, r);
             return r;
         }

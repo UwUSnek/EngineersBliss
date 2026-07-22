@@ -3,8 +3,6 @@ package com.snek.engineersbliss.client.screens.rendering;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.ui.font.FontFamily;
-import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
@@ -58,10 +56,7 @@ public class BlockRenderer {
             return;
         }
 
-        // final int atlasIdx = blockIdx / SHEETS_PER_ATLAS;
-        // final int localIdx = blockIdx % SHEETS_PER_ATLAS;
         final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
-
         if(!TextureAtlasTracker.isTextureReady(textureId)) {
             graphics.blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
         }
@@ -138,19 +133,9 @@ public class BlockRenderer {
      * @param height The height of each line
      */
     public static void extractBlockName(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int color, final int height) {
-
-        // Set up pose
         final float scale = (float)height / DEFAULT_ITEM_SPRITE_SIZE;
-        graphics.pose().pushMatrix();
-        graphics.pose().translate(x, y);
-        graphics.pose().scale(scale, scale);
-
-        // Draw name
-        final @NotNull UiTxt text = new UiTxt(block.getName(), Fonts.ui.bold, scale);
-        RenderingUtils.extractTxt(graphics, text, 0, 0, color, false);
-
-        // Pop pose
-        graphics.pose().popMatrix();
+        final @NotNull UiTxt text = new UiTxt(block.getName(), scale);
+        RenderingUtils.extractTxt(graphics, text, x, y, color, false);
     }
 
 

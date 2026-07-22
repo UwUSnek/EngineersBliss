@@ -1,11 +1,10 @@
 package com.snek.engineersbliss.client.ui.widgets;
 
 import com.snek.engineersbliss.client.ui.font.Fonts;
-import com.snek.engineersbliss.client.utils.Layout;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 
 
@@ -16,7 +15,7 @@ public class UiEditBox extends EditBox {
         super(Fonts.ui.regular.get(1f).getFont(), x, y, width, height, narration);
         this.setTextShadow(false);
         this.addFormatter((text, offset) ->
-            FormattedCharSequence.forward(text, Layout.textStyleForScale(Layout.FONT_NAME_UI_REGULAR))
+            FormattedCharSequence.forward(text, Style.EMPTY.withFont(Fonts.ui.regular.get(1f).getDescription()))
         );
     }
 }

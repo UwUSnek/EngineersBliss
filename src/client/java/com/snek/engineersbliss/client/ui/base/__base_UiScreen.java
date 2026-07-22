@@ -9,7 +9,6 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.widgets.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
@@ -103,13 +102,7 @@ public abstract class __base_UiScreen extends Screen {
         return r;
     }
 
-    // protected static UiButton createButton(final Txt label, final Txt details, final Consumer<Button> action, char keybind, final @Nullable String spriteName, final @Nullable String featureId) {
-    //     final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
-    //     final UiButton r = new UiButton(label, b -> { action.accept(b); b.setFocused(false); }, keybind, TextAlignment.LEFT, featureId);
-    //     r.withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
-    //     r.setTooltip(Tooltip.create(details.get()));
-    //     return r;
-    // }
+
     @Override
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;

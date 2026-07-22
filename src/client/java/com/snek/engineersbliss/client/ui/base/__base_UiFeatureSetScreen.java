@@ -44,8 +44,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
     public static final float LEFT_SIDEBAR_WIDTH = 0.25f;
     public static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
     public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH;
-    public static final float DESCRIPTION_HEIGHT = 0.15f;
-    public static final float DESCRIPTION_NAME_HEIGHT = 0.05f;
+    public static final float DESCRIPTION_HEIGHT = 0.1f;
+    public static final float DESCRIPTION_NAME_HEIGHT = 0.1f;
     public static final float PREVIEW_WIDTH = 0.25f;
 
     // Hover data cache
@@ -75,7 +75,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT);
         addRenderableWidget(leftSidebar);
         final UiTxt titleText = featureSet.calcName();
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.getString().toLowerCase(), Fonts.mono.medium, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
 
         // Add right sidebar
@@ -153,7 +153,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                     };
 
                     // Update description name text
-                    final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), 2f);
+                    final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), Fonts.ui.bold, 2f);
                     descriptionNameWidget.setLabel(descriptionName);
                     descriptionNameWidget.setBgColor(Layout.bgColorSolid);
 

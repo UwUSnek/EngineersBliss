@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.ui.font;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.FontDescription;
@@ -37,7 +39,8 @@ public class ScaledFont {
 
 
 
-    private ScaledFont(final Object __unused, Font font, final float scale, final float glyphSize, final FontDescription description) {
+    @SuppressWarnings("java:S1172")
+    public ScaledFont(final @Nullable Object __unused, Font font, final float scale, final float glyphSize, final FontDescription description) {
         this.font = font;
         this.scale = scale;
         this.glyphSize = glyphSize;
