@@ -273,8 +273,8 @@ public class PauseScreenMixin extends Screen {
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
 
         // Calculate text dimensions and position
-        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()), Fonts.ui.bold, Layout.HEADER_SCALE);
-        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds));
+        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()),             Fonts.smooth.regular, Layout.HEADER_SCALE);
+        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds), Fonts.smooth.light);
         int textCenterX = (x0 + x1) / 2;
         int nameY = clusterTop - 48;
         int titleY = nameY + playerName.getScaledFont().getLineHeight() + 2;
