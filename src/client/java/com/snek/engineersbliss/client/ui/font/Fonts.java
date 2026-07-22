@@ -38,11 +38,18 @@ public class Fonts {
 
     // All Font instances by name. One instance for each scale.
     //! Scale advanced by FONT_SCALE_STEP each index.
-    private static       List<@Nullable Pair<Font, FontDescription>>    defaultFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>> monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>>    uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>>  uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>>     uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+
+    private static       List<@Nullable Pair<Font, FontDescription>>       defaultFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>    monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+
+    private static final List<@Nullable Pair<Font, FontDescription>>   smoothLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>> smoothRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>    smoothBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+
+    private static final List<@Nullable Pair<Font, FontDescription>>       uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>     uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>        uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+
 
 
 
@@ -57,6 +64,14 @@ public class Fonts {
     public static final class mono {
         private mono() {}
         public static FontFamily medium = (final float scaleMultiplier) -> createScaledFont(monoMediumFonts, "mono_medium", scaleMultiplier);
+    }
+
+    /** A smoother, more symmetrical font than the default UI font. */
+    public static final class smooth {
+        private smooth() {}
+        public static FontFamily   light = (final float scaleMultiplier) -> createScaledFont(smoothLightFonts,   "smooth_light",   scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(smoothRegularFonts, "smooth_regular", scaleMultiplier);
+        public static FontFamily    bold = (final float scaleMultiplier) -> createScaledFont(smoothBoldFonts,    "smooth_bold",    scaleMultiplier);
     }
 
     /** The default font for Engineer's Bliss UIs. Not monospace. */
