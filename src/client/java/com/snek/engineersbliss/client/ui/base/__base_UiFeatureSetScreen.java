@@ -11,6 +11,7 @@ import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
 import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -75,6 +76,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT);
         addRenderableWidget(leftSidebar);
         final UiTxt titleText = featureSet.calcName();
+        leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
         leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.getString().toLowerCase(), Fonts.mono.medium, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
 

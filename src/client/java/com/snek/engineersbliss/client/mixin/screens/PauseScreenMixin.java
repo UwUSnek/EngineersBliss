@@ -183,6 +183,7 @@ public class PauseScreenMixin extends Screen {
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
+            leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
             leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Rendering
