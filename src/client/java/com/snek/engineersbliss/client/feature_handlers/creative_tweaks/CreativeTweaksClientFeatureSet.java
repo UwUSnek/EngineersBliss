@@ -25,6 +25,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
 
 
 
+    public static final ClientFeature<?> WALKING_SPEED = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.WALKING_SPEED,
+        () -> new UiTxt("Walking speed"),
+        () -> (UiTxt)new UiTxt()
+            .cat(new UiTxt("Controls your walking speed.\n"))
+            .cat(new UiTxt("Values represent multiples of the default walking speed."))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
     public static final ClientFeature<?> FLYING_SPEED = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.FLYING_SPEED,
         () -> new UiTxt("Flying speed"),

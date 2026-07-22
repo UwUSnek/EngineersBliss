@@ -187,7 +187,6 @@ def process_loop_pair(path_a: Path, path_b: Path, input_dir: Path, outdir: Path)
             out_path = outdir / rel.parent / f"{ path.stem }{ path.suffix }"
             out_path.parent.mkdir(parents=True, exist_ok=True)
             scale_video(path, out_path, out_w, out_h, TARGET_FPS)
-            log.append(f"    wrote { out_path } ({ w }x{ h } -> { out_w }x{ out_h }, untrimmed)")
         return "\n".join(log)
 
     mse_a = compute_mse_matrix(frames_a)
@@ -214,7 +213,6 @@ def process_loop_pair(path_a: Path, path_b: Path, input_dir: Path, outdir: Path)
         out_path = outdir / rel.parent / f"{ path.stem }{ path.suffix }"
         out_path.parent.mkdir(parents=True, exist_ok=True)
         cut_video(path, out_path, start, end, fps, out_w, out_h, TARGET_FPS)
-        log.append(f"    wrote { out_path }")
 
     return "\n".join(log)
 
@@ -233,7 +231,6 @@ def process_plain_file(path: Path, input_dir: Path, outdir: Path):
     out_path = outdir / rel
     out_path.parent.mkdir(parents=True, exist_ok=True)
     scale_video(path, out_path, out_w, out_h, TARGET_FPS)
-    log.append(f"  wrote { out_path }")
 
     return "\n".join(log)
 

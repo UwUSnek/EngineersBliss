@@ -38,7 +38,8 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         // Player properties
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(new UiTxt("Player properties", Fonts.ui.bold, Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (CreativeTweaksClientFeatureSet.FLYING_SPEED, CreativeTweaksClientHandler::onFlyingSpeedChange), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (CreativeTweaksClientFeatureSet.WALKING_SPEED, CreativeTweaksClientHandler::onWalkingSpeedChange), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (CreativeTweaksClientFeatureSet.FLYING_SPEED,  CreativeTweaksClientHandler:: onFlyingSpeedChange), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),   Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                Layout.BORDER_HEIGHT);

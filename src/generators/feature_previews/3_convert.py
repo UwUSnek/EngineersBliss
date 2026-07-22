@@ -162,8 +162,6 @@ def process_file(path: Path, input_dir: Path, outdir: Path):
         optimize_png(png_path)
         meta = write_mcmeta(png_path, cols, chunk_rows, chunk.shape[0], fps, width, height)
         size_kb = png_path.stat().st_size / 1024
-        log.append(f"  wrote { png_path } ({ chunk.shape[0] } frames, { cols } cols, {size_kb:.1f} KiB)")
-        log.append(f"  mcmeta: { json.dumps(meta['engineers-bliss.atlas']) }")
 
     return "\n".join(log)
 

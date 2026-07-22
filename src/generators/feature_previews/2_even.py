@@ -100,11 +100,9 @@ def process_pair(rel_dir: Path, base: str, states: dict, input_dir: Path, outdir
     elif on_dur < off_dur:
         pad_video(on_path, on_dst, on_info, target_duration)
         copy_video(off_path, off_dst)
-        log.append(f"  padded { on_path.name } to match { off_path.name }")
     else:
         pad_video(off_path, off_dst, off_info, target_duration)
         copy_video(on_path, on_dst)
-        log.append(f"  padded { off_path.name } to match { on_path.name }")
 
     return "\n".join(log)
 
