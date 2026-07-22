@@ -71,7 +71,7 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
         () -> new UiTxt()
             .cat(new UiTxt("Lets you open Chests, Trapped Chests, Ender Chests and Copper Chests even when they are below a solid block.\n"))
             .cat(new UiTxt("This also includes double chest variants.\n"))
-            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get()).cat("\n")
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get()).cat(new UiTxt("\n"))
             .cat(Notices.MULTIPLAYER_NOTICE.get()) //TODO actually check if this is not possible in multiplayer
     );
 
@@ -83,7 +83,7 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
         () -> new UiTxt("Phase through blocks"),
         () -> new UiTxt()
             .cat(new UiTxt("Lets you phase through blocks while flying, completely ignoring their collisions.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get()).cat("\n")
+            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get()).cat(new UiTxt("\n"))
             .cat(Notices.MULTIPLAYER_NOTICE.get())
     );
     public static final ClientFeature<?> PHASE_THROUGH_ENTITIES = new ClientFeature<>(
@@ -91,7 +91,7 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
         () -> new UiTxt("Phase through entities"),
         () -> new UiTxt()
             .cat(new UiTxt("Stops you from pushing and being pushed by other entities, even while not flying.\n"))
-            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get()).cat("\n")
+            .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get()).cat(new UiTxt("\n"))
             .cat(Notices.MULTIPLAYER_NOTICE.get())
     );
     public static final ClientFeature<?> DISABLE_FIRE_EFFECT = new ClientFeature<>(

@@ -22,15 +22,17 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
 
     public static ServerSteppedFeature<Float> FLYING_SPEED = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "flying_speed",
-        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0
+        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 4
+        //! Flying speed is fully client side
     ));
     public static ServerSteppedFeature<Float> WALKING_SPEED = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "walking_speed",
-        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0
+        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 4,
+        CreativeTweaksServerHandler::updateWalkingSpeed
     ));
     public static ServerSteppedFeature<Float> INTERACTION_DISTANCE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "reach_distance",
-        List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0,
+        List.of(5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0,
         CreativeTweaksServerHandler::updateInteractionDistance
     ));
     public static ServerSteppedFeature<Integer> INTERACTION_RADIUS = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
