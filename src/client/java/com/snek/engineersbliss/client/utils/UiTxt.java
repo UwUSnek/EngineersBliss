@@ -70,4 +70,9 @@ public class UiTxt extends Txt {
     public Txt substring(int start, int end) {
         return new UiTxt(super.substring(start, end).get(), getFontFamily(), getScale());
     }
+
+    /** Wrapper for Txt.cat that returns a UiTxt instead of a Txt. */
+    public UiTxt cat(final @NotNull UiTxt s) {
+        return (UiTxt)super.cat(s);
+    }
 }
