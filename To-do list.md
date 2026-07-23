@@ -71,6 +71,7 @@
 
 - **Creative mode tweaks**
   - ~~Control flying speed~~
+  - ~~Control walking speed~~
   - ~~Control reach distance~~
   - ~~Control interaction radius (click multiple blocks at once)~~
   - add in-game UI for these. display their current values with icons and such
