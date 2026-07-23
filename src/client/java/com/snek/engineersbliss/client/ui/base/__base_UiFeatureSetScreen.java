@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -77,7 +78,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         addRenderableWidget(leftSidebar);
         final UiTxt titleText = featureSet.calcName();
         leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), Fonts.ui.light, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
 
         // Add right sidebar
@@ -99,7 +100,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         descriptionWidget = new UiTextWidget(
             descriptionX, height - descriptionHeight, descriptionWidth, descriptionHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
-        );
+        ).withVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
         addRenderableWidget(descriptionWidget);
     }
@@ -155,7 +156,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
                     };
 
                     // Update description name text
-                    final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), Fonts.ui.bold, 2f);
+                    final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), 2f);
                     descriptionNameWidget.setLabel(descriptionName);
                     descriptionNameWidget.setBgColor(Layout.bgColorSolid);
 

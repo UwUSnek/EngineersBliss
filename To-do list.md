@@ -262,3 +262,7 @@
 
 
 - maybe add a "center crossair" feature in alt textures? Vanilla's crossair isnt centered
+
+
+
+- USE SLIDER FOR ALT TEXTURES FEATURES. overlay still images
