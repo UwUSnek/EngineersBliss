@@ -43,12 +43,9 @@ public abstract class CustomOutlinesMixin {
 
 
 
-    @Inject(
-        method = "extractBlockOutline",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    public void extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    @SuppressWarnings("unused")
+    @Inject(method = "extractBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
+    private void eb$extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
         if(!RenderFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
         if(RenderFilterHandler.getTargetHiddenBlocks()) return;
         customOutlineBlocks.clear();
@@ -62,8 +59,8 @@ public abstract class CustomOutlinesMixin {
 
         // Run custom outline logic if the first block is hidden
         ci.cancel();
-        final Vec3 start = camera.position();
-        final Vec3 look = Vec3.directionFromRotation(camera.xRot(), camera.yRot());
+        final Vec3 start = minecraft.player.getEyePosition();
+        final Vec3 look = minecraft.player.getViewVector(1.0f);
         final double reach = minecraft.player.blockInteractionRange();
         final Vec3 end = start.add(look.scale(reach));
 
@@ -94,12 +91,9 @@ public abstract class CustomOutlinesMixin {
 
 
 
-    @Inject(
-        method = "renderBlockOutline",
-        at = @At("HEAD"),
-        cancellable = true
-    )
-    public void renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    @SuppressWarnings("unused")
+    @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
+    private void eb$renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
         if(!RenderFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
         if(RenderFilterHandler.getTargetHiddenBlocks()) return;
         if(customOutlineBlocks.isEmpty()) return;

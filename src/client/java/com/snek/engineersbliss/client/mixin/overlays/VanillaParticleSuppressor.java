@@ -1,0 +1,43 @@
+package com.snek.engineersbliss.client.mixin.overlays;
+
+import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+
+
+
+
+@Mixin(ClientLevel.class)
+public class VanillaParticleSuppressor {
+
+    @SuppressWarnings("unused")
+    @Inject(method = "getMarkerParticleTarget", at = @At("HEAD"), cancellable = true, require = 1)
+	private void eb$getMarkerParticleTarget(final CallbackInfoReturnable<Block> cir) {
+        final Player player = Minecraft.getInstance().player;
+        if(player == null) {
+            cir.setReturnValue(null);
+            return;
+        }
+        if(ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_BARRIER_DISPLAY)) {
+            final @NotNull ItemStack stack = player.getMainHandItem();
+            if(stack.getItem() == Items.BARRIER) cir.setReturnValue(null);
+        }
+        if(ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_LIGHT_BLOCK_DISPLAY)) {
+            final @NotNull ItemStack stack = player.getMainHandItem();
+            if(stack.getItem() == Items.LIGHT) cir.setReturnValue(null);
+        }
+        //! Structure voids don't emit any particle in Vanilla. No need to block that.
+    }
+}

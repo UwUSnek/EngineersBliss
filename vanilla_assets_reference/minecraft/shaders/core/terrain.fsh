@@ -70,7 +70,7 @@ vec4 sampleRGSS(sampler2D source, vec2 uv, vec2 pixelSize) {
 
     vec4 rgssColorLow = vec4(0.0);
     vec4 rgssColorHigh = vec4(0.0);
-    for (int i = 0; i < 4; ++i) {
+    for(int i = 0; i < 4; ++i) {
         vec2 sampleUV = uv + offsets[i] * pixelSize;
         rgssColorLow += textureLod(source, sampleUV, mipLevelLow);
         rgssColorHigh += textureLod(source, sampleUV, mipLevelHigh);

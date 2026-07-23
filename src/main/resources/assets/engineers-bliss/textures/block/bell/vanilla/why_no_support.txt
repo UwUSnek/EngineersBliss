@@ -1,0 +1,4 @@
+
+The part provider uses Vanill'as support models, as the bell is the only dynamically rendered part.
+
+Vanilla supports don't even have their own texture anyway, they just steal the texture from Stone and Dark Oak Planks.

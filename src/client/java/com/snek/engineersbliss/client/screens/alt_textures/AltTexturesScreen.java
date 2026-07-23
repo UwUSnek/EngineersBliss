@@ -1,23 +1,28 @@
 package com.snek.engineersbliss.client.screens.alt_textures;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.screens.__base_PauseScreen;
-import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesClientFeatureSet;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
+import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.network.chat.Component;
 
 
 
 
-public class AltTexturesScreen extends __base_PauseScreen {
-    private static final int BUTTON_WIDTH = 200;
+
+
+
+public class AltTexturesScreen extends __base_UiFeatureSetScreen {
 
 
     public AltTexturesScreen() {
-        super();
+        super(AltTexturesClientFeatureSet.INSTANCE);
     }
 
 
@@ -25,41 +30,50 @@ public class AltTexturesScreen extends __base_PauseScreen {
 
     @Override
     protected void init() {
-        // Visibility //TODO add header
-        addButton(getToggleText(AltTextureFeature.TRANSPARENT_SLIME_BLOCK,      AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK)),      b -> toggleFeature(AltTextureFeature.TRANSPARENT_SLIME_BLOCK,      b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.TRANSPARENT_HONEY_BLOCK,      AltTexturesHandler.getFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK)),      b -> toggleFeature(AltTextureFeature.TRANSPARENT_HONEY_BLOCK,      b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS, AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS)), b -> toggleFeature(AltTextureFeature.UNOBSTRUCTIVE_MANGROVE_ROOTS, b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING,    AltTexturesHandler.getFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING)),    b -> toggleFeature(AltTextureFeature.UNOBSTRUCTIVE_SCAFFOLDING,    b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, BUTTON_WIDTH);
-
-        // Misc //TODO add header
-        addButton(getToggleText(AltTextureFeature.MINIMAL_REDSTONE_WIRE,           AltTexturesHandler.getFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE)),           b -> toggleFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE,           b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.CONSISTENT_SLOPED_RAILS,      AltTexturesHandler.getFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS)),      b -> toggleFeature(AltTextureFeature.CONSISTENT_SLOPED_RAILS,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-
-        // 3D //TODO add header
-        addButton(getToggleText(AltTextureFeature.REDSTONE_WIRE_3D,             AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D)),             b -> toggleFeature(AltTextureFeature.REDSTONE_WIRE_3D,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(AltTextureFeature.RAILS_3D,                     AltTexturesHandler.getFeature(AltTextureFeature.RAILS_3D)),                     b -> toggleFeature(AltTextureFeature.RAILS_3D,                     b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH) * 2, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-    }
+        super.init();
 
 
-    @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
-        if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
-    }
+        // Visibility
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt("Visibility", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.MINIMAL_REDSTONE_WIRE),                   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.NO_REDSTONE_DUST_PARTICLES),              Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.NO_CAMPFIRE_PARTICLES),                   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.NO_FIRE_PARTICLES),                       Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.NO_LAVA_PARTICLES),                       Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.NO_WATER_STREAM_PARTICLES),               Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.NO_DRIP_PARTICLES),                       Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.TRANSPARENT_SLIME_BLOCK),                 Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.TRANSPARENT_HONEY_BLOCK),                 Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.UNOBSTRUCTIVE_MANGROVE_ROOTS),            Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.UNOBSTRUCTIVE_SCAFFOLDING),               Layout.BORDER_HEIGHT);
 
+        // Fixes
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt("Fixes & performance", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.CONSISTENT_SLOPED_RAILS),                 Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.   BETTER_BARRIER_DISPLAY),                  Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.   BETTER_STRUCTURE_VOID_DISPLAY),           Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.   BETTER_LIGHT_BLOCK_DISPLAY),              Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_CHESTS),                           Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_SIGNS),                            Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_BANNERS),                          Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_DECORATED_POTS),                   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_BELLS),                            Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_COPPER_GOLEM_STATUES),             Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.STATIC_LECTERNS),                         Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.OPTIMIZED_SHELVES),                       Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.OPTIMIZED_CAMPFIRES),                     Layout.BORDER_HEIGHT);
 
-
-
-
-    public String getToggleText(final AltTextureFeature feature, final boolean state) {
-        return feature.getName() + ": " + (state ? "ON" : "OFF");
-    }
-
-
-    public void toggleFeature(final AltTextureFeature feature, final Button b) {
-        boolean newState = !AltTexturesHandler.getFeature(feature);
-        b.setMessage(Component.literal(getToggleText(feature, newState)));
-        AltTexturesHandler.setFeature(feature, newState);
-        MinecraftUtils.refreshSectionsContaining(feature.getAffectedBlocks());
+        // 3D models
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt("3D models", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.REDSTONE_WIRE_3D),                        Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.RAILS_3D),                                Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.LADDERS_3D),                              Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.CHAINS_3D),                               Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.BARS_3D),                                 Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.VINES_3D),                                Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(AltTexturesClientFeatureSet.GLOW_LICHEN_3D),                          Layout.BORDER_HEIGHT);
     }
 }

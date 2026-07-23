@@ -1,0 +1,44 @@
+package com.snek.engineersbliss.client.mixin.alt_textures.particle_suppressors;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
+
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
+
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
+
+
+
+
+/**
+ * A mixin that stops fire and soul fire blocks from emitting particles.
+ */
+@Mixin(BaseFireBlock.class)
+public class BaseFireBlockParticleSuppressorMixin {
+    private BaseFireBlockParticleSuppressorMixin() {}
+
+
+    @SuppressWarnings("unused")
+    @Redirect(
+        method = "animateTick",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"
+        ),
+        require = 1
+    )
+    private void eb$addParticle(
+        final Level level,
+        final ParticleOptions particle,
+        final double x, final double y, final double z,
+        final double xSpeed, final double ySpeed, final double zSpeed
+    ) {
+        if(!ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_FIRE_PARTICLES)) {
+            level.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
+        }
+    }
+}

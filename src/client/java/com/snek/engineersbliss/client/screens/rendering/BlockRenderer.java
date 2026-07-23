@@ -1,8 +1,12 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
-import com.snek.engineersbliss.EngineerSBliss;
+import org.jetbrains.annotations.NotNull;
 
-import net.minecraft.client.Minecraft;
+import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
+
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
@@ -27,16 +31,9 @@ public class BlockRenderer {
     private static final int ATLAS_COLS = 8;
     private static final int ATLAS_ROWS = 8;
     private static final int SHEETS_PER_ATLAS = ATLAS_COLS * ATLAS_ROWS;
-
-    public static final int SPRITE_FRAME_WIDTH  = 64;
-    public static final int SPRITE_FRAME_HEIGHT = 64;
-    public static final int SPRITE_FRAME_COUNT  = 36;
-    public static final int SPRITE_FPS          = 12;
-    public static final int SPRITE_COLS         = 6;
-    public static final int SPRITE_ROWS         = 6;
-    public static final int SPRITE_SHEET_WIDTH  = SPRITE_FRAME_WIDTH  * SPRITE_COLS;
-    public static final int SPRITE_SHEET_HEIGHT = SPRITE_FRAME_HEIGHT * SPRITE_ROWS;
-
+    //TODO this stuff could be moved to the atlas tracker using a suffix _n system but that's kinda complicated
+    //TODO and also large sprite sheets are supposed to use that? these are not large sprite sheets but atlases of sprite sheets which is different.
+    //TODO different math? probably?
 
 
 
@@ -49,54 +46,36 @@ public class BlockRenderer {
      * @param y         The Y position
      * @param size      The rendered size in pixels
      */
-    public static void renderBlockSpriteSheet(GuiGraphicsExtractor graphics, Block block, int x, int y, int size) {
+    public static void extractBlockSpriteSheet(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int size) {
 
         // Get block index, fallback to default icon if absent
-        Identifier id = BuiltInRegistries.BLOCK.getKey(block);
-        int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
+        final Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+        final int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
         if(blockIdx == -1) {
-            renderBlockIcon(graphics, block, x, y, size);
+            extractBlockIcon(graphics, block, x, y, size);
             return;
         }
 
-        int atlasIdx = blockIdx / SHEETS_PER_ATLAS;
-        int localIdx = blockIdx % SHEETS_PER_ATLAS;
-        int sheetCol = localIdx % ATLAS_COLS;
-        int sheetRow = localIdx / ATLAS_COLS;
-        Identifier texture = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_" + atlasIdx + ".avif");
-
-        // Atlas dimensions in sheets
-        float atlasW = ATLAS_COLS * (float)SPRITE_SHEET_WIDTH;
-        float atlasH = ATLAS_ROWS * (float)SPRITE_SHEET_HEIGHT;
-
-        // Current animation frame
-        int frame = (int)((System.currentTimeMillis() / (1000L / SPRITE_FPS)) % SPRITE_FRAME_COUNT);
-        int frameCol = frame % SPRITE_COLS;
-        int frameRow = frame / SPRITE_COLS;
-
-        // Pixel offsets of this sheet within the atlas
-        float sheetOffsetX = sheetCol * (float)SPRITE_SHEET_WIDTH;
-        float sheetOffsetY = sheetRow * (float)SPRITE_SHEET_HEIGHT;
-
-        float u0 = (sheetOffsetX + frameCol       * SPRITE_FRAME_WIDTH)  / atlasW;
-        float u1 = (sheetOffsetX + (frameCol + 1) * SPRITE_FRAME_WIDTH)  / atlasW;
-        float v0 = (sheetOffsetY + frameRow       * SPRITE_FRAME_HEIGHT) / atlasH;
-        float v1 = (sheetOffsetY + (frameRow + 1) * SPRITE_FRAME_HEIGHT) / atlasH;
-
-        graphics.blit(texture, x, y, x + size, y + size, u0, u1, v0, v1);
+        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
+        if(!TextureAtlasTracker.isTextureReady(textureId)) {
+            graphics.blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
+        }
+        else {
+            final float[] uv = TextureAtlasTracker.getUV(textureId, blockIdx, System.currentTimeMillis());
+            graphics.blit(textureId, x, y, x + size, y + size, uv[0], uv[1], uv[2], uv[3]);
+        }
     }
 
     /**
      * Renders an animated block spritesheet on the provided Graphics.
-     * Spritesheets are 480x34560 vertical strips (72 frames × 480px).
      * The default size is 16px.
      * @param graphics  The output Graphics
      * @param block     The block whose spritesheet to render
      * @param x         The X position
      * @param y         The Y position
      */
-    public static void renderBlockSpriteSheet(GuiGraphicsExtractor graphics, Block block, int x, int y) {
-        renderBlockSpriteSheet(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
+    public static void extractBlockSpriteSheet(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y) {
+        extractBlockSpriteSheet(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
     }
 
 
@@ -110,8 +89,8 @@ public class BlockRenderer {
      * @param x The X position
      * @param y The Y position
      */
-    public static void renderBlockIcon(GuiGraphicsExtractor graphics, Block block, int x, int y) {
-        renderBlockIcon(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
+    public static void extractBlockIcon(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y) {
+        extractBlockIcon(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
     }
 
 
@@ -124,10 +103,10 @@ public class BlockRenderer {
      * @param y The Y position
      * @param size The size of the icon
      */
-    public static void renderBlockIcon(GuiGraphicsExtractor graphics, Block block, int x, int y, int size) {
+    public static void extractBlockIcon(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int size) {
 
         // Set up pose
-        float scale = (float)size / DEFAULT_ITEM_SPRITE_SIZE;
+        final float scale = (float)size / DEFAULT_ITEM_SPRITE_SIZE;
         graphics.pose().pushMatrix();
         graphics.pose().translate(x, y);
         graphics.pose().scale(scale, scale);
@@ -153,18 +132,10 @@ public class BlockRenderer {
      * @param y The Y position
      * @param height The height of each line
      */
-    public static void renderBlockName(GuiGraphicsExtractor graphics, Block block, int x, int y, int color, int height) {
-
-        // Set up pose
-        float scale = (float)height / DEFAULT_ITEM_SPRITE_SIZE;
-        graphics.pose().pushMatrix();
-        graphics.pose().translate(x, y);
-        graphics.pose().scale(scale, scale);
-
-        graphics.text(Minecraft.getInstance().font, block.getName().getVisualOrderText(), 0, 0, color);
-
-        // Pop pose
-        graphics.pose().popMatrix();
+    public static void extractBlockName(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int color, final int height) {
+        final float scale = (float)height / DEFAULT_ITEM_SPRITE_SIZE;
+        final @NotNull UiTxt text = new UiTxt(block.getName(), scale);
+        RenderingUtils.extractTxt(graphics, text, x, y, color, false);
     }
 
 
@@ -178,7 +149,7 @@ public class BlockRenderer {
      * @param x The X position
      * @param y The Y position
      */
-    public static void renderBlockName(GuiGraphicsExtractor graphics, Block block, int x, int y, int color) {
-        renderBlockName(graphics, block, x, y, color, DEFAULT_ITEM_SPRITE_SIZE);
+    public static void extractBlockName(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int color) {
+        extractBlockName(graphics, block, x, y, color, DEFAULT_ITEM_SPRITE_SIZE);
     }
 }

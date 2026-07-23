@@ -1,0 +1,4 @@
+
+The wooden base of Lecterns is rendered statically in Vanilla.
+For whatever reason, the book stays still but it's rendered dynamically.
+The mod simply replaces the book's rendering with a static model, keeping the Vanilla base.

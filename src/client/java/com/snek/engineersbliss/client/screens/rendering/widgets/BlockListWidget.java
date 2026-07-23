@@ -1,47 +1,31 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.lighting.LevelLightEngine;
-import net.minecraft.world.level.lighting.LightEngine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.regex.Pattern;
 
-import com.mojang.blaze3d.platform.InputConstants;
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
-import com.snek.engineersbliss.client.screens.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
-import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
-import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
-import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheStorageAccessor;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
-import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.input.MouseButtonInfo;
-import net.minecraft.client.multiplayer.ClientChunkCache;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.BlockModelLighter;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
 
 
 
@@ -52,12 +36,10 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
     final int rowItemHeight;
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
-    private final RenderingScreen screen;
 
 
-    public BlockListWidget(final Minecraft client, final RenderingScreen screen, final int width, final int height, final int top, final int itemHeight) {
+    public BlockListWidget(final Minecraft client, final int width, final int height, final int top, final int itemHeight) {
         super(client, width, height, top, itemHeight);
-        this.screen = screen;
         this.rowItemHeight = itemHeight;
 
         // Create list of all blocks
@@ -95,11 +77,11 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
 
-
+    private static final Pattern CLEAN_PATTERN = Pattern.compile("\\s*([&|#@])\\s*");
     public void filter(final String query) {
 
         // Remove spaces near operators and prefixes
-        final String cleanQuery = query.replaceAll("\\s*([&|#@])\\s*", "$1");
+        final String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
 
 
         // Iterate over or groups first, so or operators naturally end up with lower priority
@@ -147,7 +129,7 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         // Clear block list and load the filtered entries
         clear();
         for(final Block block : orResults) {
-            addEntry(new Entry(block, screen));
+            addEntry(new Entry(block));
         }
     }
 
@@ -170,14 +152,15 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+        final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
 
         // draw header above list
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        graphics.text(minecraft.font, Component.literal("Block"),   rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, Component.literal("Enable"),  rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, Component.literal("Isolate"), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Block"  , rowLeft, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Enable" , rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Isolate", rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
@@ -190,11 +173,11 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 final Block block = hoveredEntry.block;
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
-                tooltipLines.add(ClientTooltipComponent.create(Component.literal(BuiltInRegistries.BLOCK.getKey(block).toString()).withStyle(ChatFormatting.BLUE).getVisualOrderText()));
+                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
-                    tooltipLines.add(ClientTooltipComponent.create(Component.literal("#" + tag.location()).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText()))
+                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt("#" + tag.location()).gray().get().getVisualOrderText()))
                 );
-                graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+                graphics.tooltip(font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
         }
     }
@@ -218,15 +201,14 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         private final Block block;
         private final Checkbox enableBox;
         private final Checkbox isolateBox;
-        private final RenderingScreen screen;
         public Block getBlock() { return block; }
 
 
-        public Entry(final Block block, final RenderingScreen screen) {
+        public Entry(final Block block) {
+            final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
             this.block = block;
-            this.screen = screen;
-            this.enableBox  = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
-            this.isolateBox = Checkbox.builder(Component.empty(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
+            this.enableBox  = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 
@@ -237,8 +219,8 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
             // Block icon and name
-            BlockRenderer.renderBlockIcon(graphics, block, this.getContentX(), midY - 8);
-            BlockRenderer.renderBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
+            BlockRenderer.extractBlockIcon(graphics, block, this.getContentX(), midY - 8);
+            BlockRenderer.extractBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
 
 
             // Checkboxes
