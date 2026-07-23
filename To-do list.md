@@ -164,7 +164,6 @@
   - [Vanilla block] Frogspawn item
   - [Vanilla blocks] Cake with Candle items //TODO same placement requirements as cake //FIXME maybe generate them automatically? idk what to do about the render though
   - [Vanilla blocks] Potted plant items //TODO same placement requirements as flower pot
-  - [Vanilla blocks] Sloped Rail items //TODO same placement requirements as rails
   - [Vanilla block & item] Your Player Head as an item
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey

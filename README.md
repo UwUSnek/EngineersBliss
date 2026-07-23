@@ -231,7 +231,6 @@ It helps a lot :3
   - [Vanilla block] Frogspawn item
   - [Vanilla blocks] Cake with Candle items
   - [Vanilla blocks] Potted plant items
-  - [Vanilla blocks] Sloped Rail items
   - [Vanilla block & item] Your Player Head as an item
   - [Vanilla block & item] Bee Nest with Bees and Honey
   - [Vanilla block & item] Beehive with Bees and Honey
