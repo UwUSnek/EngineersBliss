@@ -12,7 +12,8 @@ import net.minecraft.world.entity.player.Player;
 
 public class CreativeTweaksClientHandler {
     private CreativeTweaksClientHandler() { }
-    private static final float DEFAULT_FLYING_SPEED = new Abilities().getFlyingSpeed();
+    private static final float DEFAULT_FLYING_SPEED  = new Abilities().getFlyingSpeed();
+
 
 
     public static void onFlyingSpeedChange(final Integer index, final Float value) {

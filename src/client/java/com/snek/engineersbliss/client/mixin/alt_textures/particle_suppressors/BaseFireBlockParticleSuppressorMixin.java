@@ -37,7 +37,7 @@ public class BaseFireBlockParticleSuppressorMixin {
         final double x, final double y, final double z,
         final double xSpeed, final double ySpeed, final double zSpeed
     ) {
-        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_FIRE_PARTICLES)) {
+        if(!ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_FIRE_PARTICLES)) {
             level.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }

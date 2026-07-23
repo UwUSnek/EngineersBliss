@@ -52,8 +52,8 @@ def is_visible(ch, font):
 
 # This custom resize improves alpha in lower resolutions by normalizing it to 255 before rendering.
 # This stops lighter fonts from becoming transparent when rendered at lower resolutions
-# The strength is controlled by the curve_strength parameter
-def resize_glyph(glyph_img, target_size, curve_strength=3.5):
+# The strength is controlled by the curve_strength parameter. Value 1 does nothing. Higher values create sharper corners.
+def resize_glyph(glyph_img, target_size, curve_strength=2.5):
     a = glyph_img.split()[-1]
     a_resized = a.resize(target_size, Image.LANCZOS)
 

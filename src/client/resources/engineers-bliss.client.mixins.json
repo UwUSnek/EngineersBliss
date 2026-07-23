@@ -6,6 +6,8 @@
         "accessors.GameRendererAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",
+        "accessors.AbstractScrollAreaAccessor",
+        "accessors.FontAccessor",
 
 
         "shaders.JuliaSetShaderMixin",

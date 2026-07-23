@@ -22,11 +22,17 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
 
     public static ServerSteppedFeature<Float> FLYING_SPEED = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "flying_speed",
-        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 0
+        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 4
+        //! Flying speed is fully client side
+    ));
+    public static ServerSteppedFeature<Float> WALKING_SPEED = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
+        "walking_speed",
+        List.of(0.05f, 0.125f, 0.25f, 0.5f, 1f, 2f, 4f, 8f, 16f, 32f, 64f), 4,
+        CreativeTweaksServerHandler::updateWalkingSpeed
     ));
     public static ServerSteppedFeature<Float> INTERACTION_DISTANCE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "reach_distance",
-        List.of(4.5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0,
+        List.of(5f, 8f, 16f, 32f, 64f, 128f, 256f, 8192f), 0,
         CreativeTweaksServerHandler::updateInteractionDistance
     ));
     public static ServerSteppedFeature<Integer> INTERACTION_RADIUS = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
@@ -78,30 +84,4 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
     public static final ServerToggleFeature DISABLE_WATER_OVERLAY           = INSTANCE.registerFeature(new ServerToggleFeature("disable_water_overlay",           true));
     public static final ServerToggleFeature DISABLE_LAVA_OVERLAY            = INSTANCE.registerFeature(new ServerToggleFeature("disable_lava_overlay",            true));
     public static final ServerToggleFeature DISABLE_NETHER_PORTAL_OVERLAY   = INSTANCE.registerFeature(new ServerToggleFeature("disable_nether_portal_overlay",   true));
-
-
-//TODO remove old system stuff
-
-    // // Name and properties
-    // private final long flagBit; //! Flag bit index is calculated from the order of declaration
-    // private final boolean _default;
-
-
-    // // Getters and checks
-    // public long getFlagBit() { return flagBit; }
-    // public boolean hasFlagBit(final long mask) { return (mask & flagBit) != 0; }
-
-
-    // public static long DEFAULT_FLAGS = 0;
-    // static {
-    //     for(final var feature : values()) {
-    //         if(feature._default) DEFAULT_FLAGS |= feature.getFlagBit();
-    //     }
-    // }
-
-
-    // private CreativeTweakServerFeature(final boolean _default) {
-    //     this._default = _default;
-    //     this.flagBit = 1 << ordinal();
-    // }
 }

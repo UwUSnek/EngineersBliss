@@ -1,49 +1,31 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.lighting.LevelLightEngine;
-import net.minecraft.world.level.lighting.LightEngine;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.regex.Pattern;
 
-import com.mojang.blaze3d.platform.InputConstants;
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
-import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
+import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
-import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheAccessor;
-import net.fabricmc.fabric.mixin.client.gametest.ClientChunkCacheStorageAccessor;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
-import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.input.MouseButtonInfo;
-import net.minecraft.client.multiplayer.ClientChunkCache;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.block.BlockModelLighter;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
-import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
 
 
 
@@ -170,14 +152,15 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+        final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
 
         // draw header above list
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        graphics.text(minecraft.font, new UiTxt("Block"  ).get(), rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, new UiTxt("Enable" ).get(), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(minecraft.font, new UiTxt("Isolate").get(), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Block"  , rowLeft, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Enable" , rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(font, "Isolate", rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
@@ -190,11 +173,11 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
                 final Block block = hoveredEntry.block;
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
-                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" " + BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
+                tooltipLines.add(ClientTooltipComponent.create(new UiTxt(BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
-                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt(" #" + tag.location()).gray().get().getVisualOrderText()))
+                    tooltipLines.add(ClientTooltipComponent.create(new UiTxt("#" + tag.location()).gray().get().getVisualOrderText()))
                 );
-                graphics.tooltip(minecraft.font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+                graphics.tooltip(font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
         }
     }
@@ -222,9 +205,10 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
 
 
         public Entry(final Block block) {
+            final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
             this.block = block;
-            this.enableBox  = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
-            this.isolateBox = Checkbox.builder(new UiTxt().get(), BlockListWidget.this.minecraft.font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
+            this.enableBox  = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
         }
 
 

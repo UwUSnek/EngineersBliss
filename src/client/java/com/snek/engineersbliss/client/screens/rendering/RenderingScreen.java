@@ -1,15 +1,20 @@
 package com.snek.engineersbliss.client.screens.rendering;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.widgets.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.UiEditBox;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
-import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
-import com.snek.engineersbliss.client.screens.parts.UiEditBox;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.KeyEvent;
@@ -33,10 +38,10 @@ public class RenderingScreen extends __base_UiScreen {
     private BlockListWidget blockList;
 
 
-    Button renderBlockOutlinesButton = null;
-    Button renderBlocksButton = null;
-    Button renderBlockEntitiesButton = null;
-    Button renderFluidsButton = null;
+    UiButton renderBlockOutlinesButton = null;
+    UiButton renderBlocksButton = null;
+    UiButton renderBlockEntitiesButton = null;
+    UiButton renderFluidsButton = null;
 
 
     public RenderingScreen() {
@@ -164,12 +169,13 @@ public class RenderingScreen extends __base_UiScreen {
 
     @Override
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+        final @NotNull ScaledFont scaledFont = Fonts.ui.regular.get(1f);
+        final @NotNull Font font = scaledFont.getFont();
         final int lineBase = this.height;
-        final int lineHeight = this.font.lineHeight;
+        final int lineHeight = scaledFont.getLineHeight();
         if(tabPressed) return;
 
         super.extractRenderState(graphics, mouseX, mouseY, delta);
-        graphics.centeredText(this.font, this.title, this.width / 2, 20, 0xFFFFFFFF);
 
 
         // Draw find syntax instructions
@@ -180,8 +186,8 @@ public class RenderingScreen extends __base_UiScreen {
             "|", "Search either of two strings"
         };
         for(int i = 0; i < syntaxInstructions.length / 2; i++) {
-            graphics.text(this.font, new UiTxt(syntaxInstructions[i * 2    ]).get(), BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
-            graphics.text(this.font, new UiTxt(syntaxInstructions[i * 2 + 1]).get(), BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(font, syntaxInstructions[i * 2    ], BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+            graphics.text(font, syntaxInstructions[i * 2 + 1], BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
         }
 
 
@@ -198,19 +204,21 @@ public class RenderingScreen extends __base_UiScreen {
                 "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
             };
 
-            graphics.text(this.font, new UiTxt(renderStats[0]).get(), rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(this.font, new UiTxt(renderStats[2]).get(), rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(this.font, new UiTxt(renderStats[4]).get(), rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            graphics.text(font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(font, renderStats[2], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(font, renderStats[4], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
             int rightTextPrefixWidth = 0;
             for(int i = 0; i < renderStats.length; i += 2) {
-                final int w = this.font.width(renderStats[i]);
+                final int w = scaledFont.calcWidth(renderStats[i]);
                 if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
             }
 
-            graphics.text(this.font, new UiTxt(renderStats[1]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(this.font, new UiTxt(renderStats[3]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(this.font, new UiTxt(renderStats[5]).get(), rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            graphics.text(font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
+            graphics.text(font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
+            graphics.text(font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
         }
+
+        //TODO optimize stuff. put static elements in init()
     }
 
 
@@ -238,61 +246,61 @@ public class RenderingScreen extends __base_UiScreen {
 
 
 
-    public static Txt getToggleText_targetHiddenBlocks(final boolean state) {
+    public static UiTxt getToggleText_targetHiddenBlocks(final boolean state) {
         return new UiTxt("Target hidden blocks: " + (state ? "ON" : "OFF"));
     }
-    public static void toggleTargetHiddenBlocks(final Button b) {
+    public static void toggleTargetHiddenBlocks(final UiButton b) {
         final boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
         RenderFilterHandler.setTargetHiddenBlocks(newState);
-        b.setMessage(getToggleText_targetHiddenBlocks(newState).get());
+        b.setLabel(getToggleText_targetHiddenBlocks(newState).get());
     }
 
 
-    public static Txt getToggleText_renderBlockOutlines(final boolean state) {
+    public static UiTxt getToggleText_renderBlockOutlines(final boolean state) {
         return new UiTxt("[O] Render block outlines: " + (state ? "ON" : "OFF"));
     }
-    public static void toggleRenderBlockOutlines(final Button b) {
+    public static void toggleRenderBlockOutlines(final UiButton b) {
         final boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
         RenderFilterHandler.setRenderBlockOutlines(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(getToggleText_renderBlockOutlines(newState).get());
+        b.setLabel(getToggleText_renderBlockOutlines(newState).get());
     }
 
 
-    public static Txt getToggleText_renderBlocks(final boolean state) {
+    public static UiTxt getToggleText_renderBlocks(final boolean state) {
         return new UiTxt("[B] Render blocks: " + (state ? "ON" : "OFF"));
     }
-    public static void toggleRenderBlocks(final Button b) {
+    public static void toggleRenderBlocks(final UiButton b) {
         final boolean newState = !RenderFilterHandler.getRenderBlocks();
         RenderFilterHandler.setRenderBlocks(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(getToggleText_renderBlocks(newState).get());
+        b.setLabel(getToggleText_renderBlocks(newState).get());
     }
 
 
-    public static Txt getToggleText_renderBlockEntities(final boolean state) {
+    public static UiTxt getToggleText_renderBlockEntities(final boolean state) {
         return new UiTxt("[E] Render block entities: " + (state ? "ON" : "OFF"));
     }
-    public static void toggleRenderBlockEntities(final Button b) {
+    public static void toggleRenderBlockEntities(final UiButton b) {
         final boolean newState = !RenderFilterHandler.getRenderBlockEntities();
         RenderFilterHandler.setRenderBlockEntities(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(getToggleText_renderBlockEntities(newState).get());
+        b.setLabel(getToggleText_renderBlockEntities(newState).get());
     }
 
 
-    public static Txt getToggleText_renderFluids(final boolean state) {
+    public static UiTxt getToggleText_renderFluids(final boolean state) {
         return new UiTxt("[F] Render fluids: " + (state ? "ON" : "OFF"));
     }
-    public static void toggleRenderFluids(final Button b) {
+    public static void toggleRenderFluids(final UiButton b) {
         final boolean newState = !RenderFilterHandler.getRenderFluids();
         RenderFilterHandler.setRenderFluids(newState);
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
-        b.setMessage(getToggleText_renderFluids(newState).get());
+        b.setLabel(getToggleText_renderFluids(newState).get());
     }
 }
 

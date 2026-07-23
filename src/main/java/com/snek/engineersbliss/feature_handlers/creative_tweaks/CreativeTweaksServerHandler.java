@@ -34,14 +34,36 @@ import net.minecraft.world.phys.Vec3;
 
 public class CreativeTweaksServerHandler {
     private CreativeTweaksServerHandler() {}
-    public static final int DEFAULT_INTERACTION_RADIUS = 1;
+    private static final String FEATURE_SET_ID = CreativeTweaksServerFeatureSet.INSTANCE.getId();
+    private static final int DEFAULT_INTERACTION_RADIUS = 1;
     private static final float DEFAULT_REACH = 4.5f; //FIXME get this from somewhere instead of hard coding it
-    private static final Identifier REACH_MODIFIER_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "creative_tweaks.reach");
+    private static final Identifier REACH_MODIFIER_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, FEATURE_SET_ID + ".reach");
+    private static final Identifier SPEED_MODIFIER_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, FEATURE_SET_ID + ".walking_speed");
 
 
     private static final Map<UUID, Integer> interactionRadii = new HashMap<>();
     private static @Nullable BlockPos pickOverride = null;
     public static @Nullable BlockPos getPickOverride() { return pickOverride; }
+
+
+
+
+    //! Walking speed needs a custom attribute.
+    //! player.getAbilities().setWalkingSpeed(n) doesn't actually set the walking speed. It only changes FOV.
+    public static void updateWalkingSpeed(final Player player, final int valueIndex) {
+        if(!player.isCreative()) return;
+
+
+        final float newValue = CreativeTweaksServerFeatureSet.WALKING_SPEED.getValues().get(valueIndex);
+        final var attribute = player.getAttribute(Attributes.MOVEMENT_SPEED);
+        if(attribute != null) {
+            attribute.addOrUpdateTransientModifier(new AttributeModifier(
+                SPEED_MODIFIER_ID,
+                newValue - 1,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+            ));
+        }
+    }
 
 
 

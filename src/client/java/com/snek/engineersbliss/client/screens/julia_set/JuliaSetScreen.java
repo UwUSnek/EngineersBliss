@@ -1,10 +1,14 @@
 package com.snek.engineersbliss.client.screens.julia_set;
 
-import com.snek.engineersbliss.client.screens.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 
 
 
 
 public class JuliaSetScreen extends __base_UiScreen {
-    // Empty
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
 }
