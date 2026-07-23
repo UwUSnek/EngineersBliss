@@ -208,7 +208,7 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
     );
     public static final ClientFeature<?> DISABLE_COBWEB_SLOWDOWN = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_COBWEB_SLOWDOWN,
-        () -> new UiTxt("Disable Cobwebs slowdown"),
+        () -> new UiTxt("Disable Cobweb slowdown"),
         () -> new UiTxt()
             .cat(new UiTxt("Prevents you from being slowed down while walking through Cobwebs.\n"))
             .cat(new UiTxt("This also lets you jump freely while inside Cobwebs.\n"))
@@ -216,7 +216,7 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
     );
     public static final ClientFeature<?> DISABLE_LADDER_SLOWDOWN = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_LADDER_SLOWDOWN,
-        () -> new UiTxt("Disable Ladders slowdown"),
+        () -> new UiTxt("Disable Ladder slowdown"),
         () -> new UiTxt()
             .cat(new UiTxt("Prevents you from being slowed down while walking near Ladders.\n"))
             .cat(new UiTxt("This doesn't let you jump while inside Ladders: Being a Climbable block, the jump button initiates the Climb action.\n"))
