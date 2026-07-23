@@ -147,6 +147,7 @@ It helps a lot :3
   <br><br>
 - **Creative mode tweaks**
   - Control flying speed
+  - Control walking speed
   - Control reach distance
   - Control interaction radius (click multiple blocks at once)<br><br>
   - Configurable fast clicking
