@@ -9,6 +9,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
@@ -29,6 +30,9 @@ public class UiFeatureButton extends UiButton {
 
     public              ClientFeature<?> getClientFeature() { return clientFeature; }
     public @Nullable ServerToggleFeature getServerFeature() { return serverFeature; }
+
+
+    private final Identifier bgSpriteId;
 
 
 
@@ -61,11 +65,18 @@ public class UiFeatureButton extends UiButton {
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
 
-        // Set up sprite
+        // Calculate sprite id
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
-        final Identifier bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath);
-        this.withSpriteBg(bgSpriteId, 1f, 1f);
+        this.bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath);
     }
+
+    //! Update sprite height and label offset when the height is changed
+    @Override
+    public void setHeight(int height) {
+        super.setHeight(height);
+        this.withSpriteBg(bgSpriteId, 1f, height + Layout.textMarginPx);
+    }
+
 
 
 

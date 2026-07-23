@@ -31,7 +31,7 @@ public class UiButton extends Button {
     private final TextAlignment alignment;
     private @Nullable Identifier bgSpriteId;
     private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
-    private float labelOffset;   // Label offset from the left edge, compared to the height. 0 means no offset.
+    private int labelOffset;   // Label offset from the left edge, in pixels.
 
 
 
@@ -76,10 +76,16 @@ public class UiButton extends Button {
     public UiButton withSpriteBg(final Identifier id, final float width) {
         return withSpriteBg(id, width, labelOffset);
     }
-    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffset) {
+    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffsetUnit) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
-        this.labelOffset = labelOffset;
+        this.labelOffset = (int)(height * labelOffsetUnit);
+        return this;
+    }
+    public UiButton withSpriteBg(final Identifier id, final float width, final int labelOffsetPx) {
+        this.bgSpriteId = id;
+        this.bgSpriteWidth = width;
+        this.labelOffset = labelOffsetPx;
         return this;
     }
 
@@ -106,7 +112,7 @@ public class UiButton extends Button {
 
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final int textX = getX() + (int)(height * labelOffset);
+        final int textX = getX() + labelOffset;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, width, usingSprite);
