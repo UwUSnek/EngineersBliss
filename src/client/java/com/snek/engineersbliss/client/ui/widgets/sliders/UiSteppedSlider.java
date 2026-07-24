@@ -5,10 +5,13 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 
@@ -22,9 +25,12 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
  * A UiSlider that snaps to increments and can define arbitrary values for each step.
  */
 public class UiSteppedSlider<T> extends UiSlider {
+    private final TextureCache graphCache = new TextureCache();
+
 
     // The list of possible values.
     private final List<T> stepValues;
+
 
 
     public UiSteppedSlider(
@@ -91,13 +97,33 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
 
+    @Override
+    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
+
+
+        // Render graph
+        if(stepValues.size() < 2) return;
+
+        final int w = getWidth();
+        final int h = getHeight();
+        final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        final int pixelW = Math.max(1, (int)Math.round(w * guiScale));
+        final int pixelH = Math.max(1, (int)Math.round(h * guiScale));
+
+        graphCache.update(pixelW, pixelH, image -> extractGraph(image, pixelW, pixelH));
+        graphCache.blit(graphics, getX(), getY(), w, h);
+    }
+
+
+
+
     /**
      * Draws a filled line graph over the widget's box.
      * This is done one pixel column at a time because GuiGraphicsExtractor only exposes rectangle fills.
      */
-    protected void renderGraph(final GuiGraphicsExtractor graphics) {
+    private void extractGraph(final NativeImage image, final int pixelW, final int pixelH) {
         final int n = stepValues.size();
-        if(n < 2) return;
 
         double min = Double.MAX_VALUE;
         double max = -Double.MAX_VALUE;
@@ -109,37 +135,13 @@ public class UiSteppedSlider<T> extends UiSlider {
         }
         final double range = (max - min == 0) ? 1 : (max - min);
 
-        final int x0 = getX();
-        final int y0 = getY();
-        final int w  = getWidth();
-        final int h  = getHeight();
-        final int bottom = y0 + h;
+        final double[] px = new double[n];
+        final double[] py = new double[n];
+        for(int i = 0; i < n; i++) {
+            px[i] = (double)pixelW * i / (n - 1);
+            py[i] = pixelH - ((mags[i] - min) / range) * pixelH;
+        }
 
-
-
-        // Render the graph at full resolution so it doesn't look blurry
-        final double scale = RenderingUtils.pushFullResRendering(graphics); {
-
-            // Calculate line coordinates
-            final double[] px = new double[n];
-            final double[] py = new double[n];
-            for(int i = 0; i < n; i++) {
-                px[i] = scale * (x0 + (double)w * i / (n - 1));
-                py[i] = scale * (bottom - ((mags[i] - min) / range) * h);
-            }
-
-            // Draw line
-            RenderingUtils.extractLine(graphics, px, py, 1.0f, Layout.SliderGraphLineColor);
-
-        } RenderingUtils.popFullResRendering(graphics);
-    }
-
-
-
-
-    @Override
-    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        super.extractBackground(graphics, mouseX, mouseY, a);
-        renderGraph(graphics);
+        RenderingUtils.extractLine(image, px, py, 1.0f, Layout.SliderGraphLineColor);
     }
 }
