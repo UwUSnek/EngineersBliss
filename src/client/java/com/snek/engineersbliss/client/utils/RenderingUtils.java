@@ -24,6 +24,18 @@ public class RenderingUtils {
 
 
 
+    /**
+     * Draws formatted text at the specified location.
+     * @param graphics The GuiGraphicsExtractor to draw on.
+     * @param text The text to draw.
+     * @param scaledFont The ScaledFont instance used to determine the Font Family and text scale.
+     * @param x The X position, in pixels.
+     * @param y The Y position, in pixels.
+     * @param color The default text color. Individual styled text segments can override this.
+     * @param textAlignment The horizontal alignment of the text.
+     * @param elmWidth The width of the element. This is used for alignment calculations. Can safely be 0 if textAlignment is LEFT or CENTER_ANCHORED.
+     * @param dropShadow Whether to draw a shadow behind the rendered text.
+     */
     public static void extractTxt(
         final GuiGraphicsExtractor graphics,
         final Component text,
@@ -31,7 +43,7 @@ public class RenderingUtils {
         final int x, final int y,
         final int color,
         final TextAlignment textAlignment,
-        final int elmWidth, //! Can safely be 0 if textAlignment is LEFT or CENTER_ANCHORED
+        final int elmWidth,
         final boolean dropShadow
     ) {
 
@@ -141,5 +153,99 @@ public class RenderingUtils {
 
 
         return lines;
+    }
+
+
+
+
+
+
+
+
+    /**
+     * Draws a pixel of the specified color with the given coverage, scaling the existing base alpha value.
+     */
+    public static void blendPixel(final GuiGraphicsExtractor graphics, final int x, final int y, final int color, final int baseAlpha, final double coverage) {
+        final int alpha = (int)Math.round(baseAlpha * Math.clamp(coverage, 0.0, 1.0));
+        if(alpha <= 0) return;
+        graphics.fill(x, y, x + 1, y + 1, (color & 0x00FFFFFF) | (alpha << 24));
+    }
+
+
+
+
+    /**
+     * Fills a column of pixels, interpolating its ends based on how much of the final pixel they cover.
+     * @param graphics The GuiGraphicsExtractor to draw on.
+     * @param x The X position of the column, in pixels.
+     * @param fractionalTop The Y position of the top of the column, in pixels.
+     * @param fractionalBottom The Y position of the bottom of the column, in pixels.
+     * @param color The color of the line.
+     */
+    public static void extractVerticalSpan(final GuiGraphicsExtractor graphics, final int x, final double fractionalTop, final double fractionalBottom, final int color) {
+        final int baseAlpha = (color >>> 24) & 0xFF;
+        if(baseAlpha == 0 || fractionalBottom <= fractionalTop) return;
+
+        final int top    = (int)Math.floor(fractionalTop);
+        final int bottom = (int)Math.floor(fractionalBottom);
+
+        // Draw a single pixel if the line is 1px tall
+        if(top == bottom) {
+            blendPixel(graphics, x, top, color, baseAlpha, fractionalBottom - fractionalTop);
+            return;
+        }
+
+        // Partial coverage on the top row
+        blendPixel(graphics, x, top, color, baseAlpha, (top + 1) - fractionalTop);
+
+        // Fully-covered rows in between
+        if(bottom > top + 1) {
+            graphics.fill(x, top + 1, x + 1, bottom, color);
+        }
+
+        // Partial coverage on the bottom row
+        final double bottomCoverage = fractionalBottom - bottom;
+        if(bottomCoverage > 0) blendPixel(graphics, x, bottom, color, baseAlpha, bottomCoverage);
+    }
+
+
+
+
+    /**
+     * Draws a polyline through the provided coordinates, antialiasing pixel columns.
+     * @param graphics The GuiGraphicsExtractor to draw on.
+     * @param xs The X coordinates of the points.
+     * @param ys The Y coordinates of the points.
+     * @param thickness The thickness of the polyline, in pixels.
+     * @param color The color of the polyline.
+     */
+    public static void extractLine(
+        final GuiGraphicsExtractor graphics,
+        final double[] xs, final double[] ys,
+        final float thickness, final int color
+    ) {
+        if(xs.length < 2) return;
+
+        final int left  = (int)Math.floor(xs[0]);
+        final int right = (int)Math.ceil(xs[xs.length - 1]);
+        final double halfThickness = thickness / 2.0;
+
+        final double[] colY = new double[right - left + 1];
+        int segIdx = 0;
+        for(int col = left; col <= right; col++) {
+            while(segIdx < xs.length - 2 && col > xs[segIdx + 1]) segIdx++;
+            final double x0 = xs[segIdx], x1 = xs[segIdx + 1];
+            final double y0 = ys[segIdx], y1 = ys[segIdx + 1];
+            final double t = (x1 == x0) ? 0 : Math.clamp((col - x0) / (x1 - x0), 0.0, 1.0);
+            colY[col - left] = y0 + (y1 - y0) * t;
+        }
+
+        for(int col = left; col <= right; col++) {
+            final double yHere = colY[col - left];
+            final double yNext = (col < right) ? colY[col - left + 1] : yHere;
+            final double top    = Math.min(yHere, yNext) - halfThickness;
+            final double bottom = Math.max(yHere, yNext) + halfThickness;
+            extractVerticalSpan(graphics, col, top, bottom, color);
+        }
     }
 }

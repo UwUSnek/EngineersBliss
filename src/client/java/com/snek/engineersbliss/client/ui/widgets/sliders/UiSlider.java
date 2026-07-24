@@ -76,16 +76,16 @@ public class UiSlider extends AbstractSliderButton {
 
 
 
+    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColor);
+    }
+
+
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
 
-        // Draw black background //! Always drawn
-        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColor);
-
-
-        // Draw hover highlight
-        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
-
+        // Draw background
+        extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
@@ -93,6 +93,9 @@ public class UiSlider extends AbstractSliderButton {
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, TextAlignment.CENTER, width, false);
+
+        // Draw hover highlight
+        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
 
         this.handleCursor(graphics);
     }

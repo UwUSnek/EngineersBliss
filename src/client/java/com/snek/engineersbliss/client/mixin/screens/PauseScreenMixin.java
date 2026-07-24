@@ -262,7 +262,7 @@ public class PauseScreenMixin extends Screen {
         // Draw player model
         final @Nullable PlayerMannequin model = PlayerMannequin.getMannequin();
         if(model != null) {
-            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0F, mouseX, mouseY, model);
+            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0f, mouseX, mouseY, model);
         }
 
 

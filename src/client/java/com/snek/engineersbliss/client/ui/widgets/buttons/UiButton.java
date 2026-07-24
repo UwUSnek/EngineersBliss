@@ -106,10 +106,6 @@ public class UiButton extends Button {
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, height);
         }
 
-        // Draw hover highlight
-        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
-
-
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + labelOffset;
@@ -117,13 +113,15 @@ public class UiButton extends Button {
         final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
         RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, width, usingSprite);
 
-
         // Draw keybind if present
         if(key != '\0') {
             final UiTxt keybindText = new UiTxt(String.valueOf(key), Fonts.mono.medium);
             final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_BADGE_WIDTH / 2;
             RenderingUtils.extractTxt(graphics, keybindText, keybindX, textY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
         }
+
+        // Draw hover highlight
+        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
     }
 
 
