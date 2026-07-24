@@ -4,12 +4,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
-
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -65,7 +65,7 @@ public abstract class FluidSpeedMixin {
         // If entity is a player and they are not swimming (keep default swimming movement) and they have the feature active, use the custom movement
         if((Object)this instanceof final Player _this) {
             if(!_this.isSwimming()) {
-                if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
+                if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_WATER_SLOWDOWN)) {
                     eb$customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                     ci.cancel();
                 }
@@ -82,7 +82,7 @@ public abstract class FluidSpeedMixin {
 
         // If entity is a player and they have the feature active, use the custom movement
         if((Object)this instanceof final Player _this) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
+            if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_LAVA_SLOWDOWN)) {
                 eb$customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                 ci.cancel();
             }

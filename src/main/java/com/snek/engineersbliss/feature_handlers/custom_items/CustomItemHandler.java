@@ -30,26 +30,26 @@ public class CustomItemHandler {
         "green_screen",
         Block::new,
         BlockBehaviour.Properties.of()
-			.strength(-1.0F, 3600000.8F)
-			.mapColor(MapColor.COLOR_GREEN)
-			.noLootTable()
-			.noOcclusion()
-			.isValidSpawn(Blocks::never)
-			.noTerrainParticles()
-			.pushReaction(PushReaction.BLOCK),
+            .strength(-1.0F, 3600000.8F)
+            .mapColor(MapColor.COLOR_GREEN)
+            .noLootTable()
+            .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .noTerrainParticles()
+            .pushReaction(PushReaction.BLOCK),
         true
     );
     public static final Block BLUE_SCREEN = register(
         "blue_screen",
         Block::new,
         BlockBehaviour.Properties.of()
-			.strength(-1.0F, 3600000.8F)
-			.mapColor(MapColor.COLOR_BLUE)
-			.noLootTable()
-			.noOcclusion()
-			.isValidSpawn(Blocks::never)
-			.noTerrainParticles()
-			.pushReaction(PushReaction.BLOCK),
+            .strength(-1.0F, 3600000.8F)
+            .mapColor(MapColor.COLOR_BLUE)
+            .noLootTable()
+            .noOcclusion()
+            .isValidSpawn(Blocks::never)
+            .noTerrainParticles()
+            .pushReaction(PushReaction.BLOCK),
         true
     );
 

@@ -1,32 +1,23 @@
 package com.snek.engineersbliss.client.screens.overlays;
 
-import org.jetbrains.annotations.Nullable;
-
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.screens.__base_Screen;
-import com.snek.engineersbliss.client.screens.parts.TextAlignment;
-import com.snek.engineersbliss.client.screens.parts.UiButton;
-import com.snek.engineersbliss.client.screens.parts.UiSpacer;
-import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
-import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
+import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.utils.Txt;
-
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 
 
 
 
-public class OverlaysScreen extends __base_Screen {
-    private static UiWidgetList leftSidebar;
-    private static final float LEFT_SIDEBAR_WIDTH = 0.25f;
+public class OverlaysScreen extends __base_UiFeatureSetScreen {
 
 
     public OverlaysScreen() {
-        super();
+        super(OverlaysClientFeatureSet.INSTANCE);
     }
 
 
@@ -34,68 +25,21 @@ public class OverlaysScreen extends __base_Screen {
 
     @Override
     protected void init() {
+        super.init();
 
 
-        leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT); {
-            final String titleString = "Overlays";
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        // Power levels
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt("Power levels", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.COMPARATOR_POWER_LEVELS),    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_LEVELS), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.RAIL_POWER_LEVELS),          Layout.BORDER_HEIGHT);
 
-            // Power levels
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Power levels", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.COMPARATOR_POWER_LEVELS,    "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS, "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.RAIL_POWER_LEVELS,          "test"), Layout.BORDER_HEIGHT);
-
-            // Logic
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Block logic", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,   "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE, "test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(createOverlayFeatureButton(OverlayFeature.RAIL_POWER_SOURCE,          "test"), Layout.BORDER_HEIGHT);
-        }
-        addRenderableWidget(leftSidebar);
-    }
-
-
-    public static UiButton createOverlayFeatureButton(final OverlayFeature feature, final @Nullable String spriteName) {
-        return createButton(
-            getToggleText(feature),
-            feature.getDetails(),
-            b -> toggleFeature(feature, b),
-            '\0',
-            "overlays/" + spriteName
-        );
-    }
-
-
-
-
-
-
-
-
-    @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
-        if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
-    }
-
-
-
-
-
-    public static Txt getToggleText(final OverlayFeature feature, final boolean state) {
-        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
-    }
-    public static Txt getToggleText(final OverlayFeature feature) {
-        return getToggleText(feature, OverlaysHandler.getFeature(feature));
-    }
-
-
-    public static void toggleFeature(final OverlayFeature feature, final Button b) {
-        final boolean newState = !OverlaysHandler.getFeature(feature);
-        b.setMessage(getToggleText(feature, newState).get());
-        OverlaysHandler.setFeature(feature, newState);
+        // Logic
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt("Block logic", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.COMPARATOR_LOGIC_SNIPPET),   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_SOURCE), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.RAIL_POWER_SOURCE),          Layout.BORDER_HEIGHT);
     }
 }

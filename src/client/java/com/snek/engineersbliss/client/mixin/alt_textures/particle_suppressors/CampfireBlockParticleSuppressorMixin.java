@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -39,7 +39,7 @@ public class CampfireBlockParticleSuppressorMixin {
         final double x, final double y, final double z,
         final double xSpeed, final double ySpeed, final double zSpeed
     ) {
-        if(!AltTexturesHandler.getFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES)) {
+        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_CAMPFIRE_PARTICLES)) {
             level.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }
@@ -57,7 +57,7 @@ public class CampfireBlockParticleSuppressorMixin {
         final boolean smoking,
         final CallbackInfo ci
     ) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.NO_CAMPFIRE_PARTICLES)) {
+        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_CAMPFIRE_PARTICLES)) {
             ci.cancel();
         }
     }

@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -39,7 +39,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 		final SubmitNodeCollector submitNodeCollector,
         final CallbackInfo ci
 	) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS)) {
+        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS)) {
             ci.cancel();
         }
     }

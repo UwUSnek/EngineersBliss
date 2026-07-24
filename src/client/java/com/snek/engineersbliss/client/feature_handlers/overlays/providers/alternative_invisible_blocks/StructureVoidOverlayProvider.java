@@ -2,11 +2,11 @@ package com.snek.engineersbliss.client.feature_handlers.overlays.providers.alter
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.TextureProviderDisplay;
 import com.snek.engineersbliss.client.feature_handlers.overlays.providers.__base_TextureOverlayProvider;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -26,7 +26,7 @@ public final class StructureVoidOverlayProvider extends __base_TextureOverlayPro
         final Player player = Minecraft.getInstance().player;
         if(player == null) return false;
         return
-            OverlaysHandler.getFeature(OverlayFeature.BETTER_STRUCTURE_VOID_DISPLAY) &&
+            ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_STRUCTURE_VOID_DISPLAY) &&
             state.is(Blocks.STRUCTURE_VOID) &&
             player.getMainHandItem().getItem() == (Items.STRUCTURE_VOID)
         ;

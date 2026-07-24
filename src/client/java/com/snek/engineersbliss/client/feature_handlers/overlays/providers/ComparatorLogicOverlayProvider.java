@@ -1,9 +1,9 @@
 package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +21,7 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
     public boolean shouldRender(final BlockState state, final BlockPos pos, final __base_OverlayAttachedData attachedData) {
         return
             //! Comparator level is always shown, including 0 (no signal) and -1 (no server data)
-            OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET) &&
+            ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.COMPARATOR_LOGIC_SNIPPET) &&
             state.is(Blocks.COMPARATOR)
         ;
     }

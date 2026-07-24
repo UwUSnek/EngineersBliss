@@ -71,6 +71,7 @@
 
 - **Creative mode tweaks**
   - ~~Control flying speed~~
+  - ~~Control walking speed~~
   - ~~Control reach distance~~
   - ~~Control interaction radius (click multiple blocks at once)~~
   - add in-game UI for these. display their current values with icons and such
@@ -259,3 +260,10 @@
 
 - displays tab/+/- default keybinds in UIs
 - displays add these to the pause menu too somehow
+
+
+- maybe add a "center crossair" feature in alt textures? Vanilla's crossair isnt centered
+
+
+
+- USE SLIDER FOR ALT TEXTURES FEATURES. overlay still images

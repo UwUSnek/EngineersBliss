@@ -4,9 +4,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.utils.BlockEntityUtils;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CampfireBlockEntity;
-import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 
 
@@ -40,12 +39,12 @@ public abstract class BlockEntityDispatcherOptimizerMixin {
     ) {
         switch(blockEntity) {
             case CampfireBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_CAMPFIRES) && !BlockEntityUtils.campfireHasItems(e)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.OPTIMIZED_CAMPFIRES) && !BlockEntityUtils.campfireHasItems(e)) {
                     cir.setReturnValue(null);
                 }
             }
             case ShelfBlockEntity e -> {
-                if(AltTexturesHandler.getFeature(AltTextureFeature.OPTIMIZED_SHELVES) && !BlockEntityUtils.shelfHasItems(e)) {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.OPTIMIZED_SHELVES) && !BlockEntityUtils.shelfHasItems(e)) {
                     cir.setReturnValue(null);
                 }
             }

@@ -13,19 +13,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
-import com.snek.engineersbliss.client.screens.parts.PlayerMannequin;
-import com.snek.engineersbliss.client.screens.parts.TextAlignment;
-import com.snek.engineersbliss.client.screens.parts.UiButton;
-import com.snek.engineersbliss.client.screens.parts.UiSpacer;
-import com.snek.engineersbliss.client.screens.parts.UiTextWidget;
-import com.snek.engineersbliss.client.screens.parts.UiWidgetList;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.PlayerMannequin;
+import com.snek.engineersbliss.client.ui.widgets.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -33,7 +33,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
@@ -52,7 +51,6 @@ import net.minecraft.resources.Identifier;
 public class PauseScreenMixin extends Screen {
     private static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
     private static final int BUTTON_MARGIN = Layout.BORDER_HEIGHT;
-    private static final int BUTTON_SPACING = BUTTON_HEIGHT + BUTTON_MARGIN;
 
 
     // Vanilla button dimensions and position. Calculated before any custom element is added.
@@ -185,7 +183,8 @@ public class PauseScreenMixin extends Screen {
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
             final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, 2f).withBoldFont(), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
 
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
@@ -198,6 +197,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "pause_screen/action_history"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  RenderingScreen::new, 'V', "pause_screen/version_control"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "pause_screen/test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "pause_screen/test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "pause_screen/test"), Layout.BORDER_HEIGHT);
@@ -266,23 +266,20 @@ public class PauseScreenMixin extends Screen {
         }
 
 
-        // Calculate text dimensions and position
-        final Font font = Minecraft.getInstance().font;
-        int textCenterX = (x0 + x1) / 2;
-        int nameY = clusterTop - 48;
-        int titleY = nameY + (int)(font.lineHeight * Layout.HEADER_SCALE) + 2;
-
-
         // Calculate play time
         final long ms = MinecraftUtils.getPlaytimeMs();
         final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
         final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
 
+        // Calculate text dimensions and position
+        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()),             Fonts.ui.regular, Layout.HEADER_SCALE);
+        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds), Fonts.ui.light);
+        int textCenterX = (x0 + x1) / 2;
+        int nameY = clusterTop - 48;
+        int titleY = nameY + playerName.getScaledFont().getLineHeight() + 2;
 
         // Draw player name an title
-        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()), Layout.HEADER_SCALE).withBoldFont();
-        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds));
         RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
         RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
     }
@@ -290,12 +287,12 @@ public class PauseScreenMixin extends Screen {
 
 
 
-
+    //TODO remove. use the new system or something, idk
     private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind, final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
         return new UiButton(new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
-        }, keybind).withSpriteBg(bgSpriteId, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+        }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, BUTTON_HEIGHT);
     }
 }
