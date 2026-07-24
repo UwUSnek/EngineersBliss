@@ -1,3 +1,13 @@
+//FIXME make this a subclass of __base_SidebarScreen
+//FIXME make __base_FeatureSetScreen a subclass of __base_SidebarScreen
+
+//FIXME move settings to the left sidebar
+//FIXME move presets to the right sidebar
+
+
+
+
+
 package com.snek.engineersbliss.client.screens.rendering;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +52,7 @@ public class RenderingScreen extends __base_UiScreen {
     UiButton renderBlocksButton = null;
     UiButton renderBlockEntitiesButton = null;
     UiButton renderFluidsButton = null;
+    UiButton shadingFixButton = null;
 
 
     public RenderingScreen() {
@@ -151,6 +162,11 @@ public class RenderingScreen extends __base_UiScreen {
             getToggleText_renderFluids(RenderFilterHandler.getRenderFluids()),
             new UiTxt("Toggle whether fluids should be rendered at all."),
             RenderingScreen::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
+        );
+        shadingFixButton = addButton(
+            getToggleText_shadingFix(RenderFilterHandler.getFixShading()),
+            new UiTxt("Fixes the weird shading Vanilla applies to certain blocks. This is most visible on Dirt Path and Farmland blocks."),
+            RenderingScreen::toggleShadingFix,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide
         );
 
 
@@ -301,6 +317,17 @@ public class RenderingScreen extends __base_UiScreen {
         RenderFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_renderFluids(newState).get());
+    }
+
+
+    public static UiTxt getToggleText_shadingFix(final boolean state) {
+        return new UiTxt("Smooth Shading: " + (state ? "ON" : "OFF"));
+    }
+    public static void toggleShadingFix(final UiButton b) {
+        final boolean newState = !RenderFilterHandler.getFixShading();
+        RenderFilterHandler.setShadingFix(newState);
+        MinecraftUtils.refreshRendering();
+        b.setLabel(getToggleText_shadingFix(newState).get());
     }
 }
 

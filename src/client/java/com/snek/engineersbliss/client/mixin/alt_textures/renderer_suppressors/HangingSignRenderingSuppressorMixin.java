@@ -5,7 +5,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
 import com.snek.engineersbliss.client.utils.BlockEntityUtils;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
