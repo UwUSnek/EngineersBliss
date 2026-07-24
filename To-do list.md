@@ -71,6 +71,7 @@
 
 - **Creative mode tweaks**
   - ~~Control flying speed~~
+  - ~~Control walking speed~~
   - ~~Control reach distance~~
   - ~~Control interaction radius (click multiple blocks at once)~~
   - add in-game UI for these. display their current values with icons and such
@@ -161,16 +162,17 @@
   - [Vanilla block] Twisting Vines Plant item
   - [Vanilla block] Weeping Vines Plant item
   - [Vanilla block] Frogspawn item
-  - [Vanilla blocks] Cake with Candle items //TODO same placement requirements as cake //FIXME maybe generate them automatically? idk what to do about the render though
-  - [Vanilla blocks] Potted plant items //TODO same placement requirements as flower pot
-  - [Vanilla blocks] Sloped Rail items //TODO same placement requirements as rails
+  - ~~[Vanilla blocks] Cake with Candle items~~
+  - ~~[Vanilla blocks] Potted plant items~~
   - [Vanilla block & item] Your Player Head as an item
-  - [Vanilla block & item] Bee Nest with Bees and Honey
-  - [Vanilla block & item] Beehive with Bees and Honey
-  - [Vanilla block & entity] Armor Stand with arms
+  - ~~[Vanilla block] Bee Nest with Bees and Honey~~
+  - ~~[Vanilla block] Bee Nest with Honey but no Bees~~
+  - ~~[Vanilla block] Beehive with Bees and Honey~~
+  - ~~[Vanilla block] Beehive with Honey but no Bees~~
+  - [Vanilla entity] Armor Stand with arms
   - [Vanilla entity] TNTs with higher explosion strength
-  - [Vanilla entity] Ender Dragon Spawn Egg
-  - [Vanilla entity] Wither Spawn Egg
+  - [Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu
+  - [Vanilla item & entity] Wither Spawn Egg in the Creative menu
 
 
 

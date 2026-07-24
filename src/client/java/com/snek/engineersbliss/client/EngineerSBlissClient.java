@@ -4,6 +4,7 @@ import javax.imageio.spi.IIORegistry;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
@@ -11,7 +12,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomBlockHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
@@ -52,9 +53,13 @@ public class EngineerSBlissClient implements ClientModInitializer {
         MinecraftUtils.register();
 
 
-        // Initialize custom items
-        //! Item and block registration is done on the server side
+        // Initialize block model shading fix plugin
+        ModelLoadingPlugin.register(new ShadingFixModelPlugin());
+
+
+        // Initialize custom block renderer plugin (for GREEN_SCREEN and BLUE_SCREEN blocks)
         ModelLoadingPlugin.register(new UnshadedBlockModelPlugin());
+        //! Item and block registration is done on the server side
 
 
         // Initialize resource plugin for alt textures handler

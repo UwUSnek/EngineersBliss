@@ -14,24 +14,120 @@ import net.minecraft.world.item.ItemStack;
 
 
 
-public class ModCreativeTab {
 
-    public static final ResourceKey<CreativeModeTab> TAB_KEY = ResourceKey.create(
+
+
+
+public class ModCreativeTab {
+    private ModCreativeTab() {}
+
+
+
+
+    public static final ResourceKey<CreativeModeTab> CUSTOM_ITEMS_TAB_KEY = ResourceKey.create(
         BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "engineers-bliss")
+        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "custom_items")
     );
 
-    public static final CreativeModeTab TAB = FabricCreativeModeTab.builder()
+    public static final CreativeModeTab CUSTOM_ITEMS_TAB = FabricCreativeModeTab.builder()
         .icon(() -> new ItemStack(CustomItemHandler.GREEN_SCREEN.asItem()))
-        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".engineers-bliss"))
+        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".custom_items"))
         .displayItems((params, output) -> {
             output.accept(CustomItemHandler.GREEN_SCREEN);
             output.accept(CustomItemHandler.BLUE_SCREEN);
-        })
-        .build()
+        }).build()
     ;
 
+
+
+
+
+
+
+
+
+    public static final ResourceKey<CreativeModeTab> MISSING_VANILLA_ITEMS_TAB_KEY = ResourceKey.create(
+        BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "missing_vanilla_items")
+    );
+
+    public static final CreativeModeTab MISSING_VANILLA_ITEMS_TAB = FabricCreativeModeTab.builder()
+        .icon(() -> new ItemStack(CustomItemHandler.POTTED_FLOWERING_AZALEA.asItem()))
+        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_vanilla_items"))
+        .displayItems((params, output) -> {
+            output.accept(CustomItemHandler.CANDLE_CAKE);
+            output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
+            output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);
+            output.accept(CustomItemHandler.MAGENTA_CANDLE_CAKE);
+            output.accept(CustomItemHandler.LIGHT_BLUE_CANDLE_CAKE);
+            output.accept(CustomItemHandler.YELLOW_CANDLE_CAKE);
+            output.accept(CustomItemHandler.LIME_CANDLE_CAKE);
+            output.accept(CustomItemHandler.PINK_CANDLE_CAKE);
+            output.accept(CustomItemHandler.GRAY_CANDLE_CAKE);
+            output.accept(CustomItemHandler.LIGHT_GRAY_CANDLE_CAKE);
+            output.accept(CustomItemHandler.CYAN_CANDLE_CAKE);
+            output.accept(CustomItemHandler.PURPLE_CANDLE_CAKE);
+            output.accept(CustomItemHandler.BLUE_CANDLE_CAKE);
+            output.accept(CustomItemHandler.BROWN_CANDLE_CAKE);
+            output.accept(CustomItemHandler.GREEN_CANDLE_CAKE);
+            output.accept(CustomItemHandler.RED_CANDLE_CAKE);
+            output.accept(CustomItemHandler.BLACK_CANDLE_CAKE);
+
+            output.accept(CustomItemHandler.POTTED_DANDELION);
+            output.accept(CustomItemHandler.POTTED_POPPY);
+            output.accept(CustomItemHandler.POTTED_BLUE_ORCHID);
+            output.accept(CustomItemHandler.POTTED_ALLIUM);
+            output.accept(CustomItemHandler.POTTED_AZURE_BLUET);
+            output.accept(CustomItemHandler.POTTED_RED_TULIP);
+            output.accept(CustomItemHandler.POTTED_ORANGE_TULIP);
+            output.accept(CustomItemHandler.POTTED_WHITE_TULIP);
+            output.accept(CustomItemHandler.POTTED_PINK_TULIP);
+            output.accept(CustomItemHandler.POTTED_OXEYE_DAISY);
+            output.accept(CustomItemHandler.POTTED_CORNFLOWER);
+            output.accept(CustomItemHandler.POTTED_LILY_OF_THE_VALLEY);
+            output.accept(CustomItemHandler.POTTED_WITHER_ROSE);
+            output.accept(CustomItemHandler.POTTED_TORCHFLOWER);
+            output.accept(CustomItemHandler.POTTED_OAK_SAPLING);
+            output.accept(CustomItemHandler.POTTED_SPRUCE_SAPLING);
+            output.accept(CustomItemHandler.POTTED_BIRCH_SAPLING);
+            output.accept(CustomItemHandler.POTTED_JUNGLE_SAPLING);
+            output.accept(CustomItemHandler.POTTED_ACACIA_SAPLING);
+            output.accept(CustomItemHandler.POTTED_DARK_OAK_SAPLING);
+            output.accept(CustomItemHandler.POTTED_CHERRY_SAPLING);
+            output.accept(CustomItemHandler.POTTED_RED_MUSHROOM);
+            output.accept(CustomItemHandler.POTTED_BROWN_MUSHROOM);
+            output.accept(CustomItemHandler.POTTED_FERN);
+            output.accept(CustomItemHandler.POTTED_DEAD_BUSH);
+            output.accept(CustomItemHandler.POTTED_CACTUS);
+            output.accept(CustomItemHandler.POTTED_BAMBOO);
+            output.accept(CustomItemHandler.POTTED_AZALEA);
+            output.accept(CustomItemHandler.POTTED_FLOWERING_AZALEA);
+            output.accept(CustomItemHandler.POTTED_CRIMSON_FUNGUS);
+            output.accept(CustomItemHandler.POTTED_WARPED_FUNGUS);
+            output.accept(CustomItemHandler.POTTED_CRIMSON_ROOTS);
+            output.accept(CustomItemHandler.POTTED_WARPED_ROOTS);
+            output.accept(CustomItemHandler.POTTED_MANGROVE_PROPAGULE);
+            output.accept(CustomItemHandler.POTTED_PALE_OAK_SAPLING);
+            output.accept(CustomItemHandler.POTTED_OPEN_EYEBLOSSOM);
+            output.accept(CustomItemHandler.POTTED_CLOSED_EYEBLOSSOM);
+            output.accept(CustomItemHandler.POTTED_GOLDEN_DANDELION);
+
+            output.accept(CustomItemHandler.FULL_BEE_NEST);
+            output.accept(CustomItemHandler.FULL_BEE_NEST_NO_BEES);
+            output.accept(CustomItemHandler.FULL_BEEHIVE);
+            output.accept(CustomItemHandler.FULL_BEEHIVE_NO_BEES);
+        }).build()
+    ;
+
+
+
+
+
+
+
+
     public static void register() {
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, TAB_KEY, TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_ITEMS_TAB_KEY,          CUSTOM_ITEMS_TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MISSING_VANILLA_ITEMS_TAB_KEY, MISSING_VANILLA_ITEMS_TAB);
     }
 }
