@@ -5,18 +5,20 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -32,6 +34,9 @@ public class UiButton extends Button {
     private @Nullable Identifier bgSpriteId;
     private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
     private int labelOffset;   // Label offset from the left edge, in pixels.
+
+    // Cached textures
+    private final TextureCache bgCache = new TextureCache();
 
 
 
@@ -92,21 +97,18 @@ public class UiButton extends Button {
 
 
 
+
+
+
+
     @Override
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        final boolean usingSprite = bgSpriteId != null;
 
-
-        // Draw black background //! Always drawn
-        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColor);
-
-        // Draw background sprite if present, on top of the default background so the shape of the button is preserved
-        if(usingSprite) {
-            final int spriteWidth = (int)(height * bgSpriteWidth);
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, height);
-        }
+        // Draw background
+        extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw label
+        final boolean usingSprite = bgSpriteId != null;
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + labelOffset;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
@@ -123,6 +125,47 @@ public class UiButton extends Button {
         // Draw hover highlight
         if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
     }
+
+
+
+
+    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+
+        final int w = getWidth();
+        final int h = getHeight();
+        final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        final int pixelW = Math.max(1, (int)Math.round(w * guiScale));
+        final int pixelH = Math.max(1, (int)Math.round(h * guiScale));
+
+        bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
+        bgCache.blit(graphics, getX(), getY(), w, h);
+    }
+
+
+
+    /**
+     * Draws the background of the element. Use local coordinates.
+     * This handles static backgrounds that are drawn once and cached until the element changes dimensions.
+     * @param img The output image to draw to.
+     * @param w The width of the image and element.
+     * @param h The height of the image and element.
+     */
+    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
+
+        // Draw black background color //! Always drawn
+        RenderingUtils.fillImageArea(img, 0, 0, w, h, Layout.bgColor);
+
+        // Draw background sprite if present, on top of the default background so the shape of the button is preserved
+        final boolean usingSprite = bgSpriteId != null;
+        if(usingSprite) {
+            final int spriteWidth = (int)(h * bgSpriteWidth);
+            RenderingUtils.blitSpriteToImage(img, bgSpriteId, 0, 0, spriteWidth, h);
+        }
+    }
+
+
+
+
 
 
 

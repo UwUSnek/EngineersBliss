@@ -1,11 +1,15 @@
 package com.snek.engineersbliss.client.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.rendering.PixelFiller;
@@ -14,6 +18,7 @@ import com.snek.engineersbliss.client.utils.rendering.PixelSetter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -91,6 +96,80 @@ public class RenderingUtils {
             result |= Math.clamp(c, 0, 255) << shift;
         }
         return result;
+    }
+
+
+
+    /**
+     * Overlays the specified pixel of the provided NativeImage with the given color.
+     * @param img The image to draw to.
+     * @param x The X position of the pixel.
+     * @param y The Y position of the pixel.
+     * @param c The color to draw.
+     */
+    public static void fillImagePixel(final NativeImage img, final int x, final int y, final int c) {
+
+        // Custom logic to blend alpha. setPixel doesn't do that by default.
+        final int px = clampX(x, img);
+        final int py = clampY(y, img);
+        img.setPixel(px, py, over(c, img.getPixel(px, py)));
+    }
+
+
+    /**
+     * Overlays the specified area of the provided NativeImage with the given color.
+     * @param img The image to draw to.
+     * @param x0 The X position of the top-left corner of the area to fill.
+     * @param y0 The Y position of the top-left corner of the area to fill.
+     * @param x1 The X position of the bottom-right corner of the area to fill.
+     * @param y1 The Y position of the bottom-right corner of the area to fill.
+     * @param c The color to draw.
+     */
+    public static void fillImageArea(final NativeImage img, final int x0, final int y0, final int x1, final int y1, final int c) {
+
+        // Fill one pixel at a time using the same method. fillRect can't blend.
+        final int cx0 = clampX(x0, img);
+        final int cy0 = clampY(y0, img);
+        final int cx1 = clampX(x1 - 1, img);
+        final int cy1 = clampY(y1 - 1, img);
+        for(int yy = cy0; yy <= cy1; yy++) {
+            for(int xx = cx0; xx <= cx1; xx++) {
+                fillImagePixel(img, xx, yy, c);
+            }
+        }
+    }
+
+
+    /**
+     * Blits a sprite onto a NativeImage.
+     * ! NOTICE: This runs on the CPU, it gets very laggy very quickly. Cache drawn images whenever possible.
+     * @param img The image to blit the sprite to.
+     * @param spriteId The Identifier of the sprite to blit.
+     * @param x The X position of the sprite in image-local coords.
+     * @param y The Y position of the sprite in image-local coords.
+     * @param w The final width of the sprite.
+     * @param h The final height of the sprite.
+     */
+    public static void blitSpriteToImage(final NativeImage img, final Identifier spriteId, final int x, final int y, final int w, final int h) {
+        final Identifier textureId = spriteId.withPath(p -> "textures/gui/sprites/" + p + ".png");
+
+        try(final InputStream in = Minecraft.getInstance().getResourceManager().open(textureId);
+            final NativeImage src = NativeImage.read(in)) {
+
+            final int srcW = src.getWidth();
+            final int srcH = src.getHeight();
+
+            for(int yy = 0; yy < h; yy++) {
+                final int sy = Math.clamp((yy * srcH) / h, 0, srcH - 1);
+                for(int xx = 0; xx < w; xx++) {
+                    final int sx = Math.clamp((xx * srcW) / w, 0, srcW - 1);
+                    fillImagePixel(img, x + xx, y + yy, src.getPixel(sx, sy));
+                }
+            }
+        }
+        catch(final IOException e) {
+            EngineerSBliss.LOGGER.error("Missing GUI sprite: {}", spriteId, e);
+        }
     }
 
 
@@ -340,27 +419,8 @@ public class RenderingUtils {
         final float thickness, final int color
     ) {
         extractLine(
-
-            // Custom logic to blend alpha. setPixel doesn't do that by default.
-            (x, y, c) -> {
-                final int px = clampX(x, img);
-                final int py = clampY(y, img);
-                img.setPixel(px, py, over(c, img.getPixel(px, py)));
-            },
-
-            // Fille one pixel at a time using the same method. fillRect can't blend.
-            (x0, y0, x1, y1, c) -> {
-                final int cx0 = clampX(x0, img);
-                final int cy0 = clampY(y0, img);
-                final int cx1 = clampX(x1 - 1, img);
-                final int cy1 = clampY(y1 - 1, img);
-                for(int yy = cy0; yy <= cy1; yy++) {
-                    for(int xx = cx0; xx <= cx1; xx++) {
-                        img.setPixel(xx, yy, over(c, img.getPixel(xx, yy)));
-                    }
-                }
-            },
-
+            (x,  y,          c) -> fillImagePixel(img, x,  y,          c),
+            (x0, y0, x1, y1, c) -> fillImageArea (img, x0, y0, x1, y1, c),
             xs, ys, thickness, color
         );
     }
