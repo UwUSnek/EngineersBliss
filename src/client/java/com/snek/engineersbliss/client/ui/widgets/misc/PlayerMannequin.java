@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui.widgets;
+package com.snek.engineersbliss.client.ui.widgets.misc;
 
 import org.jetbrains.annotations.Nullable;
 

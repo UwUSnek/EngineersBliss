@@ -12,11 +12,11 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
-import com.snek.engineersbliss.client.ui.widgets.UiButton;
-import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
-import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
-import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
-import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -38,15 +38,11 @@ import net.minecraft.resources.Identifier;
  * A special __base_UiScreen that can properly handle UiFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
  * It comes with left and a right sidebars and a feature previews.
  */
-public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
+public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     // Elements and layout
-    protected static UiWidgetList leftSidebar;
-    protected static UiWidgetList rightSidebar;
     protected static UiTextWidget descriptionWidget;
     protected static UiTextWidget descriptionNameWidget;
-    public static final float LEFT_SIDEBAR_WIDTH = 0.25f;
-    public static final float RIGHT_SIDEBAR_WIDTH = 0.25f;
     public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH;
     public static final float DESCRIPTION_HEIGHT = 0.1f;
     public static final float DESCRIPTION_NAME_HEIGHT = 0.1f;
@@ -64,7 +60,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
     // Parent feature set and constructor
     protected final __base_ClientFeatureSet<?> featureSet;
     protected __base_UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
-        super();
+        super(true, true);
         this.featureSet = featureSet;
     }
 
@@ -77,18 +73,10 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiScreen {
         super.init();
 
 
-        // Add left sidebar
-        leftSidebar = new UiWidgetList((int)(width * LEFT_SIDEBAR_WIDTH), height, 0, 0, BUTTON_HEIGHT);
-        addRenderableWidget(leftSidebar);
+        // Add left sidebar title
         final UiTxt titleText = featureSet.calcName();
         leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
         leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-
-
-        // Add right sidebar
-        final int rightSidebarWidth = (int)(width * RIGHT_SIDEBAR_WIDTH);
-        rightSidebar = new UiWidgetList(rightSidebarWidth, height, width - rightSidebarWidth, 0, BUTTON_HEIGHT);
-        addRenderableWidget(rightSidebar);
 
 
         // Add description name and text elements

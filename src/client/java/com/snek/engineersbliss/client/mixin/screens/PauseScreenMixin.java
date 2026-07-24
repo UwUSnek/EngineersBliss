@@ -21,11 +21,11 @@ import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
-import com.snek.engineersbliss.client.ui.widgets.PlayerMannequin;
-import com.snek.engineersbliss.client.ui.widgets.UiButton;
-import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
-import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
-import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.misc.PlayerMannequin;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -262,7 +262,7 @@ public class PauseScreenMixin extends Screen {
         // Draw player model
         final @Nullable PlayerMannequin model = PlayerMannequin.getMannequin();
         if(model != null) {
-            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0F, mouseX, mouseY, model);
+            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0f, mouseX, mouseY, model);
         }
 
 

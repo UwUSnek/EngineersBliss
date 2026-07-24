@@ -31,7 +31,7 @@ public class CustomBlockHandler {
         "green_screen",
         Block::new,
         BlockBehaviour.Properties.of()
-            .strength(-1.0F, 3600000.8F)
+            .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.COLOR_GREEN)
             .noLootTable()
             .noOcclusion()
@@ -43,7 +43,7 @@ public class CustomBlockHandler {
         "blue_screen",
         Block::new,
         BlockBehaviour.Properties.of()
-            .strength(-1.0F, 3600000.8F)
+            .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.COLOR_BLUE)
             .noLootTable()
             .noOcclusion()

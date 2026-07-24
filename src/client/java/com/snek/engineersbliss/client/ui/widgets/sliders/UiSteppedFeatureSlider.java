@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui.widgets;
+package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.function.BiConsumer;
 
