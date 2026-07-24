@@ -1,12 +1,4 @@
-//FIXME make this a toggle in the rendering screen
-//FIXME make this a toggle in the rendering screen
-//FIXME make this a toggle in the rendering screen
-//FIXME make this a toggle in the rendering screen
-//FIXME make this a toggle in the rendering screen
-
-
-
-package com.snek.engineersbliss.client.feature_handlers.overlays.renderer;
+package com.snek.engineersbliss.client.feature_handlers.rendering;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -36,7 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * Static model faces, including Vanilla's, are shaded based on a single direction instead of interpolating them (MC-223314).
  * This plugin Fixes this by forcing {@link ShadeMode#ENHANCED} on all models.
  */
-public class SmoothShadingModelPlugin implements ModelLoadingPlugin {
+public class ShadingFixModelPlugin implements ModelLoadingPlugin {
 
 
     @Override
@@ -95,15 +87,20 @@ public class SmoothShadingModelPlugin implements ModelLoadingPlugin {
             final RandomSource random,
             final Predicate<@Nullable Direction> cullTest
         ) {
-            emitter.pushTransform(quad -> {
-                quad.shadeMode(ShadeMode.ENHANCED);
-                return true;
-            });
-            try {
-                delegate.emitQuads(emitter, level, pos, state, random, cullTest);
+            if(RenderFilterHandler.getFixShading()) {
+                emitter.pushTransform(quad -> {
+                    quad.shadeMode(ShadeMode.ENHANCED);
+                    return true;
+                });
+                try {
+                    delegate.emitQuads(emitter, level, pos, state, random, cullTest);
+                }
+                finally {
+                    emitter.popTransform();
+                }
             }
-            finally {
-                emitter.popTransform();
+            else {
+                delegate.emitQuads(emitter, level, pos, state, random, cullTest);
             }
         }
     }
