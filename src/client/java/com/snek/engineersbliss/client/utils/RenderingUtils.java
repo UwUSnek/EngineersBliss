@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
@@ -20,6 +21,39 @@ import net.minecraft.network.chat.Component;
 
 public class RenderingUtils {
     private RenderingUtils() {}
+
+
+
+
+    /**
+     * Forces the GuiGraphicsExtractor to render at full resolution instead of whatever the GUI Scale option decides.
+     * This allows for sharper edges and proper antialiasing at high GUI Scales.
+     * ! Use the returned scale factor to multiply coordinates and dimensions.
+     * ! Call popFullResRendering(GuiGraphicsExtractor) after rendering is done to revert the custom transform.
+     * @param graphics The GuiGraphicsExtractor to modify.
+     * @return The current scale factor. Use this for coordinate calculations.
+     */
+    public static double pushFullResRendering(final GuiGraphicsExtractor graphics) {
+        final var window = Minecraft.getInstance().getWindow();
+        final double guiScale = window.getWidth() / (double) window.getGuiScaledWidth();
+        graphics.pose().pushMatrix();
+        graphics.pose().scale((float)(1.0 / guiScale), (float)(1.0 / guiScale));
+        return guiScale;
+    }
+
+
+
+    /**
+     * Reverts the transform pushed by pushFullResRendering(GuiGraphicsExtractor).
+     * @param graphics The GuiGraphicsExtractor to modify.
+     */
+    public static void popFullResRendering(final GuiGraphicsExtractor graphics) {
+        graphics.pose().popMatrix();
+    }
+
+
+
+
 
 
 
@@ -213,6 +247,7 @@ public class RenderingUtils {
 
     /**
      * Draws a polyline through the provided coordinates, antialiasing pixel columns.
+     * ! NOTICE: This runs on the CPU, it gets very laggy very quickly. Cache drawn images whenever possible.
      * @param graphics The GuiGraphicsExtractor to draw on.
      * @param xs The X coordinates of the points.
      * @param ys The Y coordinates of the points.

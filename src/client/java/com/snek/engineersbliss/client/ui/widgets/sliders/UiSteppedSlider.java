@@ -115,26 +115,23 @@ public class UiSteppedSlider<T> extends UiSlider {
         final int h  = getHeight();
         final int bottom = y0 + h;
 
-        final double[] px = new double[n];
-        final double[] py = new double[n];
-        for(int i = 0; i < n; i++) {
-            px[i] = x0 + (double)w * i / (n - 1);
-            py[i] = bottom - ((mags[i] - min) / range) * h;
-        }
 
-        // Fill area under the curve
-        for(int col = 0; col < w; col++) {
-            final double t = (double)col / (w - 1);
-            final double idxF = t * (n - 1);
-            final int i0 = (int)Math.floor(idxF);
-            final int i1 = Math.min(i0 + 1, n - 1);
-            final double frac = idxF - i0;
-            final double topY = py[i0] + (py[i1] - py[i0]) * frac;
-            graphics.fill(x0 + col, (int)Math.round(topY), x0 + col + 1, bottom, Layout.SliderGraphFillColor);
-        }
 
-        // Draw line
-        RenderingUtils.extractLine(graphics, px, py, 1.0f, Layout.SliderGraphLineColor);
+        // Render the graph at full resolution so it doesn't look blurry
+        final double scale = RenderingUtils.pushFullResRendering(graphics); {
+
+            // Calculate line coordinates
+            final double[] px = new double[n];
+            final double[] py = new double[n];
+            for(int i = 0; i < n; i++) {
+                px[i] = scale * (x0 + (double)w * i / (n - 1));
+                py[i] = scale * (bottom - ((mags[i] - min) / range) * h);
+            }
+
+            // Draw line
+            RenderingUtils.extractLine(graphics, px, py, 1.0f, Layout.SliderGraphLineColor);
+
+        } RenderingUtils.popFullResRendering(graphics);
     }
 
 

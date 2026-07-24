@@ -47,7 +47,7 @@ public class UiSlider extends AbstractSliderButton {
 
     @Override
     protected void updateMessage() {
-        this.label = new UiTxt(baseLabel.get()).cat(buildValueText());
+        this.label = ((UiTxt)new UiTxt(baseLabel.get()).cat(" : ")).cat(buildValueText());
     }
     public UiTxt buildValueText() {
         return new UiTxt(String.valueOf((int)(value * 100)) + "%");
