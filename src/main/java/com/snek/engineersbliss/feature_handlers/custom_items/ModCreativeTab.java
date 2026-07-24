@@ -111,6 +111,11 @@ public class ModCreativeTab {
             output.accept(CustomItemHandler.POTTED_OPEN_EYEBLOSSOM);
             output.accept(CustomItemHandler.POTTED_CLOSED_EYEBLOSSOM);
             output.accept(CustomItemHandler.POTTED_GOLDEN_DANDELION);
+
+            output.accept(CustomItemHandler.FULL_BEE_NEST);
+            output.accept(CustomItemHandler.FULL_BEE_NEST_NO_BEES);
+            output.accept(CustomItemHandler.FULL_BEEHIVE);
+            output.accept(CustomItemHandler.FULL_BEEHIVE_NO_BEES);
         }).build()
     ;
 

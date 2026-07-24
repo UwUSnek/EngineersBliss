@@ -63,5 +63,10 @@
     "item.engineers-bliss.potted_pale_oak_sapling"   : "Potted Pale Oak Sapling",
     "item.engineers-bliss.potted_open_eyeblossom"    : "Potted Open Eyeblossom",
     "item.engineers-bliss.potted_closed_eyeblossom"  : "Potted Closed Eyeblossom",
-    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion"
+    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion",
+
+    "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
+    "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
+    "item.engineers-bliss.full_beehive"          : "Full Beehive",
+    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees"
 }

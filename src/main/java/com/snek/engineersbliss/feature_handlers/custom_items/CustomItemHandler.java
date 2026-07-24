@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.feature_handlers.custom_items;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -82,6 +83,11 @@ public class CustomItemHandler {
     public static final Item POTTED_CLOSED_EYEBLOSSOM  = register("potted_closed_eyeblossom",  p -> new BlockItem(Blocks.POTTED_CLOSED_EYEBLOSSOM,  p));
     public static final Item POTTED_GOLDEN_DANDELION   = register("potted_golden_dandelion",   p -> new BlockItem(Blocks.POTTED_GOLDEN_DANDELION,   p));
 
+
+    public static final Item FULL_BEE_NEST         = register("full_bee_nest",         p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 3, 5));
+    public static final Item FULL_BEE_NEST_NO_BEES = register("full_bee_nest_no_bees", p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 0, 5));
+    public static final Item FULL_BEEHIVE          = register("full_beehive",          p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 3, 5));
+    public static final Item FULL_BEEHIVE_NO_BEES  = register("full_beehive_no_bees",  p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 0, 5));
 
 
 

@@ -231,10 +231,12 @@ It helps a lot :3
   - [Vanilla block] Frogspawn item
   - [Vanilla blocks] Cake with Candle items
   - [Vanilla blocks] Potted plant items
-  - [Vanilla block & item] Your Player Head as an item
-  - [Vanilla block & item] Bee Nest with Bees and Honey
-  - [Vanilla block & item] Beehive with Bees and Honey
-  - [Vanilla block & entity] Armor Stand with arms
+  - [Vanilla block] Your Player Head as an item
+  - [Vanilla block] Bee Nest with Bees and Honey
+  - [Vanilla block] Bee Nest with Honey but no Bees
+  - [Vanilla block] Beehive with Bees and Honey
+  - [Vanilla block] Beehive with Honey but no Bees
+  - [Vanilla entity] Armor Stand with arms
   - [Vanilla entity] TNTs with higher explosion strength
-  - [Vanilla entity] Ender Dragon Spawn Egg
-  - [Vanilla entity] Wither Spawn Egg
+  - [Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu
+  - [Vanilla item & entity] Wither Spawn Egg in the Creative menu
