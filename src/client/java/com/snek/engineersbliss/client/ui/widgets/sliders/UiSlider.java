@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
@@ -101,6 +102,13 @@ public class UiSlider extends AbstractSliderButton {
 
         // Draw hover highlight
         if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
+
+        // Draw slider thumb
+        final int thumbX = getX() + (int)(this.value * (this.width - HANDLE_WIDTH)); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        final int thumbColor = isHovered() ? Layout.fgColor : Layout.bgColorActive | 0xFF000000; //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), thumbColor); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        if(isHovered()) graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), Layout.bgColorActive);
+
 
         this.handleCursor(graphics);
     }
