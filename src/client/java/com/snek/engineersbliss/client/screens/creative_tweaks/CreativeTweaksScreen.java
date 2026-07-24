@@ -5,10 +5,10 @@ import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeT
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
-import com.snek.engineersbliss.client.ui.widgets.UiFeatureButton;
-import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
-import com.snek.engineersbliss.client.ui.widgets.UiSteppedFeatureSlider;
-import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 

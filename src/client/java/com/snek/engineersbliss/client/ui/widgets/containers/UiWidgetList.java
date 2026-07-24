@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui.widgets;
+package com.snek.engineersbliss.client.ui.widgets.containers;
 
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.mixin.accessors.AbstractScrollAreaAccessor;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
 
 

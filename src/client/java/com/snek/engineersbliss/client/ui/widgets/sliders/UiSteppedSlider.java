@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui.widgets;
+package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -6,10 +6,6 @@ import java.util.function.BiConsumer;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.utils.Txt;
-
-import net.minecraft.client.gui.components.AbstractSliderButton;
-import net.minecraft.network.chat.Component;
 
 
 
@@ -18,10 +14,10 @@ import net.minecraft.network.chat.Component;
 
 
 
-public class UiSteppedSlider<T> extends AbstractSliderButton {
-    private UiTxt label;
+public class UiSteppedSlider<T> extends UiSlider {
+
+    // The list of possible values.
     private final List<T> stepValues;
-    private final BiConsumer<Integer, T> afterChangeCallback;
 
 
     public UiSteppedSlider(
@@ -29,10 +25,13 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback
     ) {
-        super(x, y, w, h, new Txt().get(), indexToUnit(defaultValueIndex, stepValues.size()));
-        this.label = label;
+        super(x, y, w, h, label, indexToUnit(defaultValueIndex, stepValues.size()), n -> {
+            if(afterChangeCallback != null) {
+                final int selectedIndex = unitToIndex(n, stepValues.size());
+                afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
+            }
+        });
         this.stepValues = stepValues;
-        this.afterChangeCallback = afterChangeCallback;
         updateMessage();
     }
 
@@ -49,38 +48,24 @@ public class UiSteppedSlider<T> extends AbstractSliderButton {
 
 
     @Override
+    public UiTxt buildValueText() {
+        return new UiTxt(String.valueOf(getSelectedValue()));
+    }
+    @Override
     protected void updateMessage() {
-        super.setMessage(label.copy().cat(": " + getSelectedValue()).get());
-    }
-    @Override
-    public void setMessage(Component message) {
-        throw new UnsupportedOperationException("Use .setLabel(label) instead");
-    }
-    public void setLabel(final Component label) {
-        super.setMessage(label);
-        this.label = new UiTxt(label);
-    }
-    public void setLabel(final UiTxt label) {
-        super.setMessage(label.get());
-        this.label = (UiTxt)label.copy();
+        //! Guard the automatic updateMessage call done by UiSlider.
+        //! stepValues is null so trying to read it would cause a NPE.
+        if(stepValues != null) super.updateMessage();
     }
 
 
-
-
-    @Override
-    protected void applyValue() {
-        if(afterChangeCallback != null) {
-            final int selectedIndex = unitToIndex(value);
-            afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
-        }
-    }
 
 
     static double snap(final double value, int steps) {
         --steps;
         return Math.round(value * steps) / (double) steps;
     }
+
 
     @Override
     protected void setValue(final double newValue) {

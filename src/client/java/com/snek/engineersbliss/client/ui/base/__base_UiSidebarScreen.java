@@ -1,6 +1,6 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 
 
 

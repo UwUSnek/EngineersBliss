@@ -2,9 +2,9 @@ package com.snek.engineersbliss.client.screens.action_history;
 
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
-import com.snek.engineersbliss.client.ui.widgets.UiSpacer;
-import com.snek.engineersbliss.client.ui.widgets.UiTextWidget;
-import com.snek.engineersbliss.client.ui.widgets.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 

@@ -31,7 +31,8 @@ public class RenderingUtils {
         final int x, final int y,
         final int color,
         final TextAlignment textAlignment,
-        final int elmWidth //! Can safely be 0 if textAlignment is LEFT or CENTER_ANCHORED
+        final int elmWidth, //! Can safely be 0 if textAlignment is LEFT or CENTER_ANCHORED
+        final boolean dropShadow
     ) {
 
         // Retrieve font and text scale, apply drop shadow option
@@ -51,11 +52,11 @@ public class RenderingUtils {
         // Draw scaled text
         graphics.pose().pushMatrix();
         graphics.pose().scale(textScale, textScale);
-        graphics.text(scaledFont.getFont(), text, _x, _y, color);
+        graphics.text(scaledFont.getFont(), text, _x, _y, color, dropShadow);
         graphics.pose().popMatrix();
     }
     public static void extractTxt(final GuiGraphicsExtractor graphics, final Component text, final ScaledFont scaledFont, final int x, final int y, final int color) {
-        extractTxt(graphics, text, scaledFont, x, y, color, TextAlignment.LEFT, 0);
+        extractTxt(graphics, text, scaledFont, x, y, color, TextAlignment.LEFT, 0, true);
     }
 
 
@@ -63,8 +64,7 @@ public class RenderingUtils {
 
     public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
         final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final Component componentText = (dropShadow ? text : text.copy().noShadow()).get();
-        extractTxt(graphics, componentText, scaledFont, x, y, color, textAlignment, elmWidth);
+        extractTxt(graphics, text.get(), scaledFont, x, y, color, textAlignment, elmWidth, dropShadow);
     }
     public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
         extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, 0, dropShadow);
