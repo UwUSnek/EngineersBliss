@@ -51,13 +51,13 @@ public class UiTextWidget extends AbstractWidget {
 
 
     public UiTextWidget(final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(0, 0, 0, 0, label, alignment, color, false, bgColor);
+        this(50, 50, 50, 50, label, alignment, color, false, bgColor);
     }
     public UiTextWidget(final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
         this(x, y, w, h, label, alignment, color, false, bgColor);
     }
     public UiTextWidget(final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
-        this(0, 0, 0, 0, label, alignment, color, wrapLines, bgColor);
+        this(50, 50, 50, 50, label, alignment, color, wrapLines, bgColor);
     }
     public UiTextWidget(final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
         super(x, y, w, h, new Txt().get());

@@ -41,11 +41,12 @@ import net.minecraft.resources.Identifier;
 public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     // Elements and layout
-    protected static UiTextWidget descriptionWidget;
+    protected static UiTextWidget descriptionTextWidget;
     protected static UiTextWidget descriptionNameWidget;
     public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH;
-    public static final float DESCRIPTION_HEIGHT = 0.1f;
-    public static final float DESCRIPTION_NAME_HEIGHT = 0.1f;
+    public static final float DESCRIPTION_HEIGHT = 0.15f;
+    public static final float DESCRIPTION_NAME_HEIGHT = 0.06f;
+    public static final float DESCRIPTION_TEXT_HEIGHT = DESCRIPTION_HEIGHT - DESCRIPTION_NAME_HEIGHT;
     public static final float PREVIEW_WIDTH = 0.25f;
 
     // Hover data cache
@@ -84,17 +85,17 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
         final int descriptionX = (width - descriptionWidth) / 2;
         final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
-        final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
+        final int descriptionTextHeight = (int)(height * DESCRIPTION_TEXT_HEIGHT);
         descriptionNameWidget = new UiTextWidget(
-            descriptionX, height - descriptionHeight - descriptionNameHeight, descriptionWidth, descriptionNameHeight,
+            descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidth, descriptionNameHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         );
-        descriptionWidget = new UiTextWidget(
-            descriptionX, height - descriptionHeight, descriptionWidth, descriptionHeight,
+        descriptionTextWidget = new UiTextWidget(
+            descriptionX, height - descriptionTextHeight, descriptionWidth, descriptionTextHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         ).withVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
-        addRenderableWidget(descriptionWidget);
+        addRenderableWidget(descriptionTextWidget);
     }
 
 
@@ -151,16 +152,20 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final int w, final int h, final int hPlaceholder,
-            final int xOff, final int xOn, final int y, final int yPlaceholder) {
+    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final int w, final int h, final int hPlaceholder, final int xOff, final int xOn, final int y, final int yPlaceholder) {
         // Render ON/OFF text
         {
+            final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
+            final int descriptionX = (width - descriptionWidth) / 2;
+            final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
+            graphics.fill(descriptionX, 0, descriptionX + descriptionWidth, descriptionHeight, Layout.bgColorSolid);
+
             final int scale = 5;
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
             final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
             final int textOffX = xOff + w / 2;
             final int textOnX  = xOn  + w / 2;
-            final int textY    = scaledFont.getLineHeight();
+            final int textY    = (descriptionHeight - scaledFont.getLineHeight()) / 2;
             RenderingUtils.extractTxt(graphics, new UiTxt("OFF", fontFamily, scale), textOffX, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
             RenderingUtils.extractTxt(graphics, new UiTxt("ON",  fontFamily, scale), textOnX,  textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
         }
@@ -192,6 +197,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     private void updateToggleFeaturePreviewElements(UiFeatureButton button) {
         //TODO maybe draw one preview for each setting step? or something like that? idk yet
+
+        // Draw feature preview
         lastHoveredButton = button;
         final __base_ServerFeature<?> serverFeature = button.getServerFeature();
         final String featureSetId = serverFeature.getFeatureSet().getId();
@@ -210,8 +217,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Update description text
         final UiTxt description = button.getClientFeature().calcDesc();
-        descriptionWidget.setLabel(description);
-        descriptionWidget.setBgColor(Layout.bgColorSolid);
+        descriptionTextWidget.setLabel(description);
+        descriptionTextWidget.setBgColor(Layout.bgColorSolid);
     }
 
 
@@ -223,8 +230,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             lastHoveredButton = null;
             descriptionNameWidget.setLabel(new UiTxt());
             descriptionNameWidget.setBgColor(0x0);
-            descriptionWidget.setLabel(new UiTxt());
-            descriptionWidget.setBgColor(0x0);
+            descriptionTextWidget.setLabel(new UiTxt());
+            descriptionTextWidget.setBgColor(0x0);
         }
     }
 

@@ -41,7 +41,7 @@ public class UiFeatureButton extends UiButton {
         this(feature, null);
     }
     public UiFeatureButton(final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
-        this(0, 0, 0, 0, feature, afterPressCallback);
+        this(50, 50, 50, 50, feature, afterPressCallback);
     }
     public UiFeatureButton(final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
         this(x, y, w, h, feature, null);

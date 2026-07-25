@@ -29,13 +29,13 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
 
 
     public UiSteppedFeatureSlider(final ClientFeature<?> feature) {
-        this(0, 0, 0, 0, feature, null);
+        this(50, 50, 50, 50, feature, null);
     }
     public UiSteppedFeatureSlider(final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
         this(x, y, w, h, feature, null);
     }
     public UiSteppedFeatureSlider(final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
-        this(0, 0, 0, 0, feature, afterChangeCallback);
+        this(50, 50, 50, 50, feature, afterChangeCallback);
     }
 
     @SuppressWarnings("unchecked")
