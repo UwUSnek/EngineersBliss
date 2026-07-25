@@ -5,8 +5,8 @@
 
 
 
-    "block.engineers-bliss.green_screen": "Green Screen",
-    "block.engineers-bliss.blue_screen":   "Blue Screen",
+    "item.engineers-bliss.green_screen": "Green Screen",
+    "item.engineers-bliss.blue_screen":   "Blue Screen",
 
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",
     "item.engineers-bliss.white_candle_cake"      : "Cake with White Candle",
