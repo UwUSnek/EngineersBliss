@@ -143,13 +143,13 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
             // Draw thumb
             final boolean hovered = isOverScrollbar(mouseX, mouseY);
-            final int thumbColor = hovered ? Layout.fgColor : Layout.bgColorActive | 0xFF000000;
+            final int thumbColor = hovered ?  Layout.handleColorActive : Layout.handleColor;
             graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, thumbColor);
             if(isOverScrollbar(mouseX, mouseY)) {
                 graphics.requestCursor(((AbstractScrollAreaAccessor)this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
 
                 // Draw hover overlay
-                graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.bgColorActive);
+                graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.highlightOverlay);
             }
         }
     }

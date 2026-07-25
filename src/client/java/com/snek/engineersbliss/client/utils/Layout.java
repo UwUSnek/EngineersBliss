@@ -12,16 +12,18 @@ public class Layout {
 
     public static int fgColor          = 0xFFEEEEEE;
     public static int fgColorHint      = 0xAABBBBBB;
+    public static int highlightOverlay = 0x40FFFFFF;
 
     public static int bgColor          = 0x80151515;
-    public static int bgColorActive    = 0x80777777;
-    public static int fgColorActive    = 0xFFFFFFFF;
-    public static int bgColorActiveAlt = 0x80A28CAD;
+    public static int bgColorAlt       = 0x80A28CAD;
+
+    public static int handleColor       = 0x80626262;
+    public static int handleColorActive = 0x80DDDDDD;
 
     public static int bgColorSolid     = 0xAA111111;
     public static int textMarginPx     = 4;
 
-    public static int SliderGraphFillColor = bgColorActiveAlt;
+    public static int SliderGraphFillColor = bgColorAlt;
     public static int SliderGraphLineColor = fgColorHint;
 
 

@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -17,6 +18,7 @@ import com.snek.engineersbliss.utils.Txt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 
@@ -30,6 +32,10 @@ public class UiSlider extends AbstractSliderButton {
     private final UiTxt baseLabel;
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
+
+    // Mouse handling
+    private boolean dragged = false;
+    private double virtualX = 0;
 
     // Cached textures
     private final TextureCache bgCache = new TextureCache();
@@ -74,13 +80,81 @@ public class UiSlider extends AbstractSliderButton {
 
 
 
+
+
+
+
+    @Override
+    protected void onDrag(MouseButtonEvent event, double dx, double dy) {
+        //! Override with no-op to skip the default setValueFromMouse call.
+        //! setValueFromMouse is private and cannot be changed.
+    }
+
+
+    @Override
+    public void onClick(MouseButtonEvent event, boolean doubleClick) {
+        //! Override with no-op to skip the default setValueFromMouse call.
+        //! setValueFromMouse is private and cannot be changed.
+    }
+
+
+    //! Disable the cursor so it doesn't wander off screen or out of bounds while dragging.
+    // Also recalculate the slider's handle position based on the click position. //! onClick disabled that.
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
+        boolean result = super.mouseClicked(event, doubled);
+        dragged = true;
+        if(result) {
+            GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+            virtualX = event.x();
+            updateValueFromVirtualX();
+        }
+        return result;
+    }
+
+
+    //! Calculate a virtual X position by accumulating deltas.
+    //! This allows for instant bound clamping. Simply moving the cursor back to the right position looks very jittery and delayed.
+    @Override
+    public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
+        boolean result = super.mouseDragged(event, dx, dy);
+        virtualX = Math.clamp(virtualX + dx, getX(), (double)getX() + getWidth());
+        updateValueFromVirtualX();
+        return result;
+    }
+
+
+    //! Reactivate the cursor (mouseClicked disabled it).
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        long handle = Minecraft.getInstance().getWindow().handle();
+        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+        double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
+        dragged = false;
+        return super.mouseReleased(event);
+    }
+
+
+    private void updateValueFromVirtualX() {
+        this.setValue((virtualX - (this.getX() + HANDLE_WIDTH / 2d)) / (getWidth() - HANDLE_WIDTH));
+    }
+
+
     @Override
     protected void applyValue() {
         if(onChange != null) onChange.accept(value);
     }
-    protected int calcThumbX() {
-        return getX() + (int)(this.value * (width - HANDLE_WIDTH));
+
+    public boolean isBeingDragged() {
+        return dragged;
     }
+
+    public boolean isHoveredOrBeingDragged() {
+        return isHovered() || isBeingDragged();
+    }
+
+
 
 
 
@@ -95,30 +169,28 @@ public class UiSlider extends AbstractSliderButton {
         // Draw background
         extractBackground(graphics, mouseX, mouseY, a);
 
-        // Draw slider thumb
-        final int thumbX = calcThumbX();
-        final int thumbColor = isHovered() ? Layout.fgColor : Layout.bgColorActive | 0xFF000000; //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
-        graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), thumbColor); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
-        if(isHovered()) graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), Layout.bgColorActive);
+        // Draw slider handle
+        final int handleX = getX() + (int)(this.value * (width - HANDLE_WIDTH));
+        final int handleColor = isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor;
+        graphics.fill(handleX, getY(), handleX + HANDLE_WIDTH, getBottom(), handleColor);
 
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + Layout.textMarginPx;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
-        final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, TextAlignment.CENTER, width, false);
+        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, TextAlignment.CENTER, width, false);
 
         // Draw hover highlight
-        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
+        if(isHoveredOrBeingDragged()) {
+            graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.highlightOverlay);
+        }
 
+        // Handle cursor shape and position
         this.handleCursor(graphics);
     }
 
 
-
-
     public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-
         final int w = getWidth();
         final int h = getHeight();
         final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
@@ -128,7 +200,6 @@ public class UiSlider extends AbstractSliderButton {
         bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
         bgCache.blit(graphics, getX(), getY(), w, h);
     }
-
 
 
     /**

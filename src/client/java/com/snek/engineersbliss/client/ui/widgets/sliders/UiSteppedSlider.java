@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+
+import net.minecraft.client.Minecraft;
 
 
 
@@ -80,6 +83,18 @@ public class UiSteppedSlider<T> extends UiSlider {
         final double snappedValue = snap(newValue, stepValues.size());
         super.setValue(snappedValue); //! Superclass handles 0-1 clamping
     }
+
+    // @Override
+    // protected void handleCursorPosition(final int mouseX, final int mouseY, final double guiScale) {
+    //     if(isBeingDragged()) {
+    //         long handle = Minecraft.getInstance().getWindow().handle();
+    //         GLFW.glfwSetCursorPos(
+    //             handle,
+    //             guiScale * (getX() + getWidth() * snap(value, stepValues.size())),
+    //             guiScale * (getY() + getHeight() / 2d)
+    //         );
+    //     }
+    // }
 
 
 

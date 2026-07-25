@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -34,6 +35,9 @@ public class UiButton extends Button {
     private @Nullable Identifier bgSpriteId;
     private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
     private int labelOffset;   // Label offset from the left edge, in pixels.
+
+    // Mouse handling
+    private boolean dragged = false;
 
     // Cached textures
     private final TextureCache bgCache = new TextureCache();
@@ -102,6 +106,34 @@ public class UiButton extends Button {
 
 
     @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        final boolean r = super.mouseClicked(event, doubleClick);
+        dragged = true;
+        return r;
+    }
+
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        dragged = false;
+        return super.mouseReleased(event);
+    }
+
+    public boolean isBeingDragged() {
+        return dragged;
+    }
+
+    public boolean isHoveredOrBeingDragged() {
+        return isHovered() || isBeingDragged();
+    }
+
+
+
+
+
+
+
+
+    @Override
     protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
         // Draw background
@@ -112,8 +144,7 @@ public class UiButton extends Button {
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + labelOffset;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
-        final int fgColor = isHovered() ? Layout.fgColorActive : Layout.fgColor;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, fgColor, alignment, width, usingSprite);
+        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, usingSprite);
 
         // Draw keybind if present
         if(key != '\0') {
@@ -123,7 +154,9 @@ public class UiButton extends Button {
         }
 
         // Draw hover highlight
-        if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
+        if(isHoveredOrBeingDragged()) {
+            graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.highlightOverlay);
+        }
     }
 
 
