@@ -469,14 +469,14 @@ public class CustomItemHandler {
 
         public static List<Txt> VANILLA_BLOCK = List.of(
             new Txt("Blocks placed using this item are compatible").color(Colors.COLOR_LS_GREEN),
-            new Txt("with Vanilla and can be safely expored in")   .color(Colors.COLOR_LS_GREEN),
+            new Txt("with Vanilla and can be safely exported in")  .color(Colors.COLOR_LS_GREEN),
             new Txt("worlds, structures, and schematics.")         .color(Colors.COLOR_LS_GREEN)
         );
 
 
         public static List<Txt> VANILLA_ENTITY = List.of(
             new Txt("Entities placed using this item are compatible").color(Colors.COLOR_LS_GREEN),
-            new Txt("with Vanilla and can be safely expored in")     .color(Colors.COLOR_LS_GREEN),
+            new Txt("with Vanilla and can be safely exported in")    .color(Colors.COLOR_LS_GREEN),
             new Txt("worlds, structures, and schematics.")           .color(Colors.COLOR_LS_GREEN)
         );
     }
