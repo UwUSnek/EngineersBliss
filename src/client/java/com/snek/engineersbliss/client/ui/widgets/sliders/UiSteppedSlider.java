@@ -46,8 +46,8 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
 
-    public static double indexToUnit(final int   index, final int size) { return (double)index / size;  }
-    public static int    unitToIndex(final double unit, final int size) { return Math.min(size - 1, (int)(unit * size)); }
+    public static double indexToUnit(final int   index, final int size) { return (double)index / (size - 1);  }
+    public static int    unitToIndex(final double unit, final int size) { return Math.min(size - 1, (int)Math.round(unit * (size - 1))); }
     public double indexToUnit(final int   index) { return indexToUnit(index, stepValues.size()); }
     public int    unitToIndex(final double unit) { return unitToIndex(unit,  stepValues.size()); }
     public T getSelectedValue() { return stepValues.get(unitToIndex(value)); }
