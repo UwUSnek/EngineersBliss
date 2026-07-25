@@ -209,6 +209,13 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidgetAndSpacer(eb$createButton("Creative tweaks",  CreativeTweaksScreen::new, 'Y', "pause_screen/test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new,      'X', "pause_screen/test"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new,      'M', "pause_screen/test"), Layout.BORDER_HEIGHT);
+
+            // Info
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(new UiTxt("Info", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Render stats", RenderingScreen::new, '\0', "pause_screen/render_stats"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("World stats",  RenderingScreen::new, '\0', "pause_screen/world_stats"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("About",        RenderingScreen::new, '\0', "pause_screen/about"),        Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 
@@ -217,15 +224,6 @@ public class PauseScreenMixin extends Screen {
         //FIXME anything that changes game mechanics for anything that isn't the creative player is in there (write this too)
         //FIXME move no particles to alternative texture maybe?
         //FIXME move visible block overlays to alternative texture maybe?
-
-
-        // About section
-        final Button aboutButton = eb$createButton("About", RenderingScreen::new, '\0', "pause_screen/test");
-        addRenderableWidget(aboutButton);
-        aboutButton.setSize((int)(width * leftSidebarWidth), BUTTON_HEIGHT);
-        aboutButton.setX(0);
-        aboutButton.setY(height - BUTTON_HEIGHT - BUTTON_MARGIN);
-
 
         // Julia set
         final Button juliaScreenButton = eb$createButton("??", JuliaSetScreen::new, '\0', null);
