@@ -5,13 +5,16 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
@@ -27,6 +30,9 @@ public class UiSlider extends AbstractSliderButton {
     private final UiTxt baseLabel;
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
+
+    // Cached textures
+    private final TextureCache bgCache = new TextureCache();
 
 
 
@@ -76,9 +82,8 @@ public class UiSlider extends AbstractSliderButton {
 
 
 
-    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColor);
-    }
+
+
 
 
     @Override
@@ -86,6 +91,12 @@ public class UiSlider extends AbstractSliderButton {
 
         // Draw background
         extractBackground(graphics, mouseX, mouseY, a);
+
+        // Draw slider thumb
+        final int thumbX = getX() + (int)(this.value * (this.width - HANDLE_WIDTH)); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        final int thumbColor = isHovered() ? Layout.fgColor : Layout.bgColorActive | 0xFF000000; //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), thumbColor); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        if(isHovered()) graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), Layout.bgColorActive);
 
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
@@ -98,5 +109,33 @@ public class UiSlider extends AbstractSliderButton {
         if(isHovered) graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorActive);
 
         this.handleCursor(graphics);
+    }
+
+
+
+
+    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+
+        final int w = getWidth();
+        final int h = getHeight();
+        final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        final int pixelW = Math.max(1, (int)Math.round(w * guiScale));
+        final int pixelH = Math.max(1, (int)Math.round(h * guiScale));
+
+        bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
+        bgCache.blit(graphics, getX(), getY(), w, h);
+    }
+
+
+
+    /**
+     * Draws the background of the element. Use local coordinates.
+     * This handles static backgrounds that are drawn once and cached until the element changes dimensions.
+     * @param img The output image to draw to.
+     * @param w The width of the image and element.
+     * @param h The height of the image and element.
+     */
+    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
+        RenderingUtils.fillImageArea(img, 0, 0, w, h, Layout.bgColor);
     }
 }
