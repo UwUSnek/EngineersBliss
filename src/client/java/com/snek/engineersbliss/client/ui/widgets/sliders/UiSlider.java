@@ -78,6 +78,9 @@ public class UiSlider extends AbstractSliderButton {
     protected void applyValue() {
         if(onChange != null) onChange.accept(value);
     }
+    protected int calcThumbX() {
+        return getX() + (int)(this.value * (width - HANDLE_WIDTH));
+    }
 
 
 
@@ -93,7 +96,7 @@ public class UiSlider extends AbstractSliderButton {
         extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw slider thumb
-        final int thumbX = getX() + (int)(this.value * (this.width - HANDLE_WIDTH)); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
+        final int thumbX = calcThumbX();
         final int thumbColor = isHovered() ? Layout.fgColor : Layout.bgColorActive | 0xFF000000; //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
         graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), thumbColor); //FIXME define colors in Layout. Update UiWidgetList too (the scrollbar)
         if(isHovered()) graphics.fill(thumbX, getY(), thumbX + HANDLE_WIDTH, getBottom(), Layout.bgColorActive);

@@ -10,6 +10,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 
 
@@ -55,6 +56,23 @@ public class ModCreativeTab {
         .icon(() -> new ItemStack(CustomItemHandler.POTTED_FLOWERING_AZALEA.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_vanilla_items"))
         .displayItems((params, output) -> {
+
+            output.accept(CustomItemHandler.FULL_BEE_NEST);
+            output.accept(CustomItemHandler.FULL_BEE_NEST_NO_BEES);
+            output.accept(CustomItemHandler.FULL_BEEHIVE);
+            output.accept(CustomItemHandler.FULL_BEEHIVE_NO_BEES);
+
+
+            output.accept(CustomItemHandler.YOUR_PLAYER_HEAD);
+
+
+            output.accept(CustomItemHandler.ARMOR_STAND_WITH_ARMS);
+
+
+            output.accept(Items.ENDER_DRAGON_SPAWN_EGG);
+            output.accept(Items.WITHER_SPAWN_EGG);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);
@@ -72,6 +90,7 @@ public class ModCreativeTab {
             output.accept(CustomItemHandler.GREEN_CANDLE_CAKE);
             output.accept(CustomItemHandler.RED_CANDLE_CAKE);
             output.accept(CustomItemHandler.BLACK_CANDLE_CAKE);
+
 
             output.accept(CustomItemHandler.POTTED_DANDELION);
             output.accept(CustomItemHandler.POTTED_POPPY);
@@ -111,11 +130,6 @@ public class ModCreativeTab {
             output.accept(CustomItemHandler.POTTED_OPEN_EYEBLOSSOM);
             output.accept(CustomItemHandler.POTTED_CLOSED_EYEBLOSSOM);
             output.accept(CustomItemHandler.POTTED_GOLDEN_DANDELION);
-
-            output.accept(CustomItemHandler.FULL_BEE_NEST);
-            output.accept(CustomItemHandler.FULL_BEE_NEST_NO_BEES);
-            output.accept(CustomItemHandler.FULL_BEEHIVE);
-            output.accept(CustomItemHandler.FULL_BEEHIVE_NO_BEES);
         }).build()
     ;
 
