@@ -73,6 +73,7 @@ public class ModCreativeTab {
             output.accept(CustomItemHandler.RED_CANDLE_CAKE);
             output.accept(CustomItemHandler.BLACK_CANDLE_CAKE);
 
+
             output.accept(CustomItemHandler.POTTED_DANDELION);
             output.accept(CustomItemHandler.POTTED_POPPY);
             output.accept(CustomItemHandler.POTTED_BLUE_ORCHID);
@@ -112,10 +113,14 @@ public class ModCreativeTab {
             output.accept(CustomItemHandler.POTTED_CLOSED_EYEBLOSSOM);
             output.accept(CustomItemHandler.POTTED_GOLDEN_DANDELION);
 
+
             output.accept(CustomItemHandler.FULL_BEE_NEST);
             output.accept(CustomItemHandler.FULL_BEE_NEST_NO_BEES);
             output.accept(CustomItemHandler.FULL_BEEHIVE);
             output.accept(CustomItemHandler.FULL_BEEHIVE_NO_BEES);
+
+
+            output.accept(CustomItemHandler.YOUR_PLAYER_HEAD);
         }).build()
     ;
 

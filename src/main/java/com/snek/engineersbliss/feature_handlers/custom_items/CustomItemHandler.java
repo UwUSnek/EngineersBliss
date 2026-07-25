@@ -7,8 +7,10 @@ import org.joml.Vector3i;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomPlayerHeadItem;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -155,229 +157,229 @@ public class CustomItemHandler {
     public static final Item POTTED_DANDELION = register(
         "potted_dandelion",
         p -> new BlockItem(Blocks.POTTED_DANDELION, p),
-        new Txt("A Dandelion in a Flower Pot"),
+        new Txt("A Dandelion in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_POPPY = register(
         "potted_poppy",
         p -> new BlockItem(Blocks.POTTED_POPPY, p),
-        new Txt("A Poppy in a Flower Pot"),
+        new Txt("A Poppy in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_BLUE_ORCHID = register(
         "potted_blue_orchid",
         p -> new BlockItem(Blocks.POTTED_BLUE_ORCHID, p),
-        new Txt("A Blue Orchid in a Flower Pot"),
+        new Txt("A Blue Orchid in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_ALLIUM = register(
         "potted_allium",
         p -> new BlockItem(Blocks.POTTED_ALLIUM, p),
-        new Txt("An Allium in a Flower Pot"),
+        new Txt("An Allium in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_AZURE_BLUET = register(
         "potted_azure_bluet",
         p -> new BlockItem(Blocks.POTTED_AZURE_BLUET, p),
-        new Txt("An Azure Bluet in a Flower Pot"),
+        new Txt("An Azure Bluet in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_RED_TULIP = register(
         "potted_red_tulip",
         p -> new BlockItem(Blocks.POTTED_RED_TULIP, p),
-        new Txt("A Red Tulip in a Flower Pot"),
+        new Txt("A Red Tulip in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_ORANGE_TULIP = register(
         "potted_orange_tulip",
         p -> new BlockItem(Blocks.POTTED_ORANGE_TULIP, p),
-        new Txt("An Orange Tulip in a Flower Pot"),
+        new Txt("An Orange Tulip in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_WHITE_TULIP = register(
         "potted_white_tulip",
         p -> new BlockItem(Blocks.POTTED_WHITE_TULIP, p),
-        new Txt("A White Tulip in a Flower Pot"),
+        new Txt("A White Tulip in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_PINK_TULIP = register(
         "potted_pink_tulip",
         p -> new BlockItem(Blocks.POTTED_PINK_TULIP, p),
-        new Txt("A Pink Tulip in a Flower Pot"),
+        new Txt("A Pink Tulip in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_OXEYE_DAISY = register(
         "potted_oxeye_daisy",
         p -> new BlockItem(Blocks.POTTED_OXEYE_DAISY, p),
-        new Txt("An Oxeye Daisy in a Flower Pot"),
+        new Txt("An Oxeye Daisy in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_CORNFLOWER = register(
         "potted_cornflower",
         p -> new BlockItem(Blocks.POTTED_CORNFLOWER, p),
-        new Txt("A Cornflower in a Flower Pot"),
+        new Txt("A Cornflower in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_LILY_OF_THE_VALLEY = register(
         "potted_lily_of_the_valley",
         p -> new BlockItem(Blocks.POTTED_LILY_OF_THE_VALLEY, p),
-        new Txt("A Lily of the Valley in a Flower Pot"),
+        new Txt("A Lily of the Valley in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_WITHER_ROSE = register(
         "potted_wither_rose",
         p -> new BlockItem(Blocks.POTTED_WITHER_ROSE, p),
-        new Txt("A Wither Rose in a Flower Pot"),
+        new Txt("A Wither Rose in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_TORCHFLOWER = register(
         "potted_torchflower",
         p -> new BlockItem(Blocks.POTTED_TORCHFLOWER, p),
-        new Txt("A Torchflower in a Flower Pot"),
+        new Txt("A Torchflower in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_OAK_SAPLING = register(
         "potted_oak_sapling",
         p -> new BlockItem(Blocks.POTTED_OAK_SAPLING, p),
-        new Txt("An Oak Sapling in a Flower Pot"),
+        new Txt("An Oak Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_SPRUCE_SAPLING = register(
         "potted_spruce_sapling",
         p -> new BlockItem(Blocks.POTTED_SPRUCE_SAPLING, p),
-        new Txt("A Spruce Sapling in a Flower Pot"),
+        new Txt("A Spruce Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_BIRCH_SAPLING = register(
         "potted_birch_sapling",
         p -> new BlockItem(Blocks.POTTED_BIRCH_SAPLING, p),
-        new Txt("A Birch Sapling in a Flower Pot"),
+        new Txt("A Birch Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_JUNGLE_SAPLING = register(
         "potted_jungle_sapling",
         p -> new BlockItem(Blocks.POTTED_JUNGLE_SAPLING, p),
-        new Txt("A Jungle Sapling in a Flower Pot"),
+        new Txt("A Jungle Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_ACACIA_SAPLING = register(
         "potted_acacia_sapling",
         p -> new BlockItem(Blocks.POTTED_ACACIA_SAPLING, p),
-        new Txt("An Acacia Sapling in a Flower Pot"),
+        new Txt("An Acacia Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_DARK_OAK_SAPLING = register(
         "potted_dark_oak_sapling",
         p -> new BlockItem(Blocks.POTTED_DARK_OAK_SAPLING, p),
-        new Txt("A Dark Oak Sapling in a Flower Pot"),
+        new Txt("A Dark Oak Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_CHERRY_SAPLING = register(
         "potted_cherry_sapling",
         p -> new BlockItem(Blocks.POTTED_CHERRY_SAPLING, p),
-        new Txt("A Cherry Sapling in a Flower Pot"),
+        new Txt("A Cherry Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_RED_MUSHROOM = register(
         "potted_red_mushroom",
         p -> new BlockItem(Blocks.POTTED_RED_MUSHROOM, p),
-        new Txt("A Red Mushroom in a Flower Pot"),
+        new Txt("A Red Mushroom in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_BROWN_MUSHROOM = register(
         "potted_brown_mushroom",
         p -> new BlockItem(Blocks.POTTED_BROWN_MUSHROOM, p),
-        new Txt("A Brown Mushroom in a Flower Pot"),
+        new Txt("A Brown Mushroom in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_FERN = register(
         "potted_fern",
         p -> new BlockItem(Blocks.POTTED_FERN, p),
-        new Txt("A Fern in a Flower Pot"),
+        new Txt("A Fern in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_DEAD_BUSH = register(
         "potted_dead_bush",
         p -> new BlockItem(Blocks.POTTED_DEAD_BUSH, p),
-        new Txt("A Dead Bush in a Flower Pot"),
+        new Txt("A Dead Bush in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_CACTUS = register(
         "potted_cactus",
         p -> new BlockItem(Blocks.POTTED_CACTUS, p),
-        new Txt("A Cactus in a Flower Pot"),
+        new Txt("A Cactus in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_BAMBOO = register(
         "potted_bamboo",
         p -> new BlockItem(Blocks.POTTED_BAMBOO, p),
-        new Txt("A Bamboo in a Flower Pot"),
+        new Txt("A Bamboo in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_AZALEA = register(
         "potted_azalea",
         p -> new BlockItem(Blocks.POTTED_AZALEA, p),
-        new Txt("An Azalea in a Flower Pot"),
+        new Txt("An Azalea in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_FLOWERING_AZALEA = register(
         "potted_flowering_azalea",
         p -> new BlockItem(Blocks.POTTED_FLOWERING_AZALEA, p),
-        new Txt("A Flowering Azalea in a Flower Pot"),
+        new Txt("A Flowering Azalea in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_CRIMSON_FUNGUS = register(
         "potted_crimson_fungus",
         p -> new BlockItem(Blocks.POTTED_CRIMSON_FUNGUS, p),
-        new Txt("A Crimson Fungus in a Flower Pot"),
+        new Txt("A Crimson Fungus in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_WARPED_FUNGUS = register(
         "potted_warped_fungus",
         p -> new BlockItem(Blocks.POTTED_WARPED_FUNGUS, p),
-        new Txt("A Warped Fungus in a Flower Pot"),
+        new Txt("A Warped Fungus in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_CRIMSON_ROOTS = register(
         "potted_crimson_roots",
         p -> new BlockItem(Blocks.POTTED_CRIMSON_ROOTS, p),
-        new Txt("Crimson Roots in a Flower Pot"),
+        new Txt("Crimson Roots in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_WARPED_ROOTS = register(
         "potted_warped_roots",
         p -> new BlockItem(Blocks.POTTED_WARPED_ROOTS, p),
-        new Txt("Warped Roots in a Flower Pot"),
+        new Txt("Warped Roots in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_MANGROVE_PROPAGULE = register(
         "potted_mangrove_propagule",
         p -> new BlockItem(Blocks.POTTED_MANGROVE_PROPAGULE, p),
-        new Txt("A Mangrove Propagule in a Flower Pot"),
+        new Txt("A Mangrove Propagule in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_PALE_OAK_SAPLING = register(
         "potted_pale_oak_sapling",
         p -> new BlockItem(Blocks.POTTED_PALE_OAK_SAPLING, p),
-        new Txt("A Pale Oak Sapling in a Flower Pot"),
+        new Txt("A Pale Oak Sapling in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_OPEN_EYEBLOSSOM = register(
         "potted_open_eyeblossom",
         p -> new BlockItem(Blocks.POTTED_OPEN_EYEBLOSSOM, p),
-        new Txt("An Open Eyeblossom in a Flower Pot"),
+        new Txt("An Open Eyeblossom in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_CLOSED_EYEBLOSSOM = register(
         "potted_closed_eyeblossom",
         p -> new BlockItem(Blocks.POTTED_CLOSED_EYEBLOSSOM, p),
-        new Txt("A Closed Eyeblossom in a Flower Pot"),
+        new Txt("A Closed Eyeblossom in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item POTTED_GOLDEN_DANDELION = register(
         "potted_golden_dandelion",
         p -> new BlockItem(Blocks.POTTED_GOLDEN_DANDELION, p),
-        new Txt("A Golden Dandelion in a Flower Pot"),
+        new Txt("A Golden Dandelion in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
@@ -387,25 +389,35 @@ public class CustomItemHandler {
     public static final Item FULL_BEE_NEST = register(
         "full_bee_nest",
         p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 3, 5),
-        new Txt("A Bee Nest with 5 levels of Honey and 3 Bees"),
+        new Txt("A Bee Nest with 5 levels of Honey and 3 Bees."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item FULL_BEE_NEST_NO_BEES = register(
         "full_bee_nest_no_bees",
         p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 0, 5),
-        new Txt("A Bee Nest with 5 levels of Honey but no Bees"),
+        new Txt("A Bee Nest with 5 levels of Honey but no Bees."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item FULL_BEEHIVE = register(
         "full_beehive",
         p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 3, 5),
-        new Txt("A Beehive with 5 levels of Honey and 3 Bees"),
+        new Txt("A Beehive with 5 levels of Honey and 3 Bees."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item FULL_BEEHIVE_NO_BEES = register(
         "full_beehive_no_bees",
         p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 0, 5),
-        new Txt("A Beehive with 5 levels of Honey but no Bees"),
+        new Txt("A Beehive with 5 levels of Honey but no Bees."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
+    public static final Item YOUR_PLAYER_HEAD = register(
+        "your_player_head",
+        p -> new CustomPlayerHeadItem(Blocks.PLAYER_HEAD, Blocks.PLAYER_WALL_HEAD, Direction.DOWN, p),
+        new Txt("Your Player Head."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 

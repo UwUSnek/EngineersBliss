@@ -68,5 +68,7 @@
     "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
     "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
     "item.engineers-bliss.full_beehive"          : "Full Beehive",
-    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees"
+    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees",
+
+    "item.engineers-bliss.your_player_head"  : "Turns into your Player Head when held in the inventory"
 }
