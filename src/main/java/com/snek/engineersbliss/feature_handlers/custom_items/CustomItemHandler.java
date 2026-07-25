@@ -6,8 +6,9 @@ import java.util.List;
 import org.joml.Vector3i;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomPlayerHeadItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.YourPlayerHeadItem;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.core.Direction;
@@ -416,9 +417,18 @@ public class CustomItemHandler {
 
     public static final Item YOUR_PLAYER_HEAD = register(
         "your_player_head",
-        p -> new CustomPlayerHeadItem(Blocks.PLAYER_HEAD, Blocks.PLAYER_WALL_HEAD, Direction.DOWN, p),
+        p -> new YourPlayerHeadItem(Blocks.PLAYER_HEAD, Blocks.PLAYER_WALL_HEAD, Direction.DOWN, p),
         new Txt("Your Player Head."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+    public static final Item ARMOR_STAND_WITH_ARMS = register(
+        "armor_stand_with_arms",
+        ArmorStandWithArmsItem::new,
+        new Txt("It comes with arms!"),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_ENTITY
     );
 
 
@@ -444,32 +454,16 @@ public class CustomItemHandler {
         public static List<Txt> CUSTOM_BLOCK = List.of(
             new Txt("This item and the block it places don't exist in Vanilla.").color(Colors.COLOR_LS_RED),
             new Txt("They cannot be used on servers without the")               .color(Colors.COLOR_LS_RED),
-            new Txt(EngineerSBliss.MOD_NAME + " mod installed ")                .color(Colors.COLOR_LS_RED),
-            new Txt("and will disappear from worlds, structures,")              .color(Colors.COLOR_LS_RED),
-            new Txt("and schematics when opened without the mod.")              .color(Colors.COLOR_LS_RED)
+            new Txt(EngineerSBliss.MOD_NAME + " mod installed and will")        .color(Colors.COLOR_LS_RED),
+            new Txt("disappear from worlds when opened without it.")            .color(Colors.COLOR_LS_RED)
         );
 
 
         public static List<Txt> CUSTOM_ITEM_ONLY = List.of(
-            new Txt("This item doesn't exist in Vanilla.")        .color(Colors.COLOR_LS_RED),
-            new Txt("It cannot be used on servers without the")   .color(Colors.COLOR_LS_RED),
-            new Txt(EngineerSBliss.MOD_NAME + " mod installed ")  .color(Colors.COLOR_LS_RED),
-            new Txt("and will disappear from worlds, structures,").color(Colors.COLOR_LS_RED),
-            new Txt("and schematics when opened without the mod.").color(Colors.COLOR_LS_RED)
-        );
-
-
-        public static List<Txt> VANILLA_ENTITY_ITEM = List.of(
-            new Txt("This item and the entity it spawns are compatible").color(Colors.COLOR_LS_GREEN),
-            new Txt("with Vanilla and can be safely expored in")        .color(Colors.COLOR_LS_GREEN),
-            new Txt("worlds, structures, and schematics.")              .color(Colors.COLOR_LS_GREEN)
-        );
-
-
-        public static List<Txt> VANILLA_BLOCK_ITEM = List.of(
-            new Txt("This item and the block it places are compatible").color(Colors.COLOR_LS_GREEN),
-            new Txt("with Vanilla and can be safely expored in")       .color(Colors.COLOR_LS_GREEN),
-            new Txt("worlds, structures, and schematics.")             .color(Colors.COLOR_LS_GREEN)
+            new Txt("This item doesn't exist in Vanilla.")              .color(Colors.COLOR_LS_RED),
+            new Txt("It cannot be used on servers without the")         .color(Colors.COLOR_LS_RED),
+            new Txt(EngineerSBliss.MOD_NAME + " mod installed and will").color(Colors.COLOR_LS_RED),
+            new Txt("disappear from worlds when opened without it.")    .color(Colors.COLOR_LS_RED)
         );
 
 
@@ -526,7 +520,7 @@ public class CustomItemHandler {
 
         // Create item properties and set the lore
         Item.Properties properties = new Item.Properties().setId(key);
-        if(lines.size() > 0) {
+        if(!lines.isEmpty()) {
             properties = properties.component(DataComponents.LORE, new ItemLore(lines, lines));
         }
 
@@ -543,3 +537,5 @@ public class CustomItemHandler {
         //! This triggers static init
     }
 }
+//TODO rename models/item to custom_item
+//TODO update references in items/
