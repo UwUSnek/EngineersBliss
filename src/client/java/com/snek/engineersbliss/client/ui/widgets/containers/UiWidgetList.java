@@ -35,7 +35,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         setX(x);
     }
 
-
+//TODO add texture cache or something, idk
 
 
     @Override

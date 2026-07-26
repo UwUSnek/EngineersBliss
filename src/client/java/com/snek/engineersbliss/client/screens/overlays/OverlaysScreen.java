@@ -31,15 +31,15 @@ public class OverlaysScreen extends __base_UiFeatureSetScreen {
         // Power levels
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(new UiTxt("Power levels", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.COMPARATOR_POWER_LEVELS),    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_LEVELS), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.RAIL_POWER_LEVELS),          Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.COMPARATOR_POWER_LEVELS),    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_LEVELS), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.RAIL_POWER_LEVELS),          Layout.BORDER_HEIGHT);
 
         // Logic
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(new UiTxt("Block logic", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.COMPARATOR_LOGIC_SNIPPET),   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_SOURCE), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(OverlaysClientFeatureSet.RAIL_POWER_SOURCE),          Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.COMPARATOR_LOGIC_SNIPPET),   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_SOURCE), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.RAIL_POWER_SOURCE),          Layout.BORDER_HEIGHT);
     }
 }

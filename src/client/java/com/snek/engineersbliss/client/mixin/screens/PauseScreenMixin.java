@@ -291,7 +291,7 @@ public class PauseScreenMixin extends Screen {
     //TODO remove. use the new system or something, idk
     private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind, final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
-        return new UiButton(new UiTxt(label), b -> {
+        return new UiButton(this, new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
         }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, BUTTON_HEIGHT);

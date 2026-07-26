@@ -10,6 +10,8 @@ import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
+import net.minecraft.client.gui.screens.Screen;
+
 
 
 
@@ -28,18 +30,18 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
 
 
 
-    public UiSteppedFeatureSlider(final ClientFeature<?> feature) {
-        this(50, 50, 50, 50, feature, null);
+    public UiSteppedFeatureSlider(final Screen screen, final ClientFeature<?> feature) {
+        this(screen, 50, 50, 50, 50, feature, null);
     }
-    public UiSteppedFeatureSlider(final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
-        this(x, y, w, h, feature, null);
+    public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
+        this(screen, x, y, w, h, feature, null);
     }
-    public UiSteppedFeatureSlider(final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
-        this(50, 50, 50, 50, feature, afterChangeCallback);
+    public UiSteppedFeatureSlider(final Screen screen, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
+        this(screen, 50, 50, 50, 50, feature, afterChangeCallback);
     }
 
     @SuppressWarnings("unchecked")
-    public UiSteppedFeatureSlider(final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
+    public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
 
         // Throw exception if not a ServerSteppedFeature
         final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();
@@ -52,7 +54,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
 
         // Proceed with normal initialization
         final @NotNull ServerSteppedFeature<T> _serverFeature = (ServerSteppedFeature<T>)genericServerFeature;
-        super(x, y, w, h, feature.calcName(), _serverFeature.getValues(), _serverFeature.getDefault(), (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback));
+        super(screen, x, y, w, h, feature.calcName(), _serverFeature.getValues(), _serverFeature.getDefault(), (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback));
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
     }

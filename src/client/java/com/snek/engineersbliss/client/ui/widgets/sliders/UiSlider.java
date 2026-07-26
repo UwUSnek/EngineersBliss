@@ -18,6 +18,7 @@ import com.snek.engineersbliss.utils.Txt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
@@ -38,20 +39,21 @@ public class UiSlider extends AbstractSliderButton {
     private double virtualX = 0;
 
     // Cached textures
-    private final TextureCache bgCache = new TextureCache();
+    private final TextureCache bgCache;
 
 
 
 
-    public UiSlider(final int x, final int y, final int width, final int height, final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
+    public UiSlider(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(x, y, width, height, new Txt().get(), initialValue);
         this.baseLabel = label;
         this.onChange = onChange;
         updateMessage();
+        bgCache = new TextureCache(screen);
     }
-    public UiSlider(final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
-        this(50, 50, 150, DEFAULT_HEIGHT, label, initialValue, onChange);
+    public UiSlider(final Screen screen, final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
+        this(screen, 50, 50, 150, DEFAULT_HEIGHT, label, initialValue, onChange);
     }
 
 

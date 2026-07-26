@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -18,6 +19,7 @@ import com.snek.engineersbliss.utils.Txt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
@@ -40,12 +42,16 @@ public class UiButton extends Button {
     private boolean dragged = false;
 
     // Cached textures
-    private final TextureCache bgCache = new TextureCache();
+    private final TextureCache bgCache;
+    //FIXME make the background cache a shared thing. > implements BgCacheWidget
+    //FIXME make BgCacheWidget require all the stuff needed to call drawCachedBackground
+
+    //FIXME use BgCacheWidget to implement caching in buttons and in the other widgets too
 
 
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         //! Pass empty text to super and store a custom UiTxt isntance locally
         super(x, y, width, height, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
         this.key = Character.toLowerCase(key);
@@ -53,29 +59,30 @@ public class UiButton extends Button {
         this.label = label;
         this.bgSpriteId = null;
         this.labelOffset = Layout.textMarginPx;
+        this.bgCache = new TextureCache(screen);
     }
-    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        this(50, 50, 50, 50, label, pressCallback, key, alignment);
+    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+        this(screen, 50, 50, 50, 50, label, pressCallback, key, alignment);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(x, y, width, height, label, pressCallback, '\0', alignment);
+    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+        this(screen, x, y, width, height, label, pressCallback, '\0', alignment);
     }
-    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(50, 50, 50, 50, label, pressCallback, alignment);
+    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+        this(screen, 50, 50, 50, 50, label, pressCallback, alignment);
     }
 
 
-    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
-        this(x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
+    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+        this(screen, x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
-        this(50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
+    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+        this(screen, 50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
-        this(x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
+    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
+        this(screen, x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
     }
-    public UiButton(final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
-        this(50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
+    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
+        this(screen, 50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
     }
 
 

@@ -98,7 +98,7 @@ public abstract class __base_UiScreen extends Screen {
     //TODO remove. this is the old version, still used by RenderingScreen
     //TODO remove. this is the old version, still used by RenderingScreen
     protected UiButton addButton(final UiTxt label, final UiTxt details, final Consumer<UiButton> action, final int x, final int y, final int width) {
-        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
+        final UiButton r = new UiButton(this, x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);
         }, TextAlignment.CENTER);
@@ -137,7 +137,9 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(null); // Close screen and go back to game
+
+        // Close screen and go back to game
+        this.minecraft.setScreen(null);
     }
 
 

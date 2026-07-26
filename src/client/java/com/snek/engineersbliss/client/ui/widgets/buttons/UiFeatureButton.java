@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 
 
@@ -37,18 +38,18 @@ public class UiFeatureButton extends UiButton {
 
 
 
-    public UiFeatureButton(final ClientFeature<?> feature) {
-        this(feature, null);
+    public UiFeatureButton(final Screen screen, final ClientFeature<?> feature) {
+        this(screen, feature, null);
     }
-    public UiFeatureButton(final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
-        this(50, 50, 50, 50, feature, afterPressCallback);
+    public UiFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
+        this(screen, 50, 50, 50, 50, feature, afterPressCallback);
     }
-    public UiFeatureButton(final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
-        this(x, y, w, h, feature, null);
+    public UiFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
+        this(screen, x, y, w, h, feature, null);
     }
 
 
-    public UiFeatureButton(final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
+    public UiFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
 
         // Throw exception if not a ServerToggleFeature
         final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();
@@ -61,7 +62,7 @@ public class UiFeatureButton extends UiButton {
 
         // Proceed with normal initialization
         final ServerToggleFeature _serverFeature = (ServerToggleFeature)genericServerFeature;
-        super(x, y, w, h, getToggleText(feature, _serverFeature), b -> onClick((UiFeatureButton)b, afterPressCallback), '\0', TextAlignment.LEFT);
+        super(screen, x, y, w, h, getToggleText(feature, _serverFeature), b -> onClick((UiFeatureButton)b, afterPressCallback), '\0', TextAlignment.LEFT);
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
 

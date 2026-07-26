@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 
 
 
@@ -32,11 +31,12 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
     public UiSteppedSlider(
+        final Screen screen,
         final int x, final int y, final int w, final int h, final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback
     ) {
-        super(x, y, w, h, label, indexToUnit(defaultValueIndex, stepValues.size()), n -> {
+        super(screen, x, y, w, h, label, indexToUnit(defaultValueIndex, stepValues.size()), n -> {
             if(afterChangeCallback != null) {
                 final int selectedIndex = unitToIndex(n, stepValues.size());
                 afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
