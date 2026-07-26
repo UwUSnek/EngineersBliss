@@ -164,15 +164,14 @@
   - [Vanilla block] Frogspawn item
   - ~~[Vanilla blocks] Cake with Candle items~~
   - ~~[Vanilla blocks] Potted plant items~~
-  - [Vanilla block & item] Your Player Head as an item
+  - ~~[Vanilla block & item] Your Player Head as an item~~
   - ~~[Vanilla block] Bee Nest with Bees and Honey~~
   - ~~[Vanilla block] Bee Nest with Honey but no Bees~~
   - ~~[Vanilla block] Beehive with Bees and Honey~~
   - ~~[Vanilla block] Beehive with Honey but no Bees~~
-  - [Vanilla entity] Armor Stand with arms
-  - [Vanilla entity] TNTs with higher explosion strength
-  - [Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu
-  - [Vanilla item & entity] Wither Spawn Egg in the Creative menu
+  - ~~[Vanilla entity] Armor Stand with arms~~
+  - ~~[Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu~~
+  - ~~[Vanilla item & entity] Wither Spawn Egg in the Creative menu~~
 
 
 
@@ -194,20 +193,16 @@
 
 # Not features:
 
-- Update UI, draw one with a more modern style
+- ~~Update UI, draw one with a more modern style~~
 - render stats //TODO minecraft.getGpuUtilization()
 
 
-- add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
-- add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block
+- ~~add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign~~
+- ~~add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block~~
 
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
 
-- Add small pretty custom icons for all the settings
-
-- add cool redstone mechanism overlay in front of the main menu screen
-- add cool small redstone mechanism overlay in the pause menu
-
+- ~~Add small pretty custom icons for all the settings~~
 
 
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
@@ -221,16 +216,7 @@
   - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on
 
 
-- maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
-
-- make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing
-
-
-- add some logo or something as blur background cutout?
-
-
-
-- add a "keybinds" section in creative tweaks
+- ~~add a "keybinds" section~~
   - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
   - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
 
@@ -239,7 +225,7 @@
 - add a generic "hide all particles" toggle in rendering screen
 
 
-- static lectern models? or optimized, idk
+- ~~static lectern models? or optimized, idk~~
 
 
 - add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
@@ -259,12 +245,13 @@
 
 - 3am water that extends normal water fluid but has shaders
 
-- displays tab/+/- default keybinds in UIs
-- displays add these to the pause menu too somehow
+- Add a status bar at the bottom of the screen
+  - display tab/+/- default keybinds in UIs
+  - display add these to the pause menu too somehow
 
 
-- maybe add a "center crossair" feature in alt textures? Vanilla's crossair isnt centered
+- maybe add a "center crosshair" feature in alt textures? Vanilla's crosshair isnt centered
 
 
 
-- USE SLIDER FOR ALT TEXTURES FEATURES. overlay still images
+- USE SLIDER/TOGGLE FOR ALT TEXTURES FEATURES. overlay still images
