@@ -84,18 +84,6 @@ public class UiSteppedSlider<T> extends UiSlider {
         super.setValue(snappedValue); //! Superclass handles 0-1 clamping
     }
 
-    // @Override
-    // protected void handleCursorPosition(final int mouseX, final int mouseY, final double guiScale) {
-    //     if(isBeingDragged()) {
-    //         long handle = Minecraft.getInstance().getWindow().handle();
-    //         GLFW.glfwSetCursorPos(
-    //             handle,
-    //             guiScale * (getX() + getWidth() * snap(value, stepValues.size())),
-    //             guiScale * (getY() + getHeight() / 2d)
-    //         );
-    //     }
-    // }
-
 
 
 

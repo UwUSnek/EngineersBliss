@@ -78,7 +78,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         // Add left sidebar title
         final UiTxt titleText = featureSet.calcName();
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
 
 
         // Add description name and text elements
@@ -88,10 +88,12 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
         final int descriptionTextHeight = (int)(height * DESCRIPTION_TEXT_HEIGHT);
         descriptionNameWidget = new UiTextWidget(
+            this,
             descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidthPx, descriptionNameHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         );
         descriptionTextWidget = new UiTextWidget(
+            this,
             descriptionX, height - descriptionTextHeight, descriptionWidthPx, descriptionTextHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         ).withVerticalAlignment(TextAlignmentY.TOP);

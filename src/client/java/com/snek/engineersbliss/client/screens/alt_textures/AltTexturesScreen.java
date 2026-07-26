@@ -34,7 +34,7 @@ public class AltTexturesScreen extends __base_UiFeatureSetScreen {
 
         // Visibility
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt("Visibility", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Visibility", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.MINIMAL_REDSTONE_WIRE),                   Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.NO_REDSTONE_DUST_PARTICLES),              Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.NO_CAMPFIRE_PARTICLES),                   Layout.BORDER_HEIGHT);
@@ -49,7 +49,7 @@ public class AltTexturesScreen extends __base_UiFeatureSetScreen {
 
         // Fixes
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt("Fixes & performance", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Fixes & performance", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.CONSISTENT_SLOPED_RAILS),                 Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.   BETTER_BARRIER_DISPLAY),                  Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, OverlaysClientFeatureSet.   BETTER_STRUCTURE_VOID_DISPLAY),           Layout.BORDER_HEIGHT);
@@ -66,7 +66,7 @@ public class AltTexturesScreen extends __base_UiFeatureSetScreen {
 
         // 3D models
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt("3D models", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("3D models", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.REDSTONE_WIRE_3D),                        Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.RAILS_3D),                                Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, AltTexturesClientFeatureSet.LADDERS_3D),                              Layout.BORDER_HEIGHT);

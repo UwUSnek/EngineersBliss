@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -15,6 +16,7 @@ import com.snek.engineersbliss.utils.Txt;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 
 
@@ -24,7 +26,7 @@ import net.minecraft.client.input.MouseButtonEvent;
  * A custom widget capable of rendering text with the specified scale, alignment, background color and text color.
  * It also supports line word wrap.
  */
-public class UiTextWidget extends AbstractWidget {
+public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
     private UiTxt label;
     private List<UiTxt> cachedLines; //! Wrapped lines
     private final TextAlignment alignment;
@@ -34,32 +36,37 @@ public class UiTextWidget extends AbstractWidget {
     private final boolean wrapLines;
 
 
+    // Cached textures
+    private final TextureCache bgCache;
+	@Override public TextureCache getBgTextureCache() { return bgCache; }
 
 
-    public UiTextWidget(final UiTxt label, final TextAlignment alignment, final int color) {
-        this(label, alignment, color, 0x0);
+
+
+    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color) {
+        this(screen, label, alignment, color, 0x0);
     }
-    public UiTextWidget(final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color) {
-        this(x, y, w, h, label, alignment, color, 0x0);
+    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color) {
+        this(screen, x, y, w, h, label, alignment, color, 0x0);
     }
-    public UiTextWidget(final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
-        this(label, alignment, color, wrapLines, 0x0);
+    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
+        this(screen, label, alignment, color, wrapLines, 0x0);
     }
-    public UiTextWidget(final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
-        this(x, y, w, h, label, alignment, color, wrapLines, 0x0);
+    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
+        this(screen, x, y, w, h, label, alignment, color, wrapLines, 0x0);
     }
 
 
-    public UiTextWidget(final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(50, 50, 50, 50, label, alignment, color, false, bgColor);
+    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
+        this(screen, 50, 50, 50, 50, label, alignment, color, false, bgColor);
     }
-    public UiTextWidget(final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(x, y, w, h, label, alignment, color, false, bgColor);
+    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
+        this(screen, x, y, w, h, label, alignment, color, false, bgColor);
     }
-    public UiTextWidget(final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
-        this(50, 50, 50, 50, label, alignment, color, wrapLines, bgColor);
+    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
+        this(screen, 50, 50, 50, 50, label, alignment, color, wrapLines, bgColor);
     }
-    public UiTextWidget(final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
+    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
         super(x, y, w, h, new Txt().get());
         this.alignment = alignment;
         this.color = color;
@@ -67,6 +74,7 @@ public class UiTextWidget extends AbstractWidget {
         this.wrapLines = wrapLines;
         verticalAlignment = TextAlignmentY.CENTER;
         setLabel(label); //! Call setLabel to initialized cachedLines
+        bgCache = new TextureCache(screen);
     }
 
 
@@ -84,10 +92,9 @@ public class UiTextWidget extends AbstractWidget {
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
-        // Draw background color if needed
-        if((bgColor & 0xFF000000) != 0) {
-            graphics.fill(getX(), getY(), getRight(), getBottom(), bgColor);
-        }
+
+        // Draw background
+        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
 
 
         // Fetch ScaledFont and calculate position
@@ -109,6 +116,18 @@ public class UiTextWidget extends AbstractWidget {
             ++curLineNum;
         }
     }
+
+
+    @Override
+    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
+        if((bgColor & 0xFF000000) != 0) {
+            RenderingUtils.fillImageArea(img, 0, 0, w, h, bgColor);
+        }
+    }
+
+
+
+
 
 
 

@@ -15,6 +15,7 @@ import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
  * A __base_UiScreen that comes with sidebars.
  */
 public abstract class __base_UiSidebarScreen extends __base_UiScreen {
+    public static float DEFAULT_SIDEBAR_WIDTH = 0.25f;
 
     // Elements and layout
     protected final boolean hasLeftSidebar;
@@ -31,7 +32,7 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
      * Creates a screen with left and right sidebars of default width.
      */
     protected __base_UiSidebarScreen() {
-        this(0.25f, 0.25f);
+        this(DEFAULT_SIDEBAR_WIDTH, DEFAULT_SIDEBAR_WIDTH);
     }
 
 
@@ -59,14 +60,14 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
         // Add left sidebar
         if(hasLeftSidebar) {
             final int leftSidebarWidthPx = (int)(width * leftSidebarWidth);
-            leftSidebar = new UiWidgetList(leftSidebarWidthPx, height, 0, 0, BUTTON_HEIGHT);
+            leftSidebar = new UiWidgetList(this, leftSidebarWidthPx, height, 0, 0, BUTTON_HEIGHT);
             addRenderableWidget(leftSidebar);
         }
 
         // Add right sidebar
         if(hasRightSidebar) {
             final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
-            rightSidebar = new UiWidgetList(rightSidebarWidthPx, height, width - rightSidebarWidthPx, 0, BUTTON_HEIGHT);
+            rightSidebar = new UiWidgetList(this, rightSidebarWidthPx, height, width - rightSidebarWidthPx, 0, BUTTON_HEIGHT);
             addRenderableWidget(rightSidebar);
         }
     }

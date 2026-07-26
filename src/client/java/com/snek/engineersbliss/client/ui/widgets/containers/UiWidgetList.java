@@ -8,10 +8,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
+
+import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
+import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +35,20 @@ import com.snek.engineersbliss.client.utils.Layout;
 /**
  * A scrollable vertical list capable of containing other widgets.
  */
-public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
+public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> implements BgCacheWidget {
 
-    public UiWidgetList(int width, int height, int x, int y, int itemHeight) {
+    // Cached textures
+    private final TextureCache bgCache;
+	@Override public TextureCache getBgTextureCache() { return bgCache; }
+
+
+    public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
         super(Minecraft.getInstance(), width, height, y, itemHeight);
+        bgCache = new TextureCache(screen);
         setX(x);
     }
 
-//TODO add texture cache or something, idk
+
 
 
     @Override
@@ -164,6 +174,22 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
 
 
+
+    //! Disable default background
+    @Override
+    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
+        // Empty
+    }
+
+
+    //! Draw custom background, then draw the rest
+    @Override
+    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    }
+
+
     @Override
     protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
         int scrollBarX     = this.scrollBarX();
@@ -189,12 +215,6 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
                 graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.highlightOverlay);
             }
         }
-    }
-
-
-    @Override
-    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
-        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorSolid);
     }
 
 

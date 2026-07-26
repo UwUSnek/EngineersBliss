@@ -6,17 +6,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
+import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -28,7 +27,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiButton extends Button {
+public class UiButton extends Button implements BgCacheWidget {
     private static final int KEYBIND_BADGE_WIDTH = 16;
 
     private UiTxt label;
@@ -43,10 +42,7 @@ public class UiButton extends Button {
 
     // Cached textures
     private final TextureCache bgCache;
-    //FIXME make the background cache a shared thing. > implements BgCacheWidget
-    //FIXME make BgCacheWidget require all the stuff needed to call drawCachedBackground
-
-    //FIXME use BgCacheWidget to implement caching in buttons and in the other widgets too
+	@Override public TextureCache getBgTextureCache() { return bgCache; }
 
 
 
@@ -169,31 +165,11 @@ public class UiButton extends Button {
 
 
 
-    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-
-        final int w = getWidth();
-        final int h = getHeight();
-        final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
-        final int pixelW = Math.max(1, (int)Math.round(w * guiScale));
-        final int pixelH = Math.max(1, (int)Math.round(h * guiScale));
-
-        bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
-        bgCache.blit(graphics, getX(), getY(), w, h);
-    }
-
-
-
-    /**
-     * Draws the background of the element. Use local coordinates.
-     * This handles static backgrounds that are drawn once and cached until the element changes dimensions.
-     * @param img The output image to draw to.
-     * @param w The width of the image and element.
-     * @param h The height of the image and element.
-     */
+    @Override
     public void drawCachedBackground(final NativeImage img, final int w, final int h) {
 
         // Draw black background color //! Always drawn
-        RenderingUtils.fillImageArea(img, 0, 0, w, h, Layout.bgColor);
+        BgCacheWidget.super.drawCachedBackground(img, w, h);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;

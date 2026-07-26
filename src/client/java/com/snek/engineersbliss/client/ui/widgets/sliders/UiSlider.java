@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -29,7 +29,7 @@ import net.minecraft.network.chat.Component;
 
 
 
-public class UiSlider extends AbstractSliderButton {
+public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private final UiTxt baseLabel;
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
@@ -40,6 +40,7 @@ public class UiSlider extends AbstractSliderButton {
 
     // Cached textures
     private final TextureCache bgCache;
+	@Override public TextureCache getBgTextureCache() { return bgCache; }
 
 
 
@@ -189,29 +190,5 @@ public class UiSlider extends AbstractSliderButton {
 
         // Handle cursor shape and position
         this.handleCursor(graphics);
-    }
-
-
-    public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        final int w = getWidth();
-        final int h = getHeight();
-        final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
-        final int pixelW = Math.max(1, (int)Math.round(w * guiScale));
-        final int pixelH = Math.max(1, (int)Math.round(h * guiScale));
-
-        bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
-        bgCache.blit(graphics, getX(), getY(), w, h);
-    }
-
-
-    /**
-     * Draws the background of the element. Use local coordinates.
-     * This handles static backgrounds that are drawn once and cached until the element changes dimensions.
-     * @param img The output image to draw to.
-     * @param w The width of the image and element.
-     * @param h The height of the image and element.
-     */
-    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
-        RenderingUtils.fillImageArea(img, 0, 0, w, h, Layout.bgColor);
     }
 }
