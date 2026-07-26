@@ -32,13 +32,15 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
     private final TextAlignment alignment;
     private TextAlignmentY verticalAlignment;
     private int color;
-    private int bgColor;
     private final boolean wrapLines;
 
 
     // Cached textures
     private final TextureCache bgCache;
+    private int bgColor = Layout.bgColor;
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
 	@Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
 
 
 
@@ -89,6 +91,30 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
 
 
 
+    //! Recalculate lines when the width changes
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
+        recalculateLines();
+    }
+
+
+    protected void recalculateLines() {
+        if(wrapLines) {
+            final int wrapWidth = width - Layout.textMarginPx * 2;
+            cachedLines = RenderingUtils.wrapLines(label, wrapWidth);
+        }
+        else {
+            cachedLines = List.of(label);
+        }
+    }
+
+
+
+
+
+
+
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
@@ -118,14 +144,6 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
     }
 
 
-    @Override
-    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
-        if((bgColor & 0xFF000000) != 0) {
-            RenderingUtils.fillImageArea(img, 0, 0, w, h, bgColor);
-        }
-    }
-
-
 
 
 
@@ -149,33 +167,5 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
 
     public void setColor(final int newColor) {
         color = newColor;
-    }
-
-    public void setBgColor(final int newBgColor) {
-        bgColor = newBgColor;
-    }
-
-
-
-
-
-
-
-    //! Recalculate lines when the width changes
-    @Override
-    public void setWidth(int width) {
-        super.setWidth(width);
-        recalculateLines();
-    }
-
-
-    protected void recalculateLines() {
-        if(wrapLines) {
-            final int wrapWidth = width - Layout.textMarginPx * 2;
-            cachedLines = RenderingUtils.wrapLines(label, wrapWidth);
-        }
-        else {
-            cachedLines = List.of(label);
-        }
     }
 }

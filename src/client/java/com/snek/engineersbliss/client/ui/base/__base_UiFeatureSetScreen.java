@@ -90,12 +90,12 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         descriptionNameWidget = new UiTextWidget(
             this,
             descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidthPx, descriptionNameHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
         );
         descriptionTextWidget = new UiTextWidget(
             this,
             descriptionX, height - descriptionTextHeight, descriptionWidthPx, descriptionTextHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
         ).withVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
         addRenderableWidget(descriptionTextWidget);
@@ -161,7 +161,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             final int descriptionWidthPx = (int)(width * descriptionWidth);
             final int descriptionX = (width - descriptionWidthPx) / 2;
             final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
-            graphics.fill(descriptionX, 0, descriptionX + descriptionWidthPx, descriptionHeight, Layout.bgColorSolid);
+            graphics.fill(descriptionX, 0, descriptionX + descriptionWidthPx, descriptionHeight, Layout.bgColor);
 
             final int scale = 5;
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
@@ -216,12 +216,12 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         // Update description name text
         final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), 2f);
         descriptionNameWidget.setLabel(descriptionName);
-        descriptionNameWidget.setBgColor(Layout.bgColorSolid);
+        descriptionNameWidget.setBgColor(Layout.bgColor);
 
         // Update description text
         final UiTxt description = button.getClientFeature().calcDesc();
         descriptionTextWidget.setLabel(description);
-        descriptionTextWidget.setBgColor(Layout.bgColorSolid);
+        descriptionTextWidget.setBgColor(Layout.bgColor);
     }
 
 

@@ -20,10 +20,12 @@ import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.mixin.accessors.AbstractScrollAreaAccessor;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 
 
 
@@ -39,7 +41,10 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
 
     // Cached textures
     private final TextureCache bgCache;
+    private int bgColor = Layout.bgColor;
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
 	@Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
 
 
     public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
@@ -202,7 +207,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
         if(scrollable()) {
 
             // Draw track
-            graphics.fill(scrollBarX, getY(), scrollBarX + barWidth, getBottom(), Layout.bgColorSolid);
+            graphics.fill(scrollBarX, getY(), scrollBarX + barWidth, getBottom(), Layout.bgColor);
 
             // Draw thumb
             final boolean hovered = isOverScrollbar(mouseX, mouseY);

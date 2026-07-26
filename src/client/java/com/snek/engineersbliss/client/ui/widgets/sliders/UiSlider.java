@@ -40,7 +40,10 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
     // Cached textures
     private final TextureCache bgCache;
+    private int bgColor = Layout.bgColor;
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
 	@Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
 
 
 
@@ -54,7 +57,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         bgCache = new TextureCache(screen);
     }
     public UiSlider(final Screen screen, final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
-        this(screen, 50, 50, 150, DEFAULT_HEIGHT, label, initialValue, onChange);
+        this(screen, 50, 50, 50, 50, label, initialValue, onChange);
     }
 
 

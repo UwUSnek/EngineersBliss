@@ -42,7 +42,10 @@ public class UiButton extends Button implements BgCacheWidget {
 
     // Cached textures
     private final TextureCache bgCache;
+    private int bgColor = Layout.bgColor;
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
 	@Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
 
 
 

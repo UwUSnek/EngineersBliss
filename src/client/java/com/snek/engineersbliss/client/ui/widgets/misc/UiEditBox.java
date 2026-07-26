@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.utils.Layout;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -20,7 +21,10 @@ public class UiEditBox extends EditBox implements BgCacheWidget {
 
     // Cached textures
     private final TextureCache bgCache;
-    @Override public TextureCache getBgTextureCache() { return bgCache; }
+    private int bgColor = Layout.bgColor;
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
+	@Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
 
 
 

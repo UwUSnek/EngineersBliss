@@ -48,12 +48,28 @@ public interface BgCacheWidget {
 
     /**
      * Redraws the background of the widget to update the texture cache. Uses local coordinates.
-     * Defaults to filling the widget's box with Layout.bgColor.
+     * Defaults to filling the widget's box with getBgBaseColor().
      * @param img The output image to draw to.
      * @param w The width of the image and widget.
      * @param h The height of the image and widget.
      */
     public default void drawCachedBackground(final NativeImage img, final int w, final int h) {
-        RenderingUtils.fillImageArea(img, 0, 0, w, h, Layout.bgColor);
+        RenderingUtils.fillImageArea(img, 0, 0, w, h, getBgBaseColor());
+    }
+
+
+
+
+    /**
+     * Marks the background texture cache as dirty, forcing it to be redrawn before the next frame.
+     */
+    public default void markBgDirty() {
+        getBgTextureCache().markDirty();
+    }
+
+
+
+    public default int getBgBaseColor() {
+        return Layout.bgColor;
     }
 }
