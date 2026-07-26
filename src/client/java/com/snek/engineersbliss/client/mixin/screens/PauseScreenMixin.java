@@ -20,7 +20,6 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
-import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
@@ -193,32 +192,33 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Render filter",    RenderingScreen  ::new, 'R', "pause_screen/render_filter"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",         OverlaysScreen   ::new, 'O', "pause_screen/overlays"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",     AltTexturesScreen::new, 'T', "pause_screen/alt_textures"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",         OverlaysScreen   ::new, 'O', "pause_screen/overlays"),      Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",     AltTexturesScreen::new, 'T', "pause_screen/alt_textures"),  Layout.BORDER_HEIGHT);
 
             // Tools
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-            leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "pause_screen/action_history"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  RenderingScreen::new, 'V', "pause_screen/version_control"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "pause_screen/test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "pause_screen/test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "pause_screen/test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     RenderingScreen::new, 'I', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor),      Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "pause_screen/action_history"),   Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  RenderingScreen::new, 'V', "pause_screen/version_control"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "pause_screen/block_properties"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "pause_screen/block_groups"),     Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "pause_screen/container_tools"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     RenderingScreen::new, 'I', "pause_screen/custom_items"),     Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Keybinds",         RenderingScreen::new, 'K', "pause_screen/keybinds"),         Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Creative tweaks",  CreativeTweaksScreen::new, 'Y', "pause_screen/test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new,      'X', "pause_screen/test"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new,      'M', "pause_screen/test"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Creative tweaks",  CreativeTweaksScreen::new, 'Y', "pause_screen/creative_tweaks"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new,      'X', "pause_screen/gameplay_tweaks"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new,      'M', "pause_screen/sound_muffler"),   Layout.BORDER_HEIGHT);
 
             // Info
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Info", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Render stats", RenderingScreen::new, '\0', "pause_screen/render_stats"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("World stats",  RenderingScreen::new, '\0', "pause_screen/world_stats"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("About",        RenderingScreen::new, '\0', "pause_screen/about"),        Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Render stats", RenderingScreen::new, '\0', "pause_screen/render_stats"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("World stats",  RenderingScreen::new, '\0', "pause_screen/world_stats"),   Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("About",        RenderingScreen::new, '\0', "pause_screen/about"),         Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 
