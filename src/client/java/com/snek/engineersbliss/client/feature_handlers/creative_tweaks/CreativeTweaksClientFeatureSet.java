@@ -41,7 +41,6 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("Values represent multiples of the default Creative Mode flying speed."))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
-    //TODO add walking speed multiplier
     public static final ClientFeature<?> INTERACTION_DISTANCE = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE,
         () -> new UiTxt("Interaction distance"),
@@ -56,6 +55,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
         () -> new UiTxt()
             .cat(new UiTxt("Controls your interaction radius. This lets you place, break or use multiple blocks at once.\n"))
             .cat(new UiTxt("Values represent the maximum distance from your targeted position in which blocks respond to left and right clicks."))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
+    public static final ClientFeature<?> INTERACTION_COUNT = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.INTERACTION_COUNT,
+        () -> new UiTxt("Interaction count"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Controls your interaction count. This lets you place, break, or use multiple blocks at once.\n"))
+            .cat(new UiTxt("Values represent the amount of times your interactions are processed. 1 is Vanilla's default."))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
     public static final ClientFeature<?> NO_SIGN_GUI = new ClientFeature<>(

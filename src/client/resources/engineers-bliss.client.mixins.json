@@ -8,6 +8,7 @@
         "accessors.BlockEntityRenderersAccessor",
         "accessors.AbstractScrollAreaAccessor",
         "accessors.FontAccessor",
+        "accessors.MinecraftAccessor",
 
 
         "shaders.JuliaSetShaderMixin",

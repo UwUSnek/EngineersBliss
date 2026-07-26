@@ -42,9 +42,9 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.FLYING_SPEED,  CreativeTweaksClientHandler:: onFlyingSpeedChange), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT, CreativeTweaksClientHandler::onInteractionCountChange),    Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS), Layout.BORDER_HEIGHT);
-
 
 
         // Player properties
@@ -62,6 +62,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_CURRENT_DRAG),            Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG),      Layout.BORDER_HEIGHT);
 
+
         // World interations
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Speed debuffs", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
@@ -77,6 +78,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_TWISTING_VINES_SLOWDOWN), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WEEPING_VINES_SLOWDOWN),  Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SWEET_BERRIES_SLOWDOWN),  Layout.BORDER_HEIGHT);
+
 
         // Visual clutter
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
