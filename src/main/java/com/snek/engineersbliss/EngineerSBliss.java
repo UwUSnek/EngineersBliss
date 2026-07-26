@@ -14,7 +14,7 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksSe
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomBlockHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
-import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
+import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTabs;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
@@ -47,7 +47,7 @@ public class EngineerSBliss implements ModInitializer {
         // Initialize custom items
         CustomBlockHandler.init();
         CustomItemHandler.init();
-        ModCreativeTab.register();
+        ModCreativeTabs.register();
 
 
         // Register feature sets and initialize the feature system

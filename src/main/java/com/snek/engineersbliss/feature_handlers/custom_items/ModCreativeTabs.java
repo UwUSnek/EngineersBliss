@@ -19,8 +19,8 @@ import net.minecraft.world.item.Items;
 
 
 
-public class ModCreativeTab {
-    private ModCreativeTab() {}
+public class ModCreativeTabs {
+    private ModCreativeTabs() {}
 
 
 
@@ -47,14 +47,14 @@ public class ModCreativeTab {
 
 
 
-    public static final ResourceKey<CreativeModeTab> MISSING_VANILLA_ITEMS_TAB_KEY = ResourceKey.create(
+    public static final ResourceKey<CreativeModeTab> MISSING_ITEMS_TAB_KEY = ResourceKey.create(
         BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "missing_vanilla_items")
+        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "missing_items")
     );
 
-    public static final CreativeModeTab MISSING_VANILLA_ITEMS_TAB = FabricCreativeModeTab.builder()
+    public static final CreativeModeTab MISSING_ITEMS_TAB = FabricCreativeModeTab.builder()
         .icon(() -> new ItemStack(CustomItemHandler.POTTED_FLOWERING_AZALEA.asItem()))
-        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_vanilla_items"))
+        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_items"))
         .displayItems((params, output) -> {
 
             output.accept(CustomItemHandler.FULL_BEE_NEST);
@@ -141,7 +141,7 @@ public class ModCreativeTab {
 
 
     public static void register() {
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_ITEMS_TAB_KEY,          CUSTOM_ITEMS_TAB);
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MISSING_VANILLA_ITEMS_TAB_KEY, MISSING_VANILLA_ITEMS_TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_ITEMS_TAB_KEY,  CUSTOM_ITEMS_TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MISSING_ITEMS_TAB_KEY, MISSING_ITEMS_TAB);
     }
 }

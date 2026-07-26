@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
