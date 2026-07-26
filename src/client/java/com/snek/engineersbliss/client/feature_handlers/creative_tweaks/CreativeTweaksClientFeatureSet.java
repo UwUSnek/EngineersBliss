@@ -165,14 +165,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
 
     public static final ClientFeature<?> DISABLE_HONEY_SLOWDOWN = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_HONEY_SLOWDOWN,
-        () -> new UiTxt("Disable Honey Blocks slowdown"),
+        () -> new UiTxt("Disable Honey Block slowdown"),
         () -> new UiTxt()
             .cat(new UiTxt("Prevents you from being slowed down while walking on Honey Blocks.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get())
     );
     public static final ClientFeature<?> DISABLE_SLIME_SLOWDOWN = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_SLIME_SLOWDOWN,
-        () -> new UiTxt("Disable Slime Blocks slowdown"),
+        () -> new UiTxt("Disable Slime Block slowdown"),
         () -> new UiTxt()
             .cat(new UiTxt("Prevents you from being slowed down while walking on Slime Blocks.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get())

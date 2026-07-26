@@ -20,6 +20,7 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
@@ -65,7 +66,7 @@ public class PauseScreenMixin extends Screen {
 
 
     private static UiWidgetList leftSidebar;
-    private static final float leftSidebarWidth = 0.25f;
+    private static final float leftSidebarWidth = 0.2f;
 
 
 
@@ -182,9 +183,11 @@ public class PauseScreenMixin extends Screen {
 
 
         leftSidebar = new UiWidgetList((int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
-            final String titleString = String.format("%s v%s", EngineerSBliss.MOD_NAME, EngineerSBlissClient.getModVersion());
+            final UiTxt titleText   = new UiTxt(EngineerSBliss.MOD_NAME, Fonts.ui.light, 2f);
+            final UiTxt versionText = new UiTxt(String.format("v%s", EngineerSBlissClient.getModVersion()), Fonts.ui.regular, 1f);
             leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
-            leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleString, Fonts.ui.bold, 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(titleText,   TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(versionText, TextAlignment.LEFT, Layout.fgColor).withVerticalAlignment(TextAlignmentY.TOP), Layout.HEADER_HEIGHT);
 
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);

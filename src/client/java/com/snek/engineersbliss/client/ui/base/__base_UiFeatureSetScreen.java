@@ -43,11 +43,11 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     // Elements and layout
     protected static UiTextWidget descriptionTextWidget;
     protected static UiTextWidget descriptionNameWidget;
-    public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH;
     public static final float DESCRIPTION_HEIGHT = 0.15f;
     public static final float DESCRIPTION_NAME_HEIGHT = 0.06f;
     public static final float DESCRIPTION_TEXT_HEIGHT = DESCRIPTION_HEIGHT - DESCRIPTION_NAME_HEIGHT;
     public static final float PREVIEW_WIDTH = 0.25f;
+    private final float descriptionWidth;
 
     // Hover data cache
     public static final long HOVER_OFF_DELAY_MS = 250;
@@ -61,7 +61,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     // Parent feature set and constructor
     protected final __base_ClientFeatureSet<?> featureSet;
     protected __base_UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
-        super(true, true);
+        super();
+        this.descriptionWidth = 1f - leftSidebarWidth - rightSidebarWidth;
         this.featureSet = featureSet;
     }
 
@@ -82,16 +83,16 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Add description name and text elements
         //! Preview is added dynamically
-        final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
-        final int descriptionX = (width - descriptionWidth) / 2;
+        final int descriptionWidthPx = (int)(width * descriptionWidth);
+        final int descriptionX = (width - descriptionWidthPx) / 2;
         final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
         final int descriptionTextHeight = (int)(height * DESCRIPTION_TEXT_HEIGHT);
         descriptionNameWidget = new UiTextWidget(
-            descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidth, descriptionNameHeight,
+            descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidthPx, descriptionNameHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         );
         descriptionTextWidget = new UiTextWidget(
-            descriptionX, height - descriptionTextHeight, descriptionWidth, descriptionTextHeight,
+            descriptionX, height - descriptionTextHeight, descriptionWidthPx, descriptionTextHeight,
             new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
         ).withVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
@@ -155,10 +156,10 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final int w, final int h, final int hPlaceholder, final int xOff, final int xOn, final int y, final int yPlaceholder) {
         // Render ON/OFF text
         {
-            final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
-            final int descriptionX = (width - descriptionWidth) / 2;
+            final int descriptionWidthPx = (int)(width * descriptionWidth);
+            final int descriptionX = (width - descriptionWidthPx) / 2;
             final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
-            graphics.fill(descriptionX, 0, descriptionX + descriptionWidth, descriptionHeight, Layout.bgColorSolid);
+            graphics.fill(descriptionX, 0, descriptionX + descriptionWidthPx, descriptionHeight, Layout.bgColorSolid);
 
             final int scale = 5;
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
