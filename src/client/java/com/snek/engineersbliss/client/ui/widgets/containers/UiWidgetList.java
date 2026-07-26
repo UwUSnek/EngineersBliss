@@ -28,6 +28,9 @@ import com.snek.engineersbliss.client.utils.Layout;
 
 
 
+/**
+ * A scrollable vertical list capable of containing other widgets.
+ */
 public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
     public UiWidgetList(int width, int height, int x, int y, int itemHeight) {
@@ -43,12 +46,18 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return false;
     }
 
+	@Override
+	protected void updateWidgetNarration(NarrationElementOutput output) {
+        // Empty
+	}
+
     @Override
     public boolean keyPressed(final KeyEvent event) {
         boolean r = false;
         for(final Entry c : children()) r = r || c.keyPressed(event);
         return r;
     }
+
     @Override
     public boolean charTyped(CharacterEvent event) {
         boolean r = false;
@@ -61,11 +70,30 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return super.scrollRate() * 2d;
     }
 
-    //! For whatever reason, AbstractSelectionList's getHovered is PROTECTED but also FINAL??? so it cannot be called by external classes.
-    //! This lets external code access the hovered entry without iterating all the children.
+
+    //! For whatever reason, AbstractSelectionList's getHovered() is PROTECTED but also FINAL???
+    //! So the hovered entry cannot be accessed by external classes.
+    //! This lets external code access it without iterating all the children.
     public Entry getHoveredEntry() {
         return super.getHovered();
     }
+
+
+    //! Override lets clicks through when they don't hit a sub element.
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        if(super.isMouseOver(mouseX, mouseY)) {
+            if(this.isOverScrollbar(mouseX, mouseY)) return true;
+            else for(final var c : children()) {
+                if(c.isMouseOver(mouseX, mouseY)) return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
 
 
 
@@ -102,22 +130,37 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
 
 
-
-    @Override
-    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
-        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorSolid);
-    }
-
-
-
-
-
     //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its PRIVATE omfg why.
-    //! In Vanilla, getFirstEntryY is only used for setY, so this override changes setY to remove the 2px padding.
+    //! In Vanilla, getFirstEntryY is only used for setY, so this override changes setY to remove the 2px padding added by getFirstEntryY.
     @Override
     public void setY(final int y) {
         super.setY(y - 2);
     }
+
+    //! Fix Vanilla getRowLeft to account for the scrollbar's width.
+    @Override
+    public int getRowLeft() {
+        return getX();
+    }
+
+    @Override
+    public int getRowWidth() {
+        return this.width - this.scrollbarWidth();
+    }
+
+    @Override
+    protected int scrollBarX() {
+        return getX() + width - scrollbarWidth();
+    }
+
+    @Override
+    public int scrollbarWidth() {
+        return 2;
+    }
+
+
+
+
 
 
 
@@ -149,36 +192,13 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
     }
 
 
-
-
-    //TODO something's wrong here, it seems like the scrollbar is wider than it should be and the row widths is also a few pixels more than it should be.
-    //TODO the elements get cut by a few pixels on the right side when the scroll bar is visible
     @Override
-    public int getRowWidth() {
-        return this.width - this.scrollbarWidth();
+    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
+        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorSolid);
     }
 
-    @Override
-    protected int scrollBarX() {
-        return getX() + width - scrollbarWidth();
-    }
 
-    @Override
-    public int scrollbarWidth() {
-        return 2;
-    }
 
-    //! Override lets clicks through when they don't hit a sub element
-    @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        if(super.isMouseOver(mouseX, mouseY)) {
-            if(this.isOverScrollbar(mouseX, mouseY)) return true;
-            else for(final var c : children()) {
-                if(c.isMouseOver(mouseX, mouseY)) return true;
-            }
-        }
-        return false;
-    }
 
 
 
@@ -239,9 +259,4 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
             return widget.charTyped(event);
         }
     }
-
-	@Override
-	protected void updateWidgetNarration(NarrationElementOutput output) {
-        //TODO idk what this does
-	}
 }
