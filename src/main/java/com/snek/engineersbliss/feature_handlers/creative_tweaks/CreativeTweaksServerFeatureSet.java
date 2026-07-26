@@ -43,7 +43,7 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static ServerSteppedFeature<Integer> INTERACTION_COUNT = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
         "interaction_count",
-        IntStream.range(1, 101).boxed().toList(), 0
+        IntStream.range(1, 51).boxed().toList(), 0
     ));
     public static ServerToggleFeature NO_SIGN_GUI = INSTANCE.registerFeature(new ServerToggleFeature(
         "no_sign_gui",

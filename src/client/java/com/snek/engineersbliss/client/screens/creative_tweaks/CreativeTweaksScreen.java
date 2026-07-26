@@ -42,7 +42,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.FLYING_SPEED,  CreativeTweaksClientHandler:: onFlyingSpeedChange), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT, CreativeTweaksClientHandler::onInteractionCountChange),    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),    Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS), Layout.BORDER_HEIGHT);
 
