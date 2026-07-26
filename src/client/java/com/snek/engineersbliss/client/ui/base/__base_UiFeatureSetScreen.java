@@ -77,8 +77,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Add left sidebar title
         final UiTxt titleText = featureSet.calcName();
-        leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
 
 
         // Add description name and text elements

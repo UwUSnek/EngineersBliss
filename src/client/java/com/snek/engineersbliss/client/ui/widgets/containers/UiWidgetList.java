@@ -112,17 +112,11 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
 
 
-    //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its private.
-    //! So scrollAmount add 2px from to re-align the elemtns.
-    //! In Vanilla, getFirstEntryY is always used with scrollAmount.
-    //! setScrollAmount compensates for scrollAmount so scrolling down doesn't get messed up.
+    //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its PRIVATE omfg why.
+    //! In Vanilla, getFirstEntryY is only used for setY, so this override changes setY to remove the 2px padding.
     @Override
-    public double scrollAmount() {
-        return super.scrollAmount() + 2.0;
-    }
-    @Override
-    public void setScrollAmount(double scrollAmount) {
-        super.setScrollAmount(scrollAmount - 2.0);
+    public void setY(final int y) {
+        super.setY(y - 2);
     }
 
 
