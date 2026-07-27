@@ -2,6 +2,8 @@ package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.DoubleFunction;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -30,18 +32,26 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
 
+    @SuppressWarnings("unchecked")
     public UiSteppedSlider(
         final Screen screen,
         final int x, final int y, final int w, final int h, final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
-        final @Nullable BiConsumer<Integer, T> afterChangeCallback
+        final @Nullable BiConsumer<Integer, T> afterChangeCallback,
+        final @Nullable Function<UiSlider, UiTxt> valueFormatter
     ) {
-        super(screen, x, y, w, h, label, indexToUnit(defaultValueIndex, stepValues.size()), n -> {
-            if(afterChangeCallback != null) {
-                final int selectedIndex = unitToIndex(n, stepValues.size());
-                afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
-            }
-        });
+        super(
+            screen,
+            x, y, w, h,
+            label, indexToUnit(defaultValueIndex, stepValues.size()),
+            n -> {
+                if(afterChangeCallback != null) {
+                    final int selectedIndex = unitToIndex(n, stepValues.size());
+                    afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
+                }
+            },
+            valueFormatter == null ? s -> new UiTxt(String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue())) : valueFormatter
+        );
         this.stepValues = stepValues;
         updateMessage();
     }
@@ -53,15 +63,14 @@ public class UiSteppedSlider<T> extends UiSlider {
     public static int    unitToIndex(final double unit, final int size) { return Math.min(size - 1, (int)Math.round(unit * (size - 1))); }
     public double indexToUnit(final int   index) { return indexToUnit(index, stepValues.size()); }
     public int    unitToIndex(final double unit) { return unitToIndex(unit,  stepValues.size()); }
-    public T getSelectedValue() { return stepValues.get(unitToIndex(value)); }
 
-
-
-
-    @Override
-    public UiTxt buildValueText() {
-        return new UiTxt(String.valueOf(getSelectedValue()));
+    public T getSelectedValue() {
+        return stepValues.get(unitToIndex(value, stepValues.size()));
     }
+
+
+
+
     @Override
     protected void updateMessage() {
         //! Guard the automatic updateMessage call done by UiSlider.

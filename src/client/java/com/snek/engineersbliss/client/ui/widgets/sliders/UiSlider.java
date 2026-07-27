@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +34,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private final UiTxt baseLabel;
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
+    private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
 
     // Mouse handling
     private boolean dragged = false;
@@ -48,16 +50,30 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
 
-    public UiSlider(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
+    public UiSlider(
+        final Screen screen,
+        final int x, final int y, final int width, final int height,
+        final UiTxt label, final double initialValue,
+        final @Nullable Consumer<Double> onChange,
+        final @Nullable Function<UiSlider, UiTxt> valueFormatter
+    ) {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(x, y, width, height, new Txt().get(), initialValue);
         this.baseLabel = label;
         this.onChange = onChange;
+        this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
         updateMessage();
         bgCache = new TextureCache(screen);
     }
-    public UiSlider(final Screen screen, final UiTxt label, final double initialValue, final @Nullable Consumer<Double> onChange) {
-        this(screen, 50, 50, 50, 50, label, initialValue, onChange);
+
+
+    public UiSlider(
+        final Screen screen,
+        final UiTxt label, final double initialValue,
+        final @Nullable Consumer<Double> onChange,
+        final @Nullable Function<UiSlider, UiTxt> valueFormatter
+    ) {
+        this(screen, 50, 50, 50, 50, label, initialValue, onChange, valueFormatter);
     }
 
 
@@ -65,10 +81,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
     @Override
     protected void updateMessage() {
-        this.label = ((UiTxt)new UiTxt(baseLabel.get()).cat(" : ")).cat(buildValueText());
-    }
-    public UiTxt buildValueText() {
-        return new UiTxt(String.valueOf((int)(value * 100)) + "%");
+        this.label = ((UiTxt)new UiTxt(baseLabel.get()).cat(" : ")).cat(valueFormatter.apply(this));
     }
     public void setLabel(final Component label) {
         super.setMessage(label);

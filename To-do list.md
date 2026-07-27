@@ -255,3 +255,5 @@
 
 
 - USE SLIDER/TOGGLE FOR ALT TEXTURES FEATURES. overlay still images
+
+- maybe add chat timestamps?

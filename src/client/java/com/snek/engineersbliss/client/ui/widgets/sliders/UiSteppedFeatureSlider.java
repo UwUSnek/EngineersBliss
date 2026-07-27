@@ -1,12 +1,14 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
+import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
@@ -31,17 +33,29 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
 
 
     public UiSteppedFeatureSlider(final Screen screen, final ClientFeature<?> feature) {
-        this(screen, 50, 50, 50, 50, feature, null);
+        this(screen, 50, 50, 50, 50, feature, null, null);
     }
     public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
-        this(screen, x, y, w, h, feature, null);
+        this(screen, x, y, w, h, feature, null, null);
     }
     public UiSteppedFeatureSlider(final Screen screen, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
-        this(screen, 50, 50, 50, 50, feature, afterChangeCallback);
+        this(screen, 50, 50, 50, 50, feature, afterChangeCallback, null);
+    }
+    public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
+        this(screen, x, y, w, h, feature, afterChangeCallback, null);
     }
 
+    public UiSteppedFeatureSlider(final Screen screen, final ClientFeature<?> feature, final @Nullable Function<UiSlider, UiTxt> valueFormatter) {
+        this(screen, 50, 50, 50, 50, feature, null, valueFormatter);
+    }
+    public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Function<UiSlider, UiTxt> valueFormatter) {
+        this(screen, x, y, w, h, feature, null, valueFormatter);
+    }
+    public UiSteppedFeatureSlider(final Screen screen, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback, final @Nullable Function<UiSlider, UiTxt> valueFormatter) {
+        this(screen, 50, 50, 50, 50, feature, afterChangeCallback, valueFormatter);
+    }
     @SuppressWarnings("unchecked")
-    public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
+    public UiSteppedFeatureSlider(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable BiConsumer<Integer, T> afterChangeCallback, final @Nullable Function<UiSlider, UiTxt> valueFormatter) {
 
         // Throw exception if not a ServerSteppedFeature
         final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();
@@ -59,7 +73,8 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
             feature.calcName(),
             _serverFeature.getValues(),
             ClientFeatureSync.getFeatureI(_serverFeature),
-            (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback)
+            (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback),
+            valueFormatter //! No special formatting by default
         );
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;

@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.creative_tweaks;
 
+import java.util.function.Function;
+
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
@@ -8,6 +10,7 @@ import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.sliders.UiSlider;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -20,6 +23,21 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
+
+    @SuppressWarnings("unchecked")
+    private static final Function<UiSlider, UiTxt> tickFormatter = s -> {
+        final int total = ((UiSteppedFeatureSlider<Integer>)s).getSelectedValue();
+        final int seconds = total / 20;
+        final int ticks   = total % 20;
+        return new UiTxt(seconds == 0
+            ? ticks == 0
+                ? "0"
+                : String.format("%st", ticks)
+            : ticks == 0
+                ? String.format("%ss", seconds)
+                : String.format("%ss%st", seconds, ticks)
+        );
+    };
 
 
 
@@ -38,17 +56,17 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         // Player properties
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Player properties", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.WALKING_SPEED),                 Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.WALKING_SPEED),                    Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.FLYING_SPEED,  CreativeTweaksClientHandler:: onFlyingSpeedChange), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE),          Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),            Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),             Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.PLACE_DELAY),                   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.AUTOCLICKER_DELAY),             Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                 Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS),    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE),             Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),               Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),                Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.PLACE_DELAY,       tickFormatter), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.AUTOCLICKER_DELAY, tickFormatter), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS),       Layout.BORDER_HEIGHT);
 
 
         // Player properties
