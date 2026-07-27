@@ -45,6 +45,30 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
         "interaction_count",
         IntStream.range(1, 51).boxed().toList(), 0
     ));
+    public static ServerSteppedFeature<Integer> PLACE_DELAY = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
+        "place_delay",
+        List.of(
+            1,   2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+            21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+            60, 80, 100
+        ), 0 //TODO fix default
+    ));
+    public static ServerSteppedFeature<Integer> AUTOCLICKER_DELAY = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
+        "place_delay",
+        List.of(
+            1,   2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+            21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+            60, 80, 100
+        ), 0
+    ));
+    public static ServerToggleFeature AUTOCLICKER = INSTANCE.registerFeature(new ServerToggleFeature(
+        "autoclicker",
+        false
+    ));
+    public static ServerToggleFeature TOGGLE_CLICKS = INSTANCE.registerFeature(new ServerToggleFeature(
+        "toggle_clicks",
+        false
+    ));
     public static ServerToggleFeature NO_SIGN_GUI = INSTANCE.registerFeature(new ServerToggleFeature(
         "no_sign_gui",
         false
@@ -82,6 +106,7 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
     public static final ServerToggleFeature DISABLE_WEEPING_VINES_SLOWDOWN  = INSTANCE.registerFeature(new ServerToggleFeature("disable_weeping_vines_slowdown",  true));
     public static final ServerToggleFeature DISABLE_SWEET_BERRIES_SLOWDOWN  = INSTANCE.registerFeature(new ServerToggleFeature("disable_sweet_berries_slowdown",  true));
 
+    public static final ServerToggleFeature DISABLE_BLOCK_BREAK_PARTICLES   = INSTANCE.registerFeature(new ServerToggleFeature("disable_block_break_particles",   false));
     public static final ServerToggleFeature DISABLE_ITEM_CHANGE_ANIMATION   = INSTANCE.registerFeature(new ServerToggleFeature("disable_item_change_animation",   false));
     public static final ServerToggleFeature DISABLE_HAND_SWING_ANIMATION    = INSTANCE.registerFeature(new ServerToggleFeature("disable_hand_swing_animation",    false));
     public static final ServerToggleFeature DISABLE_DIMENSION_CHANGE_SCREEN = INSTANCE.registerFeature(new ServerToggleFeature("disable_dimension_change_screen", true));

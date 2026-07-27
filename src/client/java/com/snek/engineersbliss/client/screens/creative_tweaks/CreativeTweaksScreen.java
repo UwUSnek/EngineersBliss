@@ -38,13 +38,17 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         // Player properties
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Player properties", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.WALKING_SPEED), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.WALKING_SPEED),                 Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.FLYING_SPEED,  CreativeTweaksClientHandler:: onFlyingSpeedChange), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE),          Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),            Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),             Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.PLACE_DELAY),                   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.AUTOCLICKER_DELAY),             Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                 Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton                (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS),    Layout.BORDER_HEIGHT);
 
 
         // Player properties
@@ -83,6 +87,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         // Visual clutter
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Visual clutter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BLOCK_BREAK_PARTICLES),   Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION),   Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HAND_SWING_ANIMATION),    Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_DIMENSION_CHANGE_SCREEN), Layout.BORDER_HEIGHT);
