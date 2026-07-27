@@ -91,7 +91,7 @@ public class UiFeatureButton extends UiButton {
     }
 
     /**
-     * Creates a UiTxt with format "<feature_name>: [ON/OFF]" based on the provided state.
+     * Creates a UiTxt with format "<feature_name>: [ON|OFF]" based on the provided state.
      * @param feature The toggle feature.
      * @param state The state to display. True for ON, false for OFF.
      * @return The created UiTxt.

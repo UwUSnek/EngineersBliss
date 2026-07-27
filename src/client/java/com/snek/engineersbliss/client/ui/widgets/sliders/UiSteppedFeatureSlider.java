@@ -54,7 +54,13 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
 
         // Proceed with normal initialization
         final @NotNull ServerSteppedFeature<T> _serverFeature = (ServerSteppedFeature<T>)genericServerFeature;
-        super(screen, x, y, w, h, feature.calcName(), _serverFeature.getValues(), _serverFeature.getDefault(), (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback));
+        super(
+            screen, x, y, w, h,
+            feature.calcName(),
+            _serverFeature.getValues(),
+            ClientFeatureSync.getFeatureI(_serverFeature),
+            (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback)
+        );
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
     }
