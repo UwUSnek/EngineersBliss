@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
@@ -31,6 +32,9 @@ import net.minecraft.network.chat.Component;
 
 
 public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
+	public static final int HANDLE_WIDTH = 8;
+
+
     private final UiTxt baseLabel;
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
@@ -43,9 +47,12 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     // Cached textures
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
+    private int bgColorAlt = Layout.bgColorAlt;
     public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
+    public void setBgColorAlt(final int newColor) { bgColorAlt = newColor; markBgDirty(); }
 	@Override public TextureCache getBgTextureCache() { return bgCache; }
     @Override public int getBgBaseColor() { return bgColor; }
+    public int getBgBaseColorAlt() { return bgColorAlt; }
 
 
 
@@ -189,9 +196,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw slider handle
-        final int handleX = getX() + (int)(this.value * (width - HANDLE_WIDTH));
+        final int handleX = calcHandleX();
         final int handleColor = isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor;
-        graphics.fill(handleX, getY(), handleX + HANDLE_WIDTH, getBottom(), handleColor);
+        graphics.fill(handleX - HANDLE_WIDTH / 2, getY(), handleX + HANDLE_WIDTH / 2, getBottom(), handleColor);
 
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
@@ -206,5 +213,25 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
         // Handle cursor shape and position
         this.handleCursor(graphics);
+    }
+
+
+    public int calcHandleX() {
+        return getX() + (int)(this.value * width);
+    }
+
+
+    @Override
+    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
+        //! Empty - Skip default cached background. first layer depends on the handle's position
+    }
+
+
+    @Override
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
+        final int handleStartX = calcHandleX() - HANDLE_WIDTH / 2;
+        graphics.fill(getX(),       getY(), handleStartX, getBottom(), getBgBaseColorAlt());
+        graphics.fill(handleStartX, getY(), getRight(),   getBottom(), getBgBaseColor());
     }
 }

@@ -13,7 +13,7 @@ import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
-import com.snek.engineersbliss.client.ui.widgets.buttons.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
@@ -35,7 +35,7 @@ import net.minecraft.resources.Identifier;
 
 
 /**
- * A special __base_UiScreen that can properly handle UiFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
+ * A special __base_UiScreen that can properly handle UiToggleFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
  * It comes with left and a right sidebars and a feature previews.
  */
 public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
@@ -118,7 +118,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
         // If hovering an element with feature preview
-        if(widget instanceof UiFeatureButton button) {
+        if(widget instanceof UiToggleFeatureButton button) {
 
             // Update hover timestamp
             // Update preview elements if the hovered element has changed
@@ -198,7 +198,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void updateToggleFeaturePreviewElements(UiFeatureButton button) {
+    private void updateToggleFeaturePreviewElements(UiToggleFeatureButton button) {
         //TODO maybe draw one preview for each setting step? or something like that? idk yet
 
         // Draw feature preview

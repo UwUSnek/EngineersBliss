@@ -15,6 +15,7 @@ import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
 
 
@@ -24,7 +25,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiFeatureButton extends UiButton {
+public class UiToggleFeatureButton extends UiToggleButton {
     private final              ClientFeature<?> clientFeature;
     private final @Nullable ServerToggleFeature serverFeature;
 
@@ -34,37 +35,40 @@ public class UiFeatureButton extends UiButton {
 
 
     private final Identifier bgSpriteId;
+    private final Consumer<UiButton> afterPressCallback;
 
 
 
 
-    public UiFeatureButton(final Screen screen, final ClientFeature<?> feature) {
+    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature) {
         this(screen, feature, null);
     }
-    public UiFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
+    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
         this(screen, 50, 50, 50, 50, feature, afterPressCallback);
     }
-    public UiFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
+    public UiToggleFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature) {
         this(screen, x, y, w, h, feature, null);
     }
 
 
-    public UiFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
+    public UiToggleFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback) {
 
         // Throw exception if not a ServerToggleFeature
         final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();
         if(!(genericServerFeature instanceof ServerToggleFeature)) {
             throw new IllegalArgumentException(
-                "UiFeatureButton created with a server feature of incompatible type: " +
+                "UiToggleFeatureButton created with a server feature of incompatible type: " +
                 genericServerFeature.getClass().getName()
             );
         }
 
         // Proceed with normal initialization
         final ServerToggleFeature _serverFeature = (ServerToggleFeature)genericServerFeature;
-        super(screen, x, y, w, h, getToggleText(feature, _serverFeature), b -> onClick((UiFeatureButton)b, afterPressCallback), '\0', TextAlignment.LEFT);
+        final boolean initialValue = ClientFeatureSync.getFeatureB(_serverFeature);
+        super(screen, initialValue, x, y, w, h, getToggleText(feature, initialValue), null, '\0', TextAlignment.LEFT);
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
+        this.afterPressCallback = afterPressCallback;
 
         // Calculate sprite id
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
@@ -81,31 +85,23 @@ public class UiFeatureButton extends UiButton {
 
 
 
-
-    public static void onClick(final UiFeatureButton b, final @Nullable Consumer<UiButton> afterPressCallback) {
-        final boolean newState = !ClientFeatureSync.getFeatureB(b.getServerFeature());
-        b.setLabel(getToggleText(b.getClientFeature(), newState));
-        ClientFeatureSync.setFeature(b.getServerFeature(), newState);
-        if(afterPressCallback != null) afterPressCallback.accept(b);
-        b.setFocused(false);
+    @Override
+    public void onClick(MouseButtonEvent event, boolean doubleClick) {
+        super.onClick(event, doubleClick);
+        setLabel(getToggleText(getClientFeature()));
+        ClientFeatureSync.setFeature(getServerFeature(), value);
+        setFocused(false);
+        if(afterPressCallback != null) afterPressCallback.accept(this);
     }
 
-    /**
-     * Creates a UiTxt with format "<feature_name>: [ON|OFF]" based on the provided state.
-     * @param feature The toggle feature.
-     * @param state The state to display. True for ON, false for OFF.
-     * @return The created UiTxt.
-     */
-    public static UiTxt getToggleText(final ClientFeature<?> feature, final boolean state) {
-        return (UiTxt)feature.calcName().cat(": " + (state ? "ON" : "OFF"));
+
+
+
+    public static UiTxt getToggleText(final ClientFeature<?> feature, final boolean value) {
+        return (UiTxt)feature.calcName().cat(": " + (value ? "ON" : "OFF"));
     }
 
-    /**
-     * Creates a UiTxt with format "<feature_name>: [ON/OFF]" based on the current client-side state of the specified feature.
-     * @param feature The toggle feature.
-     * @return The created UiTxt.
-     */
-    public static UiTxt getToggleText(final ClientFeature<?> feature, final ServerToggleFeature stf) {
-        return getToggleText(feature, ClientFeatureSync.getFeatureB(stf));
+    public UiTxt getToggleText(final ClientFeature<?> feature) {
+        return getToggleText(feature, value);
     }
 }

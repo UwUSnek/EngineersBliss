@@ -110,7 +110,6 @@ public class UiButton extends Button implements BgCacheWidget {
 
 
 
-
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         final boolean r = super.mouseClicked(event, doubleClick);

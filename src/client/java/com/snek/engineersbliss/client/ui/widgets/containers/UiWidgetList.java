@@ -206,13 +206,10 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
         // If there are hidden elements
         if(scrollable()) {
 
-            // Draw track
-            graphics.fill(scrollBarX, getY(), scrollBarX + barWidth, getBottom(), Layout.bgColor);
-
-            // Draw thumb
+            // Draw handle
             final boolean hovered = isOverScrollbar(mouseX, mouseY);
-            final int thumbColor = hovered ?  Layout.handleColorActive : Layout.handleColor;
-            graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, thumbColor);
+            final int handleColor = hovered ?  Layout.handleColorActive : Layout.handleColor;
+            graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, handleColor);
             if(isOverScrollbar(mouseX, mouseY)) {
                 graphics.requestCursor(((AbstractScrollAreaAccessor)this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
 
