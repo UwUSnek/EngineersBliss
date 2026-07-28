@@ -9,13 +9,14 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
-import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
 
 
 
@@ -42,6 +42,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
+    private AnimatedDouble visualValue; //! The visual interpolated value, 0 to 1
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -78,6 +79,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
         updateMessage();
         bgCache = new TextureCache(screen);
+        visualValue = new AnimatedDouble(initialValue, 100, Easings.cubicInOut);
     }
 
 
@@ -181,13 +183,17 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
     private void updateValueFromVirtualX() {
-        this.setValue((virtualX - (this.getX() + height)) / (getWidth() - 2d * height));
+        final double newValue = (virtualX - (this.getX() + height)) / (getWidth() - 2d * height);
+        if(value != newValue) {
+            this.setValue(newValue);
+        }
     }
 
 
     @Override
     protected void applyValue() {
         if(onChange != null) onChange.accept(value);
+        visualValue.startNewTransition(value);
         markBgDirty();
     }
 
@@ -264,7 +270,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
     public int calcHandleX() {
-        return calcInnerLeft() + (int)(this.value * calcInnerWidth());
+        return calcInnerLeft() + (int)(visualValue.compute() * calcInnerWidth());
     }
 
     public int calcInnerLeft() {

@@ -88,7 +88,9 @@ public class UiSteppedSlider<T> extends UiSlider {
     @Override
     protected void setValue(final double newValue) {
         final double snappedValue = snap(newValue, stepValues.size());
-        super.setValue(snappedValue); //! Superclass handles 0-1 clamping
+
+        //! Superclass handles 0-1 clamping and checks for the value to be different before calling applyValue.
+        super.setValue(snappedValue);
     }
 
     @Override
