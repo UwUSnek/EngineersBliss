@@ -18,6 +18,7 @@ import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.utils.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -35,7 +36,9 @@ import net.minecraft.resources.Identifier;
 
 
 public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
-	public static final int HANDLE_WIDTH = 8;
+	public static final int HANDLE_BASE_WIDTH = 8;
+    private static final double HANDLE_MIN_WIDTH_SCALE = 0.15;
+    private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
 
 
     private final UiTxt baseLabel;
@@ -77,9 +80,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         this.baseLabel = label;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
+        this.bgCache = new TextureCache(screen);
+        this.visualValue = new AnimatedDouble(initialValue, 100, Easings.cubicInOut);
         updateMessage();
-        bgCache = new TextureCache(screen);
-        visualValue = new AnimatedDouble(initialValue, 100, Easings.cubicInOut);
     }
 
 
@@ -223,8 +226,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
         // Draw slider handle //! Clamp to slider inner width
         final int handleX = calcHandleX();
-        final int handleL = handleX - HANDLE_WIDTH / 2;
-        final int handleR = handleX + HANDLE_WIDTH / 2;
+        final int handleWidth = calcHandleWidth();
+        final int handleL = handleX - handleWidth / 2;
+        final int handleR = handleX + handleWidth / 2;
         final int innerL = calcInnerLeft();
         final int innerR = calcInnerRight();
         final int handleColor = isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor;
@@ -268,6 +272,24 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
 
+
+    // public int calcHandleWidth() {
+    //     final double speed = Math.abs(visualValue.calcSpeed());
+    //     final double widthFactor = Math.clamp(1.0 - speed * HANDLE_SPEED_SENSITIVITY, HANDLE_MIN_WIDTH_SCALE, 1.0);
+    //     return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
+    // }
+    // public int calcHandleWidth() {
+    //     final double speed = Math.abs(visualValue.calcSpeed());
+    //     // System.out.println("Using speed " + speed);
+    //     final double widthFactor = Math.clamp(1.0 - (speed - 1.0) * 0.3, HANDLE_MIN_WIDTH_SCALE, 1.0);
+    //     return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
+    // }
+    public int calcHandleWidth() {
+        final double magnitude = Math.abs(value - visualValue.getLast());
+        final double speed = Math.abs(visualValue.calcSpeed()) * magnitude;
+        final double widthFactor = Math.clamp(1.0 - speed * HANDLE_SPEED_SENSITIVITY, HANDLE_MIN_WIDTH_SCALE, 1.0);
+        return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
+    }
 
     public int calcHandleX() {
         return calcInnerLeft() + (int)(visualValue.compute() * calcInnerWidth());
