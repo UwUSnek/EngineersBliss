@@ -118,6 +118,7 @@ public class RenderingUtils {
 
     /**
      * Overlays the specified area of the provided NativeImage with the given color.
+     * Does nothing if the color's alpha channel is 0.
      * @param img The image to draw to.
      * @param x0 The X position of the top-left corner of the area to fill.
      * @param y0 The Y position of the top-left corner of the area to fill.
@@ -126,15 +127,16 @@ public class RenderingUtils {
      * @param c The color to draw.
      */
     public static void fillImageArea(final NativeImage img, final int x0, final int y0, final int x1, final int y1, final int c) {
-
-        // Fill one pixel at a time using the same method. fillRect can't blend.
-        final int cx0 = clampX(x0, img);
-        final int cy0 = clampY(y0, img);
-        final int cx1 = clampX(x1 - 1, img);
-        final int cy1 = clampY(y1 - 1, img);
-        for(int yy = cy0; yy <= cy1; yy++) {
-            for(int xx = cx0; xx <= cx1; xx++) {
-                fillImagePixel(img, xx, yy, c);
+        if((c & 0xFF000000) != 0) {
+            // Fill one pixel at a time using the same method. fillRect can't blend.
+            final int cx0 = clampX(x0, img);
+            final int cy0 = clampY(y0, img);
+            final int cx1 = clampX(x1 - 1, img);
+            final int cy1 = clampY(y1 - 1, img);
+            for(int yy = cy0; yy <= cy1; yy++) {
+                for(int xx = cx0; xx <= cx1; xx++) {
+                    fillImagePixel(img, xx, yy, c);
+                }
             }
         }
     }

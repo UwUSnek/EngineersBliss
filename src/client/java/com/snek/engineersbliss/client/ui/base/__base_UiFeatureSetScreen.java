@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import java.time.Clock;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -122,7 +120,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
             // Update hover timestamp
             // Update preview elements if the hovered element has changed
-            lastHoverTime = Clock.systemDefaultZone().millis();
+            lastHoverTime = System.currentTimeMillis();
             if(button != lastHoveredButton) {
                 updateToggleFeaturePreviewElements(button);
             }
@@ -241,7 +239,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
     private boolean isPreviewOffOnCooldown() {
-        final long now = Clock.systemDefaultZone().millis();
+        final long now = System.currentTimeMillis();
         return now - lastHoverTime < HOVER_OFF_DELAY_MS;
     }
 }

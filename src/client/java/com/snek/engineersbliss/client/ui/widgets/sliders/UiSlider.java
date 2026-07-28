@@ -222,16 +222,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
     @Override
-    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
-        //! Empty - Skip default cached background. first layer depends on the handle's position
-    }
-
-
-    @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
         final int handleStartX = calcHandleX() - HANDLE_WIDTH / 2;
-        graphics.fill(getX(),       getY(), handleStartX, getBottom(), getBgBaseColorAlt());
-        graphics.fill(handleStartX, getY(), getRight(),   getBottom(), getBgBaseColor());
+        graphics.fill(getX(), getY(), handleStartX, getBottom(), getBgBaseColorAlt());
     }
 }

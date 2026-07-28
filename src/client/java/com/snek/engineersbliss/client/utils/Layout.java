@@ -17,7 +17,7 @@ public class Layout {
     public static int bgColor          = 0x80151515;
     public static int bgColorAlt       = 0xAA886A99;
 
-    public static int handleColor       = 0x80626262;
+    public static int handleColor       = 0x80999999;
     public static int handleColorActive = 0x80DDDDDD;
 
     public static int textMarginPx     = 4;
