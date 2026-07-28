@@ -33,7 +33,7 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static ServerSteppedFeature<Float> INTERACTION_DISTANCE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "reach_distance",
-        List.of(5f, 8f, 16f, 32f, 64f, 128f, 256f, 512f), 0,
+        List.of(1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 16f, 32f, 64f, 128f, 256f), 4,
         CreativeTweaksServerHandler::updateInteractionDistance
     ));
     public static ServerSteppedFeature<Integer> INTERACTION_RADIUS = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
