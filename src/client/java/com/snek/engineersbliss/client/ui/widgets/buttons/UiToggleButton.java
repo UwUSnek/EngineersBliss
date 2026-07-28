@@ -8,6 +8,7 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Easings;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
@@ -19,7 +20,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 public class UiToggleButton extends UiButton {
 	protected static final int INDICATOR_WIDTH = 4;
-	protected static final int INDICATOR_TRANSITION_DURATION = 250;
     protected boolean value;
 
     // Background toggle indicator
@@ -69,7 +69,7 @@ public class UiToggleButton extends UiButton {
 
     private void finalizeInit(final boolean initialValue) {
         this.value = initialValue;
-        this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), INDICATOR_TRANSITION_DURATION);
+        this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), Layout.toggleTransitionDuration, Easings.sineIn);
     }
 
 

@@ -29,6 +29,13 @@ public class Layout {
 
 
 
+    public static int toggleTransitionDuration = 250;
+    public static int hoverTransitionDuration  = 80;
+    public static int slideTransitionDuration  = 120;
+
+
+
+
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 2;
     public static final int LIST_TOP = 32;

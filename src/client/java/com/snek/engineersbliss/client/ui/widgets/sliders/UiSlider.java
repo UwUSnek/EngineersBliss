@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
@@ -46,6 +47,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private final @Nullable Consumer<Double> onChange;
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
     private AnimatedDouble visualValue; //! The visual interpolated value, 0 to 1
+    private AnimatedColor overlayColor;
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -81,7 +83,8 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
         this.bgCache = new TextureCache(screen);
-        this.visualValue = new AnimatedDouble(initialValue, 150, Easings.cubicInOut);
+        this.visualValue = new AnimatedDouble(initialValue, Layout.slideTransitionDuration, Easings.cubicInOut);
+        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
         updateMessage();
     }
 
@@ -215,8 +218,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
 
-
-
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
 
@@ -245,10 +246,12 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, TextAlignment.CENTER, width, false);
 
 
-        // Draw hover highlight
-        if(isHoveredOrBeingDragged()) {
-            graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.highlightOverlay);
-        }
+        // Recalculate and draw hover highlight
+        //! Minecraft doesn't provide any onMouseEnter/onMouseLeave callback so this must be recalculated by the rendering loop.
+        //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
+        final boolean shouldShowOverlay = isHoveredOrBeingDragged();
+        overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
+        graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
 
 
         // Handle cursor shape and position
@@ -273,17 +276,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
 
-    // public int calcHandleWidth() {
-    //     final double speed = Math.abs(visualValue.calcSpeed());
-    //     final double widthFactor = Math.clamp(1.0 - speed * HANDLE_SPEED_SENSITIVITY, HANDLE_MIN_WIDTH_SCALE, 1.0);
-    //     return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
-    // }
-    // public int calcHandleWidth() {
-    //     final double speed = Math.abs(visualValue.calcSpeed());
-    //     // System.out.println("Using speed " + speed);
-    //     final double widthFactor = Math.clamp(1.0 - (speed - 1.0) * 0.3, HANDLE_MIN_WIDTH_SCALE, 1.0);
-    //     return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
-    // }
     public int calcHandleWidth() {
         final double magnitude = Math.abs(value - visualValue.getLast());
         final double speed = Math.abs(visualValue.calcSpeed()) * magnitude;

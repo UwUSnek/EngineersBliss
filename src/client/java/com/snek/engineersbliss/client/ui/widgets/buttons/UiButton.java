@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
@@ -14,6 +15,7 @@ import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -34,6 +36,7 @@ public class UiButton extends Button implements BgCacheWidget {
     private char key;
     private final TextAlignment alignment;
     private int labelOffset;   // Label offset from the left edge, in pixels.
+    private final AnimatedColor overlayColor;
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -61,6 +64,7 @@ public class UiButton extends Button implements BgCacheWidget {
         this.bgSpriteId = null;
         this.labelOffset = Layout.textMarginPx;
         this.bgCache = new TextureCache(screen);
+        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         this(screen, 50, 50, 50, 50, label, pressCallback, key, alignment);
@@ -146,12 +150,14 @@ public class UiButton extends Button implements BgCacheWidget {
         // Draw background
         extractBackground(graphics, mouseX, mouseY, a);
 
+
         // Draw label
         final boolean usingSprite = bgSpriteId != null;
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + labelOffset;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
         RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, usingSprite);
+
 
         // Draw keybind if present
         if(key != '\0') {
@@ -160,10 +166,13 @@ public class UiButton extends Button implements BgCacheWidget {
             RenderingUtils.extractTxt(graphics, keybindText, keybindX, textY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
         }
 
-        // Draw hover highlight
-        if(isHoveredOrBeingDragged()) {
-            graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.highlightOverlay);
-        }
+
+        // Recalculate and draw hover highlight
+        //! Minecraft doesn't provide any onMouseEnter/onMouseLeave callback so this must be recalculated by the rendering loop.
+        //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
+        final boolean shouldShowOverlay = isHoveredOrBeingDragged();
+        overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
+        graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
     }
 
 
