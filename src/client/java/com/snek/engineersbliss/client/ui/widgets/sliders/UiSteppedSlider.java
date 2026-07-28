@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.DoubleFunction;
@@ -12,7 +13,9 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.util.Mth;
 
 
 
@@ -25,6 +28,8 @@ import net.minecraft.client.gui.screens.Screen;
  * A UiSlider that snaps to increments and can define arbitrary values for each step.
  */
 public class UiSteppedSlider<T> extends UiSlider {
+
+    private final @Nullable BiConsumer<Integer, T> afterChangeCallback;
 
 
     // The list of possible values.
@@ -44,15 +49,11 @@ public class UiSteppedSlider<T> extends UiSlider {
             screen,
             x, y, w, h,
             label, indexToUnit(defaultValueIndex, stepValues.size()),
-            n -> {
-                if(afterChangeCallback != null) {
-                    final int selectedIndex = unitToIndex(n, stepValues.size());
-                    afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
-                }
-            },
+            null,
             valueFormatter == null ? s -> new UiTxt(String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue())) : valueFormatter
         );
         this.stepValues = stepValues;
+        this.afterChangeCallback = afterChangeCallback;
         updateMessage();
     }
 
@@ -93,6 +94,16 @@ public class UiSteppedSlider<T> extends UiSlider {
         super.setValue(snappedValue); //! Superclass handles 0-1 clamping
     }
 
+    @Override
+    protected void applyValue() {
+        super.applyValue();
+        if(afterChangeCallback != null) {
+            final int selectedIndex = unitToIndex(value, stepValues.size());
+            afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
+        }
+        markBgDirty();
+    }
+
 
 
 
@@ -102,30 +113,41 @@ public class UiSteppedSlider<T> extends UiSlider {
     }
 
 
-
-
     @Override
     public void drawCachedBackground(final NativeImage image, final int w, final int h) {
         super.drawCachedBackground(image, w, h);
         final int n = stepValues.size();
 
+
+        // Calculate magnitures
         double min = Double.MAX_VALUE;
         double max = -Double.MAX_VALUE;
-        final double[] mags = new double[n];
+        final double[] magnitudes = new double[n];
         for(int i = 0; i < n; i++) {
-            mags[i] = magnitudeOf(stepValues.get(i));
-            if(mags[i] < min) min = mags[i];
-            if(mags[i] > max) max = mags[i];
+            magnitudes[i] = magnitudeOf(stepValues.get(i));
+            if(magnitudes[i] < min) min = magnitudes[i];
+            if(magnitudes[i] > max) max = magnitudes[i];
         }
         final double range = (max - min == 0) ? 1 : (max - min);
 
+
+        // Calculate coordinates of the points
         final double[] px = new double[n];
         final double[] py = new double[n];
         for(int i = 0; i < n; i++) {
             px[i] = (double)w * i / (n - 1);
-            py[i] = h - ((mags[i] - min) / range) * h;
+            py[i] = h - ((magnitudes[i] - min) / range) * h;
         }
 
-        RenderingUtils.extractLine(image, px, py, 1.0f, Layout.SliderGraphLineColor);
+
+        // Calculate the X of the left edge of the handle //! Absolute -> local -> scaled
+        final int handleStartX = (calcHandleX() - getX() - HANDLE_WIDTH) * Minecraft.getInstance().options.guiScale().get();
+
+
+        // Split line into two and draw the segments
+        int split = 1;
+        while(split < n - 1 && px[split] < handleStartX) split++;
+        RenderingUtils.extractLine(image, Arrays.copyOfRange(px, 0, split + 1), Arrays.copyOfRange(py, 0, split + 1), 1.0f, Layout.SliderGraphLineColor);
+        RenderingUtils.extractLine(image, Arrays.copyOfRange(px, split, n), Arrays.copyOfRange(py, split, n), 1.0f, Layout.bgColorAlt);
     }
-}
+    }
