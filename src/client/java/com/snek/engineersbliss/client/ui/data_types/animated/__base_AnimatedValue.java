@@ -22,6 +22,7 @@ import net.minecraft.client.Minecraft;
 public abstract class __base_AnimatedValue<T> {
     private T last;
     private T target;
+    private T entryTangent;
     private long transitionDuration;
     private long lastChangeTime;
     private Easing easing;
@@ -73,11 +74,27 @@ public abstract class __base_AnimatedValue<T> {
 
 
     /**
+     * Computes the interpolated value at an arbitrary linear progress.
+     * @param linearProgress The linear progress to use to compute the value.
+     * @return The computed value.
+     */
+    private T computeAt(final double linearProgress) {
+        if(entryTangent != null) {
+            final T a = interpolate(last, entryTangent, linearProgress);
+            final T b = interpolate(entryTangent, target, linearProgress);
+            final T c = interpolate(a, b, linearProgress);
+            final T d = interpolate(b, target, linearProgress);
+            return interpolate(c, d, linearProgress);
+        }
+        return interpolate(last, target, easing.compute(linearProgress));
+    }
+
+    /**
      * Computes the interpolated value based on the current system time.
      * @return The interpolated value.
      */
     public T compute() {
-        return interpolate(last, target, easing.compute(calcLinearProgress()));
+        return computeAt(calcLinearProgress());
     }
     protected abstract T interpolate(final T last, final T target, final double t);
 
@@ -106,11 +123,16 @@ public abstract class __base_AnimatedValue<T> {
     /**
      * Starts a new interpolation using the stored interpolation time and easing and the provided new target value.
      * Does nothing if the new target value is identical to the current target.
+     * If the previous transition was still in flight, the new one starts from wherever the
+     * value actually is and carries over its entry speed instead of snapping/restarting from rest.
      * @param newTarget The new target value.
      */
     public void startNewTransition(final T newTarget) {
         if(!getTarget().equals(newTarget)) {
-            last = target;
+            final double t0 = calcLinearProgress();
+            final T current = computeAt(t0);
+            entryTangent = t0 < 1.0 ? computeAt(Math.min(1.0, t0 + (1.0 / 3.0))) : null;
+            last = current;
             target = newTarget;
             lastChangeTime = System.currentTimeMillis();
         }

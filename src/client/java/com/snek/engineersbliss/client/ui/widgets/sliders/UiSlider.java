@@ -81,7 +81,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
         this.bgCache = new TextureCache(screen);
-        this.visualValue = new AnimatedDouble(initialValue, 100, Easings.cubicInOut);
+        this.visualValue = new AnimatedDouble(initialValue, 150, Easings.cubicInOut);
         updateMessage();
     }
 
