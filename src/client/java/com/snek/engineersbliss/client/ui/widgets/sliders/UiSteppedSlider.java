@@ -1,11 +1,10 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.DoubleFunction;
 import java.util.function.Function;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
@@ -13,9 +12,7 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.util.Mth;
 
 
 
@@ -101,16 +98,24 @@ public class UiSteppedSlider<T> extends UiSlider {
             final int selectedIndex = unitToIndex(value, stepValues.size());
             afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
         }
-        markBgDirty();
     }
 
 
 
 
-    protected double magnitudeOf(final T value) {
-        if(value instanceof Number number) return number.doubleValue();
+
+
+
+
+
+
+
+
+    protected double magnitudeOf(final @NotNull T value) {
+        if(value instanceof final @NotNull Number number) return number.doubleValue();
         return Double.parseDouble(String.valueOf(value));
     }
+
 
 
     @Override
@@ -118,8 +123,7 @@ public class UiSteppedSlider<T> extends UiSlider {
         super.drawCachedBackground(image, w, h);
         final int n = stepValues.size();
 
-
-        // Calculate magnitures
+        // Calculate magnitudes
         double min = Double.MAX_VALUE;
         double max = -Double.MAX_VALUE;
         final double[] magnitudes = new double[n];
@@ -131,23 +135,21 @@ public class UiSteppedSlider<T> extends UiSlider {
         final double range = (max - min == 0) ? 1 : (max - min);
 
 
-        // Calculate coordinates of the points
+        // Calculate local point coordinates
+        final int size = h;
+        final int graphLeft = w - size;
         final double[] px = new double[n];
         final double[] py = new double[n];
         for(int i = 0; i < n; i++) {
-            px[i] = (double)w * i / (n - 1);
+            px[i] = graphLeft + (double)(size - 1) * i / (n - 1);
             py[i] = h - ((magnitudes[i] - min) / range) * h;
         }
 
 
-        // Calculate the X of the left edge of the handle //! Absolute -> local -> scaled
-        final int handleStartX = (calcHandleX() - getX() - HANDLE_WIDTH) * Minecraft.getInstance().options.guiScale().get();
+        // Draw graph area
+        RenderingUtils.extractLineArea(image, px, py, h, graphLeft, graphLeft + (int)(value * size), Layout.SliderGraphFillColor);
 
-
-        // Split line into two and draw the segments
-        int split = 1;
-        while(split < n - 1 && px[split] < handleStartX) split++;
-        RenderingUtils.extractLine(image, Arrays.copyOfRange(px, 0, split + 1), Arrays.copyOfRange(py, 0, split + 1), 1.0f, Layout.SliderGraphLineColor);
-        RenderingUtils.extractLine(image, Arrays.copyOfRange(px, split, n), Arrays.copyOfRange(py, split, n), 1.0f, Layout.bgColorAlt);
+        // Draw the actual line on top. RenderingUtils.extractLine handles 2-axis antialiasing automatically
+        RenderingUtils.extractLine(image, px, py, 1f, Layout.SliderGraphLineColor);
     }
-    }
+}

@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -13,6 +14,7 @@ import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -78,6 +80,10 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
         );
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
+
+        // Calculate sprite id
+        final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
+        withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f);
     }
 
 

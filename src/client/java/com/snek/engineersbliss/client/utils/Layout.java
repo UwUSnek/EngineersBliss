@@ -10,17 +10,18 @@ public class Layout {
     private Layout() { }
 
 
-    public static int fgColor          = 0xFFEEEEEE;
-    public static int fgColorHint      = 0xAABBBBBB;
-    public static int highlightOverlay = 0x40FFFFFF;
+    public static int fgColor                = 0xFFEEEEEE;
+    public static int fgColorHint            = 0xAABBBBBB;
+    public static int highlightOverlay       = 0x40FFFFFF;
 
-    public static int bgColor          = 0x80151515;
-    public static int bgColorAlt       = 0xAA886A99;
+    public static int bgColor                = 0x80151515;
+    public static int bgColorAlt             = 0xAA886A99;
 
-    public static int handleColor       = 0x80999999;
-    public static int handleColorActive = 0x80DDDDDD;
+    public static int handleColor            = 0x80999999;
+    public static int handleColorActive      = 0x80DDDDDD;
+    public static int handleColorTransparent = 0x10999999;
 
-    public static int textMarginPx     = 4;
+    public static int textMarginPx = 4;
 
     public static int SliderGraphFillColor = bgColorAlt;
     public static int SliderGraphLineColor = fgColorHint;

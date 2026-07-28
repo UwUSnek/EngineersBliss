@@ -10,6 +10,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -23,6 +24,8 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 
 
 
@@ -39,6 +42,10 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
+
+    // Sprite
+    private @Nullable Identifier bgSpriteId;
+    private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
 
     // Mouse handling
     private boolean dragged = false;
@@ -82,6 +89,17 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     ) {
         this(screen, 50, 50, 50, 50, label, initialValue, onChange, valueFormatter);
     }
+
+
+    public UiSlider withSpriteBg(final Identifier id, final float width) {
+        this.bgSpriteId = id;
+        this.bgSpriteWidth = width;
+        return this;
+    }
+
+
+
+
 
 
 
@@ -163,13 +181,14 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
     private void updateValueFromVirtualX() {
-        this.setValue((virtualX - (this.getX() + HANDLE_WIDTH / 2d)) / (getWidth() - HANDLE_WIDTH));
+        this.setValue((virtualX - (this.getX() + height)) / (getWidth() - 2d * height));
     }
 
 
     @Override
     protected void applyValue() {
         if(onChange != null) onChange.accept(value);
+        markBgDirty();
     }
 
     public boolean isBeingDragged() {
@@ -195,10 +214,19 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         // Draw background
         extractBackground(graphics, mouseX, mouseY, a);
 
-        // Draw slider handle
+
+        // Draw slider handle //! Clamp to slider inner width
         final int handleX = calcHandleX();
+        final int handleL = handleX - HANDLE_WIDTH / 2;
+        final int handleR = handleX + HANDLE_WIDTH / 2;
+        final int innerL = calcInnerLeft();
+        final int innerR = calcInnerRight();
         final int handleColor = isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor;
-        graphics.fill(handleX - HANDLE_WIDTH / 2, getY(), handleX + HANDLE_WIDTH / 2, getBottom(), handleColor);
+        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor);
+        if(handleL <  innerL) graphics.fill(handleL, getY(), innerL,  getBottom(), Layout.handleColorTransparent);
+        if(handleR >= innerR) graphics.fill(innerR,  getY(), handleR, getBottom(), Layout.handleColorTransparent);
+
+
 
         // Draw label
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
@@ -206,25 +234,48 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
         RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, TextAlignment.CENTER, width, false);
 
+
         // Draw hover highlight
         if(isHoveredOrBeingDragged()) {
             graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.highlightOverlay);
         }
+
 
         // Handle cursor shape and position
         this.handleCursor(graphics);
     }
 
 
-    public int calcHandleX() {
-        return getX() + (int)(this.value * width);
-    }
 
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
-        final int handleStartX = calcHandleX() - HANDLE_WIDTH / 2;
-        graphics.fill(getX(), getY(), handleStartX, getBottom(), getBgBaseColorAlt());
+    public void drawCachedBackground(NativeImage img, int w, int h) {
+        BgCacheWidget.super.drawCachedBackground(img, w, h);
+
+        // Draw background sprite if present, on top of the default background so the shape of the button is preserved
+        final boolean usingSprite = bgSpriteId != null;
+        if(usingSprite) {
+            final int spriteWidth = (int)(h * bgSpriteWidth);
+            RenderingUtils.blitSpriteToImage(img, bgSpriteId, 0, 0, spriteWidth, h);
+        }
+    }
+
+
+
+
+    public int calcHandleX() {
+        return calcInnerLeft() + (int)(this.value * calcInnerWidth());
+    }
+
+    public int calcInnerLeft() {
+        return getX() + height;
+    }
+
+    public int calcInnerRight() {
+        return getRight() - height;
+    }
+
+    public int calcInnerWidth() {
+        return getWidth() - 2 * height;
     }
 }

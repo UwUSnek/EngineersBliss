@@ -33,9 +33,11 @@ public class UiButton extends Button implements BgCacheWidget {
     private UiTxt label;
     private char key;
     private final TextAlignment alignment;
+    private int labelOffset;   // Label offset from the left edge, in pixels.
+
+    // Sprite
     private @Nullable Identifier bgSpriteId;
     private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
-    private int labelOffset;   // Label offset from the left edge, in pixels.
 
     // Mouse handling
     private boolean dragged = false;
