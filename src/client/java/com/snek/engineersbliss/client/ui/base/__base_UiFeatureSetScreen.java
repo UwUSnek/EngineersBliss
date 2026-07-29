@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import java.time.Clock;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,14 +11,14 @@ import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
-import com.snek.engineersbliss.client.ui.widgets.buttons.UiFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -35,18 +33,19 @@ import net.minecraft.resources.Identifier;
 
 
 /**
- * A special __base_UiScreen that can properly handle UiFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
+ * A special __base_UiScreen that can properly handle UiToggleFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
  * It comes with left and a right sidebars and a feature previews.
  */
 public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     // Elements and layout
-    protected static UiTextWidget descriptionWidget;
+    protected static UiTextWidget descriptionTextWidget;
     protected static UiTextWidget descriptionNameWidget;
-    public static final float DESCRIPTION_WIDTH = 1f - LEFT_SIDEBAR_WIDTH - RIGHT_SIDEBAR_WIDTH;
-    public static final float DESCRIPTION_HEIGHT = 0.1f;
-    public static final float DESCRIPTION_NAME_HEIGHT = 0.1f;
+    public static final float DESCRIPTION_HEIGHT = 0.15f;
+    public static final float DESCRIPTION_NAME_HEIGHT = 0.06f;
+    public static final float DESCRIPTION_TEXT_HEIGHT = DESCRIPTION_HEIGHT - DESCRIPTION_NAME_HEIGHT;
     public static final float PREVIEW_WIDTH = 0.25f;
+    private final float descriptionWidth;
 
     // Hover data cache
     public static final long HOVER_OFF_DELAY_MS = 250;
@@ -60,7 +59,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     // Parent feature set and constructor
     protected final __base_ClientFeatureSet<?> featureSet;
     protected __base_UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
-        super(true, true);
+        super();
+        this.descriptionWidth = 1f - leftSidebarWidth - rightSidebarWidth;
         this.featureSet = featureSet;
     }
 
@@ -75,26 +75,28 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Add left sidebar title
         final UiTxt titleText = featureSet.calcName();
-        leftSidebar.addWidget(new UiSpacer(Layout.BORDER_HEIGHT));
-        leftSidebar.addWidget(new UiTextWidget(new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
 
 
         // Add description name and text elements
         //! Preview is added dynamically
-        final int descriptionWidth = (int)(width * DESCRIPTION_WIDTH);
-        final int descriptionX = (width - descriptionWidth) / 2;
+        final int descriptionWidthPx = (int)(width * descriptionWidth);
+        final int descriptionX = (width - descriptionWidthPx) / 2;
         final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
-        final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
+        final int descriptionTextHeight = (int)(height * DESCRIPTION_TEXT_HEIGHT);
         descriptionNameWidget = new UiTextWidget(
-            descriptionX, height - descriptionHeight - descriptionNameHeight, descriptionWidth, descriptionNameHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+            this,
+            descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidthPx, descriptionNameHeight,
+            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
         );
-        descriptionWidget = new UiTextWidget(
-            descriptionX, height - descriptionHeight, descriptionWidth, descriptionHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColorSolid
+        descriptionTextWidget = new UiTextWidget(
+            this,
+            descriptionX, height - descriptionTextHeight, descriptionWidthPx, descriptionTextHeight,
+            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
         ).withVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
-        addRenderableWidget(descriptionWidget);
+        addRenderableWidget(descriptionTextWidget);
     }
 
 
@@ -114,11 +116,11 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
         // If hovering an element with feature preview
-        if(widget instanceof UiFeatureButton button) {
+        if(widget instanceof UiToggleFeatureButton button) {
 
             // Update hover timestamp
             // Update preview elements if the hovered element has changed
-            lastHoverTime = Clock.systemDefaultZone().millis();
+            lastHoverTime = System.currentTimeMillis();
             if(button != lastHoveredButton) {
                 updateToggleFeaturePreviewElements(button);
             }
@@ -151,16 +153,20 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final int w, final int h, final int hPlaceholder,
-            final int xOff, final int xOn, final int y, final int yPlaceholder) {
+    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final int w, final int h, final int hPlaceholder, final int xOff, final int xOn, final int y, final int yPlaceholder) {
         // Render ON/OFF text
         {
+            final int descriptionWidthPx = (int)(width * descriptionWidth);
+            final int descriptionX = (width - descriptionWidthPx) / 2;
+            final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
+            graphics.fill(descriptionX, 0, descriptionX + descriptionWidthPx, descriptionHeight, Layout.bgColor);
+
             final int scale = 5;
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
             final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
             final int textOffX = xOff + w / 2;
             final int textOnX  = xOn  + w / 2;
-            final int textY    = scaledFont.getLineHeight();
+            final int textY    = (descriptionHeight - scaledFont.getLineHeight()) / 2;
             RenderingUtils.extractTxt(graphics, new UiTxt("OFF", fontFamily, scale), textOffX, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
             RenderingUtils.extractTxt(graphics, new UiTxt("ON",  fontFamily, scale), textOnX,  textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
         }
@@ -190,8 +196,10 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void updateToggleFeaturePreviewElements(UiFeatureButton button) {
+    private void updateToggleFeaturePreviewElements(UiToggleFeatureButton button) {
         //TODO maybe draw one preview for each setting step? or something like that? idk yet
+
+        // Draw feature preview
         lastHoveredButton = button;
         final __base_ServerFeature<?> serverFeature = button.getServerFeature();
         final String featureSetId = serverFeature.getFeatureSet().getId();
@@ -206,12 +214,12 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         // Update description name text
         final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), 2f);
         descriptionNameWidget.setLabel(descriptionName);
-        descriptionNameWidget.setBgColor(Layout.bgColorSolid);
+        descriptionNameWidget.setBgColor(Layout.bgColor);
 
         // Update description text
         final UiTxt description = button.getClientFeature().calcDesc();
-        descriptionWidget.setLabel(description);
-        descriptionWidget.setBgColor(Layout.bgColorSolid);
+        descriptionTextWidget.setLabel(description);
+        descriptionTextWidget.setBgColor(Layout.bgColor);
     }
 
 
@@ -223,15 +231,15 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             lastHoveredButton = null;
             descriptionNameWidget.setLabel(new UiTxt());
             descriptionNameWidget.setBgColor(0x0);
-            descriptionWidget.setLabel(new UiTxt());
-            descriptionWidget.setBgColor(0x0);
+            descriptionTextWidget.setLabel(new UiTxt());
+            descriptionTextWidget.setBgColor(0x0);
         }
     }
 
 
 
     private boolean isPreviewOffOnCooldown() {
-        final long now = Clock.systemDefaultZone().millis();
+        final long now = System.currentTimeMillis();
         return now - lastHoverTime < HOVER_OFF_DELAY_MS;
     }
 }

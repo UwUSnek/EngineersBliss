@@ -207,6 +207,15 @@ public final class Utils {
     }
 
     /**
+    * Converts a packed RGB color to a shade of gray by setting its saturation to 0.
+    * @param rgb The packed RGB color (0xRRGGBB).
+    * @return The shade of gray expressed as a packed RGB color.
+    */
+    public static int toPackedBW(final int rgb) {
+        return HSVtoPackedRGB(toBW(packedRGBtoHSV(rgb)));
+    }
+
+    /**
      * Converts an HSV color to a shade of gray by setting its saturation to 0.
      * @param hsv The HSV color.
      * @return The shade of gray expressed as an HSV color.
@@ -242,6 +251,54 @@ public final class Utils {
         final float s;
         final float v = max;
 
+
+        if(max != 0) {
+            s = delta / max;
+        }
+        else {
+            return new Vector3f(-1, 0, v);
+        }
+
+        if(delta == 0) {
+            h = 0;
+        }
+        else if(r == max) {
+            h = (g - b) / delta;
+        }
+        else if(g == max) {
+            h = 2 + (b - r) / delta;
+        }
+        else {
+            h = 4 + (r - g) / delta;
+        }
+
+        h *= 60;
+        if(h < 0) h += 360;
+
+        return new Vector3f(h, s, v);
+    }
+
+    /**
+     * Converts a packed RGB color to HSV.
+     * <p> RGB packed: 0xRRGGBB
+     * <p> Hue:         0 to 360.0
+     * <p> Saturation:  0 to 1.0
+     * <p> Value:       0 to 1.0
+     * @param rgb The packed RGB color.
+     * @return The color as an HSV value.
+     */
+    public static @NotNull Vector3f packedRGBtoHSV(final int rgb) {
+        final float r = ((rgb >> 16) & 0xFF) / 255.0f;
+        final float g = ((rgb >> 8) & 0xFF) / 255.0f;
+        final float b = (rgb & 0xFF) / 255.0f;
+
+        final float max = Math.max(r, Math.max(g, b));
+        final float min = Math.min(r, Math.min(g, b));
+        final float delta = max - min;
+
+        float h = 0;
+        final float s;
+        final float v = max;
 
         if(max != 0) {
             s = delta / max;
@@ -320,6 +377,55 @@ public final class Utils {
         return new Vector3i(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
     }
 
+    /**
+     * Converts an HSV color to a packed RGB int.
+     * <p> Hue:         0 to 360.0
+     * <p> Saturation:  0 to 1.0
+     * <p> Value:       0 to 1.0
+     * @param hsv The HSV color.
+     * @return The color as a packed RGB int (0xRRGGBB).
+     */
+    public static int HSVtoPackedRGB(final @NotNull Vector3f hsv) {
+        final float h = hsv.x;
+        final float s = hsv.y;
+        final float v = hsv.z;
+
+        final float c = v * s;
+        final float x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+        final float m = v - c;
+
+        float r = 0;
+        float g = 0;
+        float b = 0;
+
+        if(0 <= h && h < 60) {
+            r = c; g = x; b = 0;
+        }
+        else if(60 <= h && h < 120) {
+            r = x; g = c; b = 0;
+        }
+        else if(120 <= h && h < 180) {
+            r = 0; g = c; b = x;
+        }
+        else if(180 <= h && h < 240) {
+            r = 0; g = x; b = c;
+        }
+        else if(240 <= h && h < 300) {
+            r = x; g = 0; b = c;
+        }
+        else if(300 <= h && h < 360) {
+            r = c; g = 0; b = x;
+        }
+
+        r += m; g += m; b += m;
+
+        final int ir = Math.round(r * 255) & 0xFF;
+        final int ig = Math.round(g * 255) & 0xFF;
+        final int ib = Math.round(b * 255) & 0xFF;
+
+        return (ir << 16) | (ig << 8) | ib;
+    }
+
 
 
 
@@ -356,6 +462,39 @@ public final class Utils {
         ));
     }
 
+    /**
+     * Interpolates two packed RGB colors while maintaining luminosity.
+     * @param rgb1 The starting color (0xRRGGBB).
+     * @param rgb2 The target color (0xRRGGBB).
+     * @param factor The interpolation factor.
+     * @return The resulting packed RGB color.
+     */
+    public static int interpolatePackedRGB(final int rgb1, final int rgb2, final float factor) {
+        final Vector3f hsv1 = packedRGBtoHSV(rgb1);
+        final Vector3f hsv2 = packedRGBtoHSV(rgb2);
+
+        float h1 = hsv1.x;
+        final float s1 = hsv1.y;
+        final float v1 = hsv1.z;
+
+        float h2 = hsv2.x;
+        final float s2 = hsv2.y;
+        final float v2 = hsv2.z;
+
+        // Adjust hue to allow the interpolation to take the shortest path
+        if(Math.abs(h1 - h2) > 180) {
+            if (h1 > h2) h2 += 360;
+            else h1 += 360;
+        }
+
+        // Interpolate values and return packed color
+        return HSVtoPackedRGB(new Vector3f(
+            interpolateF(h1, h2, factor) % 360,
+            interpolateF(s1, s2, factor),
+            interpolateF(v1, v2, factor)
+        ));
+    }
+
 
 
 
@@ -377,6 +516,21 @@ public final class Utils {
             rgbRet.y,
             rgbRet.z
         );
+    }
+
+    /**
+     * Interpolates two packed ARGB colors while maintaining luminosity.
+     * @param argb1 The starting color (0xAARRGGBB).
+     * @param argb2 The target color (0xAARRGGBB).
+     * @param factor The interpolation factor.
+     * @return The resulting packed ARGB color.
+     */
+    public static int interpolatePackedARGB(final int argb1, final int argb2, final float factor) {
+        final int a1 = (argb1 >> 24) & 0xFF;
+        final int a2 = (argb2 >> 24) & 0xFF;
+        final int a = interpolateI(a1, a2, factor);
+        final int rgb = interpolatePackedRGB(argb1 & 0xFFFFFF, argb2 & 0xFFFFFF, factor);
+        return (a << 24) | rgb;
     }
 
 
@@ -418,7 +572,21 @@ public final class Utils {
      * @return The resulting value.
      */
     public static int interpolateI(final int v1, final int v2, final float factor) {
-        return Math.round(v1 + (v2 - v1) * factor);
+        return (int)Math.round(v1 + (v2 - v1) * (double)factor);
+    }
+
+
+
+
+    /**
+     * Interpolates two long values.
+     * @param v1 The first value.
+     * @param v2 The second value.
+     * @param factor The interpolation factor.
+     * @return The resulting value.
+     */
+    public static long interpolateI(final long v1, final long v2, final float factor) {
+        return Math.round(v1 + (v2 - v1) * (double)factor);
     }
 }
 

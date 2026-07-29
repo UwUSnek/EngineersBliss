@@ -8,18 +8,24 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 
+import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
+import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.mixin.accessors.AbstractScrollAreaAccessor;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 
 
 
@@ -28,10 +34,22 @@ import com.snek.engineersbliss.client.utils.Layout;
 
 
 
-public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
+/**
+ * A scrollable vertical list capable of containing other widgets.
+ */
+public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> implements BgCacheWidget {
 
-    public UiWidgetList(int width, int height, int x, int y, int itemHeight) {
+    // Cached textures
+    private final TextureCache bgCache;
+    private int bgColor = Layout.bgColor;
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
+	@Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
+
+
+    public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
         super(Minecraft.getInstance(), width, height, y, itemHeight);
+        bgCache = new TextureCache(screen);
         setX(x);
     }
 
@@ -43,12 +61,18 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return false;
     }
 
+	@Override
+	protected void updateWidgetNarration(NarrationElementOutput output) {
+        // Empty
+	}
+
     @Override
     public boolean keyPressed(final KeyEvent event) {
         boolean r = false;
         for(final Entry c : children()) r = r || c.keyPressed(event);
         return r;
     }
+
     @Override
     public boolean charTyped(CharacterEvent event) {
         boolean r = false;
@@ -61,11 +85,30 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return super.scrollRate() * 2d;
     }
 
-    //! For whatever reason, AbstractSelectionList's getHovered is PROTECTED but also FINAL??? so it cannot be called by external classes.
-    //! This lets external code access the hovered entry without iterating all the children.
+
+    //! For whatever reason, AbstractSelectionList's getHovered() is PROTECTED but also FINAL???
+    //! So the hovered entry cannot be accessed by external classes.
+    //! This lets external code access it without iterating all the children.
     public Entry getHoveredEntry() {
         return super.getHovered();
     }
+
+
+    //! Override lets clicks through when they don't hit a sub element.
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        if(super.isMouseOver(mouseX, mouseY)) {
+            if(this.isOverScrollbar(mouseX, mouseY)) return true;
+            else for(final var c : children()) {
+                if(c.isMouseOver(mouseX, mouseY)) return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
 
 
 
@@ -102,63 +145,19 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
 
 
 
-
+    //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its PRIVATE omfg why.
+    //! In Vanilla, getFirstEntryY is only used for setY, so this override changes setY to remove the 2px padding added by getFirstEntryY.
     @Override
-    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
-        graphics.fill(getX(), getY(), getRight(), getBottom(), Layout.bgColorSolid);
+    public void setY(final int y) {
+        super.setY(y - 2);
     }
 
-
-
-
-
-    //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its private.
-    //! So scrollAmount add 2px from to re-align the elemtns.
-    //! In Vanilla, getFirstEntryY is always used with scrollAmount.
-    //! setScrollAmount compensates for scrollAmount so scrolling down doesn't get messed up.
+    //! Fix Vanilla getRowLeft to account for the scrollbar's width.
     @Override
-    public double scrollAmount() {
-        return super.scrollAmount() + 2.0;
-    }
-    @Override
-    public void setScrollAmount(double scrollAmount) {
-        super.setScrollAmount(scrollAmount - 2.0);
+    public int getRowLeft() {
+        return getX();
     }
 
-
-
-    @Override
-    protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
-        int scrollBarX     = this.scrollBarX();
-        int scrollerHeight = this.scrollerHeight();
-        int scrollerY      = this.scrollBarY();
-        int barWidth       = this.scrollbarWidth();
-
-
-        // If there are hidden elements
-        if(scrollable()) {
-
-            // Draw track
-            graphics.fill(scrollBarX, getY(), scrollBarX + barWidth, getBottom(), Layout.bgColorSolid);
-
-            // Draw thumb
-            final boolean hovered = isOverScrollbar(mouseX, mouseY);
-            final int thumbColor = hovered ? Layout.fgColor : Layout.bgColorActive | 0xFF000000;
-            graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, thumbColor);
-            if(isOverScrollbar(mouseX, mouseY)) {
-                graphics.requestCursor(((AbstractScrollAreaAccessor)this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
-
-                // Draw hover overlay
-                graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.bgColorActive);
-            }
-        }
-    }
-
-
-
-
-    //TODO something's wrong here, it seems like the scrollbar is wider than it should be and the row widths is also a few pixels more than it should be.
-    //TODO the elements get cut by a few pixels on the right side when the scroll bar is visible
     @Override
     public int getRowWidth() {
         return this.width - this.scrollbarWidth();
@@ -174,17 +173,54 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
         return 2;
     }
 
-    //! Override lets clicks through when they don't hit a sub element
+
+
+
+
+
+
+
+    //! Disable default background
     @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        if(super.isMouseOver(mouseX, mouseY)) {
-            if(this.isOverScrollbar(mouseX, mouseY)) return true;
-            else for(final var c : children()) {
-                if(c.isMouseOver(mouseX, mouseY)) return true;
+    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
+        // Empty
+    }
+
+
+    //! Draw custom background, then draw the rest
+    @Override
+    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    }
+
+
+    @Override
+    protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
+        int scrollBarX     = this.scrollBarX();
+        int scrollerHeight = this.scrollerHeight();
+        int scrollerY      = this.scrollBarY();
+        int barWidth       = this.scrollbarWidth();
+
+
+        // If there are hidden elements
+        if(scrollable()) {
+
+            // Draw handle
+            final boolean hovered = isOverScrollbar(mouseX, mouseY);
+            final int handleColor = hovered ?  Layout.handleColorActive : Layout.handleColor;
+            graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, handleColor);
+            if(isOverScrollbar(mouseX, mouseY)) {
+                graphics.requestCursor(((AbstractScrollAreaAccessor)this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+
+                // Draw hover overlay
+                graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.highlightOverlay);
             }
         }
-        return false;
     }
+
+
+
 
 
 
@@ -245,9 +281,4 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> {
             return widget.charTyped(event);
         }
     }
-
-	@Override
-	protected void updateWidgetNarration(NarrationElementOutput output) {
-        //TODO idk what this does
-	}
 }

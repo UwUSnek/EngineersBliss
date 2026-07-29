@@ -44,6 +44,11 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
+
+
+
+
+
     protected boolean tabPressed = false;
     @Override
     public boolean keyPressed(final KeyEvent event) {
@@ -71,6 +76,8 @@ public abstract class __base_UiScreen extends Screen {
             }
         }
     }
+
+
     @Override
     public boolean keyReleased(final KeyEvent event) {
         if(event.key() == InputConstants.KEY_TAB) {
@@ -85,15 +92,13 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
-    @Override
-    public boolean isPauseScreen() {
-        return true;
-    }
+
+
 
     //TODO remove. this is the old version, still used by RenderingScreen
     //TODO remove. this is the old version, still used by RenderingScreen
     protected UiButton addButton(final UiTxt label, final UiTxt details, final Consumer<UiButton> action, final int x, final int y, final int width) {
-        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
+        final UiButton r = new UiButton(this, x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);
         }, TextAlignment.CENTER);
@@ -102,21 +107,21 @@ public abstract class __base_UiScreen extends Screen {
         return r;
     }
 
-
     @Override
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
+
+        //! Stop other widgets from updating hover state while dragging.
+        //! This is done by calling the superclass's extractRenderState with a fake invalid mouse position that no widget can cover.
+        //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
+        if(isDragging()) super.extractRenderState(graphics, -1,     -1,     delta);
+        else             super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
-
-
-
 
     @Override
     public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
         graphics.blurBeforeThisStratum();
     }
-
 
     @Override
 	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
@@ -124,8 +129,22 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
+
+
+
+
+
+
     @Override
     public void onClose() {
-        this.minecraft.setScreen(null); // Close screen and go back to game
+
+        // Close screen and go back to game
+        this.minecraft.setScreen(null);
+    }
+
+
+    @Override
+    public boolean isPauseScreen() {
+        return true;
     }
 }

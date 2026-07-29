@@ -237,6 +237,5 @@ It helps a lot :3
   - [Vanilla block] Beehive with Bees and Honey
   - [Vanilla block] Beehive with Honey but no Bees
   - [Vanilla entity] Armor Stand with arms
-  - [Vanilla entity] TNTs with higher explosion strength
   - [Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu
   - [Vanilla item & entity] Wither Spawn Egg in the Creative menu

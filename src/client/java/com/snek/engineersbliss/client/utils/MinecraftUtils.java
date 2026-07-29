@@ -1,6 +1,4 @@
 package com.snek.engineersbliss.client.utils;
-
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
@@ -66,7 +63,7 @@ public class MinecraftUtils {
 
     public static void fetchPlaytime() {
         Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
-        playtimeRequestTime = Clock.systemUTC().millis();
+        playtimeRequestTime = System.currentTimeMillis();
         pausedAccumMs = 0;
         wasPaused = false;
     }
@@ -80,7 +77,7 @@ public class MinecraftUtils {
 
     private static void checkPauseTransition() {
         final boolean paused = Minecraft.getInstance().isPaused();
-        final long now = Clock.systemUTC().millis();
+        final long now = System.currentTimeMillis();
         if(paused && !wasPaused) pauseStartTime = now;
         if(!paused && wasPaused) pausedAccumMs += now - pauseStartTime;
         wasPaused = paused;
@@ -91,7 +88,7 @@ public class MinecraftUtils {
         if(player == null) return 0;
         if(playtimeAtRequest == 0) playtimeAtRequest = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
 
-        final long curTime = Clock.systemUTC().millis();
+        final long curTime = System.currentTimeMillis();
         long timeElapsed = curTime - playtimeRequestTime - pausedAccumMs;
         if(wasPaused) timeElapsed -= (curTime - pauseStartTime); // still-open pause window
 

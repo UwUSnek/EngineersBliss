@@ -6,9 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.ui.base.ScreenMixinAccessor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
@@ -32,8 +34,22 @@ public class TextureCache implements AutoCloseable {
     private @Nullable DynamicTexture texture;
     private int width  = -1;
     private int height = -1;
+    private boolean dirty = false;
 
 
+    /**
+     * Creates a TextureCache that frees its memory on its own when the screen is closed.
+     * @param screen The screen to track.
+     */
+    public TextureCache(final Screen screen) {
+        this();
+        ((ScreenMixinAccessor)screen).eb$registerTextureCacheForClose(this);
+    }
+
+    /**
+     * Creates a TextureCache that doesn't free its memory on its own.
+     * Call .close() when the texture is discarded to avoid memory leaks.
+     */
     public TextureCache() {
         this.location = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "dynamic_texture_cache/_" + ++nextId);
     }
@@ -42,13 +58,12 @@ public class TextureCache implements AutoCloseable {
 
 
     /**
-     * Repaints the texture if it differs from the size of the currently cached texture.
-     * This is a no-op if the size doesn't change, so calling it every frame is fine.
+     * Repaints the texture if marked dirty or if it differs from the size of the currently cached texture.
      * @param width The width of the texture.
      * @param width The height of the texture.
      */
     public void update(final int width, final int height, final Consumer<NativeImage> painter) {
-        if(texture != null && width == this.width && height == this.height) return;
+        if(texture != null && !dirty && width == this.width && height == this.height) return;
 
         // useCalloc=true initializes the buffer to 0 so unpainted pixels start transparent
         final NativeImage image = new NativeImage(NativeImage.Format.RGBA, Math.max(1, width), Math.max(1, height), true);
@@ -61,6 +76,7 @@ public class TextureCache implements AutoCloseable {
         texture = newTexture;
         this.width  = width;
         this.height = height;
+        this.dirty = false;
     }
 
 
@@ -88,5 +104,11 @@ public class TextureCache implements AutoCloseable {
             texture = null;
             width = height = -1;
         }
+    }
+
+
+
+    public void markDirty() {
+        dirty = true;
     }
 }
