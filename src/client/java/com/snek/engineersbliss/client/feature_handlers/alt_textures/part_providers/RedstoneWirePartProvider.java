@@ -3,8 +3,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 import java.util.ArrayList;
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -81,8 +81,8 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
     @Override
     public boolean shouldUseCustom(final BlockState state) {
         return
-            AltTexturesHandler.getFeature(AltTextureFeature.MINIMAL_REDSTONE_WIRE) ||
-            AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D)
+            ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.MINIMAL_REDSTONE_WIRE) ||
+            ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.REDSTONE_WIRE_3D)
         ;
     }
     @Override
@@ -99,6 +99,6 @@ public class RedstoneWirePartProvider extends __base_PartProvider {
     }
     @Override
     public int calcCurrentModelSetIndex() {
-        return AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D) ? 1 : 0;
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.REDSTONE_WIRE_3D) ? 1 : 0;
     }
 }

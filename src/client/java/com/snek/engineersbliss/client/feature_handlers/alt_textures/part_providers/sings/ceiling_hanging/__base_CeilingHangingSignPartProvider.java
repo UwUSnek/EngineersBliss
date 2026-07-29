@@ -2,8 +2,8 @@ package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provid
 
 import java.util.List;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.__base_SignPartProvider;
 
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
@@ -64,6 +64,6 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
     }
     @Override
     public int calcCurrentModelSetIndex() {
-        return AltTexturesHandler.getFeature(AltTextureFeature.CHAINS_3D) ? 1 : 0;
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.CHAINS_3D) ? 1 : 0;
     }
 }

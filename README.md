@@ -147,6 +147,7 @@ It helps a lot :3
   <br><br>
 - **Creative mode tweaks**
   - Control flying speed
+  - Control walking speed
   - Control reach distance
   - Control interaction radius (click multiple blocks at once)<br><br>
   - Configurable fast clicking
@@ -204,6 +205,8 @@ It helps a lot :3
   - Item Sink (storage block with infinite capacity)
   - 0 Friction blocks
   - ∞ Friction blocks
+  - Green Screen block
+  - Blue Screen block
   - [Vanilla block] Fire item
   - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
@@ -228,8 +231,11 @@ It helps a lot :3
   - [Vanilla block] Frogspawn item
   - [Vanilla blocks] Cake with Candle items
   - [Vanilla blocks] Potted plant items
-  - [Vanilla blocks] Sloped Rail items
-  - [Vanilla block & item] Your Player Head as an item
-  - [Vanilla block & item] Bee Nest with Bees and Honey
-  - [Vanilla block & item] Beehive with Bees and Honey
-  - [Vanilla block & entity] Armor Stand with arms
+  - [Vanilla block] Your Player Head as an item
+  - [Vanilla block] Bee Nest with Bees and Honey
+  - [Vanilla block] Bee Nest with Honey but no Bees
+  - [Vanilla block] Beehive with Bees and Honey
+  - [Vanilla block] Beehive with Honey but no Bees
+  - [Vanilla entity] Armor Stand with arms
+  - [Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu
+  - [Vanilla item & entity] Wither Spawn Egg in the Creative menu

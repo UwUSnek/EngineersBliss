@@ -2,10 +2,10 @@ package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.ComparatorAttachedData;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
@@ -20,7 +20,7 @@ public final class ComparatorLevelOverlayProvider extends __base_TextureOverlayP
     @Override
     public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return
-            OverlaysHandler.getFeature(OverlayFeature.COMPARATOR_POWER_LEVELS) &&
+            ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.COMPARATOR_POWER_LEVELS) &&
             state.is(Blocks.COMPARATOR)
         ;
     }

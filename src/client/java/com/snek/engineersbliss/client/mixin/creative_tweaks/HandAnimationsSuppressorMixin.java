@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
@@ -30,7 +30,7 @@ public class HandAnimationsSuppressorMixin {
     @SuppressWarnings("unused")
     @Inject(method = "swingArm", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$swingArm(final float attack, final PoseStack poseStack, final int invert, final HumanoidArm arm, final CallbackInfo ci) {
-        if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_HAND_SWING_ANIMATION)) {
+        if(ClientFeatureSync.getFeatureB(CreativeTweaksServerFeatureSet.DISABLE_HAND_SWING_ANIMATION)) {
             ci.cancel();
         }
     }
@@ -52,8 +52,8 @@ public class HandAnimationsSuppressorMixin {
         )
     )
     private float eb$swapAnimationScaleMainHand(float original) {
-        if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION)) {
-            return 0.0F;
+        if(ClientFeatureSync.getFeatureB(CreativeTweaksServerFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION)) {
+            return 0.0f;
         }
         return original;
     }
@@ -72,8 +72,8 @@ public class HandAnimationsSuppressorMixin {
         )
     )
     private float eb$swapAnimationScaleOffHand(float original) {
-        if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION)) {
-            return 0.0F;
+        if(ClientFeatureSync.creativePlayerHasFeature(Minecraft.getInstance().player, CreativeTweaksServerFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION)) {
+            return 0.0f;
         }
         return original;
     }
@@ -85,7 +85,7 @@ public class HandAnimationsSuppressorMixin {
     @SuppressWarnings("unused")
     @ModifyReturnValue(method = "shouldInstantlyReplaceVisibleItem", at = @At("RETURN"), require = 1)
     private boolean eb$shouldInstantlyReplaceVisibleItem(boolean original) {
-        if(CreativeTweaksHandler.clientPlayerHasFeature(Minecraft.getInstance().player, CreativeTweakFeature.DISABLE_ITEM_CHANGE_ANIMATION)) {
+        if(ClientFeatureSync.creativePlayerHasFeature(Minecraft.getInstance().player, CreativeTweaksServerFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION)) {
             return true;
         }
         return original;

@@ -59,8 +59,8 @@ public abstract class CustomOutlinesMixin {
 
         // Run custom outline logic if the first block is hidden
         ci.cancel();
-        final Vec3 start = camera.position();
-        final Vec3 look = Vec3.directionFromRotation(camera.xRot(), camera.yRot());
+        final Vec3 start = minecraft.player.getEyePosition();
+        final Vec3 look = minecraft.player.getViewVector(1.0f);
         final double reach = minecraft.player.blockInteractionRange();
         final Vec3 end = start.add(look.scale(reach));
 
