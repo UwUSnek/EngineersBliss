@@ -8,6 +8,8 @@ import org.joml.Vector3i;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.YourPlayerHeadItem;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -44,6 +46,92 @@ public class CustomItemHandler {
         p -> new BlockItem(CustomBlockHandler. BLUE_SCREEN, p),
         new Txt("A perfectly blue block with no shading."),
         Notices.CUSTOM_BLOCK
+    );
+
+
+
+
+    public static final Item FULL_BEE_NEST = register(
+        "full_bee_nest",
+        p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 3, 5),
+        new Txt("A Bee Nest with 5 levels of Honey and 3 Bees."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item FULL_BEE_NEST_NO_BEES = register(
+        "full_bee_nest_no_bees",
+        p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 0, 5),
+        new Txt("A Bee Nest with 5 levels of Honey but no Bees."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item FULL_BEEHIVE = register(
+        "full_beehive",
+        p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 3, 5),
+        new Txt("A Beehive with 5 levels of Honey and 3 Bees."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item FULL_BEEHIVE_NO_BEES = register(
+        "full_beehive_no_bees",
+        p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 0, 5),
+        new Txt("A Beehive with 5 levels of Honey but no Bees."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
+    public static final Item YOUR_PLAYER_HEAD = register(
+        "your_player_head",
+        p -> new YourPlayerHeadItem(Blocks.PLAYER_HEAD, Blocks.PLAYER_WALL_HEAD, Direction.DOWN, p),
+        new Txt("Your Player Head."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+    public static final Item ARMOR_STAND_WITH_ARMS = register(
+        "armor_stand_with_arms",
+        ArmorStandWithArmsItem::new,
+        new Txt("It comes with arms!"),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_ENTITY
+    );
+
+
+
+    public static final Item HEADLESS_STICKY_PISTON = register(
+        "headless_sticky_piston",
+        p -> new HeadlessPistonItem(Blocks.STICKY_PISTON, p),
+        new Txt("A Sticky Piston without the Piston Head part."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item HEADLESS_PISTON = register(
+        "headless_piston",
+        p -> new HeadlessPistonItem(Blocks.PISTON, p),
+        new Txt("A Piston without the Piston Head part."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item STICKY_PISTON_HEAD = register(
+        "sticky_piston_head",
+        p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, false, p),
+        new Txt("A Sticky Piston, but only the Piston Head part (Long variant)."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PISTON_HEAD = register(
+        "piston_head",
+        p -> new PistonHeadItem(Blocks.PISTON_HEAD, false, false, p),
+        new Txt("A Piston, but only the Piston Head part (Long variant)."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SHORT_STICKY_PISTON_HEAD = register(
+        "short_sticky_piston_head",
+        p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, true, p),
+        new Txt("A Sticky Piston, but only the Piston Head part (Short variant)."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SHORT_PISTON_HEAD = register(
+        "short_piston_head",
+        p -> new PistonHeadItem(Blocks.PISTON_HEAD, false, true, p),
+        new Txt("A Piston, but only the Piston Head part (Short variant)."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
 
@@ -382,53 +470,6 @@ public class CustomItemHandler {
         p -> new BlockItem(Blocks.POTTED_GOLDEN_DANDELION, p),
         new Txt("A Golden Dandelion in a Flower Pot."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-
-
-
-
-    public static final Item FULL_BEE_NEST = register(
-        "full_bee_nest",
-        p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 3, 5),
-        new Txt("A Bee Nest with 5 levels of Honey and 3 Bees."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-    public static final Item FULL_BEE_NEST_NO_BEES = register(
-        "full_bee_nest_no_bees",
-        p -> new CustomBeehiveItem(Blocks.BEE_NEST, p, 0, 5),
-        new Txt("A Bee Nest with 5 levels of Honey but no Bees."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-    public static final Item FULL_BEEHIVE = register(
-        "full_beehive",
-        p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 3, 5),
-        new Txt("A Beehive with 5 levels of Honey and 3 Bees."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-    public static final Item FULL_BEEHIVE_NO_BEES = register(
-        "full_beehive_no_bees",
-        p -> new CustomBeehiveItem(Blocks.BEEHIVE,  p, 0, 5),
-        new Txt("A Beehive with 5 levels of Honey but no Bees."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-
-
-
-
-    public static final Item YOUR_PLAYER_HEAD = register(
-        "your_player_head",
-        p -> new YourPlayerHeadItem(Blocks.PLAYER_HEAD, Blocks.PLAYER_WALL_HEAD, Direction.DOWN, p),
-        new Txt("Your Player Head."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-
-
-
-    public static final Item ARMOR_STAND_WITH_ARMS = register(
-        "armor_stand_with_arms",
-        ArmorStandWithArmsItem::new,
-        new Txt("It comes with arms!"),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_ENTITY
     );
 
 

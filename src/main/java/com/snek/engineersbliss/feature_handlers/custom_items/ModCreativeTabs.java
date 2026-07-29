@@ -73,6 +73,14 @@ public class ModCreativeTabs {
             output.accept(Items.WITHER_SPAWN_EGG);
 
 
+            output.accept(CustomItemHandler.HEADLESS_STICKY_PISTON);
+            output.accept(CustomItemHandler.HEADLESS_PISTON);
+            output.accept(CustomItemHandler.STICKY_PISTON_HEAD);
+            output.accept(CustomItemHandler.PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_PISTON_HEAD);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);
