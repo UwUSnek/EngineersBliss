@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
@@ -11,7 +10,7 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 
 
 
-public class PistonHeadItem extends BlockItem {
+public class PistonHeadItem extends __base_CustomBlockItem {
     private final boolean sticky;
     private final boolean _short;
 

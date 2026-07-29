@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.bee.Bee;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.Block;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public class CustomBeehiveItem extends BlockItem {
+public class CustomBeehiveItem extends __base_CustomBlockItem {
     private final int beeCount;
     private final int honeyLevel;
 
