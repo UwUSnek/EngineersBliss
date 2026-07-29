@@ -61,12 +61,12 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE),             Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),               Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),                Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.PLACE_DELAY,       tickFormatter), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.PLACEMENT_DELAY,   tickFormatter), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.AUTOCLICKER_DELAY, tickFormatter), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton                (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                      Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton                (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton                (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                      Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton                (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS),       Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS),       Layout.BORDER_HEIGHT);
 
 
         // Player properties
