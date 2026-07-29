@@ -41,6 +41,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("Values represent multiples of the default Creative Mode flying speed."))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
+    public static final ClientFeature<?> PLAYER_SCALE = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.PLAYER_SCALE,
+        () -> new UiTxt("Player scale"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Controls your scale. This affects your actual hitbox.\n"))
+            .cat(new UiTxt("Values represent multiples of the default player model size."))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
     public static final ClientFeature<?> INTERACTION_DISTANCE = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE,
         () -> new UiTxt("Interaction distance"),
