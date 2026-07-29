@@ -17,10 +17,8 @@ import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.textures.SvgTextureTracker;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
-import com.snek.engineersbliss.utils.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -40,7 +38,7 @@ import net.minecraft.resources.Identifier;
 
 public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 	public static final int HANDLE_BASE_WIDTH = 8;
-    private static final double HANDLE_MIN_WIDTH_SCALE = 0.15;
+    private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
 
 
@@ -289,7 +287,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     public int calcHandleWidth() {
         final double magnitude = Math.abs(value - visualValue.getLast());
         final double speed = Math.abs(visualValue.calcSpeed()) * magnitude;
-        final double widthFactor = Math.clamp(1.0 - speed * HANDLE_SPEED_SENSITIVITY, HANDLE_MIN_WIDTH_SCALE, 1.0);
+        final double widthFactor = Math.clamp(1.0 + speed * HANDLE_SPEED_SENSITIVITY, 1.0, HANDLE_MAX_WIDTH_SCALE);
         return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
     }
 
