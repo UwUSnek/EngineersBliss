@@ -101,37 +101,37 @@ public class CustomItemHandler {
         "headless_sticky_piston",
         p -> new HeadlessPistonItem(Blocks.STICKY_PISTON, p),
         new Txt("A Sticky Piston without the Piston Head part."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HEADLESS_PISTON_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item HEADLESS_PISTON = register(
         "headless_piston",
         p -> new HeadlessPistonItem(Blocks.PISTON, p),
         new Txt("A Piston without the Piston Head part."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HEADLESS_PISTON_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item STICKY_PISTON_HEAD = register(
         "sticky_piston_head",
         p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, false, p),
         new Txt("A Sticky Piston, but only the Piston Head part (Long variant)."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PISTON_HEAD = register(
         "piston_head",
         p -> new PistonHeadItem(Blocks.PISTON_HEAD, false, false, p),
         new Txt("A Piston, but only the Piston Head part (Long variant)."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item SHORT_STICKY_PISTON_HEAD = register(
         "short_sticky_piston_head",
         p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, true, p),
         new Txt("A Sticky Piston, but only the Piston Head part (Short variant)."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item SHORT_PISTON_HEAD = register(
         "short_piston_head",
         p -> new PistonHeadItem(Blocks.PISTON_HEAD, false, true, p),
         new Txt("A Piston, but only the Piston Head part (Short variant)."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
 
@@ -481,8 +481,9 @@ public class CustomItemHandler {
 
     public static class Colors {
         private Colors() {}
-        public static final Vector3i COLOR_LS_RED   = new Vector3i(255, 128, 128).mul(3).div(4);
-        public static final Vector3i COLOR_LS_GREEN = new Vector3i(128, 255, 128).mul(3).div(4);
+        public static final Vector3i COLOR_LS_RED    = new Vector3i(255, 128, 128).mul(3).div(4);
+        public static final Vector3i COLOR_LS_ORANGE = new Vector3i(255, 128,   0).mul(3).div(4);
+        public static final Vector3i COLOR_LS_GREEN  = new Vector3i(128, 255, 128).mul(3).div(4);
     }
 
 
@@ -519,6 +520,18 @@ public class CustomItemHandler {
             new Txt("Entities placed using this item are compatible").color(Colors.COLOR_LS_GREEN),
             new Txt("with Vanilla and can be safely exported in")    .color(Colors.COLOR_LS_GREEN),
             new Txt("worlds, structures, and schematics.")           .color(Colors.COLOR_LS_GREEN)
+        );
+
+
+        public static List<Txt> PISTON_HEAD_BREAKS = List.of(
+            new Txt("Updates make the block break unless properly").color(Colors.COLOR_LS_ORANGE),
+            new Txt("connected to a matching piston block.")       .color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+        public static List<Txt> HEADLESS_PISTON_RESETS = List.of(
+            new Txt("This only keeps its headless state when powered.")      .color(Colors.COLOR_LS_ORANGE),
+            new Txt("Removing the power source will make the head reappear.").color(Colors.COLOR_LS_ORANGE)
         );
     }
 

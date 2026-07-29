@@ -145,12 +145,12 @@
   - [Vanilla block] Nether Portal item
   - [Vanilla block] End Portal item
   - [Vanilla block] End Gateway item
-  - [Vanilla block] Headless Piston item   //TODO add this to item lore -> //FIXME Updates make the head appear
-  - [Vanilla block] Headless Sticky Piston item   //TODO add this to item lore -> //FIXME Updates make the head appear
-  - [Vanilla block] Sticky Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless sticky piston
-  - [Vanilla block] Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless piston
-  - [Vanilla block] Short Sticky Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless sticky piston
-  - [Vanilla block] Short Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless piston
+  - ~~[Vanilla block] Headless Piston item~~
+  - ~~[Vanilla block] Headless Sticky Piston item~~
+  - ~~[Vanilla block] Sticky Piston Head item~~
+  - ~~[Vanilla block] Piston Head item~~
+  - ~~[Vanilla block] Short Sticky Piston Head item~~
+  - ~~[Vanilla block] Short Piston Head item~~
   - [Vanilla block] Frosted Ice item       //TODO add this to item lore -> //FIXME Updates make it melt
   - [Vanilla block] Water Cauldron item
   - [Vanilla block] Lava Cauldron item
