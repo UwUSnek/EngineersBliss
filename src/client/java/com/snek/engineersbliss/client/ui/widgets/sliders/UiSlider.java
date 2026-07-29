@@ -17,6 +17,7 @@ import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.client.utils.textures.SvgTextureTracker;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 import com.snek.engineersbliss.utils.Utils;
@@ -26,6 +27,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -262,15 +264,23 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
 
 
     @Override
-    public void drawCachedBackground(NativeImage img, int w, int h) {
-        BgCacheWidget.super.drawCachedBackground(img, w, h);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            final int spriteWidth = (int)(h * bgSpriteWidth);
-            RenderingUtils.blitSpriteToImage(img, bgSpriteId, 0, 0, spriteWidth, h);
+            final int spriteWidth = (int)(getHeight() * bgSpriteWidth);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
         }
+    }
+
+
+
+
+    @Override
+    public void drawCachedBackground(NativeImage img, int w, int h) {
+        BgCacheWidget.super.drawCachedBackground(img, w, h);
     }
 
 

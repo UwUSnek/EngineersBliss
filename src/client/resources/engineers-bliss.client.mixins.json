@@ -9,12 +9,15 @@
         "accessors.AbstractScrollAreaAccessor",
         "accessors.FontAccessor",
         "accessors.MinecraftAccessor",
+        "accessors.SpriteSourcesAccessor",
 
 
         "shaders.JuliaSetShaderMixin",
 
 
         "misc.AsyncTextureLoaderMixin",
+        "misc.SpriteSourcesMixin",
+        "misc.SpriteAtlasSvgSupportMixin",
 
 
         "screens.ScreenMixin",

@@ -37,6 +37,10 @@ loom {
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
+    // Bundled dependencies
+    implementation "com.github.weisj:jsvg:2.1.0"
+    include        "com.github.weisj:jsvg:2.1.0"
+
     // Required dependencies
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"

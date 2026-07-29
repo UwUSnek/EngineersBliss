@@ -146,6 +146,7 @@ public class RenderingUtils {
     /**
      * Blits a sprite onto a NativeImage.
      * ! NOTICE: This runs on the CPU, it gets very laggy very quickly. Cache drawn images whenever possible.
+     * ! This method only supports PNG sprites. Other formats go through Minecraft's loading system and must be blitted from the GPU.
      * @param img The image to blit the sprite to.
      * @param spriteId The Identifier of the sprite to blit.
      * @param x The X position of the sprite in image-local coords.

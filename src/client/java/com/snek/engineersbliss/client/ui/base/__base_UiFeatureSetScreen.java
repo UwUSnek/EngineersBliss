@@ -18,7 +18,7 @@ import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;

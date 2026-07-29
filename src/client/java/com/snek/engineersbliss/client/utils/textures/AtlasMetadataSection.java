@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.texture_atlases;
+package com.snek.engineersbliss.client.utils.textures;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -24,5 +24,6 @@ public record AtlasMetadataSection(
             Codec.INT.fieldOf("frame_height").forGetter(AtlasMetadataSection::frameHeight),
             Codec.INT.fieldOf("frame_count" ).forGetter(AtlasMetadataSection::frameCount),
             Codec.INT.fieldOf("fps"         ).forGetter(AtlasMetadataSection::fps)
-        ).apply(inst, AtlasMetadataSection::new)));
+        ).apply(inst, AtlasMetadataSection::new)))
+    ;
 }

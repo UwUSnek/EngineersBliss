@@ -23,6 +23,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -179,16 +180,14 @@ public class UiButton extends Button implements BgCacheWidget {
 
 
     @Override
-    public void drawCachedBackground(final NativeImage img, final int w, final int h) {
-
-        // Draw black background color //! Always drawn
-        BgCacheWidget.super.drawCachedBackground(img, w, h);
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            final int spriteWidth = (int)(h * bgSpriteWidth);
-            RenderingUtils.blitSpriteToImage(img, bgSpriteId, 0, 0, spriteWidth, h);
+            final int spriteWidth = (int)(getHeight() * bgSpriteWidth);
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
         }
     }
 

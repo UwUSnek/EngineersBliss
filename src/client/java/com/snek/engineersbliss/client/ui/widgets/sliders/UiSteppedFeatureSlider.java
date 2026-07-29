@@ -82,6 +82,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> {
         this.serverFeature = _serverFeature;
 
         // Calculate sprite id
+        // final String bgSpritePath = String.format("textures/gui/sprite/%s/%s.svg", serverFeature.getFeatureSet().getId(), serverFeature.getId()); //TODO REMOVE
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
         withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f);
     }
