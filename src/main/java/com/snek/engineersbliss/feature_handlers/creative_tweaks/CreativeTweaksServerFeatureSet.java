@@ -51,7 +51,7 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
         Stream.concat(IntStream.range(1, 41).boxed(), Stream.of(60, 80, 100, 120, 140, 160)).toList(), 0 //TODO fix default
     ));
     public static ServerSteppedFeature<Integer> AUTOCLICKER_DELAY = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
-        "place_delay",
+        "autoclicker_delay",
         Stream.concat(IntStream.range(1, 41).boxed(), Stream.of(60, 80, 100, 120, 140, 160)).toList(), 0 //TODO fix default
     ));
     public static ServerToggleFeature AUTOCLICKER = INSTANCE.registerFeature(new ServerToggleFeature(
