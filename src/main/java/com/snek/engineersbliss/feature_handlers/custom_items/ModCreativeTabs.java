@@ -73,20 +73,6 @@ public class ModCreativeTabs {
             output.accept(Items.WITHER_SPAWN_EGG);
 
 
-            output.accept(CustomItemHandler.HEADLESS_STICKY_PISTON);
-            output.accept(CustomItemHandler.HEADLESS_PISTON);
-            output.accept(CustomItemHandler.STICKY_PISTON_HEAD);
-            output.accept(CustomItemHandler.PISTON_HEAD);
-            output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
-            output.accept(CustomItemHandler.SHORT_PISTON_HEAD);
-
-
-            output.accept(CustomItemHandler.KELP_PLANT);
-            output.accept(CustomItemHandler.CAVE_VINES_PLANT);
-            output.accept(CustomItemHandler.TWISTING_VINES_PLANT);
-            output.accept(CustomItemHandler.WEEPING_VINES_PLANT);
-
-
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);
@@ -154,8 +140,41 @@ public class ModCreativeTabs {
 
 
 
+
+    public static final ResourceKey<CreativeModeTab> BLOCK_PARTS_TAB_KEY = ResourceKey.create(
+        BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "custom_items")
+    );
+
+    public static final CreativeModeTab BLOCK_PARTS_TAB = FabricCreativeModeTab.builder()
+        .icon(() -> new ItemStack(CustomItemHandler.STICKY_PISTON_HEAD.asItem()))
+        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".block_parts"))
+        .displayItems((params, output) -> {
+            output.accept(CustomItemHandler.HEADLESS_STICKY_PISTON);
+            output.accept(CustomItemHandler.HEADLESS_PISTON);
+            output.accept(CustomItemHandler.STICKY_PISTON_HEAD);
+            output.accept(CustomItemHandler.PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_PISTON_HEAD);
+
+
+            output.accept(CustomItemHandler.KELP_PLANT);
+            output.accept(CustomItemHandler.CAVE_VINES_PLANT);
+            output.accept(CustomItemHandler.TWISTING_VINES_PLANT);
+            output.accept(CustomItemHandler.WEEPING_VINES_PLANT);
+        }).build()
+    ;
+
+
+
+
+
+
+
+
     public static void register() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_ITEMS_TAB_KEY,  CUSTOM_ITEMS_TAB);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MISSING_ITEMS_TAB_KEY, MISSING_ITEMS_TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BLOCK_PARTS_TAB_KEY, BLOCK_PARTS_TAB);
     }
 }
