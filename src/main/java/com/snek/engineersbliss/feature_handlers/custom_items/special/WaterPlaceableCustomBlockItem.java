@@ -1,6 +1,9 @@
 package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
 
@@ -19,8 +22,8 @@ import net.minecraft.world.level.material.Fluids;
  */
 public class WaterPlaceableCustomBlockItem extends CustomBlockItem {
 
-    public WaterPlaceableCustomBlockItem(Block block, CustomItemProperties p) {
-        super(block, p);
+    public WaterPlaceableCustomBlockItem(Block block, CustomItemProperties p, final @Nullable List<Block> mappedBlocks) {
+        super(block, p, mappedBlocks);
     }
 
 

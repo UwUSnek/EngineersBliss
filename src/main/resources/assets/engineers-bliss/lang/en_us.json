@@ -42,6 +42,12 @@
     "item.engineers-bliss.weeping_vines_crown"           : "Weeping Vines Crown",
 
 
+    "item.engineers-bliss.fire"          : "Fire",
+    "item.engineers-bliss.nether_portal" : "Nether Portal",
+    "item.engineers-bliss.end_portal"    : "End Portal",
+    "item.engineers-bliss.end_gateway"   : "End Gateway",
+
+
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",
     "item.engineers-bliss.white_candle_cake"      : "Cake with White Candle",
     "item.engineers-bliss.orange_candle_cake"     : "Cake with Orange Candle",

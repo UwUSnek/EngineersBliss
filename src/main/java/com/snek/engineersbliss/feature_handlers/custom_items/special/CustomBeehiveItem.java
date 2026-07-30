@@ -1,5 +1,9 @@
 package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
 import com.snek.engineersbliss.mixin.accessors.BeeAccessor;
 
@@ -22,8 +26,8 @@ public class CustomBeehiveItem extends CustomBlockItem {
     private final int beeCount;
     private final int honeyLevel;
 
-    public CustomBeehiveItem(Block block, CustomItemProperties properties, int beeCount, int honeyLevel) {
-        super(block, properties);
+    public CustomBeehiveItem(Block block, CustomItemProperties properties, int beeCount, int honeyLevel, final @Nullable List<Block> mappedBlocks) {
+        super(block, properties, mappedBlocks);
         this.beeCount  = beeCount;
         this.honeyLevel = honeyLevel;
     }

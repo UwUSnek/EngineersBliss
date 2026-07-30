@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,8 +23,8 @@ import net.minecraft.core.Direction;
 
 
 public class YourPlayerHeadItem extends CustomStandingAndWallBlockItem {
-    public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, CustomItemProperties p) {
-        super(standing, wall, attachDirection, p);
+    public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, CustomItemProperties p, final @Nullable List<Block> mappedBlocks) {
+        super(standing, wall, attachDirection, p, mappedBlocks);
     }
 
 

@@ -1,5 +1,9 @@
 package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
 
 import net.minecraft.core.Direction;
@@ -17,8 +21,8 @@ public class PistonHeadItem extends CustomBlockItem {
     private final boolean _short;
 
 
-    public PistonHeadItem(Block block, final boolean sticky, final boolean _short, CustomItemProperties properties) {
-        super(block, properties);
+    public PistonHeadItem(Block block, final boolean sticky, final boolean _short, CustomItemProperties properties, final @Nullable List<Block> mappedBlocks) {
+        super(block, properties, mappedBlocks);
         this.sticky = sticky;
         this._short = _short;
     }

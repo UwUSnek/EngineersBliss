@@ -73,6 +73,12 @@ public class ModCreativeTabs {
             output.accept(Items.WITHER_SPAWN_EGG);
 
 
+            output.accept(CustomItemHandler.FIRE);
+            output.accept(CustomItemHandler.NETHER_PORTAL);
+            output.accept(CustomItemHandler.END_PORTAL);
+            output.accept(CustomItemHandler.END_GATEWAY);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);
