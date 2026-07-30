@@ -17,6 +17,7 @@ import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPis
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.WaterPlaceableCustomBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.YourPlayerHeadItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.NetherPortalItem;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.core.Direction;
@@ -28,8 +29,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FlowerPotBlock;
-import net.minecraft.world.level.block.GrowingPlantBodyBlock;
 
 
 
@@ -216,7 +215,7 @@ public class CustomItemHandler {
     );
     public static final Item NETHER_PORTAL = register(
         "nether_portal", "legacy",
-        p -> new CustomBlockItem(Blocks.NETHER_PORTAL, p, List.of(Blocks.NETHER_PORTAL)),
+        p -> new NetherPortalItem(Blocks.NETHER_PORTAL, p, List.of(Blocks.NETHER_PORTAL)),
         new Txt("A Nether Portal block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
