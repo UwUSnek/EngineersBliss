@@ -3,6 +3,7 @@ package com.snek.engineersbliss.feature_handlers.custom_items;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
@@ -608,13 +609,10 @@ public class CustomItemHandler {
         );
 
 
-        // Create item properties
-        //! Use custom item path - Required for assets/engineers-bliss/items subdirectories.
+        // Create item properties with the specified path and set the item ID
+        //! Custom item path is required to use subdirectories in assets/engineers-bliss/items.
         final String modelPath = modelCustomDir == null ? id : String.format("%s/%s", modelCustomDir, id);
-        Item.Properties properties = new Item.Properties()
-            .setId(key)
-            .component(DataComponents.ITEM_MODEL, Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, modelPath))
-        ;
+        @NotNull Item.Properties properties = new CustomItemProperties(modelPath).setId(key);
 
 
         // Set item lore if present
