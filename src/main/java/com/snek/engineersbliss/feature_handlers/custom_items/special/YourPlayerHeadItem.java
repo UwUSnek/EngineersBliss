@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 
 
 
-public class YourPlayerHeadItem extends __base_CustomStandingAndWallBlockItem {
+public class YourPlayerHeadItem extends CustomStandingAndWallBlockItem {
     public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, Properties p) {
         super(standing, wall, attachDirection, p);
     }

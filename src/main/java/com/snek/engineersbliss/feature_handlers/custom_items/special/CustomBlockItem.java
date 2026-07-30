@@ -11,12 +11,12 @@ import net.minecraft.world.level.block.Block;
 
 /**
  * The base class of custom block items.
- * This stops the item registration phase from overriding vanilla (& modded) block-to-item mappings.
+ * This stops the item registration phase from overwriting vanilla (& modded) block-to-item mappings.
  */
-public class __base_CustomBlockItem extends BlockItem {
+public class CustomBlockItem extends BlockItem {
 
 
-    public __base_CustomBlockItem(Block block, Properties p) {
+    public CustomBlockItem(Block block, Properties p) {
         super(block, p);
     }
 

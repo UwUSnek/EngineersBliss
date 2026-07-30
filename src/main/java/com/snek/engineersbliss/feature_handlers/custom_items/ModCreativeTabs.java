@@ -81,6 +81,12 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.SHORT_PISTON_HEAD);
 
 
+            output.accept(CustomItemHandler.KELP_PLANT);
+            output.accept(CustomItemHandler.CAVE_VINES_PLANT);
+            output.accept(CustomItemHandler.TWISTING_VINES_PLANT);
+            output.accept(CustomItemHandler.WEEPING_VINES_PLANT);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);

@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 
 
 
-public class PistonHeadItem extends __base_CustomBlockItem {
+public class PistonHeadItem extends CustomBlockItem {
     private final boolean sticky;
     private final boolean _short;
 

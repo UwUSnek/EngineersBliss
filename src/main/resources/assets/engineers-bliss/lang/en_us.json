@@ -9,6 +9,32 @@
     "item.engineers-bliss.blue_screen":   "Blue Screen",
 
 
+    "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
+    "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
+    "item.engineers-bliss.full_beehive"          : "Full Beehive",
+    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees",
+
+
+    "item.engineers-bliss.your_player_head" : "Turns into your Player Head when held in the inventory",
+
+
+    "item.engineers-bliss.armor_stand_with_arms" : "Armor Stand with arms",
+
+
+    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
+    "item.engineers-bliss.headless_piston"          : "Headless Piston",
+    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
+    "item.engineers-bliss.piston_head"              : "Piston Head",
+    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
+    "item.engineers-bliss.short_piston_head"        : "Short Piston Head",
+
+
+    "item.engineers-bliss.kelp_plant"           : "Kelp Plant",
+    "item.engineers-bliss.cave_vines_plant"     : "Cave Vines Plant",
+    "item.engineers-bliss.twisting_vines_plant" : "Twisting Vines Plant",
+    "item.engineers-bliss.weeping_vines_plant"  : "Weeping Vines Plant",
+
+
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",
     "item.engineers-bliss.white_candle_cake"      : "Cake with White Candle",
     "item.engineers-bliss.orange_candle_cake"     : "Cake with Orange Candle",
@@ -65,25 +91,5 @@
     "item.engineers-bliss.potted_pale_oak_sapling"   : "Potted Pale Oak Sapling",
     "item.engineers-bliss.potted_open_eyeblossom"    : "Potted Open Eyeblossom",
     "item.engineers-bliss.potted_closed_eyeblossom"  : "Potted Closed Eyeblossom",
-    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion",
-
-
-    "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
-    "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
-    "item.engineers-bliss.full_beehive"          : "Full Beehive",
-    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees",
-
-
-    "item.engineers-bliss.your_player_head"  : "Turns into your Player Head when held in the inventory",
-
-
-    "item.engineers-bliss.armor_stand_with_arms"  : "Armor Stand with arms",
-
-
-    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
-    "item.engineers-bliss.headless_piston"          : "Headless Piston",
-    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
-    "item.engineers-bliss.piston_head"              : "Piston Head",
-    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
-    "item.engineers-bliss.short_piston_head"        : "Short Piston Head"
+    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion"
 }

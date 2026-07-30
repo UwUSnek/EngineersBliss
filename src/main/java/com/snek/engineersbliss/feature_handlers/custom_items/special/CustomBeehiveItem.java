@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public class CustomBeehiveItem extends __base_CustomBlockItem {
+public class CustomBeehiveItem extends CustomBlockItem {
     private final int beeCount;
     private final int honeyLevel;
 

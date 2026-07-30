@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public class HeadlessPistonItem extends __base_CustomBlockItem {
+public class HeadlessPistonItem extends CustomBlockItem {
     public HeadlessPistonItem(Block block, Properties properties) {
         super(block, properties);
     }

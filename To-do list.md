@@ -157,10 +157,10 @@
   - [Vanilla block] Powder Snow Cauldron item
   - [Vanilla block] Unlit Campfire item
   - [Vanilla block] Unlit Soul Campfire item
-  - [Vanilla block] Kelp Plant item
-  - [Vanilla block] Cave Vines Plant item
-  - [Vanilla block] Twisting Vines Plant item
-  - [Vanilla block] Weeping Vines Plant item
+  - ~~[Vanilla block] Kelp Plant item~~
+  - ~~[Vanilla block] Cave Vines Plant item~~
+  - ~~[Vanilla block] Twisting Vines Plant item~~
+  - ~~[Vanilla block] Weeping Vines Plant item~~
   - [Vanilla block] Frogspawn item
   - ~~[Vanilla blocks] Cake with Candle items~~
   - ~~[Vanilla blocks] Potted plant items~~

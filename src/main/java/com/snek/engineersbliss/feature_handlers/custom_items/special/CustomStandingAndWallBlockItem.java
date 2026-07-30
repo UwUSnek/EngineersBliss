@@ -12,12 +12,12 @@ import net.minecraft.world.level.block.Block;
 
 /**
  * The base class of custom block items with standing and wall variants.
- * This stops the item registration phase from overriding vanilla (& modded) block-to-item mappings.
+ * This stops the item registration phase from overwriting vanilla (& modded) block-to-item mappings.
  */
-public class __base_CustomStandingAndWallBlockItem extends StandingAndWallBlockItem {
+public class CustomStandingAndWallBlockItem extends StandingAndWallBlockItem {
 
 
-    public __base_CustomStandingAndWallBlockItem(Block block, final Block wallBlock, final Direction attachmentDirection, Properties p) {
+    public CustomStandingAndWallBlockItem(Block block, final Block wallBlock, final Direction attachmentDirection, Properties p) {
         super(block, wallBlock, attachmentDirection, p);
     }
 
