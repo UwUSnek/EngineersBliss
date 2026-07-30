@@ -143,7 +143,7 @@ public class ModCreativeTabs {
 
     public static final ResourceKey<CreativeModeTab> BLOCK_PARTS_TAB_KEY = ResourceKey.create(
         BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "custom_items")
+        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block_parts")
     );
 
     public static final CreativeModeTab BLOCK_PARTS_TAB = FabricCreativeModeTab.builder()
@@ -175,6 +175,6 @@ public class ModCreativeTabs {
     public static void register() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_ITEMS_TAB_KEY,  CUSTOM_ITEMS_TAB);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MISSING_ITEMS_TAB_KEY, MISSING_ITEMS_TAB);
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BLOCK_PARTS_TAB_KEY, BLOCK_PARTS_TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BLOCK_PARTS_TAB_KEY,   BLOCK_PARTS_TAB);
     }
 }
