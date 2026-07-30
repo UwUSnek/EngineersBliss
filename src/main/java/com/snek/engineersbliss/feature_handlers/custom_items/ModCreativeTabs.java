@@ -53,7 +53,7 @@ public class ModCreativeTabs {
     );
 
     public static final CreativeModeTab MISSING_ITEMS_TAB = FabricCreativeModeTab.builder()
-        .icon(() -> new ItemStack(CustomItemHandler.POTTED_FLOWERING_AZALEA.asItem()))
+        .icon(() -> new ItemStack(CustomItemHandler.POTTED_CHERRY_SAPLING.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_items"))
         .displayItems((params, output) -> {
 
