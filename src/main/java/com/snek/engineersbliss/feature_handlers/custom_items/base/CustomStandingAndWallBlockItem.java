@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.special;
+package com.snek.engineersbliss.feature_handlers.custom_items.base;
 
 import java.util.List;
 import java.util.Map;
@@ -38,11 +38,10 @@ public class CustomStandingAndWallBlockItem extends StandingAndWallBlockItem {
             for(final Block mappedBlock : mappedBlocks) {
                 map.put(mappedBlock, item);
             }
+            PickBlockOverrideManager.registerCustomOverrides(map, mappedBlocks, item);
         }
 
         // Otherwise, override registerBlocks with a no-op so the existing mapping is preserved.
-        else {
-            // Empty
-        }
+        else { /* Empty */ }
     }
 }

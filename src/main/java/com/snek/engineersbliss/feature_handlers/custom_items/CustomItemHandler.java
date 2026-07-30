@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
@@ -28,6 +28,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.GrowingPlantBodyBlock;
 
 
 
@@ -162,7 +164,7 @@ public class CustomItemHandler {
     );
     public static final Item CAVE_VINES_STEM_WITH_BERRIES = register(
         "cave_vines_stem_with_berries", "plants",
-        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, true, p, List.of(Blocks.CAVE_VINES_PLANT)),
+        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, true, p, null),
         new Txt("A Cave Vines Plant block in item form. Comes with Glow Berries."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
@@ -174,7 +176,7 @@ public class CustomItemHandler {
     );
     public static final Item CAVE_VINES_CROWN_WITH_BERRIES = register(
         "cave_vines_crown_with_berries", "plants",
-        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, true, p, List.of(Blocks.CAVE_VINES)),
+        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, true, p, null),
         new Txt("A Cave Vines block in item form. Comes with Glow Berries."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );

@@ -5,6 +5,7 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
