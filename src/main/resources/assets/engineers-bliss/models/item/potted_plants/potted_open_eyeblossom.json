@@ -1,7 +1,7 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "engineers-bliss:item/potted_plants/potted_open_eyeblossom"
+  "credit" : "UwU_Snek",
+  "parent" : "minecraft:item/generated",
+  "textures" : {
+    "layer0" : "engineers-bliss:item/potted_plants/potted_open_eyeblossom"
   }
 }
