@@ -36,13 +36,12 @@
   - ~~3D Rails~~
   - ~~3D Ladders~~
   - ~~3D Iron Chains & Copper Chains~~
-  - 3D Iron Bars & Copper Bars
+  - ~~3D Iron Bars & Copper Bars~~
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
   - Player model rendering in the pause menu //TODO add this to the readme if possible
     - Display player name above model
     - Display customizable title under the name
-  - Replace block entity rendering with static models //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -72,6 +71,7 @@
 
 - **Creative mode tweaks**
   - ~~Control flying speed~~
+  - ~~Control walking speed~~
   - ~~Control reach distance~~
   - ~~Control interaction radius (click multiple blocks at once)~~
   - add in-game UI for these. display their current values with icons and such
@@ -91,15 +91,15 @@
   - ~~Phase through blocks while flying~~
   - ~~Phase through entities~~
   - ~~Disable bouncing on Slime Blocks~~
-  - Disable not being able to jump from Honey Blocks
-  - Disable sliding on the sides of Honey Blocks
+  - ~~Disable not being able to jump from Honey Blocks~~
+  - ~~Disable sliding on the sides of Honey Blocks~~
   - ~~Disable being slowed down by Slime Blocks~~
   - ~~Disable being slowed down by Honey Blocks~~
   - ~~Disable being slowed down by Soul Sand~~
   - ~~Disable being slowed down by powder snow~~
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - ~~Disable being moved by Water and Lava currents~~
-  - Disable being dragged by Bubble Columns
+  - ~~Disable being dragged by Bubble Columns~~
 
   - Disable item change animation
   - Disable hand swing animation
@@ -135,6 +135,8 @@
   - Item Sink (storage block with infinite capacity)
   - 0 Friction blocks
   - ∞ Friction blocks
+  - ~~Green Screen block~~
+  - ~~Blue Screen block~~
   - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
   - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
   - [Vanilla Item] Name Tag item with Custom Name //TODO meant for name tagging mobs (makes them persistent). add to item lore
@@ -143,12 +145,12 @@
   - [Vanilla block] Nether Portal item
   - [Vanilla block] End Portal item
   - [Vanilla block] End Gateway item
-  - [Vanilla block] Headless Piston item   //TODO add this to item lore -> //FIXME Updates make the head appear
-  - [Vanilla block] Headless Sticky Piston item   //TODO add this to item lore -> //FIXME Updates make the head appear
-  - [Vanilla block] Sticky Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless sticky piston
-  - [Vanilla block] Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless piston
-  - [Vanilla block] Short Sticky Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless sticky piston
-  - [Vanilla block] Short Piston Head item   //TODO add this to item lore -> //FIXME Updates make the block break unless properly connected to a headless piston
+  - ~~[Vanilla block] Headless Piston item~~
+  - ~~[Vanilla block] Headless Sticky Piston item~~
+  - ~~[Vanilla block] Sticky Piston Head item~~
+  - ~~[Vanilla block] Piston Head item~~
+  - ~~[Vanilla block] Short Sticky Piston Head item~~
+  - ~~[Vanilla block] Short Piston Head item~~
   - [Vanilla block] Frosted Ice item       //TODO add this to item lore -> //FIXME Updates make it melt
   - [Vanilla block] Water Cauldron item
   - [Vanilla block] Lava Cauldron item
@@ -160,13 +162,16 @@
   - [Vanilla block] Twisting Vines Plant item
   - [Vanilla block] Weeping Vines Plant item
   - [Vanilla block] Frogspawn item
-  - [Vanilla blocks] Cake with Candle items //TODO same placement requirements as cake //FIXME maybe generate them automatically? idk what to do about the render though
-  - [Vanilla blocks] Potted plant items //TODO same placement requirements as flower pot
-  - [Vanilla blocks] Sloped Rail items //TODO same placement requirements as rails
-  - [Vanilla block & item] Your Player Head as an item
-  - [Vanilla block & item] Bee Nest with Bees and Honey
-  - [Vanilla block & item] Beehive with Bees and Honey
-  - [Vanilla block & entity] Armor Stand with arms
+  - ~~[Vanilla blocks] Cake with Candle items~~
+  - ~~[Vanilla blocks] Potted plant items~~
+  - ~~[Vanilla block & item] Your Player Head as an item~~
+  - ~~[Vanilla block] Bee Nest with Bees and Honey~~
+  - ~~[Vanilla block] Bee Nest with Honey but no Bees~~
+  - ~~[Vanilla block] Beehive with Bees and Honey~~
+  - ~~[Vanilla block] Beehive with Honey but no Bees~~
+  - ~~[Vanilla entity] Armor Stand with arms~~
+  - ~~[Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu~~
+  - ~~[Vanilla item & entity] Wither Spawn Egg in the Creative menu~~
 
 
 
@@ -180,22 +185,24 @@
 
 
 
+
+
+
+
+
+
 # Not features:
 
-- Update UI, draw one with a more modern style
+- ~~Update UI, draw one with a more modern style~~
 - render stats //TODO minecraft.getGpuUtilization()
 
 
-- add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign
-- add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block
+- ~~add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign~~
+- ~~add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block~~
 
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
 
-- Add small pretty custom icons for all the settings
-
-- add cool redstone mechanism overlay in front of the main menu screen
-- add cool small redstone mechanism overlay in the pause menu
-
+- ~~Add small pretty custom icons for all the settings~~
 
 
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
@@ -203,22 +210,14 @@
 
 - add a "about" screen that talks abotu the mod, basically just copy the readme.
   - display my skin/drawing in there too and name
+  - say that no part of the mod was generated by ai
 
 
 - add images to the readme?
   - show a screenshot of a big block of block entities and like 2fps/300fps difference when static models are on
 
 
-- maybe add a "display attachment point" overlay? kinda like redstone power source arrows but for blocks that require a support. ceiling/floor/wall
-
-- make chests swap back to dynamic model when opening them - refresh the chunk section on opening/closing
-
-
-- add some logo or something as blur background cutout?
-
-
-
-- add a "keybinds" section in creative tweaks
+- ~~add a "keybinds" section~~
   - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
   - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
 
@@ -227,7 +226,7 @@
 - add a generic "hide all particles" toggle in rendering screen
 
 
-- static lectern models? or optimized, idk
+- ~~static lectern models? or optimized, idk~~
 
 
 - add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
@@ -243,3 +242,20 @@
   - number of regions
   - number of generated chunks
   - size of the world directory
+
+
+- 3am water that extends normal water fluid but has shaders
+
+- Add a status bar at the bottom of the screen
+  - display player position here? maybe? and tps and fps and ping
+  - display tab/+/- default keybinds in UIs
+    - add these to the pause menu too somehow
+
+
+- maybe add a "center crosshair" feature in alt textures? Vanilla's crosshair isnt centered
+
+
+
+- USE SLIDER/TOGGLE FOR ALT TEXTURES FEATURES. overlay still images
+
+- maybe add chat timestamps?

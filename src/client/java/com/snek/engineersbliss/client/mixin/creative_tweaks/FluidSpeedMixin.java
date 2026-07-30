@@ -4,12 +4,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
-
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +33,7 @@ public abstract class FluidSpeedMixin {
      * Replaces water movement with air movement to keep correct speed and disable water related movement buffs.
      * Manually adds back the floating in fluid, falling in fluid, and jumping out of fluid physics.
      */
-    @Unique private void customTravelInFluid(final Player _this, final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY) {
+    @Unique private void eb$customTravelInFluid(final Player _this, final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY) {
 
         // Default air movement
         // ! Force set onGround to true while running this to stop fluids from making the player "not on the ground" while sprinting.
@@ -60,13 +60,13 @@ public abstract class FluidSpeedMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "travelInWater", at = @At("HEAD"), cancellable = true, require = 1)
-    private void travelInWater(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
+    private void eb$travelInWater(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
         // If entity is a player and they are not swimming (keep default swimming movement) and they have the feature active, use the custom movement
         if((Object)this instanceof final Player _this) {
             if(!_this.isSwimming()) {
-                if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_WATER_SLOWDOWN)) {
-                    customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
+                if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_WATER_SLOWDOWN)) {
+                    eb$customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                     ci.cancel();
                 }
             }
@@ -78,12 +78,12 @@ public abstract class FluidSpeedMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "travelInLava", at = @At("HEAD"), cancellable = true, require = 1)
-    private void travelInLava(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
+    private void eb$travelInLava(final Vec3 input, final double baseGravity, final boolean isFalling, final double oldY, final CallbackInfo ci) {
 
         // If entity is a player and they have the feature active, use the custom movement
         if((Object)this instanceof final Player _this) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_LAVA_SLOWDOWN)) {
-                customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
+            if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_LAVA_SLOWDOWN)) {
+                eb$customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                 ci.cancel();
             }
         }

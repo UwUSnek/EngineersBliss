@@ -7,8 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -34,7 +34,7 @@ public class ClimbableSlowdownSuppressor {
 
     @SuppressWarnings("unused")
     @Inject(method = "handleOnClimbable", at = @At("HEAD"))
-    private void captureOriginal(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
+    private void eb$captureOriginal(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
         if((Object)this instanceof Player) {
             originalDelta = delta;
         }
@@ -45,7 +45,7 @@ public class ClimbableSlowdownSuppressor {
 
     @SuppressWarnings("unused")
     @Inject(method = "handleOnClimbable", at = @At("RETURN"), cancellable = true)
-    private void handleOnClimbable(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
+    private void eb$handleOnClimbable(final Vec3 delta, final CallbackInfoReturnable<Vec3> cir) {
         final LivingEntity _this = (LivingEntity)(Object)this;
 
 
@@ -54,14 +54,20 @@ public class ClimbableSlowdownSuppressor {
 
 
             // Handle Ladders
-            if(state.is(Blocks.LADDER) && CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_LADDER_SLOWDOWN)) {
+            if(
+                state.is(Blocks.LADDER) &&
+                ClientFeatureSync.creativePlayerHasFeature(_this, CreativeTweaksServerFeatureSet.DISABLE_LADDER_SLOWDOWN)
+            ) {
                 final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
 
 
             // Handle Vines
-            if(state.is(Blocks.VINE) && CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_VINES_SLOWDOWN)) {
+            if(
+                state.is(Blocks.VINE) &&
+                ClientFeatureSync.creativePlayerHasFeature(_this, CreativeTweaksServerFeatureSet.DISABLE_VINES_SLOWDOWN)
+            ) {
                 final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
             }
@@ -70,7 +76,7 @@ public class ClimbableSlowdownSuppressor {
             // Handle Twisting Vines
             if(
                 (state.is(Blocks.TWISTING_VINES) || state.is(Blocks.TWISTING_VINES_PLANT)) &&
-                CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_TWISTING_VINES_SLOWDOWN)
+                ClientFeatureSync.creativePlayerHasFeature(_this, CreativeTweaksServerFeatureSet.DISABLE_TWISTING_VINES_SLOWDOWN)
             ) {
                 final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));
@@ -80,7 +86,7 @@ public class ClimbableSlowdownSuppressor {
             // Handle Weeping Vines
             if(
                 (state.is(Blocks.WEEPING_VINES) || state.is(Blocks.WEEPING_VINES_PLANT)) &&
-                CreativeTweaksHandler.clientPlayerHasFeature(_this, CreativeTweakFeature.DISABLE_WEEPING_VINES_SLOWDOWN)
+                ClientFeatureSync.creativePlayerHasFeature(_this, CreativeTweaksServerFeatureSet.DISABLE_WEEPING_VINES_SLOWDOWN)
             ) {
                 final Vec3 clamped = cir.getReturnValue();
                 cir.setReturnValue(new Vec3(originalDelta.x, clamped.y, originalDelta.z));

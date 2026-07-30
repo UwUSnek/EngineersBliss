@@ -1,0 +1,89 @@
+{
+    "creativeTab.engineers-bliss.missing_items": "Engineer's Bliss - Missing items",
+    "creativeTab.engineers-bliss.custom_items":  "Engineer's Bliss - Custom items",
+
+
+
+
+    "item.engineers-bliss.green_screen": "Green Screen",
+    "item.engineers-bliss.blue_screen":   "Blue Screen",
+
+
+    "item.engineers-bliss.candle_cake"            : "Cake with Candle",
+    "item.engineers-bliss.white_candle_cake"      : "Cake with White Candle",
+    "item.engineers-bliss.orange_candle_cake"     : "Cake with Orange Candle",
+    "item.engineers-bliss.magenta_candle_cake"    : "Cake with Magenta Candle",
+    "item.engineers-bliss.light_blue_candle_cake" : "Cake with Light Blue Candle",
+    "item.engineers-bliss.yellow_candle_cake"     : "Cake with Yellow Candle",
+    "item.engineers-bliss.lime_candle_cake"       : "Cake with Lime Candle",
+    "item.engineers-bliss.pink_candle_cake"       : "Cake with Pink Candle",
+    "item.engineers-bliss.gray_candle_cake"       : "Cake with Gray Candle",
+    "item.engineers-bliss.light_gray_candle_cake" : "Cake with Light Gray Candle",
+    "item.engineers-bliss.cyan_candle_cake"       : "Cake with Cyan Candle",
+    "item.engineers-bliss.purple_candle_cake"     : "Cake with Purple Candle",
+    "item.engineers-bliss.blue_candle_cake"       : "Cake with Blue Candle",
+    "item.engineers-bliss.brown_candle_cake"      : "Cake with Brown Candle",
+    "item.engineers-bliss.green_candle_cake"      : "Cake with Green Candle",
+    "item.engineers-bliss.red_candle_cake"        : "Cake with Red Candle",
+    "item.engineers-bliss.black_candle_cake"      : "Cake with Black Candle",
+
+
+    "item.engineers-bliss.potted_dandelion"          : "Potted Dandelion",
+    "item.engineers-bliss.potted_poppy"              : "Potted Poppy",
+    "item.engineers-bliss.potted_blue_orchid"        : "Potted Blue Orchid",
+    "item.engineers-bliss.potted_allium"             : "Potted Allium",
+    "item.engineers-bliss.potted_azure_bluet"        : "Potted Azure Bluet",
+    "item.engineers-bliss.potted_red_tulip"          : "Potted Red Tulip",
+    "item.engineers-bliss.potted_orange_tulip"       : "Potted Orange Tulip",
+    "item.engineers-bliss.potted_white_tulip"        : "Potted White Tulip",
+    "item.engineers-bliss.potted_pink_tulip"         : "Potted Pink Tulip",
+    "item.engineers-bliss.potted_oxeye_daisy"        : "Potted Oxeye Daisy",
+    "item.engineers-bliss.potted_cornflower"         : "Potted Cornflower",
+    "item.engineers-bliss.potted_lily_of_the_valley" : "Potted Lily of the Valley",
+    "item.engineers-bliss.potted_wither_rose"        : "Potted Wither Rose",
+    "item.engineers-bliss.potted_torchflower"        : "Potted Torchflower",
+    "item.engineers-bliss.potted_oak_sapling"        : "Potted Oak Sapling",
+    "item.engineers-bliss.potted_spruce_sapling"     : "Potted Spruce Sapling",
+    "item.engineers-bliss.potted_birch_sapling"      : "Potted Birch Sapling",
+    "item.engineers-bliss.potted_jungle_sapling"     : "Potted Jungle Sapling",
+    "item.engineers-bliss.potted_acacia_sapling"     : "Potted Acacia Sapling",
+    "item.engineers-bliss.potted_dark_oak_sapling"   : "Potted Dark Oak Sapling",
+    "item.engineers-bliss.potted_cherry_sapling"     : "Potted Cherry Sapling",
+    "item.engineers-bliss.potted_red_mushroom"       : "Potted Red Mushroom",
+    "item.engineers-bliss.potted_brown_mushroom"     : "Potted Brown Mushroom",
+    "item.engineers-bliss.potted_fern"               : "Potted Fern",
+    "item.engineers-bliss.potted_dead_bush"          : "Potted Dead Bush",
+    "item.engineers-bliss.potted_cactus"             : "Potted Cactus",
+    "item.engineers-bliss.potted_bamboo"             : "Potted Bamboo",
+    "item.engineers-bliss.potted_azalea"             : "Potted Azalea",
+    "item.engineers-bliss.potted_flowering_azalea"   : "Potted Flowering Azalea",
+    "item.engineers-bliss.potted_crimson_fungus"     : "Potted Crimson Fungus",
+    "item.engineers-bliss.potted_warped_fungus"      : "Potted Warped Fungus",
+    "item.engineers-bliss.potted_crimson_roots"      : "Potted Crimson Roots",
+    "item.engineers-bliss.potted_warped_roots"       : "Potted Warped Roots",
+    "item.engineers-bliss.potted_mangrove_propagule" : "Potted Mangrove Propagule",
+    "item.engineers-bliss.potted_pale_oak_sapling"   : "Potted Pale Oak Sapling",
+    "item.engineers-bliss.potted_open_eyeblossom"    : "Potted Open Eyeblossom",
+    "item.engineers-bliss.potted_closed_eyeblossom"  : "Potted Closed Eyeblossom",
+    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion",
+
+
+    "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
+    "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
+    "item.engineers-bliss.full_beehive"          : "Full Beehive",
+    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees",
+
+
+    "item.engineers-bliss.your_player_head"  : "Turns into your Player Head when held in the inventory",
+
+
+    "item.engineers-bliss.armor_stand_with_arms"  : "Armor Stand with arms",
+
+
+    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
+    "item.engineers-bliss.headless_piston"          : "Headless Piston",
+    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
+    "item.engineers-bliss.piston_head"              : "Piston Head",
+    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
+    "item.engineers-bliss.short_piston_head"        : "Short Piston Head"
+}

@@ -47,7 +47,7 @@ public class ComparatorInputChangeTrackerMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "neighborChanged", at = @At("HEAD"), cancellable = false, require = 1)
-    private void neighborChanged(final BlockState state, final Level level, final BlockPos pos, final Block block, @Nullable final Orientation orientation, final boolean movedByPiston, final CallbackInfo ci) {
+    private void eb$neighborChanged(final BlockState state, final Level level, final BlockPos pos, final Block block, @Nullable final Orientation orientation, final boolean movedByPiston, final CallbackInfo ci) {
 
         // Return if level isnt valid, this is firing on the client, or the block is not a Comparator
         if(level == null || level.isClientSide()) return;

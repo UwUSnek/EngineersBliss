@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -27,12 +27,12 @@ public class ClientBlockPhasingPacketFixMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "isEntityCollidingWithAnythingNew", at = @At("HEAD"), cancellable = true, require = 1)
-    private void isEntityCollidingWithAnythingNew(
+    private void eb$isEntityCollidingWithAnythingNew(
         final LevelReader level, final Entity entity, final AABB oldAABB,
         final double newX, final double newY, final double newZ,
         final CallbackInfoReturnable<Boolean> cir
     ) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(entity)) {
+        if(ClientFeatureSync.shouldPlayerPhaseThroughBlocks(entity)) {
             cir.setReturnValue(false);
         }
     }

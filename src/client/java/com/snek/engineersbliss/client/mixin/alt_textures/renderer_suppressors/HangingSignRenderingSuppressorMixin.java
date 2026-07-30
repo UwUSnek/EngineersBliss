@@ -4,9 +4,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.utils.BlockEntityUtils;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -42,7 +42,7 @@ public abstract class HangingSignRenderingSuppressorMixin extends AbstractSignRe
 
     @SuppressWarnings("unused")
     @Inject(method = "extractRenderState", at = @At("HEAD"), cancellable = true, require = 1)
-    private void extractRenderState(
+    private void eb$extractRenderState(
         final SignBlockEntity blockEntity,
         final HangingSignRenderState state,
         final float partialTicks,
@@ -50,7 +50,7 @@ public abstract class HangingSignRenderingSuppressorMixin extends AbstractSignRe
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         final CallbackInfo ci
     ) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS)) {
+        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS)) {
             if(!BlockEntityUtils.signHasText(blockEntity)) {
                 ci.cancel();
             }

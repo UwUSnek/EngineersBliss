@@ -1,22 +1,23 @@
 package com.snek.engineersbliss.client.screens.overlays;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
-import com.snek.engineersbliss.client.screens.__base_Screen;
-import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
+import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 
 
 
-
-public class OverlaysScreen extends __base_Screen {
-    private static final int BUTTON_WIDTH = 200;
+public class OverlaysScreen extends __base_UiFeatureSetScreen {
 
 
     public OverlaysScreen() {
-        super();
+        super(OverlaysClientFeatureSet.INSTANCE);
     }
 
 
@@ -24,40 +25,21 @@ public class OverlaysScreen extends __base_Screen {
 
     @Override
     protected void init() {
+        super.init();
 
-        // Power levels  //TODO add header
-        addButton(getToggleText(OverlayFeature.COMPARATOR_POWER_LEVELS),       OverlayFeature.COMPARATOR_POWER_LEVELS      .getDetails(), b -> toggleFeature(OverlayFeature.COMPARATOR_POWER_LEVELS,       b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS),    OverlayFeature.REDSTONE_WIRE_POWER_LEVELS   .getDetails(), b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS,    b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.RAIL_POWER_LEVELS),             OverlayFeature.RAIL_POWER_LEVELS            .getDetails(), b -> toggleFeature(OverlayFeature.RAIL_POWER_LEVELS,             b), BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
+
+        // Power levels
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Power levels", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, OverlaysClientFeatureSet.COMPARATOR_POWER_LEVELS),    Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_LEVELS), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, OverlaysClientFeatureSet.RAIL_POWER_LEVELS),          Layout.BORDER_HEIGHT);
 
         // Logic
-        addButton(getToggleText(OverlayFeature.COMPARATOR_LOGIC_SNIPPET),      OverlayFeature.COMPARATOR_LOGIC_SNIPPET     .getDetails(), b -> toggleFeature(OverlayFeature.COMPARATOR_LOGIC_SNIPPET,      b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 0, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE),    OverlayFeature.REDSTONE_WIRE_POWER_SOURCE   .getDetails(), b -> toggleFeature(OverlayFeature.REDSTONE_WIRE_POWER_SOURCE,    b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 1, BUTTON_WIDTH);
-        addButton(getToggleText(OverlayFeature.RAIL_POWER_SOURCE),             OverlayFeature.RAIL_POWER_SOURCE            .getDetails(), b -> toggleFeature(OverlayFeature.RAIL_POWER_SOURCE,             b), BORDER_WIDTH + (BORDER_WIDTH + BUTTON_WIDTH), LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 2, BUTTON_WIDTH);
-    }
-
-
-    @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
-        if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
-    }
-
-
-
-
-
-    public static Txt getToggleText(final OverlayFeature feature, final boolean state) {
-        return feature.getName().cat(": " + (state ? "ON" : "OFF"));
-    }
-    public static Txt getToggleText(final OverlayFeature feature) {
-        return getToggleText(feature, OverlaysHandler.getFeature(feature));
-    }
-
-
-    public static void toggleFeature(final OverlayFeature feature, final Button b) {
-        final boolean newState = !OverlaysHandler.getFeature(feature);
-        b.setMessage(getToggleText(feature, newState).get());
-        OverlaysHandler.setFeature(feature, newState);
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Block logic", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, OverlaysClientFeatureSet.COMPARATOR_LOGIC_SNIPPET),   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, OverlaysClientFeatureSet.REDSTONE_WIRE_POWER_SOURCE), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, OverlaysClientFeatureSet.RAIL_POWER_SOURCE),          Layout.BORDER_HEIGHT);
     }
 }

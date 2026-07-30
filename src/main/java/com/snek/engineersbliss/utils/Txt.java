@@ -2,6 +2,7 @@ package com.snek.engineersbliss.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -225,6 +226,7 @@ public class Txt {
     public @NotNull Txt noItalic       () { style = style.withItalic       (false); return this; }
     public @NotNull Txt noObfuscated   () { style = style.withObfuscated   (false); return this; }
     public @NotNull Txt noStrikethrough() { style = style.withStrikethrough(false); return this; }
+    public @NotNull Txt noShadow       () { style = style.withoutShadow    ();      return this; }
 
 
 
@@ -282,7 +284,7 @@ public class Txt {
      */
     public @NotNull Component get() {
         rawText.setStyle(style);
-        return rawText;
+        return rawText.copy();
     }
 
     /**
@@ -302,7 +304,6 @@ public class Txt {
 
     /**
      * Extracts a substring from a Txt, preserving styles.
-     * @param component The component.
      * @param start Starting index (inclusive).
      *     This can safely exceed the length of the text.
      * @param end Ending index (exclusive).
@@ -315,18 +316,31 @@ public class Txt {
         }
 
         final List<MutableComponent> parts = new ArrayList<>();
-        extractRecursive(get(), start, end, 0, style, parts);
+        final int[] pos = {0};
+
+        get().visit((nodeStyle, text) -> {
+            final int contentLen = text.length();
+            final int contentEnd = pos[0] + contentLen;
+
+            if(pos[0] < end && contentEnd > start) {
+                final int localStart = Math.max(0, start - pos[0]);
+                final int localEnd = Math.min(contentLen, end - pos[0]);
+                if(localStart < localEnd) {
+                    parts.add(Component.literal(text.substring(localStart, localEnd)).setStyle(nodeStyle));
+                }
+            }
+            pos[0] = contentEnd;
+            return Optional.<Void>empty(); // Keep visiting
+        }, style);
 
         if(parts.isEmpty()) {
             return new Txt();
         }
 
-        // Build component chain
         final MutableComponent result = parts.get(0);
         for(int i = 1; i < parts.size(); i++) {
             result.append(parts.get(i));
         }
-
         return new Txt(result);
     }
 
@@ -335,7 +349,6 @@ public class Txt {
 
     /**
      * Safe substring that clamps indices to valid range.
-     * @param component The component.
      * @param start Starting index (inclusive).
      *     This can safely exceed the length of the text.
      * @param end Ending index (exclusive).
@@ -347,43 +360,6 @@ public class Txt {
             Math.max(0, start),
             Math.max(start, end)
         );
-    }
-
-
-
-
-    private static int extractRecursive(final @NotNull Component comp, final int start, final int end, int pos, final @NotNull Style parentStyle, final @NotNull List<@NotNull MutableComponent> parts) {
-
-        // Inherit missing styles from parent
-        final @NotNull Style effectiveStyle = parentStyle.applyTo(comp.getStyle());
-
-
-        // Extract text content from component
-        final @NotNull String content = comp.getString();
-        final int contentLen = content.length();
-        final int contentEnd = pos + contentLen;
-
-
-        // Check if this component's content intersects with the target range
-        if(pos < end && contentEnd > start) {
-            final int localStart = Math.max(0, start - pos);
-            final int localEnd = Math.min(contentLen, end - pos);
-
-            if(localStart < localEnd) {
-                final String substring = content.substring(localStart, localEnd);
-                parts.add(Component.literal(substring).setStyle(effectiveStyle));
-            }
-        }
-        pos = contentEnd;
-
-
-        // Process siblings
-        for(final @NotNull Component sibling : comp.getSiblings()) {
-            if(pos >= end) break;
-            pos = extractRecursive(sibling, start, end, pos, effectiveStyle, parts);
-        }
-
-        return pos;
     }
 }
 

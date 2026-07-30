@@ -5,8 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweakFeature;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 
 import net.minecraft.world.entity.Entity;
 
@@ -18,9 +18,9 @@ public class ClientFireEffectSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "fireImmune", at = @At("RETURN"), cancellable = true, require = 1)
-	private void fireImmune(final CallbackInfoReturnable<Boolean> cir) {
+	private void eb$fireImmune(final CallbackInfoReturnable<Boolean> cir) {
         if(!cir.getReturnValueZ()) {
-            if(CreativeTweaksHandler.clientPlayerHasFeature(this, CreativeTweakFeature.DISABLE_FIRE_EFFECT)) {
+            if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_FIRE_EFFECT)) {
                 cir.setReturnValue(true);
             }
         }

@@ -6,11 +6,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -23,14 +24,20 @@ public class VanillaParticleSuppressor {
 
     @SuppressWarnings("unused")
     @Inject(method = "getMarkerParticleTarget", at = @At("HEAD"), cancellable = true, require = 1)
-	private void getMarkerParticleTarget(final CallbackInfoReturnable<Block> cir) {
-        if(OverlaysHandler.getFeature(OverlayFeature.BETTER_BARRIER_DISPLAY)) {
-            final @NotNull ItemStack stack = Minecraft.getInstance().player.getMainHandItem();
+	private void eb$getMarkerParticleTarget(final CallbackInfoReturnable<Block> cir) {
+        final Player player = Minecraft.getInstance().player;
+        if(player == null) {
+            cir.setReturnValue(null);
+            return;
+        }
+        if(ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_BARRIER_DISPLAY)) {
+            final @NotNull ItemStack stack = player.getMainHandItem();
             if(stack.getItem() == Items.BARRIER) cir.setReturnValue(null);
         }
-        if(OverlaysHandler.getFeature(OverlayFeature.BETTER_LIGHT_BLOCK_DISPLAY)) {
-            final @NotNull ItemStack stack = Minecraft.getInstance().player.getMainHandItem();
+        if(ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.BETTER_LIGHT_BLOCK_DISPLAY)) {
+            final @NotNull ItemStack stack = player.getMainHandItem();
             if(stack.getItem() == Items.LIGHT) cir.setReturnValue(null);
         }
+        //! Structure voids don't emit any particle in Vanilla. No need to block that.
     }
 }

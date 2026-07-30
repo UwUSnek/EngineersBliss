@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -23,8 +23,8 @@ public class ClientBlockPhasingPoseFixMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At("HEAD"), cancellable = true, require = 1)
-    private void canPlayerFitWithinBlocksAndEntitiesWhen(final Pose newPose, final CallbackInfoReturnable<Boolean> cir) {
-        if(CreativeTweaksHandler.shouldPlayerPhaseThroughBlocks(this)) {
+    private void eb$canPlayerFitWithinBlocksAndEntitiesWhen(final Pose newPose, final CallbackInfoReturnable<Boolean> cir) {
+        if(ClientFeatureSync.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(true);
         }
     }

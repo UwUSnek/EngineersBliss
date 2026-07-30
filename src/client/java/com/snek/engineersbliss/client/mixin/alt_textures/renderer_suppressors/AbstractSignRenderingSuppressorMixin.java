@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -15,7 +15,6 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.world.level.block.EnchantingTableBlock;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 
@@ -31,7 +30,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "submitSign", at = @At("HEAD"), cancellable = true, require = 1)
-	private void submitSign(
+	private void eb$submitSign(
 		final PoseStack poseStack,
 		final int lightCoords,
 		final WoodType type,
@@ -40,7 +39,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 		final SubmitNodeCollector submitNodeCollector,
         final CallbackInfo ci
 	) {
-        if(AltTexturesHandler.getFeature(AltTextureFeature.STATIC_SIGNS)) {
+        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS)) {
             ci.cancel();
         }
     }

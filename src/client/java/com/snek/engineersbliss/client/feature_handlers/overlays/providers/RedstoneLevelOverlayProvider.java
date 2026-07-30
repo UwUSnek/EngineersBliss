@@ -2,11 +2,10 @@ package com.snek.engineersbliss.client.feature_handlers.overlays.providers;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTextureFeature;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesHandler;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlayFeature;
-import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.overlays.attached_data.__base_OverlayAttachedData;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
+import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
@@ -22,7 +21,7 @@ public final class RedstoneLevelOverlayProvider extends __base_TextureOverlayPro
     @Override
     public boolean shouldRender(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
         return
-            OverlaysHandler.getFeature(OverlayFeature.REDSTONE_WIRE_POWER_LEVELS) &&
+            ClientFeatureSync.getFeatureB(OverlaysServerFeatureSet.REDSTONE_WIRE_POWER_LEVELS) &&
             state.is(Blocks.REDSTONE_WIRE) &&
             state.getValue(RedStoneWireBlock.POWER) > 0
         ;
@@ -35,7 +34,7 @@ public final class RedstoneLevelOverlayProvider extends __base_TextureOverlayPro
 
     @Override
     public double calcVerticalOffset(final BlockState state, final BlockPos pos, @Nullable final __base_OverlayAttachedData attachedData) {
-        return (AltTexturesHandler.getFeature(AltTextureFeature.REDSTONE_WIRE_3D) ? PIXEL_HEIGHT * 0.4 : 0.01) + 0.02;
+        return (ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.REDSTONE_WIRE_3D) ? PIXEL_HEIGHT * 0.4 : 0.01) + 0.02;
     }
 
     @Override
