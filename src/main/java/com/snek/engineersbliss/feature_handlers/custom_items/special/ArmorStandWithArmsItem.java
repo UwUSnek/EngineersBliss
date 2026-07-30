@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.core.BlockPos;
@@ -30,7 +31,7 @@ import net.minecraft.world.phys.Vec3;
 
 
 public class ArmorStandWithArmsItem extends Item {
-    public ArmorStandWithArmsItem(Properties p) {
+    public ArmorStandWithArmsItem(CustomItemProperties p) {
         super(p);
     }
 

@@ -2,6 +2,8 @@ package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
 import java.util.Map;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -16,7 +18,7 @@ import net.minecraft.world.level.block.Block;
 public class CustomBlockItem extends BlockItem {
 
 
-    public CustomBlockItem(Block block, Properties p) {
+    public CustomBlockItem(Block block, CustomItemProperties p) {
         super(block, p);
     }
 

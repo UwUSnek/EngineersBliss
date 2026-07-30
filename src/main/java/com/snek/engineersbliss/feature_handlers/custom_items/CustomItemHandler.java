@@ -2,6 +2,7 @@ package com.snek.engineersbliss.feature_handlers.custom_items;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +12,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBlockItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.WaterPlaceableCustomBlockItem;
@@ -100,34 +102,16 @@ public class CustomItemHandler {
 
 
 
-    public static final Item HEADLESS_STICKY_PISTON = register(
-        "headless_sticky_piston", "pistons",
-        p -> new HeadlessPistonItem(Blocks.STICKY_PISTON, p),
-        new Txt("A Sticky Piston without the Piston Head part."),
-        Notices.HEADLESS_PISTON_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
     public static final Item HEADLESS_PISTON = register(
         "headless_piston", "pistons",
         p -> new HeadlessPistonItem(Blocks.PISTON, p),
         new Txt("A Piston without the Piston Head part."),
         Notices.HEADLESS_PISTON_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
-    public static final Item STICKY_PISTON_HEAD = register(
-        "sticky_piston_head", "pistons",
-        p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, false, p),
-        new Txt("A Sticky Piston, but only the Piston Head part (Long variant)."),
-        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
     public static final Item PISTON_HEAD = register(
         "piston_head", "pistons",
         p -> new PistonHeadItem(Blocks.PISTON_HEAD, false, false, p),
         new Txt("A Piston, but only the Piston Head part (Long variant)."),
-        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-    );
-    public static final Item SHORT_STICKY_PISTON_HEAD = register(
-        "short_sticky_piston_head", "pistons",
-        p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, true, p),
-        new Txt("A Sticky Piston, but only the Piston Head part (Short variant)."),
         Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item SHORT_PISTON_HEAD = register(
@@ -136,32 +120,86 @@ public class CustomItemHandler {
         new Txt("A Piston, but only the Piston Head part (Short variant)."),
         Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
+    public static final Item HEADLESS_STICKY_PISTON = register(
+        "headless_sticky_piston", "pistons",
+        p -> new HeadlessPistonItem(Blocks.STICKY_PISTON, p),
+        new Txt("A Sticky Piston without the Piston Head part."),
+        Notices.HEADLESS_PISTON_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item STICKY_PISTON_HEAD = register(
+        "sticky_piston_head", "pistons",
+        p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, false, p),
+        new Txt("A Sticky Piston, but only the Piston Head part (Long variant)."),
+        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SHORT_STICKY_PISTON_HEAD = register(
+        "short_sticky_piston_head", "pistons",
+        p -> new PistonHeadItem(Blocks.PISTON_HEAD, true, true, p),
+        new Txt("A Sticky Piston, but only the Piston Head part (Short variant)."),
+        Notices.PISTON_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
 
 
 
 
-    public static final Item KELP_PLANT = register(
-        "kelp_plant", "plant_plants",
+    public static final Item KELP_STEM = register(
+        "kelp_stem", "plants",
         p -> new WaterPlaceableCustomBlockItem(Blocks.KELP_PLANT, p),
-        new Txt("A Kelp Plant in item form."),
+        new Txt("A Kelp Plant block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
-    public static final Item CAVE_VINES_PLANT = register(
-        "cave_vines_plant", "plant_plants",
-        p -> new CustomBlockItem(Blocks.CAVE_VINES_PLANT, p),
-        new Txt("A Cave Vines Plant in item form."),
+    public static final Item KELP_CROWN = register(
+        "kelp_crown", "plants",
+        p -> new WaterPlaceableCustomBlockItem(Blocks.KELP, p),
+        new Txt("A Kelp block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
-    public static final Item TWISTING_VINES_PLANT = register(
-        "twisting_vines_plant", "plant_plants",
+    public static final Item CAVE_VINES_STEM = register(
+        "cave_vines_stem", "plants",
+        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, false, p),
+        new Txt("A Cave Vines Plant block in item form."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CAVE_VINES_STEM_WITH_BERRIES = register(
+        "cave_vines_stem_with_berries", "plants",
+        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, true, p),
+        new Txt("A Cave Vines Plant block in item form. Comes with Glow Berries."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CAVE_VINES_CROWN = register(
+        "cave_vines_crown", "plants",
+        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, false, p),
+        new Txt("A Cave Vines block in item form."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CAVE_VINES_CROWN_WITH_BERRIES = register(
+        "cave_vines_crown_with_berries", "plants",
+        p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, true, p),
+        new Txt("A Cave Vines block in item form. Comes with Glow Berries."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item TWISTING_VINES_STEM = register(
+        "twisting_vines_stem", "plants",
         p -> new CustomBlockItem(Blocks.TWISTING_VINES_PLANT, p),
-        new Txt("A Twisting Vines Plant in item form."),
+        new Txt("A Twisting Vines Plant block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
-    public static final Item WEEPING_VINES_PLANT = register(
-        "weeping_vines_plant", "plant_plants",
+    public static final Item TWISTING_VINES_CROWN = register(
+        "twisting_vines_crown", "plants",
+        p -> new CustomBlockItem(Blocks.TWISTING_VINES, p),
+        new Txt("A Twisting Vines block in item form."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item WEEPING_VINES_STEM = register(
+        "weeping_vines_stem", "plants",
         p -> new CustomBlockItem(Blocks.WEEPING_VINES_PLANT, p),
-        new Txt("A Weeping Vines Plant in item form."),
+        new Txt("A Weeping Vines Plant block in item form."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item WEEPING_VINES_CROWN = register(
+        "weeping_vines_crown", "plants",
+        p -> new CustomBlockItem(Blocks.WEEPING_VINES, p),
+        new Txt("A Weeping Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
@@ -571,10 +609,10 @@ public class CustomItemHandler {
 
 
 
-    private static Item register(String id, java.util.function.Function<Item.Properties, Item> factory, Object... lore) {
+    private static Item register(String id, Function<CustomItemProperties, Item> factory, Object... lore) {
         return register(id, null, factory, lore);
     }
-    private static Item register(String id, @Nullable String modelCustomDir, java.util.function.Function<Item.Properties, Item> factory, Object... lore) {
+    private static Item register(String id, @Nullable String modelCustomDir, Function<CustomItemProperties, Item> factory, Object... lore) {
         final List<Component> lines = new ArrayList<>();
         lines.add(Component.empty());
         for(final Object loreEntry : lore) {
@@ -597,10 +635,10 @@ public class CustomItemHandler {
 
 
 
-    private static Item register(String id, java.util.function.Function<Item.Properties, Item> factory, List<Component> lines) {
+    private static Item register(String id, Function<CustomItemProperties, Item> factory, List<Component> lines) {
         return register(id, null, factory, lines);
     }
-    private static Item register(String id, @Nullable String modelCustomDir, java.util.function.Function<Item.Properties, Item> factory, List<Component> lines) {
+    private static Item register(String id, @Nullable String modelCustomDir, Function<CustomItemProperties, Item> factory, List<Component> lines) {
 
         // Create Key
         var key = net.minecraft.resources.ResourceKey.create(
@@ -612,12 +650,12 @@ public class CustomItemHandler {
         // Create item properties with the specified path and set the item ID
         //! Custom item path is required to use subdirectories in assets/engineers-bliss/items.
         final String modelPath = modelCustomDir == null ? id : String.format("%s/%s", modelCustomDir, id);
-        @NotNull Item.Properties properties = new CustomItemProperties(modelPath).setId(key);
+        @NotNull CustomItemProperties properties = (CustomItemProperties)new CustomItemProperties(modelPath).setId(key);
 
 
         // Set item lore if present
         if(!lines.isEmpty()) {
-            properties = properties.component(DataComponents.LORE, new ItemLore(lines, lines));
+            properties = (CustomItemProperties)properties.component(DataComponents.LORE, new ItemLore(lines, lines));
         }
 
 

@@ -2,6 +2,8 @@ package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
 import java.util.Map;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
@@ -17,7 +19,7 @@ import net.minecraft.world.level.block.Block;
 public class CustomStandingAndWallBlockItem extends StandingAndWallBlockItem {
 
 
-    public CustomStandingAndWallBlockItem(Block block, final Block wallBlock, final Direction attachmentDirection, Properties p) {
+    public CustomStandingAndWallBlockItem(Block block, final Block wallBlock, final Direction attachmentDirection, CustomItemProperties p) {
         super(block, wallBlock, attachmentDirection, p);
     }
 

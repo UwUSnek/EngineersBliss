@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
 import com.snek.engineersbliss.mixin.accessors.BeeAccessor;
 
 import net.minecraft.core.BlockPos;
@@ -21,7 +22,7 @@ public class CustomBeehiveItem extends CustomBlockItem {
     private final int beeCount;
     private final int honeyLevel;
 
-    public CustomBeehiveItem(Block block, Properties properties, int beeCount, int honeyLevel) {
+    public CustomBeehiveItem(Block block, CustomItemProperties properties, int beeCount, int honeyLevel) {
         super(block, properties);
         this.beeCount  = beeCount;
         this.honeyLevel = honeyLevel;

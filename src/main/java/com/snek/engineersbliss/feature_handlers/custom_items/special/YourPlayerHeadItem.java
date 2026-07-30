@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.core.Direction;
@@ -20,7 +21,7 @@ import net.minecraft.core.Direction;
 
 
 public class YourPlayerHeadItem extends CustomStandingAndWallBlockItem {
-    public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, Properties p) {
+    public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, CustomItemProperties p) {
         super(standing, wall, attachDirection, p);
     }
 

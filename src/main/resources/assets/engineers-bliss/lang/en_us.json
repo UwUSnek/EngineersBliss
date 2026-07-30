@@ -22,18 +22,24 @@
     "item.engineers-bliss.armor_stand_with_arms" : "Armor Stand with arms",
 
 
-    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
     "item.engineers-bliss.headless_piston"          : "Headless Piston",
-    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
     "item.engineers-bliss.piston_head"              : "Piston Head",
-    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
     "item.engineers-bliss.short_piston_head"        : "Short Piston Head",
+    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
+    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
+    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
 
 
-    "item.engineers-bliss.kelp_plant"           : "Kelp Plant",
-    "item.engineers-bliss.cave_vines_plant"     : "Cave Vines Plant",
-    "item.engineers-bliss.twisting_vines_plant" : "Twisting Vines Plant",
-    "item.engineers-bliss.weeping_vines_plant"  : "Weeping Vines Plant",
+    "item.engineers-bliss.kelp_stem"                     : "Kelp Stem",
+    "item.engineers-bliss.kelp_crown"                    : "Kelp Crown",
+    "item.engineers-bliss.cave_vines_stem"               : "Cave Vines Stem",
+    "item.engineers-bliss.cave_vines_stem_with_berries"  : "Cave Vines Stem with Berries",
+    "item.engineers-bliss.cave_vines_crown"              : "Cave Vines Crown",
+    "item.engineers-bliss.cave_vines_crown_with_berries" : "Cave Vines Crown with Berries",
+    "item.engineers-bliss.twisting_vines_stem"           : "Twisting Vines Stem",
+    "item.engineers-bliss.twisting_vines_crown"          : "Twisting Vines Crown",
+    "item.engineers-bliss.weeping_vines_stem"            : "Weeping Vines Stem",
+    "item.engineers-bliss.weeping_vines_crown"           : "Weeping Vines Crown",
 
 
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",

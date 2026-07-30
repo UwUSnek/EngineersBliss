@@ -2,6 +2,8 @@ package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +19,7 @@ import net.minecraft.world.level.material.Fluids;
  */
 public class WaterPlaceableCustomBlockItem extends CustomBlockItem {
 
-    public WaterPlaceableCustomBlockItem(Block block, Properties p) {
+    public WaterPlaceableCustomBlockItem(Block block, CustomItemProperties p) {
         super(block, p);
     }
 

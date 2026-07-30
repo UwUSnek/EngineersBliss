@@ -2,6 +2,6 @@
   "credit": "UwU_Snek",
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "engineers-bliss:item/plant_plants/cave_vines_plant"
+    "layer0": "engineers-bliss:item/plants/cave_vines_crown"
   }
 }

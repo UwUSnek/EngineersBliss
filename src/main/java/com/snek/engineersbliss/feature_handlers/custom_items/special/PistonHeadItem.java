@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.feature_handlers.custom_items.special;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +17,7 @@ public class PistonHeadItem extends CustomBlockItem {
     private final boolean _short;
 
 
-    public PistonHeadItem(Block block, final boolean sticky, final boolean _short, Properties properties) {
+    public PistonHeadItem(Block block, final boolean sticky, final boolean _short, CustomItemProperties properties) {
         super(block, properties);
         this.sticky = sticky;
         this._short = _short;

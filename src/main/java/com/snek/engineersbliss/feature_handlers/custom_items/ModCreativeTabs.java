@@ -147,21 +147,27 @@ public class ModCreativeTabs {
     );
 
     public static final CreativeModeTab BLOCK_PARTS_TAB = FabricCreativeModeTab.builder()
-        .icon(() -> new ItemStack(CustomItemHandler.STICKY_PISTON_HEAD.asItem()))
+        .icon(() -> new ItemStack(CustomItemHandler.CAVE_VINES_CROWN_WITH_BERRIES.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".block_parts"))
         .displayItems((params, output) -> {
-            output.accept(CustomItemHandler.HEADLESS_STICKY_PISTON);
             output.accept(CustomItemHandler.HEADLESS_PISTON);
-            output.accept(CustomItemHandler.STICKY_PISTON_HEAD);
             output.accept(CustomItemHandler.PISTON_HEAD);
-            output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
             output.accept(CustomItemHandler.SHORT_PISTON_HEAD);
+            output.accept(CustomItemHandler.HEADLESS_STICKY_PISTON);
+            output.accept(CustomItemHandler.STICKY_PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
 
 
-            output.accept(CustomItemHandler.KELP_PLANT);
-            output.accept(CustomItemHandler.CAVE_VINES_PLANT);
-            output.accept(CustomItemHandler.TWISTING_VINES_PLANT);
-            output.accept(CustomItemHandler.WEEPING_VINES_PLANT);
+            output.accept(CustomItemHandler.KELP_STEM);
+            output.accept(CustomItemHandler.KELP_CROWN);
+            output.accept(CustomItemHandler.CAVE_VINES_STEM);
+            output.accept(CustomItemHandler.CAVE_VINES_STEM_WITH_BERRIES);
+            output.accept(CustomItemHandler.CAVE_VINES_CROWN);
+            output.accept(CustomItemHandler.CAVE_VINES_CROWN_WITH_BERRIES);
+            output.accept(CustomItemHandler.TWISTING_VINES_STEM);
+            output.accept(CustomItemHandler.TWISTING_VINES_CROWN);
+            output.accept(CustomItemHandler.WEEPING_VINES_STEM);
+            output.accept(CustomItemHandler.WEEPING_VINES_CROWN);
         }).build()
     ;
 

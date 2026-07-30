@@ -4,23 +4,27 @@ import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemPropertie
 
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.piston.PistonBaseBlock;
+import net.minecraft.world.level.block.CaveVinesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 
 
 
-public class HeadlessPistonItem extends CustomBlockItem {
-    public HeadlessPistonItem(Block block, CustomItemProperties properties) {
+public class CustomCaveVinesItem extends CustomBlockItem {
+    private final boolean berries;
+
+    public CustomCaveVinesItem(Block block, final boolean berries, CustomItemProperties properties) {
         super(block, properties);
+        this.berries = berries;
     }
 
 
+    // Force set berries on the placed block
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
         BlockState state = super.getPlacementState(context);
-        if(state != null && state.hasProperty(PistonBaseBlock.EXTENDED)) {
-            state = state.setValue(PistonBaseBlock.EXTENDED, true);
+        if(state != null && state.hasProperty(CaveVinesBlock.BERRIES)) {
+            state = state.setValue(CaveVinesBlock.BERRIES, berries);
         }
         return state;
     }
