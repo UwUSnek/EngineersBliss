@@ -13,6 +13,7 @@ import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockIte
 import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomWaterPlaceableBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCauldronItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
@@ -246,6 +247,52 @@ public class CustomItemHandler {
         "unlit_soul_campfire", "unlit_campfires",
         p -> new UnlitCampfireItem(Blocks.SOUL_CAMPFIRE, p),
         new Txt("A Soul Campfire that is unlit by default."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
+    public static final Item WATER_CAULDRON_3X = register(
+        "water_cauldron_3x", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.WATER_CAULDRON, p, List.of(Blocks.WATER_CAULDRON), 3),
+        new Txt("A Cauldron filled with Water."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item WATER_CAULDRON_2X = register(
+        "water_cauldron_2x", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.WATER_CAULDRON, p, null, 2),
+        new Txt("A Cauldron two-thirds full of Water."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item WATER_CAULDRON_1X = register(
+        "water_cauldron_1x", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.WATER_CAULDRON, p, null, 1),
+        new Txt("A Cauldron one-third full of Water."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item POWDER_SNOW_CAULDRON_3X = register(
+        "powder_snow_cauldron_3x", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.POWDER_SNOW_CAULDRON, p, List.of(Blocks.POWDER_SNOW_CAULDRON), 3),
+        new Txt("A Cauldron filled with Powder Snow."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item POWDER_SNOW_CAULDRON_2X = register(
+        "powder_snow_cauldron_2x", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.POWDER_SNOW_CAULDRON, p, null, 2),
+        new Txt("A Cauldron two-thirds full of Powder Snow."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item POWDER_SNOW_CAULDRON_1X = register(
+        "powder_snow_cauldron_1x", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.POWDER_SNOW_CAULDRON, p, null, 1),
+        new Txt("A Cauldron one-third full of Powder Snow."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LAVA_CAULDRON = register(
+        "lava_cauldron", "cauldrons",
+        p -> new CustomCauldronItem(Blocks.LAVA_CAULDRON, p, List.of(Blocks.LAVA_CAULDRON), 3),
+        new Txt("A Cauldron filled with Lava."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 

@@ -218,9 +218,9 @@ It helps a lot :3
   - [Vanilla block] Short Sticky Piston Head item
   - [Vanilla block] Short Piston Head item
   - [Vanilla block] Frosted Ice item
-  - [Vanilla block] Water Cauldron item
+  - [Vanilla block] Water Cauldron items
+  - [Vanilla block] Powder Snow Cauldron items
   - [Vanilla block] Lava Cauldron item
-  - [Vanilla block] Powder Snow Cauldron item
   - [Vanilla block] Unlit Campfire item
   - [Vanilla block] Unlit Soul Campfire item
   - [Vanilla block] Kelp Stem item

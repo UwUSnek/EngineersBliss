@@ -52,6 +52,15 @@
     "item.engineers-bliss.unlit_soul_campfire" : "Unlit Soul Campfire",
 
 
+    "item.engineers-bliss.water_cauldron_3x"       : "Water Cauldron",
+    "item.engineers-bliss.water_cauldron_2x"       : "Mostly filled Water Cauldron",
+    "item.engineers-bliss.water_cauldron_1x"       : "Partially Filled Water Cauldron",
+    "item.engineers-bliss.powder_snow_cauldron_3x" : "Powder Snow Cauldron",
+    "item.engineers-bliss.powder_snow_cauldron_2x" : "Mostly filled Powder Snow Cauldron",
+    "item.engineers-bliss.powder_snow_cauldron_1x" : "Partially Filled Powder Snow Cauldron",
+    "item.engineers-bliss.lava_cauldron"           : "Lava Cauldron",
+
+
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",
     "item.engineers-bliss.white_candle_cake"      : "Cake with White Candle",
     "item.engineers-bliss.orange_candle_cake"     : "Cake with Orange Candle",

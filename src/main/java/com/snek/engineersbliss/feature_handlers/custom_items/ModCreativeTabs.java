@@ -83,6 +83,15 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.UNLIT_SOUL_CAMPFIRE);
 
 
+            output.accept(CustomItemHandler.WATER_CAULDRON_3X);
+            output.accept(CustomItemHandler.WATER_CAULDRON_2X);
+            output.accept(CustomItemHandler.WATER_CAULDRON_1X);
+            output.accept(CustomItemHandler.POWDER_SNOW_CAULDRON_3X);
+            output.accept(CustomItemHandler.POWDER_SNOW_CAULDRON_2X);
+            output.accept(CustomItemHandler.POWDER_SNOW_CAULDRON_1X);
+            output.accept(CustomItemHandler.LAVA_CAULDRON);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);
