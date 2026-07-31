@@ -16,6 +16,7 @@ import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehi
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.UnlitCampfireItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.YourPlayerHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.NetherPortalItem;
 import com.snek.engineersbliss.utils.Txt;
@@ -229,6 +230,22 @@ public class CustomItemHandler {
         "end_gateway", "legacy",
         p -> new CustomBlockItem(Blocks.END_GATEWAY, p, List.of(Blocks.END_GATEWAY), true),
         new Txt("An End Gateway in item form."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
+    public static final Item UNLIT_CAMPFIRE = register(
+        "unlit_campfire", "unlit_campfires",
+        p -> new UnlitCampfireItem(Blocks.CAMPFIRE, p),
+        new Txt("A Campfire that is unlit by default."),
+        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item UNLIT_SOUL_CAMPFIRE = register(
+        "unlit_soul_campfire", "unlit_campfires",
+        p -> new UnlitCampfireItem(Blocks.SOUL_CAMPFIRE, p),
+        new Txt("A Soul Campfire that is unlit by default."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 

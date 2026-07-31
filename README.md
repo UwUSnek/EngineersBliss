@@ -233,7 +233,6 @@ It helps a lot :3
   - [Vanilla block] Twisting Vines Crown item
   - [Vanilla block] Weeping Vines Stem item
   - [Vanilla block] Weeping Vines Crown item
-  - [Vanilla block] Frogspawn item
   - [Vanilla blocks] Cake with Candle items
   - [Vanilla blocks] Potted plant items
   - [Vanilla block] Your Player Head as an item

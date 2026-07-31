@@ -79,6 +79,10 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.END_GATEWAY);
 
 
+            output.accept(CustomItemHandler.UNLIT_CAMPFIRE);
+            output.accept(CustomItemHandler.UNLIT_SOUL_CAMPFIRE);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);

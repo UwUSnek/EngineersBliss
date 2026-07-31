@@ -48,6 +48,10 @@
     "item.engineers-bliss.end_gateway"   : "End Gateway",
 
 
+    "item.engineers-bliss.unlit_campfire"      : "Soul Campfire",
+    "item.engineers-bliss.unlit_soul_campfire" : "Unlit Soul Campfire",
+
+
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",
     "item.engineers-bliss.white_candle_cake"      : "Cake with White Candle",
     "item.engineers-bliss.orange_candle_cake"     : "Cake with Orange Candle",
