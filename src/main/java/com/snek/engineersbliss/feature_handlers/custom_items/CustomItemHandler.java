@@ -10,12 +10,12 @@ import org.joml.Vector3i;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomWaterPlaceableBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.WaterPlaceableCustomBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.YourPlayerHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.NetherPortalItem;
 import com.snek.engineersbliss.utils.Txt;
@@ -145,13 +145,13 @@ public class CustomItemHandler {
 
     public static final Item KELP_STEM = register(
         "kelp_stem", "plants",
-        p -> new WaterPlaceableCustomBlockItem(Blocks.KELP_PLANT, p, List.of(Blocks.KELP_PLANT)),
+        p -> new CustomWaterPlaceableBlockItem(Blocks.KELP_PLANT, p, List.of(Blocks.KELP_PLANT)),
         new Txt("A Kelp Plant block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item KELP_CROWN = register(
         "kelp_crown", "plants",
-        p -> new WaterPlaceableCustomBlockItem(Blocks.KELP, p, List.of(Blocks.KELP)),
+        p -> new CustomWaterPlaceableBlockItem(Blocks.KELP, p, List.of(Blocks.KELP)),
         new Txt("A Kelp block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
@@ -209,7 +209,7 @@ public class CustomItemHandler {
 
     public static final Item FIRE = register(
         "fire", "legacy",
-        p -> new CustomBlockItem(Blocks.FIRE, p, List.of(Blocks.FIRE, Blocks.SOUL_FIRE)),
+        p -> new CustomBlockItem(Blocks.FIRE, p, List.of(Blocks.FIRE, Blocks.SOUL_FIRE), true),
         new Txt("Fire in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
@@ -221,13 +221,13 @@ public class CustomItemHandler {
     );
     public static final Item END_PORTAL = register(
         "end_portal", "legacy",
-        p -> new CustomBlockItem(Blocks.END_PORTAL, p, List.of(Blocks.END_PORTAL)),
+        p -> new CustomBlockItem(Blocks.END_PORTAL, p, List.of(Blocks.END_PORTAL), true),
         new Txt("An End Portal block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item END_GATEWAY = register(
         "end_gateway", "legacy",
-        p -> new CustomBlockItem(Blocks.END_GATEWAY, p, List.of(Blocks.END_GATEWAY)),
+        p -> new CustomBlockItem(Blocks.END_GATEWAY, p, List.of(Blocks.END_GATEWAY), true),
         new Txt("An End Gateway in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );

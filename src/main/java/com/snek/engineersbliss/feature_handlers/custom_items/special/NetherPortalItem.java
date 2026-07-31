@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class NetherPortalItem extends CustomBlockItem {
 
     public NetherPortalItem(Block block, CustomItemProperties p, @Nullable List<Block> mappedBlocks) {
-        super(block, p, mappedBlocks);
+        super(block, p, mappedBlocks, true);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.base;
+package com.snek.engineersbliss.feature_handlers.custom_items;
 
 import java.util.HashMap;
 import java.util.List;

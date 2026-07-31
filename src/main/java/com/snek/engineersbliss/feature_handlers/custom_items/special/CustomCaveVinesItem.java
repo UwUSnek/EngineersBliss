@@ -19,7 +19,7 @@ public class CustomCaveVinesItem extends CustomBlockItem {
     private final boolean berries;
 
     public CustomCaveVinesItem(Block block, final boolean berries, CustomItemProperties properties, final @Nullable List<Block> mappedBlocks) {
-        super(block, properties, mappedBlocks);
+        super(block, properties, mappedBlocks, berries);
         this.berries = berries;
     }
 

@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.special;
+package com.snek.engineersbliss.feature_handlers.custom_items.base;
 
 import java.util.List;
 
@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
-import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -21,10 +20,13 @@ import net.minecraft.world.level.material.Fluids;
 /**
  * A CustomBlockItem that only allows placement in water or flowing water.
  */
-public class WaterPlaceableCustomBlockItem extends CustomBlockItem {
+public class CustomWaterPlaceableBlockItem extends CustomBlockItem {
 
-    public WaterPlaceableCustomBlockItem(Block block, CustomItemProperties p, final @Nullable List<Block> mappedBlocks) {
+    public CustomWaterPlaceableBlockItem(Block block, CustomItemProperties p, final @Nullable List<Block> mappedBlocks) {
         super(block, p, mappedBlocks);
+    }
+    public CustomWaterPlaceableBlockItem(Block block, CustomItemProperties p, final @Nullable List<Block> mappedBlocks, final boolean fullBright) {
+        super(block, p, mappedBlocks, fullBright);
     }
 
 

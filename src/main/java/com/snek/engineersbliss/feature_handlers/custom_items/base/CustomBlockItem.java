@@ -19,28 +19,24 @@ import net.minecraft.world.level.block.Block;
  * This can stop the item registration phase from overwriting vanilla (& modded) block-to-item mappings and define custom mappings.
  * Vanilla block items have no parameter for that.
  */
-public class CustomBlockItem extends BlockItem {
-    final @Nullable List<Block> mappedBlocks;
+public class CustomBlockItem extends BlockItem implements __base_CustomBlockItem {
+    private final @Nullable List<Block> mappedBlocks;
+    private final boolean fullBright;
+    public boolean isFullBright() { return fullBright; }
 
 
     public CustomBlockItem(Block block, CustomItemProperties p, final @Nullable List<Block> mappedBlocks) {
+        this(block, p, mappedBlocks, false);
+    }
+    public CustomBlockItem(Block block, CustomItemProperties p, final @Nullable List<Block> mappedBlocks, final boolean fullBright) {
         super(block, p);
         this.mappedBlocks = mappedBlocks;
+        this.fullBright = fullBright;
     }
 
 
     @Override
     public void registerBlocks(final Map<Block, Item> map, final Item item) {
-
-        // Register custom block mappings if present
-        if(mappedBlocks != null) {
-            for(final Block mappedBlock : mappedBlocks) {
-                map.put(mappedBlock, item);
-            }
-            PickBlockOverrideManager.registerCustomOverrides(map, mappedBlocks, item);
-        }
-
-        // Otherwise, override registerBlocks with a no-op so the existing mapping is preserved.
-        else { /* Empty */ }
+        __base_CustomBlockItem.super.registerBlocks(map, item, mappedBlocks);
     }
 }
