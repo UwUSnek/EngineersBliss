@@ -698,12 +698,12 @@ public class CustomItemHandler {
 
 
         public static List<Txt> PLANT_STEM_RESETS = List.of(
-            new Txt("Updates make the block change back to the non-stem")  .color(Colors.COLOR_LS_ORANGE),
-            new Txt("version if not under another block of the same type.").color(Colors.COLOR_LS_ORANGE)
+            new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
+            new Txt("version if not under another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
         );
         public static List<Txt> PLANT_STEM_RESETS_HANGING = List.of(
-            new Txt("Updates make the block change back to the non-stem")  .color(Colors.COLOR_LS_ORANGE),
-            new Txt("version if not above another block of the same type.").color(Colors.COLOR_LS_ORANGE)
+            new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
+            new Txt("version if not above another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
         );
     }
 
