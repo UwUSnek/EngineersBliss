@@ -149,7 +149,7 @@ public class CustomItemHandler {
         "kelp_stem", "plants",
         p -> new CustomWaterPlaceableBlockItem(Blocks.KELP_PLANT, p, List.of(Blocks.KELP_PLANT)),
         new Txt("A Kelp Plant block in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item KELP_CROWN = register(
         "kelp_crown", "plants",
@@ -161,13 +161,13 @@ public class CustomItemHandler {
         "cave_vines_stem", "plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, false, p, List.of(Blocks.CAVE_VINES_PLANT)),
         new Txt("A Cave Vines Plant block in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_STEM_WITH_BERRIES = register(
         "cave_vines_stem_with_berries", "plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, true, p, null),
         new Txt("A Cave Vines Plant block in item form. Comes with Glow Berries."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_CROWN = register(
         "cave_vines_crown", "plants",
@@ -185,7 +185,7 @@ public class CustomItemHandler {
         "twisting_vines_stem", "plants",
         p -> new CustomBlockItem(Blocks.TWISTING_VINES_PLANT, p, List.of(Blocks.TWISTING_VINES_PLANT)),
         new Txt("A Twisting Vines Plant block in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item TWISTING_VINES_CROWN = register(
         "twisting_vines_crown", "plants",
@@ -197,7 +197,7 @@ public class CustomItemHandler {
         "weeping_vines_stem", "plants",
         p -> new CustomBlockItem(Blocks.WEEPING_VINES_PLANT, p, List.of(Blocks.WEEPING_VINES_PLANT)),
         new Txt("A Weeping Vines Plant block in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item WEEPING_VINES_CROWN = register(
         "weeping_vines_crown", "plants",
@@ -663,21 +663,19 @@ public class CustomItemHandler {
         );
 
 
+
+
         public static List<Txt> CUSTOM_ITEM_ONLY = List.of(
             new Txt("This item doesn't exist in Vanilla.")              .color(Colors.COLOR_LS_RED),
             new Txt("It cannot be used on servers without the")         .color(Colors.COLOR_LS_RED),
             new Txt(EngineerSBliss.MOD_NAME + " mod installed and will").color(Colors.COLOR_LS_RED),
             new Txt("disappear from worlds when opened without it.")    .color(Colors.COLOR_LS_RED)
         );
-
-
         public static List<Txt> VANILLA_BLOCK = List.of(
             new Txt("Blocks placed using this item are compatible").color(Colors.COLOR_LS_GREEN),
             new Txt("with Vanilla and can be safely exported in")  .color(Colors.COLOR_LS_GREEN),
             new Txt("worlds, structures, and schematics.")         .color(Colors.COLOR_LS_GREEN)
         );
-
-
         public static List<Txt> VANILLA_ENTITY = List.of(
             new Txt("Entities placed using this item are compatible").color(Colors.COLOR_LS_GREEN),
             new Txt("with Vanilla and can be safely exported in")    .color(Colors.COLOR_LS_GREEN),
@@ -685,15 +683,27 @@ public class CustomItemHandler {
         );
 
 
+
+
         public static List<Txt> PISTON_HEAD_BREAKS = List.of(
             new Txt("Updates make the block break unless properly").color(Colors.COLOR_LS_ORANGE),
             new Txt("connected to a matching piston block.")       .color(Colors.COLOR_LS_ORANGE)
         );
-
-
         public static List<Txt> HEADLESS_PISTON_RESETS = List.of(
             new Txt("This only keeps its headless state when powered.")      .color(Colors.COLOR_LS_ORANGE),
             new Txt("Removing the power source will make the head reappear.").color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> PLANT_STEM_RESETS = List.of(
+            new Txt("Updates make the block change back to the non-stem")  .color(Colors.COLOR_LS_ORANGE),
+            new Txt("version if not under another block of the same type.").color(Colors.COLOR_LS_ORANGE)
+        );
+        public static List<Txt> PLANT_STEM_RESETS_HANGING = List.of(
+            new Txt("Updates make the block change back to the non-stem")  .color(Colors.COLOR_LS_ORANGE),
+            new Txt("version if not above another block of the same type.").color(Colors.COLOR_LS_ORANGE)
         );
     }
 
