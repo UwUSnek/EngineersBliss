@@ -259,3 +259,8 @@
 - USE SLIDER/TOGGLE FOR ALT TEXTURES FEATURES. overlay still images
 
 - maybe add chat timestamps?
+
+
+- add static bed models for 26.1
+- remove static bed models in 26.2+
+- remove static sign models in 26.2+
