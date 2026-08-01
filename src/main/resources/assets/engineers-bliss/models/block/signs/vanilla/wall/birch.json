@@ -1,7 +1,7 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/signs/vanilla/templates/wall",
-  "textures": {
-    "texture": "engineers-bliss:block/signs/vanilla/birch"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/signs/vanilla/templates/wall",
+  "textures" : {
+    "texture" : "engineers-bliss:block/signs/vanilla/birch"
   }
 }

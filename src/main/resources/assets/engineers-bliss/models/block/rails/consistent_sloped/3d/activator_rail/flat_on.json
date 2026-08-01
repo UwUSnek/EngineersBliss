@@ -1,8 +1,8 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/rails/consistent_sloped/3d/template_rail/activator_flat",
-  "textures": {
-    "rail": "engineers-bliss:block/rails/consistent_sloped/activator_rail_on",
-    "particle": "engineers-bliss:block/rails/consistent_sloped/activator_rail_on"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/rails/consistent_sloped/3d/template_rail/activator_flat",
+  "textures" : {
+    "rail"     : "engineers-bliss:block/rails/consistent_sloped/activator_rail_on",
+    "particle" : "engineers-bliss:block/rails/consistent_sloped/activator_rail_on"
   }
 }

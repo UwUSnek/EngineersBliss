@@ -10,13 +10,36 @@ public class Layout {
     private Layout() { }
 
 
-    public static int bgColor        = 0x80151515;
-    public static int fgColor        = 0xFFEEEEEE;
-    public static int fgColorHint    = 0xAABBBBBB;
-    public static int bgColorActive  = 0x80777777;
-    public static int fgColorActive  = 0xFFFFFFFF;
-    public static int bgColorSolid   = 0xAA111111;
-    public static int textMarginPx  = 4;
+    public static int fgColor                = 0xFFEEEEEE;
+    public static int fgColorHint            = 0xAABBBBBB;
+    public static int highlightOverlay       = 0x40FFFFFF;
+
+    public static int bgColor                = 0x80151515;
+    public static int bgColorAlt             = 0xAA886A99;
+
+    public static int handleColor            = 0x80999999;
+    public static int handleColorActive      = 0x80DDDDDD;
+    public static int handleColorTransparent = 0x10999999;
+
+    public static int textMarginPx = 4;
+
+    public static int SliderGraphFillColor = bgColorAlt;
+    public static int SliderGraphLineColor = fgColorHint;
+
+
+
+
+    public static int statusBarBgColor = 0xFF1E1E1E;
+
+
+
+
+    public static int toggleTransitionDuration = 250;
+    public static int hoverTransitionDuration  = 80;
+    public static int slideTransitionDuration  = 120;
+
+
+
 
     public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 2;

@@ -1,86 +1,44 @@
 {
-  "credit": "UwU_Snek",
-  "format_version": "1.21.11",
-  "parent": "block/block",
-  "textures": {
-    "particle": "#texture",
-    "texture": "#texture"
+  "credit" : "UwU_Snek",
+  "format_version" : "1.21.11",
+  "parent" : "block/block",
+  "textures" : {
+    "particle" : "#texture",
+    "texture"  : "#texture"
   },
-  "elements": [
+  "elements" : [
     {
-      "from": [
-        1.3333,
-        2.68156,
-        8.68092
-      ],
-      "to": [
-        14.6667,
-        29.34816,
-        9.34752
-      ],
-      "rotation": {
-        "angle": -2.5,
-        "axis": "x",
-        "origin": [
-          8,
-          29.01486,
-          9.01422
-        ]
+      "from" : [1.3333, 2.68156, 8.68092],
+      "to" : [14.6667, 29.34816, 9.34752],
+      "rotation" : {
+        "angle"  : -2.5,
+        "axis"   : "x",
+        "origin" : [8, 29.01486, 9.01422]
       },
-      "faces": {
-        "north": {
-          "uv": [
-            0.25,
-            0.25,
-            5.25,
-            10.25
-          ],
-          "texture": "#texture"
+      "faces" : {
+        "north" : {
+          "uv"      : [0.25, 0.25, 5.25, 10.25],
+          "texture" : "#texture"
         },
-        "east": {
-          "uv": [
-            0,
-            0.25,
-            0.25,
-            10.25
-          ],
-          "texture": "#texture"
+        "east" : {
+          "uv"      : [0, 0.25, 0.25, 10.25],
+          "texture" : "#texture"
         },
-        "south": {
-          "uv": [
-            5.5,
-            0.25,
-            10.5,
-            10.25
-          ],
-          "texture": "#texture"
+        "south" : {
+          "uv"      : [5.5, 0.25, 10.5, 10.25],
+          "texture" : "#texture"
         },
-        "west": {
-          "uv": [
-            5.25,
-            0.25,
-            5.5,
-            10.25
-          ],
-          "texture": "#texture"
+        "west" : {
+          "uv"      : [5.25, 0.25, 5.5, 10.25],
+          "texture" : "#texture"
         },
-        "up": {
-          "uv": [
-            0.25,
-            0,
-            5.25,
-            0.25
-          ],
-          "texture": "#texture"
+        "up" : {
+          "uv"      : [0.25, 0, 5.25, 0.25],
+          "texture" : "#texture"
         },
-        "down": {
-          "uv": [
-            5.25,
-            0,
-            10.25,
-            0.25
-          ],
-          "texture": "#texture"
+        "down" : {
+          "uv"      : [5.25, 0, 10.25, 0.25],
+          "texture" : "#texture"
         }
       }
     }

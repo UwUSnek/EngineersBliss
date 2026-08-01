@@ -1,83 +1,45 @@
 {
-  "credit": "UwU_Snek",
-  "format_version": "1.21.11",
-  "ambientocclusion": false,
-  "textures": {
-    "particle": "engineers-bliss:block/redstone_wire/minimal/large_dot",
-    "line": "engineers-bliss:block/redstone_wire/minimal/large_dot"
+  "credit" : "UwU_Snek",
+  "format_version" : "1.21.11",
+  "ambientocclusion" : false,
+  "textures" : {
+    "particle" : "engineers-bliss:block/redstone_wire/minimal/large_dot",
+    "line"     : "engineers-bliss:block/redstone_wire/minimal/large_dot"
   },
-  "elements": [
+  "elements" : [
     {
-      "from": [
-        5,
-        0.05,
-        5
-      ],
-      "to": [
-        11,
-        0.451,
-        11
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            5,
-            5,
-            11,
-            6
-          ],
-          "texture": "#line",
-          "tintindex": 0
+      "from" : [5, 0.05, 5],
+      "to" : [11, 0.451, 11],
+      "faces" : {
+        "north" : {
+          "uv"        : [5, 5, 11, 6],
+          "texture"   : "#line",
+          "tintindex" : 0
         },
-        "east": {
-          "uv": [
-            5,
-            5,
-            11,
-            6
-          ],
-          "texture": "#line",
-          "tintindex": 0
+        "east" : {
+          "uv"        : [5, 5, 11, 6],
+          "texture"   : "#line",
+          "tintindex" : 0
         },
-        "south": {
-          "uv": [
-            5,
-            5,
-            11,
-            6
-          ],
-          "texture": "#line",
-          "tintindex": 0
+        "south" : {
+          "uv"        : [5, 5, 11, 6],
+          "texture"   : "#line",
+          "tintindex" : 0
         },
-        "west": {
-          "uv": [
-            5,
-            5,
-            11,
-            6
-          ],
-          "texture": "#line",
-          "tintindex": 0
+        "west" : {
+          "uv"        : [5, 5, 11, 6],
+          "texture"   : "#line",
+          "tintindex" : 0
         },
-        "up": {
-          "uv": [
-            5,
-            5,
-            11,
-            11
-          ],
-          "texture": "#line",
-          "tintindex": 0
+        "up" : {
+          "uv"        : [5, 5, 11, 11],
+          "texture"   : "#line",
+          "tintindex" : 0
         },
-        "down": {
-          "uv": [
-            5,
-            5,
-            11,
-            11
-          ],
-          "texture": "#line",
-          "tintindex": 0
+        "down" : {
+          "uv"        : [5, 5, 11, 11],
+          "texture"   : "#line",
+          "tintindex" : 0
         }
       }
     }

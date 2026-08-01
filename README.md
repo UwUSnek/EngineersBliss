@@ -79,11 +79,15 @@ It helps a lot :3
 
 ## Full list of features
 
+- **Misc**:
+  - Player model rendering in the pause menu
+  - In-game status bar
+  <br><br>
 - **Rendering**:
   - Selectively hide blocks by type or rendering method
   - Click through hidden blocks
   - Custom block outlines
-  - Player model rendering in the pause menu
+  - Force light recalculation
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire
@@ -208,34 +212,54 @@ It helps a lot :3
   - Green Screen block
   - Blue Screen block
   - [Vanilla block] Fire item
-  - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
   - [Vanilla block] End Portal item
   - [Vanilla block] End Gateway item
+  - [Vanilla block] Frosted Ice item
+  - [Vanilla block] Water Cauldron items
+  - [Vanilla block] Powder Snow Cauldron items
+  - [Vanilla block] Lava Cauldron item
+  - [Vanilla block] Unlit Campfire item
+  - [Vanilla block] Unlit Soul Campfire item
   - [Vanilla block] Headless Piston item
   - [Vanilla block] Headless Sticky Piston item
   - [Vanilla block] Sticky Piston Head item
   - [Vanilla block] Piston Head item
   - [Vanilla block] Short Sticky Piston Head item
   - [Vanilla block] Short Piston Head item
-  - [Vanilla block] Frosted Ice item
-  - [Vanilla block] Water Cauldron item
-  - [Vanilla block] Lava Cauldron item
-  - [Vanilla block] Powder Snow Cauldron item
-  - [Vanilla block] Unlit Campfire item
-  - [Vanilla block] Unlit Soul Campfire item
-  - [Vanilla block] Kelp Plant item
-  - [Vanilla block] Cave Vines Plant item
-  - [Vanilla block] Twisting Vines Plant item
-  - [Vanilla block] Weeping Vines Plant item
-  - [Vanilla block] Frogspawn item
+  - [Vanilla block] Door Part item
+  - [Vanilla block] Bed Part items
+  - [Vanilla block] Rose Bush Stem item
+  - [Vanilla block] Rose Bush Crown item
+  - [Vanilla block] Sunflower Stem item
+  - [Vanilla block] Sunflower Crown item
+  - [Vanilla block] Tall Grass Stem item
+  - [Vanilla block] Tall Grass Crown item
+  - [Vanilla block] Pitcher Plant Stem item
+  - [Vanilla block] Pitcher Plant Crown item
+  - [Vanilla block] Peony Stem item
+  - [Vanilla block] Peony Crown item
+  - [Vanilla block] Large Fern Stem item
+  - [Vanilla block] Large Fern Crown item
+  - [Vanilla block] Lilac Stem item
+  - [Vanilla block] Lilac Crown item
+  - [Vanilla block] Kelp Stem item
+  - [Vanilla block] Kelp Crown item
+  - [Vanilla block] Cave Vines Stem item
+  - [Vanilla block] Cave Vines Stem with Berries item
+  - [Vanilla block] Cave Vines Crown item
+  - [Vanilla block] Cave Vines Crown with Berries item
+  - [Vanilla block] Twisting Vines Stem item
+  - [Vanilla block] Twisting Vines Crown item
+  - [Vanilla block] Weeping Vines Stem item
+  - [Vanilla block] Weeping Vines Crown item
   - [Vanilla blocks] Cake with Candle items
   - [Vanilla blocks] Potted plant items
-  - [Vanilla blocks] Sloped Rail items
-  - [Vanilla block & item] Your Player Head as an item
-  - [Vanilla block & item] Bee Nest with Bees and Honey
-  - [Vanilla block & item] Beehive with Bees and Honey
-  - [Vanilla block & entity] Armor Stand with arms
-  - [Vanilla entity] TNTs with higher explosion strength
-  - [Vanilla entity] Ender Dragon Spawn Egg
-  - [Vanilla entity] Wither Spawn Egg
+  - [Vanilla block] Your Player Head as an item
+  - [Vanilla block] Bee Nest with Bees and Honey
+  - [Vanilla block] Bee Nest with Honey but no Bees
+  - [Vanilla block] Beehive with Bees and Honey
+  - [Vanilla block] Beehive with Honey but no Bees
+  - [Vanilla entity] Armor Stand with arms
+  - [Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu
+  - [Vanilla item & entity] Wither Spawn Egg in the Creative menu

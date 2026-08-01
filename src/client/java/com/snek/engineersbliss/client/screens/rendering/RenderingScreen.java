@@ -18,8 +18,8 @@ import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
-import com.snek.engineersbliss.client.ui.widgets.UiButton;
-import com.snek.engineersbliss.client.ui.widgets.UiEditBox;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiEditBox;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -114,7 +114,7 @@ public class RenderingScreen extends __base_UiScreen {
 
         // Left sidebar
 
-        searchField = new UiEditBox(BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiTxt("Search...").get());
+        searchField = new UiEditBox(this, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiTxt("Search...").get());
         searchField.setHint(new UiTxt("Search...").get());
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));

@@ -92,7 +92,7 @@ public class Fonts {
     private static ScaledFont createScaledFont(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier) {
         final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
         final @NotNull Pair<Font, FontDescription> font = createFontIfNeeded(fontList, fontName, scaleMultiplier, guiScale);
-        return new ScaledFont(null, font.getFirst(), scaleMultiplier, guiScale * scaleMultiplier, font.getSecond());
+        return new ScaledFont(null, font.getFirst(), scaleMultiplier, font.getSecond());
     }
 
 

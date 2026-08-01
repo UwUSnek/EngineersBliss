@@ -1,19 +1,17 @@
 package com.snek.engineersbliss.client;
 
-import javax.imageio.spi.IIORegistry;
-
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
+import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
-import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -78,8 +76,16 @@ public class EngineerSBlissClient implements ClientModInitializer {
         OverlayRenderer.register();
 
 
+        // Register CreativeTweaksClientHandler
+        CreativeTweaksClientHandler.register();
+
+
         // Register network receivers
         AttachedDataNetworkReceiver.register();
+
+
+        // Register status bar GUI renderer
+        StatusBarRenderer.register();
 
 
         // Log library loading
