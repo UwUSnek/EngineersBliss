@@ -7,6 +7,8 @@ import net.minecraft.resources.Identifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.lwjgl.system.MemoryUtil;
+
 
 
 
@@ -42,6 +44,18 @@ public final class SvgTextureTracker {
     public static Map<Identifier, Entry> all() { return REGISTRY; }
 
 
+
+
+
+
+
+    private static NativeImage copy(final NativeImage src) {
+        final NativeImage out = new NativeImage(src.getWidth(), src.getHeight(), false);
+        MemoryUtil.memCopy(src.getPointer(), out.getPointer(), src.getWidth() * src.getHeight() * 4L);
+        return out;
+    }
+
+
     /**
      * Creates a copy of the requested texture.
      * This also rasterizes and caches the texture on first request.
@@ -55,7 +69,7 @@ public final class SvgTextureTracker {
             master = SvgRasterizer.rasterize(e.svgBytes, e.meta.width() * scale, e.meta.height() * scale);
             e.cached[idx] = master;
         }
-        return SvgRasterizer.copy(master);
+        return copy(master);
     }
 
 
