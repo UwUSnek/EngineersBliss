@@ -1,8 +1,8 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/lanterns/3d/templates/lantern",
-  "textures": {
-    "chain": "engineers-bliss:block/chains/3d/iron",
-    "lantern": "engineers-bliss:block/lanterns/vanilla/soul"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/lanterns/3d/templates/lantern",
+  "textures" : {
+    "chain"   : "engineers-bliss:block/chains/3d/iron",
+    "lantern" : "engineers-bliss:block/lanterns/vanilla/soul"
   }
 }

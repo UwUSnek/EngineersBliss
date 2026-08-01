@@ -6,13 +6,16 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
+
+import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomStandingAndWallBlockItem;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.core.Direction;
@@ -20,9 +23,9 @@ import net.minecraft.core.Direction;
 
 
 
-public class YourPlayerHeadItem extends StandingAndWallBlockItem {
-    public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, Properties p) {
-        super(standing, wall, attachDirection, p);
+public class YourPlayerHeadItem extends CustomStandingAndWallBlockItem {
+    public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, CustomItemProperties p, final @Nullable List<Block> mappedBlocks) {
+        super(standing, wall, attachDirection, p, mappedBlocks);
     }
 
 

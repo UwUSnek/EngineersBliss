@@ -53,7 +53,7 @@ public class ModCreativeTabs {
     );
 
     public static final CreativeModeTab MISSING_ITEMS_TAB = FabricCreativeModeTab.builder()
-        .icon(() -> new ItemStack(CustomItemHandler.POTTED_FLOWERING_AZALEA.asItem()))
+        .icon(() -> new ItemStack(CustomItemHandler.POTTED_CHERRY_SAPLING.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_items"))
         .displayItems((params, output) -> {
 
@@ -71,6 +71,25 @@ public class ModCreativeTabs {
 
             output.accept(Items.ENDER_DRAGON_SPAWN_EGG);
             output.accept(Items.WITHER_SPAWN_EGG);
+
+
+            output.accept(CustomItemHandler.FIRE);
+            output.accept(CustomItemHandler.NETHER_PORTAL);
+            output.accept(CustomItemHandler.END_PORTAL);
+            output.accept(CustomItemHandler.END_GATEWAY);
+
+
+            output.accept(CustomItemHandler.UNLIT_CAMPFIRE);
+            output.accept(CustomItemHandler.UNLIT_SOUL_CAMPFIRE);
+
+
+            output.accept(CustomItemHandler.WATER_CAULDRON_3X);
+            output.accept(CustomItemHandler.WATER_CAULDRON_2X);
+            output.accept(CustomItemHandler.WATER_CAULDRON_1X);
+            output.accept(CustomItemHandler.POWDER_SNOW_CAULDRON_3X);
+            output.accept(CustomItemHandler.POWDER_SNOW_CAULDRON_2X);
+            output.accept(CustomItemHandler.POWDER_SNOW_CAULDRON_1X);
+            output.accept(CustomItemHandler.LAVA_CAULDRON);
 
 
             output.accept(CustomItemHandler.CANDLE_CAKE);
@@ -140,8 +159,47 @@ public class ModCreativeTabs {
 
 
 
+
+    public static final ResourceKey<CreativeModeTab> BLOCK_PARTS_TAB_KEY = ResourceKey.create(
+        BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+        Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block_parts")
+    );
+
+    public static final CreativeModeTab BLOCK_PARTS_TAB = FabricCreativeModeTab.builder()
+        .icon(() -> new ItemStack(CustomItemHandler.CAVE_VINES_CROWN_WITH_BERRIES.asItem()))
+        .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".block_parts"))
+        .displayItems((params, output) -> {
+            output.accept(CustomItemHandler.HEADLESS_PISTON);
+            output.accept(CustomItemHandler.PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_PISTON_HEAD);
+            output.accept(CustomItemHandler.HEADLESS_STICKY_PISTON);
+            output.accept(CustomItemHandler.STICKY_PISTON_HEAD);
+            output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
+
+
+            output.accept(CustomItemHandler.KELP_STEM);
+            output.accept(CustomItemHandler.KELP_CROWN);
+            output.accept(CustomItemHandler.CAVE_VINES_STEM);
+            output.accept(CustomItemHandler.CAVE_VINES_STEM_WITH_BERRIES);
+            output.accept(CustomItemHandler.CAVE_VINES_CROWN);
+            output.accept(CustomItemHandler.CAVE_VINES_CROWN_WITH_BERRIES);
+            output.accept(CustomItemHandler.TWISTING_VINES_STEM);
+            output.accept(CustomItemHandler.TWISTING_VINES_CROWN);
+            output.accept(CustomItemHandler.WEEPING_VINES_STEM);
+            output.accept(CustomItemHandler.WEEPING_VINES_CROWN);
+        }).build()
+    ;
+
+
+
+
+
+
+
+
     public static void register() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, CUSTOM_ITEMS_TAB_KEY,  CUSTOM_ITEMS_TAB);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, MISSING_ITEMS_TAB_KEY, MISSING_ITEMS_TAB);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BLOCK_PARTS_TAB_KEY,   BLOCK_PARTS_TAB);
     }
 }
