@@ -83,6 +83,7 @@ It helps a lot :3
   - Selectively hide blocks by type or rendering method
   - Click through hidden blocks
   - Custom block outlines
+  - Force light recalculation
   - Player model rendering in the pause menu
   <br><br>
 - **Alternative textures**:

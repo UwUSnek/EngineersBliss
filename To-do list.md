@@ -4,6 +4,8 @@
   - ~~Selectively hide blocks by type or rendering method~~
   - ~~Click through hidden blocks~~
   - ~~Custom block outlines~~
+  - ~~Force light recalculation~~
+  - ~~Player model rendering in the pause menu~~
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
@@ -39,9 +41,6 @@
   - ~~3D Iron Bars & Copper Bars~~
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
-  - Player model rendering in the pause menu //TODO add this to the readme if possible
-    - Display player name above model
-    - Display customizable title under the name
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
