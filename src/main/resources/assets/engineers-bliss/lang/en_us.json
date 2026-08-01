@@ -77,5 +77,13 @@
     "item.engineers-bliss.your_player_head"  : "Turns into your Player Head when held in the inventory",
 
 
-    "item.engineers-bliss.armor_stand_with_arms"  : "Armor Stand with arms"
+    "item.engineers-bliss.armor_stand_with_arms"  : "Armor Stand with arms",
+
+
+    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
+    "item.engineers-bliss.headless_piston"          : "Headless Piston",
+    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
+    "item.engineers-bliss.piston_head"              : "Piston Head",
+    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
+    "item.engineers-bliss.short_piston_head"        : "Short Piston Head"
 }

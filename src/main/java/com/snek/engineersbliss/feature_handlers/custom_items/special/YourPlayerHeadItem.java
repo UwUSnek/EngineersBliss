@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.Block;
 
@@ -20,7 +19,7 @@ import net.minecraft.core.Direction;
 
 
 
-public class YourPlayerHeadItem extends StandingAndWallBlockItem {
+public class YourPlayerHeadItem extends __base_CustomStandingAndWallBlockItem {
     public YourPlayerHeadItem(Block standing, Block wall, Direction attachDirection, Properties p) {
         super(standing, wall, attachDirection, p);
     }
