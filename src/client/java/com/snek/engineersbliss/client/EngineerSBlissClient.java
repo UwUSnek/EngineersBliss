@@ -4,6 +4,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
+import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
@@ -11,7 +12,6 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -82,9 +82,12 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
         // Register network receivers
         AttachedDataNetworkReceiver.register();
-net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-    System.out.println("FINAL full_bee_nest: " + CustomItemHandler.FULL_BEE_NEST.components().get(net.minecraft.core.component.DataComponents.ITEM_MODEL));
-});
+
+
+        // Register status bar GUI renderer
+        StatusBarRenderer.register();
+
+
         // Log library loading
         EngineerSBliss.LOGGER.info(EngineerSBliss.MOD_NAME + " client loaded :3");
     }

@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.textures;
+package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

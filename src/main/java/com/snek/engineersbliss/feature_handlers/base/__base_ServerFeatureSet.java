@@ -37,6 +37,18 @@ public abstract class __base_ServerFeatureSet {
     }
 
 
+
+
+    /**
+     * Checks if the feature set is initialized. Throws an exception if not.
+     */
+    public void initializedOrThrow() {
+        if(!initialized) {
+            throw new IllegalStateException("Feature set \"" + getId() + "\" used before initialization");
+        }
+    }
+
+
     /**
      * Stores all features defined by this set in a list shared with the other sets,
      * in order to allow for calculating the numerical ID when finalizeSetInits is called.
@@ -49,7 +61,10 @@ public abstract class __base_ServerFeatureSet {
             EngineerSBliss.LOGGER.error("init function of feature set {} called twice", getId(), new Throwable());
         }
         else {
-            // No-op. This only starts the static initializer.
+            // This only starts the static initializer and updates the initialization state.
+            // ! Is also makes sure that the feature set initialization phase hasn't been finalized yet.
+            __base_ServerFeature.notFinalizedOrThrow("Attempting to initialize feature set \"" + getId() + "\" after feature set finalization");
+            initialized = true;
         }
     }
 }
