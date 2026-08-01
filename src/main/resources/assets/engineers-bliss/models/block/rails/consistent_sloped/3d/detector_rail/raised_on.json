@@ -1,8 +1,8 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/rails/consistent_sloped/3d/template_rail/detector_raised_on",
-  "textures": {
-    "rail": "engineers-bliss:block/rails/consistent_sloped/detector_rail_on_alt",
-    "particle": "engineers-bliss:block/rails/consistent_sloped/detector_rail_on"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/rails/consistent_sloped/3d/template_rail/detector_raised_on",
+  "textures" : {
+    "rail"     : "engineers-bliss:block/rails/consistent_sloped/detector_rail_on_alt",
+    "particle" : "engineers-bliss:block/rails/consistent_sloped/detector_rail_on"
   }
 }

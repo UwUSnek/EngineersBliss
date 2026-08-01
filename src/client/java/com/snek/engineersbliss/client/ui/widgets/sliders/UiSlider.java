@@ -307,3 +307,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         return getWidth() - 2 * height;
     }
 }
+
+
+
+//TODO add a sound when the value changes. The pitch changes based on the %

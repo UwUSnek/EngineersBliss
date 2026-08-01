@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "engineers-bliss:item/legacy/end_gateway",
+    "model": {
+      "type": "minecraft:end_cube",
+      "effect": "portal"
+    }
+  }
+}

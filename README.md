@@ -208,7 +208,6 @@ It helps a lot :3
   - Green Screen block
   - Blue Screen block
   - [Vanilla block] Fire item
-  - [Vanilla block] Soul Fire item
   - [Vanilla block] Nether Portal item
   - [Vanilla block] End Portal item
   - [Vanilla block] End Gateway item
@@ -219,16 +218,21 @@ It helps a lot :3
   - [Vanilla block] Short Sticky Piston Head item
   - [Vanilla block] Short Piston Head item
   - [Vanilla block] Frosted Ice item
-  - [Vanilla block] Water Cauldron item
+  - [Vanilla block] Water Cauldron items
+  - [Vanilla block] Powder Snow Cauldron items
   - [Vanilla block] Lava Cauldron item
-  - [Vanilla block] Powder Snow Cauldron item
   - [Vanilla block] Unlit Campfire item
   - [Vanilla block] Unlit Soul Campfire item
-  - [Vanilla block] Kelp Plant item
-  - [Vanilla block] Cave Vines Plant item
-  - [Vanilla block] Twisting Vines Plant item
-  - [Vanilla block] Weeping Vines Plant item
-  - [Vanilla block] Frogspawn item
+  - [Vanilla block] Kelp Stem item
+  - [Vanilla block] Kelp Crown item
+  - [Vanilla block] Cave Vines Stem item
+  - [Vanilla block] Cave Vines Stem with Berries item
+  - [Vanilla block] Cave Vines Crown item
+  - [Vanilla block] Cave Vines Crown with Berries item
+  - [Vanilla block] Twisting Vines Stem item
+  - [Vanilla block] Twisting Vines Crown item
+  - [Vanilla block] Weeping Vines Stem item
+  - [Vanilla block] Weeping Vines Crown item
   - [Vanilla blocks] Cake with Candle items
   - [Vanilla blocks] Potted plant items
   - [Vanilla block] Your Player Head as an item
