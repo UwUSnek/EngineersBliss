@@ -4,17 +4,17 @@
    height="32"
    viewBox="0 0 24 24"
    version="1.1"
-   id="svg2"
-   sodipodi:docname="autoclicker_delay.svg"
+   id="svg1"
+   sodipodi:docname="placement_delay.svg"
    inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs2" />
+     id="defs1" />
   <sodipodi:namedview
-     id="namedview2"
+     id="namedview1"
      pagecolor="#000000"
      bordercolor="#999999"
      borderopacity="1"
@@ -23,23 +23,23 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="25.15625"
-     inkscape:cx="15.980124"
-     inkscape:cy="16"
+     inkscape:cx="14.270807"
+     inkscape:cy="14.370186"
      inkscape:window-width="1904"
      inkscape:window-height="1014"
      inkscape:window-x="1928"
      inkscape:window-y="26"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
+     inkscape:current-layer="svg1" />
   <g
-     id="g1"
-     transform="translate(-0.47188595,0.23194927)">
+     id="g1-5"
+     transform="translate(-0.47188595,2.36665)">
     <g
-       id="g6"
+       id="g6-4"
        transform="translate(-1.1289029,1.3693689)">
       <path
          style="fill:#000000;fill-opacity:0.00735533;stroke:#ffffff;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:none;stroke-dashoffset:7.2;stroke-opacity:1;paint-order:normal"
-         id="path10"
+         id="path10-7"
          sodipodi:type="arc"
          sodipodi:cx="16.593828"
          sodipodi:cy="7.6551514"
@@ -53,26 +53,26 @@
       <path
          style="fill:none;stroke:#ffffff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="m 15.416928,1.3521603 h 2.353801"
-         id="path1" />
+         id="path1-65" />
       <path
          style="fill:none;stroke:#ffffff;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="m 15.542972,2.4835433 h 2.101712"
-         id="path1-62" />
+         id="path1-62-6" />
       <path
          style="fill:none;stroke:#ffffff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="m 19.802865,3.2971515 1.067619,1.0747268"
-         id="path1-6" />
+         id="path1-6-9" />
       <path
          style="fill:none;stroke:#ffffff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
          d="m 16.631793,5.953125 v 0.3046875 1.2811503 l 1.803544,1.0412771"
-         id="path5"
+         id="path5-3"
          sodipodi:nodetypes="cccc"
          inkscape:transform-center-x="-0.9207543"
          inkscape:transform-center-y="-0.068474374" />
       <path
          style="fill:none;stroke:#000000;stroke-width:0.75px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="M 16.593828,7.5389625 Z"
-         id="path6" />
+         id="path6-7" />
     </g>
     <g
        id="g3-1"
@@ -82,15 +82,11 @@
          style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.69354;stroke-linecap:round;stroke-linejoin:round"
          id="rect1-9"
          width="9.337347"
-         height="13.072772"
+         height="9.3459463"
          x="5.9555612"
-         y="8.6394882"
-         ry="2.1856217"
+         y="8.6387653"
+         ry="2.1856215"
          rx="2.4206483" />
-      <path
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.69354;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-         d="m 10.624236,10.977767 v 2.900466"
-         id="path3-4" />
     </g>
   </g>
 </svg>
