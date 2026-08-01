@@ -111,6 +111,13 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("Stops the Edit Sign GUI from showing up after placing a Sign or Hanging Sign.\n"))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
+    public static final ClientFeature<?> DISABLE_PICKING_UP_ITEMS = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.DISABLE_PICKING_UP_ITEMS,
+        () -> new UiTxt("Disable picking up Items"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Stops you from picking up item entities.\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
     public static final ClientFeature<?> OPEN_OBSTRUCTED_CONTAINERS = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.OPEN_OBSTRUCTED_CONTAINERS,
         () -> new UiTxt("Open obstructed containers"),

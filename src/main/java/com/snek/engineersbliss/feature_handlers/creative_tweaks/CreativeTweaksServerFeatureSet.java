@@ -71,6 +71,10 @@ public class CreativeTweaksServerFeatureSet extends __base_ServerFeatureSet {
         "no_sign_gui",
         false
     ));
+    public static ServerToggleFeature DISABLE_PICKING_UP_ITEMS = INSTANCE.registerFeature(new ServerToggleFeature(
+        "disable_picking_up_items",
+        false
+    ));
     public static ServerToggleFeature OPEN_OBSTRUCTED_CONTAINERS = INSTANCE.registerFeature(new ServerToggleFeature(
         "open_obstructed_containers",
         false
