@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.textures;
+package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.github.weisj.jsvg.SVGDocument;
 import com.github.weisj.jsvg.parser.LoaderContext;
