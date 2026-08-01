@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.textures;
+package com.snek.engineersbliss.client.utils.textures.atlases;
 
 import java.util.Map;
 import java.util.Set;

@@ -81,7 +81,11 @@
         "alt_textures.particle_suppressors.redstone_dust.LeverDustParticleSuppressorMixin",
         "alt_textures.particle_suppressors.redstone_dust.OreDustParticleSuppressorMixin",
         "alt_textures.particle_suppressors.redstone_dust.RepeaterDustParticleSuppressorMixin",
-        "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin"
+        "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.TorchDustParticleSuppressorMixin",
+
+
+        "status_bar.VanillaGuiHeightChangerMixin"
     ],
     "injectors": {
         "defaultRequire": 1

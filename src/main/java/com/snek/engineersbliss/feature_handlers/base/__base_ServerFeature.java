@@ -104,4 +104,26 @@ public abstract class __base_ServerFeature<T> {
             }
         }
     }
+
+
+    /**
+     * Checks if the server feature set initialization phase has been finalized. Throws an exception if it hasn't.
+     * @param message The message to display in the exception.
+     */
+    public static void finalizedOrThrow(final String message) {
+        if(!initialized) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+
+    /**
+     * Checks if the server feature set initialization phase has been finalized. Throws an exception if it has.
+     * @param message The message to display in the exception.
+     */
+    public static void notFinalizedOrThrow(final String message) {
+        if(initialized) {
+            throw new IllegalStateException(message);
+        }
+    }
 }

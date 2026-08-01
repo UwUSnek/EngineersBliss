@@ -16,6 +16,7 @@ import com.snek.engineersbliss.feature_handlers.custom_items.CustomBlockHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
 import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTabs;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
@@ -54,6 +55,7 @@ public class EngineerSBliss implements ModInitializer {
         CreativeTweaksServerFeatureSet.INSTANCE.init();
         AltTexturesServerFeatureSet.INSTANCE.init();
         OverlaysServerFeatureSet.INSTANCE.init();
+        SettingsServerFeatureSet.INSTANCE.init();
         __base_ServerFeature.finalizeSetInits();
 
 

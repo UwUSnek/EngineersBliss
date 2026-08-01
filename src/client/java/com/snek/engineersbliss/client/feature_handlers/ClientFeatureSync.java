@@ -36,22 +36,24 @@ public class ClientFeatureSync {
 
 
     public static <T> T getFeature(final __base_ServerFeature<T> feature) {
+        feature.getFeatureSet().initializedOrThrow();
+        __base_ServerFeature.finalizedOrThrow("Feature used before feature set init finalization");
         return playerData.getValue(feature);
     }
     public static boolean getFeatureB(final __base_ServerFeature<Boolean> feature) {
-        return playerData.getValue(feature);
+        return getFeature(feature);
     }
     public static int getFeatureI(final __base_ServerFeature<Integer> feature) {
-        return playerData.getValue(feature);
+        return getFeature(feature);
     }
     public static long getFeatureL(final __base_ServerFeature<Long> feature) {
-        return playerData.getValue(feature);
+        return getFeature(feature);
     }
     public static Float getFeatureF(final __base_ServerFeature<Float> feature) {
-        return playerData.getValue(feature);
+        return getFeature(feature);
     }
     public static double getFeatureD(final __base_ServerFeature<Double> feature) {
-        return playerData.getValue(feature);
+        return getFeature(feature);
     }
 
 
@@ -62,6 +64,8 @@ public class ClientFeatureSync {
      * This also updates the local feature data cache and sends a feature update packet to the server.
      */
     public static <T> void setFeature(final __base_ServerFeature<T> feature, final T value) {
+        feature.getFeatureSet().initializedOrThrow();
+        __base_ServerFeature.finalizedOrThrow("Feature used before feature set init finalization");
         playerData.setValue(feature, value);
 
 
