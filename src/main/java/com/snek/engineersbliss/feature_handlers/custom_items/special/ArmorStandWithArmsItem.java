@@ -5,6 +5,8 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomItem;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +19,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -29,8 +30,8 @@ import net.minecraft.world.phys.Vec3;
 
 
 
-public class ArmorStandWithArmsItem extends Item {
-    public ArmorStandWithArmsItem(Properties p) {
+public class ArmorStandWithArmsItem extends CustomItem {
+    public ArmorStandWithArmsItem(CustomItemProperties p) {
         super(p);
     }
 

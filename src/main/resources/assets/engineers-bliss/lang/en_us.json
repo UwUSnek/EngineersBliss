@@ -1,12 +1,64 @@
 {
     "creativeTab.engineers-bliss.missing_items": "Engineer's Bliss - Missing items",
-    "creativeTab.engineers-bliss.custom_items":  "Engineer's Bliss - Custom items",
+    "creativeTab.engineers-bliss.custom_items" : "Engineer's Bliss - Custom items",
+    "creativeTab.engineers-bliss.block_parts"  : "Engineer's Bliss - Block parts",
 
 
 
 
     "item.engineers-bliss.green_screen": "Green Screen",
     "item.engineers-bliss.blue_screen":   "Blue Screen",
+
+
+    "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
+    "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
+    "item.engineers-bliss.full_beehive"          : "Full Beehive",
+    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees",
+
+
+    "item.engineers-bliss.your_player_head" : "Turns into your Player Head when held in the inventory",
+
+
+    "item.engineers-bliss.armor_stand_with_arms" : "Armor Stand with arms",
+
+
+    "item.engineers-bliss.headless_piston"          : "Headless Piston",
+    "item.engineers-bliss.piston_head"              : "Piston Head",
+    "item.engineers-bliss.short_piston_head"        : "Short Piston Head",
+    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
+    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
+    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
+
+
+    "item.engineers-bliss.kelp_stem"                     : "Kelp Stem",
+    "item.engineers-bliss.kelp_crown"                    : "Kelp Crown",
+    "item.engineers-bliss.cave_vines_stem"               : "Cave Vines Stem",
+    "item.engineers-bliss.cave_vines_stem_with_berries"  : "Cave Vines Stem with Berries",
+    "item.engineers-bliss.cave_vines_crown"              : "Cave Vines Crown",
+    "item.engineers-bliss.cave_vines_crown_with_berries" : "Cave Vines Crown with Berries",
+    "item.engineers-bliss.twisting_vines_stem"           : "Twisting Vines Stem",
+    "item.engineers-bliss.twisting_vines_crown"          : "Twisting Vines Crown",
+    "item.engineers-bliss.weeping_vines_stem"            : "Weeping Vines Stem",
+    "item.engineers-bliss.weeping_vines_crown"           : "Weeping Vines Crown",
+
+
+    "item.engineers-bliss.fire"          : "Fire",
+    "item.engineers-bliss.nether_portal" : "Nether Portal",
+    "item.engineers-bliss.end_portal"    : "End Portal",
+    "item.engineers-bliss.end_gateway"   : "End Gateway",
+
+
+    "item.engineers-bliss.unlit_campfire"      : "Soul Campfire",
+    "item.engineers-bliss.unlit_soul_campfire" : "Unlit Soul Campfire",
+
+
+    "item.engineers-bliss.water_cauldron_3x"       : "Water Cauldron",
+    "item.engineers-bliss.water_cauldron_2x"       : "Mostly filled Water Cauldron",
+    "item.engineers-bliss.water_cauldron_1x"       : "Partially Filled Water Cauldron",
+    "item.engineers-bliss.powder_snow_cauldron_3x" : "Powder Snow Cauldron",
+    "item.engineers-bliss.powder_snow_cauldron_2x" : "Mostly filled Powder Snow Cauldron",
+    "item.engineers-bliss.powder_snow_cauldron_1x" : "Partially Filled Powder Snow Cauldron",
+    "item.engineers-bliss.lava_cauldron"           : "Lava Cauldron",
 
 
     "item.engineers-bliss.candle_cake"            : "Cake with Candle",
@@ -65,25 +117,5 @@
     "item.engineers-bliss.potted_pale_oak_sapling"   : "Potted Pale Oak Sapling",
     "item.engineers-bliss.potted_open_eyeblossom"    : "Potted Open Eyeblossom",
     "item.engineers-bliss.potted_closed_eyeblossom"  : "Potted Closed Eyeblossom",
-    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion",
-
-
-    "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
-    "item.engineers-bliss.full_bee_nest_no_bees" : "Full Bee Nest with no Bees",
-    "item.engineers-bliss.full_beehive"          : "Full Beehive",
-    "item.engineers-bliss.full_beehive_no_bees"  : "Full Beehive with no Bees",
-
-
-    "item.engineers-bliss.your_player_head"  : "Turns into your Player Head when held in the inventory",
-
-
-    "item.engineers-bliss.armor_stand_with_arms"  : "Armor Stand with arms",
-
-
-    "item.engineers-bliss.headless_sticky_piston"   : "Headless Sticky Piston",
-    "item.engineers-bliss.headless_piston"          : "Headless Piston",
-    "item.engineers-bliss.sticky_piston_head"       : "Sticky Piston Head",
-    "item.engineers-bliss.piston_head"              : "Piston Head",
-    "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
-    "item.engineers-bliss.short_piston_head"        : "Short Piston Head"
+    "item.engineers-bliss.potted_golden_dandelion"   : "Potted Golden Dandelion"
 }

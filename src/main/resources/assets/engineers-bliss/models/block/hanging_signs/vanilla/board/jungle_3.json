@@ -1,7 +1,7 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/hanging_signs/vanilla/templates/board_3",
-  "textures": {
-    "texture": "engineers-bliss:block/hanging_signs/vanilla/jungle"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/hanging_signs/vanilla/templates/board_3",
+  "textures" : {
+    "texture" : "engineers-bliss:block/hanging_signs/vanilla/jungle"
   }
 }

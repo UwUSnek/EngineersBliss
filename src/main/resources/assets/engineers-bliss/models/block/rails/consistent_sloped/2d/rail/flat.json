@@ -1,8 +1,8 @@
 {
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/rails/consistent_sloped/2d/template_rail/flat",
-  "textures": {
-    "rail": "engineers-bliss:block/rails/consistent_sloped/rail",
-    "particle": "engineers-bliss:block/rails/consistent_sloped/rail"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/rails/consistent_sloped/2d/template_rail/flat",
+  "textures" : {
+    "rail"     : "engineers-bliss:block/rails/consistent_sloped/rail",
+    "particle" : "engineers-bliss:block/rails/consistent_sloped/rail"
   }
 }

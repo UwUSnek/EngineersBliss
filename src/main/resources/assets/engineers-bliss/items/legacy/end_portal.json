@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "engineers-bliss:item/legacy/end_portal",
+    "model": {
+      "type": "minecraft:end_cube",
+      "effect": "portal"
+    },
+    "transformation": {
+      "left_rotation":  [ 0.0, 0.0, 0.0, 1.0 ],
+      "right_rotation": [ 0.0, 0.0, 0.0, 1.0 ],
+      "translation": [0, 0.375, 0],
+      "scale": [1, 0.25, 1]
+    }
+  }
+}
