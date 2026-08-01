@@ -31,6 +31,7 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
+import com.snek.engineersbliss.client.screens.settings.SettingsScreen;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -198,27 +199,32 @@ public class PauseScreenMixin extends Screen {
             // Tools
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor),      Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   RenderingScreen::new, 'U', "pause_screen/action_history"),   Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  RenderingScreen::new, 'V', "pause_screen/version_control"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", RenderingScreen::new, 'P', "pause_screen/block_properties"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     RenderingScreen::new, 'G', "pause_screen/block_groups"),     Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  RenderingScreen::new, 'C', "pause_screen/container_tools"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     RenderingScreen::new, 'I', "pause_screen/custom_items"),     Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Keybinds",         RenderingScreen::new, 'K', "pause_screen/keybinds"),         Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   ()->{return null;}, 'U', "pause_screen/action_history"),   Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  ()->{return null;}, 'V', "pause_screen/version_control"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", ()->{return null;}, 'P', "pause_screen/block_properties"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     ()->{return null;}, 'G', "pause_screen/block_groups"),     Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  ()->{return null;}, 'C', "pause_screen/container_tools"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     ()->{return null;}, 'I', "pause_screen/custom_items"),     Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Creative tweaks",  CreativeTweaksScreen::new, 'Y', "pause_screen/creative_tweaks"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  RenderingScreen::new,      'X', "pause_screen/gameplay_tweaks"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    RenderingScreen::new,      'M', "pause_screen/sound_muffler"),   Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  ()->{return null;},      'X', "pause_screen/gameplay_tweaks"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    ()->{return null;},      'M', "pause_screen/sound_muffler"),   Layout.BORDER_HEIGHT);
+
+            // Preferences
+            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Preferences", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Settings",         SettingsScreen::new, 'S', "pause_screen/settings"),         Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Keybinds",         ()->{return null;}, 'K', "pause_screen/keybinds"),         Layout.BORDER_HEIGHT);
 
             // Info
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Info", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Render stats", RenderingScreen::new, '\0', "pause_screen/render_stats"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("World stats",  RenderingScreen::new, '\0', "pause_screen/world_stats"),   Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("About",        RenderingScreen::new, '\0', "pause_screen/about"),         Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Render stats", ()->{return null;}, '\0', "pause_screen/render_stats"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("World stats",  ()->{return null;}, '\0', "pause_screen/world_stats"),   Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("About",        ()->{return null;}, '\0', "pause_screen/about"),         Layout.BORDER_HEIGHT);
         }
         addRenderableWidget(leftSidebar);
 
@@ -297,3 +303,20 @@ public class PauseScreenMixin extends Screen {
         }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, BUTTON_HEIGHT);
     }
 }
+
+
+
+
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO add a placeholder "coming soon" overlay to more complex features
+//TODO also add this to the reamde file
+//TODO release a beta version without these features
+//TODO full release will contain most of the main features and all the fixes
