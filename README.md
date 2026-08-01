@@ -79,12 +79,15 @@ It helps a lot :3
 
 ## Full list of features
 
+- **Misc**:
+  - Player model rendering in the pause menu
+  - In-game status bar
+  <br><br>
 - **Rendering**:
   - Selectively hide blocks by type or rendering method
   - Click through hidden blocks
   - Custom block outlines
   - Force light recalculation
-  - Player model rendering in the pause menu
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire

@@ -1,11 +1,14 @@
 # To-do list
 
+- **Misc**:
+  - ~~Player model rendering in the pause menu~~
+  - In-game status bar
+
 - **Rendering**:
   - ~~Selectively hide blocks by type or rendering method~~
   - ~~Click through hidden blocks~~
   - ~~Custom block outlines~~
   - ~~Force light recalculation~~
-  - ~~Player model rendering in the pause menu~~
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
