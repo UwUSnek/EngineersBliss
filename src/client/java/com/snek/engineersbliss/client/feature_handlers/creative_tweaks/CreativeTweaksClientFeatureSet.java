@@ -41,6 +41,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("Values represent multiples of the default Creative Mode flying speed."))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
+    public static final ClientFeature<?> PLAYER_SCALE = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.PLAYER_SCALE,
+        () -> new UiTxt("Player scale"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Controls your scale. This affects your actual hitbox.\n"))
+            .cat(new UiTxt("Values represent multiples of the default player model size."))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
     public static final ClientFeature<?> INTERACTION_DISTANCE = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE,
         () -> new UiTxt("Interaction distance"),
@@ -67,9 +75,9 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("This stacks with [Interaction radius].\n").green())
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
-    public static final ClientFeature<?> PLACE_DELAY = new ClientFeature<>(
-        CreativeTweaksServerFeatureSet.PLACE_DELAY,
-        () -> new UiTxt("Interaction delay"),
+    public static final ClientFeature<?> PLACEMENT_DELAY = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.PLACEMENT_DELAY,
+        () -> new UiTxt("Placement delay"),
         () -> new UiTxt()
             .cat(new UiTxt("Controls the delay after which a new block is placed when holding the use button.\n"))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())

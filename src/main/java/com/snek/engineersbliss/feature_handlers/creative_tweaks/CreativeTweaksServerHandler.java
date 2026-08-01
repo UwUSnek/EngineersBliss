@@ -68,6 +68,24 @@ public class CreativeTweaksServerHandler {
 
 
 
+    public static void updatePlayerScale(final Player player, final int valueIndex) {
+        if(!player.isCreative()) return;
+
+
+        final float newValue = CreativeTweaksServerFeatureSet.PLAYER_SCALE.getValues().get(valueIndex);
+        final var attribute = player.getAttribute(Attributes.SCALE);
+        if(attribute != null) {
+            attribute.addOrUpdateTransientModifier(new AttributeModifier(
+                SPEED_MODIFIER_ID,
+                newValue - 1,
+                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+            ));
+        }
+    }
+
+
+
+
     public static void updateInteractionRadius(final Player player, final int valueIndex) {
         if(!player.isCreative()) return;
         final int newValue = CreativeTweaksServerFeatureSet.INTERACTION_RADIUS.getValues().get(valueIndex);
