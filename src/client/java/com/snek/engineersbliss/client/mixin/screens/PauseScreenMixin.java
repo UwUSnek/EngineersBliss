@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
@@ -30,6 +31,7 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 import com.snek.engineersbliss.client.screens.settings.SettingsScreen;
 
@@ -271,9 +273,11 @@ public class PauseScreenMixin extends Screen {
 
 
         // Draw player model
-        final @Nullable PlayerMannequin model = PlayerMannequin.getMannequin();
-        if(model != null) {
-            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0f, mouseX, mouseY, model);
+        if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN)) {
+            final @Nullable PlayerMannequin model = PlayerMannequin.getMannequin();
+            if(model != null) {
+                InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0f, mouseX, mouseY, model);
+            }
         }
 
 
