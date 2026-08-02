@@ -48,6 +48,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
     private AnimatedDouble visualValue; //! The visual interpolated value, 0 to 1
     private AnimatedColor overlayColor;
+    private AnimatedColor handleColor;
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -84,7 +85,8 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
         this.bgCache = new TextureCache(screen);
         this.visualValue = new AnimatedDouble(initialValue, Layout.slideTransitionDuration, Easings.cubicInOut);
-        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
+        this.overlayColor = new AnimatedColor(0x0,                Layout.hoverTransitionDuration, Easings.quadIn);
+        this.handleColor  = new AnimatedColor(Layout.handleColor, Layout.hoverTransitionDuration, Easings.quadIn);
         updateMessage();
     }
 
@@ -232,8 +234,8 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         final int handleR = handleX + handleWidth / 2;
         final int innerL = calcInnerLeft();
         final int innerR = calcInnerRight();
-        final int handleColor = isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor;
-        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor);
+        handleColor.startNewTransition(isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor);
+        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
         if(handleL <  innerL) graphics.fill(handleL, getY(), innerL,  getBottom(), Layout.handleColorTransparent);
         if(handleR >= innerR) graphics.fill(innerR,  getY(), handleR, getBottom(), Layout.handleColorTransparent);
 
