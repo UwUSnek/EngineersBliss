@@ -127,10 +127,15 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
                 }
             }
         }
+
+        // Stop the preview from disappearing when dragging sliders
+        else if(isDragging()) {
+            lastHoverTime = System.currentTimeMillis();
+        }
+
+        // CLear preview if not dragging, not hovering, and the cooldown has expired
         else if(!isPreviewOffOnCooldown()) {
             lastHoveredFeatureWidget = null;
-
-            // Clear preview elements if the cooldown has expired
             clearPreview();
         }
 
