@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.ui.base;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -13,7 +14,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -55,6 +55,10 @@ public abstract class __base_UiScreen extends Screen {
     @Override
     public boolean keyPressed(final KeyEvent event) {
         switch(event.key()) {
+            case InputConstants.KEY_ESCAPE: {
+                onClose();
+                return true;
+            }
             case InputConstants.KEY_TAB: {
                 tabPressed = true;
                 return true;
@@ -77,7 +81,7 @@ public abstract class __base_UiScreen extends Screen {
                 //! Don't call super.keyPressed.
                 //! Vanilla has custom handling for arrow keys which breaks all sorts of stuff.
                 boolean r = false;
-                if(!r) for(final GuiEventListener e : children()) {
+                for(final @NotNull GuiEventListener e : children()) {
                     if(e.keyPressed(event)) r = true;
                 }
                 return r;
@@ -88,18 +92,20 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean keyReleased(final KeyEvent event) {
-        if(event.key() == InputConstants.KEY_TAB) {
-            tabPressed = false;
-            return true;
-        }
-        else {
-            //! No super.keyReleased call.
-            //! super.keyPressed is never called in the first place. This simply mirrors that behaviour.
-            boolean r = false;
-            if(!r) for(final GuiEventListener e : children()) {
-                if(e.keyReleased(event)) r = true;
+        switch(event.key()) {
+            case InputConstants.KEY_TAB: {
+                tabPressed = false;
+                return true;
             }
-            return r;
+            default: {
+                //! No super.keyReleased call.
+                //! super.keyPressed is never called in the first place. This simply mirrors that behaviour.
+                boolean r = false;
+                for(final @NotNull GuiEventListener e : children()) {
+                    if(e.keyReleased(event)) r = true;
+                }
+                return r;
+            }
         }
     }
 
@@ -159,6 +165,12 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isAllowedInPortal() {
         return true;
     }
 }
