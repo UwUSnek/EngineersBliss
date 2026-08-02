@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.screens.creative_tweaks;
 
+import java.text.DecimalFormat;
 import java.util.function.Function;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientFeatureSet;
@@ -10,10 +11,10 @@ import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
-import com.snek.engineersbliss.client.ui.widgets.sliders.UiSlider;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Utils;
 
 
 
@@ -23,20 +24,33 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
+    private static final DecimalFormat decimalFormatter = new DecimalFormat("0.#####");
+
 
     @SuppressWarnings("unchecked")
-    private static final Function<UiSlider, UiTxt> tickFormatter = s -> {
-        final int total = ((UiSteppedFeatureSlider<Integer>)s).getSelectedValue();
-        final int seconds = total / 20;
-        final int ticks   = total % 20;
-        return new UiTxt(seconds == 0
+    private static final Function<Integer, String> tickFormatter = n -> {
+        final int seconds = n / 20;
+        final int ticks   = n % 20;
+        return seconds == 0
             ? ticks == 0
                 ? "0"
                 : String.format("%st", ticks)
             : ticks == 0
                 ? String.format("%ss", seconds)
                 : String.format("%ss%st", seconds, ticks)
-        );
+        ;
+    };
+    private static final Function<Float, String> multiplierFormatter = n -> {
+        return decimalFormatter.format(n) + "x";
+    };
+    private static final Function<Integer, String> intMultiplierFormatter = n -> {
+        return String.format("%dx", n);
+    };
+    private static final Function<Float, String> blockFormatter = n -> {
+        return String.format("%s block%s", decimalFormatter.format(n), (Utils.floatEquals(n, 1, 1e-5f) ? "" : "s"));
+    };
+    private static final Function<Integer, String> intBlockFormatter = n -> {
+        return String.format("%d block%s", n, (n == 1 ? "" : "s"));
     };
 
 
@@ -56,14 +70,46 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         // Player properties
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Player properties", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.WALKING_SPEED),                    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.FLYING_SPEED,  CreativeTweaksClientHandler:: onFlyingSpeedChange), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.PLAYER_SCALE),                     Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE),             Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS),               Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT),                Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.PLACEMENT_DELAY,   tickFormatter), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, CreativeTweaksClientFeatureSet.AUTOCLICKER_DELAY, tickFormatter), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+            this, CreativeTweaksClientFeatureSet.WALKING_SPEED,
+            null, multiplierFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+            this, CreativeTweaksClientFeatureSet.FLYING_SPEED,
+            CreativeTweaksClientHandler::onFlyingSpeedChange, multiplierFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+            this, CreativeTweaksClientFeatureSet.PLAYER_SCALE,
+            null, multiplierFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+            this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE,
+            null, blockFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, CreativeTweaksClientFeatureSet.INTERACTION_RADIUS,
+            null, intBlockFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, CreativeTweaksClientFeatureSet.INTERACTION_COUNT,
+            null, intMultiplierFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, CreativeTweaksClientFeatureSet.PLACEMENT_DELAY,
+            null, tickFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, CreativeTweaksClientFeatureSet.AUTOCLICKER_DELAY,
+            null, tickFormatter,
+            0, 0 //FIXME fix preview text indices
+        ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                      Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                    Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                      Layout.BORDER_HEIGHT);

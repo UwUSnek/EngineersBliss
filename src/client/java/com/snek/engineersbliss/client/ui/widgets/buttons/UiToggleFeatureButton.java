@@ -13,6 +13,7 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
+import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -25,13 +26,17 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiToggleFeatureButton extends UiToggleButton {
+public class UiToggleFeatureButton extends UiToggleButton implements DualPreviewFeatureInputWidget {
     private final              ClientFeature<?> clientFeature;
     private final @Nullable ServerToggleFeature serverFeature;
 
 
-    public              ClientFeature<?> getClientFeature() { return clientFeature; }
-    public @Nullable ServerToggleFeature getServerFeature() { return serverFeature; }
+    @Override public              ClientFeature<?> getClientFeature() { return clientFeature; }
+    @Override public @Nullable ServerToggleFeature getServerFeature() { return serverFeature; }
+    @Override public String getLeftPreviewSuffix () { return "on";  }
+    @Override public String getRightPreviewSuffix() { return "off"; }
+    @Override public String getLeftTitle         () { return "ON";  }
+    @Override public String getRightTitle        () { return "OFF"; }
 
 
     private final Identifier bgSpriteId;

@@ -31,6 +31,18 @@ public class UiSteppedSlider<T> extends UiSlider {
 
     // The list of possible values.
     private final List<T> stepValues;
+    public final List<T> getStepValues() { return stepValues; }
+
+
+    // Value formatters
+    private final Function<T, String> valueFormatter;
+    public Function<T, String> getValueFormatter() {
+        return valueFormatter;
+    }
+    public String formatValueAt(final int valueIndex) {
+        return valueFormatter.apply(getStepValues().get(valueIndex));
+    }
+
 
 
 
@@ -40,17 +52,20 @@ public class UiSteppedSlider<T> extends UiSlider {
         final int x, final int y, final int w, final int h, final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
-        final @Nullable Function<UiSlider, UiTxt> valueFormatter
+        final @Nullable Function<T, String> valueFormatter
     ) {
         super(
             screen,
             x, y, w, h,
             label, indexToUnit(defaultValueIndex, stepValues.size()),
             null,
-            valueFormatter == null ? s -> new UiTxt(String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue())) : valueFormatter
+            valueFormatter != null
+                ? s -> new UiTxt(valueFormatter.apply(((UiSteppedSlider<T>)s).getSelectedValue()))
+                : s -> new UiTxt(      String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue()))
         );
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
+        this.valueFormatter = valueFormatter != null ? valueFormatter::apply : String::valueOf;
         updateMessage();
     }
 
