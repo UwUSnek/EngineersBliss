@@ -28,8 +28,12 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
         "status_bar_position",
         false
     ));
+    public static ServerToggleFeature CHAT_HIDES_STATUS_BAR = INSTANCE.registerFeature(new ServerToggleFeature(
+        "chat_hides_status_bar",
+        true
+    ));
     public static ServerToggleFeature PLAYER_MODEL_IN_PAUSE_SCREEN = INSTANCE.registerFeature(new ServerToggleFeature(
         "player_model_in_pause_screen",
-        false
+        true
     ));
 }

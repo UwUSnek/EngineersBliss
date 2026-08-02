@@ -31,6 +31,15 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         () -> new UiTxt("Status Bar position"),
         () -> new UiTxt("The position of the in-game status bar.")
     );
+    public static final ClientFeature<?> CHAT_HIDES_STATUS_BAR = new ClientFeature<>(
+        SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR,
+        () -> new UiTxt("Chat hides Status Bar"),
+        () -> new UiTxt("Hides the Status Bar when the chat is open.")
+    );
+
+
+
+
     public static final ClientFeature<?> PLAYER_MODEL_IN_PAUSE_SCREEN = new ClientFeature<>(
         SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
         () -> new UiTxt("Display player model in pause screen"),

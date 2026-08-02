@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 
@@ -30,6 +31,12 @@ public class StatusBarRenderer {
 
 
     private static void render(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
+
+        // Skip rendering if the player has the chat open and the "Chat hides Status Bar" setting ON
+        if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR) && MinecraftUtils.isChatOpen()) {
+            return;
+        }
+
         final @NotNull Minecraft mc = Minecraft.getInstance();
         final int width     = mc.getWindow().getGuiScaledWidth();
         final int height    = mc.getWindow().getGuiScaledHeight();

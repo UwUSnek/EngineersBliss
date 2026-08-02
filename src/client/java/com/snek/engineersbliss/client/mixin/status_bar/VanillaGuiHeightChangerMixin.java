@@ -5,6 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
@@ -26,8 +27,12 @@ public class VanillaGuiHeightChangerMixin {
     private int eb$guiHeight(int original) {
 
 
-        //! Do nothing if the player is not in a world
-        if(Minecraft.getInstance().level == null) {
+        // Do nothing if the player is not in a world
+        // Also do nothing if the player has the chat open and the "Chat hides Status Bar" setting ON
+        if(
+            Minecraft.getInstance().level == null ||
+            (ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR) && MinecraftUtils.isChatOpen())
+        ) {
             return original;
         }
 

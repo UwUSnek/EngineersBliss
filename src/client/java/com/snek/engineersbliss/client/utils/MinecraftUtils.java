@@ -13,6 +13,7 @@ import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -49,6 +50,12 @@ public class MinecraftUtils {
         ClientPlayConnectionEvents.DISCONNECT.register((listener,         client) -> invalidatePlaytimeData());
 
         LevelRenderEvents.START_MAIN.register(context -> checkPauseTransition());
+    }
+
+
+
+    public static boolean isChatOpen() {
+        return Minecraft.getInstance().screen instanceof ChatScreen;
     }
 
 
