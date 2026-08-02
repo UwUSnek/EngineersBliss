@@ -110,57 +110,57 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
             null, tickFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.AUTOCLICKER),                      Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS),                    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI),                      Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.DISABLE_PICKING_UP_ITEMS),         Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS),       Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.AUTOCLICKER,                null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.TOGGLE_CLICKS,              null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.NO_SIGN_GUI,                null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.DISABLE_PICKING_UP_ITEMS,   null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, CreativeTweaksClientFeatureSet.OPEN_OBSTRUCTED_CONTAINERS, null), Layout.BORDER_HEIGHT);
 
 
         // Player properties
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("World interactions", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.PHASE_THROUGH_BLOCKS_FLY),        Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.PHASE_THROUGH_ENTITIES),          Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_FIRE_EFFECT),             Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_FREEZING_EFFECT),         Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.FIX_HONEY_JUMP),                  Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HONEY_SLIDING),           Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SLIME_BOUNCE),            Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BED_BOUNCE),              Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_ICE_SLIDING),             Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_CURRENT_DRAG),            Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG),      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.PHASE_THROUGH_BLOCKS_FLY,             null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.PHASE_THROUGH_ENTITIES,               null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_FIRE_EFFECT,                  null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_FREEZING_EFFECT,              null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.FIX_HONEY_JUMP,                       null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HONEY_SLIDING,                null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SLIME_BOUNCE,                 null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BED_BOUNCE,                   null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_ICE_SLIDING,                  null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_CURRENT_DRAG,                 null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG,           null), Layout.BORDER_HEIGHT);
 
 
         // World interations
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Speed debuffs", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HONEY_SLOWDOWN),          Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SLIME_SLOWDOWN),          Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SOULSAND_SLOWDOWN),       Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_POWDER_SNOW_SLOWDOWN),    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WATER_SLOWDOWN),          Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_LAVA_SLOWDOWN),           Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_COBWEB_SLOWDOWN),         Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_LADDER_SLOWDOWN),         Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_VINES_SLOWDOWN),          Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_TWISTING_VINES_SLOWDOWN), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WEEPING_VINES_SLOWDOWN),  Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SWEET_BERRIES_SLOWDOWN),  Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HONEY_SLOWDOWN,               null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SLIME_SLOWDOWN,               null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SOULSAND_SLOWDOWN,            null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_POWDER_SNOW_SLOWDOWN,         null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WATER_SLOWDOWN,               null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_LAVA_SLOWDOWN,                null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_COBWEB_SLOWDOWN,              null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_LADDER_SLOWDOWN,              null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_VINES_SLOWDOWN,               null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_TWISTING_VINES_SLOWDOWN,      null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WEEPING_VINES_SLOWDOWN,       null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SWEET_BERRIES_SLOWDOWN,       null), Layout.BORDER_HEIGHT);
 
 
         // Visual clutter
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Visual clutter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BLOCK_BREAK_PARTICLES),   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION),   Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HAND_SWING_ANIMATION),    Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_DIMENSION_CHANGE_SCREEN), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WATER_FOV_CHANGE),        Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WATER_OVERLAY),           Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_LAVA_OVERLAY),            Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_NETHER_PORTAL_OVERLAY),   Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BLOCK_BREAK_PARTICLES,   null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION,   null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HAND_SWING_ANIMATION,    null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_DIMENSION_CHANGE_SCREEN, null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WATER_FOV_CHANGE,        null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_WATER_OVERLAY,           null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_LAVA_OVERLAY,            null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_NETHER_PORTAL_OVERLAY,   null), Layout.BORDER_HEIGHT);
 
 
 

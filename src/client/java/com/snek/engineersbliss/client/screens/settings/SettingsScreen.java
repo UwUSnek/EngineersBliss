@@ -45,7 +45,7 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
             this, SettingsClientFeatureSet.STATUS_BAR_HEIGHT,
             null, pixelFormatter, 0, 0
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, SettingsClientFeatureSet.STATUS_BAR_POSITION),               Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN),      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.STATUS_BAR_POSITION,          null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN, null), Layout.BORDER_HEIGHT);
     }
 }
