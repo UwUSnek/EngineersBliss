@@ -74,7 +74,9 @@ public abstract class __base_UiScreen extends Screen {
                 return true;
             }
             default: {
-                boolean r = super.keyPressed(event);
+                //! Don't call super.keyPressed.
+                //! Vanilla has custom handling for arrow keys which breaks all sorts of stuff.
+                boolean r = false;
                 if(!r) for(final GuiEventListener e : children()) {
                     if(e.keyPressed(event)) r = true;
                 }
@@ -91,7 +93,9 @@ public abstract class __base_UiScreen extends Screen {
             return true;
         }
         else {
-            boolean r = super.keyReleased(event);
+            //! No super.keyReleased call.
+            //! super.keyPressed is never called in the first place. This simply mirrors that behaviour.
+            boolean r = false;
             if(!r) for(final GuiEventListener e : children()) {
                 if(e.keyReleased(event)) r = true;
             }

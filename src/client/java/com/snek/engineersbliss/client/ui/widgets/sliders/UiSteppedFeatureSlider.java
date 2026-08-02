@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,9 +11,9 @@ import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
+import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.resources.Identifier;
 
 
@@ -35,8 +34,8 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
     @Override public @Nullable __base_ServerFeature<?> getServerFeature() { return serverFeature; }
     @Override public String getLeftPreviewSuffix () { return "a";  }
     @Override public String getRightPreviewSuffix() { return "b"; }
-    @Override public String getLeftTitle         () { return formatValueAt(leftPreviewIndex); }
-    @Override public String getRightTitle        () { return formatValueAt(rightPreviewIndex); }
+    @Override public String getLeftTitle         () { return formatValueAt(leftPreviewIndex,  true); }
+    @Override public String getRightTitle        () { return formatValueAt(rightPreviewIndex, true); }
 
 
 
@@ -49,7 +48,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         final Screen screen,
         final ClientFeature<?> feature,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
-        final @Nullable Function<T, String> valueFormatter,
+        final @Nullable ValueFormatter<T> valueFormatter,
         final int leftPreviewIndex,
         final int rightPreviewIndex
     ) {
@@ -63,7 +62,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         final int w, final int h,
         final ClientFeature<?> feature,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
-        final @Nullable Function<T, String> valueFormatter,
+        final @Nullable ValueFormatter<T> valueFormatter,
         final int leftPreviewIndex,
         final int rightPreviewIndex
     ) {

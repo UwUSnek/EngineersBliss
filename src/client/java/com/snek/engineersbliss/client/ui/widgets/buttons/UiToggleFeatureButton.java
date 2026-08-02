@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.ui.widgets.buttons;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +14,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
+import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -36,8 +36,8 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
     @Override public @Nullable ServerToggleFeature getServerFeature() { return serverFeature; }
     @Override public String getLeftPreviewSuffix () { return "off";  }
     @Override public String getRightPreviewSuffix() { return "on";  }
-    @Override public String getLeftTitle         () { return formatValue(false); }
-    @Override public String getRightTitle        () { return formatValue(true);  }
+    @Override public String getLeftTitle         () { return formatValue(false, true); }
+    @Override public String getRightTitle        () { return formatValue(true,  true); }
 
 
     private final Identifier bgSpriteId;
@@ -46,18 +46,18 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
 
 
 
-    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Function<Boolean, String> valueFormatter) {
+    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         this(screen, feature, null, valueFormatter);
     }
-    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback, final @Nullable Function<Boolean, String> valueFormatter) {
+    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         this(screen, 50, 50, 50, 50, feature, afterPressCallback, valueFormatter);
     }
-    public UiToggleFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Function<Boolean, String> valueFormatter) {
+    public UiToggleFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         this(screen, x, y, w, h, feature, null, valueFormatter);
     }
 
 
-    public UiToggleFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback, final @Nullable Function<Boolean, String> valueFormatter) {
+    public UiToggleFeatureButton(final Screen screen, final int x, final int y, final int w, final int h, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
 
         // Throw exception if not a ServerToggleFeature
         final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();
@@ -71,7 +71,7 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
         // Proceed with normal initialization
         final ServerToggleFeature _serverFeature = (ServerToggleFeature)genericServerFeature;
         final boolean initialValue = ClientFeatureSync.getFeatureB(_serverFeature);
-        final Function<Boolean, String> nonNullValueFormatter = valueFormatter != null ? valueFormatter : n -> n.booleanValue() ? "ON" : "OFF";
+        final ValueFormatter<Boolean> nonNullValueFormatter = valueFormatter != null ? valueFormatter : (n, u) -> n.booleanValue() ? "ON" : "OFF";
         super(screen, initialValue, x, y, w, h, getToggleText(feature, initialValue, nonNullValueFormatter), null, nonNullValueFormatter, '\0', TextAlignment.LEFT);
         this.clientFeature = feature;
         this.serverFeature = _serverFeature;
@@ -104,8 +104,8 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
 
 
 
-    public static UiTxt getToggleText(final ClientFeature<?> feature, final boolean value, final Function<Boolean, String> valueFormatter) {
-        return (UiTxt)feature.calcName().cat(": " + valueFormatter.apply(value));
+    public static UiTxt getToggleText(final ClientFeature<?> feature, final boolean value, final ValueFormatter<Boolean> valueFormatter) {
+        return (UiTxt)feature.calcName().cat(": " + valueFormatter.format(value, false));
     }
 
     public UiTxt getToggleText(final ClientFeature<?> feature) {

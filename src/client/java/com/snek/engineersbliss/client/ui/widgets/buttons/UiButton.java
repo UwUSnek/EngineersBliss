@@ -11,6 +11,7 @@ import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
+import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -29,7 +30,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiButton extends Button implements BgCacheWidget {
+public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
     private static final int KEYBIND_BADGE_WIDTH = 16;
 
     private UiTxt label;
@@ -37,6 +38,10 @@ public class UiButton extends Button implements BgCacheWidget {
     private final TextAlignment alignment;
     private int labelOffset;   // Label offset from the left edge, in pixels.
     private final AnimatedColor overlayColor;
+
+    // Screen reference
+    private final Screen screen;
+    public Screen getScreen() { return screen; }
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -58,6 +63,7 @@ public class UiButton extends Button implements BgCacheWidget {
     public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         //! Pass empty text to super and store a custom UiTxt isntance locally
         super(x, y, width, height, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
+        this.screen = screen;
         this.key = Character.toLowerCase(key);
         this.alignment = alignment;
         this.label = label;

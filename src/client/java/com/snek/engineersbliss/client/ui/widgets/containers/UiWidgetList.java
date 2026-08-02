@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
+import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,11 @@ import com.snek.engineersbliss.client.utils.RenderingUtils;
 /**
  * A scrollable vertical list capable of containing other widgets.
  */
-public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> implements BgCacheWidget {
+public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> implements BgCacheWidget, UiWidgetBase {
+
+    // Screen reference
+    private final Screen screen;
+    public Screen getScreen() { return screen; }
 
     // Cached textures
     private final TextureCache bgCache;
@@ -49,6 +54,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
 
     public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
         super(Minecraft.getInstance(), width, height, y, itemHeight);
+        this.screen = screen;
         bgCache = new TextureCache(screen);
         setX(x);
     }

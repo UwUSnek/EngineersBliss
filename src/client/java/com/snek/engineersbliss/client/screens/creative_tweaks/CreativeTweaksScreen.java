@@ -8,6 +8,7 @@ import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeT
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
@@ -28,7 +29,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
 
     @SuppressWarnings("unchecked")
-    private static final Function<Integer, String> tickFormatter = n -> {
+    private static final ValueFormatter<Integer> tickFormatter = (n, u) -> {
         final int seconds = n / 20;
         final int ticks   = n % 20;
         return seconds == 0
@@ -40,17 +41,19 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
                 : String.format("%ss%st", seconds, ticks)
         ;
     };
-    private static final Function<Float, String> multiplierFormatter = n -> {
+    private static final ValueFormatter<Float> multiplierFormatter = (n, u) -> {
         return decimalFormatter.format(n) + "x";
     };
-    private static final Function<Integer, String> intMultiplierFormatter = n -> {
+    private static final ValueFormatter<Integer> intMultiplierFormatter = (n, u) -> {
         return String.format("%dx", n);
     };
-    private static final Function<Float, String> blockFormatter = n -> {
-        return String.format("%s block%s", decimalFormatter.format(n), (Utils.floatEquals(n, 1, 1e-5f) ? "" : "s"));
+    private static final ValueFormatter<Float> blockFormatter = (n, u) -> {
+        final String unit = u ? "b" : (Utils.floatEquals(n, 1, 1e-5f) ? "block" : "blocks");
+        return String.format("%s%s", decimalFormatter.format(n), unit);
     };
-    private static final Function<Integer, String> intBlockFormatter = n -> {
-        return String.format("%d block%s", n, (n == 1 ? "" : "s"));
+    private static final ValueFormatter<Integer> intBlockFormatter = (n, u) -> {
+        final String unit = u ? "b" : (n == 1 ? "block" : "blocks");
+        return String.format("%d%s", n, unit);
     };
 
 

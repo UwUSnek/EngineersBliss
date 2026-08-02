@@ -13,6 +13,7 @@ import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
+import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -37,7 +38,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
+public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiWidgetBase {
 	public static final int HANDLE_BASE_WIDTH = 8;
     private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
@@ -50,6 +51,10 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private AnimatedDouble visualValue; //! The visual interpolated value, 0 to 1
     private AnimatedColor overlayColor;
     private AnimatedColor handleColor;
+
+    // Screen reference
+    private final Screen screen;
+    public Screen getScreen() { return screen; }
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -81,6 +86,7 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     ) {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(x, y, width, height, new Txt().get(), initialValue);
+        this.screen = screen;
         this.baseLabel = label;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
@@ -159,11 +165,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
         boolean result = super.mouseClicked(event, doubled);
         dragged = true;
-        if(result) {
-            GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
-            virtualX = event.x();
-            updateValueFromVirtualX();
-        }
+        GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+        virtualX = event.x();
+        updateValueFromVirtualX();
         return result;
     }
 
