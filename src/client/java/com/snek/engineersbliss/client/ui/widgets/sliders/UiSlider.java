@@ -24,6 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -187,6 +188,15 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
         dragged = false;
         return super.mouseReleased(event);
+    }
+
+
+
+    //! Default keyPressed moves the handle when the left or right arrow key is pressed.
+    //! This stops that behaviour.
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        return true;
     }
 
 

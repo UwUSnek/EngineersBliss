@@ -13,6 +13,7 @@ import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 
 
 
@@ -120,6 +121,28 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
 
+
+
+
+
+
+
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        if(isHovered()) {
+            if(event.isLeft()) {
+                final double newValue = indexToUnit(unitToIndex(value) - 1);
+                setValue(Math.clamp(newValue, 0.0, 1.0));
+                return true;
+            }
+            if(event.isRight()) {
+                final double newValue = indexToUnit(unitToIndex(value) + 1);
+                setValue(Math.clamp(newValue, 0.0, 1.0));
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 

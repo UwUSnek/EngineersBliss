@@ -14,6 +14,7 @@ import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.resources.Identifier;
 
 

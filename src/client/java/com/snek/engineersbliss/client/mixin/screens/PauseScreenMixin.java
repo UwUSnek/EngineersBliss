@@ -89,13 +89,17 @@ public class PauseScreenMixin extends Screen {
                 return true;
             }
         }
-        for(final var c : children()) r = r || c.keyPressed(event);
+        for(final var c : children()) {
+            if(c.keyPressed(event)) r = true;
+        }
         return r;
     }
     @Override
     public boolean charTyped(CharacterEvent event) {
         boolean r = false;
-        for(final var c : children()) r = r || c.charTyped(event);
+        for(final var c : children()) {
+            if(c.charTyped(event)) r = true;
+        }
         return r;
     }
 

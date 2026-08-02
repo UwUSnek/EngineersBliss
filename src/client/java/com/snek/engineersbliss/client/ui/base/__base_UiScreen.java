@@ -13,7 +13,9 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 
@@ -72,7 +74,11 @@ public abstract class __base_UiScreen extends Screen {
                 return true;
             }
             default: {
-                return super.keyPressed(event);
+                boolean r = super.keyPressed(event);
+                if(!r) for(final GuiEventListener e : children()) {
+                    if(e.keyPressed(event)) r = true;
+                }
+                return r;
             }
         }
     }
@@ -85,7 +91,11 @@ public abstract class __base_UiScreen extends Screen {
             return true;
         }
         else {
-            return super.keyReleased(event);
+            boolean r = super.keyReleased(event);
+            if(!r) for(final GuiEventListener e : children()) {
+                if(e.keyReleased(event)) r = true;
+            }
+            return r;
         }
     }
 
