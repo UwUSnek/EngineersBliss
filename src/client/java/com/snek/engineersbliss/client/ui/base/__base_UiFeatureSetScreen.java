@@ -110,45 +110,41 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         if(tabPressed) return;
 
 
-        // Find hovered entry
+
+
+        // Update hovered feature entry data
         final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
         final AbstractWidget widget = entry != null ? entry.getWidget() : null;
-
-
-        // If hovering an element with feature preview
         if(widget instanceof FeatureInputWidget featureWidget) {
-
-            // Update hover timestamp
-            // Update preview elements if the hovered element has changed
             lastHoverTime = System.currentTimeMillis();
             if(featureWidget != lastHoveredFeatureWidget) {
+                lastHoveredFeatureWidget = featureWidget;
+
+                // Update preview elements if the hovered element has changed
                 switch(featureWidget) {
                     case DualPreviewFeatureInputWidget dpw -> updateToggleFeaturePreviewElements(dpw);
                     default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
                 }
             }
+        }
+        else if(!isPreviewOffOnCooldown()) {
+            lastHoveredFeatureWidget = null;
 
-            // Draw immediate preview geometry if needed
-            final float ratio = 9f / 4f;
-            final int w = (int)(width * PREVIEW_WIDTH);
-            final int h = (int)(w * ratio);
-            final int hPlaceholder = w;
-            final int xL = (width  - w) / 2 - w / 2;
-            final int xR = (width  - w) / 2 + w / 2;
-            final int y    = (height - h) / 2;
-            final int yPlaceholder = (height - hPlaceholder) / 2;
-            if(hoveredPreviewAtlasIds != null && isPreviewOffOnCooldown()) {
-                switch(featureWidget) {
-                    case DualPreviewFeatureInputWidget dpw -> renderImmediateToggleFeaturePreview(graphics, dpw, w, h, hPlaceholder, xL, xR, y, yPlaceholder);
-                    default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
-                }
+            // Clear preview elements if the cooldown has expired
+            clearPreview();
+        }
+
+
+
+        // Draw immediate feature preview elements if needed
+        if(lastHoveredFeatureWidget != null && hoveredPreviewAtlasIds != null) {
+            switch(lastHoveredFeatureWidget) {
+                case DualPreviewFeatureInputWidget dpw -> renderImmediateToggleFeaturePreview(graphics, dpw);
+                default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
             }
         }
 
-        // Try to clear the preview elements if not
-        else {
-            tryClearPreview();
-        }
+
 
 
         // Normal rendering
@@ -158,7 +154,23 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final DualPreviewFeatureInputWidget featureInputWidget, final int w, final int h, final int hPlaceholder, final int xL, final int xR, final int y, final int yPlaceholder) {
+
+
+
+
+    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final DualPreviewFeatureInputWidget featureInputWidget) {
+
+        // Calculate data
+        final float ratio = 9f / 4f;
+        final int w = (int)(width * PREVIEW_WIDTH);
+        final int h = (int)(w * ratio);
+        final int hPlaceholder = w;
+        final int xL = (width  - w) / 2 - w / 2;
+        final int xR = (width  - w) / 2 + w / 2;
+        final int y    = (height - h) / 2;
+        final int yPlaceholder = (height - hPlaceholder) / 2;
+
+
         // Render background text
         {
             final int descriptionWidthPx = (int)(width * descriptionWidth);
@@ -204,16 +216,27 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
+    private void clearPreview() {
+        hoveredPreviewAtlasIds = null;
+        lastHoveredFeatureWidget = null;
+        descriptionNameWidget.setLabel(new UiTxt());
+        descriptionNameWidget.setBgColor(0x0);
+        descriptionTextWidget.setLabel(new UiTxt());
+        descriptionTextWidget.setBgColor(0x0);
+    }
+
+
+
+
     private void updateToggleFeaturePreviewElements(DualPreviewFeatureInputWidget featureInputWidget) {
-        //TODO maybe draw one preview for each setting step? or something like that? idk yet
 
         // Draw feature preview
         lastHoveredFeatureWidget = featureInputWidget;
         final __base_ServerFeature<?> serverFeature = featureInputWidget.getServerFeature();
         final String featureSetId = serverFeature.getFeatureSet().getId();
         final String fatureId = serverFeature.getId();
-        final String atlasPathL = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, featureInputWidget.getLeftPreviewSuffix(), fatureId); //FIXME indices?
-        final String atlasPathR = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, featureInputWidget.getRightPreviewSuffix(), fatureId); //FIXME indices?
+        final String atlasPathL = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix()); //FIXME indices?
+        final String atlasPathR = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix()); //FIXME indices?
         hoveredPreviewAtlasIds = new Identifier[] {
             Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathL),
             Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathR)
@@ -228,20 +251,6 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         final UiTxt description = featureInputWidget.getClientFeature().calcDesc();
         descriptionTextWidget.setLabel(description);
         descriptionTextWidget.setBgColor(Layout.bgColor);
-    }
-
-
-
-
-    private void tryClearPreview() {
-        if(!isPreviewOffOnCooldown()) {
-            hoveredPreviewAtlasIds = null;
-            lastHoveredFeatureWidget = null;
-            descriptionNameWidget.setLabel(new UiTxt());
-            descriptionNameWidget.setBgColor(0x0);
-            descriptionTextWidget.setLabel(new UiTxt());
-            descriptionTextWidget.setBgColor(0x0);
-        }
     }
 
 
