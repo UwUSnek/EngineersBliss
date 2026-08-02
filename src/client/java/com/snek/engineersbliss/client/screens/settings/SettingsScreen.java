@@ -48,7 +48,7 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
         ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
             this, SettingsClientFeatureSet.STATUS_BAR_POSITION,
-            null
+            null, (n, u) -> n.booleanValue() ? "Top" : "Bottom"
         ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
             this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
