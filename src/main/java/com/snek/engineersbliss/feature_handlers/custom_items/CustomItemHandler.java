@@ -15,6 +15,7 @@ import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandW
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCauldronItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomPlantHalfBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.UnlitCampfireItem;
@@ -145,62 +146,150 @@ public class CustomItemHandler {
 
 
 
+    public static final Item ROSE_BUSH_STEM = register(
+        "rose_bush_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.ROSE_BUSH, p, true),
+        new Txt("The bottom half of a Rose Bush in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item ROSE_BUSH_CROWN = register(
+        "rose_bush_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.ROSE_BUSH, p, false),
+        new Txt("The top half of a Rose Bush in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SUNFLOWER_STEM = register(
+        "sunflower_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.SUNFLOWER, p, true),
+        new Txt("The bottom half of a Sunflower in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SUNFLOWER_CROWN = register(
+        "sunflower_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.SUNFLOWER, p, false),
+        new Txt("The top half of a Sunflower in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item TALL_GRASS_STEM = register(
+        "tall_grass_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.TALL_GRASS, p, true),
+        new Txt("The bottom half of a Tall Grass in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item TALL_GRASS_CROWN = register(
+        "tall_grass_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.TALL_GRASS, p, false),
+        new Txt("The top half of a Tall Grass in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PITCHER_PLANT_STEM = register(
+        "pitcher_plant_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.PITCHER_PLANT, p, true),
+        new Txt("The bottom half of a Pitcher Plant in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PITCHER_PLANT_CROWN = register(
+        "pitcher_plant_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.PITCHER_PLANT, p, false),
+        new Txt("The top half of a Pitcher Plant in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PEONY_STEM = register(
+        "peony_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.PEONY, p, true),
+        new Txt("The bottom half of a Peony in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PEONY_CROWN = register(
+        "peony_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.PEONY, p, false),
+        new Txt("The top half of a Peony in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LARGE_FERN_STEM = register(
+        "large_fern_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.LARGE_FERN, p, true),
+        new Txt("The bottom half of a Large Fern in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LARGE_FERN_CROWN = register(
+        "large_fern_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.LARGE_FERN, p, false),
+        new Txt("The top half of a Large Fern in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LILAC_STEM = register(
+        "lilac_stem", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.LILAC, p, true),
+        new Txt("The bottom half of a Lilac in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LILAC_CROWN = register(
+        "lilac_crown", "tall_plants",
+        p -> new CustomPlantHalfBlockItem(Blocks.LILAC, p, false),
+        new Txt("The top half of a Lilac in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
     public static final Item KELP_STEM = register(
-        "kelp_stem", "plants",
+        "kelp_stem", "long_plants",
         p -> new CustomWaterPlaceableBlockItem(Blocks.KELP_PLANT, p, List.of(Blocks.KELP_PLANT)),
         new Txt("A Kelp Plant block in item form."),
-        Notices.PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item KELP_CROWN = register(
-        "kelp_crown", "plants",
+        "kelp_crown", "long_plants",
         p -> new CustomWaterPlaceableBlockItem(Blocks.KELP, p, List.of(Blocks.KELP)),
         new Txt("A Kelp block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_STEM = register(
-        "cave_vines_stem", "plants",
+        "cave_vines_stem", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, false, p, List.of(Blocks.CAVE_VINES_PLANT)),
         new Txt("A Cave Vines Plant block in item form."),
-        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_STEM_WITH_BERRIES = register(
-        "cave_vines_stem_with_berries", "plants",
+        "cave_vines_stem_with_berries", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, true, p, null),
         new Txt("A Cave Vines Plant block in item form. Comes with Glow Berries."),
-        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_CROWN = register(
-        "cave_vines_crown", "plants",
+        "cave_vines_crown", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, false, p, List.of(Blocks.CAVE_VINES)),
         new Txt("A Cave Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_CROWN_WITH_BERRIES = register(
-        "cave_vines_crown_with_berries", "plants",
+        "cave_vines_crown_with_berries", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, true, p, null),
         new Txt("A Cave Vines block in item form. Comes with Glow Berries."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item TWISTING_VINES_STEM = register(
-        "twisting_vines_stem", "plants",
+        "twisting_vines_stem", "long_plants",
         p -> new CustomBlockItem(Blocks.TWISTING_VINES_PLANT, p, List.of(Blocks.TWISTING_VINES_PLANT)),
         new Txt("A Twisting Vines Plant block in item form."),
-        Notices.PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item TWISTING_VINES_CROWN = register(
-        "twisting_vines_crown", "plants",
+        "twisting_vines_crown", "long_plants",
         p -> new CustomBlockItem(Blocks.TWISTING_VINES, p, List.of(Blocks.TWISTING_VINES)),
         new Txt("A Twisting Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item WEEPING_VINES_STEM = register(
-        "weeping_vines_stem", "plants",
+        "weeping_vines_stem", "long_plants",
         p -> new CustomBlockItem(Blocks.WEEPING_VINES_PLANT, p, List.of(Blocks.WEEPING_VINES_PLANT)),
         new Txt("A Weeping Vines Plant block in item form."),
-        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item WEEPING_VINES_CROWN = register(
-        "weeping_vines_crown", "plants",
+        "weeping_vines_crown", "long_plants",
         p -> new CustomBlockItem(Blocks.WEEPING_VINES, p, List.of(Blocks.WEEPING_VINES)),
         new Txt("A Weeping Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
@@ -707,13 +796,25 @@ public class CustomItemHandler {
 
 
 
-        public static List<Txt> PLANT_STEM_RESETS = List.of(
-            new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
-            new Txt("version if not under another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
+        public static List<Txt> LONG_PLANT_STEM_RESETS = List.of(
+            new Txt("Updates from above make the block change to the crown version").color(Colors.COLOR_LS_ORANGE),
+            new Txt("unless properly connected to a matching crown block.")         .color(Colors.COLOR_LS_ORANGE)
         );
-        public static List<Txt> PLANT_STEM_RESETS_HANGING = List.of(
-            new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
-            new Txt("version if not above another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
+        public static List<Txt> HANGING_LONG_PLANT_STEM_RESETS = List.of(
+            new Txt("Updates from below make the block change to the crown version").color(Colors.COLOR_LS_ORANGE),
+            new Txt("unless properly connected to a matching crown block.")         .color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> TALL_PLANT_STEM_BREAKS = List.of(
+            new Txt("Updates from above make the block break unless").color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching crown block.") .color(Colors.COLOR_LS_ORANGE)
+        );
+        public static List<Txt> TALL_PLANT_CROWN_BREAKS = List.of(
+            new Txt("Updates make the block break unless properly").color(Colors.COLOR_LS_ORANGE),
+            new Txt("connected to a matching stem block.")         .color(Colors.COLOR_LS_ORANGE)
         );
 
 

@@ -180,6 +180,22 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
 
 
+            output.accept(CustomItemHandler.ROSE_BUSH_STEM);
+            output.accept(CustomItemHandler.ROSE_BUSH_CROWN);
+            output.accept(CustomItemHandler.SUNFLOWER_STEM);
+            output.accept(CustomItemHandler.SUNFLOWER_CROWN);
+            output.accept(CustomItemHandler.TALL_GRASS_STEM);
+            output.accept(CustomItemHandler.TALL_GRASS_CROWN);
+            output.accept(CustomItemHandler.PITCHER_PLANT_STEM);
+            output.accept(CustomItemHandler.PITCHER_PLANT_CROWN);
+            output.accept(CustomItemHandler.PEONY_STEM);
+            output.accept(CustomItemHandler.PEONY_CROWN);
+            output.accept(CustomItemHandler.LARGE_FERN_STEM);
+            output.accept(CustomItemHandler.LARGE_FERN_CROWN);
+            output.accept(CustomItemHandler.LILAC_STEM);
+            output.accept(CustomItemHandler.LILAC_CROWN);
+
+
             output.accept(CustomItemHandler.KELP_STEM);
             output.accept(CustomItemHandler.KELP_CROWN);
             output.accept(CustomItemHandler.CAVE_VINES_STEM);

@@ -30,6 +30,22 @@
     "item.engineers-bliss.short_sticky_piston_head" : "Short Sticky Piston Head",
 
 
+    "item.engineers-bliss.rose_bush_stem"                : "Rose Bush Stem",
+    "item.engineers-bliss.rose_bush_crown"               : "Rose Bush Crown",
+    "item.engineers-bliss.sunflower_stem"                : "Sunflower Stem",
+    "item.engineers-bliss.sunflower_crown"               : "Sunflower Crown",
+    "item.engineers-bliss.tall_grass_stem"               : "Tall Grass Stem",
+    "item.engineers-bliss.tall_grass_crown"              : "Tall Grass Crown",
+    "item.engineers-bliss.pitcher_plant_stem"            : "Pitcher Plant Stem",
+    "item.engineers-bliss.pitcher_plant_crown"           : "Pitcher Plant Crown",
+    "item.engineers-bliss.peony_stem"                    : "Peony Stem",
+    "item.engineers-bliss.peony_crown"                   : "Peony Crown",
+    "item.engineers-bliss.large_fern_stem"               : "Large Fern Stem",
+    "item.engineers-bliss.large_fern_crown"              : "Large Fern Crown",
+    "item.engineers-bliss.lilac_stem"                    : "Lilac Stem",
+    "item.engineers-bliss.lilac_crown"                   : "Lilac Crown",
+
+
     "item.engineers-bliss.kelp_stem"                     : "Kelp Stem",
     "item.engineers-bliss.kelp_crown"                    : "Kelp Crown",
     "item.engineers-bliss.cave_vines_stem"               : "Cave Vines Stem",

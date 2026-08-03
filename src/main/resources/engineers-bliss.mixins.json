@@ -9,6 +9,7 @@
         "accessors.DiodeBlockAccessor",
         "accessors.PoweredRailBlockAccessor",
         "accessors.BeeAccessor",
+        "accessors.BlockItemAccessor",
 
         "overlay_data.ComparatorInputChangeTrackerMixin",
         "overlay_data.RailInputChangeTrackerMixin",

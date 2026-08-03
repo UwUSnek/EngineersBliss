@@ -160,20 +160,20 @@
   - ~~[Vanilla block] Short Piston Head item~~
   - [Vanilla block] Door Part items
   - [Vanilla block] Bed Part items
-  - [Vanilla block] Rose Bush Stem item
-  - [Vanilla block] Rose Bush Crown item
-  - [Vanilla block] Sunflower Stem item
-  - [Vanilla block] Sunflower Crown item
-  - [Vanilla block] Tall Grass Stem item
-  - [Vanilla block] Tall Grass Crown item
-  - [Vanilla block] Pitcher Plant Stem item
-  - [Vanilla block] Pitcher Plant Crown item
-  - [Vanilla block] Peony Stem item
-  - [Vanilla block] Peony Crown item
-  - [Vanilla block] Large Fern Stem item
-  - [Vanilla block] Large Fern Crown item
-  - [Vanilla block] Lilac Stem item
-  - [Vanilla block] Lilac Crown item
+  - ~~[Vanilla block] Rose Bush Stem item~~
+  - ~~[Vanilla block] Rose Bush Crown item~~
+  - ~~[Vanilla block] Sunflower Stem item~~
+  - ~~[Vanilla block] Sunflower Crown item~~
+  - ~~[Vanilla block] Tall Grass Stem item~~
+  - ~~[Vanilla block] Tall Grass Crown item~~
+  - ~~[Vanilla block] Pitcher Plant Stem item~~
+  - ~~[Vanilla block] Pitcher Plant Crown item~~
+  - ~~[Vanilla block] Peony Stem item~~
+  - ~~[Vanilla block] Peony Crown item~~
+  - ~~[Vanilla block] Large Fern Stem item~~
+  - ~~[Vanilla block] Large Fern Crown item~~
+  - ~~[Vanilla block] Lilac Stem item~~
+  - ~~[Vanilla block] Lilac Crown item~~
   - ~~[Vanilla block] Kelp Stem item~~
   - ~~[Vanilla block] Kelp Crown item~~
   - ~~[Vanilla block] Cave Vines Stem item~~
