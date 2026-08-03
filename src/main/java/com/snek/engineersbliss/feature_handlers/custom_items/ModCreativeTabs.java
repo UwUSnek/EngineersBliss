@@ -180,6 +180,42 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
 
 
+            output.accept(CustomItemHandler.ACACIA_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.ACACIA_DOOR_TOP);
+            output.accept(CustomItemHandler.BAMBOO_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.BAMBOO_DOOR_TOP);
+            output.accept(CustomItemHandler.BIRCH_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.BIRCH_DOOR_TOP);
+            output.accept(CustomItemHandler.CHERRY_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.CHERRY_DOOR_TOP);
+            output.accept(CustomItemHandler.CRIMSON_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.CRIMSON_DOOR_TOP);
+            output.accept(CustomItemHandler.DARK_OAK_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.DARK_OAK_DOOR_TOP);
+            output.accept(CustomItemHandler.IRON_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.IRON_DOOR_TOP);
+            output.accept(CustomItemHandler.JUNGLE_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.JUNGLE_DOOR_TOP);
+            output.accept(CustomItemHandler.MANGROVE_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.MANGROVE_DOOR_TOP);
+            output.accept(CustomItemHandler.OAK_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.OAK_DOOR_TOP);
+            output.accept(CustomItemHandler.PALE_OAK_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.PALE_OAK_DOOR_TOP);
+            output.accept(CustomItemHandler.SPRUCE_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.SPRUCE_DOOR_TOP);
+            output.accept(CustomItemHandler.WARPED_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.WARPED_DOOR_TOP);
+            output.accept(CustomItemHandler.COPPER_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.COPPER_DOOR_TOP);
+            output.accept(CustomItemHandler.EXPOSED_COPPER_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.EXPOSED_COPPER_DOOR_TOP);
+            output.accept(CustomItemHandler.WEATHERED_COPPER_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.WEATHERED_COPPER_DOOR_TOP);
+            output.accept(CustomItemHandler.OXIDIZED_COPPER_DOOR_BOTTOM);
+            output.accept(CustomItemHandler.OXIDIZED_COPPER_DOOR_TOP);
+
+
             output.accept(CustomItemHandler.ROSE_BUSH_STEM);
             output.accept(CustomItemHandler.ROSE_BUSH_CROWN);
             output.accept(CustomItemHandler.SUNFLOWER_STEM);

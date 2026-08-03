@@ -1,0 +1,7 @@
+{
+  "credit" : "UwU_Snek",
+  "parent" : "minecraft:item/generated",
+  "textures" : {
+    "layer0" : "engineers-bliss:item/doors/exposed_copper_top"
+  }
+}
