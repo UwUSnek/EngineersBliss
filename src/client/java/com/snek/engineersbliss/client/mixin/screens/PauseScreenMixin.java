@@ -77,6 +77,11 @@ public class PauseScreenMixin extends Screen {
         super(title);
     }
 
+    @Override
+    public boolean isPauseScreen() {
+        return ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.PAUSE_GAME_IN_PAUSE_MENU);
+    }
+
 
 
 

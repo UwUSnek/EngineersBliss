@@ -39,6 +39,13 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
         super.init();
 
 
+        // Screens
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,  null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PAUSE_GAME_IN_MOD_SCREENS, null), Layout.BORDER_HEIGHT);
+
+
         // Status bar
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Status bar", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
@@ -50,10 +57,7 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
             this, SettingsClientFeatureSet.STATUS_BAR_POSITION,
             null, (n, u) -> n.booleanValue() ? "Top" : "Bottom"
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
-            this, SettingsClientFeatureSet.CHAT_HIDES_STATUS_BAR,
-            null
-        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.CHAT_HIDES_STATUS_BAR, null), Layout.BORDER_HEIGHT);
 
 
         // Misc

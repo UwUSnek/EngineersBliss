@@ -1,5 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.settings;
 
+import java.util.function.Supplier;
+
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -18,6 +21,25 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
     private SettingsClientFeatureSet() {
         super(SettingsServerFeatureSet.INSTANCE, () -> new UiTxt("Settings"));
     }
+
+
+
+
+    public static final ClientFeature<?> PAUSE_GAME_IN_PAUSE_MENU = new ClientFeature<>(
+        SettingsServerFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,
+        () -> new UiTxt("Pause Menu pauses the game"),
+        () -> (UiTxt)new UiTxt()
+            .cat(new UiTxt("Pauses the game while the Pause Menu is open. This is the default behaviour in Vanilla\n."))
+            .cat(Notices.SINGLE_PLAYER_ONLY.get())
+    );
+    public static final ClientFeature<?> PAUSE_GAME_IN_MOD_SCREENS = new ClientFeature<>(
+        SettingsServerFeatureSet.PAUSE_GAME_IN_MOD_SCREENS,
+        () -> new UiTxt("" + EngineerSBliss.MOD_NAME + " screens pause the game"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Pauses the game while any of the screens from the " + EngineerSBliss.MOD_NAME + " mod are open\n."))
+            .cat(Notices.SINGLE_PLAYER_ONLY.get())
+    );
+
 
 
 
@@ -43,6 +65,19 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
     public static final ClientFeature<?> PLAYER_MODEL_IN_PAUSE_SCREEN = new ClientFeature<>(
         SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
         () -> new UiTxt("Display player model in pause screen"),
-        () -> new UiTxt("Whether to render your player's skin in the pause menu.")
+        () -> new UiTxt("Renders your player's skin, name, and playtime in the pause menu.")
     );
+
+
+
+
+
+
+
+
+    private static class Notices {
+        private static Supplier<UiTxt> SINGLE_PLAYER_ONLY = () -> (UiTxt)new UiTxt(
+            "This only works in Single Player."
+        ).red();
+    }
 }

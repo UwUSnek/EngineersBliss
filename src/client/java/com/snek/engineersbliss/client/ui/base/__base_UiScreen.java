@@ -6,10 +6,12 @@ import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
@@ -165,7 +167,7 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() {
-        return true;
+        return ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.PAUSE_GAME_IN_MOD_SCREENS);
     }
 
 
