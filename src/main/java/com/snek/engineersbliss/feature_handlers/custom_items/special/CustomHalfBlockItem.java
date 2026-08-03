@@ -18,9 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
 
@@ -47,8 +47,8 @@ public class CustomHalfBlockItem extends CustomBlockItem {
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
         BlockState state = super.getPlacementState(context);
-        if(state != null && state.hasProperty(DoublePlantBlock.HALF)) {
-            state = state.setValue(DoublePlantBlock.HALF, isBottom ? DoubleBlockHalf.LOWER : DoubleBlockHalf.UPPER);
+        if(state != null && state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+            state = state.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, isBottom ? DoubleBlockHalf.LOWER : DoubleBlockHalf.UPPER);
         }
         return state;
     }
