@@ -1047,11 +1047,11 @@ public class CustomItemHandler {
 
 
         public static List<Txt> DOOR_BOTTOM_BREAKS = List.of(
-            new Txt("Updates from above make the block break unless")           .color(Colors.COLOR_LS_ORANGE), //TODO check if behaviour matches stems and crowns. fix notice otherwise
+            new Txt("Updates from above make the block break unless")           .color(Colors.COLOR_LS_ORANGE),
             new Txt("properly connected to a matching bottom half door block.") .color(Colors.COLOR_LS_ORANGE)
         );
         public static List<Txt> DOOR_TOP_BREAKS = List.of(
-            new Txt("Updates from below make the block break unless")       .color(Colors.COLOR_LS_ORANGE), //TODO check if behaviour matches stems and crowns. fix notice otherwise
+            new Txt("Updates from below make the block break unless")       .color(Colors.COLOR_LS_ORANGE),
             new Txt("properly connected to a matching top half door block.").color(Colors.COLOR_LS_ORANGE)
         );
 
