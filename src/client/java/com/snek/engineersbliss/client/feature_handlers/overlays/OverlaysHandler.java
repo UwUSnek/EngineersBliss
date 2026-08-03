@@ -44,7 +44,7 @@ public class OverlaysHandler {
      * Initializes the overlay handler and registers any required event listener.
      * This must be called in the mod's initializer function.
      */
-    public static void init(){
+    public static void init() {
 
         // Register listeners
         ClientChunkEvents.CHUNK_LOAD  .register((level, chunk) -> onChunkLoad(chunk));

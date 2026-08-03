@@ -43,7 +43,7 @@ import net.minecraft.world.phys.AABB;
 
 
 public class MinecraftUtils {
-    private MinecraftUtils() { }
+    private MinecraftUtils() {}
 
 
 
