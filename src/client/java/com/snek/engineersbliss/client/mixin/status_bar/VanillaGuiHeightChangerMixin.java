@@ -43,7 +43,7 @@ public class VanillaGuiHeightChangerMixin {
         //! Minecraft doesn't provide any getter for the Y base coord, so the status bar is simply drawn on top of the existing elements.
         else {
             if(!ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.STATUS_BAR_POSITION)) {
-                final int barHeight = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT);
+                final int barHeight = SettingsServerFeatureSet.STATUS_BAR_HEIGHT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT));
                 return original - barHeight;
             }
             return original;

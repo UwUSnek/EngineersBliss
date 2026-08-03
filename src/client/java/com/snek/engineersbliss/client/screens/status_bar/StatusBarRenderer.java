@@ -44,7 +44,7 @@ public class StatusBarRenderer {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         final int width     = mc.getWindow().getGuiScaledWidth();
         final int height    = mc.getWindow().getGuiScaledHeight();
-        final int barHeight = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT);
+        final int barHeight = SettingsServerFeatureSet.STATUS_BAR_HEIGHT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT));
         final boolean isPositionTop = ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.STATUS_BAR_POSITION);
         final int barTop    = isPositionTop ? 0 : height - barHeight;
         final int barBottom = isPositionTop ? barHeight : height;

@@ -28,7 +28,7 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
 
     public static ServerSteppedFeature<Integer> STATUS_BAR_HEIGHT = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
         "status_bar_height",
-        IntStream.range(10, 101).boxed().toList(), 24 - 10
+        IntStream.range(10, 101).boxed().toList(), 12 - 10
     ));
     public static ServerToggleFeature STATUS_BAR_POSITION   = INSTANCE.registerFeature(new ServerToggleFeature("status_bar_position",   false));
     public static ServerToggleFeature CHAT_HIDES_STATUS_BAR = INSTANCE.registerFeature(new ServerToggleFeature("chat_hides_status_bar", true));
