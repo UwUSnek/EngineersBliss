@@ -79,11 +79,15 @@ It helps a lot :3
 
 ## Full list of features
 
+- **Misc**:
+  - Player model rendering in the pause menu
+  - In-game status bar
+  <br><br>
 - **Rendering**:
   - Selectively hide blocks by type or rendering method
   - Click through hidden blocks
   - Custom block outlines
-  - Player model rendering in the pause menu
+  - Force light recalculation
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire
@@ -211,18 +215,34 @@ It helps a lot :3
   - [Vanilla block] Nether Portal item
   - [Vanilla block] End Portal item
   - [Vanilla block] End Gateway item
-  - [Vanilla block] Headless Piston item
-  - [Vanilla block] Headless Sticky Piston item
-  - [Vanilla block] Sticky Piston Head item
-  - [Vanilla block] Piston Head item
-  - [Vanilla block] Short Sticky Piston Head item
-  - [Vanilla block] Short Piston Head item
   - [Vanilla block] Frosted Ice item
   - [Vanilla block] Water Cauldron items
   - [Vanilla block] Powder Snow Cauldron items
   - [Vanilla block] Lava Cauldron item
   - [Vanilla block] Unlit Campfire item
   - [Vanilla block] Unlit Soul Campfire item
+  - [Vanilla block] Headless Piston item
+  - [Vanilla block] Headless Sticky Piston item
+  - [Vanilla block] Sticky Piston Head item
+  - [Vanilla block] Piston Head item
+  - [Vanilla block] Short Sticky Piston Head item
+  - [Vanilla block] Short Piston Head item
+  - [Vanilla block] Door Part item
+  - [Vanilla block] Bed Part items
+  - [Vanilla block] Rose Bush Stem item
+  - [Vanilla block] Rose Bush Crown item
+  - [Vanilla block] Sunflower Stem item
+  - [Vanilla block] Sunflower Crown item
+  - [Vanilla block] Tall Grass Stem item
+  - [Vanilla block] Tall Grass Crown item
+  - [Vanilla block] Pitcher Plant Stem item
+  - [Vanilla block] Pitcher Plant Crown item
+  - [Vanilla block] Peony Stem item
+  - [Vanilla block] Peony Crown item
+  - [Vanilla block] Large Fern Stem item
+  - [Vanilla block] Large Fern Crown item
+  - [Vanilla block] Lilac Stem item
+  - [Vanilla block] Lilac Crown item
   - [Vanilla block] Kelp Stem item
   - [Vanilla block] Kelp Crown item
   - [Vanilla block] Cave Vines Stem item

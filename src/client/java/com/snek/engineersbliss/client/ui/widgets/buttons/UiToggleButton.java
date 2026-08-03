@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
+import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
@@ -28,47 +29,57 @@ public class UiToggleButton extends UiButton {
     public void setBgColorAlt(final int newColor) { bgColorAlt = newColor; markBgDirty(); }
     public int getBgBaseColorAlt() { return bgColorAlt; }
 
+    // Value formatters
+    private ValueFormatter<Boolean> valueFormatter;
+    public ValueFormatter<Boolean> getValueFormatter() {
+        return valueFormatter;
+    }
+    public String formatValue(final boolean n, final boolean shortUnit) {
+        return valueFormatter.format(n, shortUnit);
+    }
 
 
 
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+
+    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
         super(screen, x, y, width, height, label, pressCallback, key, alignment);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+    public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
         super(screen, label, pressCallback, key, alignment);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final TextAlignment alignment) {
         super(screen, x, y, width, height, label, pressCallback, alignment);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
         super(screen, label, pressCallback, alignment);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
 
 
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key) {
         super(screen, x, y, width, height, label, pressCallback, key);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
         super(screen, label, pressCallback, key);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
+    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         super(screen, x, y, width, height, label, pressCallback);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
         super(screen, label, pressCallback);
-        finalizeInit(initialValue);
+        finalizeInit(initialValue, valueFormatter);
     }
 
 
-    private void finalizeInit(final boolean initialValue) {
+    private void finalizeInit(final boolean initialValue, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         this.value = initialValue;
+        this.valueFormatter = valueFormatter != null ? valueFormatter : (n, u) -> n.booleanValue() ? "ON" : "OFF";
         this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), Layout.toggleTransitionDuration, Easings.sineIn);
     }
 

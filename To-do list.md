@@ -1,9 +1,14 @@
 # To-do list
 
+- **Misc**:
+  - ~~Player model rendering in the pause menu~~
+  - In-game status bar
+
 - **Rendering**:
   - ~~Selectively hide blocks by type or rendering method~~
   - ~~Click through hidden blocks~~
   - ~~Custom block outlines~~
+  - ~~Force light recalculation~~
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
@@ -39,9 +44,6 @@
   - ~~3D Iron Bars & Copper Bars~~
   - ~~3D Vines~~
   - ~~3D Glow Lichen~~
-  - Player model rendering in the pause menu //TODO add this to the readme if possible
-    - Display player name above model
-    - Display customizable title under the name
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
@@ -101,8 +103,8 @@
   - ~~Disable being moved by Water and Lava currents~~
   - ~~Disable being dragged by Bubble Columns~~
 
-  - Disable item change animation
-  - Disable hand swing animation
+  - ~~Disable item change animation~~
+  - ~~Disable hand swing animation~~
   - ~~Disable being on fire~~
   - ~~Disable freezing effect~~
   - Disable dimension change loading screens
@@ -144,18 +146,34 @@
   - ~~[Vanilla block] Nether Portal item~~
   - ~~[Vanilla block] End Portal item~~
   - ~~[Vanilla block] End Gateway item~~
-  - ~~[Vanilla block] Headless Piston item~~
-  - ~~[Vanilla block] Headless Sticky Piston item~~
-  - ~~[Vanilla block] Sticky Piston Head item~~
-  - ~~[Vanilla block] Piston Head item~~
-  - ~~[Vanilla block] Short Sticky Piston Head item~~
-  - ~~[Vanilla block] Short Piston Head item~~
   - [Vanilla block] Frosted Ice item       //TODO add this to item lore -> //FIXME Updates make it melt
   - ~~[Vanilla block] Water Cauldron items~~
   - ~~[Vanilla block] Powder Snow Cauldron items~~
   - ~~[Vanilla block] Lava Cauldron item~~
   - ~~[Vanilla block] Unlit Campfire item~~
   - ~~[Vanilla block] Unlit Soul Campfire item~~
+  - ~~[Vanilla block] Headless Piston item~~
+  - ~~[Vanilla block] Headless Sticky Piston item~~
+  - ~~[Vanilla block] Sticky Piston Head item~~
+  - ~~[Vanilla block] Piston Head item~~
+  - ~~[Vanilla block] Short Sticky Piston Head item~~
+  - ~~[Vanilla block] Short Piston Head item~~
+  - [Vanilla block] Door Part items
+  - [Vanilla block] Bed Part items
+  - [Vanilla block] Rose Bush Stem item
+  - [Vanilla block] Rose Bush Crown item
+  - [Vanilla block] Sunflower Stem item
+  - [Vanilla block] Sunflower Crown item
+  - [Vanilla block] Tall Grass Stem item
+  - [Vanilla block] Tall Grass Crown item
+  - [Vanilla block] Pitcher Plant Stem item
+  - [Vanilla block] Pitcher Plant Crown item
+  - [Vanilla block] Peony Stem item
+  - [Vanilla block] Peony Crown item
+  - [Vanilla block] Large Fern Stem item
+  - [Vanilla block] Large Fern Crown item
+  - [Vanilla block] Lilac Stem item
+  - [Vanilla block] Lilac Crown item
   - ~~[Vanilla block] Kelp Stem item~~
   - ~~[Vanilla block] Kelp Crown item~~
   - ~~[Vanilla block] Cave Vines Stem item~~
@@ -268,3 +286,8 @@
 - add static bed models for 26.1
 - remove static bed models in 26.2+
 - remove static sign models in 26.2+
+
+
+- maybe add an "area block distribution" tool?
+  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
+    - call them "Area analysis" or something

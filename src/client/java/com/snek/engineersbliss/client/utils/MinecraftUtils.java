@@ -7,12 +7,14 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -22,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -49,6 +52,20 @@ public class MinecraftUtils {
         ClientPlayConnectionEvents.DISCONNECT.register((listener,         client) -> invalidatePlaytimeData());
 
         LevelRenderEvents.START_MAIN.register(context -> checkPauseTransition());
+    }
+
+
+    public static boolean isCreativeMode(final @Nullable Player player) {
+        return player != null && player.isCreative();
+    }
+    public static boolean isCreativeMode() {
+        return isCreativeMode(Minecraft.getInstance().player);
+    }
+
+
+
+    public static boolean isChatOpen() {
+        return Minecraft.getInstance().screen instanceof ChatScreen;
     }
 
 
