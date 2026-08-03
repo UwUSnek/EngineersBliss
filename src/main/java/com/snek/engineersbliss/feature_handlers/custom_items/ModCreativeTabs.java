@@ -92,6 +92,9 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.LAVA_CAULDRON);
 
 
+            output.accept(CustomItemHandler.FROSTED_ICE);
+
+
             output.accept(CustomItemHandler.CANDLE_CAKE);
             output.accept(CustomItemHandler.WHITE_CANDLE_CAKE);
             output.accept(CustomItemHandler.ORANGE_CANDLE_CAKE);

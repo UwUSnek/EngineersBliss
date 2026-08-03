@@ -146,7 +146,7 @@
   - ~~[Vanilla block] Nether Portal item~~
   - ~~[Vanilla block] End Portal item~~
   - ~~[Vanilla block] End Gateway item~~
-  - [Vanilla block] Frosted Ice item       //TODO add this to item lore -> //FIXME Updates make it melt
+  - ~~[Vanilla block] Frosted Ice item~~
   - ~~[Vanilla block] Water Cauldron items~~
   - ~~[Vanilla block] Powder Snow Cauldron items~~
   - ~~[Vanilla block] Lava Cauldron item~~

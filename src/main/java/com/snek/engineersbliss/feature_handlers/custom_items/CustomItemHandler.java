@@ -299,6 +299,16 @@ public class CustomItemHandler {
 
 
 
+    public static final Item FROSTED_ICE = register(
+        "frosted_ice",
+        p -> new CustomBlockItem(Blocks.FROSTED_ICE, p, List.of(Blocks.FROSTED_ICE)),
+        new Txt("Frosted Ice. This is the Ice created by Forst Walker."),
+        Notices.FROSTED_ICE_MELTS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
     public static final Item CANDLE_CAKE = register(
         "candle_cake", "candle_cakes",
         p -> new CustomBlockItem(Blocks.CANDLE_CAKE, p, List.of(Blocks.CANDLE_CAKE)),
@@ -704,6 +714,13 @@ public class CustomItemHandler {
         public static List<Txt> PLANT_STEM_RESETS_HANGING = List.of(
             new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
             new Txt("version if not above another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> FROSTED_ICE_MELTS = List.of(
+            new Txt("This block starts melting as soon as it is placed.").color(Colors.COLOR_LS_ORANGE)
         );
     }
 
