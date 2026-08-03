@@ -32,8 +32,12 @@ public class StatusBarRenderer {
 
     private static void render(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
 
-        // Skip rendering if the player has the chat open and the "Chat hides Status Bar" setting ON
-        if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR) && MinecraftUtils.isChatOpen()) {
+        // Skip rendering if the player is not in Creative mode
+        // Also skip rendering if the player has the chat open and the "Chat hides Status Bar" setting ON
+        if(
+            !MinecraftUtils.isCreativeMode() ||
+            (ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR) && MinecraftUtils.isChatOpen())
+        ) {
             return;
         }
 

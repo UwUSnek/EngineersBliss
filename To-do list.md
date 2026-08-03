@@ -286,3 +286,8 @@
 - add static bed models for 26.1
 - remove static bed models in 26.2+
 - remove static sign models in 26.2+
+
+
+- maybe add an "area block distribution" tool?
+  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
+    - call them "Area analysis" or something

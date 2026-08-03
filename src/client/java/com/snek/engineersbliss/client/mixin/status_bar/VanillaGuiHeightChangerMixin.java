@@ -27,10 +27,12 @@ public class VanillaGuiHeightChangerMixin {
     private int eb$guiHeight(int original) {
 
 
-        // Do nothing if the player is not in a world
-        // Also do nothing if the player has the chat open and the "Chat hides Status Bar" setting ON
+        // Do nothing if the player is not in a world.
+        // Also do nothing if the player is not in creative mode.
+        // Also do nothing if the player has the chat open and the "Chat hides Status Bar" setting ON.
         if(
             Minecraft.getInstance().level == null ||
+            !MinecraftUtils.isCreativeMode() ||
             (ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR) && MinecraftUtils.isChatOpen())
         ) {
             return original;
