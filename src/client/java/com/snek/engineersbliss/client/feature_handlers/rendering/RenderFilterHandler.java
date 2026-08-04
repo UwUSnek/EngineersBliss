@@ -28,7 +28,7 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 
 
 public class RenderFilterHandler {
-    private RenderFilterHandler() { }
+    private RenderFilterHandler() {}
 
     private static int lightRecalcMax = 0;
     private static int lightRecalcProgress = 0;

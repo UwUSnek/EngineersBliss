@@ -5,10 +5,10 @@ import java.util.function.Function;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsClientFeatureSet;
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
-import com.snek.engineersbliss.client.ui.widgets.sliders.UiSlider;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -22,10 +22,8 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 public class SettingsScreen extends __base_UiFeatureSetScreen {
 
-    @SuppressWarnings("unchecked")
-    private static final Function<UiSlider, UiTxt> pixelFormatter = s -> {
-        final int total = ((UiSteppedFeatureSlider<Integer>)s).getSelectedValue();
-        return new UiTxt(String.format("%dpx", total));
+    private static final ValueFormatter<Integer> pixelFormatter = (n, u) -> {
+        return String.format("%dpx", n);
     };
 
 
@@ -41,11 +39,33 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
         super.init();
 
 
-        // Rendering
+        // Screens
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(this, SettingsClientFeatureSet.STATUS_BAR_HEIGHT, pixelFormatter), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, SettingsClientFeatureSet.STATUS_BAR_POSITION),               Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton          (this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN),      Layout.BORDER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,  null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PAUSE_GAME_IN_MOD_SCREENS, null), Layout.BORDER_HEIGHT);
+
+
+        // Status bar
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Status bar", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, SettingsClientFeatureSet.STATUS_BAR_HEIGHT,
+            null, pixelFormatter, 0, 0
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
+            this, SettingsClientFeatureSet.STATUS_BAR_POSITION,
+            null, (n, u) -> n.booleanValue() ? "Top" : "Bottom"
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.CHAT_HIDES_STATUS_BAR, null), Layout.BORDER_HEIGHT);
+
+
+        // Misc
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
+            this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
+            null
+        ), Layout.BORDER_HEIGHT);
     }
 }

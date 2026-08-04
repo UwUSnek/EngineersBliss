@@ -10,8 +10,8 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
-import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
-import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
+import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
+import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
@@ -51,7 +51,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     public static final long HOVER_OFF_DELAY_MS = 250;
     private long lastHoverTime = 0;
     private Identifier[] hoveredPreviewAtlasIds = null;
-    private UiButton lastHoveredButton = null;
+    private FeatureInputWidget lastHoveredFeatureWidget = null;
 
 
 
@@ -110,40 +110,46 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         if(tabPressed) return;
 
 
-        // Find hovered entry
+
+
+        // Update hovered feature entry data
         final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
         final AbstractWidget widget = entry != null ? entry.getWidget() : null;
-
-
-        // If hovering an element with feature preview
-        if(widget instanceof UiToggleFeatureButton button) {
-
-            // Update hover timestamp
-            // Update preview elements if the hovered element has changed
+        if(widget instanceof FeatureInputWidget featureWidget) {
             lastHoverTime = System.currentTimeMillis();
-            if(button != lastHoveredButton) {
-                updateToggleFeaturePreviewElements(button);
+            if(featureWidget != lastHoveredFeatureWidget) {
+                lastHoveredFeatureWidget = featureWidget;
+
+                // Update preview elements if the hovered element has changed
+                switch(featureWidget) {
+                    case DualPreviewFeatureInputWidget dpw -> updateToggleFeaturePreviewElements(dpw);
+                    default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
+                }
             }
         }
 
-        // Try to clear the preview elements if not
-        else {
-            tryClearPreview();
+        // Stop the preview from disappearing when dragging sliders
+        else if(isDragging()) {
+            lastHoverTime = System.currentTimeMillis();
+        }
+
+        // CLear preview if not dragging, not hovering, and the cooldown has expired
+        else if(!isPreviewOffOnCooldown()) {
+            lastHoveredFeatureWidget = null;
+            clearPreview();
         }
 
 
-        // Draw immediate preview geometry if needed
-        final float ratio = 9f / 4f;
-        final int w = (int)(width * PREVIEW_WIDTH);
-        final int h = (int)(w * ratio);
-        final int hPlaceholder = w;
-        final int xOff = (width  - w) / 2 - w / 2;
-        final int xOn  = (width  - w) / 2 + w / 2;
-        final int y    = (height - h) / 2;
-        final int yPlaceholder = (height - hPlaceholder) / 2;
-        if(hoveredPreviewAtlasIds != null && isPreviewOffOnCooldown()) {
-            renderImmediateToggleFeaturePreview(graphics, w, h, hPlaceholder, xOff, xOn, y, yPlaceholder);
+
+        // Draw immediate feature preview elements if needed
+        if(lastHoveredFeatureWidget != null && hoveredPreviewAtlasIds != null) {
+            switch(lastHoveredFeatureWidget) {
+                case DualPreviewFeatureInputWidget dpw -> renderImmediateToggleFeaturePreview(graphics, dpw);
+                default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
+            }
         }
+
+
 
 
         // Normal rendering
@@ -153,8 +159,24 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final int w, final int h, final int hPlaceholder, final int xOff, final int xOn, final int y, final int yPlaceholder) {
-        // Render ON/OFF text
+
+
+
+
+    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final DualPreviewFeatureInputWidget featureInputWidget) {
+
+        // Calculate data
+        final float ratio = 9f / 4f;
+        final int w = (int)(width * PREVIEW_WIDTH);
+        final int h = (int)(w * ratio);
+        final int hPlaceholder = w;
+        final int xL = (width  - w) / 2 - w / 2;
+        final int xR = (width  - w) / 2 + w / 2;
+        final int y    = (height - h) / 2;
+        final int yPlaceholder = (height - hPlaceholder) / 2;
+
+
+        // Render background text
         {
             final int descriptionWidthPx = (int)(width * descriptionWidth);
             final int descriptionX = (width - descriptionWidthPx) / 2;
@@ -164,31 +186,34 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             final int scale = 5;
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
             final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
-            final int textOffX = xOff + w / 2;
-            final int textOnX  = xOn  + w / 2;
+            final int textXL = xL + w / 2;
+            final int textXR = xR + w / 2;
             final int textY    = (descriptionHeight - scaledFont.getLineHeight()) / 2;
-            RenderingUtils.extractTxt(graphics, new UiTxt("OFF", fontFamily, scale), textOffX, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
-            RenderingUtils.extractTxt(graphics, new UiTxt("ON",  fontFamily, scale), textOnX,  textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            final String textL = featureInputWidget.getLeftTitle();
+            final String textR = featureInputWidget.getRightTitle();
+            RenderingUtils.extractTxt(graphics, new UiTxt(textL, fontFamily, scale), textXL, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            RenderingUtils.extractTxt(graphics, new UiTxt(textR, fontFamily, scale), textXR, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            //FIXME replace on/off text with something from the interface
         }
 
 
         // Render the feature preview
         {
-            final Identifier atlasIdOff = hoveredPreviewAtlasIds[0];
-            final Identifier atlasIdOn  = hoveredPreviewAtlasIds[1];
-            if(!TextureAtlasTracker.isTextureReady(atlasIdOff)) {
-                graphics.blit(atlasIdOff, xOff, yPlaceholder, xOff + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+            final Identifier atlasIdL = hoveredPreviewAtlasIds[0];
+            final Identifier atlasIdR = hoveredPreviewAtlasIds[1];
+            if(!TextureAtlasTracker.isTextureReady(atlasIdL)) {
+                graphics.blit(atlasIdL, xL, yPlaceholder, xL + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
             }
             else {
-                final float[] uvOff = TextureAtlasTracker.getUV(atlasIdOff, 0, System.currentTimeMillis());
-                graphics.blit(atlasIdOff, xOff, y, xOff + w, y + h, uvOff[0], uvOff[1], uvOff[2], uvOff[3]);
+                final float[] uv = TextureAtlasTracker.getUV(atlasIdL, 0, System.currentTimeMillis());
+                graphics.blit(atlasIdL, xL, y, xL + w, y + h, uv[0], uv[1], uv[2], uv[3]);
             }
-            if(!TextureAtlasTracker.isTextureReady(atlasIdOn)) {
-                graphics.blit(atlasIdOn,  xOn, yPlaceholder, xOn + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+            if(!TextureAtlasTracker.isTextureReady(atlasIdR)) {
+                graphics.blit(atlasIdR,  xR, yPlaceholder, xR + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
             }
             else {
-                final float[] uvOn  = TextureAtlasTracker.getUV(atlasIdOn,  0, System.currentTimeMillis());
-                graphics.blit(atlasIdOn,  xOn, y, xOn + w, y + h, uvOn[0], uvOn[1], uvOn[2], uvOn[3]);
+                final float[] uv  = TextureAtlasTracker.getUV(atlasIdR,  0, System.currentTimeMillis());
+                graphics.blit(atlasIdR,  xR, y, xR + w, y + h, uv[0], uv[1], uv[2], uv[3]);
             }
         }
     }
@@ -196,44 +221,41 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void updateToggleFeaturePreviewElements(UiToggleFeatureButton button) {
-        //TODO maybe draw one preview for each setting step? or something like that? idk yet
+    private void clearPreview() {
+        hoveredPreviewAtlasIds = null;
+        lastHoveredFeatureWidget = null;
+        descriptionNameWidget.setLabel(new UiTxt());
+        descriptionNameWidget.setBgColor(0x0);
+        descriptionTextWidget.setLabel(new UiTxt());
+        descriptionTextWidget.setBgColor(0x0);
+    }
+
+
+
+
+    private void updateToggleFeaturePreviewElements(DualPreviewFeatureInputWidget featureInputWidget) {
 
         // Draw feature preview
-        lastHoveredButton = button;
-        final __base_ServerFeature<?> serverFeature = button.getServerFeature();
+        lastHoveredFeatureWidget = featureInputWidget;
+        final __base_ServerFeature<?> serverFeature = featureInputWidget.getServerFeature();
         final String featureSetId = serverFeature.getFeatureSet().getId();
         final String fatureId = serverFeature.getId();
-        final String atlasPathOff = String.format("textures/gui/feature_previews/%s/%s_off_0.png", featureSetId, fatureId); //FIXME indices?
-        final String atlasPathOn  = String.format("textures/gui/feature_previews/%s/%s_on_0.png",  featureSetId, fatureId); //FIXME indices?
+        final String atlasPathL = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix()); //FIXME indices?
+        final String atlasPathR = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix()); //FIXME indices?
         hoveredPreviewAtlasIds = new Identifier[] {
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOff),
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathOn)
+            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathL),
+            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathR)
         };
 
         // Update description name text
-        final UiTxt descriptionName = new UiTxt(button.getClientFeature().calcName().get(), 2f);
+        final UiTxt descriptionName = new UiTxt(featureInputWidget.getClientFeature().calcName().get(), 2f);
         descriptionNameWidget.setLabel(descriptionName);
         descriptionNameWidget.setBgColor(Layout.bgColor);
 
         // Update description text
-        final UiTxt description = button.getClientFeature().calcDesc();
+        final UiTxt description = featureInputWidget.getClientFeature().calcDesc();
         descriptionTextWidget.setLabel(description);
         descriptionTextWidget.setBgColor(Layout.bgColor);
-    }
-
-
-
-
-    private void tryClearPreview() {
-        if(!isPreviewOffOnCooldown()) {
-            hoveredPreviewAtlasIds = null;
-            lastHoveredButton = null;
-            descriptionNameWidget.setLabel(new UiTxt());
-            descriptionNameWidget.setBgColor(0x0);
-            descriptionTextWidget.setLabel(new UiTxt());
-            descriptionTextWidget.setBgColor(0x0);
-        }
     }
 
 

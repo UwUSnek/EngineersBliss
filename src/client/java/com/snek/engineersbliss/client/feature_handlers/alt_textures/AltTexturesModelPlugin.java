@@ -259,7 +259,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new   WaxedExposedCopperBarsPartProvider(),
             new WaxedWeatheredCopperBarsPartProvider(),
             new  WaxedOxidizedCopperBarsPartProvider()
-        )){
+        )) {
             partProviders.put(provider.getBlock(), provider);
         }
     }

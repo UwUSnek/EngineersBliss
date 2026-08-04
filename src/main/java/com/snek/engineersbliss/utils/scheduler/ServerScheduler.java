@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * @since v1.1.0
  */
 public final class ServerScheduler {
-    private ServerScheduler() { }
+    private ServerScheduler() {}
 
     // ! Outer queue orders by target tick, but doesn't guarantee an order between entries with the same priority.
     // ! This is solved by adding an additional index value to the ordering data.
