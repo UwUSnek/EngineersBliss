@@ -11,6 +11,11 @@
   - ~~Custom block outlines~~
   - ~~Force light recalculation~~
 
+- **In-game calculator**:
+  - Basic scientific calculator operations
+  - Unit conversion
+  - History
+
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
   - ~~Disable Redstone Wire particles~~
