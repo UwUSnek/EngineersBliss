@@ -1,6 +1,6 @@
 {
   "credit" : "UwU_Snek",
-  "parent" : "minecraft:block/purple_bed_head",
+  "parent" : "engineers-bliss:block/beds/vanilla/head/purple_bed_head",
   "gui_light" : "side",
   "display" : {
     "gui" : {

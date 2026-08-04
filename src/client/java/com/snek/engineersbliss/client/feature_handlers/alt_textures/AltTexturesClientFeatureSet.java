@@ -158,6 +158,14 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
             .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
             .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
     );
+    public static final ClientFeature<?> STATIC_BEDS = new ClientFeature<>(
+        AltTexturesServerFeatureSet.STATIC_BEDS,
+        () -> new UiTxt("Static Bed models"),
+        () -> (UiTxt)new UiTxt()
+            .cat(new UiTxt("Replaces the costly real-time rendering of Beds with a static model to improve performance.\n"))
+            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
+    );
     public static final ClientFeature<?> OPTIMIZED_SHELVES = new ClientFeature<>(
         AltTexturesServerFeatureSet.OPTIMIZED_SHELVES,
         () -> new UiTxt("Optimized Shelf models"),

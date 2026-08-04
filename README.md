@@ -8,14 +8,14 @@ A **rendering**, **optimization**, and **utility** mod for Redstone Engineers.<b
 Engineer's Bliss focuses on improving the experience of designing Vanilla Redstone machines
 through a multitude of tools and custom items and blocks.
 
-These include anything from overlays and optimized block entities to automatic circuit analysis tools,
+These include anything from overlays and optimized block entities to automatic analysis tools,
 custom items, and render filters.
 
 <br>
 
 Mod written and tested by **UwU_Snek**.<br>
 Minecraft 26.1+.<br>
-Fabric Load 0.19.3+.
+Fabric Loader 0.19.3+.
 
 <br>
 
@@ -89,6 +89,11 @@ It helps a lot :3
   - Click through hidden blocks
   - Custom block outlines
   - Force light recalculation
+  <br><br>
+- **In-game calculator**:
+  - Basic scientific calculator operations
+  - Unit conversion
+  - History
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire

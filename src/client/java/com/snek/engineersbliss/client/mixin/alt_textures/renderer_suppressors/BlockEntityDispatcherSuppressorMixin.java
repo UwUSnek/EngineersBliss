@@ -10,10 +10,12 @@ import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFe
 
 import org.spongepowered.asm.mixin.injection.At;
 
+import net.minecraft.client.renderer.blockentity.BedRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
+import net.minecraft.world.level.block.entity.BedBlockEntity;
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
@@ -75,6 +77,11 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
             }
             case LecternBlockEntity e -> {
                 if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_LECTERNS)) {
+                    cir.setReturnValue(null);
+                }
+            }
+            case BedBlockEntity e -> {
+                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BEDS)) {
                     cir.setReturnValue(null);
                 }
             }

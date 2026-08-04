@@ -142,7 +142,9 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        graphics.blurBeforeThisStratum();
+        if(!tabPressed) {
+            graphics.blurBeforeThisStratum();
+        }
     }
 
     @Override
