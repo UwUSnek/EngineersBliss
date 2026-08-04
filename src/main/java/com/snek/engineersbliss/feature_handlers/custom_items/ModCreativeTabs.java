@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.feature_handlers.custom_items;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethodStage.Vanilla;
 import com.snek.engineersbliss.EngineerSBliss;
 
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
@@ -56,6 +57,12 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(CustomItemHandler.POTTED_CHERRY_SAPLING.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".missing_items"))
         .displayItems((params, output) -> {
+
+
+            output.accept(CustomItemHandler.named(Items.STICK,       "Filter Stick")); //TODO meant for filters. add to item lore
+            output.accept(CustomItemHandler.named(Items.COBBLESTONE, "Filter Cobblestone")); //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
+            output.accept(CustomItemHandler.named(Items.NAME_TAG,    "Persistent Mob")); //TODO meant for name tagging mobs (makes them persistent). add to item lore
+
 
             output.accept(CustomItemHandler.FULL_BEE_NEST);
             output.accept(CustomItemHandler.FULL_BEE_NEST_NO_BEES);

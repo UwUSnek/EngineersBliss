@@ -32,6 +32,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.Blocks;
 
@@ -1331,6 +1332,16 @@ public class CustomItemHandler {
         // Create item and register it
         Item item = factory.apply(properties);
         return Registry.register(BuiltInRegistries.ITEM, key, item);
+    }
+
+
+
+
+
+    public static ItemStack named(Item item, String name) {
+        ItemStack stack = new ItemStack(item);
+        stack.set(DataComponents.CUSTOM_NAME, Component.literal(name));
+        return stack;
     }
 
 
