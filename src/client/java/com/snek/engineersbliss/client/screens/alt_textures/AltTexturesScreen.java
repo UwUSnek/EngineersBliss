@@ -62,6 +62,7 @@ public class AltTexturesScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.STATIC_BELLS,                  null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.STATIC_COPPER_GOLEM_STATUES,   null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.STATIC_LECTERNS,               null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.STATIC_BEDS,                   null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.OPTIMIZED_SHELVES,             null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.OPTIMIZED_CAMPFIRES,           null), Layout.BORDER_HEIGHT);
 

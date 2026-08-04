@@ -131,6 +131,24 @@ public class BlockGroups {
         Blocks.RED_WALL_BANNER,
         Blocks.BLACK_WALL_BANNER
     );
+    public static final List<Block> ALL_BEDS = List.of(
+        Blocks.WHITE_BED,
+        Blocks.ORANGE_BED,
+        Blocks.MAGENTA_BED,
+        Blocks.LIGHT_BLUE_BED,
+        Blocks.YELLOW_BED,
+        Blocks.LIME_BED,
+        Blocks.PINK_BED,
+        Blocks.GRAY_BED,
+        Blocks.LIGHT_GRAY_BED,
+        Blocks.CYAN_BED,
+        Blocks.PURPLE_BED,
+        Blocks.BLUE_BED,
+        Blocks.BROWN_BED,
+        Blocks.GREEN_BED,
+        Blocks.RED_BED,
+        Blocks.BLACK_BED
+    );
     public static final List<Block> ALL_COPPER_GOLEM_STATUES = List.of(
         Blocks.COPPER_GOLEM_STATUE,
         Blocks.EXPOSED_COPPER_GOLEM_STATUE,
