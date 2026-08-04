@@ -32,8 +32,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="11.313708"
-     inkscape:cx="11.225321"
-     inkscape:cy="17.191535"
+     inkscape:cx="11.402097"
+     inkscape:cy="13.479224"
      inkscape:window-width="1904"
      inkscape:window-height="1014"
      inkscape:window-x="1928"
@@ -42,7 +42,8 @@
      inkscape:current-layer="svg1" />
   <g
      id="g2"
-     transform="translate(-1.8850735,1.5005951)">
+     transform="translate(-1.8850735,1.5005951)"
+     style="opacity:0.75">
     <g
        id="g1"
        inkscape:label="padlock"
