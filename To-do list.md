@@ -300,3 +300,10 @@
 - maybe add an "area block distribution" tool?
   - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
     - call them "Area analysis" or something
+
+
+
+
+- looking down from a very high place shows a block outline thats misaligned from the GUI crosshair
+  - add somethign that fixes this
+  - idk what causes it

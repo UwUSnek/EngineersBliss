@@ -47,7 +47,7 @@ public class CustomBedHalfBlockItem extends CustomHalfBlockItem {
     // Force set half type on the placed block
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
-        BlockState state = super.getPlacementState(context);
+        BlockState state = buildCustomPlacementState(context);
         if(state != null && state.hasProperty(BedBlock.PART)) {
             state = state.setValue(BedBlock.PART, isFoot() ? BedPart.FOOT : BedPart.HEAD);
         }
