@@ -10,6 +10,7 @@ import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -25,7 +26,7 @@ import net.minecraft.client.input.MouseButtonEvent;
  * A custom widget capable of rendering text with the specified scale, alignment, background color and text color.
  * It also supports line word wrap.
  */
-public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
+public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWidgetBase {
     private UiTxt label;
     private List<UiTxt> cachedLines; //! Wrapped lines
     private final TextAlignment alignment;
@@ -33,6 +34,9 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
     private int color;
     private final boolean wrapLines;
 
+    // Screen reference
+    private final Screen screen;
+    public Screen getScreen() { return screen; }
 
     // Cached textures
     private final TextureCache bgCache;
@@ -69,6 +73,7 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget {
     }
     public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
         super(x, y, w, h, new Txt().get());
+        this.screen = screen;
         this.alignment = alignment;
         this.color = color;
         this.bgColor = bgColor;

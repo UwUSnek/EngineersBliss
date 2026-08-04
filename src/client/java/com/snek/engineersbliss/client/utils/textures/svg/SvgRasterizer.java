@@ -75,7 +75,7 @@ public final class SvgRasterizer {
         try {
             doc = loadSvg(flattened);
         }
-        catch (final Exception e) {
+        catch(final Exception e) {
             throw new RuntimeException("Failed to read SVG stream", e);
         }
         if(doc == null) {
@@ -201,7 +201,7 @@ public final class SvgRasterizer {
             ImageIO.write(buf, "png", pngOut);
             return pngOut.toByteArray();
         }
-        catch (final Exception e) {
+        catch(final Exception e) {
             throw new RuntimeException("Failed to rasterize isolated subtree", e);
         }
     }

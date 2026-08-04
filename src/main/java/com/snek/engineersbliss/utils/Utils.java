@@ -483,7 +483,7 @@ public final class Utils {
 
         // Adjust hue to allow the interpolation to take the shortest path
         if(Math.abs(h1 - h2) > 180) {
-            if (h1 > h2) h2 += 360;
+            if(h1 > h2) h2 += 360;
             else h1 += 360;
         }
 

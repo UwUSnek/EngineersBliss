@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
@@ -30,6 +31,7 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 import com.snek.engineersbliss.client.screens.settings.SettingsScreen;
 
@@ -75,6 +77,11 @@ public class PauseScreenMixin extends Screen {
         super(title);
     }
 
+    @Override
+    public boolean isPauseScreen() {
+        return ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.PAUSE_GAME_IN_PAUSE_MENU);
+    }
+
 
 
 
@@ -89,13 +96,17 @@ public class PauseScreenMixin extends Screen {
                 return true;
             }
         }
-        for(final var c : children()) r = r || c.keyPressed(event);
+        for(final var c : children()) {
+            if(c.keyPressed(event)) r = true;
+        }
         return r;
     }
     @Override
     public boolean charTyped(CharacterEvent event) {
         boolean r = false;
-        for(final var c : children()) r = r || c.charTyped(event);
+        for(final var c : children()) {
+            if(c.charTyped(event)) r = true;
+        }
         return r;
     }
 
@@ -255,40 +266,44 @@ public class PauseScreenMixin extends Screen {
         if(player == null) return;
 
 
-        // Calculate dimensions and position
-        int modelScale = 64;
-        int boxSize = Math.max(width, height);
-        int heightDiff = boxSize - clusterSizeY;
-        int widthDiff = boxSize - clusterSizeX;
-        int x0 = clusterRight - widthDiff / 2 + BUTTON_MARGIN;
-        int x1 = x0 + boxSize;
-        int y0 = clusterTop - heightDiff / 2;
-        int y1 = y0 + boxSize;
 
 
         // Draw player model
-        final @Nullable PlayerMannequin model = PlayerMannequin.getMannequin();
-        if(model != null) {
-            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0f, mouseX, mouseY, model);
+        if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN)) {
+
+            // Calculate dimensions and position
+            int modelScale = 64;
+            int boxSize = Math.max(width, height);
+            int heightDiff = boxSize - clusterSizeY;
+            int widthDiff = boxSize - clusterSizeX;
+            int x0 = clusterRight - widthDiff / 2 + BUTTON_MARGIN;
+            int x1 = x0 + boxSize;
+            int y0 = clusterTop - heightDiff / 2;
+            int y1 = y0 + boxSize;
+
+            // Get mannequin
+            final @Nullable PlayerMannequin model = PlayerMannequin.getMannequin();
+            if(model != null) {
+                InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x0, y0, x1, y1, modelScale, 0.0f, mouseX, mouseY, model);
+            }
+
+            // Calculate play time
+            final long ms = MinecraftUtils.getPlaytimeMs();
+            final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
+            final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
+            final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
+
+            // Calculate text dimensions and position
+            final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()),             Fonts.ui.regular, Layout.HEADER_SCALE);
+            final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds), Fonts.ui.light);
+            int textCenterX = (x0 + x1) / 2;
+            int nameY = clusterTop - 48;
+            int titleY = nameY + playerName.getScaledFont().getLineHeight() + 2;
+
+            // Draw player name an title
+            RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
+            RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
         }
-
-
-        // Calculate play time
-        final long ms = MinecraftUtils.getPlaytimeMs();
-        final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
-        final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
-        final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
-
-        // Calculate text dimensions and position
-        final UiTxt playerName = new UiTxt(String.format("%s", player.getGameProfile().name()),             Fonts.ui.regular, Layout.HEADER_SCALE);
-        final UiTxt playTime   = new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds), Fonts.ui.light);
-        int textCenterX = (x0 + x1) / 2;
-        int nameY = clusterTop - 48;
-        int titleY = nameY + playerName.getScaledFont().getLineHeight() + 2;
-
-        // Draw player name an title
-        RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
-        RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
     }
 
 

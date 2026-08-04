@@ -91,10 +91,10 @@ public class RailInputDataResolver {
                 default: break;
             }
             switch(shape) {
-                case ASCENDING_NORTH: { if (direction == -1) ++y; break; }
-                case ASCENDING_SOUTH: { if (direction == +1) ++y; break; }
-                case ASCENDING_EAST:  { if (direction == +1) ++y; break; }
-                case ASCENDING_WEST:  { if (direction == -1) ++y; break; }
+                case ASCENDING_NORTH: { if(direction == -1) ++y; break; }
+                case ASCENDING_SOUTH: { if(direction == +1) ++y; break; }
+                case ASCENDING_EAST:  { if(direction == +1) ++y; break; }
+                case ASCENDING_WEST:  { if(direction == -1) ++y; break; }
                 default: break;
             }
 

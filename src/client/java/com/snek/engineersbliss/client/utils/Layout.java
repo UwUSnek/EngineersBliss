@@ -7,7 +7,7 @@ package com.snek.engineersbliss.client.utils;
 
 
 public class Layout {
-    private Layout() { }
+    private Layout() {}
 
 
     public static int fgColor                = 0xFFEEEEEE;

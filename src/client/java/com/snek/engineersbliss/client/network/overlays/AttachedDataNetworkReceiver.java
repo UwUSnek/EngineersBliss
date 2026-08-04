@@ -17,7 +17,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 
 public class AttachedDataNetworkReceiver {
-    private AttachedDataNetworkReceiver() { }
+    private AttachedDataNetworkReceiver() {}
 
 
 
