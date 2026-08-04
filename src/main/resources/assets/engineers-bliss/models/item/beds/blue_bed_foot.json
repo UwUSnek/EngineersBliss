@@ -1,6 +1,6 @@
 {
   "credit" : "UwU_Snek",
-  "parent" : "minecraft:block/blue_bed_foot",
+  "parent" : "engineers-bliss:block/beds/vanilla/foot/blue_bed_foot",
   "gui_light" : "side",
   "display" : {
     "gui" : {

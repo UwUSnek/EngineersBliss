@@ -1,6 +1,6 @@
 {
   "credit" : "UwU_Snek",
-  "parent" : "minecraft:block/light_gray_bed_head",
+  "parent" : "engineers-bliss:block/beds/vanilla/head/light_gray_bed_head",
   "gui_light" : "side",
   "display" : {
     "gui" : {
