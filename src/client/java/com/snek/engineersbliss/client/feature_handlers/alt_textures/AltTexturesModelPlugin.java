@@ -33,6 +33,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.beds.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.*;
@@ -240,6 +241,23 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new     GreenWallBannerPartProvider(),
             new       RedWallBannerPartProvider(),
             new     BlackWallBannerPartProvider(),
+
+            new     WhiteBedPartProvider(),
+            new    OrangeBedPartProvider(),
+            new   MagentaBedPartProvider(),
+            new LightBlueBedPartProvider(),
+            new    YellowBedPartProvider(),
+            new      LimeBedPartProvider(),
+            new      PinkBedPartProvider(),
+            new      GrayBedPartProvider(),
+            new LightGrayBedPartProvider(),
+            new      CyanBedPartProvider(),
+            new    PurpleBedPartProvider(),
+            new      BlueBedPartProvider(),
+            new     BrownBedPartProvider(),
+            new     GreenBedPartProvider(),
+            new       RedBedPartProvider(),
+            new     BlackBedPartProvider(),
 
             new               CopperGolemStatuePartProvider(),
             new        ExposedCopperGolemStatuePartProvider(),

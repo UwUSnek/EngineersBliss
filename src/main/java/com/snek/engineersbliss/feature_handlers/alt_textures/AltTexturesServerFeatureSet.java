@@ -118,6 +118,10 @@ public class AltTexturesServerFeatureSet extends __base_ServerBlockFeatureSet {
         "static_lecterns", true,
         List.of(Blocks.LECTERN)
     ));
+    public static final ServerBlockToggleFeature STATIC_BEDS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
+        "static_beds", true,
+        BlockGroups.ALL_BEDS
+    ));
     public static final ServerBlockToggleFeature OPTIMIZED_SHELVES = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "optimized_shelves", true,
         List.of() //! Feature doesn't change the model. No section refresh
