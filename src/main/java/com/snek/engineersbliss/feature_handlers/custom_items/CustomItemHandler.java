@@ -511,193 +511,193 @@ public class CustomItemHandler {
         "white_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, true),
         new Txt("The head part of a White Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     static final Item WHITE_BED_FOOT = register(
         "white_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, false),
         new Txt("The foot part of a White Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item ORANGE_BED_HEAD = register(
         "orange_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, true),
         new Txt("The head part of an Orange Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item ORANGE_BED_FOOT = register(
         "orange_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, false),
         new Txt("The foot part of an Orange Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item MAGENTA_BED_HEAD = register(
         "magenta_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, true),
         new Txt("The head part of a Magenta Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item MAGENTA_BED_FOOT = register(
         "magenta_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, false),
         new Txt("The foot part of a Magenta Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_BLUE_BED_HEAD = register(
         "light_blue_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, true),
         new Txt("The head part of a Light Blue Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_BLUE_BED_FOOT = register(
         "light_blue_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, false),
         new Txt("The foot part of a Light Blue Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item YELLOW_BED_HEAD = register(
         "yellow_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, true),
         new Txt("The head part of a Yellow Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item YELLOW_BED_FOOT = register(
         "yellow_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, false),
         new Txt("The foot part of a Yellow Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIME_BED_HEAD = register(
         "lime_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, true),
         new Txt("The head part of a Lime Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIME_BED_FOOT = register(
         "lime_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, false),
         new Txt("The foot part of a Lime Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PINK_BED_HEAD = register(
         "pink_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, true),
         new Txt("The head part of a Pink Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PINK_BED_FOOT = register(
         "pink_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, false),
         new Txt("The foot part of a Pink Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GRAY_BED_HEAD = register(
         "gray_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, true),
         new Txt("The head part of a Gray Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GRAY_BED_FOOT = register(
         "gray_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, false),
         new Txt("The foot part of a Gray Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_GRAY_BED_HEAD = register(
         "light_gray_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, true),
         new Txt("The head part of a Light Gray Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_GRAY_BED_FOOT = register(
         "light_gray_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, false),
         new Txt("The foot part of a Light Gray Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CYAN_BED_HEAD = register(
         "cyan_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, true),
         new Txt("The head part of a Cyan Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CYAN_BED_FOOT = register(
         "cyan_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, false),
         new Txt("The foot part of a Cyan Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PURPLE_BED_HEAD = register(
         "purple_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, true),
         new Txt("The head part of a Purple Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PURPLE_BED_FOOT = register(
         "purple_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, false),
         new Txt("The foot part of a Purple Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLUE_BED_HEAD = register(
         "blue_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, true),
         new Txt("The head part of a Blue Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLUE_BED_FOOT = register(
         "blue_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, false),
         new Txt("The foot part of a Blue Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BROWN_BED_HEAD = register(
         "brown_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, true),
         new Txt("The head part of a Brown Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BROWN_BED_FOOT = register(
         "brown_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, false),
         new Txt("The foot part of a Brown Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GREEN_BED_HEAD = register(
         "green_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, true),
         new Txt("The head part of a Green Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GREEN_BED_FOOT = register(
         "green_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, false),
         new Txt("The foot part of a Green Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item RED_BED_HEAD = register(
         "red_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, true),
         new Txt("The head part of a Red Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item RED_BED_FOOT = register(
         "red_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, false),
         new Txt("The foot part of a Red Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLACK_BED_HEAD = register(
         "black_bed_head", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, true),
         new Txt("The head part of a Black Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLACK_BED_FOOT = register(
         "black_bed_foot", "beds",
         p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, false),
         new Txt("The foot part of a Black Bed in item form."),
-        Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
 
@@ -1251,6 +1251,18 @@ public class CustomItemHandler {
         public static List<Txt> DOOR_TOP_BREAKS = List.of(
             new Txt("Updates from below make the block break unless")       .color(Colors.COLOR_LS_ORANGE),
             new Txt("properly connected to a matching top half door block.").color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> BED_FOOT_BREAKS = List.of(
+            new Txt("Updates from the head side make the block break unless").color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching bed head block.")      .color(Colors.COLOR_LS_ORANGE)
+        );
+        public static List<Txt> BED_HEAD_BREAKS = List.of(
+            new Txt("Updates from foot side make the block break unless").color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching bed foot block.")  .color(Colors.COLOR_LS_ORANGE)
         );
 
 
