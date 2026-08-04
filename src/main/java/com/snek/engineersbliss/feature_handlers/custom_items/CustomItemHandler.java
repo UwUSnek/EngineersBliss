@@ -12,9 +12,12 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomWaterPlaceableBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBedHalfBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCauldronItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomDoorHalfBlockItem;
+import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomHalfBlockItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
 import com.snek.engineersbliss.feature_handlers.custom_items.special.UnlitCampfireItem;
@@ -145,62 +148,151 @@ public class CustomItemHandler {
 
 
 
+
+    public static final Item ROSE_BUSH_STEM = register(
+        "rose_bush_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.ROSE_BUSH, p, true),
+        new Txt("The bottom half of a Rose Bush in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item ROSE_BUSH_CROWN = register(
+        "rose_bush_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.ROSE_BUSH, p, false),
+        new Txt("The top half of a Rose Bush in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SUNFLOWER_STEM = register(
+        "sunflower_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.SUNFLOWER, p, true),
+        new Txt("The bottom half of a Sunflower in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SUNFLOWER_CROWN = register(
+        "sunflower_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.SUNFLOWER, p, false),
+        new Txt("The top half of a Sunflower in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item TALL_GRASS_STEM = register(
+        "tall_grass_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.TALL_GRASS, p, true),
+        new Txt("The bottom half of a Tall Grass in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item TALL_GRASS_CROWN = register(
+        "tall_grass_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.TALL_GRASS, p, false),
+        new Txt("The top half of a Tall Grass in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PITCHER_PLANT_STEM = register(
+        "pitcher_plant_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.PITCHER_PLANT, p, true),
+        new Txt("The bottom half of a Pitcher Plant in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PITCHER_PLANT_CROWN = register(
+        "pitcher_plant_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.PITCHER_PLANT, p, false),
+        new Txt("The top half of a Pitcher Plant in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PEONY_STEM = register(
+        "peony_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.PEONY, p, true),
+        new Txt("The bottom half of a Peony in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PEONY_CROWN = register(
+        "peony_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.PEONY, p, false),
+        new Txt("The top half of a Peony in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LARGE_FERN_STEM = register(
+        "large_fern_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.LARGE_FERN, p, true),
+        new Txt("The bottom half of a Large Fern in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LARGE_FERN_CROWN = register(
+        "large_fern_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.LARGE_FERN, p, false),
+        new Txt("The top half of a Large Fern in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LILAC_STEM = register(
+        "lilac_stem", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.LILAC, p, true),
+        new Txt("The bottom half of a Lilac in item form."),
+        Notices.TALL_PLANT_STEM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LILAC_CROWN = register(
+        "lilac_crown", "tall_plants",
+        p -> new CustomHalfBlockItem(Blocks.LILAC, p, false),
+        new Txt("The top half of a Lilac in item form."),
+        Notices.TALL_PLANT_CROWN_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
     public static final Item KELP_STEM = register(
-        "kelp_stem", "plants",
+        "kelp_stem", "long_plants",
         p -> new CustomWaterPlaceableBlockItem(Blocks.KELP_PLANT, p, List.of(Blocks.KELP_PLANT)),
         new Txt("A Kelp Plant block in item form."),
-        Notices.PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item KELP_CROWN = register(
-        "kelp_crown", "plants",
+        "kelp_crown", "long_plants",
         p -> new CustomWaterPlaceableBlockItem(Blocks.KELP, p, List.of(Blocks.KELP)),
         new Txt("A Kelp block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_STEM = register(
-        "cave_vines_stem", "plants",
+        "cave_vines_stem", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, false, p, List.of(Blocks.CAVE_VINES_PLANT)),
         new Txt("A Cave Vines Plant block in item form."),
-        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_STEM_WITH_BERRIES = register(
-        "cave_vines_stem_with_berries", "plants",
+        "cave_vines_stem_with_berries", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES_PLANT, true, p, null),
         new Txt("A Cave Vines Plant block in item form. Comes with Glow Berries."),
-        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_CROWN = register(
-        "cave_vines_crown", "plants",
+        "cave_vines_crown", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, false, p, List.of(Blocks.CAVE_VINES)),
         new Txt("A Cave Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CAVE_VINES_CROWN_WITH_BERRIES = register(
-        "cave_vines_crown_with_berries", "plants",
+        "cave_vines_crown_with_berries", "long_plants",
         p -> new CustomCaveVinesItem(Blocks.CAVE_VINES, true, p, null),
         new Txt("A Cave Vines block in item form. Comes with Glow Berries."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item TWISTING_VINES_STEM = register(
-        "twisting_vines_stem", "plants",
+        "twisting_vines_stem", "long_plants",
         p -> new CustomBlockItem(Blocks.TWISTING_VINES_PLANT, p, List.of(Blocks.TWISTING_VINES_PLANT)),
         new Txt("A Twisting Vines Plant block in item form."),
-        Notices.PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item TWISTING_VINES_CROWN = register(
-        "twisting_vines_crown", "plants",
+        "twisting_vines_crown", "long_plants",
         p -> new CustomBlockItem(Blocks.TWISTING_VINES, p, List.of(Blocks.TWISTING_VINES)),
         new Txt("A Twisting Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item WEEPING_VINES_STEM = register(
-        "weeping_vines_stem", "plants",
+        "weeping_vines_stem", "long_plants",
         p -> new CustomBlockItem(Blocks.WEEPING_VINES_PLANT, p, List.of(Blocks.WEEPING_VINES_PLANT)),
         new Txt("A Weeping Vines Plant block in item form."),
-        Notices.PLANT_STEM_RESETS_HANGING, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+        Notices.HANGING_LONG_PLANT_STEM_RESETS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item WEEPING_VINES_CROWN = register(
-        "weeping_vines_crown", "plants",
+        "weeping_vines_crown", "long_plants",
         p -> new CustomBlockItem(Blocks.WEEPING_VINES, p, List.of(Blocks.WEEPING_VINES)),
         new Txt("A Weeping Vines block in item form."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
@@ -299,12 +391,22 @@ public class CustomItemHandler {
 
 
 
+    public static final Item FROSTED_ICE = register(
+        "frosted_ice",
+        p -> new CustomBlockItem(Blocks.FROSTED_ICE, p, List.of(Blocks.FROSTED_ICE)),
+        new Txt("Frosted Ice. This is the Ice created by Forst Walker."),
+        Notices.FROSTED_ICE_MELTS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
     public static final Item CANDLE_CAKE = register(
         "candle_cake", "candle_cakes",
         p -> new CustomBlockItem(Blocks.CANDLE_CAKE, p, List.of(Blocks.CANDLE_CAKE)),
         new Txt("A Cake with a Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
-);
+    );
     public static final Item WHITE_CANDLE_CAKE = register(
         "white_candle_cake", "candle_cakes",
         p -> new CustomBlockItem(Blocks.WHITE_CANDLE_CAKE, p, List.of(Blocks.WHITE_CANDLE_CAKE)),
@@ -400,6 +502,427 @@ public class CustomItemHandler {
         p -> new CustomBlockItem(Blocks.BLACK_CANDLE_CAKE, p, List.of(Blocks.BLACK_CANDLE_CAKE)),
         new Txt("A Cake with a Black Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
+    static final Item WHITE_BED_HEAD = register(
+        "white_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, true),
+        new Txt("The head part of a White Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    static final Item WHITE_BED_FOOT = register(
+        "white_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, false),
+        new Txt("The foot part of a White Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item ORANGE_BED_HEAD = register(
+        "orange_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, true),
+        new Txt("The head part of an Orange Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item ORANGE_BED_FOOT = register(
+        "orange_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, false),
+        new Txt("The foot part of an Orange Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item MAGENTA_BED_HEAD = register(
+        "magenta_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, true),
+        new Txt("The head part of a Magenta Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item MAGENTA_BED_FOOT = register(
+        "magenta_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, false),
+        new Txt("The foot part of a Magenta Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LIGHT_BLUE_BED_HEAD = register(
+        "light_blue_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, true),
+        new Txt("The head part of a Light Blue Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LIGHT_BLUE_BED_FOOT = register(
+        "light_blue_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, false),
+        new Txt("The foot part of a Light Blue Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item YELLOW_BED_HEAD = register(
+        "yellow_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, true),
+        new Txt("The head part of a Yellow Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item YELLOW_BED_FOOT = register(
+        "yellow_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, false),
+        new Txt("The foot part of a Yellow Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LIME_BED_HEAD = register(
+        "lime_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, true),
+        new Txt("The head part of a Lime Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LIME_BED_FOOT = register(
+        "lime_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, false),
+        new Txt("The foot part of a Lime Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PINK_BED_HEAD = register(
+        "pink_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, true),
+        new Txt("The head part of a Pink Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PINK_BED_FOOT = register(
+        "pink_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, false),
+        new Txt("The foot part of a Pink Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item GRAY_BED_HEAD = register(
+        "gray_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, true),
+        new Txt("The head part of a Gray Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item GRAY_BED_FOOT = register(
+        "gray_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, false),
+        new Txt("The foot part of a Gray Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LIGHT_GRAY_BED_HEAD = register(
+        "light_gray_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, true),
+        new Txt("The head part of a Light Gray Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item LIGHT_GRAY_BED_FOOT = register(
+        "light_gray_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, false),
+        new Txt("The foot part of a Light Gray Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CYAN_BED_HEAD = register(
+        "cyan_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, true),
+        new Txt("The head part of a Cyan Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CYAN_BED_FOOT = register(
+        "cyan_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, false),
+        new Txt("The foot part of a Cyan Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PURPLE_BED_HEAD = register(
+        "purple_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, true),
+        new Txt("The head part of a Purple Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PURPLE_BED_FOOT = register(
+        "purple_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, false),
+        new Txt("The foot part of a Purple Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BLUE_BED_HEAD = register(
+        "blue_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, true),
+        new Txt("The head part of a Blue Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BLUE_BED_FOOT = register(
+        "blue_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, false),
+        new Txt("The foot part of a Blue Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BROWN_BED_HEAD = register(
+        "brown_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, true),
+        new Txt("The head part of a Brown Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BROWN_BED_FOOT = register(
+        "brown_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, false),
+        new Txt("The foot part of a Brown Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item GREEN_BED_HEAD = register(
+        "green_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, true),
+        new Txt("The head part of a Green Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item GREEN_BED_FOOT = register(
+        "green_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, false),
+        new Txt("The foot part of a Green Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item RED_BED_HEAD = register(
+        "red_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, true),
+        new Txt("The head part of a Red Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item RED_BED_FOOT = register(
+        "red_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, false),
+        new Txt("The foot part of a Red Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BLACK_BED_HEAD = register(
+        "black_bed_head", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, true),
+        new Txt("The head part of a Black Bed in item form."),
+        Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BLACK_BED_FOOT = register(
+        "black_bed_foot", "beds",
+        p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, false),
+        new Txt("The foot part of a Black Bed in item form."),
+        Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+
+
+
+
+    public static final Item ACACIA_DOOR_BOTTOM = register(
+        "acacia_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.ACACIA_DOOR, p, true),
+        new Txt("The bottom half of an Acacia Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item ACACIA_DOOR_TOP = register(
+        "acacia_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.ACACIA_DOOR, p, false),
+        new Txt("The top half of an Acacia Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item BAMBOO_DOOR_BOTTOM = register(
+        "bamboo_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.BAMBOO_DOOR, p, true),
+        new Txt("The bottom half of a Bamboo Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BAMBOO_DOOR_TOP = register(
+        "bamboo_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.BAMBOO_DOOR, p, false),
+        new Txt("The top half of a Bamboo Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item BIRCH_DOOR_BOTTOM = register(
+        "birch_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.BIRCH_DOOR, p, true),
+        new Txt("The bottom half of a Birch Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item BIRCH_DOOR_TOP = register(
+        "birch_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.BIRCH_DOOR, p, false),
+        new Txt("The top half of a Birch Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item CHERRY_DOOR_BOTTOM = register(
+        "cherry_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.CHERRY_DOOR, p, true),
+        new Txt("The bottom half of a Cherry Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CHERRY_DOOR_TOP = register(
+        "cherry_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.CHERRY_DOOR, p, false),
+        new Txt("The top half of a Cherry Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item CRIMSON_DOOR_BOTTOM = register(
+        "crimson_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.CRIMSON_DOOR, p, true),
+        new Txt("The bottom half of a Crimson Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item CRIMSON_DOOR_TOP = register(
+        "crimson_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.CRIMSON_DOOR, p, false),
+        new Txt("The top half of a Crimson Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item DARK_OAK_DOOR_BOTTOM = register(
+        "dark_oak_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.DARK_OAK_DOOR, p, true),
+        new Txt("The bottom half of a Dark Oak Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item DARK_OAK_DOOR_TOP = register(
+        "dark_oak_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.DARK_OAK_DOOR, p, false),
+        new Txt("The top half of a Dark Oak Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item IRON_DOOR_BOTTOM = register(
+        "iron_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.IRON_DOOR, p, true),
+        new Txt("The bottom half of an Iron Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item IRON_DOOR_TOP = register(
+        "iron_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.IRON_DOOR, p, false),
+        new Txt("The top half of an Iron Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item JUNGLE_DOOR_BOTTOM = register(
+        "jungle_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.JUNGLE_DOOR, p, true),
+        new Txt("The bottom half of a Jungle Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item JUNGLE_DOOR_TOP = register(
+        "jungle_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.JUNGLE_DOOR, p, false),
+        new Txt("The top half of a Jungle Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item MANGROVE_DOOR_BOTTOM = register(
+        "mangrove_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.MANGROVE_DOOR, p, true),
+        new Txt("The bottom half of a Mangrove Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item MANGROVE_DOOR_TOP = register(
+        "mangrove_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.MANGROVE_DOOR, p, false),
+        new Txt("The top half of a Mangrove Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item OAK_DOOR_BOTTOM = register(
+        "oak_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.OAK_DOOR, p, true),
+        new Txt("The bottom half of an Oak Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item OAK_DOOR_TOP = register(
+        "oak_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.OAK_DOOR, p, false),
+        new Txt("The top half of an Oak Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item PALE_OAK_DOOR_BOTTOM = register(
+        "pale_oak_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.PALE_OAK_DOOR, p, true),
+        new Txt("The bottom half of a Pale Oak Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item PALE_OAK_DOOR_TOP = register(
+        "pale_oak_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.PALE_OAK_DOOR, p, false),
+        new Txt("The top half of a Pale Oak Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item SPRUCE_DOOR_BOTTOM = register(
+        "spruce_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.SPRUCE_DOOR, p, true),
+        new Txt("The bottom half of a Spruce Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item SPRUCE_DOOR_TOP = register(
+        "spruce_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.SPRUCE_DOOR, p, false),
+        new Txt("The top half of a Spruce Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item WARPED_DOOR_BOTTOM = register(
+        "warped_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.WARPED_DOOR, p, true),
+        new Txt("The bottom half of a Warped Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item WARPED_DOOR_TOP = register(
+        "warped_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.WARPED_DOOR, p, false),
+        new Txt("The top half of a Warped Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item COPPER_DOOR_BOTTOM = register(
+        "copper_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR, p, true),
+        new Txt("The bottom half of a Copper Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item COPPER_DOOR_TOP = register(
+        "copper_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR, p, false),
+        new Txt("The top half of a Copper Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item EXPOSED_COPPER_DOOR_BOTTOM = register(
+        "exposed_copper_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.EXPOSED_COPPER_DOOR, p, true),
+        new Txt("The bottom half of an Exposed Copper Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item EXPOSED_COPPER_DOOR_TOP = register(
+        "exposed_copper_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.EXPOSED_COPPER_DOOR, p, false),
+        new Txt("The top half of an Exposed Copper Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item WEATHERED_COPPER_DOOR_BOTTOM = register(
+        "weathered_copper_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.WEATHERED_COPPER_DOOR, p, true),
+        new Txt("The bottom half of a Weathere Copper Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item WEATHERED_COPPER_DOOR_TOP = register(
+        "weathered_copper_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.WEATHERED_COPPER_DOOR, p, false),
+        new Txt("The top half of a Weathere Copper Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+
+    public static final Item OXIDIZED_COPPER_DOOR_BOTTOM = register(
+        "oxidized_copper_door_bottom", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.OXIDIZED_COPPER_DOOR, p, true),
+        new Txt("The bottom half of an Oxidized Copper Door in item form."),
+        Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
+    );
+    public static final Item OXIDIZED_COPPER_DOOR_TOP = register(
+        "oxidized_copper_door_top", "doors",
+        p -> new CustomDoorHalfBlockItem(Blocks.OXIDIZED_COPPER_DOOR, p, false),
+        new Txt("The top half of an Oxidized Copper Door in item form."),
+        Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
 
@@ -697,13 +1220,56 @@ public class CustomItemHandler {
 
 
 
-        public static List<Txt> PLANT_STEM_RESETS = List.of(
-            new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
-            new Txt("version if not under another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
+        public static List<Txt> LONG_PLANT_STEM_RESETS = List.of(
+            new Txt("Updates from above make the block change to the crown version").color(Colors.COLOR_LS_ORANGE),
+            new Txt("unless properly connected to a matching crown block.")         .color(Colors.COLOR_LS_ORANGE)
         );
-        public static List<Txt> PLANT_STEM_RESETS_HANGING = List.of(
-            new Txt("Updates make the block change back to the non-stem").color(Colors.COLOR_LS_ORANGE),
-            new Txt("version if not above another block of same type.")  .color(Colors.COLOR_LS_ORANGE)
+        public static List<Txt> HANGING_LONG_PLANT_STEM_RESETS = List.of(
+            new Txt("Updates from below make the block change to the crown version").color(Colors.COLOR_LS_ORANGE),
+            new Txt("unless properly connected to a matching crown block.")         .color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> TALL_PLANT_STEM_BREAKS = List.of(
+            new Txt("Updates from above make the block break unless").color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching crown block.") .color(Colors.COLOR_LS_ORANGE)
+        );
+        public static List<Txt> TALL_PLANT_CROWN_BREAKS = List.of(
+            new Txt("Updates make the block break unless properly").color(Colors.COLOR_LS_ORANGE),
+            new Txt("connected to a matching stem block.")         .color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> DOOR_BOTTOM_BREAKS = List.of(
+            new Txt("Updates from above make the block break unless")           .color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching bottom half door block.") .color(Colors.COLOR_LS_ORANGE)
+        );
+        public static List<Txt> DOOR_TOP_BREAKS = List.of(
+            new Txt("Updates from below make the block break unless")       .color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching top half door block.").color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> BED_FOOT_BREAKS = List.of(
+            new Txt("Updates from the head side make the block break unless").color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching bed head block.")      .color(Colors.COLOR_LS_ORANGE)
+        );
+        public static List<Txt> BED_HEAD_BREAKS = List.of(
+            new Txt("Updates from foot side make the block break unless").color(Colors.COLOR_LS_ORANGE),
+            new Txt("properly connected to a matching bed foot block.")  .color(Colors.COLOR_LS_ORANGE)
+        );
+
+
+
+
+        public static List<Txt> FROSTED_ICE_MELTS = List.of(
+            new Txt("This block starts melting as soon as it is placed.").color(Colors.COLOR_LS_ORANGE)
         );
     }
 

@@ -30,7 +30,7 @@ import net.minecraft.world.level.Level;
 
 
 public class CreativeTweaksClientHandler {
-    private CreativeTweaksClientHandler() { }
+    private CreativeTweaksClientHandler() {}
     private static final float DEFAULT_FLYING_SPEED  = new Abilities().getFlyingSpeed();
 
 

@@ -60,7 +60,7 @@ public record SvgSpriteSource(String sourcePath) implements SpriteSource {
             SvgTextureTracker.getOrRegister(spriteId, bytes, meta);
 
             // Register a sprite for each GUI Scale
-            for (int scale = 1; scale <= 4; scale++) {
+            for(int scale = 1; scale <= 4; scale++) {
                 final int guiScale = scale;
                 final Identifier scaledSpriteId = SvgTextureTracker.getOptimalSprite(spriteId, guiScale);
                 output.add(scaledSpriteId, resourceLoader -> {
