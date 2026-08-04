@@ -82,6 +82,7 @@ It helps a lot :3
 - **Misc**:
   - Player model rendering in the pause menu
   - In-game status bar
+  - Stop the pause menu from pausing the game
   <br><br>
 - **Rendering**:
   - Selectively hide blocks by type or rendering method

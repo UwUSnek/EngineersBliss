@@ -30,6 +30,8 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class CustomHalfBlockItem extends CustomBlockItem {
     private final boolean isBottom;
+    protected boolean isBottom() { return isBottom; }
+
 
     public CustomHalfBlockItem(Block block, CustomItemProperties p, final boolean isBottom) {
         super(block, p, null);

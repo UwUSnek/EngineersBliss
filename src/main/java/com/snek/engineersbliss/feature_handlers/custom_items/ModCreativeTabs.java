@@ -180,6 +180,34 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.SHORT_STICKY_PISTON_HEAD);
 
 
+            output.accept(CustomItemHandler.ROSE_BUSH_STEM);
+            output.accept(CustomItemHandler.ROSE_BUSH_CROWN);
+            output.accept(CustomItemHandler.SUNFLOWER_STEM);
+            output.accept(CustomItemHandler.SUNFLOWER_CROWN);
+            output.accept(CustomItemHandler.TALL_GRASS_STEM);
+            output.accept(CustomItemHandler.TALL_GRASS_CROWN);
+            output.accept(CustomItemHandler.PITCHER_PLANT_STEM);
+            output.accept(CustomItemHandler.PITCHER_PLANT_CROWN);
+            output.accept(CustomItemHandler.PEONY_STEM);
+            output.accept(CustomItemHandler.PEONY_CROWN);
+            output.accept(CustomItemHandler.LARGE_FERN_STEM);
+            output.accept(CustomItemHandler.LARGE_FERN_CROWN);
+            output.accept(CustomItemHandler.LILAC_STEM);
+            output.accept(CustomItemHandler.LILAC_CROWN);
+
+
+            output.accept(CustomItemHandler.KELP_STEM);
+            output.accept(CustomItemHandler.KELP_CROWN);
+            output.accept(CustomItemHandler.CAVE_VINES_STEM);
+            output.accept(CustomItemHandler.CAVE_VINES_STEM_WITH_BERRIES);
+            output.accept(CustomItemHandler.CAVE_VINES_CROWN);
+            output.accept(CustomItemHandler.CAVE_VINES_CROWN_WITH_BERRIES);
+            output.accept(CustomItemHandler.TWISTING_VINES_STEM);
+            output.accept(CustomItemHandler.TWISTING_VINES_CROWN);
+            output.accept(CustomItemHandler.WEEPING_VINES_STEM);
+            output.accept(CustomItemHandler.WEEPING_VINES_CROWN);
+
+
             output.accept(CustomItemHandler.ACACIA_DOOR_BOTTOM);
             output.accept(CustomItemHandler.ACACIA_DOOR_TOP);
             output.accept(CustomItemHandler.BAMBOO_DOOR_BOTTOM);
@@ -216,32 +244,38 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.OXIDIZED_COPPER_DOOR_TOP);
 
 
-            output.accept(CustomItemHandler.ROSE_BUSH_STEM);
-            output.accept(CustomItemHandler.ROSE_BUSH_CROWN);
-            output.accept(CustomItemHandler.SUNFLOWER_STEM);
-            output.accept(CustomItemHandler.SUNFLOWER_CROWN);
-            output.accept(CustomItemHandler.TALL_GRASS_STEM);
-            output.accept(CustomItemHandler.TALL_GRASS_CROWN);
-            output.accept(CustomItemHandler.PITCHER_PLANT_STEM);
-            output.accept(CustomItemHandler.PITCHER_PLANT_CROWN);
-            output.accept(CustomItemHandler.PEONY_STEM);
-            output.accept(CustomItemHandler.PEONY_CROWN);
-            output.accept(CustomItemHandler.LARGE_FERN_STEM);
-            output.accept(CustomItemHandler.LARGE_FERN_CROWN);
-            output.accept(CustomItemHandler.LILAC_STEM);
-            output.accept(CustomItemHandler.LILAC_CROWN);
-
-
-            output.accept(CustomItemHandler.KELP_STEM);
-            output.accept(CustomItemHandler.KELP_CROWN);
-            output.accept(CustomItemHandler.CAVE_VINES_STEM);
-            output.accept(CustomItemHandler.CAVE_VINES_STEM_WITH_BERRIES);
-            output.accept(CustomItemHandler.CAVE_VINES_CROWN);
-            output.accept(CustomItemHandler.CAVE_VINES_CROWN_WITH_BERRIES);
-            output.accept(CustomItemHandler.TWISTING_VINES_STEM);
-            output.accept(CustomItemHandler.TWISTING_VINES_CROWN);
-            output.accept(CustomItemHandler.WEEPING_VINES_STEM);
-            output.accept(CustomItemHandler.WEEPING_VINES_CROWN);
+            output.accept(CustomItemHandler.WHITE_BED_HEAD);
+            output.accept(CustomItemHandler.WHITE_BED_FOOT);
+            output.accept(CustomItemHandler.ORANGE_BED_HEAD);
+            output.accept(CustomItemHandler.ORANGE_BED_FOOT);
+            output.accept(CustomItemHandler.MAGENTA_BED_HEAD);
+            output.accept(CustomItemHandler.MAGENTA_BED_FOOT);
+            output.accept(CustomItemHandler.LIGHT_BLUE_BED_HEAD);
+            output.accept(CustomItemHandler.LIGHT_BLUE_BED_FOOT);
+            output.accept(CustomItemHandler.YELLOW_BED_HEAD);
+            output.accept(CustomItemHandler.YELLOW_BED_FOOT);
+            output.accept(CustomItemHandler.LIME_BED_HEAD);
+            output.accept(CustomItemHandler.LIME_BED_FOOT);
+            output.accept(CustomItemHandler.PINK_BED_HEAD);
+            output.accept(CustomItemHandler.PINK_BED_FOOT);
+            output.accept(CustomItemHandler.GRAY_BED_HEAD);
+            output.accept(CustomItemHandler.GRAY_BED_FOOT);
+            output.accept(CustomItemHandler.LIGHT_GRAY_BED_HEAD);
+            output.accept(CustomItemHandler.LIGHT_GRAY_BED_FOOT);
+            output.accept(CustomItemHandler.CYAN_BED_HEAD);
+            output.accept(CustomItemHandler.CYAN_BED_FOOT);
+            output.accept(CustomItemHandler.PURPLE_BED_HEAD);
+            output.accept(CustomItemHandler.PURPLE_BED_FOOT);
+            output.accept(CustomItemHandler.BLUE_BED_HEAD);
+            output.accept(CustomItemHandler.BLUE_BED_FOOT);
+            output.accept(CustomItemHandler.BROWN_BED_HEAD);
+            output.accept(CustomItemHandler.BROWN_BED_FOOT);
+            output.accept(CustomItemHandler.GREEN_BED_HEAD);
+            output.accept(CustomItemHandler.GREEN_BED_FOOT);
+            output.accept(CustomItemHandler.RED_BED_HEAD);
+            output.accept(CustomItemHandler.RED_BED_FOOT);
+            output.accept(CustomItemHandler.BLACK_BED_HEAD);
+            output.accept(CustomItemHandler.BLACK_BED_FOOT);
         }).build()
     ;
 
