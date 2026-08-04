@@ -74,11 +74,18 @@
 - **Creative mode tweaks**
   - ~~Control flying speed~~
   - ~~Control walking speed~~
+  - ~~Control player scale~~
   - ~~Control reach distance~~
   - ~~Control interaction radius (click multiple blocks at once)~~
+  - ~~Control interaction count~~
+  - Control block placement delay
   - add in-game UI for these. display their current values with icons and such
 
-  - Configurable fast clicking
+  - Autoclicker with configurable delay
+  - Toggle clicks
+  - Disable Sign GUI
+  - Disable picking up items
+  - Open obstructed containers
   - Snap view to specific angles //TODO in-game indicators for multiples of 22 and 45 ° on both axes. use a keybind to snap to them
   - Place blocks facing away from the player
   - Place blocks with an offset
@@ -102,6 +109,7 @@
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - ~~Disable being moved by Water and Lava currents~~
   - ~~Disable being dragged by Bubble Columns~~
+  - Disable punching End Crystals
 
   - ~~Disable item change animation~~
   - ~~Disable hand swing animation~~
@@ -158,8 +166,8 @@
   - ~~[Vanilla block] Piston Head item~~
   - ~~[Vanilla block] Short Sticky Piston Head item~~
   - ~~[Vanilla block] Short Piston Head item~~
-  - [Vanilla block] Door Part items
-  - [Vanilla block] Bed Part items
+  - ~~[Vanilla blocks] Door Part items~~
+  - ~~[Vanilla blocks] Bed Part items~~
   - ~~[Vanilla block] Rose Bush Stem item~~
   - ~~[Vanilla block] Rose Bush Crown item~~
   - ~~[Vanilla block] Sunflower Stem item~~
@@ -197,7 +205,7 @@
 
 
 
-- disable punching end crystals? //TODO maybe? idk, very niche
+
 
 
 
