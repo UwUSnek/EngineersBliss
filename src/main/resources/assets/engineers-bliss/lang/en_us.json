@@ -77,7 +77,11 @@
     "item.engineers-bliss.lava_cauldron"           : "Lava Cauldron",
 
 
-    "item.engineers-bliss.frosted_ice"           : "Frosted Ice",
+    "item.engineers-bliss.frosted_ice" : "Frosted Ice",
+
+
+    "item.engineers-bliss.frictionless_block" : "Frictionless Block",
+    "item.engineers-bliss.frictionful_block"  : "Frictionful Block",
 
 
     "item.engineers-bliss.acacia_door_bottom"           : "Acacia Door Bottom",
