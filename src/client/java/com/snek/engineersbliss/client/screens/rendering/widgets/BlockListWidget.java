@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -207,8 +207,8 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         public Entry(final Block block) {
             final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
             this.block = block;
-            this.enableBox  = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getEnabled(block)).build();
-            this.isolateBox = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderFilterHandler.getIsolated(block)).build();
+            this.enableBox  = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderingFilterHandler.getEnabled(block)).build();
+            this.isolateBox = Checkbox.builder(new UiTxt().get(), font).pos(0, 0).selected(RenderingFilterHandler.getIsolated(block)).build();
         }
 
 
@@ -239,14 +239,14 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
             if(enableBox.mouseClicked(event, doubleClick)) {
-                RenderFilterHandler.setEnabled(block, enableBox.selected());
-                RenderFilterHandler.recalculate();
+                RenderingFilterHandler.setEnabled(block, enableBox.selected());
+                RenderingFilterHandler.recalculate();
                 MinecraftUtils.refreshSectionsContaining(block);
                 return true;
             }
             if(isolateBox.mouseClicked(event, doubleClick)) {
-                RenderFilterHandler.setIsolated(block, isolateBox.selected());
-                RenderFilterHandler.recalculate();
+                RenderingFilterHandler.setIsolated(block, isolateBox.selected());
+                RenderingFilterHandler.recalculate();
                 MinecraftUtils.refreshRendering();
                 return true;
             }

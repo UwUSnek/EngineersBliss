@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.mixin.rendering.vanilla_indigo;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * ! Vanilla and Indigo pass through this. Other renderers need special mixins.
  */
 @Mixin(RenderSectionRegion.class)
-public class RenderFilterBlockVanillaIndigoMixin {
+public class RenderingFilterBlockVanillaIndigoMixin {
 
 
     @SuppressWarnings("unused")
@@ -30,7 +30,7 @@ public class RenderFilterBlockVanillaIndigoMixin {
     private void eb$getBlockState(final BlockPos pos, final CallbackInfoReturnable<BlockState> cir) {
         final BlockState state = cir.getReturnValue();
 
-        if(!RenderFilterHandler.shouldBlockRender(state)) {
+        if(!RenderingFilterHandler.shouldBlockRender(state)) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());
         }
     }
