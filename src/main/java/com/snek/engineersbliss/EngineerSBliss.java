@@ -3,10 +3,12 @@ package com.snek.engineersbliss;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.snek.engineersbliss.custom_block_entities.CustomBlockEntityHandler;
 import com.snek.engineersbliss.custom_blocks.CustomBlockHandler;
 import com.snek.engineersbliss.custom_items.CustomItemHandler;
 import com.snek.engineersbliss.custom_items.ModCreativeTabs;
@@ -45,10 +47,13 @@ public class EngineerSBliss implements ModInitializer {
         });
 
 
-        // Initialize custom items
+        // Initialize custom items and blocks
         CustomBlockHandler.init();
+        CustomBlockEntityHandler.init();
         CustomItemHandler.init();
         ModCreativeTabs.register();
+        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.INFINITE_ITEM_SOURCE);
+        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_SINK);
 
 
         // Register feature sets and initialize the feature system

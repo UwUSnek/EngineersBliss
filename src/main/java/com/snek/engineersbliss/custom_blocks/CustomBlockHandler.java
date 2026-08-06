@@ -3,6 +3,9 @@ package com.snek.engineersbliss.custom_blocks;
 import java.util.function.Function;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.custom_block_entities.special.InfiniteItemSourceBlockEntity;
+import com.snek.engineersbliss.custom_block_entities.special.ItemSinkBlockEntity;
+import com.snek.engineersbliss.custom_blocks.base.CustomEntityBlock;
 import com.snek.engineersbliss.custom_blocks.special.FrictionlessBlock;
 
 import net.minecraft.core.Registry;
@@ -12,6 +15,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -43,8 +47,8 @@ public class CustomBlockHandler {
             .isSuffocating(Blocks::never)
             .isViewBlocking(Blocks::never)
             .noLootTable()
-            .noTerrainParticles()
             .pushReaction(PushReaction.PUSH_ONLY)
+            .sound(SoundType.GLASS)
             .friction(1)
             .noOcclusion()
     );
@@ -59,9 +63,41 @@ public class CustomBlockHandler {
             .isSuffocating(Blocks::never)
             .isViewBlocking(Blocks::never)
             .noLootTable()
-            .noTerrainParticles()
             .pushReaction(PushReaction.NORMAL)
+            .sound(SoundType.GLASS)
             .friction(0)
+            .noOcclusion()
+    );
+
+
+
+
+    public static final Block INFINITE_ITEM_SOURCE = register(
+        "infinite_item_source",
+        p -> new CustomEntityBlock(p, InfiniteItemSourceBlockEntity::new),
+        BlockBehaviour.Properties.of()
+            .strength(-1.0f, 3600000.8f)
+            .mapColor(MapColor.STONE)
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor(Blocks::never)
+            .isSuffocating(Blocks::never)
+            .isViewBlocking(Blocks::always)
+            .noLootTable()
+            .pushReaction(PushReaction.BLOCK)
+            .noOcclusion()
+    );
+    public static final Block ITEM_SINK = register(
+        "item_sink",
+        p -> new CustomEntityBlock(p, ItemSinkBlockEntity::new),
+        BlockBehaviour.Properties.of()
+            .strength(-1.0f, 3600000.8f)
+            .mapColor(MapColor.STONE)
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor(Blocks::never)
+            .isSuffocating(Blocks::never)
+            .isViewBlocking(Blocks::always)
+            .noLootTable()
+            .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
     );
 
@@ -81,6 +117,7 @@ public class CustomBlockHandler {
             .noOcclusion()
             .noTerrainParticles()
             .pushReaction(PushReaction.BLOCK)
+            .sound(SoundType.GLASS)
     );
     public static final Block BLUE_SCREEN = register(
         "blue_screen",
@@ -95,6 +132,7 @@ public class CustomBlockHandler {
             .noOcclusion()
             .noTerrainParticles()
             .pushReaction(PushReaction.BLOCK)
+            .sound(SoundType.GLASS)
     );
 
 
