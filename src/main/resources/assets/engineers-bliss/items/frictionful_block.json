@@ -1,6 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "engineers-bliss:custom_block/frictionful_block"
+        "model": "engineers-bliss:block/custom/frictionful_block"
     }
 }

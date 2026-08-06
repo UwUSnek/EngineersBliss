@@ -1,0 +1,7 @@
+{
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/vanilla/banners/static/templates/wall_flag",
+  "textures" : {
+    "texture" : "engineers-bliss:block/vanilla/banners/static/orange"
+  }
+}

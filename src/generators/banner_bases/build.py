@@ -8,11 +8,11 @@ from PIL import Image
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PATTERN_INPUT_DIR   = SCRIPT_DIR / "source_masks"
-OUTPUT_DIR_TEXTURES = SCRIPT_DIR / "../../main/resources/assets/engineers-bliss/textures" / "block/banners/vanilla"
+OUTPUT_DIR_TEXTURES = SCRIPT_DIR / "../../main/resources/assets/engineers-bliss/textures" / "block/vanilla/banners/static"
 
 
 CREDIT = "UwU_Snek"
-PARENT_MODEL = "engineers.bliss::block/banners/vanilla/templates/sheet"
+PARENT_MODEL = "engineers.bliss::block/banners/static/templates/sheet"
 TEXTURE_ALIAS = "#pattern"
 
 

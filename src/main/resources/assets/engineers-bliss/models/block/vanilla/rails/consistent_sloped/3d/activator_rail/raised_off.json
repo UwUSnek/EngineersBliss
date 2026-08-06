@@ -1,0 +1,8 @@
+{
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/vanilla/rails/consistent_sloped/3d/template_rail/activator_raised",
+  "textures" : {
+    "rail"     : "engineers-bliss:block/vanilla/rails/consistent_sloped/activator_rail_off",
+    "particle" : "engineers-bliss:block/vanilla/rails/consistent_sloped/activator_rail_off"
+  }
+}
