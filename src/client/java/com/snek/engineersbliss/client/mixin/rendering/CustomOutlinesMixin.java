@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -46,8 +46,8 @@ public abstract class CustomOutlinesMixin {
     @SuppressWarnings("unused")
     @Inject(method = "extractBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
-        if(!RenderFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
-        if(RenderFilterHandler.getTargetHiddenBlocks()) return;
+        if(!RenderingFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
+        if(RenderingFilterHandler.getTargetHiddenBlocks()) return;
         customOutlineBlocks.clear();
 
         // Return if no level or no hit result
@@ -81,7 +81,7 @@ public abstract class CustomOutlinesMixin {
                 }
 
                 // If the block is hidden or the ray didn't intersect, return null (keep traversing). Otherwise return the hit result
-                if(!RenderFilterHandler.getActiveBlocks().contains(block) || newHit == null) return null;
+                if(!RenderingFilterHandler.getActiveBlocks().contains(block) || newHit == null) return null;
                 else return newHit;
             },
             context -> BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end))
@@ -94,8 +94,8 @@ public abstract class CustomOutlinesMixin {
     @SuppressWarnings("unused")
     @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
-        if(!RenderFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
-        if(RenderFilterHandler.getTargetHiddenBlocks()) return;
+        if(!RenderingFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
+        if(RenderingFilterHandler.getTargetHiddenBlocks()) return;
         if(customOutlineBlocks.isEmpty()) return;
 
 
@@ -118,7 +118,7 @@ public abstract class CustomOutlinesMixin {
             final BlockOutlineRenderState outlineState = new BlockOutlineRenderState(pos, false, false, shape);
 
             // Draw outline: Default black for visible block, thicker gray for hidden ones
-            if(i == customOutlineBlocks.size() - 1 && RenderFilterHandler.getActiveBlocks().contains(minecraft.level.getBlockState(pos).getBlock())) {
+            if(i == customOutlineBlocks.size() - 1 && RenderingFilterHandler.getActiveBlocks().contains(minecraft.level.getBlockState(pos).getBlock())) {
                 this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.black(102), lineWidth);
             }
             else {

@@ -312,3 +312,7 @@
 - looking down from a very high place shows a block outline thats misaligned from the GUI crosshair
   - add somethign that fixes this
   - idk what causes it
+
+
+
+- add "entity outline" in rendering screen

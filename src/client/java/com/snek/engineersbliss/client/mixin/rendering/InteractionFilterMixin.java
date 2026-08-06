@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -28,7 +28,7 @@ public class InteractionFilterMixin {
     @SuppressWarnings("unused")
     @Inject(method = "pick", at = @At("RETURN"), cancellable = false, require = 1)
     private void eb$onPick(final float partialTicks, final CallbackInfo ci) {
-        if(RenderFilterHandler.getTargetHiddenBlocks()) return;
+        if(RenderingFilterHandler.getTargetHiddenBlocks()) return;
         final Minecraft minecraft = Minecraft.getInstance();
         final LocalPlayer player = minecraft.player;
         if(minecraft.level == null || player == null) return;
@@ -37,7 +37,7 @@ public class InteractionFilterMixin {
         // If the first block is not hidden, continue with vanilla logic
         if(!(minecraft.hitResult instanceof final BlockHitResult bhr)) return;
         final BlockState targeted = minecraft.level.getBlockState(bhr.getBlockPos());
-        if(RenderFilterHandler.getActiveBlocks().contains(targeted.getBlock())) return;
+        if(RenderingFilterHandler.getActiveBlocks().contains(targeted.getBlock())) return;
 
 
         // Otherwise run custom ray casting logic
@@ -50,7 +50,7 @@ public class InteractionFilterMixin {
             (context, pos) -> {
                 final BlockState state = minecraft.level.getBlockState(pos);
                 if(state.isAir()) return null;
-                if(!RenderFilterHandler.getActiveBlocks().contains(state.getBlock())) return null;
+                if(!RenderingFilterHandler.getActiveBlocks().contains(state.getBlock())) return null;
                 final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player)).clip(start, end, pos);
                 return hit != null ? hit : BlockHitResult.miss(end, Direction.UP, pos);
             },

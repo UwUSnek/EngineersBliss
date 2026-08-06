@@ -203,9 +203,9 @@ public class PauseScreenMixin extends Screen {
             // Rendering
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Render filter",    RenderingScreen  ::new, 'R', "pause_screen/render_filter"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",         OverlaysScreen   ::new, 'O', "pause_screen/overlays"),      Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",     AltTexturesScreen::new, 'T', "pause_screen/alt_textures"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Rendering filter",  RenderingScreen  ::new, 'R', "pause_screen/rendering_filter"), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",          OverlaysScreen   ::new, 'O', "pause_screen/overlays"),         Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",      AltTexturesScreen::new, 'T', "pause_screen/alt_textures"),     Layout.BORDER_HEIGHT);
 
             // Tools
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
@@ -215,7 +215,6 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", ()->{return null;}, 'P', "pause_screen/block_properties"), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     ()->{return null;}, 'G', "pause_screen/block_groups"),     Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  ()->{return null;}, 'C', "pause_screen/container_tools"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Custom items",     ()->{return null;}, 'I', "pause_screen/custom_items"),     Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);

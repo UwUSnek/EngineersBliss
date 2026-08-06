@@ -87,7 +87,7 @@ public class ShadingFixModelPlugin implements ModelLoadingPlugin {
             final RandomSource random,
             final Predicate<@Nullable Direction> cullTest
         ) {
-            if(RenderFilterHandler.getFixShading()) {
+            if(RenderingFilterHandler.getFixShading()) {
                 emitter.pushTransform(quad -> {
                     quad.shadeMode(ShadeMode.ENHANCED);
                     return true;

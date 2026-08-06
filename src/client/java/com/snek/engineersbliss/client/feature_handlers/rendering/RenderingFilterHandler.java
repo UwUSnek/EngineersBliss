@@ -27,8 +27,8 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 
 
 
-public class RenderFilterHandler {
-    private RenderFilterHandler() {}
+public class RenderingFilterHandler {
+    private RenderingFilterHandler() {}
 
     private static int lightRecalcMax = 0;
     private static int lightRecalcProgress = 0;
@@ -197,15 +197,15 @@ public class RenderFilterHandler {
         //Check category rendering. Return false if disabled
         final boolean hasBlockEntityRendering = state.hasBlockEntity() && blocksWithBlockEntityRendering.contains(state.getBlock());
         if(
-            !RenderFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty()  ||
-            !RenderFilterHandler.getRenderBlockEntities() && hasBlockEntityRendering           ||
-            !RenderFilterHandler.getRenderBlocks()        && state.getFluidState().isEmpty() && !hasBlockEntityRendering
+            !RenderingFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty()  ||
+            !RenderingFilterHandler.getRenderBlockEntities() && hasBlockEntityRendering           ||
+            !RenderingFilterHandler.getRenderBlocks()        && state.getFluidState().isEmpty() && !hasBlockEntityRendering
         ) {
             return false;
         }
 
 
         // If rendering of the block category is enabled, check the individual filters
-        return RenderFilterHandler.getActiveBlocks().contains(state.getBlock());
+        return RenderingFilterHandler.getActiveBlocks().contains(state.getBlock());
     }
 }
