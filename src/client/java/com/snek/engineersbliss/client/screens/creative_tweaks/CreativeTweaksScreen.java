@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.screens.creative_tweaks;
 
 import java.text.DecimalFormat;
-import java.util.function.Function;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
@@ -48,11 +47,11 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         return String.format("%dx", n);
     };
     private static final ValueFormatter<Float> blockFormatter = (n, u) -> {
-        final String unit = u ? "b" : (Utils.floatEquals(n, 1, 1e-5f) ? "block" : "blocks");
+        final String unit = u ? "b" : (Utils.floatEquals(n, 1, 1e-5f) ? " block" : " blocks");
         return String.format("%s%s", decimalFormatter.format(n), unit);
     };
     private static final ValueFormatter<Integer> intBlockFormatter = (n, u) -> {
-        final String unit = u ? "b" : (n == 1 ? "block" : "blocks");
+        final String unit = u ? "b" : (n == 1 ? " block" : " blocks");
         return String.format("%d%s", n, unit);
     };
 
