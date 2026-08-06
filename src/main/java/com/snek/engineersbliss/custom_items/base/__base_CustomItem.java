@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.base;
+package com.snek.engineersbliss.custom_items.base;
 
 
 

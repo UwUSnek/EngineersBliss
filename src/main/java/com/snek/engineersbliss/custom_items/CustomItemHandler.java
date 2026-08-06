@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items;
+package com.snek.engineersbliss.custom_items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +9,20 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomWaterPlaceableBlockItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.ArmorStandWithArmsItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBedHalfBlockItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomBeehiveItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCauldronItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomCaveVinesItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomDoorHalfBlockItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.CustomHalfBlockItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.HeadlessPistonItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.PistonHeadItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.UnlitCampfireItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.YourPlayerHeadItem;
-import com.snek.engineersbliss.feature_handlers.custom_items.special.NetherPortalItem;
+import com.snek.engineersbliss.custom_items.base.CustomBlockItem;
+import com.snek.engineersbliss.custom_items.base.CustomWaterPlaceableBlockItem;
+import com.snek.engineersbliss.custom_items.special.ArmorStandWithArmsItem;
+import com.snek.engineersbliss.custom_items.special.CustomBedHalfBlockItem;
+import com.snek.engineersbliss.custom_items.special.CustomBeehiveItem;
+import com.snek.engineersbliss.custom_items.special.CustomCauldronItem;
+import com.snek.engineersbliss.custom_items.special.CustomCaveVinesItem;
+import com.snek.engineersbliss.custom_items.special.CustomDoorHalfBlockItem;
+import com.snek.engineersbliss.custom_items.special.CustomHalfBlockItem;
+import com.snek.engineersbliss.custom_items.special.HeadlessPistonItem;
+import com.snek.engineersbliss.custom_items.special.NetherPortalItem;
+import com.snek.engineersbliss.custom_items.special.PistonHeadItem;
+import com.snek.engineersbliss.custom_items.special.UnlitCampfireItem;
+import com.snek.engineersbliss.custom_items.special.YourPlayerHeadItem;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.core.Direction;

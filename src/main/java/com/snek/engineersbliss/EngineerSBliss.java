@@ -7,14 +7,14 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.snek.engineersbliss.custom_items.CustomBlockHandler;
+import com.snek.engineersbliss.custom_items.CustomItemHandler;
+import com.snek.engineersbliss.custom_items.ModCreativeTabs;
 import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomBlockHandler;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
-import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTabs;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;

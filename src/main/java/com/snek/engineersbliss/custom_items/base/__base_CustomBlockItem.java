@@ -1,9 +1,9 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.base;
-
-import com.snek.engineersbliss.feature_handlers.custom_items.PickBlockOverrideManager;
+package com.snek.engineersbliss.custom_items.base;
 
 import java.util.List;
 import java.util.Map;
+
+import com.snek.engineersbliss.custom_items.PickBlockOverrideManager;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;

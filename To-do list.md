@@ -147,8 +147,8 @@
 
 - **Custom blocks and items**
   - Infinite item sources
-  - Rate counter hoppers
   - Item Sink (storage block with infinite capacity)
+  - Rate counter hoppers
   - ~~0 Friction blocks~~
   - ~~∞ Friction blocks~~
   - ~~Green Screen block~~

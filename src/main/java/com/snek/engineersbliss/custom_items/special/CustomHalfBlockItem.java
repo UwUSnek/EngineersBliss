@@ -1,13 +1,12 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.special;
+package com.snek.engineersbliss.custom_items.special;
 
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
-import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
+import com.snek.engineersbliss.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.custom_items.base.CustomBlockItem;
 import com.snek.engineersbliss.mixin.accessors.BlockItemAccessor;
-import com.snek.engineersbliss.mixin.accessors.DoorBlockAccessor;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -34,37 +33,45 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 
 
-public class CustomDoorHalfBlockItem extends CustomHalfBlockItem {
+public class CustomHalfBlockItem extends CustomBlockItem {
+    private final boolean isBottom;
+    protected boolean isBottom() { return isBottom; }
 
 
-    public CustomDoorHalfBlockItem(Block block, CustomItemProperties p, final boolean isBottom) {
-        super(block, p, isBottom);
+    public CustomHalfBlockItem(Block block, CustomItemProperties p, final boolean isBottom) {
+        super(block, p, null);
+        this.isBottom = isBottom;
     }
 
-    public CustomDoorHalfBlockItem(Block block, CustomItemProperties p, final boolean isBottom, final @Nullable List<Block> mappedBlocks) {
-        super(block, p, isBottom, mappedBlocks);
+    public CustomHalfBlockItem(Block block, CustomItemProperties p, final boolean isBottom, final @Nullable List<Block> mappedBlocks) {
+        super(block, p, mappedBlocks);
+        this.isBottom = isBottom;
     }
 
 
-    //! Inherit getPlacementState. It sets the HALF property.
 
-
-    //! Add custom door property resolution to buildCustomPlacementState.
-    //! super.buildCustomPlacementState sets the FACING property.
+    // Force set half type on the placed block
+    //! Also build the context from scratch. Vanilla's context takes into account the size of the
+    //! full bed/door/plant block and doesn't allow placement where it wouldn't fit.
     @Override
-    protected @Nullable BlockState buildCustomPlacementState(final BlockPlaceContext context) {
-        BlockState state = super.buildCustomPlacementState(context);
+    protected BlockState getPlacementState(final BlockPlaceContext context) {
+        BlockState state = buildCustomPlacementState(context);
         if(state != null) {
-            BlockPos pos = context.getClickedPos();
-            Level level = context.getLevel();
-            boolean powered = level.hasNeighborSignal(pos);
-            state = state
-                .setValue(DoorBlock.HINGE, ((DoorBlockAccessor)getBlock()).invokeGetHinge(context))
-                .setValue(DoorBlock.POWERED, powered)
-                .setValue(DoorBlock.OPEN, powered)
-            ;
+            if(state.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF)) {
+                state = state.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, isBottom ? DoubleBlockHalf.LOWER : DoubleBlockHalf.UPPER);
+            }
+            return state;
         }
         return state;
+    }
+
+    protected @Nullable BlockState buildCustomPlacementState(final BlockPlaceContext context) {
+        Direction facing = context.getHorizontalDirection();
+        BlockState state = getBlock().defaultBlockState();
+        if(state.hasProperty(HorizontalDirectionalBlock.FACING)) {
+            state = state.setValue(HorizontalDirectionalBlock.FACING, facing);
+        }
+        return canPlace(context, state) ? state : null;
     }
 
 

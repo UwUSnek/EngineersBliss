@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.special;
+package com.snek.engineersbliss.custom_items.special;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
@@ -14,8 +14,8 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
-import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomStandingAndWallBlockItem;
+import com.snek.engineersbliss.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.custom_items.base.CustomStandingAndWallBlockItem;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.core.Direction;

@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.feature_handlers.custom_items;
+package com.snek.engineersbliss.custom_items;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethodStage.Vanilla;
 import com.snek.engineersbliss.EngineerSBliss;

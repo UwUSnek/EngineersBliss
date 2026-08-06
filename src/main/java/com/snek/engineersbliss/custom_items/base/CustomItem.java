@@ -1,6 +1,6 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.base;
+package com.snek.engineersbliss.custom_items.base;
 
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.custom_items.CustomItemProperties;
 
 import net.minecraft.world.item.Item;
 

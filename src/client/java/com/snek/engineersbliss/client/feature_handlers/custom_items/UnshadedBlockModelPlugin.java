@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomBlockHandler;
+import com.snek.engineersbliss.custom_items.CustomBlockHandler;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.minecraft.resources.Identifier;

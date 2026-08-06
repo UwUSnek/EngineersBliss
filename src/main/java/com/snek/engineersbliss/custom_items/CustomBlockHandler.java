@@ -1,9 +1,9 @@
-package com.snek.engineersbliss.feature_handlers.custom_items;
+package com.snek.engineersbliss.custom_items;
 
 import java.util.function.Function;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.feature_handlers.custom_items.special_blocks.FrictionlessBlock;
+import com.snek.engineersbliss.custom_items.special_blocks.FrictionlessBlock;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,7 +30,7 @@ public class CustomBlockHandler {
 
 
 
-    // "Frictionful" is technically an english word and it technically only means that something has a non-zero amount of friction,
+    // "Frictionful" is technically a word and it technically only means that something has a non-zero amount of friction,
     // but it's the best name i could find. "Infinite Friction Block" is too verbose and the other alternatives sound too stupid.
 
     public static final Block FRICTIONLESS_BLOCK = register(

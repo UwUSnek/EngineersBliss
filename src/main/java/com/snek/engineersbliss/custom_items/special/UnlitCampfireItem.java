@@ -1,7 +1,7 @@
-package com.snek.engineersbliss.feature_handlers.custom_items.special;
+package com.snek.engineersbliss.custom_items.special;
 
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemProperties;
-import com.snek.engineersbliss.feature_handlers.custom_items.base.CustomBlockItem;
+import com.snek.engineersbliss.custom_items.CustomItemProperties;
+import com.snek.engineersbliss.custom_items.base.CustomBlockItem;
 
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
