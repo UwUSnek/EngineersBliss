@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.snek.engineersbliss.feature_handlers.custom_items.PickBlockOverrideManager;
+import com.snek.engineersbliss.custom.items.PickBlockOverrideManager;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
