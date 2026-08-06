@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "engineers-bliss:custom_block/frictionful_block" }
+    }
+}

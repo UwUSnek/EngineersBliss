@@ -32,8 +32,21 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.level.block.Blocks;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -54,10 +67,39 @@ public class CustomItemHandler {
     );
     public static final Item BLUE_SCREEN = register(
         "blue_screen",
-        p -> new CustomBlockItem(CustomBlockHandler. BLUE_SCREEN, p, List.of(CustomBlockHandler.BLUE_SCREEN)),
+        p -> new CustomBlockItem(CustomBlockHandler.BLUE_SCREEN, p, List.of(CustomBlockHandler.BLUE_SCREEN)),
         new Txt("A perfectly blue block with no shading."),
         Notices.CUSTOM_BLOCK
     );
+
+
+
+
+    public static final Item FRICTIONLESS_BLOCK = register(
+        "frictionless_block",
+        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONLESS_BLOCK, p, List.of(CustomBlockHandler.FRICTIONLESS_BLOCK)),
+        new Txt("A block with no friction. Everything slides on it. Forever."),
+        new Txt("The friction of whatever fluid you are travelling in still applies."),
+        Notices.CUSTOM_BLOCK
+    );
+    public static final Item FRICTIONFUL_BLOCK = register(
+        "frictionful_block",
+        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONFUL_BLOCK, p, List.of(CustomBlockHandler.FRICTIONFUL_BLOCK)),
+        new Txt("A block with infinite friction. Nothing can walk or slide on it. At all."),
+        Notices.CUSTOM_BLOCK
+    );
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1331,6 +1373,16 @@ public class CustomItemHandler {
         // Create item and register it
         Item item = factory.apply(properties);
         return Registry.register(BuiltInRegistries.ITEM, key, item);
+    }
+
+
+
+
+
+    public static ItemStack named(Item item, String name) {
+        ItemStack stack = new ItemStack(item);
+        stack.set(DataComponents.CUSTOM_NAME, Component.literal(name));
+        return stack;
     }
 
 

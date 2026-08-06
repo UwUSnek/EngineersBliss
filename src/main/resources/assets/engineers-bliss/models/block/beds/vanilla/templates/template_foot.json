@@ -1,5 +1,5 @@
 {
-  "parent": "enigneers-bliss:block/beds/vanilla/templates/template_bed",
+  "parent": "engineers-bliss:block/beds/vanilla/templates/template_bed",
   "textures": {
     "particle": "minecraft:block/oak_planks",
     "south": "#south",
