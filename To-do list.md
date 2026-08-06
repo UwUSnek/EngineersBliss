@@ -148,7 +148,7 @@
 - **Custom blocks and items**
   - Infinite item sources
   - Item Sink (storage block with infinite capacity)
-  - Rate counter hoppers
+  - Instant Hoppers
   - ~~0 Friction blocks~~
   - ~~∞ Friction blocks~~
   - ~~Green Screen block~~
@@ -316,3 +316,5 @@
 
 
 - add "entity outline" in rendering screen
+
+- add some joke feature that adds metal pipe sounds

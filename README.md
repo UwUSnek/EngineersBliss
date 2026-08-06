@@ -221,7 +221,7 @@ It helps a lot :3
 - **Custom blocks and items**
   - Infinite item sources
   - Item Sink (storage block with infinite capacity)
-  - Rate counter hoppers
+  - Instant Hoppers
   - 0 Friction blocks
   - ∞ Friction blocks
   - Green Screen block
