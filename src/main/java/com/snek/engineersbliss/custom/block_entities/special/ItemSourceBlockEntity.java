@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 
-public class InfiniteItemSourceBlockEntity extends BlockEntity {
+public class ItemSourceBlockEntity extends BlockEntity {
 
     private ItemVariant sourceItem = ItemVariant.of(Items.COBBLESTONE);
     private final SingleSlotStorage<ItemVariant> storage = new SingleSlotStorage<>() {
@@ -36,8 +36,8 @@ public class InfiniteItemSourceBlockEntity extends BlockEntity {
     };
 
 
-    public InfiniteItemSourceBlockEntity(BlockPos pos, BlockState state) {
-        super(CustomBlockEntityHandler.INFINITE_ITEM_SOURCE, pos, state);
+    public ItemSourceBlockEntity(BlockPos pos, BlockState state) {
+        super(CustomBlockEntityHandler.ITEM_SOURCE, pos, state);
     }
 
 

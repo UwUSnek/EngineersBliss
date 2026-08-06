@@ -219,7 +219,7 @@ It helps a lot :3
   - Easily fill open containers with specific items
   <br><br>
 - **Custom blocks and items**
-  - Infinite item sources
+  - Item Source
   - Item Sink (storage block with infinite capacity)
   - Instant Hoppers
   - 0 Friction blocks

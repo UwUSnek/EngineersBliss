@@ -3,7 +3,7 @@ package com.snek.engineersbliss.custom.blocks;
 import java.util.function.Function;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.custom.block_entities.special.InfiniteItemSourceBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.base.CustomEntityBlock;
 import com.snek.engineersbliss.custom.blocks.special.FrictionlessBlock;
@@ -72,9 +72,9 @@ public class CustomBlockHandler {
 
 
 
-    public static final Block INFINITE_ITEM_SOURCE = register(
-        "infinite_item_source",
-        p -> new CustomEntityBlock(p, InfiniteItemSourceBlockEntity::new),
+    public static final Block ITEM_SOURCE = register(
+        "item_source",
+        p -> new CustomEntityBlock(p, ItemSourceBlockEntity::new),
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.STONE)

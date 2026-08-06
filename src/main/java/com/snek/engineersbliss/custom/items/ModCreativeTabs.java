@@ -37,6 +37,14 @@ public class ModCreativeTabs {
         .displayItems((params, output) -> {
             output.accept(CustomItemHandler.GREEN_SCREEN);
             output.accept(CustomItemHandler.BLUE_SCREEN);
+
+
+            output.accept(CustomItemHandler.FRICTIONLESS_BLOCK);
+            output.accept(CustomItemHandler.FRICTIONFUL_BLOCK);
+
+
+            output.accept(CustomItemHandler.ITEM_SOURCE);
+            output.accept(CustomItemHandler.ITEM_SINK);
         }).build()
     ;
 

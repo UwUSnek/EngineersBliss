@@ -97,6 +97,25 @@ public class CustomItemHandler {
 
 
 
+    public static final Item ITEM_SOURCE = register(
+        "item_source",
+        p -> new CustomBlockItem(CustomBlockHandler.ITEM_SOURCE, p, List.of(CustomBlockHandler.ITEM_SOURCE)),
+        List.of(
+            new Txt("A configurable container that can never be emptied.").lightGray(),
+            new Txt("It can only hold one stack at a time.").lightGray()
+        ),
+        Notices.CUSTOM_BLOCK
+    );
+    public static final Item ITEM_SINK = register(
+        "item_sink",
+        p -> new CustomBlockItem(CustomBlockHandler.ITEM_SINK, p, List.of(CustomBlockHandler.ITEM_SINK)),
+        new Txt("A container with unlimited capacity."),
+        Notices.CUSTOM_BLOCK
+    );
+
+
+
+
 
 
 
