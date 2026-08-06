@@ -66,13 +66,13 @@ public class CustomItemHandler {
         "green_screen",
         p -> new CustomBlockItem(CustomBlockHandler.GREEN_SCREEN, p, List.of(CustomBlockHandler.GREEN_SCREEN)),
         new Txt("A perfectly green block with no shading."),
-        Notices.CUSTOM_BLOCK
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
     public static final Item BLUE_SCREEN = register(
         "blue_screen",
         p -> new CustomBlockItem(CustomBlockHandler.BLUE_SCREEN, p, List.of(CustomBlockHandler.BLUE_SCREEN)),
         new Txt("A perfectly blue block with no shading."),
-        Notices.CUSTOM_BLOCK
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
 
 
@@ -85,13 +85,13 @@ public class CustomItemHandler {
             new Txt("A block with no friction. Everything slides on it. Forever.").lightGray(),
             new Txt("The friction of whatever fluid you are travelling in still applies.").lightGray()
         ),
-        Notices.FRICTIONLESS_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_BLOCK
+        Notices.FRICTIONLESS_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
     );
     public static final Item FRICTIONFUL_BLOCK = register(
         "frictionful_block",
         p -> new CustomBlockItem(CustomBlockHandler.FRICTIONFUL_BLOCK, p, List.of(CustomBlockHandler.FRICTIONFUL_BLOCK)),
         new Txt("A block with infinite friction. Nothing can walk or slide on it. At all."),
-        Notices.FRICTIONFUL_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_BLOCK
+        Notices.FRICTIONFUL_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
     );
 
 
@@ -101,16 +101,20 @@ public class CustomItemHandler {
         "item_source",
         p -> new CustomBlockItem(CustomBlockHandler.ITEM_SOURCE, p, List.of(CustomBlockHandler.ITEM_SOURCE)),
         List.of(
-            new Txt("A configurable container that can never be emptied.").lightGray(),
-            new Txt("It can only hold one stack at a time.").lightGray()
+            new Txt("A configurable container that can never be emptied, but can").lightGray(),
+            new Txt("only hold one stack at a time.").lightGray(),
+            new Txt("It also keeps track of the items it provides.").lightGray()
         ),
-        Notices.CUSTOM_BLOCK
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
     public static final Item ITEM_SINK = register(
         "item_sink",
         p -> new CustomBlockItem(CustomBlockHandler.ITEM_SINK, p, List.of(CustomBlockHandler.ITEM_SINK)),
-        new Txt("A container with unlimited capacity."),
-        Notices.CUSTOM_BLOCK
+        List.of(
+            new Txt("A container with unlimited capacity.").lightGray(),
+            new Txt("It also keeps track of which and how many items it collecs.").lightGray()
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
 
 
@@ -1244,7 +1248,7 @@ public class CustomItemHandler {
         private Notices() {}
 
 
-        public static List<Txt> CUSTOM_BLOCK = List.of(
+        public static List<Txt> CUSTOM_ITEM_AND_BLOCK = List.of(
             new Txt("This item and the block it places don't exist in Vanilla.").color(Colors.COLOR_LS_RED),
             new Txt("They cannot be used on servers without the")               .color(Colors.COLOR_LS_RED),
             new Txt(EngineerSBliss.MOD_NAME + " mod installed and will")        .color(Colors.COLOR_LS_RED),
