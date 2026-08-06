@@ -1,16 +1,15 @@
-package com.snek.engineersbliss.custom_items;
+package com.snek.engineersbliss.custom_blocks;
 
 import java.util.function.Function;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.custom_items.special_blocks.FrictionlessBlock;
+import com.snek.engineersbliss.custom_blocks.special.FrictionlessBlock;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TransparentBlock;
@@ -104,22 +103,18 @@ public class CustomBlockHandler {
 
 
 
-    private static Block register(String name, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties) {
-        ResourceKey<Block> blockKey = keyOfBlock(name);
+    private static Block register(String id, Function<BlockBehaviour.Properties, Block> blockFactory, BlockBehaviour.Properties properties) {
+
+        // Create Key
+        final ResourceKey blockKey = ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, id));
+
+        // Register block
         Block block = blockFactory.apply(properties.setId(blockKey));
         return Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
     }
 
 
 
-
-    private static ResourceKey<Block> keyOfBlock(String name) {
-        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, name));
-    }
-
-    private static ResourceKey<Item> keyOfItem(String name) {
-        return ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, name));
-    }
 
     public static void init() {
         //! This triggers static init

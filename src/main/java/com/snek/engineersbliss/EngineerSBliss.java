@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.snek.engineersbliss.custom_items.CustomBlockHandler;
+import com.snek.engineersbliss.custom_blocks.CustomBlockHandler;
 import com.snek.engineersbliss.custom_items.CustomItemHandler;
 import com.snek.engineersbliss.custom_items.ModCreativeTabs;
 import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;

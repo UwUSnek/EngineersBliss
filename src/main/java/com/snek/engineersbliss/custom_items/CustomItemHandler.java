@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.custom_blocks.CustomBlockHandler;
 import com.snek.engineersbliss.custom_items.base.CustomBlockItem;
 import com.snek.engineersbliss.custom_items.base.CustomWaterPlaceableBlockItem;
 import com.snek.engineersbliss.custom_items.special.ArmorStandWithArmsItem;
@@ -29,8 +30,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
@@ -1349,10 +1352,7 @@ public class CustomItemHandler {
     private static Item register(String id, @Nullable String modelCustomDir, Function<CustomItemProperties, Item> factory, List<Component> lines) {
 
         // Create Key
-        var key = net.minecraft.resources.ResourceKey.create(
-            net.minecraft.core.registries.Registries.ITEM,
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, id)
-        );
+        var key = ResourceKey.create(Registries.ITEM,Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, id));
 
 
         // Create item properties with the specified path and set the item ID

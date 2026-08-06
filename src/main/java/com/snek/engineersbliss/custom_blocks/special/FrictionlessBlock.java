@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.custom_items.special_blocks;
+package com.snek.engineersbliss.custom_blocks.special;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
