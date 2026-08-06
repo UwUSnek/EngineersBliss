@@ -1,6 +1,6 @@
 {
   "credit" : "UwU_Snek",
-  "parent" : "engineers-bliss:block/beds/vanilla/head/cyan_bed_head",
+  "parent" : "engineers-bliss:block/vanilla/beds/static/head/cyan_bed_head",
   "gui_light" : "side",
   "display" : {
     "gui" : {

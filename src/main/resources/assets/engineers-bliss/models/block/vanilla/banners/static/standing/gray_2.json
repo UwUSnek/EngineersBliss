@@ -1,0 +1,7 @@
+{
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/vanilla/banners/static/templates/standing_flag_2",
+  "textures" : {
+    "texture" : "engineers-bliss:block/vanilla/banners/static/gray"
+  }
+}

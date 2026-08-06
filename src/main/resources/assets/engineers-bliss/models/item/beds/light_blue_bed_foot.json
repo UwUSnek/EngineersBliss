@@ -1,6 +1,6 @@
 {
   "credit" : "UwU_Snek",
-  "parent" : "engineers-bliss:block/beds/vanilla/foot/light_blue_bed_foot",
+  "parent" : "engineers-bliss:block/vanilla/beds/static/foot/light_blue_bed_foot",
   "gui_light" : "side",
   "display" : {
     "gui" : {

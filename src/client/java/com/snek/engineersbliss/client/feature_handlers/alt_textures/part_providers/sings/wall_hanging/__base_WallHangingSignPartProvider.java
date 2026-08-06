@@ -25,7 +25,7 @@ public abstract class __base_WallHangingSignPartProvider extends __base_SignPart
         final String materialName = getSignMaterialName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallHangingSignBlock.FACING));
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s_0%s",                                        materialName, dirName),
+            String.format("hanging_signs/static/board/%s_0%s",                                        materialName, dirName),
             String.format("hanging_signs/%s/wall_attachment/%s%s", chainPathForSet.get(modelSetIndex), materialName, dirName)
         );
     }
@@ -33,8 +33,8 @@ public abstract class __base_WallHangingSignPartProvider extends __base_SignPart
     public List<String> calcDependencyNames() {
         final String materialName = getSignMaterialName();
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s_0",         materialName),
-            String.format("hanging_signs/vanilla/wall_attachment/%s", materialName),
+            String.format("hanging_signs/static/board/%s_0",         materialName),
+            String.format("hanging_signs/static/wall_attachment/%s", materialName),
             String.format("hanging_signs/3d/wall_attachment/%s",      materialName)
         );
     }

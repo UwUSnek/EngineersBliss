@@ -31,7 +31,7 @@ public abstract class __base_PartProvider {
     public final List<Identifier> calcPartIds(final BlockState state, final int modelSetIndex) {
         final List<Identifier> r = new ArrayList<>();
         for(final String name : calcPartNames(state, modelSetIndex)) {
-            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
+            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/vanilla/" + name));
         }
         return r;
     }
@@ -43,7 +43,7 @@ public abstract class __base_PartProvider {
     public final List<Identifier> calcDependencyIds() {
         final List<Identifier> r = new ArrayList<>();
         for(final String name : calcDependencyNames()) {
-            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/" + name));
+            r.add(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/vanilla/" + name));
         }
         return r;
     }

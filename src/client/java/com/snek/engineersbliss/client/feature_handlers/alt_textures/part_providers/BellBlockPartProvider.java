@@ -27,11 +27,11 @@ public class BellBlockPartProvider extends __base_PartProvider {
     @Override
     public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String dirName = getVariantSuffixFromDirection(state.getValue(BellBlock.FACING));
-        return List.of(String.format("bell/vanilla/bell%s", dirName));
+        return List.of(String.format("bell/static/bell%s", dirName));
     }
     @Override
     public List<String> calcDependencyNames() {
-        return List.of("bell/vanilla/bell");
+        return List.of("bell/static/bell");
     }
 
 

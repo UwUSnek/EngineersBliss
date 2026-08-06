@@ -24,16 +24,16 @@ public abstract class __base_CopperGolemStatuePartProvider extends __base_PartPr
         final String golemName = getGolemName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(CopperGolemStatueBlock.FACING));
         final String poseName = state.getValue(CopperGolemStatueBlock.POSE).getSerializedName();
-        return List.of(String.format("copper_golem_statues/vanilla/%s/%s%s", poseName, golemName, dirName));
+        return List.of(String.format("copper_golem_statues/static/%s/%s%s", poseName, golemName, dirName));
     }
     @Override
     public List<String> calcDependencyNames() {
         final String golemName = getGolemName();
         return List.of(
-            String.format("copper_golem_statues/vanilla/standing/%s", golemName),
-            String.format("copper_golem_statues/vanilla/sitting/%s", golemName),
-            String.format("copper_golem_statues/vanilla/running/%s", golemName),
-            String.format("copper_golem_statues/vanilla/star/%s", golemName)
+            String.format("copper_golem_statues/static/standing/%s", golemName),
+            String.format("copper_golem_statues/static/sitting/%s", golemName),
+            String.format("copper_golem_statues/static/running/%s", golemName),
+            String.format("copper_golem_statues/static/star/%s", golemName)
         );
     }
 

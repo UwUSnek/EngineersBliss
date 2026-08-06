@@ -30,7 +30,7 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
             //! Rotation is always 0 when not "ATTACHED" as wide supports only snap to cardinal directions
         ;
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s%s",                                                   materialName, rotName),
+            String.format("hanging_signs/static/board/%s%s",                                                   materialName, rotName),
             String.format("hanging_signs/%s/ceiling_attachment_%s/all%s", chainPathForSet.get(modelSetIndex), attachmentName, rotName)
         );
     }
@@ -38,15 +38,15 @@ public abstract class __base_CeilingHangingSignPartProvider extends __base_SignP
     public List<String> calcDependencyNames() {
         final String materialName = getSignMaterialName();
         return List.of(
-            String.format("hanging_signs/vanilla/board/%s_0", materialName),
-            String.format("hanging_signs/vanilla/board/%s_1", materialName),
-            String.format("hanging_signs/vanilla/board/%s_2", materialName),
-            String.format("hanging_signs/vanilla/board/%s_3", materialName),
-            "hanging_signs/vanilla/ceiling_attachment_narrow/all_0",
-            "hanging_signs/vanilla/ceiling_attachment_narrow/all_1",
-            "hanging_signs/vanilla/ceiling_attachment_narrow/all_2",
-            "hanging_signs/vanilla/ceiling_attachment_narrow/all_3",
-            "hanging_signs/vanilla/ceiling_attachment_wide/all_0",
+            String.format("hanging_signs/static/board/%s_0", materialName),
+            String.format("hanging_signs/static/board/%s_1", materialName),
+            String.format("hanging_signs/static/board/%s_2", materialName),
+            String.format("hanging_signs/static/board/%s_3", materialName),
+            "hanging_signs/static/ceiling_attachment_narrow/all_0",
+            "hanging_signs/static/ceiling_attachment_narrow/all_1",
+            "hanging_signs/static/ceiling_attachment_narrow/all_2",
+            "hanging_signs/static/ceiling_attachment_narrow/all_3",
+            "hanging_signs/static/ceiling_attachment_wide/all_0",
             "hanging_signs/3d/ceiling_attachment_narrow/all_0",
             "hanging_signs/3d/ceiling_attachment_narrow/all_1",
             "hanging_signs/3d/ceiling_attachment_narrow/all_2",

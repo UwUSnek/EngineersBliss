@@ -24,14 +24,14 @@ public abstract class __base_BedPartProvider extends __base_PartProvider {
         final String colorName = getColorName();
         final String partName = state.getValue(BedBlock.PART) == BedPart.FOOT ? "foot" : "head";
         final String dirName = getVariantSuffixFromDirection(state.getValue(BedBlock.FACING));
-        return List.of(String.format("beds/vanilla/%s/%s_bed_%s%s", partName, colorName, partName, dirName));
+        return List.of(String.format("beds/static/%s/%s_bed_%s%s", partName, colorName, partName, dirName));
     }
     @Override
     public List<String> calcDependencyNames() {
         final String colorName = getColorName();
         return List.of(
-            String.format("beds/vanilla/foot/%s_bed_foot", colorName),
-            String.format("beds/vanilla/head/%s_bed_head", colorName)
+            String.format("beds/static/foot/%s_bed_foot", colorName),
+            String.format("beds/static/head/%s_bed_head", colorName)
         );
     }
 
