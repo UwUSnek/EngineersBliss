@@ -1346,9 +1346,6 @@ public class CustomItemHandler {
 
 
 
-    private static Item register(String id, Function<CustomItemProperties, Item> factory, List<Component> lines) {
-        return register(id, null, factory, lines);
-    }
     private static Item register(String id, @Nullable String modelCustomDir, Function<CustomItemProperties, Item> factory, List<Component> lines) {
 
         // Create Key
@@ -1392,5 +1389,3 @@ public class CustomItemHandler {
         //! This triggers static init
     }
 }
-//TODO rename models/item to custom_item
-//TODO update references in items/

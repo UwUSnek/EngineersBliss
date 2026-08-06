@@ -82,6 +82,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
     // Templates/Variants info
     private static final String GENERATE_MARKER_PREFIX = ".gen-";
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
+    private static final String EXCLUDED_MARKER_FILE_NAME = ".excluded";
 
 
 
@@ -304,7 +305,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                 final String dir = path.substring(0, path.lastIndexOf('/') + 1);
 
                 final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
+                final Identifier excludedMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + EXCLUDED_MARKER_FILE_NAME);
                 if(resourceManager.getResource(templateMarker).isPresent()) return;
+                if(resourceManager.getResource(excludedMarker).isPresent()) return;
 
                 final String suffixes = findGenerateSuffixes(resourceManager, dir);
                 if(suffixes == null) {
