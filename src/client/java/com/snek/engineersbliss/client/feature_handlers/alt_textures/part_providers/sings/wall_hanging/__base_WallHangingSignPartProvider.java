@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 
 public abstract class __base_WallHangingSignPartProvider extends __base_SignPartProvider {
-    private static final List<String> chainPathForSet = List.of("vanilla", "3d");
+    private static final List<String> chainPathForSet = List.of("static", "3d");
 
 
 
