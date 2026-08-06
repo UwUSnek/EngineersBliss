@@ -8,10 +8,8 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.snek.engineersbliss.custom_block_entities.CustomBlockEntityHandler;
-import com.snek.engineersbliss.custom_blocks.CustomBlockHandler;
-import com.snek.engineersbliss.custom_items.CustomItemHandler;
-import com.snek.engineersbliss.custom_items.ModCreativeTabs;
+import com.snek.engineersbliss.custom.block_entities.CustomBlockEntityHandler;
+import com.snek.engineersbliss.custom.blocks.CustomBlockHandler;
 import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
@@ -19,6 +17,8 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksSe
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
+import com.snek.engineersbliss.custom.items.CustomItemHandler;
+import com.snek.engineersbliss.custom.items.ModCreativeTabs;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
@@ -52,8 +52,6 @@ public class EngineerSBliss implements ModInitializer {
         CustomBlockEntityHandler.init();
         CustomItemHandler.init();
         ModCreativeTabs.register();
-        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.INFINITE_ITEM_SOURCE);
-        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_SINK);
 
 
         // Register feature sets and initialize the feature system
