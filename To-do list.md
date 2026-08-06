@@ -149,8 +149,8 @@
   - Infinite item sources
   - Rate counter hoppers
   - Item Sink (storage block with infinite capacity)
-  - 0 Friction blocks
-  - ∞ Friction blocks
+  - ~~0 Friction blocks~~
+  - ~~∞ Friction blocks~~
   - ~~Green Screen block~~
   - ~~Blue Screen block~~
   - ~~[Vanilla Item] Stick item with Custom Name ~~
