@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.mixin.status_bar;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
+import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -26,6 +26,12 @@ public class CrosshairHeightFixMixin {
         require = 2
     )
     private int eb$restoreCrosshairHeight(GuiGraphicsExtractor instance) {
-        return instance.guiHeight() + StatusBarRenderer.STATUS_BAR_HEIGHT;
+        if(StatusBarHandler.shouldRender() && StatusBarHandler.isBottom()) {
+            System.out.println("FIXED");
+            return instance.guiHeight() + StatusBarHandler.getHeight();
+        }
+        else {
+            return instance.guiHeight();
+        }
     }
 }
