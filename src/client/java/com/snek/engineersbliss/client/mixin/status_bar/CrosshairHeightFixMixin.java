@@ -27,7 +27,6 @@ public class CrosshairHeightFixMixin {
     )
     private int eb$restoreCrosshairHeight(GuiGraphicsExtractor instance) {
         if(StatusBarHandler.shouldRender() && StatusBarHandler.isBottom()) {
-            System.out.println("FIXED");
             return instance.guiHeight() + StatusBarHandler.getHeight();
         }
         else {

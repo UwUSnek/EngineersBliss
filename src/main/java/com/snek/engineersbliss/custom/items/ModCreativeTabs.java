@@ -32,7 +32,7 @@ public class ModCreativeTabs {
     );
 
     public static final CreativeModeTab CUSTOM_ITEMS_TAB = FabricCreativeModeTab.builder()
-        .icon(() -> new ItemStack(CustomItemHandler.GREEN_SCREEN.asItem()))
+        .icon(() -> new ItemStack(CustomItemHandler.ITEM_SINK.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".custom_items"))
         .displayItems((params, output) -> {
             output.accept(CustomItemHandler.GREEN_SCREEN);
