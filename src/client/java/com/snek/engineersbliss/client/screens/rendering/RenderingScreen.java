@@ -13,7 +13,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -122,7 +122,7 @@ public class RenderingScreen extends __base_UiScreen {
         this.addRenderableWidget(searchField);
 
         addButton(
-            getToggleText_targetHiddenBlocks(RenderFilterHandler.getTargetHiddenBlocks()),
+            getToggleText_targetHiddenBlocks(RenderingFilterHandler.getTargetHiddenBlocks()),
             new UiTxt("Toggle targeting hidden blocks"),
             RenderingScreen::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
         );
@@ -144,27 +144,27 @@ public class RenderingScreen extends __base_UiScreen {
         );
 
         renderBlockOutlinesButton = addButton(
-            getToggleText_renderBlockOutlines(RenderFilterHandler.getRenderBlockOutlines()),
+            getToggleText_renderBlockOutlines(RenderingFilterHandler.getRenderBlockOutlines()),
             new UiTxt("Toggle whether block outlines should be rendered at all"),
             RenderingScreen::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
         );
         renderBlocksButton = addButton(
-            getToggleText_renderBlocks(RenderFilterHandler.getRenderBlocks()),
+            getToggleText_renderBlocks(RenderingFilterHandler.getRenderBlocks()),
             new UiTxt("Toggle whether blocks without custom block entity rendering should be rendered at all."),
             RenderingScreen::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
         );
         renderBlockEntitiesButton = addButton(
-            getToggleText_renderBlockEntities(RenderFilterHandler.getRenderBlockEntities()),
+            getToggleText_renderBlockEntities(RenderingFilterHandler.getRenderBlockEntities()),
             new UiTxt("Toggle whether blocks with custom block entity rendering should be rendered at all."),
             RenderingScreen::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
         );
         renderFluidsButton = addButton(
-            getToggleText_renderFluids(RenderFilterHandler.getRenderFluids()),
+            getToggleText_renderFluids(RenderingFilterHandler.getRenderFluids()),
             new UiTxt("Toggle whether fluids should be rendered at all."),
             RenderingScreen::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
         );
         shadingFixButton = addButton(
-            getToggleText_shadingFix(RenderFilterHandler.getFixShading()),
+            getToggleText_shadingFix(RenderingFilterHandler.getFixShading()),
             new UiTxt("Fixes the weird shading Vanilla applies to certain blocks. This is most visible on Dirt Path and Farmland blocks."),
             RenderingScreen::toggleShadingFix,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide
         );
@@ -212,8 +212,8 @@ public class RenderingScreen extends __base_UiScreen {
         if(level != null) {
             final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
             final int rightTextX = this.width - panelWidthSide;
-            final int lightProgress = RenderFilterHandler.getLightRecalcProgress();
-            final int lightMax = RenderFilterHandler.getLightRecalcMax();
+            final int lightProgress = RenderingFilterHandler.getLightRecalcProgress();
+            final int lightMax = RenderingFilterHandler.getLightRecalcMax();
             final String[] renderStats = {
                 "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
                 "Loaded chunks: ", String.format("%,d", loadedChunkNum),
@@ -243,7 +243,7 @@ public class RenderingScreen extends __base_UiScreen {
     public void resetFilters(final Button b) {
 
         // Reset settings
-        RenderFilterHandler.init(false, true, true, true, true);
+        RenderingFilterHandler.init(false, true, true, true, true);
         MinecraftUtils.refreshRendering();
 
         // Respawn the entire screen to update buttons and checkboxes. Manually restore search query
@@ -257,7 +257,7 @@ public class RenderingScreen extends __base_UiScreen {
 
 
     public static void recalculateLight(final Button b) {
-        RenderFilterHandler.recalculateLight();
+        RenderingFilterHandler.recalculateLight();
     }
 
 
@@ -266,8 +266,8 @@ public class RenderingScreen extends __base_UiScreen {
         return new UiTxt("Target hidden blocks: " + (state ? "ON" : "OFF"));
     }
     public static void toggleTargetHiddenBlocks(final UiButton b) {
-        final boolean newState = !RenderFilterHandler.getTargetHiddenBlocks();
-        RenderFilterHandler.setTargetHiddenBlocks(newState);
+        final boolean newState = !RenderingFilterHandler.getTargetHiddenBlocks();
+        RenderingFilterHandler.setTargetHiddenBlocks(newState);
         b.setLabel(getToggleText_targetHiddenBlocks(newState).get());
     }
 
@@ -276,9 +276,9 @@ public class RenderingScreen extends __base_UiScreen {
         return new UiTxt("[O] Render block outlines: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderBlockOutlines(final UiButton b) {
-        final boolean newState = !RenderFilterHandler.getRenderBlockOutlines();
-        RenderFilterHandler.setRenderBlockOutlines(newState);
-        RenderFilterHandler.recalculate();
+        final boolean newState = !RenderingFilterHandler.getRenderBlockOutlines();
+        RenderingFilterHandler.setRenderBlockOutlines(newState);
+        RenderingFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_renderBlockOutlines(newState).get());
     }
@@ -288,9 +288,9 @@ public class RenderingScreen extends __base_UiScreen {
         return new UiTxt("[B] Render blocks: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderBlocks(final UiButton b) {
-        final boolean newState = !RenderFilterHandler.getRenderBlocks();
-        RenderFilterHandler.setRenderBlocks(newState);
-        RenderFilterHandler.recalculate();
+        final boolean newState = !RenderingFilterHandler.getRenderBlocks();
+        RenderingFilterHandler.setRenderBlocks(newState);
+        RenderingFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_renderBlocks(newState).get());
     }
@@ -300,9 +300,9 @@ public class RenderingScreen extends __base_UiScreen {
         return new UiTxt("[E] Render block entities: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderBlockEntities(final UiButton b) {
-        final boolean newState = !RenderFilterHandler.getRenderBlockEntities();
-        RenderFilterHandler.setRenderBlockEntities(newState);
-        RenderFilterHandler.recalculate();
+        final boolean newState = !RenderingFilterHandler.getRenderBlockEntities();
+        RenderingFilterHandler.setRenderBlockEntities(newState);
+        RenderingFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_renderBlockEntities(newState).get());
     }
@@ -312,9 +312,9 @@ public class RenderingScreen extends __base_UiScreen {
         return new UiTxt("[F] Render fluids: " + (state ? "ON" : "OFF"));
     }
     public static void toggleRenderFluids(final UiButton b) {
-        final boolean newState = !RenderFilterHandler.getRenderFluids();
-        RenderFilterHandler.setRenderFluids(newState);
-        RenderFilterHandler.recalculate();
+        final boolean newState = !RenderingFilterHandler.getRenderFluids();
+        RenderingFilterHandler.setRenderFluids(newState);
+        RenderingFilterHandler.recalculate();
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_renderFluids(newState).get());
     }
@@ -324,8 +324,8 @@ public class RenderingScreen extends __base_UiScreen {
         return new UiTxt("Smooth Shading: " + (state ? "ON" : "OFF"));
     }
     public static void toggleShadingFix(final UiButton b) {
-        final boolean newState = !RenderFilterHandler.getFixShading();
-        RenderFilterHandler.setShadingFix(newState);
+        final boolean newState = !RenderingFilterHandler.getFixShading();
+        RenderingFilterHandler.setShadingFix(newState);
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_shadingFix(newState).get());
     }

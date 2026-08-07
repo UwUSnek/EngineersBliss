@@ -13,6 +13,7 @@ import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
+import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -24,6 +25,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -36,7 +38,7 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
+public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiWidgetBase {
 	public static final int HANDLE_BASE_WIDTH = 8;
     private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
@@ -48,6 +50,11 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
     private AnimatedDouble visualValue; //! The visual interpolated value, 0 to 1
     private AnimatedColor overlayColor;
+    private AnimatedColor handleColor;
+
+    // Screen reference
+    private final Screen screen;
+    public Screen getScreen() { return screen; }
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -79,12 +86,14 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     ) {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(x, y, width, height, new Txt().get(), initialValue);
+        this.screen = screen;
         this.baseLabel = label;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
         this.bgCache = new TextureCache(screen);
         this.visualValue = new AnimatedDouble(initialValue, Layout.slideTransitionDuration, Easings.cubicInOut);
-        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
+        this.overlayColor = new AnimatedColor(0x0,                Layout.hoverTransitionDuration, Easings.quadIn);
+        this.handleColor  = new AnimatedColor(Layout.handleColor, Layout.hoverTransitionDuration, Easings.quadIn);
         updateMessage();
     }
 
@@ -156,11 +165,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
         boolean result = super.mouseClicked(event, doubled);
         dragged = true;
-        if(result) {
-            GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
-            virtualX = event.x();
-            updateValueFromVirtualX();
-        }
+        GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+        virtualX = event.x();
+        updateValueFromVirtualX();
         return result;
     }
 
@@ -185,6 +192,15 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
         dragged = false;
         return super.mouseReleased(event);
+    }
+
+
+
+    //! Default keyPressed moves the handle when the left or right arrow key is pressed.
+    //! This stops that behaviour.
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        return true;
     }
 
 
@@ -232,8 +248,8 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget {
         final int handleR = handleX + handleWidth / 2;
         final int innerL = calcInnerLeft();
         final int innerR = calcInnerRight();
-        final int handleColor = isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor;
-        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor);
+        handleColor.startNewTransition(isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor);
+        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
         if(handleL <  innerL) graphics.fill(handleL, getY(), innerL,  getBottom(), Layout.handleColorTransparent);
         if(handleR >= innerR) graphics.fill(innerR,  getY(), handleR, getBottom(), Layout.handleColorTransparent);
 

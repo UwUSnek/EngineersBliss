@@ -59,8 +59,8 @@
         "custom_items.FullBrightItemEntityMixin",
 
 
-        "rendering.vanilla_indigo.RenderFilterBlockVanillaIndigoMixin",
-        "rendering.RenderFilterLightMixin",
+        "rendering.vanilla_indigo.RenderingFilterBlockVanillaIndigoMixin",
+        "rendering.RenderingFilterLightMixin",
         "rendering.CustomOutlinesMixin",
         "rendering.InteractionFilterMixin",
 
@@ -82,6 +82,7 @@
         "alt_textures.particle_suppressors.redstone_dust.OreDustParticleSuppressorMixin",
         "alt_textures.particle_suppressors.redstone_dust.RepeaterDustParticleSuppressorMixin",
         "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin",
+        "alt_textures.particle_suppressors.redstone_dust.TorchDustParticleSuppressorMixin",
 
 
         "status_bar.VanillaGuiHeightChangerMixin",

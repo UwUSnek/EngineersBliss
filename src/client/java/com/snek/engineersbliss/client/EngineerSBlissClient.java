@@ -1,7 +1,7 @@
 package com.snek.engineersbliss.client;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
@@ -68,7 +68,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Initialize handlers
-        RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
+        RenderingFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
         OverlaysHandler.init();
 
 

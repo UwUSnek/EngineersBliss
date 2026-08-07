@@ -92,16 +92,38 @@ public abstract class __base_ServerFeature<T> {
      * Initializes the numerical IDs of all registered features.
      * ! This must be called during server side mod initialization, after calling onSetInit(set) on all feature sets.
      */
-    public static void finalizeSetInits(){
+    public static void finalizeSetInits() {
         if(initialized) {
             EngineerSBliss.LOGGER.error("__base_ServerFeature.finalizeSetInits called twice.", new Throwable());
         }
         else {
             initialized = true;
             registered.sort(Comparator.comparing(f -> f.id));
-            for (int i = 0; i < registered.size(); i++) {
+            for(int i = 0; i < registered.size(); i++) {
                 registered.get(i).index = i;
             }
+        }
+    }
+
+
+    /**
+     * Checks if the server feature set initialization phase has been finalized. Throws an exception if it hasn't.
+     * @param message The message to display in the exception.
+     */
+    public static void finalizedOrThrow(final String message) {
+        if(!initialized) {
+            throw new IllegalStateException(message);
+        }
+    }
+
+
+    /**
+     * Checks if the server feature set initialization phase has been finalized. Throws an exception if it has.
+     * @param message The message to display in the exception.
+     */
+    public static void notFinalizedOrThrow(final String message) {
+        if(initialized) {
+            throw new IllegalStateException(message);
         }
     }
 }

@@ -18,16 +18,16 @@ public abstract class __base_WallBannerPartProvider extends __base_BannerPartPro
         final String colorName = getColorName();
         final String dirName = getVariantSuffixFromDirection(state.getValue(WallBannerBlock.FACING));
         return List.of(
-            String.format("banners/vanilla/wall/support%s",       dirName),
-            String.format("banners/vanilla/wall/%s%s", colorName, dirName)
+            String.format("banners/static/wall/support%s",       dirName),
+            String.format("banners/static/wall/%s%s", colorName, dirName)
         );
     }
     @Override
     public List<String> calcDependencyNames() {
         final String colorName = getColorName();
         return List.of(
-            "banners/vanilla/wall/support",
-            String.format("banners/vanilla/wall/%s", colorName)
+            "banners/static/wall/support",
+            String.format("banners/static/wall/%s", colorName)
         );
     }
 }

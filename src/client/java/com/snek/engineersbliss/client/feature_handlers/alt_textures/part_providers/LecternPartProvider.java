@@ -27,11 +27,11 @@ public class LecternPartProvider extends __base_PartProvider {
     @Override
     public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String dirName = getVariantSuffixFromDirection(state.getValue(LecternBlock.FACING));
-        return List.of(String.format("lectern/vanilla/book%s", dirName));
+        return List.of(String.format("lectern/static/book%s", dirName));
     }
     @Override
     public List<String> calcDependencyNames() {
-        return List.of("lectern/vanilla/book");
+        return List.of("lectern/static/book");
     }
 
 

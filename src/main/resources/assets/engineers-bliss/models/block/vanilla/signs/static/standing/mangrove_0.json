@@ -1,0 +1,7 @@
+{
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/vanilla/signs/static/templates/standing_0",
+  "textures" : {
+    "texture" : "engineers-bliss:block/vanilla/signs/static/mangrove"
+  }
+}

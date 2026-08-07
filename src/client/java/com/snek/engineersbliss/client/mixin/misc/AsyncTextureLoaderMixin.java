@@ -3,12 +3,12 @@ package com.snek.engineersbliss.client.mixin.misc;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.utils.textures.AtlasMetadataSection;
-import com.snek.engineersbliss.client.utils.textures.TextureAtlasTracker;
-import com.snek.engineersbliss.client.utils.textures.SvgMetadataSection;
-import com.snek.engineersbliss.client.utils.textures.SvgRasterizer;
-import com.snek.engineersbliss.client.utils.textures.SvgScaleTracker;
-import com.snek.engineersbliss.client.utils.textures.SvgTextureTracker;
+import com.snek.engineersbliss.client.utils.textures.atlases.AtlasMetadataSection;
+import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgMetadataSection;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgRasterizer;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgScaleTracker;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;

@@ -1,8 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineers-bliss:block/rails/consistent_sloped/3d/template_rail/powered_raised",
-  "textures" : {
-    "rail"     : "engineers-bliss:block/rails/consistent_sloped/powered_rail_on",
-    "particle" : "engineers-bliss:block/rails/consistent_sloped/powered_rail_on"
-  }
-}

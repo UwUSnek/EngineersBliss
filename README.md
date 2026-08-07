@@ -8,14 +8,14 @@ A **rendering**, **optimization**, and **utility** mod for Redstone Engineers.<b
 Engineer's Bliss focuses on improving the experience of designing Vanilla Redstone machines
 through a multitude of tools and custom items and blocks.
 
-These include anything from overlays and optimized block entities to automatic circuit analysis tools,
+These include anything from overlays and optimized block entities to automatic analysis tools,
 custom items, and render filters.
 
 <br>
 
 Mod written and tested by **UwU_Snek**.<br>
 Minecraft 26.1+.<br>
-Fabric Load 0.19.3+.
+Fabric Loader 0.19.3+.
 
 <br>
 
@@ -82,12 +82,18 @@ It helps a lot :3
 - **Misc**:
   - Player model rendering in the pause menu
   - In-game status bar
+  - Stop the pause menu from pausing the game
   <br><br>
 - **Rendering**:
   - Selectively hide blocks by type or rendering method
   - Click through hidden blocks
   - Custom block outlines
   - Force light recalculation
+  <br><br>
+- **In-game calculator**:
+  - Basic scientific calculator operations
+  - Unit conversion
+  - History
   <br><br>
 - **Alternative textures**:
   - Minimal Redstone Wire
@@ -152,9 +158,17 @@ It helps a lot :3
 - **Creative mode tweaks**
   - Control flying speed
   - Control walking speed
+  - Control player scale
   - Control reach distance
-  - Control interaction radius (click multiple blocks at once)<br><br>
-  - Configurable fast clicking
+  - Control interaction radius (click multiple blocks at once)
+  - Control interaction count
+  - Control block placement delay
+  - add in-game UI for these. display their current values with icons and such
+  - Autoclicker with configurable delay
+  - Toggle clicks
+  - Disable Sign GUI
+  - Disable picking up items
+  - Open obstructed containers
   - Snap view to specific angles
   - Place blocks facing away from the player
   - Place blocks with an offset
@@ -174,7 +188,8 @@ It helps a lot :3
   - Disable being slowed down by Powder Snow
   - Disable sliding on Ice, Packed Ice and Blue Ice
   - Disable being moved by Water and Lava currents
-  - Disable being dragged by Bubble Columns<br><br>
+  - Disable being dragged by Bubble Columns
+  - Disable punching End Crystals<br><br>
   - Disable item change animation
   - Disable hand swing animation
   - Disable being on fire
@@ -205,8 +220,8 @@ It helps a lot :3
   <br><br>
 - **Custom blocks and items**
   - Infinite item sources
-  - Rate counter hoppers
   - Item Sink (storage block with infinite capacity)
+  - Rate counter hoppers
   - 0 Friction blocks
   - ∞ Friction blocks
   - Green Screen block
@@ -227,7 +242,7 @@ It helps a lot :3
   - [Vanilla block] Piston Head item
   - [Vanilla block] Short Sticky Piston Head item
   - [Vanilla block] Short Piston Head item
-  - [Vanilla block] Door Part item
+  - [Vanilla blocks] Door Part item
   - [Vanilla block] Bed Part items
   - [Vanilla block] Rose Bush Stem item
   - [Vanilla block] Rose Bush Crown item

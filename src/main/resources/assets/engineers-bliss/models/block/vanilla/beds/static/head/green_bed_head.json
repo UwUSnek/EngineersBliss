@@ -1,0 +1,8 @@
+{
+  "parent": "engineers-bliss:block/vanilla/beds/static/templates/template_head",
+  "textures": {
+    "east": "engineers-bliss:block/vanilla/beds/static/green_bed_head_east",
+    "up": "engineers-bliss:block/vanilla/beds/static/green_bed_head_up",
+    "west": "engineers-bliss:block/vanilla/beds/static/green_bed_head_west"
+  }
+}

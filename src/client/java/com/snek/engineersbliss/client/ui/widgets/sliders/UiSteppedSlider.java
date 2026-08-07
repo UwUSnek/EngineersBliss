@@ -2,17 +2,18 @@ package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 
 
 
@@ -31,6 +32,18 @@ public class UiSteppedSlider<T> extends UiSlider {
 
     // The list of possible values.
     private final List<T> stepValues;
+    public final List<T> getStepValues() { return stepValues; }
+
+
+    // Value formatters
+    private final ValueFormatter<T> valueFormatter;
+    public ValueFormatter<T> getValueFormatter() {
+        return valueFormatter;
+    }
+    public String formatValueAt(final int valueIndex, final boolean shortUnit) {
+        return valueFormatter.format(getStepValues().get(valueIndex), shortUnit);
+    }
+
 
 
 
@@ -40,17 +53,20 @@ public class UiSteppedSlider<T> extends UiSlider {
         final int x, final int y, final int w, final int h, final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
-        final @Nullable Function<UiSlider, UiTxt> valueFormatter
+        final @Nullable ValueFormatter<T> valueFormatter
     ) {
         super(
             screen,
             x, y, w, h,
             label, indexToUnit(defaultValueIndex, stepValues.size()),
             null,
-            valueFormatter == null ? s -> new UiTxt(String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue())) : valueFormatter
+            valueFormatter != null
+                ? s -> new UiTxt(valueFormatter.format(((UiSteppedSlider<T>)s).getSelectedValue(), false))
+                : s -> new UiTxt(       String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue()))
         );
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
+        this.valueFormatter = valueFormatter != null ? valueFormatter::format : (n, u) -> String.valueOf(n);
         updateMessage();
     }
 
@@ -105,6 +121,28 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
 
+
+
+
+
+
+
+    @Override
+    public boolean keyPressed(KeyEvent event) {
+        if(isHovered() && !isBeingDragged()) {
+            if(event.isLeft()) {
+                final double newValue = indexToUnit(unitToIndex(value) - 1);
+                setValue(Math.clamp(newValue, 0.0, 1.0));
+                return true;
+            }
+            if(event.isRight()) {
+                final double newValue = indexToUnit(unitToIndex(value) + 1);
+                setValue(Math.clamp(newValue, 0.0, 1.0));
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 

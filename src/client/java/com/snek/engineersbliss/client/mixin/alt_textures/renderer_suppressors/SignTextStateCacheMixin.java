@@ -28,7 +28,7 @@ public abstract class SignTextStateCacheMixin implements SignTextStateCacheAcces
 
     @Override
     public boolean eb$hasText() {
-        if (eb$dirty) {
+        if(eb$dirty) {
             eb$cache = eb$compute();
             eb$dirty = false;
         }

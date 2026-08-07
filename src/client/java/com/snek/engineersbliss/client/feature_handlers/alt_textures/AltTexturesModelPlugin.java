@@ -33,6 +33,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.beds.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.*;
@@ -81,6 +82,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
     // Templates/Variants info
     private static final String GENERATE_MARKER_PREFIX = ".gen-";
     private static final String TEMPLATE_MARKER_FILE_NAME = ".template";
+    private static final String EXCLUDED_MARKER_FILE_NAME = ".excluded";
 
 
 
@@ -241,6 +243,23 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new       RedWallBannerPartProvider(),
             new     BlackWallBannerPartProvider(),
 
+            new     WhiteBedPartProvider(),
+            new    OrangeBedPartProvider(),
+            new   MagentaBedPartProvider(),
+            new LightBlueBedPartProvider(),
+            new    YellowBedPartProvider(),
+            new      LimeBedPartProvider(),
+            new      PinkBedPartProvider(),
+            new      GrayBedPartProvider(),
+            new LightGrayBedPartProvider(),
+            new      CyanBedPartProvider(),
+            new    PurpleBedPartProvider(),
+            new      BlueBedPartProvider(),
+            new     BrownBedPartProvider(),
+            new     GreenBedPartProvider(),
+            new       RedBedPartProvider(),
+            new     BlackBedPartProvider(),
+
             new               CopperGolemStatuePartProvider(),
             new        ExposedCopperGolemStatuePartProvider(),
             new      WeatheredCopperGolemStatuePartProvider(),
@@ -259,7 +278,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
             new   WaxedExposedCopperBarsPartProvider(),
             new WaxedWeatheredCopperBarsPartProvider(),
             new  WaxedOxidizedCopperBarsPartProvider()
-        )){
+        )) {
             partProviders.put(provider.getBlock(), provider);
         }
     }
@@ -286,7 +305,9 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                 final String dir = path.substring(0, path.lastIndexOf('/') + 1);
 
                 final Identifier templateMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + TEMPLATE_MARKER_FILE_NAME);
+                final Identifier excludedMarker = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, dir + EXCLUDED_MARKER_FILE_NAME);
                 if(resourceManager.getResource(templateMarker).isPresent()) return;
+                if(resourceManager.getResource(excludedMarker).isPresent()) return;
 
                 final String suffixes = findGenerateSuffixes(resourceManager, dir);
                 if(suffixes == null) {

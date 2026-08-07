@@ -2,7 +2,8 @@ package com.snek.engineersbliss.client.mixin.misc;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.mixin.accessors.SpriteSourcesAccessor;
-import com.snek.engineersbliss.client.utils.textures.SvgSpriteSource;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgSpriteSource;
+
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.resources.Identifier;
 import org.spongepowered.asm.mixin.Mixin;

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.MinecraftAccessor;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
@@ -29,7 +30,7 @@ import net.minecraft.world.level.Level;
 
 
 public class CreativeTweaksClientHandler {
-    private CreativeTweaksClientHandler() { }
+    private CreativeTweaksClientHandler() {}
     private static final float DEFAULT_FLYING_SPEED  = new Abilities().getFlyingSpeed();
 
 
@@ -43,8 +44,7 @@ public class CreativeTweaksClientHandler {
 
     public static void onFlyingSpeedChange(final Integer index, final Float value) {
         final @NotNull Player player = Minecraft.getInstance().player;
-        if(player != null) {
-            if(!player.isCreative()) return;
+        if(MinecraftUtils.isCreativeMode(player)) {
             player.getAbilities().setFlyingSpeed(value * DEFAULT_FLYING_SPEED);
         }
     }

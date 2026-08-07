@@ -3,12 +3,18 @@
 - **Misc**:
   - ~~Player model rendering in the pause menu~~
   - In-game status bar
+  - ~~Stop the pause menu from pausing the game~~
 
 - **Rendering**:
   - ~~Selectively hide blocks by type or rendering method~~
   - ~~Click through hidden blocks~~
   - ~~Custom block outlines~~
   - ~~Force light recalculation~~
+
+- **In-game calculator**:
+  - Basic scientific calculator operations
+  - Unit conversion
+  - History
 
 - **Alternative textures**
   - ~~Minimal Redstone Wire~~
@@ -74,11 +80,18 @@
 - **Creative mode tweaks**
   - ~~Control flying speed~~
   - ~~Control walking speed~~
+  - ~~Control player scale~~
   - ~~Control reach distance~~
   - ~~Control interaction radius (click multiple blocks at once)~~
+  - ~~Control interaction count~~
+  - Control block placement delay
   - add in-game UI for these. display their current values with icons and such
 
-  - Configurable fast clicking
+  - Autoclicker with configurable delay
+  - Toggle clicks
+  - Disable Sign GUI
+  - Disable picking up items
+  - Open obstructed containers
   - Snap view to specific angles //TODO in-game indicators for multiples of 22 and 45 ° on both axes. use a keybind to snap to them
   - Place blocks facing away from the player
   - Place blocks with an offset
@@ -102,6 +115,7 @@
   - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
   - ~~Disable being moved by Water and Lava currents~~
   - ~~Disable being dragged by Bubble Columns~~
+  - Disable punching End Crystals
 
   - ~~Disable item change animation~~
   - ~~Disable hand swing animation~~
@@ -133,20 +147,20 @@
 
 - **Custom blocks and items**
   - Infinite item sources
-  - Rate counter hoppers
   - Item Sink (storage block with infinite capacity)
-  - 0 Friction blocks
-  - ∞ Friction blocks
+  - Rate counter hoppers
+  - ~~0 Friction blocks~~
+  - ~~∞ Friction blocks~~
   - ~~Green Screen block~~
   - ~~Blue Screen block~~
-  - [Vanilla Item] Stick item with Custom Name //TODO meant for filters. add to item lore
-  - [Vanilla Item] Cobblestone item with Custom Name //TODO meant for fuel filters (sticks can hopper into furnaces and such). add to item lore
-  - [Vanilla Item] Name Tag item with Custom Name //TODO meant for name tagging mobs (makes them persistent). add to item lore
+  - ~~[Vanilla Item] Stick item with Custom Name ~~
+  - ~~[Vanilla Item] Cobblestone item with Custom Name~~
+  - ~~[Vanilla Item] Name Tag item with Custom Name~~
   - ~~[Vanilla block] Fire item~~
   - ~~[Vanilla block] Nether Portal item~~
   - ~~[Vanilla block] End Portal item~~
   - ~~[Vanilla block] End Gateway item~~
-  - [Vanilla block] Frosted Ice item       //TODO add this to item lore -> //FIXME Updates make it melt
+  - ~~[Vanilla block] Frosted Ice item~~
   - ~~[Vanilla block] Water Cauldron items~~
   - ~~[Vanilla block] Powder Snow Cauldron items~~
   - ~~[Vanilla block] Lava Cauldron item~~
@@ -158,22 +172,22 @@
   - ~~[Vanilla block] Piston Head item~~
   - ~~[Vanilla block] Short Sticky Piston Head item~~
   - ~~[Vanilla block] Short Piston Head item~~
-  - [Vanilla block] Door Part items
-  - [Vanilla block] Bed Part items
-  - [Vanilla block] Rose Bush Stem item
-  - [Vanilla block] Rose Bush Crown item
-  - [Vanilla block] Sunflower Stem item
-  - [Vanilla block] Sunflower Crown item
-  - [Vanilla block] Tall Grass Stem item
-  - [Vanilla block] Tall Grass Crown item
-  - [Vanilla block] Pitcher Plant Stem item
-  - [Vanilla block] Pitcher Plant Crown item
-  - [Vanilla block] Peony Stem item
-  - [Vanilla block] Peony Crown item
-  - [Vanilla block] Large Fern Stem item
-  - [Vanilla block] Large Fern Crown item
-  - [Vanilla block] Lilac Stem item
-  - [Vanilla block] Lilac Crown item
+  - ~~[Vanilla blocks] Door Part items~~
+  - ~~[Vanilla blocks] Bed Part items~~
+  - ~~[Vanilla block] Rose Bush Stem item~~
+  - ~~[Vanilla block] Rose Bush Crown item~~
+  - ~~[Vanilla block] Sunflower Stem item~~
+  - ~~[Vanilla block] Sunflower Crown item~~
+  - ~~[Vanilla block] Tall Grass Stem item~~
+  - ~~[Vanilla block] Tall Grass Crown item~~
+  - ~~[Vanilla block] Pitcher Plant Stem item~~
+  - ~~[Vanilla block] Pitcher Plant Crown item~~
+  - ~~[Vanilla block] Peony Stem item~~
+  - ~~[Vanilla block] Peony Crown item~~
+  - ~~[Vanilla block] Large Fern Stem item~~
+  - ~~[Vanilla block] Large Fern Crown item~~
+  - ~~[Vanilla block] Lilac Stem item~~
+  - ~~[Vanilla block] Lilac Crown item~~
   - ~~[Vanilla block] Kelp Stem item~~
   - ~~[Vanilla block] Kelp Crown item~~
   - ~~[Vanilla block] Cave Vines Stem item~~
@@ -197,7 +211,7 @@
 
 
 
-- disable punching end crystals? //TODO maybe? idk, very niche
+
 
 
 
@@ -230,7 +244,7 @@
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
 
 
-- add a "about" screen that talks abotu the mod, basically just copy the readme.
+- add a "about" screen that talks about the mod, basically just copy the readme.
   - display my skin/drawing in there too and name
   - say that no part of the mod was generated by ai
 
@@ -286,3 +300,19 @@
 - add static bed models for 26.1
 - remove static bed models in 26.2+
 - remove static sign models in 26.2+
+
+
+- maybe add an "area block distribution" tool?
+  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
+    - call them "Area analysis" or something
+
+
+
+
+- looking down from a very high place shows a block outline thats misaligned from the GUI crosshair
+  - add somethign that fixes this
+  - idk what causes it
+
+
+
+- add "entity outline" in rendering screen
