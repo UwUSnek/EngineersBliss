@@ -2,6 +2,7 @@ package com.snek.engineersbliss.custom.block_entities;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.CustomBlockHandler;
 
@@ -41,6 +42,13 @@ public class CustomBlockEntityHandler {
             CustomBlockHandler.ITEM_SINK
         ).build()
     );
+    public static final BlockEntityType<ItemPipeBlockEntity> ITEM_PIPE = register(
+        "item_pipe",
+        FabricBlockEntityTypeBuilder.create(
+            ItemPipeBlockEntity::new,
+            CustomBlockHandler.ITEM_PIPE
+        ).build()
+    );
 
 
 
@@ -67,5 +75,6 @@ public class CustomBlockEntityHandler {
         // Register storage block entities
         ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_SOURCE);
         ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_SINK);
+        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_PIPE);
     }
 }

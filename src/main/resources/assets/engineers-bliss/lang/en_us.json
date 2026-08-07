@@ -86,6 +86,7 @@
 
     "item.engineers-bliss.item_source" : "Item Source",
     "item.engineers-bliss.item_sink"   : "Item Sink",
+    "item.engineers-bliss.item_pipe"   : "Item Pipe",
 
 
     "item.engineers-bliss.acacia_door_bottom"           : "Acacia Door Bottom",

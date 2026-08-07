@@ -45,6 +45,7 @@ public class ModCreativeTabs {
 
             output.accept(CustomItemHandler.ITEM_SOURCE);
             output.accept(CustomItemHandler.ITEM_SINK);
+            output.accept(CustomItemHandler.ITEM_PIPE);
         }).build()
     ;
 

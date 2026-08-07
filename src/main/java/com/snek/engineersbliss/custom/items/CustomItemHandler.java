@@ -103,6 +103,7 @@ public class CustomItemHandler {
         List.of(
             new Txt("A configurable container that can never be emptied, but can").lightGray(),
             new Txt("only hold one stack at a time.").lightGray(),
+            new Txt(),
             new Txt("It also keeps track of the items it provides.").lightGray()
         ),
         Notices.CUSTOM_ITEM_AND_BLOCK
@@ -112,7 +113,36 @@ public class CustomItemHandler {
         p -> new CustomBlockItem(CustomBlockHandler.ITEM_SINK, p, List.of(CustomBlockHandler.ITEM_SINK)),
         List.of(
             new Txt("A container with unlimited capacity.").lightGray(),
+            new Txt(),
             new Txt("It also keeps track of which and how many items it collecs.").lightGray()
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+    public static final Item ITEM_PIPE = register(
+        "item_pipe",
+        p -> new CustomBlockItem(CustomBlockHandler.ITEM_PIPE, p, List.of(CustomBlockHandler.ITEM_PIPE)),
+        List.of(
+            new Txt("A Hopper with adjustable cooldown and transfer limit that can"),
+            new Txt("potentially move any amount of items instantly."),
+            new Txt(),
+            new Txt("It also keeps track of which and how many items").lightGray(),
+            new Txt("it pulls, pushes, receives, and has taken from it.").lightGray()
+            //TODO for item pipes, add a small graphic with
+            //TODO     - a hopper with a chest on top?                  | items pullsed
+            //TODO     - a hopper pointing right into a chest           | items pushed
+            //TODO     - a hopper a hopper on the left pointing into it | items received
+            //TODO     - a hopper with a hopper below it                | items taken from it
+            //TODO     - a hopper with an item entity on top            | item entities pulled in
+            //TODO
+            //TODO display a timeline on which each event is shown.
+            //TODO clicking on an event shows info about it
+            //TODO
+            //TODO create time-dependant graphs for:
+            //TODO (graphs can toggle betweek stacks and items. 1 snowball is 1/16th of a stack but 1 item)
+            //TODO     - one input(or output) rate for each category of event
+            //TODO     - the amount of total items in the hopper (maxed out at 5 stacks)
+            //TODO     - total item input rate
+            //TODO     - total item output rate
         ),
         Notices.CUSTOM_ITEM_AND_BLOCK
     );
