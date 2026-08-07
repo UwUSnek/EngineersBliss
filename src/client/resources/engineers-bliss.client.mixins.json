@@ -84,7 +84,8 @@
         "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin",
 
 
-        "status_bar.VanillaGuiHeightChangerMixin"
+        "status_bar.VanillaGuiHeightChangerMixin",
+        "status_bar.CrosshairHeightFixMixin"
     ],
     "injectors": {
         "defaultRequire": 1
