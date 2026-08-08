@@ -1,9 +1,14 @@
 package com.snek.engineersbliss.client.custom.block_entities.renderers;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.TextureFormat;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureManager;
 
 
 
@@ -11,6 +16,9 @@ import com.mojang.blaze3d.textures.TextureFormat;
 public class SceneSnapshot {
     private static GpuTexture colorSnapshot;
     private static GpuTexture depthSnapshot;
+
+
+
 
     public static void init(int width, int height) {
         GpuDevice device = RenderSystem.getDevice();
@@ -24,7 +32,16 @@ public class SceneSnapshot {
             GpuTexture.USAGE_COPY_DST | GpuTexture.USAGE_TEXTURE_BINDING,
             TextureFormat.DEPTH32, width, height, 1, 1
         );
+
+
+        // Bind textures. This must be done on startup and after every resize.
+        final @NotNull TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+        textureManager.register(ItemSinkBlockEntityRenderer.SCENE_COLOR_ID, new SceneSnapshotTexture(getColor()));
+        textureManager.register(ItemSinkBlockEntityRenderer.SCENE_DEPTH_ID, new SceneSnapshotTexture(getDepth()));
     }
+
+
+
 
     public static void resize(int width, int height) {
         colorSnapshot.close();

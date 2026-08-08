@@ -72,8 +72,6 @@ BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SINK, ItemSinkBlockE
 //TODO move this somewhere else. texture registration
 ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
     SceneSnapshot.init(client.getWindow().getWidth(), client.getWindow().getHeight());
-    Minecraft.getInstance().getTextureManager().register(ItemSinkBlockEntityRenderer.SCENE_COLOR_ID, new SceneSnapshotTexture(SceneSnapshot.getColor()));
-    Minecraft.getInstance().getTextureManager().register(ItemSinkBlockEntityRenderer.SCENE_DEPTH_ID, new SceneSnapshotTexture(SceneSnapshot.getDepth()));
 });
 
         // Initialize resource plugin for alt textures handler

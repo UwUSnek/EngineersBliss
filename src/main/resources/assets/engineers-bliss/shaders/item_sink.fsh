@@ -74,6 +74,10 @@ vec4 apply_lensing_background(vec4 objectColor, vec2 uv, float distance, float h
     return vec4(mix(sceneColor.rgb, objectColor.rgb, objectColor.a), 1.0);
 }
 
+//FIXME depth filtering
+    // if (sampledLinear < BlockLinearDepth - EPSILON) {
+        // sampleUV = screenUV;
+    // }
 
 
 
