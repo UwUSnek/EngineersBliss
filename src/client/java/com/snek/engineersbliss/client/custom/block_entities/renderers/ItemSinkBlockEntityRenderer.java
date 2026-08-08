@@ -30,6 +30,10 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class ItemSinkBlockEntityRenderer implements BlockEntityRenderer<ItemSinkBlockEntity, ItemSinkBlockEntityRenderer.ItemSinkRenderState> {
+    public static final Identifier SCENE_COLOR_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "scene_color_snapshot");
+    public static final Identifier SCENE_DEPTH_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "scene_depth_snapshot");
+
+
 
     public static final RenderPipeline ITEM_SINK_PIPELINE = RenderPipelines.register(
         RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
@@ -39,14 +43,23 @@ public class ItemSinkBlockEntityRenderer implements BlockEntityRenderer<ItemSink
             .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
             .withDepthStencilState(DepthStencilState.DEFAULT)
             .withSampler("Sampler0")
+            .withSampler("SceneSampler")
+            .withSampler("SceneDepthSampler")
             .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
             .withCull(false)
         .build()
     );
 
     public static final RenderType ITEM_SINK_RENDER_TYPE = RenderType.create(
-            EngineerSBliss.MOD_ID + ":item_sink",
-            RenderSetup.builder(ITEM_SINK_PIPELINE).createRenderSetup());
+        EngineerSBliss.MOD_ID + ":item_sink",
+        RenderSetup.builder(ITEM_SINK_PIPELINE)
+            .withTexture("SceneSampler", SCENE_COLOR_ID)
+            .withTexture("SceneDepthSampler", SCENE_DEPTH_ID)
+        .createRenderSetup()
+    );
+
+
+
 
     public ItemSinkBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -74,10 +87,10 @@ public class ItemSinkBlockEntityRenderer implements BlockEntityRenderer<ItemSink
         matrices.mulPose(cameraState.orientation);
 
         queue.submitCustomGeometry(matrices, ITEM_SINK_RENDER_TYPE, (pose, consumer) -> {
-            consumer.addVertex(pose, 0.5f, -0.5f, 0).setUv(1, 0);
-            consumer.addVertex(pose, 0.5f,  0.5f, 0).setUv(1, 1);
-            consumer.addVertex(pose, -0.5f, 0.5f, 0).setUv(0, 1);
-            consumer.addVertex(pose, -0.5f,-0.5f, 0).setUv(0, 0);
+            consumer.addVertex(pose,  1f, -1f, 0).setUv(1, 0);
+            consumer.addVertex(pose,  1f,  1f, 0).setUv(1, 1);
+            consumer.addVertex(pose, -1f,  1f, 0).setUv(0, 1);
+            consumer.addVertex(pose, -1f, -1f, 0).setUv(0, 0);
         });
 
         matrices.popPose();

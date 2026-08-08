@@ -3,10 +3,18 @@
 
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
+
     in vec4 vertexColor;
     in vec2 uv0;
+
+    uniform sampler2D SceneSampler;
+    uniform sampler2D SceneDepthSampler; //TODO remove if not used
+
     out vec4 fragColor;
 #endif
+
+
+
 
 #define TAU 6.28318530718
 
@@ -44,6 +52,31 @@ float fbm(vec2 p) {
 
 
 
+vec4 apply_lensing_background(vec4 objectColor, vec2 uv, float distance, float horizon){
+
+    // Calculate the distance from the event horizon
+    float maxHorizonDistance = 0.5 - horizon;
+    float horizonDistance = clamp(abs(distance - horizon), 0.0, maxHorizonDistance);
+
+    // Calculate lensing effect strength. The closer to the horizon, the stronger the effect.
+    float lensStrength = 1.0 - (horizonDistance / maxHorizonDistance);
+    lensStrength = pow(lensStrength, 3.0);
+
+    // Calculate lensed UVs
+    vec2 direction = normalize(uv);
+    // vec2 screenUV = uv + 0.5;
+    vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(SceneSampler, 0));
+    float bendAmount = lensStrength * 0.2;
+    vec2 distortedUV = screenUV - direction * bendAmount;
+
+    // Calculate color of the lensed background and overlay the object's color on top of it
+    vec4 sceneColor = texture(SceneSampler, clamp(distortedUV, 0.0, 1.0));
+    return vec4(mix(sceneColor.rgb, objectColor.rgb, objectColor.a), 1.0);
+}
+
+
+
+
 #ifdef MINECRAFT
 void main() {
 #else
@@ -65,29 +98,37 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     #endif
 
 
+
+
     float distance = length(uv);
-    float horizon  = 0.22;
+    float horizon  = 0.2;
+    float horizonFalloff  = 0.9;
+    float outerRadius  = horizon * 2.0;
     float angle = atan(uv.y, uv.x);
 
 
-    // differential rotation based on the distance from the center
-    float spin = 1.0 / (distance);
-    float swirledAngle = angle + spin * 0.8 + t * 0.1;
+    // Differential rotation based on the distance from the center
+    float spin = horizon / distance;
+    float swirledAngle = angle + spin * 0.8 + t * 0.03;
     vec2 swirlPos = vec2(cos(swirledAngle), sin(swirledAngle)) * distance;
 
-    // scrolling disk texture
-    float turbulence = fbm(swirlPos * 8.0 + vec2(t * 0.35, -t * 0.25));
+    // Disk noise texture
+    float driftedAngle = angle + t * 0.1;
+    vec2 driftPos = vec2(cos(driftedAngle), sin(driftedAngle)) * distance;
+    float turbulence = fbm(swirlPos * 8.0 + driftPos * 2.0);
 
-    // event horizon, black core
-    float horizonMask = smoothstep(0.19, horizon, distance);
+    // Event horizon, black core
+    float horizonMask = smoothstep(horizon * horizonFalloff, horizon, distance);
 
-    // photon ring
-    float photonRing = exp(-pow((distance - horizon) * 20.0, 2.0));
+    // Photon ring
+    float photonRing = exp(-pow((distance - horizon) * (8.0 / horizon), 2.0));
 
-    // accretion disk brightness
-    float diskFalloff = (1.0 - smoothstep(horizon, 0.7, sqrt(distance)));
+    // Accretion disk
+    float diskFalloff = 1.0 - smoothstep(horizon, outerRadius, distance);
+    diskFalloff = pow(diskFalloff, 3.0);
 
-    vec3 diskColor = mix(vec3(1.0, 0.7, 0.3), vec3(1.0, 0.15, 0.15), turbulence);
+
+    vec3 diskColor = mix(vec3(0.2, 0.1, 0.05), vec3(1.0, 0.15, 0.15), turbulence);
     diskColor = mix(diskColor, vec3(1.0, 0.95, 0.85), turbulence * turbulence * 0.4);
 
     vec3 color = diskColor * diskFalloff;
@@ -95,7 +136,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     color *= horizonMask;
 
 
-    fragColor = vec4(color, max(photonRing, max(diskFalloff, 1.0 - horizonMask)));
-    //fragColor = vec4(abs(swirlPos), 0.0, 0.0);
-    //fragColor = vec4(max(diskFalloff, 1.0 - horizonMask), 1.0, 1.0, 1.0);
+
+
+    vec4 objectColor = vec4(color, max(photonRing, max(diskFalloff, 1.0 - horizonMask)));
+    fragColor = apply_lensing_background(objectColor, uv, distance, horizon);
 }

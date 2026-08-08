@@ -347,3 +347,7 @@
     - total item input rate
     - total item output rate
 - similar thing for the other trackers
+
+
+
+- make texture loader try again after a delay when the JVM runs out of memory (it prints an error, prob can be catched)
