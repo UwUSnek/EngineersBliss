@@ -5,9 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.TextureFormat;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
-
 
 
 
@@ -32,8 +29,7 @@ public class SceneSnapshot {
     public static void resize(int width, int height) {
         colorSnapshot.close();
         depthSnapshot.close();
-        final Minecraft client = Minecraft.getInstance();
-        init(client.getWindow().getWidth(), client.getWindow().getHeight());
+        init(width, height);
     }
 
     public static GpuTexture getColor() { return colorSnapshot; }
