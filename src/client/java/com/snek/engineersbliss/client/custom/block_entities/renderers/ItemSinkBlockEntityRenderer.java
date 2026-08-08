@@ -36,13 +36,9 @@ public class ItemSinkBlockEntityRenderer
                     .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
                     .build());
 
-    // RenderType wrapper so it can be passed to submitCustomGeometry
     public static final RenderType ITEM_SINK_RENDER_TYPE = RenderType.create(
             EngineerSBliss.MOD_ID + ":item_sink",
             RenderSetup.builder(ITEM_SINK_PIPELINE).createRenderSetup());
-
-    // Stacked layers for parallax effect
-    private static final int LAYERS = 16;
 
     public ItemSinkBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -66,26 +62,24 @@ public class ItemSinkBlockEntityRenderer
     public void submit(ItemSinkRenderState state, PoseStack matrices, SubmitNodeCollector queue,
             CameraRenderState cameraState) {
         matrices.pushPose();
-        matrices.translate(0, 1, 0);
+        matrices.translate(0.5, 0.5, 0.5);
+        matrices.mulPose(cameraState.orientation);
 
-        for (int i = 0; i < LAYERS; i++) {
-            matrices.pushPose();
-            matrices.translate(0, -i * (1f / LAYERS), 0);
+        queue.submitCustomGeometry(matrices, ITEM_SINK_RENDER_TYPE, (pose, consumer) -> {
+            // consumer.addVertex(pose, -0.5f, -0.5f, 0);
+            // consumer.addVertex(pose, -0.5f, 0.5f, 0);
+            // consumer.addVertex(pose, 0.5f, 0.5f, 0);
+            // consumer.addVertex(pose, 0.5f, -0.5f, 0);
 
-            queue.submitCustomGeometry(matrices, ITEM_SINK_RENDER_TYPE, (pose, consumer) -> {
-                consumer.addVertex(pose, 0, 0, 0);
-                consumer.addVertex(pose, 0, 0, 1);
-                consumer.addVertex(pose, 1, 0, 1);
-                consumer.addVertex(pose, 1, 0, 0);
-            });
-
-            matrices.popPose();
-        }
+            consumer.addVertex(pose, 0.5f, -0.5f, 0);
+            consumer.addVertex(pose, 0.5f, 0.5f, 0);
+            consumer.addVertex(pose, -0.5f, 0.5f, 0);
+            consumer.addVertex(pose, -0.5f, -0.5f, 0);
+        });
 
         matrices.popPose();
     }
 
     public static class ItemSinkRenderState extends BlockEntityRenderState {
-        // Fields for anything extractRenderState() needs to pass to submit()
     }
 }
