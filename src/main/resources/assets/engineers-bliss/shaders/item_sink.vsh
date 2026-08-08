@@ -1,7 +1,8 @@
 #version 150
 
-// Local billboard-plane offset: x/y in -0.5..0.5, z is always 0.
+// local billboard plane
 in vec3 Position;
+in vec2 UV0;
 
 layout(std140) uniform DynamicTransforms {
     mat4 ModelViewMat;
@@ -15,11 +16,11 @@ layout(std140) uniform Projection {
 };
 
 out vec4 vertexColor;
-out vec2 texCoord;
+out vec2 uv0;
 
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position + ModelOffset, 1.0);
     vertexColor = ColorModulator;
-    texCoord = Position.xz;
+    uv0 = UV0;
 }

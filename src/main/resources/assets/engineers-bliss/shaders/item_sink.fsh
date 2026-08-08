@@ -3,9 +3,8 @@
 
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
-
     in vec4 vertexColor;
-    in vec2 texCoord;
+    in vec2 uv0;
     out vec4 fragColor;
 #endif
 
@@ -55,18 +54,20 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     #ifdef MINECRAFT
         float t = GameTime * 1200.0;
-        vec2 centered = texCoord - vec2(0.5);
+        vec2 uv = uv0 - vec2(0.5);
+        // vec2 centered = texCoord;
     #else
-        vec2 uv = fragCoord / iResolution.xy;
         float t = iTime;
-        vec2 centered = uv - vec2(0.5);
-        centered.x *= iResolution.x / iResolution.y;
+        vec2 uv = fragCoord / iResolution.xy;
+        uv = uv - vec2(0.5);
+        // vec2 centered = uv;
+        uv.x *= iResolution.x / iResolution.y;
     #endif
 
 
-    float distance = length(centered);
+    float distance = length(uv);
     float horizon  = 0.22;
-    float angle = atan(centered.y, centered.x);
+    float angle = atan(uv.y, uv.x);
 
 
     // differential rotation based on the distance from the center
@@ -94,6 +95,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     color *= horizonMask;
 
 
-    fragColor = vec4(color, 1.0);
+    fragColor = vec4(color, max(photonRing, max(diskFalloff, 1.0 - horizonMask)));
     //fragColor = vec4(abs(swirlPos), 0.0, 0.0);
+    //fragColor = vec4(max(diskFalloff, 1.0 - horizonMask), 1.0, 1.0, 1.0);
 }

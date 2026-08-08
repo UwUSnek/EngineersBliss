@@ -4,6 +4,8 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
+import com.mojang.blaze3d.pipeline.ColorTargetState;
+import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,17 +26,23 @@ import net.minecraft.world.phys.Vec3;
 
 import org.jetbrains.annotations.Nullable;
 
-// assets/engineersbliss/shaders/item_sink.vsh
-// assets/engineersbliss/shaders/item_sink.fsh
-public class ItemSinkBlockEntityRenderer
-        implements BlockEntityRenderer<ItemSinkBlockEntity, ItemSinkBlockEntityRenderer.ItemSinkRenderState> {
+
+
+
+public class ItemSinkBlockEntityRenderer implements BlockEntityRenderer<ItemSinkBlockEntity, ItemSinkBlockEntityRenderer.ItemSinkRenderState> {
 
     public static final RenderPipeline ITEM_SINK_PIPELINE = RenderPipelines.register(
-            RenderPipeline.builder(RenderPipelines.END_PORTAL_SNIPPET)
-                    .withLocation(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/item_sink"))
-                    .withVertexShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
-                    .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
-                    .build());
+        RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
+            .withLocation(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/item_sink"))
+            .withVertexShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
+            .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
+            .withDepthStencilState(DepthStencilState.DEFAULT)
+            .withSampler("Sampler0")
+            .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
+            .withCull(false)
+        .build()
+    );
 
     public static final RenderType ITEM_SINK_RENDER_TYPE = RenderType.create(
             EngineerSBliss.MOD_ID + ":item_sink",
@@ -50,31 +58,26 @@ public class ItemSinkBlockEntityRenderer
 
     @Override
     public void extractRenderState(
-            ItemSinkBlockEntity blockEntity,
-            ItemSinkRenderState state,
-            float tickProgress,
-            Vec3 cameraPos,
-            @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        ItemSinkBlockEntity blockEntity,
+        ItemSinkRenderState state,
+        float tickProgress,
+        Vec3 cameraPos,
+        @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay
+    ) {
         BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
     }
 
     @Override
-    public void submit(ItemSinkRenderState state, PoseStack matrices, SubmitNodeCollector queue,
-            CameraRenderState cameraState) {
+    public void submit(ItemSinkRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
         matrices.pushPose();
         matrices.translate(0.5, 0.5, 0.5);
         matrices.mulPose(cameraState.orientation);
 
         queue.submitCustomGeometry(matrices, ITEM_SINK_RENDER_TYPE, (pose, consumer) -> {
-            // consumer.addVertex(pose, -0.5f, -0.5f, 0);
-            // consumer.addVertex(pose, -0.5f, 0.5f, 0);
-            // consumer.addVertex(pose, 0.5f, 0.5f, 0);
-            // consumer.addVertex(pose, 0.5f, -0.5f, 0);
-
-            consumer.addVertex(pose, 0.5f, -0.5f, 0);
-            consumer.addVertex(pose, 0.5f, 0.5f, 0);
-            consumer.addVertex(pose, -0.5f, 0.5f, 0);
-            consumer.addVertex(pose, -0.5f, -0.5f, 0);
+            consumer.addVertex(pose, 0.5f, -0.5f, 0).setUv(1, 0);
+            consumer.addVertex(pose, 0.5f,  0.5f, 0).setUv(1, 1);
+            consumer.addVertex(pose, -0.5f, 0.5f, 0).setUv(0, 1);
+            consumer.addVertex(pose, -0.5f,-0.5f, 0).setUv(0, 0);
         });
 
         matrices.popPose();
