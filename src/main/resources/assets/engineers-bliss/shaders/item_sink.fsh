@@ -74,10 +74,6 @@ vec4 apply_lensing_background(vec4 objectColor, vec2 uv, float distance, float h
     return vec4(mix(sceneColor.rgb, objectColor.rgb, objectColor.a), 1.0);
 }
 
-//FIXME depth filtering
-    // if (sampledLinear < BlockLinearDepth - EPSILON) {
-        // sampleUV = screenUV;
-    // }
 
 
 
@@ -113,13 +109,13 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     // Differential rotation based on the distance from the center
     float spin = horizon / distance;
-    float swirledAngle = angle + spin * 0.8 + t * 0.03;
+    float swirledAngle = angle + spin * 1.5 + t * 0.03;
     vec2 swirlPos = vec2(cos(swirledAngle), sin(swirledAngle)) * distance;
 
     // Disk noise texture
     float driftedAngle = angle + t * 0.1;
     vec2 driftPos = vec2(cos(driftedAngle), sin(driftedAngle)) * distance;
-    float turbulence = fbm(swirlPos * 8.0 + driftPos * 2.0);
+    float turbulence = fbm(swirlPos * 16.0 + driftPos * 2.0);
 
     // Event horizon, black core
     float horizonMask = smoothstep(horizon * horizonFalloff, horizon, distance);

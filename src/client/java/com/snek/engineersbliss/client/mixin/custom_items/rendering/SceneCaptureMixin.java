@@ -14,6 +14,9 @@ import com.snek.engineersbliss.client.custom.block_entities.renderers.SceneSnaps
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.CloudRenderer;
+import net.minecraft.client.renderer.LevelTargetBundle;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 
 
