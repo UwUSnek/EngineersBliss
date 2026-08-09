@@ -39,8 +39,8 @@ public class ModCreativeTabs {
             output.accept(CustomItemHandler.BLUE_SCREEN);
 
 
-            output.accept(CustomItemHandler.FRICTIONLESS_BLOCK);
-            output.accept(CustomItemHandler.FRICTIONFUL_BLOCK);
+            output.accept(CustomItemHandler.FRICTIONLESS_SURFACE);
+            output.accept(CustomItemHandler.FRICTIONFUL_SURFACE);
 
 
             output.accept(CustomItemHandler.ITEM_SOURCE);

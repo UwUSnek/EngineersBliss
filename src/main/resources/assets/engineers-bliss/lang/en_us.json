@@ -80,8 +80,8 @@
     "item.engineers-bliss.frosted_ice" : "Frosted Ice",
 
 
-    "item.engineers-bliss.frictionless_block" : "Frictionless Block",
-    "item.engineers-bliss.frictionful_block"  : "Frictionful Block",
+    "item.engineers-bliss.frictionless_surface" : "Frictionless Surface",
+    "item.engineers-bliss.frictionful_surface"  : "Frictionful Surface",
 
 
     "item.engineers-bliss.item_source" : "Item Source",

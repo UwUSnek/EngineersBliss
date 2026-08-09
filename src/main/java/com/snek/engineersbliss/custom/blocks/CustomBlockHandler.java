@@ -7,8 +7,8 @@ import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEnti
 import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.base.CustomEntityBlock;
-import com.snek.engineersbliss.custom.blocks.base.FrictionBlock;
-import com.snek.engineersbliss.custom.blocks.special.FrictionlessBlock;
+import com.snek.engineersbliss.custom.blocks.base.FrictionSurface;
+import com.snek.engineersbliss.custom.blocks.special.FrictionlessSurface;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,9 +38,9 @@ public class CustomBlockHandler {
     // "Frictionful" is technically a word and it technically only means that something has a non-zero amount of friction,
     // but it's the best name i could find. "Infinite Friction Block" is too verbose and the other alternatives sound too stupid.
 
-    public static final Block FRICTIONLESS_BLOCK = register(
-        "frictionless_block",
-        FrictionlessBlock::new,
+    public static final Block FRICTIONLESS_SURFACE = register(
+        "frictionless_surface",
+        FrictionlessSurface::new,
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.COLOR_LIGHT_BLUE)
@@ -54,9 +54,9 @@ public class CustomBlockHandler {
             .friction(1)
             .noOcclusion()
     );
-    public static final Block FRICTIONFUL_BLOCK = register(
-        "frictionful_block",
-        FrictionBlock::new,
+    public static final Block FRICTIONFUL_SURFACE = register(
+        "frictionful_surface",
+        FrictionSurface::new,
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.COLOR_LIGHT_BLUE)

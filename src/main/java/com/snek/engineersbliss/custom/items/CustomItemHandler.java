@@ -78,20 +78,20 @@ public class CustomItemHandler {
 
 
 
-    public static final Item FRICTIONLESS_BLOCK = register(
-        "frictionless_block",
-        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONLESS_BLOCK, p, List.of(CustomBlockHandler.FRICTIONLESS_BLOCK)),
+    public static final Item FRICTIONLESS_SURFACE = register(
+        "frictionless_surface",
+        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONLESS_SURFACE, p, List.of(CustomBlockHandler.FRICTIONLESS_SURFACE)),
         List.of(
-            new Txt("A block with no friction. Everything slides on it. Forever.").lightGray(),
+            new Txt("A surface with no friction. Everything slides on it. Forever.").lightGray(),
             new Txt("The friction of whatever fluid you are travelling in still applies.").lightGray()
         ),
-        Notices.FRICTIONLESS_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
+        Notices.FRICTIONLESS_SURFACE_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
     );
-    public static final Item FRICTIONFUL_BLOCK = register(
-        "frictionful_block",
-        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONFUL_BLOCK, p, List.of(CustomBlockHandler.FRICTIONFUL_BLOCK)),
-        new Txt("A block with infinite friction. Nothing can walk or slide on it. At all."),
-        Notices.FRICTIONFUL_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
+    public static final Item FRICTIONFUL_SURFACE = register(
+        "frictionful_surface",
+        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONFUL_SURFACE, p, List.of(CustomBlockHandler.FRICTIONFUL_SURFACE)),
+        new Txt("A surface with infinite friction. Nothing can walk or slide on it. At all."),
+        Notices.FRICTIONFUL_SURFACE_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
     );
 
 
@@ -1375,14 +1375,14 @@ public class CustomItemHandler {
 
 
 
-        public static List<Txt> FRICTIONLESS_BLOCK_MOVEMENT_ISSUE = List.of(
+        public static List<Txt> FRICTIONLESS_SURFACE_MOVEMENT_ISSUE = List.of(
             new Txt("Despite having no friction, mobs are able to move")           .color(Colors.COLOR_LS_ORANGE),
             new Txt("when walking on it. This is because in Minecraft, friction")  .color(Colors.COLOR_LS_ORANGE),
             new Txt("determines how quickly an entity loses velocity, but doesn't").color(Colors.COLOR_LS_ORANGE),
             new Txt("affect the acceleration mobs produce when moving. This is")   .color(Colors.COLOR_LS_ORANGE),
             new Txt("consistent with the game's physics but not with IRL physics.").color(Colors.COLOR_LS_ORANGE)
         );
-        public static List<Txt> FRICTIONFUL_BLOCK_MOVEMENT_ISSUE = List.of(
+        public static List<Txt> FRICTIONFUL_SURFACE_MOVEMENT_ISSUE = List.of(
             new Txt("Despite having infinite friction, mobs aren't able to move")  .color(Colors.COLOR_LS_ORANGE),
             new Txt("when walking on it. This is because in Minecraft, friction")  .color(Colors.COLOR_LS_ORANGE),
             new Txt("determines how quickly an entity loses velocity, and any")    .color(Colors.COLOR_LS_ORANGE),
