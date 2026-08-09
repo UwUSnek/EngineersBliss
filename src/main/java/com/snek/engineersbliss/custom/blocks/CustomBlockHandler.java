@@ -7,6 +7,7 @@ import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEnti
 import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.base.CustomEntityBlock;
+import com.snek.engineersbliss.custom.blocks.base.FrictionBlock;
 import com.snek.engineersbliss.custom.blocks.special.FrictionlessBlock;
 
 import net.minecraft.core.Registry;
@@ -55,7 +56,7 @@ public class CustomBlockHandler {
     );
     public static final Block FRICTIONFUL_BLOCK = register(
         "frictionful_block",
-        TransparentBlock::new,
+        FrictionBlock::new,
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.COLOR_LIGHT_BLUE)

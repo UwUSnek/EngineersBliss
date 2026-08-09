@@ -347,3 +347,7 @@
     - total item input rate
     - total item output rate
 - similar thing for the other trackers
+
+
+
+- Prevent the server from sending custom item & block packets to players that don't have the mod installed

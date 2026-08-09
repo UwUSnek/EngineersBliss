@@ -7,6 +7,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
+import com.snek.engineersbliss.custom.blocks.base.FrictionBlock;
+
 import com.mojang.serialization.MapCodec;
 
 
@@ -23,16 +25,9 @@ import com.mojang.serialization.MapCodec;
 /**
  * A block on which entities can slide indefinitely.
  */
-public class FrictionlessBlock extends TransparentBlock {
-    public static final MapCodec<FrictionlessBlock> CODEC = simpleCodec(FrictionlessBlock::new);
-
+public class FrictionlessBlock extends FrictionBlock {
     public FrictionlessBlock(final BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends TransparentBlock> codec() {
-        return CODEC;
     }
 
 
