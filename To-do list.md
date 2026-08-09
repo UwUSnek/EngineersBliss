@@ -351,3 +351,11 @@
 
 
 - make texture loader try again after a delay when the JVM runs out of memory (it prints an error, prob can be catched)
+
+
+
+- add a "Large Black Hole" model that shares the custom rendering of item sinks
+  - maybe add customizable size? it's a block entity anyway it can do that stuff.
+  - much bigger than the standard item sink model. bigger lensing effect too
+  - write in the item that this is only aesthetic and doesn't do anything. only creative mode ofc.
+  - maybe add the same thing for item sources, aesthetic version.
