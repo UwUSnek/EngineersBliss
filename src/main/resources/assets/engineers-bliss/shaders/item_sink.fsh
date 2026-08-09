@@ -3,12 +3,13 @@
 
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
+    #moj_import <minecraft:projection.glsl>
 
     in vec4 vertexColor;
     in vec2 uv0;
 
     uniform sampler2D SceneSampler;
-    uniform sampler2D SceneDepthSampler; //TODO remove if not used
+    uniform sampler2D SceneDepthSampler;
 
     out vec4 fragColor;
 #endif
@@ -49,6 +50,10 @@ float fbm(vec2 p) {
     return sum;
 }
 
+float linearizeDepth(float ndcZ) {
+    return ProjMat[3][2] / (ProjMat[2][2] + ndcZ);
+}
+
 
 
 
@@ -62,16 +67,31 @@ vec4 apply_lensing_background(vec4 objectColor, vec2 uv, float distance, float h
     float lensStrength = 1.0 - (horizonDistance / maxHorizonDistance);
     lensStrength = pow(lensStrength, 3.0);
 
-    // Calculate lensed UVs
-    vec2 direction = normalize(uv);
-    // vec2 screenUV = uv + 0.5;
+
+
+
+    // Calculate screen UVs and blend amount
     vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(SceneSampler, 0));
     float bendAmount = lensStrength * 0.2;
+
+    // Calculate depth gradient. This is used to blend the surroundings smoothly and avoid hard edges between normal/distorted areas.
+    float sceneDepth = texture(SceneDepthSampler, screenUV).r;
+    float sceneLinear = linearizeDepth(sceneDepth);
+    float fragLinear  = linearizeDepth(gl_FragCoord.z);
+    float depthEdge = 0.8;
+    float depthMask = smoothstep(fragLinear - depthEdge, fragLinear + depthEdge, sceneLinear);
+    bendAmount *= depthMask;
+
+    // Calculate lensed UVs
+    vec2 direction = normalize(uv);
     vec2 distortedUV = screenUV - direction * bendAmount;
 
-    // Calculate color of the lensed background and overlay the object's color on top of it
+
+
+    // Sample the background using the lensed UVs and overlay the object's color on top of it
     vec4 sceneColor = texture(SceneSampler, clamp(distortedUV, 0.0, 1.0));
-    return vec4(mix(sceneColor.rgb, objectColor.rgb, objectColor.a), 1.0);
+    float finalAlpha = objectColor.a * depthMask;
+    return vec4(mix(sceneColor.rgb, objectColor.rgb, finalAlpha), 1.0);
 }
 
 

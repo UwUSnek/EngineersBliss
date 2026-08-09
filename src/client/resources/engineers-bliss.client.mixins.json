@@ -57,7 +57,7 @@
 
         "custom_items.FullBrightHandItemMixin",
         "custom_items.FullBrightItemEntityMixin",
-        "custom_items.rendering.SceneCaptureMixin",
+        "custom_items.rendering.ItemSinkPassMixin",
 
 
         "rendering.vanilla_indigo.RenderingFilterBlockVanillaIndigoMixin",

@@ -6,7 +6,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
-import com.snek.engineersbliss.custom.blocks.base.CustomEntityBlock;
+import com.snek.engineersbliss.custom.blocks.base.CustomTransparentEntityBlock;
 import com.snek.engineersbliss.custom.blocks.special.FrictionlessBlock;
 
 import net.minecraft.core.Registry;
@@ -75,42 +75,42 @@ public class CustomBlockHandler {
 
     public static final Block ITEM_SOURCE = register(
         "item_source",
-        p -> new CustomEntityBlock(p, ItemSourceBlockEntity::new),
+        p -> new CustomTransparentEntityBlock(p, ItemSourceBlockEntity::new),
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.STONE)
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor(Blocks::never)
             .isSuffocating(Blocks::never)
-            .isViewBlocking(Blocks::always)
+            .isViewBlocking(Blocks::never)
             .noLootTable()
             .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
     );
     public static final Block ITEM_SINK = register(
         "item_sink",
-        p -> new CustomEntityBlock(p, ItemSinkBlockEntity::new),
+        p -> new CustomTransparentEntityBlock(p, ItemSinkBlockEntity::new),
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.STONE)
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor(Blocks::never)
             .isSuffocating(Blocks::never)
-            .isViewBlocking(Blocks::always)
+            .isViewBlocking(Blocks::never)
             .noLootTable()
             .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
     );
     public static final Block ITEM_PIPE = register(
         "item_pipe",
-        p -> new CustomEntityBlock(p, ItemPipeBlockEntity::new),
+        p -> new CustomTransparentEntityBlock(p, ItemPipeBlockEntity::new),
         BlockBehaviour.Properties.of()
             .strength(-1.0f, 3600000.8f)
             .mapColor(MapColor.STONE)
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor(Blocks::never)
             .isSuffocating(Blocks::never)
-            .isViewBlocking(Blocks::always)
+            .isViewBlocking(Blocks::never)
             .noLootTable()
             .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
