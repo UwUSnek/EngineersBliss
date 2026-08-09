@@ -31,6 +31,7 @@ import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
+import net.minecraft.world.phys.Vec3;
 
 
 
@@ -64,14 +65,20 @@ public abstract class ItemSinkPassMixin {
             int width = target.width;
             int height = target.height;
 
+
+            // Resize textures if the window size has changed
             if(SceneSnapshot.getColor().getWidth(0) != width || SceneSnapshot.getColor().getHeight(0) != height) {
                 SceneSnapshot.resize(width, height);
             }
 
+
+            // Load textures in for the first time
             final CommandEncoder encoder = RenderSystem.getDevice().createCommandEncoder();
             encoder.copyTextureToTexture(target.getColorTexture(), SceneSnapshot.getColor(), 0, 0, 0, 0, 0, width, height);
             encoder.copyTextureToTexture(target.getDepthTexture(), SceneSnapshot.getDepth(), 0, 0, 0, 0, 0, width, height);
 
+
+            // Find render states of the blocks
             List<ItemSinkBlockEntityRenderer.ItemSinkRenderState> sinkStates = new ArrayList<>();
             for(BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
                 if(state instanceof ItemSinkBlockEntityRenderer.ItemSinkRenderState sinkState) {
@@ -79,11 +86,26 @@ public abstract class ItemSinkPassMixin {
                 }
             }
 
+
+            // Sort blocks by distance from the camera
+            sinkStates.sort((a, b) -> Double.compare(
+                camera.pos.distanceToSqr(Vec3.atCenterOf(b.blockPos)),
+                camera.pos.distanceToSqr(Vec3.atCenterOf(a.blockPos))
+            ));
+
+
+            // Draw blocks starting from the farthest one, update sampled textures after each draw
             if(!sinkStates.isEmpty()) {
                 PoseStack poseStack = new PoseStack();
                 MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
-                ItemSinkBlockEntityRenderer.renderDirect(sinkStates, poseStack, bufferSource, camera, camera.pos);
-                bufferSource.endBatch();
+
+                for(ItemSinkBlockEntityRenderer.ItemSinkRenderState sinkState : sinkStates) {
+                    encoder.copyTextureToTexture(target.getColorTexture(), SceneSnapshot.getColor(), 0, 0, 0, 0, 0, width, height);
+                    encoder.copyTextureToTexture(target.getDepthTexture(), SceneSnapshot.getDepth(), 0, 0, 0, 0, 0, width, height);
+
+                    ItemSinkBlockEntityRenderer.renderDirect(List.of(sinkState), poseStack, bufferSource, camera, camera.pos);
+                    bufferSource.endBatch();
+                }
             }
         });
     }

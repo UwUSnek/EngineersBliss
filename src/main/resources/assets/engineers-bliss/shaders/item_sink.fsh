@@ -22,6 +22,10 @@
 
 
 
+
+
+
+
 float hash21(vec2 p) {
     p = fract(p * vec2(123.34, 456.21));
     p += dot(p, p + 45.32);
@@ -53,6 +57,10 @@ float fbm(vec2 p) {
 float linearizeDepth(float ndcZ) {
     return ProjMat[3][2] / (ProjMat[2][2] + ndcZ);
 }
+
+
+
+
 
 
 
@@ -91,8 +99,14 @@ vec4 apply_lensing_background(vec4 objectColor, vec2 uv, float distance, float h
     // Sample the background using the lensed UVs and overlay the object's color on top of it
     vec4 sceneColor = texture(SceneSampler, clamp(distortedUV, 0.0, 1.0));
     float finalAlpha = objectColor.a * depthMask;
+    float visibility = max(finalAlpha, bendAmount);
+    if(visibility < 0.001) discard;
     return vec4(mix(sceneColor.rgb, objectColor.rgb, finalAlpha), 1.0);
 }
+
+
+
+
 
 
 
