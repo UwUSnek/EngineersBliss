@@ -46,8 +46,8 @@ public class ItemSinkBlockEntityRenderer implements BlockEntityRenderer<ItemSink
     public static final RenderPipeline ITEM_SINK_PIPELINE = RenderPipelines.register(
         RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
             .withLocation(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/item_sink"))
-            .withVertexShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
-            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "item_sink"))
+            .withVertexShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/item_sink"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/item_sink"))
             .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
             // .withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, true))
             //! No depth stencil, depth is handles by the shader
