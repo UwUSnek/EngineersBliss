@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.custom.block_entities.renderers;
+package com.snek.engineersbliss.client.custom.block_entities.renderers.base;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -7,15 +7,34 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.TextureFormat;
 
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureManager;
 
 
 
 
-public class SceneSnapshot {
+
+
+
+
+public class SceneSnapshotHandler {
+    private SceneSnapshotHandler() {}
     private static GpuTexture colorSnapshot;
     private static GpuTexture depthSnapshot;
+
+
+
+
+    /**
+     * Registers the event to handle the textures' first creation.
+     * This must be called from the client mod initializer function.
+     */
+    public static void register() {
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+            init(client.getWindow().getWidth(), client.getWindow().getHeight());
+        });
+    }
 
 
 
@@ -36,8 +55,8 @@ public class SceneSnapshot {
 
         // Bind textures. This must be done on startup and after every resize.
         final @NotNull TextureManager textureManager = Minecraft.getInstance().getTextureManager();
-        textureManager.register(ItemSinkBlockEntityRenderer.SCENE_COLOR_ID, new SceneSnapshotTexture(getColor()));
-        textureManager.register(ItemSinkBlockEntityRenderer.SCENE_DEPTH_ID, new SceneSnapshotTexture(getDepth()));
+        textureManager.register(__base_SpaceWarpingRenderer.SCENE_COLOR_ID, new SceneSnapshotTexture(getColor()));
+        textureManager.register(__base_SpaceWarpingRenderer.SCENE_DEPTH_ID, new SceneSnapshotTexture(getDepth()));
     }
 
 

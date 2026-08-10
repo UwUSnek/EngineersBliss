@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.custom.block_entities.renderers;
+package com.snek.engineersbliss.client.custom.block_entities.renderers.base;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;

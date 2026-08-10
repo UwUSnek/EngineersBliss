@@ -5,9 +5,8 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilter
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
-import com.snek.engineersbliss.client.custom.block_entities.renderers.ItemSinkBlockEntityRenderer;
-import com.snek.engineersbliss.client.custom.block_entities.renderers.SceneSnapshot;
-import com.snek.engineersbliss.client.custom.block_entities.renderers.SceneSnapshotTexture;
+import com.snek.engineersbliss.client.custom.block_entities.renderers.base.SceneSnapshotHandler;
+import com.snek.engineersbliss.client.custom.block_entities.renderers.implementations.ItemSinkBlockEntityRenderer;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
@@ -65,14 +64,10 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
         // Initialize custom block renderer plugin and custom block entity renderers
         ModelLoadingPlugin.register(new UnshadedBlockModelPlugin());
-        // CustomBlockEntityHandler.initClient();
-//FIXME move to ClientCustomBlockEntityHandler
-BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SINK, ItemSinkBlockEntityRenderer::new);
+        SceneSnapshotHandler.register();
+        BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SINK, ItemSinkBlockEntityRenderer::new);
         //! Item and block registration is done on the server side
-//TODO move this somewhere else. texture registration
-ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
-    SceneSnapshot.init(client.getWindow().getWidth(), client.getWindow().getHeight());
-});
+
 
         // Initialize resource plugin for alt textures handler
         PreparableModelLoadingPlugin.register(
