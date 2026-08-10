@@ -7,9 +7,7 @@ import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -49,7 +47,6 @@ public class ItemSinkBlockEntityRenderer implements BlockEntityRenderer<ItemSink
             .withVertexShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/item_sink"))
             .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "block/item_sink"))
             .withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
-            // .withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, true))
             //! No depth stencil, depth is handles by the shader
             .withSampler("Sampler0")
             .withSampler("SceneSampler")
