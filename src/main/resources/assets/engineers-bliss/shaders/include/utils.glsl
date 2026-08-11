@@ -41,3 +41,11 @@ float fbm(vec2 p) {
 float linearizeDepth(float ndcZ) {
     return ProjMat[3][2] / (ProjMat[2][2] + ndcZ);
 }
+
+
+
+vec2 rotate(vec2 p, float a) {
+    float s = sin(a);
+    float c = cos(a);
+    return mat2(c, -s, s, c) * p;
+}

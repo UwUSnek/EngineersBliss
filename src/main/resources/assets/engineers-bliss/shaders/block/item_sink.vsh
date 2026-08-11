@@ -17,10 +17,11 @@ layout(std140) uniform Projection {
 
 out vec4 vertexColor;
 out vec2 uv0;
-
+out vec3 worldPos;
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position + ModelOffset, 1.0);
     vertexColor = ColorModulator;
     uv0 = UV0;
+    worldPos = Position + ModelOffset;
 }
