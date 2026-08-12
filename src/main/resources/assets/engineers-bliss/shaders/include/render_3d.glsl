@@ -1,5 +1,6 @@
 
 
+
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
     #moj_import <minecraft:projection.glsl>
@@ -61,7 +62,6 @@ struct ImpostorFrame {
         mat4 invProj = inverse(proj);
 
         vec2 ndc = uv * 2.0 - 1.0;
-
         vec4 viewDir = invProj * vec4(ndc, -1.0, 1.0);
         viewDir /= viewDir.w;
 
@@ -127,7 +127,35 @@ bool intersectSphere(vec3 ro, vec3 rd, float radius, out float tNear, out float 
 }
 
 
-float intersectSphereGradient(vec3 ro, vec3 rd, float startRadius, float endRadius, float density) {
+
+
+float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float startRadius, float endRadius, float density, bool fov) {
+    if (fov) {
+        float d = length(ro);
+        float r;
+
+        #ifdef MINECRAFT
+            float P = length(uv) * 2.0 * quadExtent;
+            r = (P * d) / sqrt(d * d + P * P);
+        #else
+            float tanHalfFovY = 1.0 / getProjMatrix()[1][1];
+            float theta = atan(length(uv) * 2.0 * tanHalfFovY);
+            r = d * sin(theta);
+        #endif
+
+        float outerHalf = sqrt(max(endRadius * endRadius - r * r, 0.0));
+        float pathLength;
+        if (r < startRadius) {
+            float innerHalf = sqrt(max(startRadius * startRadius - r * r, 0.0));
+            pathLength = 2.0 * (outerHalf - innerHalf);
+        } else if (r < endRadius) {
+            pathLength = 2.0 * outerHalf;
+        } else {
+            pathLength = 0.0;
+        }
+        return 1.0 - exp(-pathLength * density);
+    }
+
     float tNearOuter, tFarOuter;
     if(!intersectSphere(ro, rd, endRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
         return 0.0;
@@ -192,3 +220,5 @@ void buildOrthoBasis(vec3 normal, out vec3 tangent, out vec3 bitangent) {
 vec2 planeUV(vec3 hitPosLocal, vec3 tangent, vec3 bitangent, float scale) {
     return vec2(dot(hitPosLocal, tangent), dot(hitPosLocal, bitangent)) * scale;
 }
+
+

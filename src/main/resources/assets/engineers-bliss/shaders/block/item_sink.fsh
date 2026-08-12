@@ -86,13 +86,13 @@ float fallingSquares(vec2 uv, float _time, float horizon, float outerRadius) {
 
 
 
-#define LENSING_SCALE 2.0
+#define CORE_RADIUS_FALLOFF   0.95
+#define LENSING_SCALE         2.0
 #define PHOTON_RING_THICKNESS 0.06
 
 
 // uv0: coords that go from  0.0 to 1.0
 // uv:  coords that go from -0.5 to 0.5
-
 
 #ifdef MINECRAFT
 void main() {
@@ -145,21 +145,21 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         float angularRadius = asin(clamp(horizon / camDist, 0.0, 1.0));
         float halfFovY = radians(50.0) * 0.5;
         float coreRadius = 0.5 * tan(angularRadius) / tan(halfFovY);
+        //TODO merge with photon ring logic
     #endif
-    bool hitCore = length(uv) < coreRadius;
 
 
 
-
-    vec3 color = vec3(0.0);
+    vec4 objectFgColor = vec4(0.0);
     vec4 objectBgColor = vec4(0.0);
-    float alpha = 0.0;
 
-    if(hitCore) {
-        color = vec3(0.0);
-        alpha = 0.5;
-    }
-    else if(hitPlane) {
+
+    // Compute core mask and color
+    float coreMask = smoothstep(coreRadius, coreRadius - coreRadius * (1.0 - CORE_RADIUS_FALLOFF), length(uv));
+    objectFgColor = over(vec4(vec3(0.0), coreMask), objectFgColor);
+
+
+    if(hitPlane) {
         //vec3 planePosLocal = frame.rayOrigin + frame.rayDir * tPlane;
         //gl_FragDepth = impostorNdcDepth(frame, planePosLocal);
 
@@ -190,15 +190,14 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         //alpha = max(squares, max(photonRing, diskMask));
     }
 
-
-
-    objectBgColor = vec4(0.0);//vec4(intersectSphereGradient(frame.rayOrigin, frame.rayDir, horizon, horizon + PHOTON_RING_THICKNESS, 1.0)); //TODO
+    objectBgColor = vec4(intersectSphereGradient(frame.rayOrigin, frame.rayDir, uv, frame.quadExtent, horizon, horizon + PHOTON_RING_THICKNESS, 2.0, true));
 
     vec4 bgColor = over(objectBgColor, texture(sceneColorSampler, lensedScreenUV));
-    vec4 fgColor = vec4(color, alpha); //TODO move some logic to this
+    vec4 fgColor = objectFgColor; //TODO move some logic to this
     fragColor = over(fgColor, bgColor);
 
     #ifndef MINECRAFT
         if(uv0.x < -1.0) fragColor = vec4(uv0, 0.0, 1.0);
     #endif
+    fragColor = objectBgColor;
 }
