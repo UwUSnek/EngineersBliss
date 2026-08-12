@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 
 public class ItemSinkBlockEntityRenderer extends __base_SpaceWarpingRenderer<ItemSinkBlockEntity, ItemSinkBlockEntityRenderer.ItemSinkRenderState> {
     public ItemSinkBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
-        super(2f, "block", "item_sink", context);
+        super(4f, "block", "item_sink", context);
     }
 
 

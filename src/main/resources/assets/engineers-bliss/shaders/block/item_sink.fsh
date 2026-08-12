@@ -86,9 +86,15 @@ float fallingSquares(vec2 uv, float _time, float horizon, float outerRadius) {
 
 
 
+
+
+
+
+
+
 #define CORE_RADIUS_FALLOFF   0.95
 #define LENSING_SCALE         2.0
-#define PHOTON_RING_THICKNESS 0.06
+#define PHOTON_RING_THICKNESS 0.04
 
 
 // uv0: coords that go from  0.0 to 1.0
@@ -114,7 +120,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 uv = uv0 - vec2(0.5);
     gl_FragDepth = gl_FragCoord.z; //FIXME calculate proper depth based on the 3d rendering
 
-    float outerRadius = horizon * 2.0;
 
     vec3 diskNormal = length(frame.rayOrigin) > 0.0001 ? normalize(frame.rayOrigin) : vec3(0.0, 1.0, 0.0);
     vec3 diskTangent, diskBitangent;
@@ -123,14 +128,16 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
 
-    float rayLen;
-    bool hitPlane = intersectPlane(frame.rayOrigin, frame.rayDir, diskNormal, rayLen);
-    vec2 diskUV; //TODO actually use this
-    if(hitPlane) {
-        vec3 planePosLocal = frame.rayOrigin + frame.rayDir * rayLen;
-        diskUV = planeUV(planePosLocal, diskTangent, diskBitangent, 1.0);
-    }
+    //float rayLen;
+    //bool hitPlane = intersectPlane(frame.rayOrigin, frame.rayDir, diskNormal, rayLen);
+    //vec2 diskUV; //TODO actually use this
+    //if(hitPlane) {
+        //vec3 planePosLocal = frame.rayOrigin + frame.rayDir * rayLen;
+        //diskUV = planeUV(planePosLocal, diskTangent, diskBitangent, 1.0);
+    //}
     vec2 lensedScreenUV = calculate_lensed_screen_uv(sceneDepthSampler, frame.center, horizon, horizon * LENSING_SCALE, 0.35);
+    vec4 lensedBgColor = texture(sceneColorSampler, lensedScreenUV);
+    vec4 lensedBgColorFlipped = texture(sceneColorSampler, -lensedScreenUV);
 
 
 
@@ -150,35 +157,29 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
 
-    vec4 objectFgColor = vec4(0.0);
-    vec4 objectBgColor = vec4(0.0);
-
-
     // Compute core mask and color
     float coreMask = smoothstep(coreRadius, coreRadius - coreRadius * (1.0 - CORE_RADIUS_FALLOFF), length(uv));
-    objectFgColor = over(vec4(vec3(0.0), coreMask), objectFgColor);
+    float coreLinearMask = smoothstep(coreRadius, 0.0, length(uv)); //TODO remov eif not used
+    vec4 coreColor = vec4(vec3(0.0), coreMask);
 
 
-    if(hitPlane) {
+    //if(hitPlane) {
         //vec3 planePosLocal = frame.rayOrigin + frame.rayDir * tPlane;
         //gl_FragDepth = impostorNdcDepth(frame, planePosLocal);
 
-        //float distance = length(diskUV);
-        //float angle = atan(diskUV.y, diskUV.x);
+        float distance = length(uv);
+        float angle = atan(uv.y, uv.x);
 
-        //float spin = horizon / max(distance, 1e-4);
-        //float swirledAngle = angle + spin * 1.5 + time * 0.06;
-        //vec2 swirlPos = vec2(cos(swirledAngle), sin(swirledAngle)) * distance;
+        float spin = horizon / max(distance, 1e-4); //TODO remove if not needed
+        float swirledAngle = angle + spin * 0.5 + time * 0.06;
+        vec2 swirlPos = vec2(cos(swirledAngle), sin(swirledAngle)) * distance;
 
-        //vec2 driftPos = vec2(cos(angle), sin(angle)) * distance;
-        //float turbulence = fbm(swirlPos * 24.0 + driftPos * 12.0);
-
-        //float lensedUvDistance = length(lensedUV);
-        //float photonRing = exp(-pow((distance - horizon) * (8.0 / horizon), 2.0));
-
-        //float diskMask = 1.0 - smoothstep(horizon, outerRadius, distance);
-        //diskMask = pow(diskMask, 3.0);
-        //vec3 diskColor = mix(vec3(0.2, 0.1, 0.05), vec3(1.0, 0.15, 0.15), turbulence);
+        vec2 driftPos = vec2(cos(angle), sin(angle)) * distance;
+        float turbulence = fbm(swirlPos * 24.0 + driftPos * 12.0);
+        float outerRadius = coreRadius * 1.55;
+        float diskMask = 1.0 - smoothstep(coreRadius, outerRadius, distance);
+        diskMask = pow(diskMask, 3.0);
+        vec4 diskColor = vec4(mix(vec3(1.0, 0.2, 0.05) * 0.8, vec3(1.0, 0.15, 0.15) * 0.1, pow(turbulence, 1.0)), diskMask * 1.0);
         //diskColor = mix(diskColor, vec3(1.0, 0.95, 0.85), turbulence * turbulence * 0.4);
 
         //float squares = fallingSquares(diskUV, time, horizon, outerRadius) * 0.5 * diskMask;
@@ -188,16 +189,33 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         // objectBgColor = vec4(vec3(1.0, 0.95, 0.9), photonRing); //TODO
 
         //alpha = max(squares, max(photonRing, diskMask));
-    }
+    //}
 
-    objectBgColor = vec4(intersectSphereGradient(frame.rayOrigin, frame.rayDir, uv, frame.quadExtent, horizon, horizon + PHOTON_RING_THICKNESS, 2.0, true));
+    float photonRingStart = horizon;
+    float photonRingEnd   = photonRingStart + PHOTON_RING_THICKNESS;
+    float photonRingMask = intersectSphereGradient(frame.rayOrigin, frame.rayDir, uv, frame.quadExtent, photonRingStart, photonRingEnd, 0.6, true);
+    vec4 photonRingColor = vec4(vec3(1.0), photonRingMask * 4.0); // Flipped source color and contrast
 
-    vec4 bgColor = over(objectBgColor, texture(sceneColorSampler, lensedScreenUV));
-    vec4 fgColor = objectFgColor; //TODO move some logic to this
+
+
+
+    vec4 bgColor =
+        over(photonRingColor,
+        over(diskColor,
+        over(lensedBgColor,
+        vec4(0.0)
+    )));
+    vec4 fgColor =
+        over(coreColor,
+        vec4(0.0)
+    );
     fragColor = over(fgColor, bgColor);
+
+
+    //fragColor = diskColor;
+    //fragColor = vec4(diskMask);
 
     #ifndef MINECRAFT
         if(uv0.x < -1.0) fragColor = vec4(uv0, 0.0, 1.0);
     #endif
-    fragColor = objectBgColor;
 }

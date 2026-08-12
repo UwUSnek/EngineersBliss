@@ -115,6 +115,11 @@ vec4 over(vec4 top, vec4 bottom) {
 }
 
 
+vec3 adjustContrast(vec3 color, float contrast) {
+    return clamp((color - 0.5) * contrast + 0.5, 0.0, 1.0);
+}
+
+
 #ifdef MINECRAFT
     float linearizeDepth(float ndcZ) {
         return ProjMat[3][2] / (ProjMat[2][2] + ndcZ);
