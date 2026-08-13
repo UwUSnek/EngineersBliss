@@ -1,6 +1,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
     #moj_import <minecraft:projection.glsl>
@@ -57,8 +68,9 @@ struct ImpostorFrame {
 #else
     ImpostorFrame getImpostorFrame(vec2 uv) {
         mat4 view = getViewMatrix();
-        mat4 proj = getProjMatrix();
         mat4 invView = inverse(view);
+
+        mat4 proj = fakePerspectiveMatrix(radians(50.0), 1.0, 0.05, 100.0);
         mat4 invProj = inverse(proj);
 
         vec2 ndc = uv * 2.0 - 1.0;
@@ -180,6 +192,153 @@ float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float
 
 
 
+
+
+
+
+#define NOISE_CONTRAST 3.5
+#define NOISE_SCALE    5.0
+#define NOISE_TWIST    -4.5
+#define NOISE_SPEED    0.1
+#define NOISE_DENSITY  2.0
+
+
+/**
+ * @param ro          Ray origin, local to the object's center (ImpostorFrame.rayOrigin).
+ * @param rd          Normalized ray direction, local space (ImpostorFrame.rayDir).
+ * @param innerRadius Shell starts fading in here (roughly the event horizon).
+ * @param outerRadius Shell has fully faded out by here.
+ * @param _time       Animation time, drives a rotation of the sample points (not a UV offset).
+ * @param axisA,axisB,axisN  Orthonormal basis for the disk plane (tangent, bitangent, normal).
+ */
+vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN) {
+    float tNearOuter, tFarOuter;
+    if (!intersectSphere(ro, rd, outerRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
+        return vec4(0.0);
+    }
+    tNearOuter = max(tNearOuter, 0.0);
+
+
+
+    const int STEPS = 24;
+    float dt = (tFarOuter - tNearOuter) / float(STEPS);
+
+    float accumAlpha = 0.0;
+    float accumNoise = 0.0;
+    float accumWeight = 0.0;
+
+    for (int i = 0; i < STEPS; i++) {
+        float t = tNearOuter + (float(i) + 0.5) * dt;
+        vec3 p = ro + rd * t;
+        if(dot(p, rd) >= 0.0) continue; // Don't render back side
+        float r = length(p);
+
+        float shell = (1.0 - smoothstep(innerRadius, outerRadius, r)) * smoothstep(innerRadius * 0.85, innerRadius, r);
+        if(shell <= 0.0001) continue;
+
+        vec3 pLocal = vec3(dot(p, axisA), dot(p, axisB), dot(p, axisN));
+        float swirlAngle = _time * NOISE_SPEED + (innerRadius / max(r, 1e-4)) * NOISE_TWIST;
+        float sA = sin(swirlAngle), cA = cos(swirlAngle);
+        vec3 samplePos = vec3(mat2(cA, -sA, sA, cA) * pLocal.xy, pLocal.z);
+
+        float n = fbm3D(samplePos * (NOISE_SCALE / innerRadius));
+
+        float density = shell * n * NOISE_DENSITY;
+        accumAlpha += density * dt;
+        accumNoise += n * shell;
+        accumWeight += shell;
+    }
+
+    // Calculate noise average and make colour and alpha super high constrast to boost the 3d effect
+    float noiseAvg = accumWeight > 0.0001 ? accumNoise / accumWeight : 0.0;
+    noiseAvg   = adjustContrast(noiseAvg,   NOISE_CONTRAST);
+    accumAlpha = adjustContrast(accumAlpha, NOISE_CONTRAST);
+    return vec4(vec3(noiseAvg), clamp(accumAlpha, 0.0, 1.0));
+}
+#undef NOISE_CONTRAST
+#undef NOISE_SCALE
+#undef NOISE_TWIST
+#undef NOISE_SPEED
+#undef NOISE_DENSITY
+
+
+
+
+
+
+#define RING_NOISE_SCALE  0.8
+#define RING_NOISE_SPEED  0.3
+#define RING_NOISE_AMOUNT 1.2
+#define RING_STEPS        16
+#define RING_DENSITY      16.0
+#define RING_INNER_FALLOFF 0.01
+#define RING_OUTER_FALLOFF 0.02
+
+/**
+ * @param ro        Ray origin, local to the object's center (ImpostorFrame.rayOrigin).
+ * @param rd        Normalized ray direction, local space (ImpostorFrame.rayDir).
+ * @param radius    Inner radius of the ring, world units (roughly the event horizon).
+ * @param thickness Average radial thickness of the ring before noise modulation.
+ * @param _time     Animation time.
+ */
+float volumetricPhotonRing(vec3 ro, vec3 rd, float radius, float thickness, float _time) {
+    float b = dot(ro, rd);
+    vec3 impact = ro - b * rd;
+    float impactLen = length(impact);
+    if (impactLen < 1e-5) {
+        return 0.0;
+    }
+
+    mat4 camToWorld = inverse(getViewMatrix());
+    vec3 camRight = normalize(camToWorld[0].xyz);
+    vec3 camUp    = normalize(camToWorld[1].xyz);
+    float angle = atan(dot(impact, camUp), dot(impact, camRight));
+
+    vec3 noiseP = vec3(cos(angle), sin(angle), 0.0) * RING_NOISE_SCALE + vec3(0.0, 0.0, _time * RING_NOISE_SPEED);
+    float n = fbm3D(noiseP);
+    float thicknessMod = 1.0 + (n - 0.5) * 2.0 * RING_NOISE_AMOUNT;
+    float localThickness = max(thickness * thicknessMod, 0.0001);
+
+    float innerR = radius;
+    float outerR = radius + localThickness;
+
+    float searchOuter = radius + thickness * (1.0 + RING_NOISE_AMOUNT) + RING_OUTER_FALLOFF * 5.0;
+    float tNearOuter, tFarOuter;
+    if(!intersectSphere(ro, rd, searchOuter, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
+        return 0.0;
+    }
+    tNearOuter = max(tNearOuter, 0.0);
+    float dt = (tFarOuter - tNearOuter) / float(RING_STEPS);
+    float accumPath = 0.0;
+
+    for(int i = 0; i < RING_STEPS; i++) {
+        float t = tNearOuter + (float(i) + 0.5) * dt;
+        float r = length(ro + rd * t);
+
+        float shell;
+        if(r < outerR) {
+            shell = smoothstep(innerR - RING_INNER_FALLOFF, innerR + RING_INNER_FALLOFF, r);
+        }
+        else {
+            shell = exp(-(r - outerR) / RING_OUTER_FALLOFF);
+        }
+        accumPath += shell * dt;
+    }
+
+    return 1.0 - exp(-accumPath * RING_DENSITY);
+}
+#undef RING_NOISE_SCALE
+#undef RING_NOISE_SPEED
+#undef RING_NOISE_AMOUNT
+#undef RING_STEPS
+#undef RING_DENSITY
+#undef RING_INNER_FALLOFF
+#undef RING_OUTER_FALLOFF
+
+
+
+
+
 bool intersectPlane(vec3 ro, vec3 rd, vec3 normal, out float rayLen) {
     float denom = dot(rd, normal);
     if(abs(denom) < 1e-6) {
@@ -220,5 +379,4 @@ void buildOrthoBasis(vec3 normal, out vec3 tangent, out vec3 bitangent) {
 vec2 planeUV(vec3 hitPosLocal, vec3 tangent, vec3 bitangent, float scale) {
     return vec2(dot(hitPosLocal, tangent), dot(hitPosLocal, bitangent)) * scale;
 }
-
 
