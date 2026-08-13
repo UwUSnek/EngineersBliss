@@ -1,17 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
     #moj_import <minecraft:projection.glsl>
@@ -30,6 +17,9 @@ struct ImpostorFrame {
     vec3 normal;
     float quadExtent;
 };
+
+
+
 
 
 
@@ -82,7 +72,7 @@ struct ImpostorFrame {
 
         ImpostorFrame f;
         f.center = vec3(0.0);        // the object lives at the world origin
-        f.rayOrigin = camWorldPos;    // already "local" since center = 0
+        f.rayOrigin = camWorldPos;    // already local since center = 0
         f.rayDir = rayDirWorld;
         f.uAxis = (invView * vec4(1.0, 0.0, 0.0, 0.0)).xyz;
         f.vAxis = (invView * vec4(0.0, 1.0, 0.0, 0.0)).xyz;
@@ -91,6 +81,10 @@ struct ImpostorFrame {
         return f;
     }
 #endif
+
+
+
+
 
 
 
@@ -110,6 +104,31 @@ struct ImpostorFrame {
 
 
 
+
+
+
+
+
+// Compares a layer's real depth against the scene depth buffer and returns the occlusion factor (0-1)
+#ifdef MINECRAFT
+    float sceneOcclusionVisibility(ImpostorFrame f, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+        float layerLinear = linearizeDepth(impostorNdcDepth(f, hitPosLocal));
+        return smoothstep(layerLinear - bias, layerLinear + bias, sceneLinearDepth);
+    }
+#else
+    float sceneOcclusionVisibility(ImpostorFrame f, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+        return 1.0;
+    }
+#endif
+
+
+
+
+
+
+
+
+
 vec2 intersectBox(vec3 ro, vec3 rd, vec3 boxMin, vec3 boxMax, out vec3 tminOut) {
     vec3 invDir = 1.0 / rd;
     vec3 t0 = (boxMin - ro) * invDir;
@@ -121,6 +140,10 @@ vec2 intersectBox(vec3 ro, vec3 rd, vec3 boxMin, vec3 boxMax, out vec3 tminOut) 
     float tFar  = min(min(tmax.x, tmax.y), tmax.z);
     return vec2(tNear, tFar);
 }
+
+
+
+
 
 
 
@@ -137,6 +160,10 @@ bool intersectSphere(vec3 ro, vec3 rd, float radius, out float tNear, out float 
     tFar = -b + h;
     return true;
 }
+
+
+
+
 
 
 
@@ -198,10 +225,9 @@ float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float
 
 #define NOISE_CONTRAST 3.5
 #define NOISE_SCALE    5.0
-#define NOISE_TWIST    -4.5
+#define NOISE_TWIST   -8.0
 #define NOISE_SPEED    0.01
-#define NOISE_DENSITY  2.0
-
+#define NOISE_DENSITY  0.82
 
 /**
  * @param ro          Ray origin, local to the object's center (ImpostorFrame.rayOrigin).
@@ -210,15 +236,16 @@ float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float
  * @param outerRadius Outer radius of the shell.
  * @param _time       Animation time.
  * @param axisA,axisB,axisN  Orthonormal basis for the disk plane (tangent, bitangent, normal).
+ * @param outT        Output: density-weighted average ray distance to the visible cloud
  */
-vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN) {
+vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN, out float outT) {
+    outT = 0.0;
     float tNearOuter, tFarOuter;
     if (!intersectSphere(ro, rd, outerRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
         return vec4(0.0);
     }
     tNearOuter = max(tNearOuter, 0.0);
-
-
+    outT = tNearOuter;
 
     const int STEPS = 24;
     float dt = (tFarOuter - tNearOuter) / float(STEPS);
@@ -226,6 +253,7 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
     float accumAlpha = 0.0;
     float accumNoise = 0.0;
     float accumWeight = 0.0;
+    float accumT = 0.0;
 
     for (int i = 0; i < STEPS; i++) {
         float t = tNearOuter + (float(i) + 0.5) * dt;
@@ -241,18 +269,19 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
         float sA = sin(swirlAngle), cA = cos(swirlAngle);
         vec3 samplePos = vec3(mat2(cA, -sA, sA, cA) * pLocal.xy, pLocal.z);
 
-        float n = fbm3D(samplePos * (NOISE_SCALE / innerRadius));
-
-        float density = shell * n * NOISE_DENSITY;
+        float n = fbm3D(samplePos * (NOISE_SCALE   / max(innerRadius, 1e-4)));
+        float density = shell * n * (NOISE_DENSITY / max(innerRadius, 1e-4));
         accumAlpha += density * dt;
         accumNoise += n * shell;
         accumWeight += shell;
+        accumT += t * shell;
     }
 
     // Calculate noise average and make colour and alpha super high constrast to boost the 3d effect
     float noiseAvg = accumWeight > 0.0001 ? accumNoise / accumWeight : 0.0;
     noiseAvg   = adjustContrast(noiseAvg,   NOISE_CONTRAST);
     accumAlpha = adjustContrast(accumAlpha, NOISE_CONTRAST);
+    if (accumWeight > 0.0001) outT = accumT / accumWeight;
     return vec4(vec3(noiseAvg), clamp(accumAlpha, 0.0, 1.0));
 }
 #undef NOISE_CONTRAST
@@ -260,6 +289,7 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
 #undef NOISE_TWIST
 #undef NOISE_SPEED
 #undef NOISE_DENSITY
+
 
 
 
@@ -281,9 +311,12 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
  * @param radius    Inner radius of the ring, world units (roughly the event horizon).
  * @param thickness Average radial thickness of the ring before noise modulation.
  * @param _time     Animation time.
+ * @param outT      Output: ray distance to the ring's closest-approach point, used for depth.
  */
-float volumetricPhotonRing(vec3 ro, vec3 rd, float radius, float thickness, float _time) {
+float volumetricPhotonRing(vec3 ro, vec3 rd, float radius, float thickness, float _time, out float outT) {
     float b = dot(ro, rd);
+    outT = max(-b, 0.0);
+
     vec3 impact = ro - b * rd;
     float impactLen = length(impact);
     if (impactLen < 1e-5) {
@@ -342,15 +375,18 @@ float volumetricPhotonRing(vec3 ro, vec3 rd, float radius, float thickness, floa
 
 
 
-#define CUBE_RADIAL_DENSITY   20.0
-#define CUBE_FACE_DENSITY     25.0
-#define CUBE_FALL_SPEED       0.1
-#define CUBE_DENSITY_THRESH   0.15
-#define CUBE_SIZE_MIN         0.05
-#define CUBE_SIZE_MAX         0.25
-#define CUBE_PLANE_THICKNESS  0.1
 
-vec4 fallingCubes3D(vec3 ro, vec3 rd, float horizon, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN) {
+#define SQUARE_RADIAL_DENSITY   20.0
+#define SQUARE_FACE_DENSITY     25.0
+#define SQUARE_FALL_SPEED       0.1
+#define SQUARE_DENSITY_THRESH   0.15
+#define SQUARE_SIZE_MIN         0.05
+#define SQUARE_SIZE_MAX         0.25
+#define SQUARE_PLANE_THICKNESS  0.1
+
+// @param outT  Output: ray distance to the nearest visible square tile, used for depth.
+vec4 fallingSquares(vec3 ro, vec3 rd, float horizon, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN, out float outT) {
+    outT = 1e6;
     float tNearOuter, tFarOuter;
     if(!intersectSphere(ro, rd, outerRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
         return vec4(0.0);
@@ -362,6 +398,7 @@ vec4 fallingCubes3D(vec3 ro, vec3 rd, float horizon, float outerRadius, float _t
 
     float alpha = 0.0;
     float shade = 0.0;
+    bool foundHit = false;
 
     for(int i = 0; i < STEPS; i++) {
         float t = tNearOuter + (float(i) + 0.5) * dt;
@@ -389,9 +426,9 @@ vec4 fallingCubes3D(vec3 ro, vec3 rd, float horizon, float outerRadius, float _t
         float logR = log(r);
 
         vec3 gridUV = vec3(
-            uv.x * CUBE_FACE_DENSITY * 0.5,
-            logR * CUBE_RADIAL_DENSITY + _time * CUBE_FALL_SPEED,
-            uv.y * CUBE_FACE_DENSITY * 0.5
+            uv.x * SQUARE_FACE_DENSITY * 0.5,
+            logR * SQUARE_RADIAL_DENSITY + _time * SQUARE_FALL_SPEED,
+            uv.y * SQUARE_FACE_DENSITY * 0.5
         );
 
         vec3 cellId = floor(gridUV);
@@ -399,36 +436,42 @@ vec4 fallingCubes3D(vec3 ro, vec3 rd, float horizon, float outerRadius, float _t
         vec3 cellUV = fract(gridUV) - 0.5;
 
         float rnd = hash31(cellId);
-        if (rnd > CUBE_DENSITY_THRESH) continue;
+        if (rnd > SQUARE_DENSITY_THRESH) continue;
 
         vec3 offset = vec3(
-            hash31(cellId + vec3(1.0, 0.0, 0.0)),
-            hash31(cellId + vec3(2.0, 0.0, 0.0)),
-            hash31(cellId + vec3(3.0, 0.0, 0.0))
+            hash31(cellId + vec3(10.0, 0.0, 0.0)),
+            hash31(cellId + vec3(20.0, 0.0, 0.0)),
+            hash31(cellId + vec3(30.0, 0.0, 0.0))
         ) * 0.6 - 0.3;
-        float size = mix(CUBE_SIZE_MIN, CUBE_SIZE_MAX, hash31(cellId + vec3(4.0, 0.0, 0.0)));
+        float size = mix(SQUARE_SIZE_MIN, SQUARE_SIZE_MAX, hash31(cellId + vec3(4.0, 0.0, 0.0)));
 
         vec3 pCell = cellUV - offset;
 
-        vec3 halfExtents = vec3(size, CUBE_PLANE_THICKNESS, size);
+        vec3 halfExtents = vec3(size, SQUARE_PLANE_THICKNESS, size);
         vec3 inBox = step(abs(pCell), halfExtents);
         float plane = inBox.x * inBox.y * inBox.z;
 
         float contribution = plane * fade;
 
-        alpha = max(alpha, contribution);
-        shade = max(shade, mix(0.5, 1.0, hash31(cellId + vec3(7.0, 0.0, 0.0))) * contribution);
+        if (contribution > 0.0001 && !foundHit) {
+            outT = t;
+            foundHit = true;
+        }
+
+
+        alpha = max(alpha, mix(0.5, 1.0, hash31(cellId + vec3(1.0, 0.0, 0.0))) * contribution);
+        shade = max(shade, mix(0.0, 0.2, hash31(cellId + vec3(7.0, 0.0, 0.0))) * contribution);
     }
 
     return vec4(vec3(shade), alpha);
 }
-#undef CUBE_RADIAL_DENSITY
-#undef CUBE_FACE_DENSITY
-#undef CUBE_FALL_SPEED
-#undef CUBE_DENSITY_THRESH
-#undef CUBE_SIZE_MIN
-#undef CUBE_SIZE_MAX
-#undef CUBE_PLANE_THICKNESS
+#undef SQUARE_RADIAL_DENSITY
+#undef SQUARE_FACE_DENSITY
+#undef SQUARE_FALL_SPEED
+#undef SQUARE_DENSITY_THRESH
+#undef SQUARE_SIZE_MIN
+#undef SQUARE_SIZE_MAX
+#undef SQUARE_PLANE_THICKNESS
 
 
 
@@ -445,6 +488,10 @@ bool intersectPlane(vec3 ro, vec3 rd, vec3 normal, out float rayLen) {
     rayLen = -dot(ro, normal) / denom;
     return rayLen >= 0.0;
 }
+
+
+
+
 
 
 
@@ -477,4 +524,3 @@ void buildOrthoBasis(vec3 normal, out vec3 tangent, out vec3 bitangent) {
 vec2 planeUV(vec3 hitPosLocal, vec3 tangent, vec3 bitangent, float scale) {
     return vec2(dot(hitPosLocal, tangent), dot(hitPosLocal, bitangent)) * scale;
 }
-

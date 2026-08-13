@@ -6,6 +6,10 @@
 
 
 
+
+
+
+
 #ifdef MINECRAFT
     #moj_import <minecraft:globals.glsl>
     #moj_import <minecraft:projection.glsl>
@@ -23,8 +27,6 @@
 
     out vec4 fragColor;
 
-
-
     #define sceneColorSampler (SceneSampler)
     #define sceneDepthSampler (SceneDepthSampler)
     #define time (GameTime * 12000.0)
@@ -41,58 +43,18 @@
 
 
 
-
-
-
-
-
-
-float fallingSquares(vec2 uv, float _time, float horizon, float outerRadius) {
-    float distance = length(uv);
-    float angle = atan(uv.y, uv.x);
-    angle += pow(horizon / distance, 6.0) * 3.0;
-
-    float logR = log(distance);
-
-    float angularDensity = 140.0;
-    float radialDensity = 60.0;
-    float fallSpeed = 0.8;
-
-    vec2 gridUV = vec2(angle * angularDensity / TAU, logR * radialDensity + _time * fallSpeed);
-
-    vec2 cellId = floor(gridUV);
-    vec2 cellUV = fract(gridUV) - 0.5;
-
-    float rnd = hash21(cellId);
-    if (rnd > 0.35) {
-        return 0.0;
-    }
-
-    vec2 offset = vec2(hash21(cellId + 1.0), hash21(cellId + 2.0)) * 0.6 - 0.3;
-    float size = mix(0.1, 0.5, hash21(cellId + 3.0));
-    float rot = hash21(cellId + 4.0) * TAU;
-
-    vec2 p = rotate(cellUV - offset, rot);
-    float square = step(max(abs(p.x), abs(p.y)), size);
-    float fade = smoothstep(horizon * 0.9, horizon * 1.5, distance) * (1.0 - smoothstep(outerRadius * 0.9, outerRadius, distance));
-    return square * fade;
-}
-
-
-
-
-
-
-
-
-
-
-
 #define CORE_RADIUS_FALLOFF   0.95
 #define LENSING_SCALE         4.0
 #define PHOTON_RING_SCALE     1.05
 #define DISK_OUTER_SCALE      2.4
-#define CUBE_AREA_SCALE       1.4
+#define SQUARE_AREA_SCALE     1.4
+
+
+// How sharply each layer fades out when real world geometry is in front of it.
+#define CORE_DEPTH_BIAS   0.03
+#define RING_DEPTH_BIAS   0.03
+#define SQUARES_DEPTH_BIAS  0.03
+#define DISK_DEPTH_BIAS   0.12
 
 
 // uv0: coords that go from  0.0 to 1.0
@@ -112,12 +74,15 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float horizon = texture(iChannel2, vec2(0)).x; // world scale radius, controlled with keys
 #endif
 
-
-
-
     vec2 uv = uv0 - vec2(0.5);
-    gl_FragDepth = gl_FragCoord.z; //FIXME calculate proper depth based on the 3d rendering
 
+
+
+
+    // Poll scene depth and linearize it //TODO poll after lensing effect, might fix the depth issue
+    vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(sceneDepthSampler, 0));
+    float sceneDepthRaw = texture(sceneDepthSampler, screenUV).x;
+    float sceneLinear = linearizeDepth(sceneDepthRaw);
 
 
     // Calculate lensed screen UVs, then use them to poll the distorted scene background
@@ -126,69 +91,70 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec4 lensedSceneColor = texture(sceneColorSampler, lensedScreenUV);
 
 
-
-
-
-    // Compute core mask and color
+    // Compute core mask, depth, and color
+    float tCoreNear, tCoreFar;
+    bool coreHit = intersectSphere(frame.rayOrigin, frame.rayDir, horizon, tCoreNear, tCoreFar) && tCoreFar >= 0.0;
     float bCore = dot(frame.rayOrigin, frame.rayDir);
+    float coreT = coreHit ? max(tCoreNear, 0.0) : max(-bCore, 0.0);
     float impactCore = sqrt(max(dot(frame.rayOrigin, frame.rayOrigin) - bCore * bCore, 0.0));
     float coreMask = bCore < 0.0 ? smoothstep(horizon, horizon - horizon * (1.0 - CORE_RADIUS_FALLOFF), impactCore) : 0.0;
+    coreMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * coreT, sceneLinear, CORE_DEPTH_BIAS);
     vec4 coreColor = vec4(vec3(0.0), coreMask);
 
 
-    //if(hitPlane) {
-        //vec3 planePosLocal = frame.rayOrigin + frame.rayDir * tPlane;
-        //gl_FragDepth = impostorNdcDepth(frame, planePosLocal);
+    // Calculate disk coord data
+    vec3 diskNormal = vec3(0.0, 1.0, 0.0);
+    vec3 diskTangent, diskBitangent;
+    buildOrthoBasis(diskNormal, diskTangent, diskBitangent);
 
-        // Calculate disk coord data
-        vec3 diskNormal = vec3(0.0, 1.0, 0.0);
-        vec3 diskTangent, diskBitangent;
-        buildOrthoBasis(diskNormal, diskTangent, diskBitangent);
 
-        // Compute disk mask and color
-        vec4 edgeNoise = volumetricEdgeNoise(frame.rayOrigin, frame.rayDir, horizon, horizon * DISK_OUTER_SCALE, time, diskTangent, diskBitangent, diskNormal);
-        float turbulence = edgeNoise.r;
-        float diskMask = edgeNoise.a;
-        vec4 diskColor = vec4(mix(vec3(1.0, 0.2, 0.05) * 0.8, vec3(1.0, 0.15, 0.15) * 0.1, pow(turbulence, 1.0)), diskMask);
+    // Compute disk mask, depth, and color. This layer doesn't write gl_FragDepth
+    float diskT;
+    vec4 edgeNoise = volumetricEdgeNoise(frame.rayOrigin, frame.rayDir, horizon, horizon * DISK_OUTER_SCALE, time, diskTangent, diskBitangent, diskNormal, diskT);
+    float turbulence = edgeNoise.r;
+    float diskMask = edgeNoise.a;
+    diskMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * diskT, sceneLinear, DISK_DEPTH_BIAS);
+    vec4 diskColor = vec4(mix(vec3(1.0, 0.2, 0.05) * 0.8, vec3(1.0, 0.15, 0.15) * 0.1, pow(turbulence, 1.0)), diskMask);
 
-        //float squares = fallingSquares(diskUV, time, horizon, outerRadius) * 0.5 * diskMask;
 
-        // color = diskColor * diskMask; //TODO
-        // color = mix(color, vec3(0.0), squares); //TODO
-        // objectBgColor = vec4(vec3(1.0, 0.95, 0.9), photonRing); //TODO
-
-        //alpha = max(squares, max(photonRing, diskMask));
-    //}
-
-    //float photonRingMask = intersectSphereGradient(frame.rayOrigin, frame.rayDir, uv, frame.quadExtent, photonRingStart, photonRingEnd, 1.0, false);
-    //vec4 photonRingColor = vec4(vec3(1.0), photonRingMask * 4.0); // Flipped source color and contrast
-
-    // Compute photon ring mask and color
-    float photonRingMask = volumetricPhotonRing(frame.rayOrigin, frame.rayDir, horizon, horizon * PHOTON_RING_SCALE - horizon, time);
+    // Compute photon ring mask, depth, and color
+    float ringT;
+    float photonRingMask = volumetricPhotonRing(frame.rayOrigin, frame.rayDir, horizon, horizon * PHOTON_RING_SCALE - horizon, time, ringT);
+    photonRingMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * ringT, sceneLinear, RING_DEPTH_BIAS);
     vec4 photonRingColor = vec4(vec3(1.0, (photonRingMask * 1.1) * vec2(0.9, 0.8)), photonRingMask);
 
 
-    // Compute falling cubes mask and color
-    vec4 cubesMask = fallingCubes3D(frame.rayOrigin, frame.rayDir, horizon, horizon * CUBE_AREA_SCALE, time, diskTangent, diskBitangent, diskNormal);
-    vec4 cubesColor = vec4(vec3(0.0), cubesMask.a * 0.8);
+    // Compute falling squares mask, depth, and color
+    float squaresT;
+    vec4 squaresRaw = fallingSquares(frame.rayOrigin, frame.rayDir, horizon, horizon * SQUARE_AREA_SCALE, time, diskTangent, diskBitangent, diskNormal, squaresT);
+    float squaresAlpha = squaresRaw.a * 0.8;
+    squaresAlpha *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * squaresT, sceneLinear, SQUARES_DEPTH_BIAS);
+    vec4 squaresColor = vec4(squaresRaw.rgb, squaresAlpha);
 
 
+
+
+    // Sort core/ring/disk/squares by depth
+    float dCore = coreT, dRing = ringT, dDisk = diskT, dSquares = squaresT;
+    vec4 cCore = coreColor, cRing = photonRingColor, cDisk = diskColor, cSquares = squaresColor;
+    depthCompareSwap(dCore, dRing,    cCore, cRing);
+    depthCompareSwap(dDisk, dSquares, cDisk, cSquares);
+    depthCompareSwap(dCore, dDisk,    cCore, cDisk);
+    depthCompareSwap(dRing, dSquares, cRing, cSquares);
+    depthCompareSwap(dRing, dDisk,    cRing, cDisk);
 
 
     // Composite layers and output the final image
-    vec4 bgColor =
-        over(cubesColor,
-        over(photonRingColor,
-        over(diskColor,
-        over(lensedSceneColor,
-        vec4(0.0)
-    ))));
-    vec4 fgColor =
-        over(coreColor,
-        vec4(0.0)
-    );
-    fragColor = over(fgColor, bgColor);
-    #ifndef MINECRAFT
+    fragColor = over(cCore, cRing, cDisk, cSquares, lensedSceneColor);
+    #ifdef MINECRAFT
+        float writeT = 1e30;
+        float writeNdc = -1.0;
+        if (coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * coreT);    }
+        if (photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * ringT);    }
+        if (squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * squaresT); }
+        gl_FragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
+    #else
+        gl_FragDepth = gl_FragCoord.z;
         if(uv0.x < -1.0) fragColor = vec4(uv0, 0.0, 1.0);
     #endif
 }

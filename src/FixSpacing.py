@@ -49,7 +49,7 @@ def main():
 
     for root, _, files in os.walk(SCRIPT_DIR):
         for name in files:
-            if not name.endswith('.java'):
+            if not name.endswith(('.java', '.fsh', '.vsh')):
                 continue
             path = os.path.join(root, name)
             with open(path, 'r', encoding='utf-8') as f:

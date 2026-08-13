@@ -1,6 +1,8 @@
+
 #ifdef MINECRAFT
     #moj_import <minecraft:projection.glsl>
 #endif
+
 
 
 #define PI  3.14159265359
@@ -12,16 +14,13 @@
 
 
 
+
 float hash21(vec2 p) {
-    uvec2 v = floatBitsToUint(p);
-    v = v * 1664525u + 1013904223u;
-    v.x += v.y * 1664525u;
-    v.y += v.x * 1664525u;
-    v ^= v >> 16u;
-    v.x += v.y * 1664525u;
-    v.y += v.x * 1664525u;
-    return float(v.y) * (1.0 / 4294967296.0);
+    p = fract(p * vec2(123.34, 456.21));
+    p += dot(p, p + 45.32);
+    return fract(p.x * p.y);
 }
+
 
 float valueNoise(vec2 p) {
     vec2 i = floor(p);
@@ -34,6 +33,7 @@ float valueNoise(vec2 p) {
     return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
 }
 
+
 float fbm(vec2 p) {
     float sum = 0.0;
     float amp = 0.5;
@@ -44,12 +44,6 @@ float fbm(vec2 p) {
     }
     return sum;
 }
-
-
-
-
-
-
 
 
 float hash31(vec3 p) {
@@ -64,6 +58,7 @@ float hash31(vec3 p) {
     v.z += v.x * v.y;
     return float(v.x) * (1.0 / 4294967296.0);
 }
+
 
 float valueNoise3D(vec3 p) {
     vec3 i = floor(p);
@@ -89,6 +84,7 @@ float valueNoise3D(vec3 p) {
 
     return mix(nxy0, nxy1, u.z);
 }
+
 
 float fbm3D(vec3 p) {
     float sum = 0.0;
@@ -120,12 +116,46 @@ vec4 over(vec4 top, vec4 bottom) {
     vec3 outColor = (top.rgb * top.a + bottom.rgb * bottom.a * (1.0 - top.a)) / max(outAlpha, 0.0001);
     return vec4(outColor, outAlpha);
 }
+vec4 over(vec4 l0, vec4 l1, vec4 l2) {
+    return over(l0, over(l1, l2));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3) {
+    return over(l0, over(l1, l2, l3));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4) {
+    return over(l0, over(l1, l2, l3, l4));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5) {
+    return over(l0, over(l1, l2, l3, l4, l5));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8));
+}
 
+
+
+
+
+
+
+
+// Swaps depth and color pairs so depthA <= depthB
+void depthCompareSwap(inout float depthA, inout float depthB, inout vec4 colorA, inout vec4 colorB) {
+    if (depthA > depthB) {
+        float td = depthA; depthA = depthB; depthB = td;
+        vec4 tc = colorA; colorA = colorB; colorB = tc;
+    }
+}
 
 vec3 adjustContrast(vec3 color, float contrast) {
     return clamp((color - 0.5) * contrast + 0.5, 0.0, 1.0);
 }
-
 
 float adjustContrast(float n, float contrast) {
     return clamp((n - 0.5) * contrast + 0.5, 0.0, 1.0);
@@ -143,14 +173,20 @@ float adjustContrast(float n, float contrast) {
 
 
 
-
-
-
 #ifdef MINECRAFT
     float linearizeDepth(float ndcZ) {
         return ProjMat[3][2] / (ProjMat[2][2] + ndcZ);
     }
+#else
+    float linearizeDepth(float ndcZ) {
+        return ndcZ;
+    }
+#endif
 
+
+
+
+#ifdef MINECRAFT
     mat4 getViewMatrix() {
         return ModelViewMat;
     }
@@ -194,12 +230,7 @@ float adjustContrast(float n, float contrast) {
         return inverse(camToWorld);
     }
 
-
     mat4 getProjMatrix() {
         return fakePerspectiveMatrix(radians(50.0), iResolution.x / iResolution.y, 0.05, 100.0);
-    }
-
-    float linearizeDepth(float ndcZ) {
-        return ndcZ;
     }
 #endif
