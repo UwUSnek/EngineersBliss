@@ -12,11 +12,15 @@
 
 
 
-
 float hash21(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
+    uvec2 v = floatBitsToUint(p);
+    v = v * 1664525u + 1013904223u;
+    v.x += v.y * 1664525u;
+    v.y += v.x * 1664525u;
+    v ^= v >> 16u;
+    v.x += v.y * 1664525u;
+    v.y += v.x * 1664525u;
+    return float(v.y) * (1.0 / 4294967296.0);
 }
 
 float valueNoise(vec2 p) {
@@ -49,9 +53,16 @@ float fbm(vec2 p) {
 
 
 float hash31(vec3 p) {
-    p = fract(p * vec3(443.897, 441.423, 437.195));
-    p += dot(p, p.yzx + 19.19);
-    return fract((p.x + p.y) * p.z);
+    uvec3 v = floatBitsToUint(p);
+    v = v * 1664525u + 1013904223u;
+    v.x += v.y * v.z;
+    v.y += v.z * v.x;
+    v.z += v.x * v.y;
+    v ^= v >> 16u;
+    v.x += v.y * v.z;
+    v.y += v.z * v.x;
+    v.z += v.x * v.y;
+    return float(v.x) * (1.0 / 4294967296.0);
 }
 
 float valueNoise3D(vec3 p) {

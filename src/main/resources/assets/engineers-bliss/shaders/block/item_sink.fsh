@@ -27,7 +27,7 @@
 
     #define sceneColorSampler (SceneSampler)
     #define sceneDepthSampler (SceneDepthSampler)
-    #define time (GameTime * 1200.0)
+    #define time (GameTime * 12000.0)
 #else
     #define sceneColorSampler (iChannel0)
     #define sceneDepthSampler (iChannel1)
@@ -92,6 +92,7 @@ float fallingSquares(vec2 uv, float _time, float horizon, float outerRadius) {
 #define LENSING_SCALE         4.0
 #define PHOTON_RING_SCALE     1.05
 #define DISK_OUTER_SCALE      2.4
+#define CUBE_AREA_SCALE       1.4
 
 
 // uv0: coords that go from  0.0 to 1.0
@@ -167,15 +168,21 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec4 photonRingColor = vec4(vec3(1.0, (photonRingMask * 1.1) * vec2(0.9, 0.8)), photonRingMask);
 
 
+    // Compute falling cubes mask and color
+    vec4 cubesMask = fallingCubes3D(frame.rayOrigin, frame.rayDir, horizon, horizon * CUBE_AREA_SCALE, time, diskTangent, diskBitangent, diskNormal);
+    vec4 cubesColor = vec4(vec3(0.0), cubesMask.a * 0.8);
+
+
 
 
     // Composite layers and output the final image
     vec4 bgColor =
+        over(cubesColor,
         over(photonRingColor,
         over(diskColor,
         over(lensedSceneColor,
         vec4(0.0)
-    )));
+    ))));
     vec4 fgColor =
         over(coreColor,
         vec4(0.0)

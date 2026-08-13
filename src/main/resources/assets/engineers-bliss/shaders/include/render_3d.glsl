@@ -199,16 +199,16 @@ float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float
 #define NOISE_CONTRAST 3.5
 #define NOISE_SCALE    5.0
 #define NOISE_TWIST    -4.5
-#define NOISE_SPEED    0.1
+#define NOISE_SPEED    0.01
 #define NOISE_DENSITY  2.0
 
 
 /**
  * @param ro          Ray origin, local to the object's center (ImpostorFrame.rayOrigin).
  * @param rd          Normalized ray direction, local space (ImpostorFrame.rayDir).
- * @param innerRadius Shell starts fading in here (roughly the event horizon).
- * @param outerRadius Shell has fully faded out by here.
- * @param _time       Animation time, drives a rotation of the sample points (not a UV offset).
+ * @param innerRadius Inner radius of the shell.
+ * @param outerRadius Outer radius of the shell.
+ * @param _time       Animation time.
  * @param axisA,axisB,axisN  Orthonormal basis for the disk plane (tangent, bitangent, normal).
  */
 vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN) {
@@ -266,8 +266,9 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
 
 
 
+
 #define RING_NOISE_SCALE  0.8
-#define RING_NOISE_SPEED  0.3
+#define RING_NOISE_SPEED  0.1
 #define RING_NOISE_AMOUNT 1.2
 #define RING_STEPS        16
 #define RING_DENSITY      16.0
@@ -334,6 +335,103 @@ float volumetricPhotonRing(vec3 ro, vec3 rd, float radius, float thickness, floa
 #undef RING_DENSITY
 #undef RING_INNER_FALLOFF
 #undef RING_OUTER_FALLOFF
+
+
+
+
+
+
+
+#define CUBE_RADIAL_DENSITY   20.0
+#define CUBE_FACE_DENSITY     25.0
+#define CUBE_FALL_SPEED       0.1
+#define CUBE_DENSITY_THRESH   0.15
+#define CUBE_SIZE_MIN         0.05
+#define CUBE_SIZE_MAX         0.25
+#define CUBE_PLANE_THICKNESS  0.1
+
+vec4 fallingCubes3D(vec3 ro, vec3 rd, float horizon, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN) {
+    float tNearOuter, tFarOuter;
+    if(!intersectSphere(ro, rd, outerRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
+        return vec4(0.0);
+    }
+    tNearOuter = max(tNearOuter, 0.0);
+
+    const int STEPS = 128;
+    float dt = (tFarOuter - tNearOuter) / float(STEPS);
+
+    float alpha = 0.0;
+    float shade = 0.0;
+
+    for(int i = 0; i < STEPS; i++) {
+        float t = tNearOuter + (float(i) + 0.5) * dt;
+        vec3 p = ro + rd * t;
+        float r = length(p);
+        if(r < 1e-4) continue;
+
+        float fade = smoothstep(horizon * 0.9, horizon * 1.5, r) * (1.0 - smoothstep(outerRadius * 0.9, outerRadius, r));
+        if(fade <= 0.0001) continue;
+
+        vec3 d = vec3(dot(p, axisA), dot(p, axisB), dot(p, axisN)) / r;
+
+        vec3 ad = abs(d);
+        float face, faceScale;
+        vec2 uv;
+        if(ad.x >= ad.y && ad.x >= ad.z) {
+            faceScale = ad.x; uv = vec2(d.y, d.z); face = d.x > 0.0 ? 0.0 : 1.0;
+        } else if(ad.y >= ad.z) {
+            faceScale = ad.y; uv = vec2(d.x, d.z); face = d.y > 0.0 ? 2.0 : 3.0;
+        } else {
+            faceScale = ad.z; uv = vec2(d.x, d.y); face = d.z > 0.0 ? 4.0 : 5.0;
+        }
+        uv /= faceScale;
+
+        float logR = log(r);
+
+        vec3 gridUV = vec3(
+            uv.x * CUBE_FACE_DENSITY * 0.5,
+            logR * CUBE_RADIAL_DENSITY + _time * CUBE_FALL_SPEED,
+            uv.y * CUBE_FACE_DENSITY * 0.5
+        );
+
+        vec3 cellId = floor(gridUV);
+        cellId.x += face * 4096.0;
+        vec3 cellUV = fract(gridUV) - 0.5;
+
+        float rnd = hash31(cellId);
+        if (rnd > CUBE_DENSITY_THRESH) continue;
+
+        vec3 offset = vec3(
+            hash31(cellId + vec3(1.0, 0.0, 0.0)),
+            hash31(cellId + vec3(2.0, 0.0, 0.0)),
+            hash31(cellId + vec3(3.0, 0.0, 0.0))
+        ) * 0.6 - 0.3;
+        float size = mix(CUBE_SIZE_MIN, CUBE_SIZE_MAX, hash31(cellId + vec3(4.0, 0.0, 0.0)));
+
+        vec3 pCell = cellUV - offset;
+
+        vec3 halfExtents = vec3(size, CUBE_PLANE_THICKNESS, size);
+        vec3 inBox = step(abs(pCell), halfExtents);
+        float plane = inBox.x * inBox.y * inBox.z;
+
+        float contribution = plane * fade;
+
+        alpha = max(alpha, contribution);
+        shade = max(shade, mix(0.5, 1.0, hash31(cellId + vec3(7.0, 0.0, 0.0))) * contribution);
+    }
+
+    return vec4(vec3(shade), alpha);
+}
+#undef CUBE_RADIAL_DENSITY
+#undef CUBE_FACE_DENSITY
+#undef CUBE_FALL_SPEED
+#undef CUBE_DENSITY_THRESH
+#undef CUBE_SIZE_MIN
+#undef CUBE_SIZE_MAX
+#undef CUBE_PLANE_THICKNESS
+
+
+
 
 
 
