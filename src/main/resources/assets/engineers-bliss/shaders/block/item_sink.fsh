@@ -146,15 +146,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     // Composite layers and output the final image
     fragColor = over(cCore, cRing, cDisk, cSquares, lensedSceneColor);
-    #ifdef MINECRAFT
-        float writeT = 1e30;
-        float writeNdc = -1.0;
-        if (coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * coreT);    }
-        if (photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * ringT);    }
-        if (squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * squaresT); }
-        gl_FragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
-    #else
-        gl_FragDepth = gl_FragCoord.z;
-        if(uv0.x < -1.0) fragColor = vec4(uv0, 0.0, 1.0);
-    #endif
+    float writeT   =  1e30;
+    float writeNdc = -1.0;
+    if(coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * coreT);    }
+    if(photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * ringT);    }
+    if(squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * squaresT); }
+    gl_FragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
 }
