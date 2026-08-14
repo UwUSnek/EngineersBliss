@@ -37,7 +37,7 @@ float valueNoise(vec2 p) {
 float fbm(vec2 p) {
     float sum = 0.0;
     float amp = 0.5;
-    for (int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) {
         sum += amp * valueNoise(p);
         p *= 2.0;
         amp *= 0.5;
@@ -89,7 +89,7 @@ float valueNoise3D(vec3 p) {
 float fbm3D(vec3 p) {
     float sum = 0.0;
     float amp = 0.5;
-    for (int i = 0; i < 4; i++) {
+    for(int i = 0; i < 4; i++) {
         sum += amp * valueNoise3D(p);
         p *= 2.0;
         amp *= 0.5;
@@ -147,7 +147,7 @@ vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7
 
 // Swaps depth and color pairs so depthA <= depthB
 void depthCompareSwap(inout float depthA, inout float depthB, inout vec4 colorA, inout vec4 colorB) {
-    if (depthA > depthB) {
+    if(depthA > depthB) {
         float td = depthA; depthA = depthB; depthB = td;
         vec4 tc = colorA; colorA = colorB; colorB = tc;
     }

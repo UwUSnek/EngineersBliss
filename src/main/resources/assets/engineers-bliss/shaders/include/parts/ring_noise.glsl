@@ -29,7 +29,7 @@ float volumetricPhotonRing(vec3 ro, vec3 rd, float radius, float thickness, floa
 
     vec3 impact = ro - b * rd;
     float impactLen = length(impact);
-    if (impactLen < 1e-5) {
+    if(impactLen < 1e-5) {
         return 0.0;
     }
 

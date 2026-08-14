@@ -170,7 +170,7 @@ bool intersectSphere(vec3 ro, vec3 rd, float radius, out float tNear, out float 
 
 
 float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float startRadius, float endRadius, float density, bool fov) {
-    if (fov) {
+    if(fov) {
         float d = length(ro);
         float r;
 
@@ -185,10 +185,10 @@ float intersectSphereGradient(vec3 ro, vec3 rd, vec2 uv, float quadExtent, float
 
         float outerHalf = sqrt(max(endRadius * endRadius - r * r, 0.0));
         float pathLength;
-        if (r < startRadius) {
+        if(r < startRadius) {
             float innerHalf = sqrt(max(startRadius * startRadius - r * r, 0.0));
             pathLength = 2.0 * (outerHalf - innerHalf);
-        } else if (r < endRadius) {
+        } else if(r < endRadius) {
             pathLength = 2.0 * outerHalf;
         } else {
             pathLength = 0.0;

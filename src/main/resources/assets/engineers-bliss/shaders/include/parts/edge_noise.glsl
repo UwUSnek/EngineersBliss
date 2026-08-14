@@ -25,7 +25,7 @@
 vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius, float _time, vec3 axisA, vec3 axisB, vec3 axisN, out float outT) {
     outT = 0.0;
     float tNearOuter, tFarOuter;
-    if (!intersectSphere(ro, rd, outerRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
+    if(!intersectSphere(ro, rd, outerRadius, tNearOuter, tFarOuter) || tFarOuter < 0.0) {
         return vec4(0.0);
     }
     tNearOuter = max(tNearOuter, 0.0);
@@ -39,7 +39,7 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
     float accumWeight = 0.0;
     float accumT = 0.0;
 
-    for (int i = 0; i < STEPS; i++) {
+    for(int i = 0; i < STEPS; i++) {
         float t = tNearOuter + (float(i) + 0.5) * dt;
         vec3 p = ro + rd * t;
         if(dot(p, rd) >= 0.0) continue; // Don't render back side
@@ -65,7 +65,7 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
     float noiseAvg = accumWeight > 0.0001 ? accumNoise / accumWeight : 0.0;
     noiseAvg   = adjustContrast(noiseAvg,   NOISE_CONTRAST);
     accumAlpha = adjustContrast(accumAlpha, NOISE_CONTRAST);
-    if (accumWeight > 0.0001) outT = accumT / accumWeight;
+    if(accumWeight > 0.0001) outT = accumT / accumWeight;
     return vec4(vec3(noiseAvg), clamp(accumAlpha, 0.0, 1.0));
 }
 #undef NOISE_CONTRAST

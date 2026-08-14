@@ -100,9 +100,9 @@ vec4 fallingSquares(vec3 ro, vec3 rd, float horizon, float outerRadius, float _t
     float segStarts[2] = float[2](tNearOuter, tCA);
     float segEnds[2]   = float[2](tCA, tFarOuter);
 
-    for (int s = 0; s < 2; s++) {
+    for(int s = 0; s < 2; s++) {
         float ta = segStarts[s], tb = segEnds[s];
-        if (tb - ta < 1e-5) continue;
+        if(tb - ta < 1e-5) continue;
 
         float rA = length(ro + rd * ta);
         float rB = length(ro + rd * tb);
@@ -112,12 +112,12 @@ vec4 fallingSquares(vec3 ro, vec3 rd, float horizon, float outerRadius, float _t
         int nStart = int(floor(min(gA, gB)));
         int nEnd   = min(int(floor(max(gA, gB))), nStart + SQUARE_MAX_SHELLS);
 
-        for (int n = nStart; n <= nEnd; n++) {
+        for(int n = nStart; n <= nEnd; n++) {
             float tLo = mix(ta, tb, clamp((float(n)       - gA) / (gB - gA), 0.0, 1.0));
             float tHi = mix(ta, tb, clamp((float(n) + 1.0 - gA) / (gB - gA), 0.0, 1.0));
-            if (tHi < tLo) { float tmp = tLo; tLo = tHi; tHi = tmp; }
+            if(tHi < tLo) { float tmp = tLo; tLo = tHi; tHi = tmp; }
 
-            for (int a = 0; a < SQUARE_ANGULAR_SUBSTEPS; a++) {
+            for(int a = 0; a < SQUARE_ANGULAR_SUBSTEPS; a++) {
                 float t = mix(tLo, tHi, (float(a) + 0.5) / float(SQUARE_ANGULAR_SUBSTEPS));
                 testSquareCell(ro, rd, t, horizon, outerRadius, axisA, axisB, axisN, _time, alpha, shade, outT, foundHit);
             }

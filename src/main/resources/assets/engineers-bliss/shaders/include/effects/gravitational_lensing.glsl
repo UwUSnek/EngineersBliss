@@ -28,7 +28,7 @@ vec2 worldToScreenUV(vec3 worldPos) {
  * @param outerRadius The outer radius of the lensing falloff, in world units.
  * @param spin Frame dragging strength/direction. -1 to +1. 0 means no drag.
  **/
-vec2 _internal_calculate_lensed_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, vec2 screenUV, vec2 uvToModify, float horizon, float outerRadius, float spin){
+vec2 _internal_calculate_lensed_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, vec2 screenUV, vec2 uvToModify, float horizon, float outerRadius, float spin) {
     mat4 camToWorld = inverse(getViewMatrix());
     vec3 camRight = normalize(camToWorld[0].xyz);
     vec3 camUp    = normalize(camToWorld[1].xyz);
@@ -96,13 +96,13 @@ vec2 _internal_calculate_lensed_uv(ImpostorFrame frame, sampler2D SceneDepthSamp
 
 
 
-vec2 calculate_lensed_custom_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, vec2 uvToModify, float horizon, float outerRadius, float spin){
+vec2 calculate_lensed_custom_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, vec2 uvToModify, float horizon, float outerRadius, float spin) {
     vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(SceneDepthSampler, 0));
     return _internal_calculate_lensed_uv(frame, SceneDepthSampler, centerWorld, screenUV, uvToModify, horizon, outerRadius, spin);
 }
 
 
-vec2 calculate_lensed_screen_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, float horizon, float outerRadius, float spin){
+vec2 calculate_lensed_screen_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, float horizon, float outerRadius, float spin) {
     vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(SceneDepthSampler, 0));
     return _internal_calculate_lensed_uv(frame, SceneDepthSampler, centerWorld, screenUV, screenUV, horizon, outerRadius, spin);
 }
