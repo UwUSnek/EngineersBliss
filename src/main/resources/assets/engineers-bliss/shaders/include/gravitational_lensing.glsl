@@ -76,16 +76,16 @@ vec2 _internal_calculate_lensed_uv(ImpostorFrame frame, sampler2D SceneDepthSamp
     vec2 direction = distance > 1e-5 ? (localUV / distance) : vec2(0.0);
     vec2 tangentDir = vec2(-direction.y, direction.x);
 
-    // vec2 localPush = -direction * lensStrength * depthMask * horizon + tangentDir * dragAmount * horizon;
     vec2 fullPush = -direction * lensStrength * horizon + tangentDir * dragAmount * horizon;
     vec2 pushedUv = uvToModify + localToScreen * fullPush;
 
-    // depth check at the fully-pushed location
     float destDepthRaw = texture(SceneDepthSampler, pushedUv).x;
     float destLinear = linearizeDepth(destDepthRaw);
     float destMask = smoothstep(fragLinear - depthEdge, fragLinear + depthEdge, destLinear);
     float finalMask = min(depthMask, destMask);
 
+
+    // Return depth-tested distorted background
     return mix(uvToModify, pushedUv, finalMask);
 }
 
