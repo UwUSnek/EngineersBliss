@@ -35,7 +35,7 @@
 #endif
 
 
-void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius, vec3 axisA, vec3 axisB, vec3 axisN, float _time, inout float alpha, inout float shade, inout float outT, inout bool foundHit) {
+void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius, vec3 axisA, vec3 axisB, vec3 axisN, float _time, inout float alpha, inout vec3 shade, inout float outT, inout bool foundHit) {
     vec3 p = ro + rd * t;
     float r = length(p);
     if(r < 1e-4) return;
@@ -75,15 +75,15 @@ void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius,
     cellId.x += face * 4096.0;
     vec3 cellUV = fract(gridUV) - 0.5;
 
-    float rnd = hash31(cellId);
+    float rnd = hash13(cellId);
     if(rnd > SQUARE_DENSITY_THRESH) return;
 
     vec3 offset = vec3(
-        hash31(cellId + vec3(10.0, 0.0, 0.0)),
-        hash31(cellId + vec3(20.0, 0.0, 0.0)),
-        hash31(cellId + vec3(30.0, 0.0, 0.0))
+        hash11(rnd + 1.0),
+        hash11(rnd + 2.0),
+        hash11(rnd + 3.0)
     ) * 0.6 - 0.3;
-    float size = mix(SQUARE_SIZE_MIN, SQUARE_SIZE_MAX, hash31(cellId + vec3(4.0, 0.0, 0.0)));
+    float size = mix(SQUARE_SIZE_MIN, SQUARE_SIZE_MAX, hash11(rnd + 4.0));
 
     vec3 pCell = cellUV - offset;
     vec3 halfExtents = vec3(size, SQUARE_PLANE_THICKNESS, size);
@@ -95,8 +95,12 @@ void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius,
         outT = foundHit ? min(outT, t) : t;
         foundHit = true;
     }
-    alpha = max(alpha, mix(0.5, 1.0, hash31(cellId + vec3(1.0, 0.0, 0.0))) * contribution);
-    shade = max(shade, mix(0.0, 0.2, hash31(cellId + vec3(7.0, 0.0, 0.0))) * contribution);
+    alpha = max(alpha, mix(0.5, 1.0, hash11(rnd + 5.0)) * contribution);
+    shade = max(shade, vec3(
+        mix(0.5, 1.0, hash11(rnd + 6.0)) * contribution,
+        mix(0.5, 1.0, hash11(rnd + 7.0)) * contribution,
+        mix(0.5, 1.0, hash11(rnd + 8.0)) * contribution
+    ));
 }
 
 
@@ -111,7 +115,7 @@ vec4 fallingSquares(vec3 ro, vec3 rd, float horizon, float outerRadius, float _t
     tNearOuter = max(tNearOuter, 0.0);
 
     float alpha = 0.0;
-    float shade = 0.0;
+    vec3 shade = vec3(0.0);
     bool foundHit = false;
 
     float tCA = clamp(-dot(ro, rd), tNearOuter, tFarOuter);

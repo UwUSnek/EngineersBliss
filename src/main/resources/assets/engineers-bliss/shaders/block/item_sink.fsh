@@ -131,7 +131,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec4 squaresRaw = fallingSquares(frame.rayOrigin, frame.rayDir, horizon, horizon * SQUARE_AREA_SCALE, time, diskTangent, diskBitangent, diskNormal, squaresT);
     float squaresAlpha = squaresRaw.a * 0.8;
     squaresAlpha *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * squaresT, sceneLinear, SQUARES_DEPTH_BIAS);
-    vec4 squaresColor = vec4(squaresRaw.rgb, squaresAlpha);
+    vec4 squaresColor = vec4(vec3((squaresRaw.r + squaresRaw.g + squaresRaw.b) / 3.0) - 0.5, squaresAlpha);
 
 
 
