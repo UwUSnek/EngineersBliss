@@ -6,16 +6,34 @@
 
 
 
+#ifndef SQUARE_RADIAL_DENSITY
+    #define SQUARE_RADIAL_DENSITY   20.0
+#endif
+#ifndef SQUARE_FACE_DENSITY
+    #define SQUARE_FACE_DENSITY     25.0
+#endif
+#ifndef SQUARE_FALL_SPEED
+    #define SQUARE_FALL_SPEED       0.05
+#endif
+#ifndef SQUARE_DENSITY_THRESH
+    #define SQUARE_DENSITY_THRESH   0.5
+#endif
+#ifndef SQUARE_SIZE_MIN
+    #define SQUARE_SIZE_MIN         0.05
+#endif
+#ifndef SQUARE_SIZE_MAX
+    #define SQUARE_SIZE_MAX         0.25
+#endif
+#ifndef SQUARE_PLANE_THICKNESS
+    #define SQUARE_PLANE_THICKNESS  0.1
+#endif
+#ifndef SQUARE_ANGULAR_SUBSTEPS
+    #define SQUARE_ANGULAR_SUBSTEPS 4   //! 4 kinda works and looks kinda consistent. Higher quality makes the shader too laggy
+#endif
+#ifndef SQUARE_MAX_SHELLS
+    #define SQUARE_MAX_SHELLS       256
+#endif
 
-#define SQUARE_RADIAL_DENSITY   20.0
-#define SQUARE_FACE_DENSITY     25.0
-#define SQUARE_FALL_SPEED       0.05
-#define SQUARE_DENSITY_THRESH   0.5
-#define SQUARE_SIZE_MIN         0.05
-#define SQUARE_SIZE_MAX         0.25
-#define SQUARE_PLANE_THICKNESS  0.1
-#define SQUARE_ANGULAR_SUBSTEPS 4   //! 4 kinda works and looks kinda consistent. Higher quality makes the shader too laggy
-#define SQUARE_MAX_SHELLS       256
 
 void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius, vec3 axisA, vec3 axisB, vec3 axisN, float _time, inout float alpha, inout float shade, inout float outT, inout bool foundHit) {
     vec3 p = ro + rd * t;

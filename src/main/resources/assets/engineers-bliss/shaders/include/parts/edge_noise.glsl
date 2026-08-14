@@ -7,11 +7,21 @@
 
 
 
-#define NOISE_CONTRAST 3.5
-#define NOISE_SCALE    5.0
-#define NOISE_TWIST   -8.0
-#define NOISE_SPEED    0.01
-#define NOISE_DENSITY  0.82
+#ifndef NOISE_CONTRAST
+    #define NOISE_CONTRAST 3.5
+#endif
+#ifndef NOISE_SCALE
+    #define NOISE_SCALE    5.0
+#endif
+#ifndef NOISE_TWIST
+    #define NOISE_TWIST   -8.0
+#endif
+#ifndef NOISE_SPEED
+    #define NOISE_SPEED    0.01
+#endif
+#ifndef NOISE_DENSITY
+    #define NOISE_DENSITY  0.82
+#endif
 
 /**
  * @param ro          Ray origin, local to the object's center (ImpostorFrame.rayOrigin).

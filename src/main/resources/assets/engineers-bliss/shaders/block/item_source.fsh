@@ -1,7 +1,24 @@
 
-
 #version 150
 #define MINECRAFT
+
+
+
+
+
+
+
+
+// Noise settings
+#define NOISE_TWIST 48.0
+
+// Squares settings
+#define SQUARE_RADIAL_DENSITY   2.0
+#define SQUARE_FACE_DENSITY     25.0
+#define SQUARE_FALL_SPEED      -0.01
+#define SQUARE_DENSITY_THRESH   0.5
+#define SQUARE_SIZE_MIN         0.05
+#define SQUARE_SIZE_MAX         0.1
 
 
 
@@ -45,11 +62,12 @@
 
 
 
+
 #define CORE_RADIUS_FALLOFF   0.95
 #define LENSING_SCALE         4.0
 #define PHOTON_RING_SCALE     1.05
 #define DISK_OUTER_SCALE      2.4
-#define SQUARE_AREA_SCALE     1.4
+#define SQUARE_AREA_SCALE     2.0
 
 
 // How sharply each layer fades out when real world geometry is in front of it.
@@ -101,7 +119,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float impactCore = sqrt(max(dot(frame.rayOrigin, frame.rayOrigin) - bCore * bCore, 0.0));
     float coreMask = bCore < 0.0 ? smoothstep(horizon, horizon - horizon * (1.0 - CORE_RADIUS_FALLOFF), impactCore) : 0.0;
     coreMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * coreT, sceneLinear, CORE_DEPTH_BIAS);
-    vec4 coreColor = vec4(vec3(0.0), coreMask);
+    vec4 coreColor = vec4(vec3(0.95, 0.95, 1.0), coreMask * 1.0); //! Idk if colors > 1.0 work properly but its not creating bugs so far
 
 
     // Calculate disk coord data
@@ -116,14 +134,14 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float turbulence = edgeNoise.r;
     float diskMask = edgeNoise.a;
     diskMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * diskT, sceneLinear, DISK_DEPTH_BIAS);
-    vec4 diskColor = vec4(mix(vec3(1.0, 0.2, 0.05) * 0.8, vec3(1.0, 0.15, 0.15) * 0.1, pow(turbulence, 1.0)), diskMask);
+    vec4 diskColor = vec4(mix(vec3(0.1, 0.5, 1.0) * 0.8, vec3(0.15, 0.5, 1.0) * 0.1, pow(turbulence, 1.0)), diskMask);
 
 
     // Compute photon ring mask, depth, and color
     float ringT;
     float photonRingMask = volumetricPhotonRing(frame.rayOrigin, frame.rayDir, horizon, horizon * PHOTON_RING_SCALE - horizon, time, ringT);
     photonRingMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * ringT, sceneLinear, RING_DEPTH_BIAS);
-    vec4 photonRingColor = vec4(vec3(1.0, (photonRingMask * 1.1) * vec2(0.9, 0.8)), photonRingMask);
+    vec4 photonRingColor = vec4(vec3(0.5, vec2(0.9, 0.8)), photonRingMask);
 
 
     // Compute falling squares mask, depth, and color
@@ -162,4 +180,5 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         gl_FragDepth = gl_FragCoord.z;
         if(uv0.x < -1.0) fragColor = vec4(uv0, 0.0, 1.0);
     #endif
+    //fragColor = over(vec4(vec3(photonRingColor.rgb), photonRingMask), lensedSceneColor);
 }

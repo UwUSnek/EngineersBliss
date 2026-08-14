@@ -7,13 +7,27 @@
 
 
 
-#define RING_NOISE_SCALE    0.8
-#define RING_NOISE_SPEED    0.1
-#define RING_NOISE_AMOUNT   1.2
-#define RING_STEPS         16
-#define RING_DENSITY       16.0
-#define RING_INNER_FALLOFF  0.01
-#define RING_OUTER_FALLOFF  0.02
+#ifndef RING_NOISE_SCALE
+    #define RING_NOISE_SCALE    0.8
+#endif
+#ifndef RING_NOISE_SPEED
+    #define RING_NOISE_SPEED    0.1
+#endif
+#ifndef RING_NOISE_AMOUNT
+    #define RING_NOISE_AMOUNT   1.2
+#endif
+#ifndef RING_STEPS
+    #define RING_STEPS         16
+#endif
+#ifndef RING_DENSITY
+    #define RING_DENSITY       16.0
+#endif
+#ifndef RING_INNER_FALLOFF
+    #define RING_INNER_FALLOFF  0.01
+#endif
+#ifndef RING_OUTER_FALLOFF
+    #define RING_OUTER_FALLOFF  0.02
+#endif
 
 /**
  * @param ro        Ray origin, local to the object's center (ImpostorFrame.rayOrigin).

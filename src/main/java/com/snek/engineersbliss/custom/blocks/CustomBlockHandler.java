@@ -6,7 +6,7 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
-import com.snek.engineersbliss.custom.blocks.base.CustomEntityBlock;
+import com.snek.engineersbliss.custom.blocks.base.CustomTransparentEntityBlock;
 import com.snek.engineersbliss.custom.blocks.base.FrictionSurface;
 import com.snek.engineersbliss.custom.blocks.special.FrictionlessSurface;
 
@@ -18,7 +18,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
