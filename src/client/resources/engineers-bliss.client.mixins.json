@@ -6,6 +6,7 @@
         "accessors.GameRendererAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",
+        "accessors.BlockEntityRenderDispatcherAccessor",
         "accessors.AbstractScrollAreaAccessor",
         "accessors.FontAccessor",
         "accessors.MinecraftAccessor",
@@ -60,6 +61,7 @@
 
 
         "rendering.vanilla_indigo.RenderingFilterBlockVanillaIndigoMixin",
+        "rendering.vanilla_indigo.SpaceWarpingRenderPassMixin",
         "rendering.RenderingFilterLightMixin",
         "rendering.CustomOutlinesMixin",
         "rendering.InteractionFilterMixin",
