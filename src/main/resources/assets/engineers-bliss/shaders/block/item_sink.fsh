@@ -79,7 +79,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
 
-    // Poll scene depth and linearize it //TODO poll after lensing effect, might fix the depth issue
+    // Poll scene depth and linearize it
     vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(sceneDepthSampler, 0));
     float sceneDepthRaw = texture(sceneDepthSampler, screenUV).x;
     float sceneLinear = linearizeDepth(sceneDepthRaw);
@@ -87,7 +87,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     // Calculate lensed screen UVs, then use them to poll the distorted scene background
     float lensingBoundary = horizon * PHOTON_RING_SCALE;
-    vec2 lensedScreenUV = calculate_lensed_screen_uv(sceneDepthSampler, frame.center, lensingBoundary, lensingBoundary * LENSING_SCALE, 0.35);
+    vec2 lensedScreenUV = calculate_lensed_screen_uv(frame, sceneDepthSampler, frame.center, lensingBoundary, lensingBoundary * LENSING_SCALE, 0.35);
     vec4 lensedSceneColor = texture(sceneColorSampler, lensedScreenUV);
 
 
@@ -151,5 +151,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     if(coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * coreT);    }
     if(photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * ringT);    }
     if(squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = impostorNdcDepth(frame, frame.rayOrigin + frame.rayDir * squaresT); }
-    gl_FragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
+    float newFragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
+    gl_FragDepth = min(gl_FragDepth, newFragDepth);
+    // fragColor = vec4(vec3(gl_FragDepth / 3), 1.0);
 }

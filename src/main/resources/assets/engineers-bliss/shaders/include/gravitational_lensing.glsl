@@ -1,7 +1,15 @@
 
 #ifdef MINECRAFT
     #moj_import <engineers-bliss:utils.glsl>
+    #moj_import <engineers-bliss:render_3d.glsl>
 #endif
+
+
+
+
+
+
+
 
 vec2 worldToScreenUV(vec3 worldPos) {
     vec4 clip = getProjMatrix() * getViewMatrix() * vec4(worldPos, 1.0);
@@ -9,8 +17,9 @@ vec2 worldToScreenUV(vec3 worldPos) {
     return ndc * 0.5 + 0.5;
 }
 
+
 /**
- * Applies a gravitational lensing effect to the background color.
+ * Applies a gravitational lensing effect to the provided UVs.
  * @param SceneDepthSampler the scene sampler to read the background depth from.
  * @param centerWorld World space position of the lensing object's center.
  * @param screenUV The screen UV of the fragment being shaded.
@@ -19,7 +28,7 @@ vec2 worldToScreenUV(vec3 worldPos) {
  * @param outerRadius The outer radius of the lensing falloff, in world units.
  * @param spin Frame dragging strength/direction. -1 to +1. 0 means no drag.
  **/
-vec2 _internal_calculate_lensed_uv(sampler2D SceneDepthSampler, vec3 centerWorld, vec2 screenUV, vec2 uvToModify, float horizon, float outerRadius, float spin){
+vec2 _internal_calculate_lensed_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, vec2 screenUV, vec2 uvToModify, float horizon, float outerRadius, float spin){
     mat4 camToWorld = inverse(getViewMatrix());
     vec3 camRight = normalize(camToWorld[0].xyz);
     vec3 camUp    = normalize(camToWorld[1].xyz);
@@ -48,25 +57,52 @@ vec2 _internal_calculate_lensed_uv(sampler2D SceneDepthSampler, vec3 centerWorld
     lensStrength = pow(lensStrength, 2.0);
     float dragAmount = lensStrength * spin * 0.15;
 
+
+
+
+
     // Calculate depth gradient. This is used to blend the surroundings smoothly and avoid hard edges between normal/distorted areas.
     float sceneDepth = texture(SceneDepthSampler, screenUV).x;
     float sceneLinear = linearizeDepth(sceneDepth);
-    float fragLinear  = linearizeDepth(gl_FragCoord.z);
+    float bRef = dot(frame.rayOrigin, frame.rayDir);
+    float refT = max(-bRef, 0.0); // near-side point of the sphere along the ray
+    vec3 refWorldPos = frame.rayOrigin + frame.rayDir * refT; // frame-local space
+    float fragLinear  = linearizeDepth(impostorNdcDepth(frame, refWorldPos));
     float depthEdge = 0.8;
     float depthMask = smoothstep(fragLinear - depthEdge, fragLinear + depthEdge, sceneLinear);
 
+
+    // Check depth again at the destination UV
     vec2 direction = distance > 1e-5 ? (localUV / distance) : vec2(0.0);
     vec2 tangentDir = vec2(-direction.y, direction.x);
 
-    vec2 localPush = -direction * lensStrength * depthMask * horizon + tangentDir * dragAmount * horizon;
-    return uvToModify + localToScreen * localPush;
+    // vec2 localPush = -direction * lensStrength * depthMask * horizon + tangentDir * dragAmount * horizon;
+    vec2 fullPush = -direction * lensStrength * horizon + tangentDir * dragAmount * horizon;
+    vec2 pushedUv = uvToModify + localToScreen * fullPush;
+
+    // depth check at the fully-pushed location
+    float destDepthRaw = texture(SceneDepthSampler, pushedUv).x;
+    float destLinear = linearizeDepth(destDepthRaw);
+    float destMask = smoothstep(fragLinear - depthEdge, fragLinear + depthEdge, destLinear);
+    float finalMask = min(depthMask, destMask);
+
+    return mix(uvToModify, pushedUv, finalMask);
 }
 
-vec2 calculate_lensed_custom_uv(sampler2D SceneDepthSampler, vec3 centerWorld, vec2 uvToModify, float horizon, float outerRadius, float spin){
+
+
+
+
+
+
+
+vec2 calculate_lensed_custom_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, vec2 uvToModify, float horizon, float outerRadius, float spin){
     vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(SceneDepthSampler, 0));
-    return _internal_calculate_lensed_uv(SceneDepthSampler, centerWorld, screenUV, uvToModify, horizon, outerRadius, spin);
+    return _internal_calculate_lensed_uv(frame, SceneDepthSampler, centerWorld, screenUV, uvToModify, horizon, outerRadius, spin);
 }
-vec2 calculate_lensed_screen_uv(sampler2D SceneDepthSampler, vec3 centerWorld, float horizon, float outerRadius, float spin){
+
+
+vec2 calculate_lensed_screen_uv(ImpostorFrame frame, sampler2D SceneDepthSampler, vec3 centerWorld, float horizon, float outerRadius, float spin){
     vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(SceneDepthSampler, 0));
-    return _internal_calculate_lensed_uv(SceneDepthSampler, centerWorld, screenUV, screenUV, horizon, outerRadius, spin);
+    return _internal_calculate_lensed_uv(frame, SceneDepthSampler, centerWorld, screenUV, screenUV, horizon, outerRadius, spin);
 }
