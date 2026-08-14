@@ -1,7 +1,7 @@
 
 #ifdef MINECRAFT
-    #moj_import <engineers-bliss:utils.glsl>
-    #moj_import <engineers-bliss:render_3d.glsl>
+    #moj_import <engineers-bliss:utils/utils.glsl>
+    #moj_import <engineers-bliss:utils/render_3d.glsl>
 #endif
 
 

@@ -14,9 +14,11 @@
     #moj_import <minecraft:globals.glsl>
     #moj_import <minecraft:projection.glsl>
     #moj_import <minecraft:dynamictransforms.glsl>
-    #moj_import <engineers-bliss:utils.glsl>
-    #moj_import <engineers-bliss:gravitational_lensing.glsl>
-    #moj_import <engineers-bliss:render_3d.glsl>
+    #moj_import <engineers-bliss:utils/render_3d.glsl>
+    #moj_import <engineers-bliss:effects/gravitational_lensing.glsl>
+    #moj_import <engineers-bliss:parts/edge_noise.glsl>
+    #moj_import <engineers-bliss:parts/falling_squares.glsl>
+    #moj_import <engineers-bliss:parts/ring_noise.glsl>
 
     in vec4 vertexColor;
     in vec2 uv0;
