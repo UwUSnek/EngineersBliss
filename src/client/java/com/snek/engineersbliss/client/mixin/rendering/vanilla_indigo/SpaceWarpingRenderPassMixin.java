@@ -52,7 +52,7 @@ public abstract class SpaceWarpingRenderPassMixin {
     @Shadow @Final private LevelRenderState levelRenderState;
 
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({ "unused", "unchecked" })
     @Inject(method = "addLateDebugPass", at = @At("HEAD"))
     private void engineersbliss$addItemSinkPass(
         final FrameGraphBuilder frame,
@@ -110,7 +110,12 @@ public abstract class SpaceWarpingRenderPassMixin {
                     encoder.copyTextureToTexture(target.getColorTexture(), SceneSnapshotHandler.getColor(), 0, 0, 0, 0, 0, width, height);
                     encoder.copyTextureToTexture(target.getDepthTexture(), SceneSnapshotHandler.getDepth(), 0, 0, 0, 0, 0, width, height);
 
-                    renderState.getSecond().render(List.of(renderState.getFirst()), poseStack, bufferSource, camera, camera.pos);
+                    renderState.getSecond().render(
+                        List.of(renderState.getFirst()),
+                        poseStack, camera, camera.pos, encoder,
+                        target.getColorTextureView(),
+                        target.getDepthTextureView()
+                    );
                     bufferSource.endBatch();
                 }
             }

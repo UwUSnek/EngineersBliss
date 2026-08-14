@@ -27,23 +27,21 @@ struct ImpostorFrame {
 
 
 #ifdef MINECRAFT
+
+    //! Plane size is provided by the java code. This creates more consistent results than trying to calculate it.
+    layout(std140) uniform PlaneSizeData {
+        float PlaneSize;
+    };
+
     ImpostorFrame getImpostorFrame(vec3 worldPos, vec2 uv) {
-        vec3 dPdx = dFdx(worldPos);
-        vec3 dPdy = dFdy(worldPos);
-        float dUdx = dFdx(uv.x), dUdy = dFdy(uv.x);
-        float dVdx = dFdx(uv.y), dVdy = dFdy(uv.y);
+        mat4 invMV = inverse(getViewMatrix());
+        vec3 camWorld = (invMV * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
 
-        float det = dUdx * dVdy - dVdx * dUdy;
-        det = abs(det) < 1e-8 ? 1e-8 : det;
-
-        vec3 uAxis = (dVdy * dPdx - dVdx * dPdy) / det;
-        vec3 vAxis = (dUdx * dPdy - dUdy * dPdx) / det;
+        vec3 uAxis = invMV[0].xyz * PlaneSize;  // Camera right
+        vec3 vAxis = invMV[1].xyz * PlaneSize;  // Camera up
 
         vec3 center = worldPos - (uv.x - 0.5) * uAxis - (uv.y - 0.5) * vAxis;
         vec3 localPos = worldPos - center;
-
-        mat4 invMV = inverse(getViewMatrix());
-        vec3 camWorld = (invMV * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
         vec3 camLocal = camWorld - center;
 
         ImpostorFrame f;
