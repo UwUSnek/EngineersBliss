@@ -363,3 +363,11 @@
   - much bigger than the standard item sink model. bigger lensing effect too
   - write in the item that this is only aesthetic and doesn't do anything. only creative mode ofc.
   - maybe add the same thing for item sources, aesthetic version.
+
+
+
+
+- add a "regenerate" command/tool/something
+  - This lets you regenerate the selected area to the default world generation,
+  - The process removes all block and entities in the selection
+  - Async with progress bar

@@ -41,18 +41,24 @@ vec4 volumetricEdgeNoise(vec3 ro, vec3 rd, float innerRadius, float outerRadius,
     tNearOuter = max(tNearOuter, 0.0);
     outT = tNearOuter;
 
-    const int STEPS = 24;
-    float dt = (tFarOuter - tNearOuter) / float(STEPS);
 
+    // Clip the loop from the camera to the center of the sphere. This skips the back side
+    float tCA = -dot(ro, rd);
+    bool hasNearFarSplit = tCA > tNearOuter;
+    float loopFar = hasNearFarSplit ? min(tFarOuter, tCA) : tFarOuter;
+
+
+
+    // Compute steps and accumulate contributions
+    const int STEPS = 24;
+    float dt = (loopFar - tNearOuter) / float(STEPS);
     float accumAlpha = 0.0;
     float accumNoise = 0.0;
     float accumWeight = 0.0;
     float accumT = 0.0;
-
     for(int i = 0; i < STEPS; i++) {
         float t = tNearOuter + (float(i) + 0.5) * dt;
         vec3 p = ro + rd * t;
-        if(dot(p, rd) >= 0.0) continue; // Don't render back side
         float r = length(p);
 
         float shell = (1.0 - smoothstep(innerRadius, outerRadius, r)) * smoothstep(innerRadius * 0.85, innerRadius, r);
