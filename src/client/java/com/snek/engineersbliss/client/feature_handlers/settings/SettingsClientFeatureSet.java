@@ -67,6 +67,20 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         () -> new UiTxt("Display player model in pause screen"),
         () -> new UiTxt("Renders your player's skin, name, and playtime in the pause menu.")
     );
+    public static final ClientFeature<?> BLOCK_SHADERS = new ClientFeature<>(
+        SettingsServerFeatureSet.BLOCK_SHADERS,
+        () -> new UiTxt("Enable Block Shaders."),
+        () -> new UiTxt()
+            .cat(new UiTxt("Whether to use shaders for custom block models.\n"))
+            .cat(new UiTxt("This can be very laggy and resource intensive."))
+    );
+    public static final ClientFeature<?> BLOCK_SHADER_LIMIT = new ClientFeature<>(
+        SettingsServerFeatureSet.BLOCK_SHADER_LIMIT,
+        () -> new UiTxt("Block Shader limit"),
+        () -> (UiTxt)new UiTxt()
+            .cat(new UiTxt("The maximum number of shaded block models to display at once. This can help control lag in busy areas.\n"))
+            .cat(new UiTxt("Only available when [Block Shaders] is ON.").Orange())
+    );
 
 
 
