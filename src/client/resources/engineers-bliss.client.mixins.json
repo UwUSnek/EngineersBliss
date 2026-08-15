@@ -58,6 +58,7 @@
 
         "custom_items.FullBrightHandItemMixin",
         "custom_items.FullBrightItemEntityMixin",
+        "custom_items.FrictionGetterFixMixin",
 
 
         "rendering.vanilla_indigo.RenderingFilterBlockVanillaIndigoMixin",
