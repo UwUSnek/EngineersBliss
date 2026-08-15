@@ -13,6 +13,30 @@
 
 
 
+
+
+
+float valueNoise(float p) {
+    float i = floor(p);
+    float f = fract(p);
+    float a = hash11(i);
+    float b = hash11(i + 1.0);
+    float u = f * f * (3.0 - 2.0 * f);
+    return mix(a, b, u);
+}
+
+float fbm(float p) {
+    float sum = 0.0;
+    float amp = 0.5;
+    for(int i = 0; i < 4; i++) {
+        sum += amp * valueNoise(p);
+        p *= 2.0;
+        amp *= 0.5;
+    }
+    return sum;
+}
+
+
 float valueNoise(vec2 p) {
     vec2 i = floor(p);
     vec2 f = fract(p);
@@ -37,7 +61,7 @@ float fbm(vec2 p) {
 }
 
 
-float valueNoise3D(vec3 p) {
+float valueNoise(vec3 p) {
     vec3 i = floor(p);
     vec3 f = fract(p);
     vec3 u = f * f * (3.0 - 2.0 * f);
@@ -67,7 +91,7 @@ float fbm3D(vec3 p) {
     float sum = 0.0;
     float amp = 0.5;
     for(int i = 0; i < 4; i++) {
-        sum += amp * valueNoise3D(p);
+        sum += amp * valueNoise(p);
         p *= 2.0;
         amp *= 0.5;
     }
@@ -86,6 +110,12 @@ vec2 rotate(vec2 p, float a) {
     float c = cos(a);
     return mat2(c, -s, s, c) * p;
 }
+
+
+
+
+
+
 
 
 vec4 over(vec4 top, vec4 bottom) {
@@ -114,7 +144,27 @@ vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7
 vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8) {
     return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8));
 }
-
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9, vec4 l10) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9, vec4 l10, vec4 l11) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9, vec4 l10, vec4 l11, vec4 l12) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9, vec4 l10, vec4 l11, vec4 l12, vec4 l13) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9, vec4 l10, vec4 l11, vec4 l12, vec4 l13, vec4 l14) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14));
+}
+vec4 over(vec4 l0, vec4 l1, vec4 l2, vec4 l3, vec4 l4, vec4 l5, vec4 l6, vec4 l7, vec4 l8, vec4 l9, vec4 l10, vec4 l11, vec4 l12, vec4 l13, vec4 l14, vec4 l15) {
+    return over(l0, over(l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15));
+}
 
 
 
@@ -177,9 +227,9 @@ float adjustContrast(float n, float contrast) {
         vec3 r = normalize(cross(f, up));
         vec3 u = cross(r, f);
         return mat4(
-            vec4(r, 0.0),
-            vec4(u, 0.0),
-            vec4(-f, 0.0),
+            vec4(r,   0.0),
+            vec4(u,   0.0),
+            vec4(-f,  0.0),
             vec4(eye, 1.0)
         );
     }
@@ -189,8 +239,8 @@ float adjustContrast(float n, float contrast) {
         return mat4(
             f / aspect, 0.0, 0.0, 0.0,
             0.0,        f,   0.0, 0.0,
-            0.0, 0.0, (far + near) / (near - far), -1.0,
-            0.0, 0.0, (2.0 * far * near) / (near - far), 0.0
+            0.0, 0.0, (      far + near) / (near - far), -1.0,
+            0.0, 0.0, (2.0 * far * near) / (near - far),  0.0
         );
     }
 
