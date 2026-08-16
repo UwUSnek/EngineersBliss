@@ -371,3 +371,11 @@
   - This lets you regenerate the selected area to the default world generation,
   - The process removes all block and entities in the selection
   - Async with progress bar
+
+
+
+
+- fix overlays not working properly in multiplayer??? idk
+
+
+- fix height of player compass not accounting for the status bar

@@ -2,7 +2,6 @@ package com.snek.engineersbliss.feature_handlers.base;
 
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
