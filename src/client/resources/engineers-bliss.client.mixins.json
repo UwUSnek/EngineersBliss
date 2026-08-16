@@ -89,6 +89,7 @@
 
 
         "status_bar.VanillaGuiHeightChangerMixin",
+        "status_bar.VanillaContextualBarHeightChangerMixin",
         "status_bar.CrosshairHeightFixMixin"
     ],
     "injectors": {
