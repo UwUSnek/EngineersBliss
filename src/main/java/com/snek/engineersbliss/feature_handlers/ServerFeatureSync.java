@@ -83,8 +83,6 @@ public class ServerFeatureSync {
 
 
     private static PlayerFeatureData getPlayerData(final Player player) {
-//TODO remove
-        // initializedOrThrow();
         return playerData.compute(player.getUUID(), (k, v) -> v == null ? new PlayerFeatureData() : v);
     }
     public static <T> T getFeature(final @NotNull Player player, final @NotNull __base_ServerFeature<T> feature) {
@@ -166,8 +164,6 @@ public class ServerFeatureSync {
     //! Packet receivers need extra checks to ensure the server doesn't crash for modified packets or a version mismatch
     @SuppressWarnings("unchecked")
     private static <T> void handleFeatureUpdateRequest(int id, T newValue, ServerPlayNetworking.Context context) {
-//TODO remove
-        // initializedOrThrow();
         ServerScheduler.run(() -> {
             final Player player = context.player();
             try {
@@ -194,44 +190,6 @@ public class ServerFeatureSync {
             }
         });
     }
-
-//TODO remove
-    // private static void init() {
-    //     if(initialized) {
-    //         EngineerSBliss.LOGGER.error("init called twice", new Throwable());
-    //     }
-    //     else {
-    //         initBlockStateData();
-    //         initialized = true;
-    //     }
-    // }
-
-//TODO remove
-    // private static void initializedOrThrow() {
-    //     if(!initialized) {
-    //         throw new IllegalStateException(String.format("%s used before initialization.", ServerFeatureSync.class.getName()));
-    //     }
-    // }
-
-
-
-//TODO remove
-    // private static void initBlockStateData() {
-    //     final @NotNull List<BlockState> states = ServerMinecraftUtils.fetchAllBlockStates();
-    //     EngineerSBliss.LOGGER.info("Computing BlockState Features for {} states...", Utils.formatAmount(states.size()));
-    //     for(final @NotNull BlockState state : states) {
-    //         for(final __base_ServerFeature<?> feature : __base_ServerFeature.getAllFeatures().values()) {
-    //             final @NotNull StateFeatureData data = stateData.compute(state, (k, v) -> v == null ? new StateFeatureData() : v);
-    //             if(feature instanceof final @NotNull __base_BlockFeatureInterface blockFeature) {
-    //                 if(blockFeature.affects(state.getBlock())) {
-    //                     data.addFeature(feature);
-    //                 }
-    //             }
-    //             stateData.put(state, data);
-    //         }
-    //     }
-    //     EngineerSBliss.LOGGER.info("Done");
-    // }
 }
 
 

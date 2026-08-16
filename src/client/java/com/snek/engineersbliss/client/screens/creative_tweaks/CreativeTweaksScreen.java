@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.screens.creative_tweaks;
 
 import java.text.DecimalFormat;
-import java.util.function.Function;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;

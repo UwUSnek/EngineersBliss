@@ -40,7 +40,6 @@ public class ClientFeatureSync {
 
     public static <T> T getFeature(final __base_ServerFeature<T> feature) {
         feature.getFeatureSet().initializedOrThrow();
-        // __base_ServerFeature.finalizedOrThrow("Feature used before feature set init finalization"); //TODO remove
         return playerData.getValue(feature);
     }
     public static boolean getFeatureB(final __base_ServerFeature<Boolean> feature) {
@@ -68,7 +67,6 @@ public class ClientFeatureSync {
      */
     public static <T> void setFeature(final __base_ServerFeature<T> feature, final T value) {
         feature.getFeatureSet().initializedOrThrow();
-        // __base_ServerFeature.finalizedOrThrow("Feature used before feature set init finalization"); //TODO remove
         playerData.setValue(feature, value);
 
 
@@ -106,7 +104,7 @@ public class ClientFeatureSync {
      * ! This doesn't work when called from the dedicated server. Use ServerFeatureSync.creativePlayerHasFeature(Player, __base_ServerFeature) instead.
      */
     public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature, final T value) {
-        if(entity instanceof final Player player) {
+        if(entity instanceof final @NotNull Player player) {
             if(player.isCreative()) {
                 return getFeature(feature) == value;
             }

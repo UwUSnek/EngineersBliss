@@ -354,7 +354,6 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         initContext.modifyBlockModelOnLoad().register((model, onLoadContext) -> {
             final @NotNull BlockState state = onLoadContext.state();
             final Block block = state.getBlock();
-            // if(!AltTexturesServerFeatureSet.INSTANCE.affects(block)) return model; //TODO remove
             if(!ServerFeatureSync.stateHasFeaturesFromSet(state, AltTexturesServerFeatureSet.INSTANCE)) return model;
 
 
@@ -397,7 +396,6 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
             final @NotNull BlockState state = beforeBakeContext.state();
             final Block block = state.getBlock();
-            // if(!AltTexturesServerFeatureSet.INSTANCE.affects(block)) return model; //TODO remove
             if(!ServerFeatureSync.stateHasFeaturesFromSet(state, AltTexturesServerFeatureSet.INSTANCE)) return model;
 
 
@@ -465,7 +463,6 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         initContext.modifyBlockModelAfterBake().register((vanilla, afterBakeContext) -> {
             final @NotNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
-            // if(!AltTexturesServerFeatureSet.INSTANCE.affects(block)) return vanilla; //TODO remove
             if(!ServerFeatureSync.stateHasFeaturesFromSet(state, AltTexturesServerFeatureSet.INSTANCE)) return vanilla;
 
 
