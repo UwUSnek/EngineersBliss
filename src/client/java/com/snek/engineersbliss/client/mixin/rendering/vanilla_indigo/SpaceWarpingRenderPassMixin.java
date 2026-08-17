@@ -23,7 +23,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.SceneSnapshotHandler;
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.__base_SpaceWarpingRenderer;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderDispatcherAccessor;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
@@ -61,6 +63,12 @@ public abstract class SpaceWarpingRenderPassMixin {
         final Matrix4fc modelViewMatrix,
         final CallbackInfo ci
     ) {
+
+        // Pass if custom shaded blocks are OFF
+        if(!ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS)) {
+            return;
+        }
+
         final @NotNull FramePass pass = frame.addPass("item_sink");
         this.targets.main = pass.readsAndWrites(this.targets.main);
         final @NotNull ResourceHandle<RenderTarget> mainTarget = this.targets.main;
@@ -99,6 +107,13 @@ public abstract class SpaceWarpingRenderPassMixin {
                 camera.pos.distanceToSqr(Vec3.atCenterOf(b.getFirst().blockPos)),
                 camera.pos.distanceToSqr(Vec3.atCenterOf(a.getFirst().blockPos))
             ));
+
+            // Trim to max shaded blocks amount setting
+            final int maxBlocks = SettingsServerFeatureSet.BLOCK_SHADER_LIMIT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.BLOCK_SHADER_LIMIT));
+            if(renderStates.size() > maxBlocks) {
+                renderStates.subList(0, renderStates.size() - maxBlocks).clear();
+            }
+
 
 
             // Draw blocks starting from the farthest one, update sampled textures after each draw

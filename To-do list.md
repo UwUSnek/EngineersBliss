@@ -388,3 +388,14 @@
   - left/right click to select an area, infinite reach with preview
   - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game)
     - menu lets you do things with the selection
+
+
+- GIT INTEGRATION
+  - add a UI for it with the branch tree and all
+  - ONE REPO PER WORLD OR SERVER
+    - changing commit changes the entire world data
+    - this includes mobs, blocks, world state.
+      - player state, position, and data are NOT included. Players need to change version without getting teleported around or anything of that kind.
+      - obviously, mod jars, config files, and other such things aren't included
+    - multiplayer users share the same repo and are all on the same commit, as the versioning system is global.
+    - all of the dimensions are committed together. This avoids breaking multi-dimensional machines
