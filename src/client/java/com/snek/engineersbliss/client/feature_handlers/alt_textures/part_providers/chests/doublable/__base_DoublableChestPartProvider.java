@@ -23,14 +23,14 @@ public abstract class __base_DoublableChestPartProvider extends __base_ChestPart
             case ChestType.LEFT   -> "left";
             case ChestType.RIGHT  -> "right";
         };
-        return List.of(String.format("chests/vanilla/%s/%s%s", sideName, chestName, dirName));
+        return List.of(String.format("chests/static/%s/%s%s", sideName, chestName, dirName));
     }
     @Override
     public List<String> calcDependencyNames() {
         final String chestName = getChestName();
         final List<String> r = new ArrayList<>();
-        r.add(String.format("chests/vanilla/left/%s",  chestName));
-        r.add(String.format("chests/vanilla/right/%s", chestName));
+        r.add(String.format("chests/static/left/%s",  chestName));
+        r.add(String.format("chests/static/right/%s", chestName));
         r.addAll(super.calcDependencyNames());
         return r;
     }

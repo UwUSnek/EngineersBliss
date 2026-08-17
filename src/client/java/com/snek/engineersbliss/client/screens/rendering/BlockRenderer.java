@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.core.registries.BuiltInRegistries;

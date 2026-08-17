@@ -95,7 +95,7 @@ public final class OverlayRenderer {
 
 
         // For each chunk in the feature mask
-        for(final var chunkFeatureMaskEntry : OverlaysHandler.getFeatureWorldMap().entrySet()) {
+        for(final var chunkFeatureMaskEntry : OverlaysHandler.getWorldFeatureDataMap().entrySet()) {
             final ChunkPos chunkPos = chunkFeatureMaskEntry.getKey();
             final LevelChunk chunk = level.getChunk(chunkPos.x(), chunkPos.z());
 
@@ -106,7 +106,7 @@ public final class OverlayRenderer {
                 for(final var blockFeatureMaskEntry : chunkFeatureMaskEntry.getValue().entrySet()) {
                     final BlockPos pos = blockFeatureMaskEntry.getKey();
                     final BlockState state = chunk.getBlockState(pos);
-                    final __base_OverlayAttachedData attachedData = blockFeatureMaskEntry.getValue().getSecond();
+                    final __base_OverlayAttachedData attachedData = blockFeatureMaskEntry.getValue();
                     final Minecraft minecraft = Minecraft.getInstance();
 
                     // If the overlay should be rendered and is in view range, render it

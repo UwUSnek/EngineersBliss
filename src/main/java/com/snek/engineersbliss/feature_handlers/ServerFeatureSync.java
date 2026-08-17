@@ -1,22 +1,31 @@
 package com.snek.engineersbliss.feature_handlers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
+import com.snek.engineersbliss.feature_handlers.base.__base_BlockFeatureInterface;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.IntFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.LongFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.utils.ServerMinecraftUtils;
+import com.snek.engineersbliss.utils.Utils;
 import com.snek.engineersbliss.utils.scheduler.ServerScheduler;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 
 
 
@@ -31,36 +40,73 @@ import net.minecraft.world.entity.player.Player;
  */
 public class ServerFeatureSync {
     private ServerFeatureSync() {}
-    private static final Map<UUID, FeaturePlayerData> playerData = new ConcurrentHashMap<>();
+    private static final Map<UUID,       PlayerFeatureData> playerData = new ConcurrentHashMap<>();
+    private static final Map<BlockState,  StateFeatureData>  stateData = new ConcurrentHashMap<>();
+    private static boolean initialized = false;
 
 
 
 
-    private static FeaturePlayerData getPlayerData(final Player player) {
-        return playerData.compute(player.getUUID(), (k, v) -> v == null ? new FeaturePlayerData() : v);
+    // private static StateFeatureData getStateData(final @NotNull BlockState state) {
+    //     initializedOrThrow();
+    //     final StateFeatureData data = stateData.get(state);
+    //     if(data == null) {
+    //         throw new IllegalStateException(String.format("No feature data for state %s", state));
+    //     }
+    //     return data;
+    // }
+    private static StateFeatureData getStateData(final @NotNull BlockState state) {
+        return stateData.computeIfAbsent(state, k -> {
+            final StateFeatureData data = new StateFeatureData();
+            for(final __base_ServerFeature<?> feature : __base_ServerFeature.getAllFeatures().values()) {
+                if(feature instanceof final @NotNull __base_BlockFeatureInterface blockFeature) {
+                    if(blockFeature.affects(k.getBlock())) {
+                        data.addFeature(feature);
+                    }
+                }
+            }
+            return data;
+        });
     }
-    public static <T> T getFeature(final Player player, final __base_ServerFeature<T> feature) {
+    public static boolean stateHasFeaturesFromSet(final @NotNull BlockState state, __base_ServerFeatureSet featureSet) {
+        return getStateData(state).hasFeaturesFromSet(featureSet);
+    }
+    public static boolean stateHasFeatures(final @NotNull BlockState state) {
+        return getStateData(state).hasFeatures();
+    }
+    public static <T> boolean stateHasFeature(final @NotNull BlockState state, final @NotNull __base_ServerFeature<T> feature) {
+        return getStateData(state).hasFeature(feature);
+    }
+    //! No setter for these since they are all initialized when the server starts
+
+
+
+
+    private static PlayerFeatureData getPlayerData(final Player player) {
+        return playerData.compute(player.getUUID(), (k, v) -> v == null ? new PlayerFeatureData() : v);
+    }
+    public static <T> T getFeature(final @NotNull Player player, final @NotNull __base_ServerFeature<T> feature) {
         return getPlayerData(player).getValue(feature);
     }
-    public static boolean getFeatureB(final Player player, final __base_ServerFeature<Boolean> feature) {
+    public static boolean getFeatureB(final @NotNull Player player, final @NotNull __base_ServerFeature<Boolean> feature) {
         return getPlayerData(player).getValue(feature);
     }
-    public static int getFeatureI(final Player player, final __base_ServerFeature<Integer> feature) {
+    public static int getFeatureI(final @NotNull Player player, final @NotNull __base_ServerFeature<Integer> feature) {
         return getPlayerData(player).getValue(feature);
     }
-    public static long getFeatureL(final Player player, final __base_ServerFeature<Long> feature) {
+    public static long getFeatureL(final @NotNull Player player, final @NotNull __base_ServerFeature<Long> feature) {
         return getPlayerData(player).getValue(feature);
     }
-    public static Float getFeatureF(final Player player, final __base_ServerFeature<Float> feature) {
+    public static Float getFeatureF(final @NotNull Player player, final @NotNull __base_ServerFeature<Float> feature) {
         return getPlayerData(player).getValue(feature);
     }
-    public static double getFeatureD(final Player player, final __base_ServerFeature<Double> feature) {
+    public static double getFeatureD(final @NotNull Player player, final @NotNull __base_ServerFeature<Double> feature) {
         return getPlayerData(player).getValue(feature);
     }
 
 
     //! Private because other stuff shouldn't change the server's feature states. Only the packet receiver can (this class).
-    private static <T> void setFeature(final Player player, final __base_ServerFeature<T> feature, final T value) {
+    private static <T> void setFeature(final @NotNull Player player, final @NotNull __base_ServerFeature<T> feature, final T value) {
         getPlayerData(player).setValue(feature, value);
     }
 
@@ -145,3 +191,6 @@ public class ServerFeatureSync {
         });
     }
 }
+
+
+

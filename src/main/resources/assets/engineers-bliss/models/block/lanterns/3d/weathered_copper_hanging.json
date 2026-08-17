@@ -1,8 +1,0 @@
-{
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/lanterns/3d/templates/hanging_lantern",
-  "textures": {
-    "chain": "engineers-bliss:block/chains/3d/weathered_copper",
-    "lantern": "engineers-bliss:block/lanterns/vanilla/weathered_copper"
-  }
-}

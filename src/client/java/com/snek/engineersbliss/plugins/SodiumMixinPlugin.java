@@ -19,7 +19,7 @@ public class SodiumMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(final String targetClassName, final String mixinClassName) {
-        if(mixinClassName.equals("com.snek.engineersbliss.client.mixin.rendering.sodium.RenderFilterBlockSodiumMixin")) {
+        if(mixinClassName.equals("com.snek.engineersbliss.client.mixin.rendering.sodium.RenderingFilterBlockSodiumMixin")) {
             return FabricLoader.getInstance().isModLoaded("sodium");
         }
         return true;

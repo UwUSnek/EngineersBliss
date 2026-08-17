@@ -1,25 +1,32 @@
 package com.snek.engineersbliss.client;
 
-import javax.imageio.spi.IIORegistry;
-
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
+import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
+import com.snek.engineersbliss.client.custom.block_entities.renderers.base.SceneSnapshotHandler;
+import com.snek.engineersbliss.client.custom.block_entities.renderers.implementations.ItemSinkBlockEntityRenderer;
+import com.snek.engineersbliss.client.custom.block_entities.renderers.implementations.ItemSourceBlockEntityRenderer;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.feature_handlers.custom_items.CustomItemHandler;
-import com.snek.engineersbliss.feature_handlers.custom_items.ModCreativeTab;
+import com.snek.engineersbliss.custom.block_entities.CustomBlockEntityHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.resources.Identifier;
 
 
 
@@ -52,9 +59,16 @@ public class EngineerSBlissClient implements ClientModInitializer {
         MinecraftUtils.register();
 
 
-        // Initialize custom items
-        //! Item and block registration is done on the server side
+        // Initialize block model shading fix plugin
+        ModelLoadingPlugin.register(new ShadingFixModelPlugin());
+
+
+        // Initialize custom block renderer plugin and custom block entity renderers
         ModelLoadingPlugin.register(new UnshadedBlockModelPlugin());
+        SceneSnapshotHandler.register();
+        BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SINK,   ItemSinkBlockEntityRenderer::new);
+        BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SOURCE, ItemSourceBlockEntityRenderer::new);
+        //! Item and block registration is done on the server side
 
 
         // Initialize resource plugin for alt textures handler
@@ -65,7 +79,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Initialize handlers
-        RenderFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
+        RenderingFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
         OverlaysHandler.init();
 
 
@@ -73,8 +87,16 @@ public class EngineerSBlissClient implements ClientModInitializer {
         OverlayRenderer.register();
 
 
+        // Register CreativeTweaksClientHandler
+        CreativeTweaksClientHandler.register();
+
+
         // Register network receivers
         AttachedDataNetworkReceiver.register();
+
+
+        // Register status bar GUI renderer
+        StatusBarRenderer.register();
 
 
         // Log library loading

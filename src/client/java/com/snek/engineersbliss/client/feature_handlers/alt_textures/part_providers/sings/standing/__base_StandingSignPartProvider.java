@@ -19,16 +19,16 @@ public abstract class __base_StandingSignPartProvider extends __base_SignPartPro
     public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
         final String materialName = getSignMaterialName();
         final String rotName = getVariantSuffixFromRotationIndex(state.getValue(StandingSignBlock.ROTATION));
-        return List.of(String.format("signs/vanilla/standing/%s%s", materialName, rotName));
+        return List.of(String.format("signs/static/standing/%s%s", materialName, rotName));
     }
     @Override
     public List<String> calcDependencyNames() {
         final String materialName = getSignMaterialName();
         return List.of(
-            String.format("signs/vanilla/standing/%s_0", materialName),
-            String.format("signs/vanilla/standing/%s_1", materialName),
-            String.format("signs/vanilla/standing/%s_2", materialName),
-            String.format("signs/vanilla/standing/%s_3", materialName)
+            String.format("signs/static/standing/%s_0", materialName),
+            String.format("signs/static/standing/%s_1", materialName),
+            String.format("signs/static/standing/%s_2", materialName),
+            String.format("signs/static/standing/%s_3", materialName)
         );
     }
 }

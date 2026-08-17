@@ -53,7 +53,7 @@ public class HandAnimationsSuppressorMixin {
     )
     private float eb$swapAnimationScaleMainHand(float original) {
         if(ClientFeatureSync.getFeatureB(CreativeTweaksServerFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION)) {
-            return 0.0F;
+            return 0.0f;
         }
         return original;
     }
@@ -73,7 +73,7 @@ public class HandAnimationsSuppressorMixin {
     )
     private float eb$swapAnimationScaleOffHand(float original) {
         if(ClientFeatureSync.creativePlayerHasFeature(Minecraft.getInstance().player, CreativeTweaksServerFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION)) {
-            return 0.0F;
+            return 0.0f;
         }
         return original;
     }

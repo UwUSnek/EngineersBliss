@@ -4,7 +4,7 @@
     "compatibilityLevel": "JAVA_25",
     "plugin": "com.snek.engineersbliss.plugins.SodiumMixinPlugin",
     "client": [
-        "rendering.sodium.RenderFilterBlockSodiumMixin"
+        "rendering.sodium.RenderingFilterBlockSodiumMixin"
     ],
     "injectors": {
         "defaultRequire": 1

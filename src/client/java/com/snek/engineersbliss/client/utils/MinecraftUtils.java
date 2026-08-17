@@ -1,6 +1,4 @@
 package com.snek.engineersbliss.client.utils;
-
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,13 +7,14 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.mixin.accessors.LevelRendererAccessor;
 
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -25,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -43,7 +43,7 @@ import net.minecraft.world.phys.AABB;
 
 
 public class MinecraftUtils {
-    private MinecraftUtils() { }
+    private MinecraftUtils() {}
 
 
 
@@ -52,6 +52,20 @@ public class MinecraftUtils {
         ClientPlayConnectionEvents.DISCONNECT.register((listener,         client) -> invalidatePlaytimeData());
 
         LevelRenderEvents.START_MAIN.register(context -> checkPauseTransition());
+    }
+
+
+    public static boolean isCreativeMode(final @Nullable Player player) {
+        return player != null && player.isCreative();
+    }
+    public static boolean isCreativeMode() {
+        return isCreativeMode(Minecraft.getInstance().player);
+    }
+
+
+
+    public static boolean isChatOpen() {
+        return Minecraft.getInstance().screen instanceof ChatScreen;
     }
 
 
@@ -66,7 +80,7 @@ public class MinecraftUtils {
 
     public static void fetchPlaytime() {
         Minecraft.getInstance().getConnection().send(new ServerboundClientCommandPacket(ServerboundClientCommandPacket.Action.REQUEST_STATS));
-        playtimeRequestTime = Clock.systemUTC().millis();
+        playtimeRequestTime = System.currentTimeMillis();
         pausedAccumMs = 0;
         wasPaused = false;
     }
@@ -80,7 +94,7 @@ public class MinecraftUtils {
 
     private static void checkPauseTransition() {
         final boolean paused = Minecraft.getInstance().isPaused();
-        final long now = Clock.systemUTC().millis();
+        final long now = System.currentTimeMillis();
         if(paused && !wasPaused) pauseStartTime = now;
         if(!paused && wasPaused) pausedAccumMs += now - pauseStartTime;
         wasPaused = paused;
@@ -91,7 +105,7 @@ public class MinecraftUtils {
         if(player == null) return 0;
         if(playtimeAtRequest == 0) playtimeAtRequest = player.getStats().getValue(Stats.CUSTOM.get(Stats.PLAY_TIME));
 
-        final long curTime = Clock.systemUTC().millis();
+        final long curTime = System.currentTimeMillis();
         long timeElapsed = curTime - playtimeRequestTime - pausedAccumMs;
         if(wasPaused) timeElapsed -= (curTime - pauseStartTime); // still-open pause window
 

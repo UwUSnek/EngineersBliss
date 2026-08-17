@@ -26,7 +26,7 @@ public class UiTxt extends Txt {
     // Getters
     public @NotNull FontFamily getFontFamily() { return fontFamily; }
     public @NotNull float      getScale     () { return scale; }
-    public @NotNull ScaledFont getScaledFont() { return new ScaledFont(fontFamily.get(scale), scale); }
+    public @NotNull ScaledFont getScaledFont() { return fontFamily.get(scale); }
 
 
 

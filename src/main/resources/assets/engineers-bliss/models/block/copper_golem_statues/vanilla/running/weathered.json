@@ -1,7 +1,0 @@
-{
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/copper_golem_statues/vanilla/templates/running",
-  "textures": {
-    "texture": "engineers-bliss:block/copper_golem_statues/vanilla/weathered"
-  }
-}

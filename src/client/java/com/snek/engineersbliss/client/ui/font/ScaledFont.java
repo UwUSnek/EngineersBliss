@@ -26,34 +26,31 @@ import net.minecraft.util.FormattedCharSequence;
 public class ScaledFont {
     private final Font font;
     private final float scale;
-    private final float glyphSize;
     private final FontDescription description;
 
 
     // Getters
     public Font getFont() { return font; }
     public float getScale() { return scale; }
-    public float getGlyphSize() { return glyphSize; }
     public FontDescription getDescription() { return description; }
 
 
 
 
     @SuppressWarnings("java:S1172")
-    public ScaledFont(final @Nullable Object __unused, Font font, final float scale, final float glyphSize, final FontDescription description) {
+    public ScaledFont(final @Nullable Object __unused, Font font, final float scale, final FontDescription description) {
         this.font = font;
         this.scale = scale;
-        this.glyphSize = glyphSize;
         this.description = description;
     }
-    public ScaledFont(Font.Provider provider, final float scale, final float glyphSize, final FontDescription description) {
-        this(null, new Font(provider), scale, glyphSize, description);
+    public ScaledFont(Font.Provider provider, final float scale, final FontDescription description) {
+        this(null, new Font(provider), scale, description);
     }
     public ScaledFont() {
-        this(null, Minecraft.getInstance().font, 1f, 1f, Style.EMPTY.getFont());
+        this(null, Minecraft.getInstance().font, 1f, Style.EMPTY.getFont());
     }
     public ScaledFont(ScaledFont scaledFont, final float scale) {
-        this(null, scaledFont.getFont(), scale, scaledFont.getGlyphSize(), scaledFont.getDescription());
+        this(null, scaledFont.getFont(), scale, scaledFont.getDescription());
     }
 
 

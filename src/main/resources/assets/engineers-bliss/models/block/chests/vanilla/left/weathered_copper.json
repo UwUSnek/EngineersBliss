@@ -1,7 +1,0 @@
-{
-  "credit": "UwU_Snek",
-  "parent": "engineers-bliss:block/chests/vanilla/templates/left",
-  "textures": {
-    "texture": "engineers-bliss:block/chests/vanilla/left/weathered_copper"
-  }
-}

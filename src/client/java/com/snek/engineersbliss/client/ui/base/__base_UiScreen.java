@@ -2,18 +2,22 @@ package com.snek.engineersbliss.client.ui.base;
 
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
-import com.snek.engineersbliss.client.ui.widgets.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 
@@ -44,10 +48,19 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
+
+
+
+
+
     protected boolean tabPressed = false;
     @Override
     public boolean keyPressed(final KeyEvent event) {
         switch(event.key()) {
+            case InputConstants.KEY_ESCAPE: {
+                onClose();
+                return true;
+            }
             case InputConstants.KEY_TAB: {
                 tabPressed = true;
                 return true;
@@ -67,33 +80,47 @@ public abstract class __base_UiScreen extends Screen {
                 return true;
             }
             default: {
-                return super.keyPressed(event);
+                //! Don't call super.keyPressed.
+                //! Vanilla has custom handling for arrow keys which breaks all sorts of stuff.
+                boolean r = false;
+                for(final @NotNull GuiEventListener e : children()) {
+                    if(e.keyPressed(event)) r = true;
+                }
+                return r;
             }
         }
     }
+
+
     @Override
     public boolean keyReleased(final KeyEvent event) {
-        if(event.key() == InputConstants.KEY_TAB) {
-            tabPressed = false;
-            return true;
-        }
-        else {
-            return super.keyReleased(event);
+        switch(event.key()) {
+            case InputConstants.KEY_TAB: {
+                tabPressed = false;
+                return true;
+            }
+            default: {
+                //! No super.keyReleased call.
+                //! super.keyPressed is never called in the first place. This simply mirrors that behaviour.
+                boolean r = false;
+                for(final @NotNull GuiEventListener e : children()) {
+                    if(e.keyReleased(event)) r = true;
+                }
+                return r;
+            }
         }
     }
 
 
 
 
-    @Override
-    public boolean isPauseScreen() {
-        return true;
-    }
+
+
 
     //TODO remove. this is the old version, still used by RenderingScreen
     //TODO remove. this is the old version, still used by RenderingScreen
     protected UiButton addButton(final UiTxt label, final UiTxt details, final Consumer<UiButton> action, final int x, final int y, final int width) {
-        final UiButton r = new UiButton(x, y, width, BUTTON_HEIGHT, label, b -> {
+        final UiButton r = new UiButton(this, x, y, width, BUTTON_HEIGHT, label, b -> {
             action.accept(b);
             b.setFocused(false);
         }, TextAlignment.CENTER);
@@ -102,21 +129,23 @@ public abstract class __base_UiScreen extends Screen {
         return r;
     }
 
-
     @Override
     public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
+
+        //! Stop other widgets from updating hover state while dragging.
+        //! This is done by calling the superclass's extractRenderState with a fake invalid mouse position that no widget can cover.
+        //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
+        if(isDragging()) super.extractRenderState(graphics, -1,     -1,     delta);
+        else             super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
-
-
-
 
     @Override
     public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        graphics.blurBeforeThisStratum();
+        if(!tabPressed) {
+            graphics.blurBeforeThisStratum();
+        }
     }
-
 
     @Override
 	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
@@ -124,8 +153,28 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
+
+
+
+
+
+
     @Override
     public void onClose() {
-        this.minecraft.setScreen(null); // Close screen and go back to game
+
+        // Close screen and go back to game
+        this.minecraft.setScreen(null);
+    }
+
+
+    @Override
+    public boolean isPauseScreen() {
+        return ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.PAUSE_GAME_IN_MOD_SCREENS);
+    }
+
+
+    @Override
+    public boolean isAllowedInPortal() {
+        return true;
     }
 }

@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "height=0": { "model": "engineers-bliss:block/custom/frictionless_surface/0" },
+        "height=1": { "model": "engineers-bliss:block/custom/frictionless_surface/1" },
+        "height=2": { "model": "engineers-bliss:block/custom/frictionless_surface/2" },
+        "height=3": { "model": "engineers-bliss:block/custom/frictionless_surface/3" },
+        "height=4": { "model": "engineers-bliss:block/custom/frictionless_surface/4" },
+        "height=5": { "model": "engineers-bliss:block/custom/frictionless_surface/5" },
+        "height=6": { "model": "engineers-bliss:block/custom/frictionless_surface/6" },
+        "height=7": { "model": "engineers-bliss:block/custom/frictionless_surface/7" },
+        "height=8": { "model": "engineers-bliss:block/custom/frictionless_surface/8" },
+        "height=9": { "model": "engineers-bliss:block/custom/frictionless_surface/9" },
+        "height=10": { "model": "engineers-bliss:block/custom/frictionless_surface/10" },
+        "height=11": { "model": "engineers-bliss:block/custom/frictionless_surface/11" },
+        "height=12": { "model": "engineers-bliss:block/custom/frictionless_surface/12" },
+        "height=13": { "model": "engineers-bliss:block/custom/frictionless_surface/13" },
+        "height=14": { "model": "engineers-bliss:block/custom/frictionless_surface/14" },
+        "height=15": { "model": "engineers-bliss:block/custom/frictionless_surface/15" }
+    }
+}

@@ -41,7 +41,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("Values represent multiples of the default Creative Mode flying speed."))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
-    //TODO add walking speed multiplier
+    public static final ClientFeature<?> PLAYER_SCALE = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.PLAYER_SCALE,
+        () -> new UiTxt("Player scale"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Controls your scale. This affects your actual hitbox.\n"))
+            .cat(new UiTxt("Values represent multiples of the default player model size."))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
     public static final ClientFeature<?> INTERACTION_DISTANCE = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.INTERACTION_DISTANCE,
         () -> new UiTxt("Interaction distance"),
@@ -53,9 +60,48 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
     public static final ClientFeature<?> INTERACTION_RADIUS = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.INTERACTION_RADIUS,
         () -> new UiTxt("Interaction radius"),
-        () -> new UiTxt()
+        () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Controls your interaction radius. This lets you place, break or use multiple blocks at once.\n"))
             .cat(new UiTxt("Values represent the maximum distance from your targeted position in which blocks respond to left and right clicks."))
+            .cat(new UiTxt("This stacks with [Interaction count].\n").green())
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
+    public static final ClientFeature<?> INTERACTION_COUNT = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.INTERACTION_COUNT,
+        () -> new UiTxt("Interaction count"),
+        () -> (UiTxt)new UiTxt()
+            .cat(new UiTxt("Controls your interaction count. This lets you place, break, or use multiple blocks at once.\n"))
+            .cat(new UiTxt("Values represent the amount of times your interactions are processed. 1 is Vanilla's default."))
+            .cat(new UiTxt("This stacks with [Interaction radius].\n").green())
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
+    public static final ClientFeature<?> PLACEMENT_DELAY = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.PLACEMENT_DELAY,
+        () -> new UiTxt("Placement delay"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Controls the delay after which a new block is placed when holding the use button.\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
+    public static final ClientFeature<?> AUTOCLICKER_DELAY = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.AUTOCLICKER_DELAY,
+        () -> new UiTxt("Autoclicker delay"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Controls the delay between interactions of the [Autoclicker] feature.\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
+    public static final ClientFeature<?> AUTOCLICKER = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.AUTOCLICKER,
+        () -> new UiTxt("Autoclicker"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Makes holding mouse buttons re-trigger the interaction every [Interaction delay].\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
+    public static final ClientFeature<?> TOGGLE_CLICKS = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.TOGGLE_CLICKS,
+        () -> new UiTxt("Toggle clicks"),
+        () -> (UiTxt)new UiTxt()
+            .cat(new UiTxt("Lets you toggle mouse clicks when on.\n"))
+            .cat(new UiTxt("This is compatible with the [Autoclicker] feature.\n").green())
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
     public static final ClientFeature<?> NO_SIGN_GUI = new ClientFeature<>(
@@ -65,12 +111,18 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
             .cat(new UiTxt("Stops the Edit Sign GUI from showing up after placing a Sign or Hanging Sign.\n"))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
     );
+    public static final ClientFeature<?> DISABLE_PICKING_UP_ITEMS = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.DISABLE_PICKING_UP_ITEMS,
+        () -> new UiTxt("Disable picking up Items"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Stops you from picking up item entities.\n"))
+            .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get())
+    );
     public static final ClientFeature<?> OPEN_OBSTRUCTED_CONTAINERS = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.OPEN_OBSTRUCTED_CONTAINERS,
         () -> new UiTxt("Open obstructed containers"),
         () -> new UiTxt()
-            .cat(new UiTxt("Lets you open Chests, Trapped Chests, Ender Chests and Copper Chests even when they are below a solid block.\n"))
-            .cat(new UiTxt("This also includes double chest variants.\n"))
+            .cat(new UiTxt("Lets you open Chests, Trapped Chests, Ender Chests, and Copper Chests even when they are below a solid block.\n"))
             .cat(Notices.CREATIVE_MODE_PLAYERS_UNAFFECTED_NOTICE.get()).cat(new UiTxt("\n"))
             .cat(Notices.MULTIPLAYER_NOTICE.get()) //TODO actually check if this is not possible in multiplayer
     );
@@ -165,14 +217,14 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
 
     public static final ClientFeature<?> DISABLE_HONEY_SLOWDOWN = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_HONEY_SLOWDOWN,
-        () -> new UiTxt("Disable Honey Blocks slowdown"),
+        () -> new UiTxt("Disable Honey Block slowdown"),
         () -> new UiTxt()
             .cat(new UiTxt("Prevents you from being slowed down while walking on Honey Blocks.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get())
     );
     public static final ClientFeature<?> DISABLE_SLIME_SLOWDOWN = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_SLIME_SLOWDOWN,
-        () -> new UiTxt("Disable Slime Blocks slowdown"),
+        () -> new UiTxt("Disable Slime Block slowdown"),
         () -> new UiTxt()
             .cat(new UiTxt("Prevents you from being slowed down while walking on Slime Blocks.\n"))
             .cat(Notices.CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE.get())
@@ -258,6 +310,13 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
 
 
 
+    public static final ClientFeature<?> DISABLE_BLOCK_BREAK_PARTICLES = new ClientFeature<>(
+        CreativeTweaksServerFeatureSet.DISABLE_BLOCK_BREAK_PARTICLES,
+        () -> new UiTxt("Disable block break particles"),
+        () -> new UiTxt()
+            .cat(new UiTxt("Disables the particles that are normally shown when breaking a block.\n"))
+            .cat(Notices.CREATIVE_MODE_NOTICE.get())
+    );
     public static final ClientFeature<?> DISABLE_ITEM_CHANGE_ANIMATION = new ClientFeature<>(
         CreativeTweaksServerFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION,
         () -> new UiTxt("Disable item change animation"),
@@ -312,6 +371,10 @@ public class CreativeTweaksClientFeatureSet extends __base_ClientFeatureSet<Crea
 
 
     private class Notices {
+        public static final Supplier<UiTxt> CREATIVE_MODE_NOTICE = () -> (UiTxt)new UiTxt(
+            "This only works while in Creative Mode."
+        ).yellow();
+
         public static final Supplier<UiTxt> CREATIVE_MODE_ENTITIES_UNAFFECTED_NOTICE = () -> (UiTxt)new UiTxt(
             "This only works while in Creative Mode and doesn't affect other entities."
         ).yellow();

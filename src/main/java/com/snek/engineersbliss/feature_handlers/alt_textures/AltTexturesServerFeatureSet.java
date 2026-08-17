@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import com.snek.engineersbliss.feature_handlers.BlockGroups;
 import com.snek.engineersbliss.feature_handlers.base.ServerBlockToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
-import com.snek.engineersbliss.feature_handlers.base.__base_ServerBlockFeatureSet;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
 
 import net.minecraft.world.level.block.Blocks;
 
@@ -17,13 +17,9 @@ import net.minecraft.world.level.block.Blocks;
 
 
 
-public class AltTexturesServerFeatureSet extends __base_ServerBlockFeatureSet {
+public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
     public static final AltTexturesServerFeatureSet INSTANCE = new AltTexturesServerFeatureSet();
     private AltTexturesServerFeatureSet() { super("alt_textures"); }
-
-
-    //! Vanilla Beds are no longer block entities as of 26.3.
-    //! No point in adding it as a feature just to remove it after one version.
 
 
     //! For whatever reason, Vanilla's Shelves and Campfires are rendered properly: The block model is static, while held items are rendered dynamically.
@@ -117,6 +113,10 @@ public class AltTexturesServerFeatureSet extends __base_ServerBlockFeatureSet {
     public static final ServerBlockToggleFeature STATIC_LECTERNS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_lecterns", true,
         List.of(Blocks.LECTERN)
+    ));
+    public static final ServerBlockToggleFeature STATIC_BEDS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
+        "static_beds", true,
+        BlockGroups.ALL_BEDS
     ));
     public static final ServerBlockToggleFeature OPTIMIZED_SHELVES = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "optimized_shelves", true,

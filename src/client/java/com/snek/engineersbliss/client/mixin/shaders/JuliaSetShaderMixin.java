@@ -47,7 +47,7 @@ public abstract class JuliaSetShaderMixin {
 
         // Return and reset screen if current screen is not a julia renderer
         final Minecraft mc = Minecraft.getInstance();
-        if (!(mc.screen instanceof final JuliaSetScreen screen)) {
+        if(!(mc.screen instanceof final JuliaSetScreen screen)) {
             lastScreen = null;
             return;
         }

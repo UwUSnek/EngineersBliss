@@ -1,0 +1,8 @@
+
+Static beds were introduced in Vanilla in 26.2.
+
+This entire directory is just a copy of Vanilla's textures.
+The models are also a direct copy of Vanilla's models.
+
+Changing the models and textures to match the structure of the rest of the project is too much effort for no real benefit.
+The feature only needs to be maintained for a singular minor version of Minecraft anyway (26.1).

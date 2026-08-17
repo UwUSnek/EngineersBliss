@@ -37,7 +37,7 @@ public class RepeaterDustParticleSuppressorMixin {
         final double x, final double y, final double z,
         final double xSpeed, final double ySpeed, final double zSpeed
     ) {
-        if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_REDSTONE_DUST_PARTICLES)) {
+        if(!ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.NO_REDSTONE_DUST_PARTICLES)) {
             level.addParticle(particle, x, y, z, xSpeed, ySpeed, zSpeed);
         }
     }

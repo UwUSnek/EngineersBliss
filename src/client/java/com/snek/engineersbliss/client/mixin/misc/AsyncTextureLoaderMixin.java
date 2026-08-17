@@ -3,8 +3,12 @@ package com.snek.engineersbliss.client.mixin.misc;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.utils.texture_atlases.AtlasMetadataSection;
-import com.snek.engineersbliss.client.utils.texture_atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.atlases.AtlasMetadataSection;
+import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgMetadataSection;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgRasterizer;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgScaleTracker;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -78,13 +82,48 @@ public class AsyncTextureLoaderMixin {
 
 
 
+
+
+
     @SuppressWarnings("unused")
     @Inject(method = "load", at = @At("HEAD"), cancellable = true, require = 1)
     private static void eb$load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
-        final @NotNull Resource resource = resourceManager.getResourceOrThrow(id);
-        final AtlasMetadataSection atlasMeta = resource.metadata().getSection(AtlasMetadataSection.TYPE).orElse(null);
 
-        // Not one of our animated sheets -> let vanilla handle it untouched, synchronously
+        final String path = id.getPath();
+
+        // Atlas
+
+        if(path.endsWith(".png")) {
+            final String basePath = path.substring(0, path.length() - 4);
+            final Identifier svgId = id.withPath(basePath + ".svg");
+
+            final Resource svgResource = resourceManager.getResource(svgId).orElse(null);
+            if(svgResource != null) {
+                final SvgMetadataSection svgMeta = eb$readSvgMeta(resourceManager, id.withPath(basePath + ".svg.mcmeta"));
+                if(svgMeta == null) {
+                    EngineerSBliss.LOGGER.error("SVG texture {} is missing its .svg.mcmeta metadata.", svgId, new Throwable());
+                    return;
+                }
+
+                final byte[] bytes;
+                try(InputStream is = svgResource.open()) {
+                    bytes = is.readAllBytes();
+                }
+
+                SvgTextureTracker.getOrRegister(id, bytes, svgMeta);
+                final NativeImage svgImage = SvgTextureTracker.acquire(id, SvgScaleTracker.currentScale());
+                cir.setReturnValue(new TextureContents(svgImage, null));
+                return;
+            }
+        }
+
+
+
+        // SVG
+
+        final Resource resource = resourceManager.getResourceOrThrow(id);
+
+        final AtlasMetadataSection atlasMeta = resource.metadata().getSection(AtlasMetadataSection.TYPE).orElse(null);
         if(atlasMeta == null) return;
 
         TextureAtlasTracker.registerAtlas(id, atlasMeta);
@@ -103,12 +142,11 @@ public class AsyncTextureLoaderMixin {
                     ClientScheduler.run(() -> {
                         final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
                         if(tex instanceof final @NotNull ReloadableTexture reloadable) {
-                            reloadable.apply(new TextureContents(image, metadata)); //! Apply call closes the resource
+                            reloadable.apply(new TextureContents(image, metadata));
                             TextureAtlasTracker.markLoaded(id);
                         }
                         else {
-                            //! Idk why it wouldn't be reloadable, but this checks for it. Just in acase.
-                            image.close(); //! Manually close the image if it cannot be used
+                            image.close();
                             EngineerSBliss.LOGGER.error("Texture {} is not reloadable.", id, new Throwable());
                         }
                     });
@@ -118,5 +156,27 @@ public class AsyncTextureLoaderMixin {
                 EngineerSBliss.LOGGER.error("Could not load texture {}. {}", id, e.getMessage(), new Throwable());
             }
         }, DECODE_TREAD_POOL);
+    }
+
+
+
+
+    /**
+     * Reads the SvgMetadataSection from an .svg.mcmeta file.
+     */
+    @Nullable
+    private static SvgMetadataSection eb$readSvgMeta(final ResourceManager resourceManager, final Identifier mcmetaId) {
+        final Resource mcmetaResource = resourceManager.getResource(mcmetaId).orElse(null);
+        if(mcmetaResource == null) return null;
+
+        try(InputStream is = mcmetaResource.open()) {
+            return net.minecraft.server.packs.resources.ResourceMetadata.fromJsonStream(is)
+                .getSection(SvgMetadataSection.TYPE)
+                .orElse(null);
+        }
+        catch(final @NotNull IOException e) {
+            EngineerSBliss.LOGGER.error("Could not read SVG metadata {}. {}", mcmetaId, e.getMessage(), new Throwable());
+            return null;
+        }
     }
 }
