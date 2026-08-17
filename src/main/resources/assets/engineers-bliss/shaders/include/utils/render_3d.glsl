@@ -89,13 +89,33 @@ struct ImpostorFrame {
 
 
 #ifdef MINECRAFT
-    float impostorNdcDepth(ImpostorFrame f, vec3 hitPosLocal) {
-        vec4 clipHit = getProjMatrix() * getViewMatrix() * vec4(hitPosLocal + f.center, 1.0);
+    /**
+     * Computes the depth of the point at the specified local-space hit position.
+     * @param frame ImpostorFrame data.
+     * @param viewProj The view projection matrix.
+     * @param hitPosLocal The hit position, local to the frame's center.
+     * @return The computed depth [0-1].
+     */
+    float impostorNdcDepth(ImpostorFrame frame, mat4 viewProj, vec3 hitPosLocal) {
+        vec4 clipHit = viewProj * vec4(hitPosLocal + frame.center, 1.0);
         float ndcDepth = clipHit.z / clipHit.w;
         return ndcDepth * 0.5 + 0.5;
     }
+    /**
+     * Computes the depth of the point at the specified local-space hit position.
+     * If available, the view projection matrix can be provided to improve performance.
+     * @param frame ImpostorFrame data.
+     * @param hitPosLocal The hit position, local to the frame's center.
+     * @return The computed depth [0-1].
+     */
+    float impostorNdcDepth(ImpostorFrame frame, vec3 hitPosLocal) {
+        return impostorNdcDepth(frame, computeViewProjMatrix(), hitPosLocal);
+    }
 #else
-    float impostorNdcDepth(ImpostorFrame f, vec3 hitPosLocal) {
+    float impostorNdcDepth(ImpostorFrame frame, vec3 hitPosLocal) {
+        return 2.0;
+    }
+    float impostorNdcDepth(ImpostorFrame frame, mat4 viewProj, vec3 hitPosLocal) {
         return 2.0;
     }
 #endif
@@ -108,14 +128,39 @@ struct ImpostorFrame {
 
 
 
-// Compares a layer's real depth against the scene depth buffer and returns the occlusion factor (0-1)
 #ifdef MINECRAFT
-    float sceneOcclusionVisibility(ImpostorFrame f, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
-        float layerLinear = linearizeDepth(impostorNdcDepth(f, hitPosLocal));
+    float _internal_sceneOcclusionVisibility(float sceneLinearDepth, float layerLinear, float bias) {
         return smoothstep(layerLinear - bias, layerLinear + bias, sceneLinearDepth);
     }
+    /**
+     * Compares a layer's reported depth against the scene depth buffer and calculates the occlusion factor.
+     * @param frame The frame data.
+     * @param viewProj The view projection matrix.
+     * @param hitPosLocal The hit position, local to the frame's center.
+     * @param sceneLinearDepth The linear depth of the scene.
+     * @param bias Occlusion bias. This controls how sharply the layer fades in and out.
+     * @return The occlusion factor [0-1].
+     */
+    float sceneOcclusionVisibility(ImpostorFrame frame, mat4 viewProj, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+        return _internal_sceneOcclusionVisibility(sceneLinearDepth, linearizeDepth(impostorNdcDepth(frame, viewProj, hitPosLocal)), bias);
+    }
+    /**
+     * Compares a layer's reported depth against the scene depth buffer and calculates the occlusion factor.
+     * If available, the view projection matrix can be provided to improve performance.
+     * @param frame The frame data.
+     * @param hitPosLocal The hit position, local to the frame's center.
+     * @param sceneLinearDepth The linear depth of the scene.
+     * @param bias Occlusion bias. This controls how sharply the layer fades in and out.
+     * @return The occlusion factor [0-1].
+     */
+    float sceneOcclusionVisibility(ImpostorFrame frame, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+        return _internal_sceneOcclusionVisibility(sceneLinearDepth, linearizeDepth(impostorNdcDepth(frame, hitPosLocal)), bias);
+    }
 #else
-    float sceneOcclusionVisibility(ImpostorFrame f, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+    float sceneOcclusionVisibility(ImpostorFrame frame, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+        return 1.0;
+    }
+    float sceneOcclusionVisibility(ImpostorFrame frame, mat4 viewProj, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
         return 1.0;
     }
 #endif

@@ -261,3 +261,8 @@ float adjustContrast(float n, float contrast) {
         return fakePerspectiveMatrix(radians(50.0), iResolution.x / iResolution.y, 0.05, 100.0);
     }
 #endif
+
+
+mat4 computeViewProjMatrix() {
+    return getProjMatrix() * getViewMatrix();
+}
