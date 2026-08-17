@@ -379,3 +379,12 @@
 
 
 - fix height of player compass not accounting for the status bar
+
+
+
+
+
+- SELECTION TOOL
+  - left/right click to select an area, infinite reach with preview
+  - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game)
+    - menu lets you do things with the selection
