@@ -53,10 +53,10 @@
 
 
 // How sharply each layer fades out when real world geometry is in front of it.
-#define CORE_DEPTH_BIAS   0.03
-#define RING_DEPTH_BIAS   0.03
+#define CORE_DEPTH_BIAS     0.03
+#define RING_DEPTH_BIAS     0.03
 #define SQUARES_DEPTH_BIAS  0.03
-#define DISK_DEPTH_BIAS   0.12
+#define DISK_DEPTH_BIAS     0.12
 
 
 // uv0: coords that go from  0.0 to 1.0
@@ -65,7 +65,9 @@
 #ifdef MINECRAFT
 void main() {
     ImpostorFrame frame = getImpostorFrame(worldPos, uv0);
-    float horizon = 0.4; // world scale radius. horizon * LENSING_SCALE must be < quad size
+    float horizon = 0.4 * (PlaneSize / 4.0);
+    //  ^ world scale radius. horizon * LENSING_SCALE must be < quad size
+    //! ^ PlaneSize is defined by render_3d
 #else
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 uncorrectedUV = fragCoord / iResolution.xy;
@@ -81,16 +83,15 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
 
-    // Poll scene depth and linearize it
-    vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(sceneDepthSampler, 0));
-    float sceneDepthRaw = texture(sceneDepthSampler, screenUV).x;
-    float sceneLinear = linearizeDepth(sceneDepthRaw);
-
-
     // Calculate lensed screen UVs, then use them to poll the distorted scene background
     float lensingBoundary = horizon * PHOTON_RING_SCALE;
     vec2 lensedScreenUV = calculate_lensed_screen_uv(frame, sceneDepthSampler, frame.center, lensingBoundary, lensingBoundary * LENSING_SCALE, 0.35);
     vec4 lensedSceneColor = texture(sceneColorSampler, lensedScreenUV);
+
+
+    // Poll scene depth and linearize it
+    float sceneDepthRaw = texture(sceneDepthSampler, lensedScreenUV).x;
+    float sceneLinear = linearizeDepth(sceneDepthRaw);
 
 
     // Compute core mask, depth, and color

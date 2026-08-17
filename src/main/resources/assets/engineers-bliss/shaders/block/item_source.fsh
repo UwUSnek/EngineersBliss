@@ -83,7 +83,9 @@
 #ifdef MINECRAFT
 void main() {
     ImpostorFrame frame = getImpostorFrame(worldPos, uv0);
-    float horizon = 0.4; // world scale radius. horizon * LENSING_SCALE must be < quad size
+    float horizon = 0.4 * (PlaneSize / 4.0);
+    //  ^ world scale radius. horizon * LENSING_SCALE must be < quad size
+    //! ^ PlaneSize is defined by render_3d
 #else
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     vec2 uncorrectedUV = fragCoord / iResolution.xy;
@@ -99,16 +101,15 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
 
-    // Poll scene depth and linearize it
-    vec2 screenUV = gl_FragCoord.xy / vec2(textureSize(sceneDepthSampler, 0));
-    float sceneDepthRaw = texture(sceneDepthSampler, screenUV).x;
-    float sceneLinear = linearizeDepth(sceneDepthRaw);
-
-
     // Calculate lensed screen UVs, then use them to poll the distorted scene background
     float lensingBoundary = horizon * PHOTON_RING_SCALE;
     vec2 lensedScreenUV = calculate_lensed_screen_uv(frame, sceneDepthSampler, frame.center, lensingBoundary, lensingBoundary * LENSING_SCALE, 0.35);
     vec4 lensedSceneColor = texture(sceneColorSampler, lensedScreenUV);
+
+
+    // Poll scene depth and linearize it
+    float sceneDepthRaw = texture(sceneDepthSampler, lensedScreenUV).x;
+    float sceneLinear = linearizeDepth(sceneDepthRaw);
 
 
     // Compute core mask, depth, and color
@@ -119,7 +120,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float impactCore = sqrt(max(dot(frame.rayOrigin, frame.rayOrigin) - bCore * bCore, 0.0));
     float coreMask = bCore < 0.0 ? smoothstep(horizon, horizon - horizon * (1.0 - CORE_RADIUS_FALLOFF), impactCore) : 0.0;
     coreMask *= sceneOcclusionVisibility(frame, frame.rayOrigin + frame.rayDir * coreT, sceneLinear, CORE_DEPTH_BIAS);
-    vec4 coreColor = vec4(vec3(0.95, 0.95, 1.0), coreMask * 1.0); //! Idk if colors > 1.0 work properly but its not creating bugs so far
+    vec4 coreColor = vec4(vec3(0.95, 0.95, 1.0), coreMask);
 
 
     // Calculate disk coord data
