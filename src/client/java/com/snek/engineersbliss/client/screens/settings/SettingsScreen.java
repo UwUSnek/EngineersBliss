@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.screens.settings;
 
-import java.util.function.Function;
-
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsClientFeatureSet;
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -12,6 +10,7 @@ import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 
 
@@ -25,6 +24,12 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
     private static final ValueFormatter<Integer> pixelFormatter = (n, u) -> {
         return String.format("%dpx", n);
     };
+    private static final ValueFormatter<Integer> blockShaderLimitFormatter = (n, u) -> {
+        if(n == SettingsServerFeatureSet.BLOCK_SHADER_LIMIT_INFINITE) return "Unlimited";
+        else return String.format("%d", n);
+    };
+
+
 
 
     public SettingsScreen() {
@@ -60,12 +65,20 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.CHAT_HIDES_STATUS_BAR, null), Layout.BORDER_HEIGHT);
 
 
-        // Misc
+        // Rendering
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
             this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
             null
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
+            this, SettingsClientFeatureSet.BLOCK_SHADERS,
+            null
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, SettingsClientFeatureSet.BLOCK_SHADER_LIMIT,
+            null, blockShaderLimitFormatter, 0, 0
         ), Layout.BORDER_HEIGHT);
     }
 }

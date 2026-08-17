@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.feature_handlers.settings;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
@@ -14,6 +15,8 @@ import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
 
 
 public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
+    public static int BLOCK_SHADER_LIMIT_INFINITE = 0xC0FFEE & 0xFFF;
+
     public static SettingsServerFeatureSet INSTANCE = new SettingsServerFeatureSet();
     private SettingsServerFeatureSet() { super("settings"); }
 
@@ -37,4 +40,9 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
 
 
     public static ServerToggleFeature PLAYER_MODEL_IN_PAUSE_SCREEN = INSTANCE.registerFeature(new ServerToggleFeature("player_model_in_pause_screen", true));
+    public static ServerToggleFeature BLOCK_SHADERS                = INSTANCE.registerFeature(new ServerToggleFeature("block_shaders", true));
+    public static ServerSteppedFeature<Integer> BLOCK_SHADER_LIMIT = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
+        "block_shader_limit",
+        List.of(2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, BLOCK_SHADER_LIMIT_INFINITE), 3
+    ));
 }

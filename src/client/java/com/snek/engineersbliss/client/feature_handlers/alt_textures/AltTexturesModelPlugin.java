@@ -40,6 +40,7 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.*;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.*;
+import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
@@ -353,7 +354,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         initContext.modifyBlockModelOnLoad().register((model, onLoadContext) -> {
             final @NotNull BlockState state = onLoadContext.state();
             final Block block = state.getBlock();
-            if(!AltTexturesServerFeatureSet.INSTANCE.affects(block)) return model;
+            if(!ServerFeatureSync.stateHasFeaturesFromSet(state, AltTexturesServerFeatureSet.INSTANCE)) return model;
 
 
             return new BlockStateModel.UnbakedRoot() {
@@ -395,7 +396,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         initContext.modifyBlockModelBeforeBake().register((model, beforeBakeContext) -> {
             final @NotNull BlockState state = beforeBakeContext.state();
             final Block block = state.getBlock();
-            if(!AltTexturesServerFeatureSet.INSTANCE.affects(block)) return model;
+            if(!ServerFeatureSync.stateHasFeaturesFromSet(state, AltTexturesServerFeatureSet.INSTANCE)) return model;
 
 
             // For each model ID of this blockstate
@@ -462,7 +463,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         initContext.modifyBlockModelAfterBake().register((vanilla, afterBakeContext) -> {
             final @NotNull BlockState state = afterBakeContext.state();
             final Block block = state.getBlock();
-            if(!AltTexturesServerFeatureSet.INSTANCE.affects(block)) return vanilla;
+            if(!ServerFeatureSync.stateHasFeaturesFromSet(state, AltTexturesServerFeatureSet.INSTANCE)) return vanilla;
 
 
             return new BlockStateModel() {

@@ -219,9 +219,9 @@ It helps a lot :3
   - Easily fill open containers with specific items
   <br><br>
 - **Custom blocks and items**
-  - Infinite item sources
+  - Item Source
   - Item Sink (storage block with infinite capacity)
-  - Rate counter hoppers
+  - Item Pipe
   - 0 Friction blocks
   - ∞ Friction blocks
   - Green Screen block

@@ -3,6 +3,6 @@
   "parent" : "block/cube_all",
   "ambientocclusion" : false,
   "textures" : {
-    "all" : "engineers-bliss:block/custom/frictionful_block"
+    "all" : "engineers-bliss:block/custom/green_screen"
   }
 }

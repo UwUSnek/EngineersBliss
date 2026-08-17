@@ -146,9 +146,9 @@
   - Easily fill open containers with specific items
 
 - **Custom blocks and items**
-  - Infinite item sources
+  - Item Source
   - Item Sink (storage block with infinite capacity)
-  - Rate counter hoppers
+  - Item Pipe
   - ~~0 Friction blocks~~
   - ~~∞ Friction blocks~~
   - ~~Green Screen block~~
@@ -316,3 +316,66 @@
 
 
 - add "entity outline" in rendering screen
+
+- add some joke feature that adds metal pipe sounds
+
+
+
+- make the item sink store items in a custom file / directory.
+  - this offloads the data from the chunk, preventing size limit crashes
+  - add this to the description of the item too
+
+
+
+
+
+- hoppers:
+  - for item pipes, add a small graphic with
+    - a hopper with a chest on top?                  | items pullsed
+    - a hopper pointing right into a chest           | items pushed
+    - a hopper a hopper on the left pointing into it | items received
+    - a hopper with a hopper below it                | items taken from it
+    - a hopper with an item entity on top            | item entities pulled in
+
+  - display a timeline on which each event is shown.
+  - clicking on an event shows info about it
+
+  - create time-dependant graphs for:
+  - (graphs can toggle betweek stacks and items. 1 snowball is 1/16th of a stack but 1 item)
+    - one input(or output) rate for each category of event
+    - the amount of total items in the hopper (maxed out at 5 stacks)
+    - total item input rate
+    - total item output rate
+- similar thing for the other trackers
+
+
+
+- Prevent the server from sending custom item & block packets to players that don't have the mod installed
+
+
+
+- make texture loader try again after a delay when the JVM runs out of memory (it prints an error, prob can be catched)
+
+
+
+- add a "Large Black Hole" model that shares the custom rendering of item sinks
+  - maybe add customizable size? it's a block entity anyway it can do that stuff.
+  - much bigger than the standard item sink model. bigger lensing effect too
+  - write in the item that this is only aesthetic and doesn't do anything. only creative mode ofc.
+  - maybe add the same thing for item sources, aesthetic version.
+
+
+
+
+- add a "regenerate" command/tool/something
+  - This lets you regenerate the selected area to the default world generation,
+  - The process removes all block and entities in the selection
+  - Async with progress bar
+
+
+
+
+- fix overlays not working properly in multiplayer??? idk
+
+
+- fix height of player compass not accounting for the status bar

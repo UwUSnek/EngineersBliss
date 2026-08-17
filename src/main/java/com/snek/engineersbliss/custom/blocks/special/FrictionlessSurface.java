@@ -7,6 +7,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
+import com.snek.engineersbliss.custom.blocks.base.FrictionSurface;
+
 import com.mojang.serialization.MapCodec;
 
 
@@ -17,22 +19,15 @@ import com.mojang.serialization.MapCodec;
 
 // Sliding in water and lava stops you quickly, but that's not an issue since it's the expected behaviour.
 // Technically, Air also has friction, but for whatever reason Minecraft Vanilla has extremely high air friction.
-// So the Frictionless Block needs to compensate for that in order to feel truly frictionless.
+// So the Frictionless Surface needs to compensate for that in order to feel truly frictionless.
 
 
 /**
  * A block on which entities can slide indefinitely.
  */
-public class FrictionlessBlock extends TransparentBlock {
-    public static final MapCodec<FrictionlessBlock> CODEC = simpleCodec(FrictionlessBlock::new);
-
-    public FrictionlessBlock(final BlockBehaviour.Properties properties) {
+public class FrictionlessSurface extends FrictionSurface {
+    public FrictionlessSurface(final BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends TransparentBlock> codec() {
-        return CODEC;
     }
 
 

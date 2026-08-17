@@ -1,8 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "block/cube_all",
-  "ambientocclusion" : false,
-  "textures" : {
-    "all" : "engineers-bliss:block/custom/frictionless_block"
-  }
-}

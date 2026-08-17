@@ -1,13 +1,10 @@
 package com.snek.engineersbliss.feature_handlers.base;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.snek.engineersbliss.EngineerSBliss;
 
 import net.minecraft.world.entity.player.Player;
 
@@ -42,12 +39,10 @@ public abstract class __base_ServerFeature<T> {
 
 
     // A numerical ID for fast lookup and network packets.
-    //! The index is calculated automatically on server initialization.
-    //! This is deterministic, so the indices calculated by the server always match the ones calculated by the clients
-    //! (as long as they are running the same version of the mod), as each client feature requires a corresponding server feature.
-    protected int index = -1;
-    private static final List<__base_ServerFeature<?>> registered = new ArrayList<>();
-    public static final List<__base_ServerFeature<?>> getAllFeatures() { return registered; }
+    //! This MUST be a hash calculated from the string ID in order to avoid mismatches between minor mod versions.
+    protected int hash = -1;
+    private static final Map<Integer, __base_ServerFeature<?>> registered = new ConcurrentHashMap<>();
+    public  static final Map<Integer, __base_ServerFeature<?>> getAllFeatures() { return registered; }
     protected static boolean initialized = false;
 
     /**
@@ -57,7 +52,8 @@ public abstract class __base_ServerFeature<T> {
      */
     public static <F extends __base_ServerFeature<?>> void onRegisterFeature(final F feature, final __base_ServerFeatureSet featureSet) {
         feature.setFeatureSet(featureSet);
-        registered.add(feature);
+        feature.hash = (featureSet.getId() + "." + feature.getId()).hashCode();
+        registered.put(feature.hash, feature);
     }
 
 
@@ -71,7 +67,7 @@ public abstract class __base_ServerFeature<T> {
     // Getters
     public String getId() { return id; }
     public T getDefault() { return defaultValue; }
-    public int getIndex() { return index; }
+    public int getHash() { return hash; }
 
 
 
@@ -83,47 +79,5 @@ public abstract class __base_ServerFeature<T> {
         this.id = id;
         this.defaultValue = defaultValue;
         this.afterChangeCallback = afterChangeCallback;
-    }
-
-
-
-
-    /**
-     * Initializes the numerical IDs of all registered features.
-     * ! This must be called during server side mod initialization, after calling onSetInit(set) on all feature sets.
-     */
-    public static void finalizeSetInits() {
-        if(initialized) {
-            EngineerSBliss.LOGGER.error("__base_ServerFeature.finalizeSetInits called twice.", new Throwable());
-        }
-        else {
-            initialized = true;
-            registered.sort(Comparator.comparing(f -> f.id));
-            for(int i = 0; i < registered.size(); i++) {
-                registered.get(i).index = i;
-            }
-        }
-    }
-
-
-    /**
-     * Checks if the server feature set initialization phase has been finalized. Throws an exception if it hasn't.
-     * @param message The message to display in the exception.
-     */
-    public static void finalizedOrThrow(final String message) {
-        if(!initialized) {
-            throw new IllegalStateException(message);
-        }
-    }
-
-
-    /**
-     * Checks if the server feature set initialization phase has been finalized. Throws an exception if it has.
-     * @param message The message to display in the exception.
-     */
-    public static void notFinalizedOrThrow(final String message) {
-        if(initialized) {
-            throw new IllegalStateException(message);
-        }
     }
 }

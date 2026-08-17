@@ -59,7 +59,7 @@ public class EngineerSBliss implements ModInitializer {
         AltTexturesServerFeatureSet.INSTANCE.init();
         OverlaysServerFeatureSet.INSTANCE.init();
         SettingsServerFeatureSet.INSTANCE.init();
-        __base_ServerFeature.finalizeSetInits();
+        // __base_ServerFeature.finalizeSetInits();
 
 
         // Register server feature handlers

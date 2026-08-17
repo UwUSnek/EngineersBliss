@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.custom.block_entities;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.custom.block_entities.special.InfiniteItemSourceBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.CustomBlockHandler;
 
@@ -27,11 +28,11 @@ public class CustomBlockEntityHandler {
 
 
 
-    public static final BlockEntityType<InfiniteItemSourceBlockEntity> INFINITE_ITEM_SOURCE = register(
-        "infinite_item_source",
+    public static final BlockEntityType<ItemSourceBlockEntity> ITEM_SOURCE = register(
+        "item_source",
         FabricBlockEntityTypeBuilder.create(
-            InfiniteItemSourceBlockEntity::new,
-            CustomBlockHandler.INFINITE_ITEM_SOURCE
+            ItemSourceBlockEntity::new,
+            CustomBlockHandler.ITEM_SOURCE
         ).build()
     );
     public static final BlockEntityType<ItemSinkBlockEntity> ITEM_SINK = register(
@@ -39,6 +40,13 @@ public class CustomBlockEntityHandler {
         FabricBlockEntityTypeBuilder.create(
             ItemSinkBlockEntity::new,
             CustomBlockHandler.ITEM_SINK
+        ).build()
+    );
+    public static final BlockEntityType<ItemPipeBlockEntity> ITEM_PIPE = register(
+        "item_pipe",
+        FabricBlockEntityTypeBuilder.create(
+            ItemPipeBlockEntity::new,
+            CustomBlockHandler.ITEM_PIPE
         ).build()
     );
 
@@ -65,7 +73,8 @@ public class CustomBlockEntityHandler {
         //! This also triggers static init
 
         // Register storage block entities
-        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.INFINITE_ITEM_SOURCE);
+        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_SOURCE);
         ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_SINK);
+        ItemStorage.SIDED.registerForBlockEntity((be, dir) -> be.getStorage(), CustomBlockEntityHandler.ITEM_PIPE);
     }
 }
