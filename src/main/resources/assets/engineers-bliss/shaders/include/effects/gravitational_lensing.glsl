@@ -11,8 +11,8 @@
 
 
 
-vec2 worldToScreenUV(vec3 worldPos) {
-    vec4 clip = getProjMatrix() * getViewMatrix() * vec4(worldPos, 1.0);
+vec2 worldToScreenUV(mat4 viewProj, vec3 worldPos) {
+    vec4 clip = viewProj * vec4(worldPos, 1.0);
     vec2 ndc = clip.xy / clip.w;
     return ndc * 0.5 + 0.5;
 }
@@ -40,10 +40,10 @@ vec2 _internal_calculate_lensed_uv(
     vec3 camRight = normalize(camToWorld[0].xyz);
     vec3 camUp    = normalize(camToWorld[1].xyz);
 
-    vec2 screenCenter = worldToScreenUV(centerWorld);
+    vec2 screenCenter = worldToScreenUV(viewProj, centerWorld);
     float eps = 0.01;
-    vec2 basisX = (worldToScreenUV(centerWorld + camRight * eps) - screenCenter) / eps;
-    vec2 basisY = (worldToScreenUV(centerWorld + camUp    * eps) - screenCenter) / eps;
+    vec2 basisX = (worldToScreenUV(viewProj, centerWorld + camRight * eps) - screenCenter) / eps;
+    vec2 basisY = (worldToScreenUV(viewProj, centerWorld + camUp    * eps) - screenCenter) / eps;
     mat2 localToScreen = mat2(basisX, basisY);
     mat2 screenToLocal = inverse(localToScreen);
 

@@ -129,11 +129,22 @@ struct ImpostorFrame {
 
 
 #ifdef MINECRAFT
-    float _internal_sceneOcclusionVisibility(float sceneLinearDepth, float layerLinear, float bias) {
-        return smoothstep(layerLinear - bias, layerLinear + bias, sceneLinearDepth);
+    float _internal_sceneOcclusionVisibility(float sceneLinearDepth, float layerLinearDepth, float bias) {
+        return smoothstep(layerLinearDepth - bias, layerLinearDepth + bias, sceneLinearDepth);
     }
     /**
      * Compares a layer's reported depth against the scene depth buffer and calculates the occlusion factor.
+     * @param ndcDepth The precomputed ndc depth.
+     * @param sceneLinearDepth The linear depth of the scene.
+     * @param bias Occlusion bias. This controls how sharply the layer fades in and out.
+     * @return The occlusion factor [0-1].
+     */
+    float sceneOcclusionVisibility(float ndcDepth, float sceneLinearDepth, float bias) {
+        return _internal_sceneOcclusionVisibility(sceneLinearDepth, linearizeDepth(ndcDepth), bias);
+    }
+    /**
+     * Compares a layer's reported depth against the scene depth buffer and calculates the occlusion factor.
+     * If available, the ndc depth can be provided instead of frame, view projection and hit position, to improve performance.
      * @param frame The frame data.
      * @param viewProj The view projection matrix.
      * @param hitPosLocal The hit position, local to the frame's center.
@@ -142,22 +153,10 @@ struct ImpostorFrame {
      * @return The occlusion factor [0-1].
      */
     float sceneOcclusionVisibility(ImpostorFrame frame, mat4 viewProj, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
-        return _internal_sceneOcclusionVisibility(sceneLinearDepth, linearizeDepth(impostorNdcDepth(frame, viewProj, hitPosLocal)), bias);
-    }
-    /**
-     * Compares a layer's reported depth against the scene depth buffer and calculates the occlusion factor.
-     * If available, the view projection matrix can be provided to improve performance.
-     * @param frame The frame data.
-     * @param hitPosLocal The hit position, local to the frame's center.
-     * @param sceneLinearDepth The linear depth of the scene.
-     * @param bias Occlusion bias. This controls how sharply the layer fades in and out.
-     * @return The occlusion factor [0-1].
-     */
-    float sceneOcclusionVisibility(ImpostorFrame frame, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
-        return _internal_sceneOcclusionVisibility(sceneLinearDepth, linearizeDepth(impostorNdcDepth(frame, hitPosLocal)), bias);
+        return sceneOcclusionVisibility(impostorNdcDepth(frame, viewProj, hitPosLocal), sceneLinearDepth, bias);
     }
 #else
-    float sceneOcclusionVisibility(ImpostorFrame frame, vec3 hitPosLocal, float sceneLinearDepth, float bias) {
+    float sceneOcclusionVisibility(float ndcDepth, float sceneLinearDepth, float bias) {
         return 1.0;
     }
     float sceneOcclusionVisibility(ImpostorFrame frame, mat4 viewProj, vec3 hitPosLocal, float sceneLinearDepth, float bias) {

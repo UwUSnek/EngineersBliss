@@ -101,7 +101,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float coreT = coreHit ? max(tCoreNear, 0.0) : max(-bCore, 0.0);
     float impactCore = sqrt(max(dot(frame.rayOrigin, frame.rayOrigin) - bCore * bCore, 0.0));
     float coreMask = bCore < 0.0 ? smoothstep(horizon, horizon - horizon * (1.0 - CORE_RADIUS_FALLOFF), impactCore) : 0.0;
-    coreMask *= sceneOcclusionVisibility(frame, viewProj, frame.rayOrigin + frame.rayDir * coreT, sceneLinear, CORE_DEPTH_BIAS);
+    float coreNdcDepth = impostorNdcDepth(frame, viewProj, frame.rayOrigin + frame.rayDir * coreT);
+    coreMask *= sceneOcclusionVisibility(coreNdcDepth, sceneLinear, CORE_DEPTH_BIAS);
     vec4 coreColor = vec4(vec3(0.0), coreMask);
 
 
@@ -123,7 +124,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     // Compute photon ring mask, depth, and color
     float ringT;
     float photonRingMask = volumetricPhotonRing(frame.rayOrigin, frame.rayDir, horizon, horizon * PHOTON_RING_SCALE - horizon, time, ringT);
-    photonRingMask *= sceneOcclusionVisibility(frame, viewProj, frame.rayOrigin + frame.rayDir * ringT, sceneLinear, RING_DEPTH_BIAS);
+    float photonRingNdcDepth = impostorNdcDepth(frame, viewProj, frame.rayOrigin + frame.rayDir * ringT);
+    photonRingMask *= sceneOcclusionVisibility(photonRingNdcDepth, sceneLinear, RING_DEPTH_BIAS);
     vec4 photonRingColor = vec4(vec3(1.0, (photonRingMask * 1.1) * vec2(0.9, 0.8)), photonRingMask);
 
 
@@ -131,7 +133,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     float squaresT;
     vec4 squaresRaw = fallingSquares(frame.rayOrigin, frame.rayDir, horizon, horizon * SQUARE_AREA_SCALE, time, diskTangent, diskBitangent, diskNormal, squaresT);
     float squaresAlpha = squaresRaw.a * 0.8;
-    squaresAlpha *= sceneOcclusionVisibility(frame, viewProj, frame.rayOrigin + frame.rayDir * squaresT, sceneLinear, SQUARES_DEPTH_BIAS);
+    float squaresNdcDepth = impostorNdcDepth(frame, viewProj, frame.rayOrigin + frame.rayDir * squaresT);
+    squaresAlpha *= sceneOcclusionVisibility(squaresNdcDepth, sceneLinear, SQUARES_DEPTH_BIAS);
     vec4 squaresColor = vec4(vec3((squaresRaw.r + squaresRaw.g + squaresRaw.b) / 3.0) - 0.5, squaresAlpha);
 
 
@@ -151,9 +154,9 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
     fragColor = over(cCore, cRing, cDisk, cSquares, lensedSceneColor);
     float writeT   =  1e30;
     float writeNdc = -1.0;
-    if(coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = impostorNdcDepth(frame, viewProj, frame.rayOrigin + frame.rayDir * coreT);    }
-    if(photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = impostorNdcDepth(frame, viewProj, frame.rayOrigin + frame.rayDir * ringT);    }
-    if(squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = impostorNdcDepth(frame, viewProj, frame.rayOrigin + frame.rayDir * squaresT); }
+    if(coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = coreNdcDepth;       }
+    if(photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = photonRingNdcDepth; }
+    if(squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = squaresNdcDepth;    }
     float newFragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
     gl_FragDepth = min(gl_FragDepth, newFragDepth);
 
