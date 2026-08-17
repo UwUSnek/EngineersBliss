@@ -40,9 +40,6 @@ void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius,
     float r = length(p);
     if(r < 1e-4) return;
 
-    float fade = smoothstep(horizon * 0.9, horizon * 1.5, r) * (1.0 - smoothstep(outerRadius * 0.9, outerRadius, r));
-    if(fade <= 0.0001) return;
-
     vec3 d = vec3(dot(p, axisA), dot(p, axisB), dot(p, axisN)) / r;
     vec3 ad = abs(d);
     float face, faceScale;
@@ -71,13 +68,23 @@ void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius,
         uv.y * SQUARE_FACE_DENSITY * 0.5
     );
 
+
+    // Calculate cell ID, cell UV and scalar random value
     vec3 cellId = floor(gridUV);
     cellId.x += face * 4096.0;
     vec3 cellUV = fract(gridUV) - 0.5;
-
     float rnd = hash13(cellId);
     if(rnd > SQUARE_DENSITY_THRESH) return;
 
+
+    // Compute fade factor. Normal fade out + id randomness
+    float fadeOutRnd = mix(0.2, 1.0, hash11(rnd + 9));
+    float outFade = pow(1.0 - smoothstep(outerRadius * fadeOutRnd, outerRadius, r), 0.5);
+    float fade = smoothstep(horizon * 0.9, horizon * 1.5, r) * outFade;
+    if(fade <= 0.0001) return;
+
+
+    // Calculate random cell offset and size
     vec3 offset = vec3(
         hash11(rnd + 1.0),
         hash11(rnd + 2.0),
@@ -85,16 +92,20 @@ void testSquareCell(vec3 ro, vec3 rd, float t, float horizon, float outerRadius,
     ) * 0.6 - 0.3;
     float size = mix(SQUARE_SIZE_MIN, SQUARE_SIZE_MAX, hash11(rnd + 4.0));
 
+
+    // Calculate cell contribution
     vec3 pCell = cellUV - offset;
     vec3 halfExtents = vec3(size, SQUARE_PLANE_THICKNESS, size);
     vec3 inBox = step(abs(pCell), halfExtents);
     float plane = inBox.x * inBox.y * inBox.z;
-
     float contribution = plane * fade;
     if(contribution > 0.0001) {
         outT = foundHit ? min(outT, t) : t;
         foundHit = true;
     }
+
+
+    // Accumulate shade and alpha
     alpha = max(alpha, mix(0.5, 1.0, hash11(rnd + 5.0)) * contribution);
     shade = max(shade, vec3(
         mix(0.5, 1.0, hash11(rnd + 6.0)) * contribution,
