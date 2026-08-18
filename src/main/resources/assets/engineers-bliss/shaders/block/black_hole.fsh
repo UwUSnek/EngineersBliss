@@ -90,8 +90,8 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
     // Poll scene depth and linearize it
-    float sceneDepthRaw = texture(sceneDepthSampler, lensedScreenUV).x;
-    float sceneLinear = linearizeDepth(sceneDepthRaw);
+    float lensedSceneDepth = texture(sceneDepthSampler, lensedScreenUV).x;
+    float sceneLinear = linearizeDepth(lensedSceneDepth);
 
 
     // Compute core mask, depth, and color
@@ -140,25 +140,24 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
 
-    // Sort core/ring/disk/squares by depth
-    float dCore = coreT, dRing = ringT, dDisk = diskT, dSquares = squaresT;
-    vec4 cCore = coreColor, cRing = photonRingColor, cDisk = diskColor, cSquares = squaresColor;
-    depthCompareSwap(dCore, dRing,    cCore, cRing);
-    depthCompareSwap(dDisk, dSquares, cDisk, cSquares);
-    depthCompareSwap(dCore, dDisk,    cCore, cDisk);
-    depthCompareSwap(dRing, dSquares, cRing, cSquares);
-    depthCompareSwap(dRing, dDisk,    cRing, cDisk);
+
+    // Depth-sort and composite core/ring/disk/squares color layers
+    fragColor = compositeColorLayers(
+        coreT, coreColor,
+        ringT, photonRingColor,
+        diskT, diskColor,
+        squaresT, squaresColor,
+        lensedSceneColor
+    );
 
 
-    // Composite layers and output the final image
-    fragColor = over(cCore, cRing, cDisk, cSquares, lensedSceneColor);
-    float writeT   =  1e30;
-    float writeNdc = -1.0;
-    if(coreMask       > 0.001 && coreT    < writeT) { writeT = coreT;    writeNdc = coreNdcDepth;       }
-    if(photonRingMask > 0.001 && ringT    < writeT) { writeT = ringT;    writeNdc = photonRingNdcDepth; }
-    if(squaresAlpha   > 0.001 && squaresT < writeT) { writeT = squaresT; writeNdc = squaresNdcDepth;    }
-    float newFragDepth = (writeNdc >= 0.0) ? writeNdc : sceneDepthRaw;
-    gl_FragDepth = min(gl_FragDepth, newFragDepth);
+    // Composite depth layers and write gl_FragDepth
+    gl_FragDepth = min(gl_FragDepth, compositeDepthLayers(
+        coreT,    coreNdcDepth,       coreMask,
+        ringT,    photonRingNdcDepth, photonRingMask,
+        squaresT, squaresNdcDepth,    squaresAlpha,
+        lensedSceneDepth
+    ));
 
 
     // Draw black bars on the sides if rendering in ShaderToy
