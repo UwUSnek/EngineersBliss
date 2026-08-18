@@ -43,6 +43,6 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
     public static ServerToggleFeature BLOCK_SHADERS                = INSTANCE.registerFeature(new ServerToggleFeature("block_shaders", true));
     public static ServerSteppedFeature<Integer> BLOCK_SHADER_LIMIT = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(
         "block_shader_limit",
-        List.of(2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, BLOCK_SHADER_LIMIT_INFINITE), 3
+        List.of(2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, BLOCK_SHADER_LIMIT_INFINITE), 6
     ));
 }
