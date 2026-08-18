@@ -45,6 +45,9 @@ public class ServerModVersionCheck {
                             versionCheckResult > 0 ? "upgrade" : "downgrade", serverVersion
                         )).get());
                     }
+                    else {
+                        EngineerSBliss.LOGGER.info("{} connected with version {}", handler.getUserName(), clientVersion);
+                    }
                 }, server));
             }
         });
