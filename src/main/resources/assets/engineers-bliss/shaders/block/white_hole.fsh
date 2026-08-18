@@ -160,7 +160,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
 
     // Depth-sort and composite core/ring/disk/squares
-    fragColor = compositeLayers(
+    fragColor = compositeColorLayers(
         coreT, coreColor,
         ringT, photonRingColor,
         diskT, diskColor,
