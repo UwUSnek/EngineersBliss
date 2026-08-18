@@ -146,6 +146,8 @@
   - Easily fill open containers with specific items
 
 - **Custom blocks and items**
+  - ~~Cosmetic Black Hole~~
+  - ~~Cosmetic White Hole~~
   - Item Source
   - Item Sink (storage block with infinite capacity)
   - Item Pipe
@@ -280,7 +282,7 @@
   - size of the world directory
 
 
-- 3am water that extends normal water fluid but has shaders
+- 3am water thats normal water fluid but has shaders
 
 - Add a status bar at the bottom of the screen
   - display player position here? maybe? and tps and fps and ping
@@ -309,16 +311,7 @@
 
 
 
-- looking down from a very high place shows a block outline thats misaligned from the GUI crosshair
-  - add somethign that fixes this
-  - idk what causes it
-
-
-
 - add "entity outline" in rendering screen
-
-- add some joke feature that adds metal pipe sounds
-
 
 
 - make the item sink store items in a custom file / directory.
@@ -378,9 +371,6 @@
 - fix overlays not working properly in multiplayer??? idk
 
 
-- fix height of player compass not accounting for the status bar
-
-
 
 
 
@@ -399,3 +389,19 @@
       - obviously, mod jars, config files, and other such things aren't included
     - multiplayer users share the same repo and are all on the same commit, as the versioning system is global.
     - all of the dimensions are committed together. This avoids breaking multi-dimensional machines
+
+
+
+
+- Improve readability of glsl shaders
+
+
+- Fix static black hole and white hole block models
+- Fix item models of Item Sink, Item Source, Cosmetic Black Hole, Cosmetic White Hole
+
+- Fix models of Item Pipe
+
+- Add a despawn cooldown option for invisible block overlays
+
+
+- Improve sprite of Player Scale feature
