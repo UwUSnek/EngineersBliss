@@ -97,6 +97,23 @@ public class CustomItemHandler {
 
 
 
+    public static final Item COSMETIC_BLACK_HOLE = register(
+        "cosmetic_black_hole",
+        p -> new CustomBlockItem(CustomBlockHandler.COSMETIC_BLACK_HOLE, p, List.of(CustomBlockHandler.COSMETIC_BLACK_HOLE)),
+        new Txt("A purely cosmetic Black Hole. It serves no purpose."),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+    public static final Item COSMETIC_WHITE_HOLE = register(
+        "cosmetic_white_hole",
+        p -> new CustomBlockItem(CustomBlockHandler.COSMETIC_WHITE_HOLE, p, List.of(CustomBlockHandler.COSMETIC_WHITE_HOLE)),
+        List.of(
+            new Txt("A purely cosmetic White Hole. It serves no purpose.").lightGray(),
+            new Txt(),
+            new Txt("White holes wouldn't actually look white irl, but having them be").lightGray(),
+            new Txt("white in game makes them more unique. :3").lightGray()
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
     public static final Item ITEM_SOURCE = register(
         "item_source",
         p -> new CustomBlockItem(CustomBlockHandler.ITEM_SOURCE, p, List.of(CustomBlockHandler.ITEM_SOURCE)),

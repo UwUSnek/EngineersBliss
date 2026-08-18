@@ -219,6 +219,8 @@ It helps a lot :3
   - Easily fill open containers with specific items
   <br><br>
 - **Custom blocks and items**
+  - Cosmetic Black Hole
+  - Cosmetic White Hole
   - Item Source
   - Item Sink (storage block with infinite capacity)
   - Item Pipe

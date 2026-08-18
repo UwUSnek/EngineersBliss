@@ -5,9 +5,8 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilter
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
+import com.snek.engineersbliss.client.custom.block_entities.renderers.CustomBlockEntityRendererHandler;
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.SceneSnapshotHandler;
-import com.snek.engineersbliss.client.custom.block_entities.renderers.implementations.ItemSinkBlockEntityRenderer;
-import com.snek.engineersbliss.client.custom.block_entities.renderers.implementations.ItemSourceBlockEntityRenderer;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesModelPlugin;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.client.feature_handlers.custom_items.UnshadedBlockModelPlugin;
@@ -15,18 +14,14 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
-import com.snek.engineersbliss.custom.block_entities.CustomBlockEntityHandler;
+import com.snek.engineersbliss.client.network.login.ClientModVersionCheck;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.resources.Identifier;
 
 
 
@@ -59,6 +54,10 @@ public class EngineerSBlissClient implements ClientModInitializer {
         MinecraftUtils.register();
 
 
+        // Register client version check
+        ClientModVersionCheck.register();
+
+
         // Initialize block model shading fix plugin
         ModelLoadingPlugin.register(new ShadingFixModelPlugin());
 
@@ -66,8 +65,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
         // Initialize custom block renderer plugin and custom block entity renderers
         ModelLoadingPlugin.register(new UnshadedBlockModelPlugin());
         SceneSnapshotHandler.register();
-        BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SINK,   ItemSinkBlockEntityRenderer::new);
-        BlockEntityRenderers.register(CustomBlockEntityHandler.ITEM_SOURCE, ItemSourceBlockEntityRenderer::new);
+        CustomBlockEntityRendererHandler.register();
         //! Item and block registration is done on the server side
 
 
