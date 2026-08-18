@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.client.network.login.ClientModVersionCheck;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -51,6 +52,10 @@ public class EngineerSBlissClient implements ClientModInitializer {
         // Initialize utility classes
         NetworkUtils.register();
         MinecraftUtils.register();
+
+
+        // Register client version check
+        ClientModVersionCheck.register();
 
 
         // Initialize block model shading fix plugin
