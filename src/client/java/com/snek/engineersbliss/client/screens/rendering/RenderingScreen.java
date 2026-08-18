@@ -53,6 +53,8 @@ public class RenderingScreen extends __base_UiScreen {
     UiButton renderBlockEntitiesButton = null;
     UiButton renderFluidsButton = null;
     UiButton shadingFixButton = null;
+    UiButton renderParticlesButton = null;
+    UiButton renderEntitiesButton = null;
 
 
     public RenderingScreen() {
@@ -167,6 +169,16 @@ public class RenderingScreen extends __base_UiScreen {
             getToggleText_shadingFix(RenderingFilterHandler.getFixShading()),
             new UiTxt("Fixes the weird shading Vanilla applies to certain blocks. This is most visible on Dirt Path and Farmland blocks."),
             RenderingScreen::toggleShadingFix,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide
+        );
+        renderParticlesButton = addButton(
+            getToggleText_renderParticles(RenderingFilterHandler.getRenderParticles()),
+            new UiTxt("Toggle whether particles should be rendered at all."),
+            RenderingScreen::toggleRenderParticles,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 8, panelWidthSide
+        );
+        renderEntitiesButton = addButton(
+            getToggleText_renderEntities(RenderingFilterHandler.getRenderEntities()),
+            new UiTxt("Toggle whether entities should be rendered at all."),
+            RenderingScreen::toggleRenderEntities,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 9, panelWidthSide
         );
 
 
@@ -328,6 +340,26 @@ public class RenderingScreen extends __base_UiScreen {
         RenderingFilterHandler.setShadingFix(newState);
         MinecraftUtils.refreshRendering();
         b.setLabel(getToggleText_shadingFix(newState).get());
+    }
+
+
+    public static UiTxt getToggleText_renderParticles(final boolean state) {
+        return new UiTxt("Render particles: " + (state ? "ON" : "OFF"));
+    }
+    public static void toggleRenderParticles(final UiButton b) {
+        final boolean newState = !RenderingFilterHandler.getRenderParticles();
+        RenderingFilterHandler.setRenderParticles(newState);
+        b.setLabel(getToggleText_renderParticles(newState).get());
+    }
+
+
+    public static UiTxt getToggleText_renderEntities(final boolean state) {
+        return new UiTxt("Render entities: " + (state ? "ON" : "OFF"));
+    }
+    public static void toggleRenderEntities(final UiButton b) {
+        final boolean newState = !RenderingFilterHandler.getRenderEntities();
+        RenderingFilterHandler.setRenderEntities(newState);
+        b.setLabel(getToggleText_renderEntities(newState).get());
     }
 }
 

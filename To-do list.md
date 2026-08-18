@@ -260,7 +260,7 @@
   - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
 
 
-- add a generic "hide all entities" toggle in rendering screen
+- ~~add a generic "hide all entities" toggle in rendering screen~~
 - add a generic "hide all particles" toggle in rendering screen
 
 
@@ -282,7 +282,7 @@
   - size of the world directory
 
 
-- 3am water thats normal water fluid but has shaders
+- 3am water thats normal water but has shaders
 
 - Add a status bar at the bottom of the screen
   - display player position here? maybe? and tps and fps and ping

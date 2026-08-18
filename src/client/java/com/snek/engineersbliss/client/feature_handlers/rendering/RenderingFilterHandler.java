@@ -55,17 +55,23 @@ public class RenderingFilterHandler {
     private static boolean renderBlocks;
     private static boolean renderBlockEntities;
     private static boolean renderFluids;
-    private static boolean shadingFix;
+    private static boolean shadingFix      = false;
+    private static boolean renderParticles = true;
+    private static boolean renderEntities  = true;
     public static void setRenderBlockOutlines(final boolean newRenderBlockOutlines) { renderBlockOutlines = newRenderBlockOutlines; }
     public static void setRenderBlocks       (final boolean newRenderBlocks)        { renderBlocks        = newRenderBlocks;        }
     public static void setRenderBlockEntities(final boolean newRenderBlockEntities) { renderBlockEntities = newRenderBlockEntities; }
     public static void setRenderFluids       (final boolean newRenderFluids)        { renderFluids        = newRenderFluids;        }
     public static void setShadingFix         (final boolean newShadingFix)          { shadingFix          = newShadingFix;          }
+    public static void setRenderParticles    (final boolean newRenderParticles)     { renderParticles     = newRenderParticles;     }
+    public static void setRenderEntities     (final boolean newRenderEntities)      { renderEntities      = newRenderEntities ;     }
     public static boolean getRenderBlockOutlines() { return renderBlockOutlines; }
     public static boolean getRenderBlocks       () { return renderBlocks;        }
     public static boolean getRenderBlockEntities() { return renderBlockEntities; }
     public static boolean getRenderFluids       () { return renderFluids;        }
     public static boolean getFixShading         () { return shadingFix;          }
+    public static boolean getRenderParticles    () { return renderParticles;     }
+    public static boolean getRenderEntities     () { return renderEntities ;     }
 
 
 
