@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.custom.items;
 
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethodStage.Vanilla;
 import com.snek.engineersbliss.EngineerSBliss;
 
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
@@ -32,11 +31,22 @@ public class ModCreativeTabs {
     );
 
     public static final CreativeModeTab CUSTOM_ITEMS_TAB = FabricCreativeModeTab.builder()
-        .icon(() -> new ItemStack(CustomItemHandler.GREEN_SCREEN.asItem()))
+        .icon(() -> new ItemStack(CustomItemHandler.ITEM_SINK.asItem()))
         .title(Component.translatable("creativeTab." + EngineerSBliss.MOD_ID + ".custom_items"))
         .displayItems((params, output) -> {
             output.accept(CustomItemHandler.GREEN_SCREEN);
             output.accept(CustomItemHandler.BLUE_SCREEN);
+
+
+            output.accept(CustomItemHandler.FRICTIONLESS_SURFACE);
+            output.accept(CustomItemHandler.FRICTIONFUL_SURFACE);
+
+
+            output.accept(CustomItemHandler.COSMETIC_BLACK_HOLE);
+            output.accept(CustomItemHandler.COSMETIC_WHITE_HOLE);
+            output.accept(CustomItemHandler.ITEM_SOURCE);
+            output.accept(CustomItemHandler.ITEM_SINK);
+            output.accept(CustomItemHandler.ITEM_PIPE);
         }).build()
     ;
 

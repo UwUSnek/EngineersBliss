@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.utils.BlockEntityUtils;
+import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 import org.spongepowered.asm.mixin.injection.At;
@@ -85,6 +86,12 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                     cir.setReturnValue(null);
                 }
             }
+            // case ItemSinkBlockEntity e -> {
+            //     //FIXME use the proper setting
+            //     // if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BEDS)) {
+            //         cir.setReturnValue(null);
+            //     // }
+            // }
             default -> {}
         }
     }

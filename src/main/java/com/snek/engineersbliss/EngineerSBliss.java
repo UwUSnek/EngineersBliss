@@ -3,7 +3,6 @@ package com.snek.engineersbliss;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +11,6 @@ import com.snek.engineersbliss.custom.block_entities.CustomBlockEntityHandler;
 import com.snek.engineersbliss.custom.blocks.CustomBlockHandler;
 import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
-import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 import com.snek.engineersbliss.feature_handlers.overlays.OverlaysServerFeatureSet;
@@ -24,6 +22,7 @@ import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequ
 import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.IntFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.LongFeatureUpdateRequestPayload;
+import com.snek.engineersbliss.network.login.ServerModVersionCheck;
 import com.snek.engineersbliss.network.overlay_data.payloads.ComparatorUpdatePayload;
 import com.snek.engineersbliss.network.overlay_data.payloads.RailUpdatePayload;
 import com.snek.engineersbliss.utils.scheduler.ServerScheduler;
@@ -47,6 +46,10 @@ public class EngineerSBliss implements ModInitializer {
         });
 
 
+        // Register client version check
+        ServerModVersionCheck.register();
+
+
         // Initialize custom items and blocks
         CustomBlockHandler.init();
         CustomBlockEntityHandler.init();
@@ -59,7 +62,7 @@ public class EngineerSBliss implements ModInitializer {
         AltTexturesServerFeatureSet.INSTANCE.init();
         OverlaysServerFeatureSet.INSTANCE.init();
         SettingsServerFeatureSet.INSTANCE.init();
-        __base_ServerFeature.finalizeSetInits();
+        // __base_ServerFeature.finalizeSetInits();
 
 
         // Register server feature handlers

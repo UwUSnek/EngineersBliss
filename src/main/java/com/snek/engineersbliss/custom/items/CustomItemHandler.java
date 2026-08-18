@@ -66,32 +66,102 @@ public class CustomItemHandler {
         "green_screen",
         p -> new CustomBlockItem(CustomBlockHandler.GREEN_SCREEN, p, List.of(CustomBlockHandler.GREEN_SCREEN)),
         new Txt("A perfectly green block with no shading."),
-        Notices.CUSTOM_BLOCK
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
     public static final Item BLUE_SCREEN = register(
         "blue_screen",
         p -> new CustomBlockItem(CustomBlockHandler.BLUE_SCREEN, p, List.of(CustomBlockHandler.BLUE_SCREEN)),
         new Txt("A perfectly blue block with no shading."),
-        Notices.CUSTOM_BLOCK
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
 
 
 
 
-    public static final Item FRICTIONLESS_BLOCK = register(
-        "frictionless_block",
-        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONLESS_BLOCK, p, List.of(CustomBlockHandler.FRICTIONLESS_BLOCK)),
+    public static final Item FRICTIONLESS_SURFACE = register(
+        "frictionless_surface",
+        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONLESS_SURFACE, p, List.of(CustomBlockHandler.FRICTIONLESS_SURFACE)),
         List.of(
-            new Txt("A block with no friction. Everything slides on it. Forever.").lightGray(),
+            new Txt("A surface with no friction. Everything slides on it. Forever.").lightGray(),
             new Txt("The friction of whatever fluid you are travelling in still applies.").lightGray()
         ),
-        Notices.FRICTIONLESS_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_BLOCK
+        Notices.FRICTIONLESS_SURFACE_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
     );
-    public static final Item FRICTIONFUL_BLOCK = register(
-        "frictionful_block",
-        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONFUL_BLOCK, p, List.of(CustomBlockHandler.FRICTIONFUL_BLOCK)),
-        new Txt("A block with infinite friction. Nothing can walk or slide on it. At all."),
-        Notices.FRICTIONFUL_BLOCK_MOVEMENT_ISSUE, Notices.CUSTOM_BLOCK
+    public static final Item FRICTIONFUL_SURFACE = register(
+        "frictionful_surface",
+        p -> new CustomBlockItem(CustomBlockHandler.FRICTIONFUL_SURFACE, p, List.of(CustomBlockHandler.FRICTIONFUL_SURFACE)),
+        new Txt("A surface with infinite friction. Nothing can walk or slide on it. At all."),
+        Notices.FRICTIONFUL_SURFACE_MOVEMENT_ISSUE, Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+
+
+
+
+    public static final Item COSMETIC_BLACK_HOLE = register(
+        "cosmetic_black_hole",
+        p -> new CustomBlockItem(CustomBlockHandler.COSMETIC_BLACK_HOLE, p, List.of(CustomBlockHandler.COSMETIC_BLACK_HOLE)),
+        new Txt("A purely cosmetic Black Hole. It serves no purpose."),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+    public static final Item COSMETIC_WHITE_HOLE = register(
+        "cosmetic_white_hole",
+        p -> new CustomBlockItem(CustomBlockHandler.COSMETIC_WHITE_HOLE, p, List.of(CustomBlockHandler.COSMETIC_WHITE_HOLE)),
+        List.of(
+            new Txt("A purely cosmetic White Hole. It serves no purpose.").lightGray(),
+            new Txt(),
+            new Txt("White holes wouldn't actually look white irl, but having them be").lightGray(),
+            new Txt("white in game makes them more unique. :3").lightGray()
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+    public static final Item ITEM_SOURCE = register(
+        "item_source",
+        p -> new CustomBlockItem(CustomBlockHandler.ITEM_SOURCE, p, List.of(CustomBlockHandler.ITEM_SOURCE)),
+        List.of(
+            new Txt("A configurable container that can never be emptied, but can").lightGray(),
+            new Txt("only hold one stack at a time.").lightGray(),
+            new Txt(),
+            new Txt("It also keeps track of the items it provides.").lightGray()
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+    public static final Item ITEM_SINK = register(
+        "item_sink",
+        p -> new CustomBlockItem(CustomBlockHandler.ITEM_SINK, p, List.of(CustomBlockHandler.ITEM_SINK)),
+        List.of(
+            new Txt("A container with unlimited capacity.").lightGray(),
+            new Txt(),
+            new Txt("It also keeps track of which and how many items it collecs.").lightGray()
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
+    );
+    public static final Item ITEM_PIPE = register(
+        "item_pipe",
+        p -> new CustomBlockItem(CustomBlockHandler.ITEM_PIPE, p, List.of(CustomBlockHandler.ITEM_PIPE)),
+        List.of(
+            new Txt("A Hopper with adjustable cooldown and transfer limit that can"),
+            new Txt("potentially move any amount of items instantly."),
+            new Txt(),
+            new Txt("It also keeps track of which and how many items").lightGray(),
+            new Txt("it pulls, pushes, receives, and has taken from it.").lightGray()
+            //TODO for item pipes, add a small graphic with
+            //TODO     - a hopper with a chest on top?                  | items pullsed
+            //TODO     - a hopper pointing right into a chest           | items pushed
+            //TODO     - a hopper a hopper on the left pointing into it | items received
+            //TODO     - a hopper with a hopper below it                | items taken from it
+            //TODO     - a hopper with an item entity on top            | item entities pulled in
+            //TODO
+            //TODO display a timeline on which each event is shown.
+            //TODO clicking on an event shows info about it
+            //TODO
+            //TODO create time-dependant graphs for:
+            //TODO (graphs can toggle betweek stacks and items. 1 snowball is 1/16th of a stack but 1 item)
+            //TODO     - one input(or output) rate for each category of event
+            //TODO     - the amount of total items in the hopper (maxed out at 5 stacks)
+            //TODO     - total item input rate
+            //TODO     - total item output rate
+        ),
+        Notices.CUSTOM_ITEM_AND_BLOCK
     );
 
 
@@ -1225,7 +1295,7 @@ public class CustomItemHandler {
         private Notices() {}
 
 
-        public static List<Txt> CUSTOM_BLOCK = List.of(
+        public static List<Txt> CUSTOM_ITEM_AND_BLOCK = List.of(
             new Txt("This item and the block it places don't exist in Vanilla.").color(Colors.COLOR_LS_RED),
             new Txt("They cannot be used on servers without the")               .color(Colors.COLOR_LS_RED),
             new Txt(EngineerSBliss.MOD_NAME + " mod installed and will")        .color(Colors.COLOR_LS_RED),
@@ -1322,14 +1392,14 @@ public class CustomItemHandler {
 
 
 
-        public static List<Txt> FRICTIONLESS_BLOCK_MOVEMENT_ISSUE = List.of(
+        public static List<Txt> FRICTIONLESS_SURFACE_MOVEMENT_ISSUE = List.of(
             new Txt("Despite having no friction, mobs are able to move")           .color(Colors.COLOR_LS_ORANGE),
             new Txt("when walking on it. This is because in Minecraft, friction")  .color(Colors.COLOR_LS_ORANGE),
             new Txt("determines how quickly an entity loses velocity, but doesn't").color(Colors.COLOR_LS_ORANGE),
             new Txt("affect the acceleration mobs produce when moving. This is")   .color(Colors.COLOR_LS_ORANGE),
             new Txt("consistent with the game's physics but not with IRL physics.").color(Colors.COLOR_LS_ORANGE)
         );
-        public static List<Txt> FRICTIONFUL_BLOCK_MOVEMENT_ISSUE = List.of(
+        public static List<Txt> FRICTIONFUL_SURFACE_MOVEMENT_ISSUE = List.of(
             new Txt("Despite having infinite friction, mobs aren't able to move")  .color(Colors.COLOR_LS_ORANGE),
             new Txt("when walking on it. This is because in Minecraft, friction")  .color(Colors.COLOR_LS_ORANGE),
             new Txt("determines how quickly an entity loses velocity, and any")    .color(Colors.COLOR_LS_ORANGE),

@@ -7,6 +7,8 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.render.GuiRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 
 
 

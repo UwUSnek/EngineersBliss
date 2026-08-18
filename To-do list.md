@@ -146,9 +146,11 @@
   - Easily fill open containers with specific items
 
 - **Custom blocks and items**
-  - Infinite item sources
+  - ~~Cosmetic Black Hole~~
+  - ~~Cosmetic White Hole~~
+  - Item Source
   - Item Sink (storage block with infinite capacity)
-  - Rate counter hoppers
+  - Item Pipe
   - ~~0 Friction blocks~~
   - ~~∞ Friction blocks~~
   - ~~Green Screen block~~
@@ -280,7 +282,7 @@
   - size of the world directory
 
 
-- 3am water that extends normal water fluid but has shaders
+- 3am water thats normal water fluid but has shaders
 
 - Add a status bar at the bottom of the screen
   - display player position here? maybe? and tps and fps and ping
@@ -309,10 +311,97 @@
 
 
 
-- looking down from a very high place shows a block outline thats misaligned from the GUI crosshair
-  - add somethign that fixes this
-  - idk what causes it
-
-
-
 - add "entity outline" in rendering screen
+
+
+- make the item sink store items in a custom file / directory.
+  - this offloads the data from the chunk, preventing size limit crashes
+  - add this to the description of the item too
+
+
+
+
+
+- hoppers:
+  - for item pipes, add a small graphic with
+    - a hopper with a chest on top?                  | items pullsed
+    - a hopper pointing right into a chest           | items pushed
+    - a hopper a hopper on the left pointing into it | items received
+    - a hopper with a hopper below it                | items taken from it
+    - a hopper with an item entity on top            | item entities pulled in
+
+  - display a timeline on which each event is shown.
+  - clicking on an event shows info about it
+
+  - create time-dependant graphs for:
+  - (graphs can toggle betweek stacks and items. 1 snowball is 1/16th of a stack but 1 item)
+    - one input(or output) rate for each category of event
+    - the amount of total items in the hopper (maxed out at 5 stacks)
+    - total item input rate
+    - total item output rate
+- similar thing for the other trackers
+
+
+
+- Prevent the server from sending custom item & block packets to players that don't have the mod installed
+
+
+
+- make texture loader try again after a delay when the JVM runs out of memory (it prints an error, prob can be catched)
+
+
+
+- add a "Large Black Hole" model that shares the custom rendering of item sinks
+  - maybe add customizable size? it's a block entity anyway it can do that stuff.
+  - much bigger than the standard item sink model. bigger lensing effect too
+  - write in the item that this is only aesthetic and doesn't do anything. only creative mode ofc.
+  - maybe add the same thing for item sources, aesthetic version.
+
+
+
+
+- add a "regenerate" command/tool/something
+  - This lets you regenerate the selected area to the default world generation,
+  - The process removes all block and entities in the selection
+  - Async with progress bar
+
+
+
+
+- fix overlays not working properly in multiplayer??? idk
+
+
+
+
+
+- SELECTION TOOL
+  - left/right click to select an area, infinite reach with preview
+  - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game)
+    - menu lets you do things with the selection
+
+
+- GIT INTEGRATION
+  - add a UI for it with the branch tree and all
+  - ONE REPO PER WORLD OR SERVER
+    - changing commit changes the entire world data
+    - this includes mobs, blocks, world state.
+      - player state, position, and data are NOT included. Players need to change version without getting teleported around or anything of that kind.
+      - obviously, mod jars, config files, and other such things aren't included
+    - multiplayer users share the same repo and are all on the same commit, as the versioning system is global.
+    - all of the dimensions are committed together. This avoids breaking multi-dimensional machines
+
+
+
+
+- Improve readability of glsl shaders
+
+
+- Fix static black hole and white hole block models
+- Fix item models of Item Sink, Item Source, Cosmetic Black Hole, Cosmetic White Hole
+
+- Fix models of Item Pipe
+
+- Add a despawn cooldown option for invisible block overlays
+
+
+- Improve sprite of Player Scale feature
