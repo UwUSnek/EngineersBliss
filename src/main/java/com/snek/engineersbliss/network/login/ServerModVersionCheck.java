@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.network.login;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -25,27 +27,66 @@ public class ServerModVersionCheck {
             sender.sendPacket(CHANNEL, buf);
         });
 
-        ServerLoginNetworking.registerGlobalReceiver(CHANNEL, (server, handler, understood, buf, synchronizer, responseSender) -> {
+        ServerLoginNetworking.registerGlobalReceiver(CHANNEL, (server, handler, understood, buffer, synchronizer, responseSender) -> {
             if(understood) {
-                String clientVersion = buf.readUtf();
-                if(!compatible(clientVersion, getVersion())) {
-                    handler.disconnect(new Txt(EngineerSBliss.MOD_NAME + " version mismatch. Server: " + getVersion() + ", Client: " + clientVersion).get());
-                }
+                String clientVersion = buffer.readUtf(); // must read synchronously, buf isn't valid later
+                String serverVersion = getVersion();
+
+                synchronizer.waitFor(CompletableFuture.runAsync(() -> {
+                    final int versionCheckResult = compareVersions(serverVersion, clientVersion);
+                    if(versionCheckResult == 0xBAD) {
+                        handler.disconnect(new Txt(EngineerSBliss.MOD_NAME + ": Couldn't parse mod version.").get());
+                    }
+                    else if(versionCheckResult != 0) {
+                        handler.disconnect(new Txt(String.format(
+                            "%s: version mismatch.%nThis server is using version %s, but you are on %s.%nPlease %s your mod to version %s.",
+                            EngineerSBliss.MOD_NAME,
+                            serverVersion, clientVersion,
+                            versionCheckResult > 0 ? "upgrade" : "downgrade", serverVersion
+                        )).get());
+                    }
+                }, server));
             }
         });
     }
 
 
-    private static boolean compatible(String a, String b) {
-        String[] pa = a.split("\\.", 3);
-        String[] pb = b.split("\\.", 3);
-        return
-            pa.length >= 2 &&
-            pb.length >= 2 &&
-            pa[0].equals(pb[0]) &&
-            pa[1].equals(pb[1])
-        ;
+
+
+    /**
+     * Compares the client and server versions.
+     * @param serverVersion The version of the mod on the server. Expected format: <major>.<minor>.<patch>
+     * @param clientVersion The version of the mod on the client. Expected format: <major>.<minor>.<patch>
+     * @return 1 if the server version is newer, -1 if it is older, 0 if they are equal.
+     *      This doesn't check the patch version.
+     *      Returns 0xBAD if the version cannot be parsed.
+     */
+    private static int compareVersions(String serverVersion, String clientVersion) {
+        final String[] serverStrings = serverVersion.split("\\.");
+        final String[] clientStrings = clientVersion.split("\\.");
+        if(serverStrings.length < 2 || clientStrings.length < 2) {
+            EngineerSBliss.LOGGER.error("Could not parse mod versions. Server: {}, Client: {}", serverVersion, clientVersion, new Throwable());
+            return 0xBAD;
+        }
+
+        try {
+            final int serverMajor = Integer.parseInt(serverStrings[0]);
+            final int clientMajor = Integer.parseInt(clientStrings[0]);
+            final int serverMinor = Integer.parseInt(serverStrings[1]);
+            final int clientMinor = Integer.parseInt(clientStrings[1]);
+            if(serverMajor > clientMajor) return +1;
+            if(serverMajor < clientMajor) return -1;
+            if(serverMinor > clientMinor) return +1;
+            if(serverMinor < clientMinor) return -1;
+            return 0;
+        }
+        catch(NumberFormatException e) {
+            EngineerSBliss.LOGGER.error("Could not parse mod versions. Server: {}, Client: {}", serverVersion, clientVersion, e);
+            return 0xBAD;
+        }
     }
+
+
 
 
     private static String getVersion() {

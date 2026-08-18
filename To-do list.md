@@ -257,6 +257,7 @@
 
 - ~~add a "keybinds" section~~
   - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
+    - Activating the scroll key makes the status bar change color or something like that
   - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
 
 
