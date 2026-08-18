@@ -2,6 +2,8 @@ package com.snek.engineersbliss.custom.block_entities;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.CosmeticBlackHoleBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.CosmeticWhiteHoleBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.CustomBlockHandler;
@@ -28,6 +30,20 @@ public class CustomBlockEntityHandler {
 
 
 
+    public static final BlockEntityType<CosmeticBlackHoleBlockEntity> COSMETIC_BLACK_HOLE = register(
+        "cosmetic_black_hole",
+        FabricBlockEntityTypeBuilder.create(
+            CosmeticBlackHoleBlockEntity::new,
+            CustomBlockHandler.COSMETIC_BLACK_HOLE
+        ).build()
+    );
+    public static final BlockEntityType<CosmeticWhiteHoleBlockEntity> COSMETIC_WHITE_HOLE = register(
+        "cosmetic_white_hole",
+        FabricBlockEntityTypeBuilder.create(
+            CosmeticWhiteHoleBlockEntity::new,
+            CustomBlockHandler.COSMETIC_WHITE_HOLE
+        ).build()
+    );
     public static final BlockEntityType<ItemSourceBlockEntity> ITEM_SOURCE = register(
         "item_source",
         FabricBlockEntityTypeBuilder.create(

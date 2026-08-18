@@ -41,16 +41,18 @@ vec2 _internal_calculate_lensed_uv(
     vec3 camUp    = normalize(camToWorld[1].xyz);
 
     vec2 screenCenter = worldToScreenUV(viewProj, centerWorld);
-    float eps = 0.01;
+    float camDist = length(centerWorld - (camToWorld * vec4(0,0,0,1)).xyz);
+    float eps = max(0.01, camDist * 0.001);
     vec2 basisX = (worldToScreenUV(viewProj, centerWorld + camRight * eps) - screenCenter) / eps;
     vec2 basisY = (worldToScreenUV(viewProj, centerWorld + camUp    * eps) - screenCenter) / eps;
     mat2 localToScreen = mat2(basisX, basisY);
     mat2 screenToLocal = inverse(localToScreen);
 
-    float det = determinant(localToScreen);
-    if(abs(det) < 1e-5) {
-        return uvToModify;
-    }
+
+    // float det = determinant(localToScreen);
+    // if(abs(det) < 1e-5) {
+    //     return uvToModify;
+    // }
 
     vec2 localUV = screenToLocal * (screenUV - screenCenter);
     float distance = length(localUV);

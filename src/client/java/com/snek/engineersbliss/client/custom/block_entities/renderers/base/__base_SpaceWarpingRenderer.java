@@ -22,7 +22,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -47,23 +46,19 @@ import org.lwjgl.system.MemoryUtil;
 
 
 
-public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S extends BlockEntityRenderState> implements BlockEntityRenderer<E, S> {
+public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S extends __base_SpaceWarpingRenderer.__base_SpaceWarpingRenderState> extends __base_CustomBlockEntityRenderer<E, S> {
     public static final Identifier SCENE_COLOR_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "scene_color_snapshot");
     public static final Identifier SCENE_DEPTH_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "scene_depth_snapshot");
 
 
-    private float planeSize;
-
-    public float getPlaneSize() { return planeSize; }
-    public void setPlaneSize(final float newPlaneSize) { planeSize = newPlaneSize; }
+    public abstract float calcPlaneSize(BlockEntity e);
 
 
 
     private final RenderSetup renderSetup;
     private final RenderPipeline renderPipeline;
-    protected __base_SpaceWarpingRenderer(final float initialPlaneSize, final String shaderPathRoot, final String id, BlockEntityRendererProvider.Context context) {
+    protected __base_SpaceWarpingRenderer(final String shaderPathRoot, final String id, BlockEntityRendererProvider.Context context) {
         super();
-        this.planeSize = initialPlaneSize;
         RenderType.create(
             String.format("%s:%s", EngineerSBliss.MOD_ID, id),
             renderSetup = RenderSetup.builder(
@@ -100,7 +95,8 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
         final Vec3 cameraPos,
         final @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay
     ) {
-        BlockEntityRenderer.super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+        super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
+        state.planeSize = calcPlaneSize(blockEntity);
     }
 
 
@@ -121,13 +117,13 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
         GpuTextureView colorTarget,
         GpuTextureView depthTarget
     ) {
-        for (S state : states) {
+        for(S state : states) {
             BlockPos blockPos = state.blockPos;
             poseStack.pushPose();
             poseStack.translate(blockPos.getX() - camPos.x + 0.5, blockPos.getY() - camPos.y + 0.5, blockPos.getZ() - camPos.z + 0.5);
             poseStack.mulPose(cameraState.orientation);
             var pose = poseStack.last();
-            final float h = planeSize / 2f;
+            final float h = state.planeSize / 2f;
 
             // Build vertex bytes. POSITION_TEX = vec3 pos + vec2 uv = 20 bytes/vertex
             ByteBuffer vertexData = MemoryUtil.memAlloc(4 * 20);
@@ -157,7 +153,7 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
                 new Vector3f(),
                 new Matrix4f()
             );
-            GpuBufferSlice planeSizeSlice = PlaneSizeUniforms.INSTANCE.write(planeSize);
+            GpuBufferSlice planeSizeSlice = PlaneSizeUniforms.INSTANCE.write(state.planeSize);
 
             try(RenderPass renderPass = encoder.createRenderPass(() -> "space_warp_draw", colorTarget, OptionalInt.empty(), depthTarget, OptionalDouble.empty())) {
                 renderPass.setPipeline(renderPipeline);
@@ -184,10 +180,8 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
     }
 
 
-    private static void writeVertex(ByteBuffer buf, PoseStack.Pose pose, float x, float y, float z, float u, float v) {
-        org.joml.Vector3f pos = new org.joml.Vector3f(x, y, z);
-        pose.pose().transformPosition(pos);
-        buf.putFloat(pos.x).putFloat(pos.y).putFloat(pos.z);
-        buf.putFloat(u).putFloat(v);
+
+    public static class __base_SpaceWarpingRenderState extends BlockEntityRenderState {
+        public float planeSize;
     }
 }

@@ -4,10 +4,14 @@ import java.util.function.Function;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSourceBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.CosmeticBlackHoleBlockEntity;
+import com.snek.engineersbliss.custom.block_entities.special.CosmeticWhiteHoleBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemPipeBlockEntity;
 import com.snek.engineersbliss.custom.block_entities.special.ItemSinkBlockEntity;
 import com.snek.engineersbliss.custom.blocks.base.CustomTransparentEntityBlock;
 import com.snek.engineersbliss.custom.blocks.base.FrictionSurface;
+import com.snek.engineersbliss.custom.blocks.special.CosmeticBlackHoleBlock;
+import com.snek.engineersbliss.custom.blocks.special.CosmeticWhiteHoleBlock;
 import com.snek.engineersbliss.custom.blocks.special.FrictionlessSurface;
 
 import net.minecraft.core.Registry;
@@ -73,6 +77,40 @@ public class CustomBlockHandler {
 
 
 
+
+
+
+
+    public static final Block COSMETIC_BLACK_HOLE = register(
+        "cosmetic_black_hole",
+        p -> new CosmeticBlackHoleBlock(p, CosmeticBlackHoleBlockEntity::new),
+        BlockBehaviour.Properties.of()
+            .strength(-1.0f, 3600000.8f)
+            .mapColor(MapColor.STONE)
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor(Blocks::never)
+            .isSuffocating(Blocks::never)
+            .isViewBlocking(Blocks::never)
+            .noCollision()
+            .noLootTable()
+            .pushReaction(PushReaction.BLOCK)
+            .noOcclusion()
+    );
+    public static final Block COSMETIC_WHITE_HOLE = register(
+        "cosmetic_white_hole",
+        p -> new CosmeticWhiteHoleBlock(p, CosmeticWhiteHoleBlockEntity::new),
+        BlockBehaviour.Properties.of()
+            .strength(-1.0f, 3600000.8f)
+            .mapColor(MapColor.STONE)
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor(Blocks::never)
+            .isSuffocating(Blocks::never)
+            .isViewBlocking(Blocks::never)
+            .noCollision()
+            .noLootTable()
+            .pushReaction(PushReaction.BLOCK)
+            .noOcclusion()
+    );
     public static final Block ITEM_SOURCE = register(
         "item_source",
         p -> new CustomTransparentEntityBlock(p, ItemSourceBlockEntity::new),
@@ -83,6 +121,7 @@ public class CustomBlockHandler {
             .isRedstoneConductor(Blocks::never)
             .isSuffocating(Blocks::never)
             .isViewBlocking(Blocks::never)
+            .noCollision()
             .noLootTable()
             .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
@@ -97,6 +136,7 @@ public class CustomBlockHandler {
             .isRedstoneConductor(Blocks::never)
             .isSuffocating(Blocks::never)
             .isViewBlocking(Blocks::never)
+            .noCollision()
             .noLootTable()
             .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
@@ -115,6 +155,10 @@ public class CustomBlockHandler {
             .pushReaction(PushReaction.BLOCK)
             .noOcclusion()
     );
+
+
+
+
 
 
 

@@ -84,9 +84,11 @@
     "item.engineers-bliss.frictionful_surface"  : "Frictionful Surface",
 
 
-    "item.engineers-bliss.item_source" : "Item Source",
-    "item.engineers-bliss.item_sink"   : "Item Sink",
-    "item.engineers-bliss.item_pipe"   : "Item Pipe",
+    "item.engineers-bliss.cosmetic_black_hole" : "Cosmetic Black Hole",
+    "item.engineers-bliss.cosmetic_white_hole" : "Cosmetic White Hole",
+    "item.engineers-bliss.item_source"         : "Item Source",
+    "item.engineers-bliss.item_sink"           : "Item Sink",
+    "item.engineers-bliss.item_pipe"           : "Item Pipe",
 
 
     "item.engineers-bliss.acacia_door_bottom"           : "Acacia Door Bottom",
