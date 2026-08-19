@@ -1,8 +1,10 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -35,9 +37,10 @@ public interface BgCacheWidget {
     public default void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         final int w = getWidth();
         final int h = getHeight();
-        final double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
-        final int pixelW = Math.max(1, (int)Math.round(w * guiScale));
-        final int pixelH = Math.max(1, (int)Math.round(h * guiScale));
+        // final double guiScale = Minecraft.getInstance().getWindow().getGuiScale(); //TODO remove
+        final float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
+        final int pixelW = Math.max(1, Math.round(w * guiScale));
+        final int pixelH = Math.max(1, Math.round(h * guiScale));
 
         getBgTextureCache().update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
         getBgTextureCache().blit(graphics, getX(), getY(), w, h);

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
@@ -18,6 +19,7 @@ import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -188,7 +190,8 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
     public boolean mouseReleased(MouseButtonEvent event) {
         long handle = Minecraft.getInstance().getWindow().handle();
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-        double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        // double guiScale = Minecraft.getInstance().getWindow().getGuiScale(); //TODO remove
+        float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
         GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
         dragged = false;
         return super.mouseReleased(event);

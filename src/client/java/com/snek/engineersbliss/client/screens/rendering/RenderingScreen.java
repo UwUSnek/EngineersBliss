@@ -184,14 +184,14 @@ public class RenderingScreen extends __base_UiScreen {
 
 
     @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+    public void _extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         final @NotNull ScaledFont scaledFont = Fonts.ui.regular.get(1f);
         final @NotNull Font font = scaledFont.getFont();
         final int lineBase = this.height;
         final int lineHeight = scaledFont.getLineHeight();
         if(tabPressed) return;
 
-        super.extractRenderState(graphics, mouseX, mouseY, delta);
+        super._extractRenderState(graphics, mouseX, mouseY, delta);
 
 
         // Draw find syntax instructions

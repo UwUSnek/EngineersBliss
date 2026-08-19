@@ -98,6 +98,18 @@ public class ClientFeatureSync {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Checks if a creative mode player has the specified feature set to the specified value.
      * Returns false if the entity is not a Player or is not in Creative Mode.
@@ -128,4 +140,12 @@ public class ClientFeatureSync {
     public static boolean shouldPlayerPhaseThroughEntities(final Object entity) {
         return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_ENTITIES);
     }
+
+
+
+
+
+
+
+    //TODO gui scale
 }

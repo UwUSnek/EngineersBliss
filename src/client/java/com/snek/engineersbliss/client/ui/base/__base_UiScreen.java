@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui.base;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -18,15 +19,23 @@ import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.render.GuiRenderer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 
 
 
 
 
 
+//FIXME animate GUI_SCALE and resize continuously until the new target is reached
+//FIXME this creates a smooth transition between size changes
 
+//BUG n.00x and n.50x scales work perfectly
+//BUG n.25x and n.75x scales duplicate pixel rows (and probably columns)
+//BUG The factor isn't the issue, as it's always calculated perfectly and float precision just isnt so bad to explain multiple duplicated pixel rows per text line
 
 
 /**
@@ -35,6 +44,12 @@ import net.minecraft.client.input.KeyEvent;
  * By default, all screens pause the game.
  */
 public abstract class __base_UiScreen extends Screen {
+    private static final Supplier<Float> modScreenScale = () -> {
+        return SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE)); //TODO replace all instances with a utility method in ClientFeatureSync
+    };
+    private double realGuiScale = 1.0;  // The window's actual current scale, refreshed each resize
+    private boolean needsResize;        //! Deferred initial resize. Must be ran after all the vanilla logic, so extractRenderState does that.
+
     public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
     public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
     public static final int LIST_TOP      = Layout.LIST_TOP;
@@ -42,8 +57,56 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
+
     protected __base_UiScreen() {
         super(new UiTxt().get());
+        this.needsResize = true;
+    }
+
+    @Override
+    public void resize(final int width, final int height) {
+        final @NotNull Minecraft mc = Minecraft.getInstance();
+        realGuiScale = mc.getWindow().getGuiScale();
+
+        int fbWidth  = mc.getWindow().getScreenWidth();
+        int fbHeight = mc.getWindow().getScreenHeight();
+
+        // int fixedWidth  = (int) Math.ceil(fbWidth  / modScreenScale.get()); //TODO remove
+        // int fixedHeight = (int) Math.ceil(fbHeight / modScreenScale.get()); //TODO remove
+        int fixedWidth  = (int)Math.floor(fbWidth  / modScreenScale.get());
+        int fixedHeight = (int)Math.floor(fbHeight / modScreenScale.get());
+
+        if(this.width != fixedWidth || this.height != fixedHeight) {
+            this.width  = fixedWidth;
+            this.height = fixedHeight;
+            this.rebuildWidgets();
+        }
+    }
+
+    // Converts an mouse coord from GuiScale-dependant coords to the fake screen size.
+    private double fx(double v) {
+        return v * (realGuiScale / modScreenScale.get());
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent e, boolean doubleClick) {
+        return super.mouseClicked(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())), doubleClick);
+    }
+    @Override
+    public boolean mouseReleased(MouseButtonEvent e) {
+        return super.mouseReleased(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())));
+    }
+    @Override
+    public boolean mouseDragged(MouseButtonEvent e, double dx, double dy) {
+        return super.mouseDragged(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())), fx(dx), fx(dy));
+    }
+    @Override
+    public void mouseMoved(double mouseX, double mouseY) {
+        super.mouseMoved(fx(mouseX), fx(mouseY));
+    }
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double sx, double sy) {
+        return super.mouseScrolled(fx(mouseX), fx(mouseY), sx, sy);
     }
 
 
@@ -66,17 +129,17 @@ public abstract class __base_UiScreen extends Screen {
                 return true;
             }
             case InputConstants.KEY_ADD: {
-                Minecraft client = Minecraft.getInstance();
-                final OptionInstance<Integer> option = client.options.guiScale();
-                option.set(option.get() + 1);
-                client.resizeGui();
+                final int newScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE) + 1;
+                final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1); //TODO replace with utility method in ClientFeatureSync
+                ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
+                resize(0, 0);
                 return true;
             }
             case GLFW.GLFW_KEY_KP_SUBTRACT: {
-                Minecraft client = Minecraft.getInstance();
-                final OptionInstance<Integer> option = client.options.guiScale();
-                option.set(option.get() - 1);
-                client.resizeGui();
+                final int newScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE) - 1;
+                final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1);
+                ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
+                resize(0, 0);
                 return true;
             }
             default: {
@@ -129,16 +192,33 @@ public abstract class __base_UiScreen extends Screen {
         return r;
     }
 
+
     @Override
-    public void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+    public final void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
+        if(needsResize) {
+            needsResize = false;
+            resize(0, 0);
+        }
+
+        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale.
+        float factor = (float)(modScreenScale.get() / realGuiScale);
+        graphics.pose().pushMatrix();
+        graphics.pose().scale(factor, factor);
+        _extractRenderState(graphics, mouseX, mouseY, delta);
+        graphics.pose().popMatrix();
+    }
+    public void _extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+        int adjMouseX = (int)fx(mouseX);
+        int adjMouseY = (int)fx(mouseY);
 
         //! Stop other widgets from updating hover state while dragging.
         //! This is done by calling the superclass's extractRenderState with a fake invalid mouse position that no widget can cover.
         //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
-        if(isDragging()) super.extractRenderState(graphics, -1,     -1,     delta);
-        else             super.extractRenderState(graphics, mouseX, mouseY, delta);
+        if(isDragging()) super.extractRenderState(graphics, -1,        -1,        delta);
+        else             super.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
     }
+
 
     @Override
     public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
@@ -146,6 +226,7 @@ public abstract class __base_UiScreen extends Screen {
             graphics.blurBeforeThisStratum();
         }
     }
+
 
     @Override
 	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {

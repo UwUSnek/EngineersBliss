@@ -305,11 +305,6 @@
 - remove static sign models in 26.2+
 
 
-- maybe add an "area block distribution" tool?
-  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
-    - call them "Area analysis" or something
-
-
 
 
 - add "entity outline" in rendering screen
@@ -375,10 +370,21 @@
 
 
 
+
+
+- maybe add an "area block distribution" tool?
+  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
+    - call them "Area analysis" or something
+
 - SELECTION TOOL
   - left/right click to select an area, infinite reach with preview
-  - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game)
-    - menu lets you do things with the selection
+  - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game). EACH ACTION HAS A KEYBIND
+    - discard selection
+    - grow selection (maxes out to connected blocks)
+    - shrink selection (makes it as small as possible)
+    - regenerate
+    - [open replace block menu, affects the whole selection]
+    - [open area analysis menu]
 
 
 - GIT INTEGRATION

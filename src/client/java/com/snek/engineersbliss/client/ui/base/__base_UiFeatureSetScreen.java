@@ -106,11 +106,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        if(tabPressed) return;
-
-
-
+    public void _extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
         // Update hovered feature entry data
         final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
@@ -153,7 +149,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
         // Normal rendering
-        super.extractRenderState(graphics, mouseX, mouseY, a);
+        super._extractRenderState(graphics, mouseX, mouseY, a);
     }
 
 

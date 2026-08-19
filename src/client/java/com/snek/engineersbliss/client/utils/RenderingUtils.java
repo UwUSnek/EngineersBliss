@@ -10,10 +10,12 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.rendering.PixelFiller;
 import com.snek.engineersbliss.client.utils.rendering.PixelSetter;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.Utils;
 
 import net.minecraft.client.Minecraft;
@@ -56,9 +58,10 @@ public class RenderingUtils {
      */
     public static double pushFullResRendering(final GuiGraphicsExtractor graphics) {
         final var window = Minecraft.getInstance().getWindow();
-        final double guiScale = window.getWidth() / (double) window.getGuiScaledWidth();
+        // final double guiScale = window.getWidth() / (double) window.getGuiScaledWidth(); //TODO remove
+        final float guiScale = window.getWidth() / SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
         graphics.pose().pushMatrix();
-        graphics.pose().scale((float)(1.0 / guiScale), (float)(1.0 / guiScale));
+        graphics.pose().scale(1.0f / guiScale, 1.0f / guiScale);
         return guiScale;
     }
 
@@ -217,7 +220,6 @@ public class RenderingUtils {
         // Retrieve font and text scale, apply drop shadow option
         final float textScale = scaledFont.getScale();
         final float stringWidth = scaledFont.calcWidth(text); //! Width of the string in screen space
-
 
         // Compute x and y positions (calculate in screen space, resize to scaled coords)
         final int _x = (int)(switch(textAlignment) {
