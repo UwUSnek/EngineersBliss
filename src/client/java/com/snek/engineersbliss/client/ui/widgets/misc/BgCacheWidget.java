@@ -37,7 +37,6 @@ public interface BgCacheWidget {
     public default void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         final int w = getWidth();
         final int h = getHeight();
-        // final double guiScale = Minecraft.getInstance().getWindow().getGuiScale(); //TODO remove
         final float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
         final int pixelW = Math.max(1, Math.round(w * guiScale));
         final int pixelH = Math.max(1, Math.round(h * guiScale));

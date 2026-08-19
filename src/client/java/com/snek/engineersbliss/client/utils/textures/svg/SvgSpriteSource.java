@@ -74,11 +74,6 @@ public record SvgSpriteSource(String sourcePath) implements SpriteSource {
                     return new SpriteContents(scaledSpriteId, new FrameSize(scaledImage.getWidth(), scaledImage.getHeight()), scaledImage);
                 });
             }
-//TODO remove
-            // output.add(spriteId, resourceLoader -> {
-            //     final NativeImage image = SvgTextureTracker.acquire(spriteId, 4);
-            //     return new SpriteContents(spriteId, new FrameSize(image.getWidth(), image.getHeight()), image);
-            // });
         }
     }
 

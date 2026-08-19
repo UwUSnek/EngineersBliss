@@ -58,7 +58,6 @@ public class RenderingUtils {
      */
     public static double pushFullResRendering(final GuiGraphicsExtractor graphics) {
         final var window = Minecraft.getInstance().getWindow();
-        // final double guiScale = window.getWidth() / (double) window.getGuiScaledWidth(); //TODO remove
         final float guiScale = window.getWidth() / SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
         graphics.pose().pushMatrix();
         graphics.pose().scale(1.0f / guiScale, 1.0f / guiScale);

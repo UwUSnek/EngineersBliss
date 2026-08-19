@@ -15,11 +15,9 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.render.GuiRenderer;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -71,8 +69,6 @@ public abstract class __base_UiScreen extends Screen {
         int fbWidth  = mc.getWindow().getScreenWidth();
         int fbHeight = mc.getWindow().getScreenHeight();
 
-        // int fixedWidth  = (int) Math.ceil(fbWidth  / modScreenScale.get()); //TODO remove
-        // int fixedHeight = (int) Math.ceil(fbHeight / modScreenScale.get()); //TODO remove
         int fixedWidth  = (int)Math.floor(fbWidth  / modScreenScale.get());
         int fixedHeight = (int)Math.floor(fbHeight / modScreenScale.get());
 

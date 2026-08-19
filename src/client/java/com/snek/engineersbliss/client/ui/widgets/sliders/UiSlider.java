@@ -190,7 +190,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
     public boolean mouseReleased(MouseButtonEvent event) {
         long handle = Minecraft.getInstance().getWindow().handle();
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-        // double guiScale = Minecraft.getInstance().getWindow().getGuiScale(); //TODO remove
         float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
         GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
         dragged = false;
