@@ -314,7 +314,7 @@ public class PauseScreenMixin extends Screen {
         return new UiButton(this, new UiTxt(label), b -> {
             minecraft.setScreen(screenFactory.get());
             b.setFocused(false);
-        }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, BUTTON_HEIGHT);
+        }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, 1f);
     }
 }
 
