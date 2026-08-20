@@ -181,11 +181,10 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
 
 
         // Draw label
-        final boolean usingSprite = bgSpriteId != null;
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
         final int textX = getX() + (int)(height * labelOffset) + Layout.textMarginPx;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, usingSprite);
+        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, false);
 
 
         // Draw keybind if present
