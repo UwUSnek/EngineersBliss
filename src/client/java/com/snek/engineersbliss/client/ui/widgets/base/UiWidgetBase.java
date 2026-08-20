@@ -1,5 +1,10 @@
 package com.snek.engineersbliss.client.ui.widgets.base;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.gui.screens.Screen;
 
 
@@ -12,4 +17,15 @@ import net.minecraft.client.gui.screens.Screen;
  */
 public interface UiWidgetBase {
     public Screen getScreen();
+    public @Nullable List<?> children();
+
+
+    public default void layoutWidgets() {
+        final @Nullable List<?> children = children();
+        if(children != null) for(final var e : children) {
+            if(e instanceof final @NotNull UiWidgetBase w) {
+                w.layoutWidgets();
+            }
+        }
+    }
 }

@@ -59,16 +59,31 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
 
         // Add left sidebar
         if(hasLeftSidebar) {
-            final int leftSidebarWidthPx = (int)(width * leftSidebarWidth);
-            leftSidebar = new UiWidgetList(this, leftSidebarWidthPx, height, 0, 0, BUTTON_HEIGHT);
+            leftSidebar = new UiWidgetList(this, 0, 0, 0, 0, BUTTON_HEIGHT);
             addRenderableWidget(leftSidebar);
         }
 
         // Add right sidebar
         if(hasRightSidebar) {
-            final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
-            rightSidebar = new UiWidgetList(this, rightSidebarWidthPx, height, width - rightSidebarWidthPx, 0, BUTTON_HEIGHT);
+            rightSidebar = new UiWidgetList(this, 0, 0, 0, 0, BUTTON_HEIGHT);
             addRenderableWidget(rightSidebar);
         }
+    }
+
+
+    // Layout logic
+    @Override
+    public void layoutWidgets() {
+        if(hasLeftSidebar) {
+            final int leftSidebarWidthPx = (int)(width * leftSidebarWidth);
+            leftSidebar.setSize( leftSidebarWidthPx, height);
+            leftSidebar.setPosition(0, 0);
+        }
+        if(hasRightSidebar) {
+            final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
+            rightSidebar.setSize(rightSidebarWidthPx, height);
+            rightSidebar.setPosition(width - rightSidebarWidthPx, 0);
+        }
+        super.layoutWidgets();
     }
 }

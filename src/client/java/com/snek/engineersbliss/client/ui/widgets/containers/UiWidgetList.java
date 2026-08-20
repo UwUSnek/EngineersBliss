@@ -16,10 +16,14 @@ import net.minecraft.client.renderer.RenderPipelines;
 
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
@@ -47,9 +51,20 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     // Cached textures
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+    public void setBgColor(final int newColor) {
+        bgColor = newColor; markBgDirty();
+    }
+	@Override public TextureCache getBgTextureCache() {
+        return bgCache;
+    }
+    @Override public int getBgBaseColor() {
+        return bgColor;
+    }
+    @Override public boolean isGuiScaleTransitioning() {
+        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
+    }
+
+
 
 
     public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
@@ -58,6 +73,44 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
         bgCache = new TextureCache(screen);
         setX(x);
     }
+
+
+
+
+
+    /**
+     * Verbatim copy of Vanilla's getFirstEntryY bc for some reason they made it private.
+     */
+	protected int _getFirstEntryY() {
+		return getY() + 2;
+	}
+    /**
+     * Verbatim copy of Vanilla's repositionEntries bc for some reason they made it private.
+     */
+    protected void _repositionEntries() {
+        int y = _getFirstEntryY() - (int)scrollAmount();
+
+        for(var child : children()) {
+            child.setY(y);
+            y += child.getHeight();
+            child.setX(getRowLeft());
+            child.setWidth(getRowWidth());
+        }
+    }
+
+    @Override
+    public void layoutWidgets() {
+        _repositionEntries();
+		if(getSelected() != null) {
+			scrollToEntry(getSelected());
+		}
+		this.refreshScrollAmount();
+        UiWidgetBase.super.layoutWidgets();
+    }
+
+
+
+
 
 
 

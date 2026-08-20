@@ -26,7 +26,7 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
     public static ServerToggleFeature PAUSE_GAME_IN_MOD_SCREENS = INSTANCE.registerFeature(new ServerToggleFeature("pause_game_in_mod_screens", true));
     public static ServerSteppedFeature<Float> GUI_SCALE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
         "gui_scale",
-        List.of(1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f), 2
+        List.of(1f, 1.5f, 2f, 2.5f, 3f), 2
         //! No client feature for the GUI scale
     ));
 

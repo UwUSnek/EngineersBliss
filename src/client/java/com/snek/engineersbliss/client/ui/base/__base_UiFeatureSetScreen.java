@@ -39,8 +39,8 @@ import net.minecraft.resources.Identifier;
 public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     // Elements and layout
-    protected static UiTextWidget descriptionTextWidget;
-    protected static UiTextWidget descriptionNameWidget;
+    protected UiTextWidget descriptionTextWidget;
+    protected UiTextWidget descriptionNameWidget;
     public static final float DESCRIPTION_HEIGHT = 0.15f;
     public static final float DESCRIPTION_NAME_HEIGHT = 0.06f;
     public static final float DESCRIPTION_TEXT_HEIGHT = DESCRIPTION_HEIGHT - DESCRIPTION_NAME_HEIGHT;
@@ -66,7 +66,6 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-
     // Initializer function
     @Override
     protected void init() {
@@ -81,22 +80,28 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Add description name and text elements
         //! Preview is added dynamically
+        descriptionNameWidget = new UiTextWidget(this,0, 0, 0, 0,new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor);
+        descriptionTextWidget = new UiTextWidget(this,0, 0, 0, 0,new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor).withVerticalAlignment(TextAlignmentY.TOP);
+        addRenderableWidget(descriptionNameWidget);
+        addRenderableWidget(descriptionTextWidget);
+    }
+
+
+    // Layout logic
+    @Override
+    public void layoutWidgets() {
+        super.layoutWidgets();
+
         final int descriptionWidthPx = (int)(width * descriptionWidth);
         final int descriptionX = (width - descriptionWidthPx) / 2;
         final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
         final int descriptionTextHeight = (int)(height * DESCRIPTION_TEXT_HEIGHT);
-        descriptionNameWidget = new UiTextWidget(
-            this,
-            descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidthPx, descriptionNameHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
-        );
-        descriptionTextWidget = new UiTextWidget(
-            this,
-            descriptionX, height - descriptionTextHeight, descriptionWidthPx, descriptionTextHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
-        ).withVerticalAlignment(TextAlignmentY.TOP);
-        addRenderableWidget(descriptionNameWidget);
-        addRenderableWidget(descriptionTextWidget);
+
+        descriptionNameWidget.setPosition(descriptionX, height - descriptionTextHeight - descriptionNameHeight);
+        descriptionNameWidget.setSize(descriptionWidthPx, descriptionNameHeight);
+
+        descriptionTextWidget.setPosition(descriptionX, height - descriptionTextHeight);
+        descriptionTextWidget.setSize(descriptionWidthPx, descriptionTextHeight);
     }
 
 

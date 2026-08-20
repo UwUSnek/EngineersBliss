@@ -1,10 +1,12 @@
 package com.snek.engineersbliss.client.ui.widgets.buttons;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -36,7 +38,7 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
     private UiTxt label;
     private char key;
     private final TextAlignment alignment;
-    private int labelOffset;   // Label offset from the left edge, in pixels.
+    private float labelOffset;
     private final AnimatedColor overlayColor;
 
     // Screen reference
@@ -53,9 +55,18 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
     // Cached textures
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+    public void setBgColor(final int newColor) {
+        bgColor = newColor; markBgDirty();
+    }
+	@Override public TextureCache getBgTextureCache() {
+        return bgCache;
+    }
+    @Override public int getBgBaseColor() {
+        return bgColor;
+    }
+    @Override public boolean isGuiScaleTransitioning() {
+        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
+    }
 
 
 
@@ -68,7 +79,7 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
         this.alignment = alignment;
         this.label = label;
         this.bgSpriteId = null;
-        this.labelOffset = Layout.textMarginPx;
+        this.labelOffset = 0;
         this.bgCache = new TextureCache(screen);
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
     }
@@ -103,17 +114,29 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
     public UiButton withSpriteBg(final Identifier id, final float width) {
         return withSpriteBg(id, width, labelOffset);
     }
-    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffsetUnit) {
+    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffset) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
-        this.labelOffset = (int)(height * labelOffsetUnit);
+        this.labelOffset = labelOffset;
         return this;
     }
-    public UiButton withSpriteBg(final Identifier id, final float width, final int labelOffsetPx) {
-        this.bgSpriteId = id;
-        this.bgSpriteWidth = width;
-        this.labelOffset = labelOffsetPx;
-        return this;
+    // public UiButton withSpriteBg(final Identifier id, final float width, final int labelOffsetPx) { //TODO remove
+    //     this.bgSpriteId = id;
+    //     this.bgSpriteWidth = width;
+    //     this.labelOffset = labelOffsetPx;
+    //     return this;
+    // }
+
+
+
+
+
+
+
+
+    @Override
+    public @Nullable List<?> children() {
+        return null;
     }
 
 
@@ -160,7 +183,7 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
         // Draw label
         final boolean usingSprite = bgSpriteId != null;
         final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final int textX = getX() + labelOffset;
+        final int textX = getX() + (int)(height * labelOffset) + Layout.textMarginPx;
         final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
         RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, usingSprite);
 

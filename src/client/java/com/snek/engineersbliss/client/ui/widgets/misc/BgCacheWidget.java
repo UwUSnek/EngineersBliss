@@ -6,7 +6,6 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 
@@ -22,6 +21,7 @@ public interface BgCacheWidget {
     public int getY();
     public int getWidth();
     public int getHeight();
+    public boolean isGuiScaleTransitioning();
     public TextureCache getBgTextureCache();
 
 
@@ -41,7 +41,9 @@ public interface BgCacheWidget {
         final int pixelW = Math.max(1, Math.round(w * guiScale));
         final int pixelH = Math.max(1, Math.round(h * guiScale));
 
-        getBgTextureCache().update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
+        if(!isGuiScaleTransitioning()) {
+            getBgTextureCache().update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
+        }
         getBgTextureCache().blit(graphics, getX(), getY(), w, h);
     }
 

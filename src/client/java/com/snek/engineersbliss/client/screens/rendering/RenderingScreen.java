@@ -54,6 +54,10 @@ public class RenderingScreen extends __base_UiScreen {
     UiButton renderFluidsButton = null;
     UiButton shadingFixButton = null;
 
+    UiButton targetHiddenBlocksButton = null;
+    UiButton resetFiltersButton = null;
+    UiButton recalculateLightButton = null;
+
 
     public RenderingScreen() {
         super();
@@ -101,30 +105,21 @@ public class RenderingScreen extends __base_UiScreen {
 
 
 
-
     @Override
     protected void init() {
 
-        this.panelWidthCenter = this.width / 2;
-        this.panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
-        this.halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
-
-
-
-
         // Left sidebar
 
-        searchField = new UiEditBox(this, BORDER_WIDTH, LIST_TOP, panelWidthSide, 20, new UiTxt("Search...").get());
+        searchField = new UiEditBox(this, 0, 0, 0, 0, new UiTxt("Search...").get());
         searchField.setHint(new UiTxt("Search...").get());
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));
-        searchField.setX(BORDER_WIDTH);
         this.addRenderableWidget(searchField);
 
-        addButton(
+        targetHiddenBlocksButton = addButton(
             getToggleText_targetHiddenBlocks(RenderingFilterHandler.getTargetHiddenBlocks()),
             new UiTxt("Toggle targeting hidden blocks"),
-            RenderingScreen::toggleTargetHiddenBlocks, BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+            RenderingScreen::toggleTargetHiddenBlocks, 0, 0, 0
         );
 
 
@@ -132,41 +127,41 @@ public class RenderingScreen extends __base_UiScreen {
 
         // Right sidebar
 
-        addButton(
+        resetFiltersButton = addButton(
             new UiTxt("Reset filters"),
             new UiTxt("Reset all rendering filters to their default state."),
-            this::resetFilters, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP, panelWidthSide
+            this::resetFilters, 0, 0, 0
         );
-        addButton(
+        recalculateLightButton = addButton(
             new UiTxt("Recalculate light"),
             new UiTxt("Recalculate all the light. This is a very resource intensive process that might take many seconds or minutes depending on your hardware."),
-            RenderingScreen::recalculateLight, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT), panelWidthSide
+            RenderingScreen::recalculateLight, 0, 0, 0
         );
 
         renderBlockOutlinesButton = addButton(
             getToggleText_renderBlockOutlines(RenderingFilterHandler.getRenderBlockOutlines()),
             new UiTxt("Toggle whether block outlines should be rendered at all"),
-            RenderingScreen::toggleRenderBlockOutlines, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3, panelWidthSide
+            RenderingScreen::toggleRenderBlockOutlines, 0, 0, 0
         );
         renderBlocksButton = addButton(
             getToggleText_renderBlocks(RenderingFilterHandler.getRenderBlocks()),
             new UiTxt("Toggle whether blocks without custom block entity rendering should be rendered at all."),
-            RenderingScreen::toggleRenderBlocks,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4, panelWidthSide
+            RenderingScreen::toggleRenderBlocks, 0, 0, 0
         );
         renderBlockEntitiesButton = addButton(
             getToggleText_renderBlockEntities(RenderingFilterHandler.getRenderBlockEntities()),
             new UiTxt("Toggle whether blocks with custom block entity rendering should be rendered at all."),
-            RenderingScreen::toggleRenderBlockEntities, this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5, panelWidthSide
+            RenderingScreen::toggleRenderBlockEntities, 0, 0, 0
         );
         renderFluidsButton = addButton(
             getToggleText_renderFluids(RenderingFilterHandler.getRenderFluids()),
             new UiTxt("Toggle whether fluids should be rendered at all."),
-            RenderingScreen::toggleRenderFluids,        this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6, panelWidthSide
+            RenderingScreen::toggleRenderFluids, 0, 0, 0
         );
         shadingFixButton = addButton(
             getToggleText_shadingFix(RenderingFilterHandler.getFixShading()),
             new UiTxt("Fixes the weird shading Vanilla applies to certain blocks. This is most visible on Dirt Path and Farmland blocks."),
-            RenderingScreen::toggleShadingFix,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7, panelWidthSide
+            RenderingScreen::toggleShadingFix, 0, 0, 0
         );
 
 
@@ -174,10 +169,45 @@ public class RenderingScreen extends __base_UiScreen {
 
         // Main list
         //! This needs to be rendered last to let tooltips show on top of right side buttons
-        blockList = new BlockListWidget(this.minecraft, panelWidthCenter, this.height - LIST_TOP, LIST_TOP, 24);
-        blockList.setX(panelWidthSide + BORDER_WIDTH * 2);
+        blockList = new BlockListWidget(this.minecraft, 0, 0, LIST_TOP, 24);
         this.addRenderableWidget(blockList);
         blockList.filter("");
+    }
+
+
+
+    @Override
+    public void layoutWidgets() {
+
+        this.panelWidthCenter = this.width / 2;
+        this.panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
+        this.halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
+
+        // Left sidebar
+        searchField.setSize(panelWidthSide, 20);
+        searchField.setPosition(BORDER_WIDTH, LIST_TOP);
+        targetHiddenBlocksButton.setSize(panelWidthSide, BUTTON_HEIGHT);
+        targetHiddenBlocksButton.setPosition(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
+
+        // Right sidebar
+        resetFiltersButton       .setSize(panelWidthSide, BUTTON_HEIGHT);
+        recalculateLightButton   .setSize(panelWidthSide, BUTTON_HEIGHT);
+        renderBlockOutlinesButton.setSize(panelWidthSide, BUTTON_HEIGHT);
+        renderBlocksButton       .setSize(panelWidthSide, BUTTON_HEIGHT);
+        renderBlockEntitiesButton.setSize(panelWidthSide, BUTTON_HEIGHT);
+        renderFluidsButton       .setSize(panelWidthSide, BUTTON_HEIGHT);
+        shadingFixButton         .setSize(panelWidthSide, BUTTON_HEIGHT);
+        resetFiltersButton       .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP);
+        recalculateLightButton   .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
+        renderBlockOutlinesButton.setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3);
+        renderBlocksButton       .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4);
+        renderBlockEntitiesButton.setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5);
+        renderFluidsButton       .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6);
+        shadingFixButton         .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7);
+
+        // Main list
+        blockList.setSize(panelWidthCenter, this.height - LIST_TOP);
+        blockList.setPosition(panelWidthSide + BORDER_WIDTH * 2, 0);
     }
 
 

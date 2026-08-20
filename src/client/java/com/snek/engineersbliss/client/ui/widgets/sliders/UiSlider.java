@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -9,6 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
@@ -70,11 +72,24 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
     private int bgColorAlt = Layout.bgColorAlt;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-    public void setBgColorAlt(final int newColor) { bgColorAlt = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
-    public int getBgBaseColorAlt() { return bgColorAlt; }
+    public void setBgColor(final int newColor) {
+        bgColor = newColor; markBgDirty();
+    }
+    public void setBgColorAlt(final int newColor) {
+        bgColorAlt = newColor; markBgDirty();
+    }
+	@Override public TextureCache getBgTextureCache() {
+        return bgCache;
+    }
+    @Override public int getBgBaseColor() {
+        return bgColor;
+    }
+    public int getBgBaseColorAlt() {
+        return bgColorAlt;
+    }
+    @Override public boolean isGuiScaleTransitioning() {
+        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
+    }
 
 
 
@@ -114,6 +129,18 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
         return this;
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public @Nullable List<?> children() {
+        return null;
     }
 
 

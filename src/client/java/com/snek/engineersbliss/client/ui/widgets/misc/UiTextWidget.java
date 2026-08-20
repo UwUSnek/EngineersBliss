@@ -3,7 +3,9 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -41,9 +43,18 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWid
     // Cached textures
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+    public void setBgColor(final int newColor) {
+        bgColor = newColor; markBgDirty();
+    }
+	@Override public TextureCache getBgTextureCache() {
+        return bgCache;
+    }
+    @Override public int getBgBaseColor() {
+        return bgColor;
+    }
+    @Override public boolean isGuiScaleTransitioning() {
+        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
+    }
 
 
 
@@ -87,6 +98,18 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWid
     public UiTextWidget withVerticalAlignment(final TextAlignmentY newVerticalAlignment) {
         verticalAlignment = newVerticalAlignment;
         return this;
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public @Nullable List<?> children() {
+        return null;
     }
 
 

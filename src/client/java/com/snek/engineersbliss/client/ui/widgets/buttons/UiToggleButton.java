@@ -40,7 +40,6 @@ public class UiToggleButton extends UiButton {
 
 
 
-
     public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
         super(screen, x, y, width, height, label, pressCallback, key, alignment);
         finalizeInit(initialValue, valueFormatter);

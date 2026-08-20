@@ -40,7 +40,7 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
     @Override public String getRightTitle        () { return formatValue(true,  true); }
 
 
-    private final Identifier bgSpriteId;
+    // private final Identifier bgSpriteId;
     private final Consumer<UiButton> afterPressCallback;
 
 
@@ -79,15 +79,16 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
 
         // Calculate sprite id
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
-        this.bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath);
+        // this.bgSpriteId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath); //TODO remove
+        this.withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f, 1f);
     }
 
-    //! Update sprite height and label offset when the height is changed
-    @Override
-    public void setHeight(int height) {
-        super.setHeight(height);
-        this.withSpriteBg(bgSpriteId, 1f, height + Layout.textMarginPx);
-    }
+    // //! Update sprite height and label offset when the height is changed
+    // @Override //TODO remove
+    // public void setHeight(int height) {
+    //     super.setHeight(height);
+    //     this.withSpriteBg(bgSpriteId, 1f, height + Layout.textMarginPx);
+    // }
 
 
 
