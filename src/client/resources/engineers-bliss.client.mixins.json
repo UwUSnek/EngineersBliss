@@ -66,6 +66,8 @@
         "rendering.RenderingFilterLightMixin",
         "rendering.CustomOutlinesMixin",
         "rendering.InteractionFilterMixin",
+        "rendering.AllParticlesSuppressor",
+        "rendering.EntityRenderingSuppressor",
 
 
         "alt_textures.renderer_suppressors.BlockEntityDispatcherSuppressorMixin",
