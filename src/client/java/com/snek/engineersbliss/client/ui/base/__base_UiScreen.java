@@ -64,7 +64,6 @@ public abstract class __base_UiScreen extends Screen {
 
     private boolean needsRelayout;
     private boolean needsRebuild;
-    // private boolean needsRebuildAfterRelayout; //TODO remove
 
 
 
@@ -75,15 +74,7 @@ public abstract class __base_UiScreen extends Screen {
         this.animatedGuiScale = new AnimatedFloat(guiScale, Layout.guiScaleTransitionDuration);
         this.needsRebuild = true;
         this.needsRelayout = false;
-        // this.needsRebuildAfterRelayout = false; //TODO remove
     }
-    // @Override //TODO remove
-    // protected void clearWidgets() {
-    //     super.clearWidgets();
-    //     needsRebuild = true;
-    //     needsRelayout = false;
-    //     needsRebuildAfterRelayout = false;
-    // }
 
 
 
@@ -96,15 +87,16 @@ public abstract class __base_UiScreen extends Screen {
     public void resize(final int width, final int height) {
         final float newGuiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE)); //TODO replace all instances with a utility method in ClientFeatureSync
         animatedGuiScale.startNewTransition(newGuiScale);
-        maybeDoResize();
+        maybeFlagResize();
     }
 
 
     /**
-     * Actually runs the resize logic, but only if needed.
-     * Runs the cheaper layoutWidgets() during transitions to improve performance.
+     * Sets the resize flags, but only if needed.
+     * Flags the cheaper layoutWidgets() during transitions to improve performance.
+     * NOTICE: The actual resize operation is done by the rendering loop when needed.
      */
-    protected void maybeDoResize() {
+    protected void maybeFlagResize() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         realGuiScale = mc.getWindow().getGuiScale();
 
@@ -119,18 +111,13 @@ public abstract class __base_UiScreen extends Screen {
             this.height = fixedHeight;
 
             if(transitioning) {
-                // layoutWidgets();
                 needsRelayout = true;
             }
             else {
-                // rebuildWidgets();
                 needsRebuild = true;
             }
         }
-
-        // wasTransitioning = transitioning; //TODO i don't think this is actually needed. just recalculating the layout might suffice
     }
-    // private boolean wasTransitioning = false; //TODO i don't think this is actually needed. just recalculating the layout might suffice
 
 
 
@@ -246,10 +233,6 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
-    // @Override
-    // protected void init() {
-    //     super.init();
-    // }
 
 
     /**
@@ -272,26 +255,17 @@ public abstract class __base_UiScreen extends Screen {
     // @SuppressWarnings("java:S1871")
     public final void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
-        maybeDoResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.
+        maybeFlagResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.
         if(needsRebuild) {
             rebuildWidgets();
             layoutWidgets();
             needsRebuild = false;
             needsRelayout = false;
-            // needsRebuildAfterRelayout = false; //TODO remove
         }
         else if(needsRelayout) {
             layoutWidgets();
             needsRelayout = false;
-            // needsRebuildAfterRelayout = true; //TODO remove
         }
-        // else if(needsRebuildAfterRelayout) { //TODO remove
-        //     rebuildWidgets();
-        //     layoutWidgets();
-        //     needsRebuild = false;
-        //     needsRelayout = false;
-        //     needsRebuildAfterRelayout = false;
-        // }
 
         // Compensate the visual scale so pixel size stays constant regardless of GUI Scale.
         float factor = animatedGuiScale.compute() / realGuiScale;
