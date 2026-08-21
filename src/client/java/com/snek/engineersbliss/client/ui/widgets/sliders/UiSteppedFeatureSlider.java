@@ -44,22 +44,9 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
 
 
 
-    public UiSteppedFeatureSlider(
-        final Screen screen,
-        final ClientFeature<?> feature,
-        final @Nullable BiConsumer<Integer, T> afterChangeCallback,
-        final @Nullable ValueFormatter<T> valueFormatter,
-        final int leftPreviewIndex,
-        final int rightPreviewIndex
-    ) {
-        this(screen, 50, 50, 50, 50, feature, afterChangeCallback, valueFormatter, leftPreviewIndex, rightPreviewIndex);
-    }
-
     @SuppressWarnings("unchecked")
     public UiSteppedFeatureSlider(
         final Screen screen,
-        final int x, final int y,
-        final int w, final int h,
         final ClientFeature<?> feature,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
         final @Nullable ValueFormatter<T> valueFormatter,
@@ -79,7 +66,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         // Proceed with normal initialization
         final @NotNull ServerSteppedFeature<T> _serverFeature = (ServerSteppedFeature<T>)genericServerFeature;
         super(
-            screen, x, y, w, h,
+            screen,
             feature.calcName(),
             _serverFeature.getValues(),
             ClientFeatureSync.getFeatureI(_serverFeature),

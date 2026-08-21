@@ -96,13 +96,12 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
 
     public UiSlider(
         final Screen screen,
-        final int x, final int y, final int width, final int height,
         final UiTxt label, final double initialValue,
         final @Nullable Consumer<Double> onChange,
         final @Nullable Function<UiSlider, UiTxt> valueFormatter
     ) {
         //! Pass empty text to super and store a custom UiTxt instance locally
-        super(x, y, width, height, new Txt().get(), initialValue);
+        super(50, 50, 50, 50, new Txt().get(), initialValue);
         this.screen = screen;
         this.baseLabel = label;
         this.onChange = onChange;
@@ -113,17 +112,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         this.handleColor  = new AnimatedColor(Layout.handleColor, Layout.hoverTransitionDuration, Easings.quadIn);
         updateMessage();
     }
-
-
-    public UiSlider(
-        final Screen screen,
-        final UiTxt label, final double initialValue,
-        final @Nullable Consumer<Double> onChange,
-        final @Nullable Function<UiSlider, UiTxt> valueFormatter
-    ) {
-        this(screen, 50, 50, 50, 50, label, initialValue, onChange, valueFormatter);
-    }
-
 
     public UiSlider withSpriteBg(final Identifier id, final float width) {
         this.bgSpriteId = id;

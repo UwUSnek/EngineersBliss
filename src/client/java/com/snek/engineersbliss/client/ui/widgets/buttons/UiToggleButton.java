@@ -40,16 +40,8 @@ public class UiToggleButton extends UiButton {
 
 
 
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
-        super(screen, x, y, width, height, label, pressCallback, key, alignment);
-        finalizeInit(initialValue, valueFormatter);
-    }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
         super(screen, label, pressCallback, key, alignment);
-        finalizeInit(initialValue, valueFormatter);
-    }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final TextAlignment alignment) {
-        super(screen, x, y, width, height, label, pressCallback, alignment);
         finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
@@ -58,16 +50,8 @@ public class UiToggleButton extends UiButton {
     }
 
 
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key) {
-        super(screen, x, y, width, height, label, pressCallback, key);
-        finalizeInit(initialValue, valueFormatter);
-    }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
         super(screen, label, pressCallback, key);
-        finalizeInit(initialValue, valueFormatter);
-    }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
-        super(screen, x, y, width, height, label, pressCallback);
         finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {

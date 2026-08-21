@@ -110,7 +110,7 @@ public class RenderingScreen extends __base_UiScreen {
 
         // Left sidebar
 
-        searchField = new UiEditBox(this, 0, 0, 0, 0, new UiTxt("Search...").get());
+        searchField = new UiEditBox(this, new UiTxt("Search...").get());
         searchField.setHint(new UiTxt("Search...").get());
         searchField.setMaxLength(Integer.MAX_VALUE);
         searchField.setResponder(searchString -> blockList.filter(searchString));

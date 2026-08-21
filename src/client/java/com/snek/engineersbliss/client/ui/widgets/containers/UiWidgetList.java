@@ -67,11 +67,10 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
 
 
 
-    public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
-        super(Minecraft.getInstance(), width, height, y, itemHeight);
+    public UiWidgetList(final Screen screen, int itemHeight) {
+        super(Minecraft.getInstance(), 50, 50, 50, itemHeight);
         this.screen = screen;
         bgCache = new TextureCache(screen);
-        setX(x);
     }
 
 

@@ -62,28 +62,16 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWid
     public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color) {
         this(screen, label, alignment, color, 0x0);
     }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color) {
-        this(screen, x, y, w, h, label, alignment, color, 0x0);
-    }
     public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
         this(screen, label, alignment, color, wrapLines, 0x0);
-    }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
-        this(screen, x, y, w, h, label, alignment, color, wrapLines, 0x0);
     }
 
 
     public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(screen, 50, 50, 50, 50, label, alignment, color, false, bgColor);
-    }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(screen, x, y, w, h, label, alignment, color, false, bgColor);
+        this(screen, label, alignment, color, false, bgColor);
     }
     public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
-        this(screen, 50, 50, 50, 50, label, alignment, color, wrapLines, bgColor);
-    }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
-        super(x, y, w, h, new Txt().get());
+        super(50, 50, 50, 50, new Txt().get());
         this.screen = screen;
         this.alignment = alignment;
         this.color = color;

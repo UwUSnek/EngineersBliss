@@ -59,13 +59,13 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
 
         // Add left sidebar
         if(hasLeftSidebar) {
-            leftSidebar = new UiWidgetList(this, 0, 0, 0, 0, BUTTON_HEIGHT);
+            leftSidebar = new UiWidgetList(this, BUTTON_HEIGHT);
             addRenderableWidget(leftSidebar);
         }
 
         // Add right sidebar
         if(hasRightSidebar) {
-            rightSidebar = new UiWidgetList(this, 0, 0, 0, 0, BUTTON_HEIGHT);
+            rightSidebar = new UiWidgetList(this, BUTTON_HEIGHT);
             addRenderableWidget(rightSidebar);
         }
     }

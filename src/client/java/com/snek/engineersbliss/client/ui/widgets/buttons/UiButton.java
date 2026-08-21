@@ -71,9 +71,9 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
 
 
 
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         //! Pass empty text to super and store a custom UiTxt isntance locally
-        super(x, y, width, height, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
+        super(50, 50, 50, 50, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
         this.screen = screen;
         this.key = Character.toLowerCase(key);
         this.alignment = alignment;
@@ -83,28 +83,14 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
         this.bgCache = new TextureCache(screen);
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
     }
-    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, key, alignment);
-    }
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(screen, x, y, width, height, label, pressCallback, '\0', alignment);
-    }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, alignment);
-    }
-
-
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
-        this(screen, x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
+        this(screen, label, pressCallback, '\0', alignment);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
-    }
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
-        this(screen, x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
+        this(screen, label, pressCallback, key, TextAlignment.LEFT);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
+        this(screen, label, pressCallback, TextAlignment.LEFT);
     }
 
 
@@ -120,12 +106,6 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
         this.labelOffset = labelOffset;
         return this;
     }
-    // public UiButton withSpriteBg(final Identifier id, final float width, final int labelOffsetPx) { //TODO remove
-    //     this.bgSpriteId = id;
-    //     this.bgSpriteWidth = width;
-    //     this.labelOffset = labelOffsetPx;
-    //     return this;
-    // }
 
 
 

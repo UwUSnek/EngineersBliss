@@ -49,8 +49,8 @@ public class UiEditBox extends EditBox implements BgCacheWidget, UiWidgetBase {
 
 
 
-    public UiEditBox(final Screen screen, final int x, final int y, final int width, final int height, final Component narration) {
-        super(Fonts.ui.regular.get(1f).getFont(), x, y, width, height, narration);
+    public UiEditBox(final Screen screen, final Component narration) {
+        super(Fonts.ui.regular.get(1f).getFont(), 50, 50, 50, 50, narration);
         this.screen = screen;
         this.setTextShadow(false);
         this.addFormatter((text, offset) ->

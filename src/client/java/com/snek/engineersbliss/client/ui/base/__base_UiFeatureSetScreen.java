@@ -80,8 +80,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Add description name and text elements
         //! Preview is added dynamically
-        descriptionNameWidget = new UiTextWidget(this,0, 0, 0, 0,new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor);
-        descriptionTextWidget = new UiTextWidget(this,0, 0, 0, 0,new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor).withVerticalAlignment(TextAlignmentY.TOP);
+        descriptionNameWidget = new UiTextWidget(this, new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor);
+        descriptionTextWidget = new UiTextWidget(this, new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor).withVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
         addRenderableWidget(descriptionTextWidget);
     }

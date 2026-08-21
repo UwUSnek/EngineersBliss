@@ -72,22 +72,22 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
         // Player properties
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Player properties", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.WALKING_SPEED,
             null, multiplierFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.FLYING_SPEED,
             CreativeTweaksClientHandler::onFlyingSpeedChange, multiplierFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.PLAYER_SCALE,
             null, multiplierFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE,
             null, blockFormatter,
             0, 0 //FIXME fix preview text indices

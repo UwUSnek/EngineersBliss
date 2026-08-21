@@ -14,12 +14,9 @@ public class UiSpacer extends AbstractWidget {
     private int bgColor;
 
 
-    public UiSpacer(final int x, final int y, final int w, final int h, final int bgColor) {
-        super(x, y, w, h, new Txt().get());
-        this.bgColor = bgColor;
-    }
     public UiSpacer(final int bgColor) {
-        this(50, 50, 50, 50, bgColor);
+        super(50, 50, 50, 50, new Txt().get());
+        this.bgColor = bgColor;
     }
     public UiSpacer() {
         this(0x00000000);
