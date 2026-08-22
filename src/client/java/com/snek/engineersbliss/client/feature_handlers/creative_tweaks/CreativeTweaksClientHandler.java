@@ -6,6 +6,8 @@ import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.MinecraftAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
+import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
@@ -168,5 +170,51 @@ public class CreativeTweaksClientHandler {
                 mca.invokeStartUseItem();
             }
         }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Checks if a creative mode player has the specified feature set to the specified value.
+     * Returns false if the entity is not a Player or is not in Creative Mode.
+     * ! This doesn't work when called from the dedicated server. Use ServerFeatureSync.creativePlayerHasFeature(Player, __base_ServerFeature) instead.
+     */
+    public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature, final T value) {
+        if(entity instanceof final @NotNull Player player) {
+            if(player.isCreative()) {
+                return ClientFeatureSync.getFeature(feature) == value;
+            }
+        }
+        return false;
+    }
+    /**
+     * Checks if a creative mode player has the specified toggle feature set to TRUE.
+     * Returns false if the entity is not a Player or is not in Creative Mode or the feature is not a toggle feature.
+     * ! This doesn't work when called from the dedicated server. Use ServerFeatureSync.creativePlayerHasFeature(Player, __base_ServerFeature) instead.
+     */
+    public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature) {
+        if(feature instanceof ServerToggleFeature) {
+            return creativePlayerHasFeature(entity, (__base_ServerFeature<Boolean>)feature, true);
+        }
+        return false;
+    }
+    public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
+        return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
+    }
+    public static boolean shouldPlayerPhaseThroughEntities(final Object entity) {
+        return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_ENTITIES);
     }
 }

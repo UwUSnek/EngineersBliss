@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
+import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerHandler;
 
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ public class ServerBlockPhasingPoseFixMixin {
     @SuppressWarnings("unused")
     @Inject(method = "canPlayerFitWithinBlocksAndEntitiesWhen", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$canPlayerFitWithinBlocksAndEntitiesWhen(final Pose newPose, final CallbackInfoReturnable<Boolean> cir) {
-        if(ServerFeatureSync.shouldPlayerPhaseThroughBlocks(this)) {
+        if(CreativeTweaksServerHandler.shouldPlayerPhaseThroughBlocks(this)) {
             cir.setReturnValue(true);
         }
     }
