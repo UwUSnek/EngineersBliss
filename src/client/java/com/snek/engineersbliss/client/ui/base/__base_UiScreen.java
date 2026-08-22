@@ -215,26 +215,6 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
-
-
-
-    //TODO remove. this is the old version, still used by RenderingScreen
-    //TODO remove. this is the old version, still used by RenderingScreen
-    protected UiButton addButton(final UiTxt label, final UiTxt details, final Consumer<UiButton> action, final int x, final int y, final int width) {
-        final UiButton r = new UiButton(this, label, b -> {
-            action.accept(b);
-            b.setFocused(false);
-        }, TextAlignment.CENTER);
-        r.setPosition(x, y);
-        r.setSize(width, BUTTON_HEIGHT);
-        r.setTooltip(Tooltip.create(details.get()));
-        this.addRenderableWidget(r);
-        return r;
-    }
-
-
-
-
     /**
      * Custom lightweight layout update function.
      * ! For some dumb reason, Vanilla's repositionElements() is just an alias for rebuildWidgets() like- WHY.
@@ -252,7 +232,6 @@ public abstract class __base_UiScreen extends Screen {
 
 
     @Override
-    // @SuppressWarnings("java:S1871")
     public final void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
         maybeFlagResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.

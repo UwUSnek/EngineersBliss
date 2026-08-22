@@ -77,7 +77,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Initialize handlers
-        RenderingFilterHandler.init(false, true, true, true, true); //TODO add to filter presets
+        RenderingFilterHandler.init();
         OverlaysHandler.init();
 
 

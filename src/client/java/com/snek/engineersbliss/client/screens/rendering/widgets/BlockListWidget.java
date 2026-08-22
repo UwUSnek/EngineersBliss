@@ -239,14 +239,14 @@ public class BlockListWidget extends AbstractSelectionList<BlockListWidget.Entry
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
             if(enableBox.mouseClicked(event, doubleClick)) {
+                RenderingFilterHandler.resetStateCache();
                 RenderingFilterHandler.setEnabled(block, enableBox.selected());
-                RenderingFilterHandler.recalculate();
                 MinecraftUtils.refreshSectionsContaining(block);
                 return true;
             }
             if(isolateBox.mouseClicked(event, doubleClick)) {
+                RenderingFilterHandler.resetStateCache();
                 RenderingFilterHandler.setIsolated(block, isolateBox.selected());
-                RenderingFilterHandler.recalculate();
                 MinecraftUtils.refreshRendering();
                 return true;
             }

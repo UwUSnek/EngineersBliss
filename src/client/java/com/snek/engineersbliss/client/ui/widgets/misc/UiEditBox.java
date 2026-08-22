@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,6 +9,8 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Txt;
 import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -49,13 +52,14 @@ public class UiEditBox extends EditBox implements BgCacheWidget, UiWidgetBase {
 
 
 
-    public UiEditBox(final Screen screen, final Component narration) {
-        super(Fonts.ui.regular.get(1f).getFont(), 50, 50, 50, 50, narration);
+    public UiEditBox(final Screen screen, final UiTxt hint, final Consumer<String> responder) {
+        super(Fonts.ui.regular.get(1f).getFont(), 50, 50, 50, 50, new Txt().get());
+        setMaxLength(Integer.MAX_VALUE);
+        setHint(hint.get());
+        setResponder(responder);
         this.screen = screen;
         this.setTextShadow(false);
-        this.addFormatter((text, offset) ->
-            FormattedCharSequence.forward(text, Style.EMPTY.withFont(Fonts.ui.regular.get(1f).getDescription()))
-        );
+        this.addFormatter((text, offset) -> FormattedCharSequence.forward(text, Style.EMPTY.withFont(Fonts.ui.regular.get(1f).getDescription())));
         bgCache = new TextureCache(screen);
     }
 

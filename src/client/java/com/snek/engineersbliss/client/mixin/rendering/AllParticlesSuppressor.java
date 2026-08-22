@@ -6,7 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
 
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
@@ -35,13 +36,17 @@ public class AllParticlesSuppressor {
         final double za,
         final CallbackInfoReturnable<Particle> cir
     ) {
-        if(!RenderingFilterHandler.getRenderParticles()) cir.setReturnValue(null);
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_PARTICLES)) {
+            cir.setReturnValue(null);
+        }
     }
 
 
     @SuppressWarnings("unused")
     @Inject(method = "add", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$add(final Particle p, final CallbackInfo ci) {
-        if(!RenderingFilterHandler.getRenderParticles()) ci.cancel();
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_PARTICLES)) {
+            ci.cancel();
+        }
     }
 }

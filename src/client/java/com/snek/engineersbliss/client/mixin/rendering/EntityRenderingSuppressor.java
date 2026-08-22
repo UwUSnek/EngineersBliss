@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
@@ -33,6 +34,8 @@ public class EntityRenderingSuppressor {
         final LevelRenderState output,
         final CallbackInfo ci
     ) {
-        if(!RenderingFilterHandler.getRenderEntities()) ci.cancel();
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_ENTITIES)) {
+            ci.cancel();
+        }
     }
 }

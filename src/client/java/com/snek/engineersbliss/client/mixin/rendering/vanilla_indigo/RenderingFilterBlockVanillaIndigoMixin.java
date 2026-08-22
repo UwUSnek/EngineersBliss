@@ -30,7 +30,7 @@ public class RenderingFilterBlockVanillaIndigoMixin {
     private void eb$getBlockState(final BlockPos pos, final CallbackInfoReturnable<BlockState> cir) {
         final BlockState state = cir.getReturnValue();
 
-        if(!RenderingFilterHandler.shouldBlockRender(state)) {
+        if(!RenderingFilterHandler.shouldStateRender(state)) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());
         }
     }

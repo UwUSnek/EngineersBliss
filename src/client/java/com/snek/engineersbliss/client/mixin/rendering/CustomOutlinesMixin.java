@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.mixin.rendering;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
+import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -24,7 +27,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -32,6 +34,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+
+
+
 
 
 
@@ -46,12 +52,20 @@ public abstract class CustomOutlinesMixin {
     @SuppressWarnings("unused")
     @Inject(method = "extractBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
-        if(!RenderingFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
-        if(RenderingFilterHandler.getTargetHiddenBlocks()) return;
+
+        //! Block vanilla and return if outlines are disabled
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_BLOCK_OUTLINES)) {
+            ci.cancel();
+            return;
+        }
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
+            return;
+        }
         customOutlineBlocks.clear();
 
+
         // Return if no level or no hit result
-        final Minecraft minecraft = Minecraft.getInstance();
+        final @NotNull Minecraft minecraft = Minecraft.getInstance();
         if(minecraft.level == null || minecraft.player == null) return;
         final HitResult hit = minecraft.hitResult;
         if(!(hit instanceof BlockHitResult)) return;
@@ -71,8 +85,7 @@ public abstract class CustomOutlinesMixin {
         BlockGetter.traverseBlocks(start, end, null,
             (context, pos) -> {
                 final BlockState state = minecraft.level.getBlockState(pos);
-                final Block block = state.getBlock();
-                if(block == Blocks.AIR) return null;
+                if(state.is(Blocks.AIR)) return null;
 
                 // Text ray hit, add to the list of outlines if it intersects the shape
                 final BlockHitResult newHit = state.getShape(minecraft.level, pos, CollisionContext.of(minecraft.player)).clip(start, end, pos);
@@ -81,7 +94,7 @@ public abstract class CustomOutlinesMixin {
                 }
 
                 // If the block is hidden or the ray didn't intersect, return null (keep traversing). Otherwise return the hit result
-                if(!RenderingFilterHandler.getActiveBlocks().contains(block) || newHit == null) return null;
+                if(!RenderingFilterHandler.shouldStateRender(state) || newHit == null) return null;
                 else return newHit;
             },
             context -> BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end))
@@ -91,11 +104,22 @@ public abstract class CustomOutlinesMixin {
 
 
 
+
+
+
+
     @SuppressWarnings("unused")
     @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
-        if(!RenderingFilterHandler.getRenderBlockOutlines()) { ci.cancel(); return; } //! Block vanilla and return if outlines are disabled
-        if(RenderingFilterHandler.getTargetHiddenBlocks()) return;
+
+        //! Block vanilla and return if outlines are disabled
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_BLOCK_OUTLINES)) {
+            ci.cancel();
+            return;
+        }
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
+            return;
+        }
         if(customOutlineBlocks.isEmpty()) return;
 
 
@@ -104,7 +128,7 @@ public abstract class CustomOutlinesMixin {
         //! Vanilla's checks don't actually draw any outline when ran from this mixin so I use !onlyTranslucentBlocks.
         //! I have no idea why. But this produces a consistent outline
 
-        final Minecraft minecraft = Minecraft.getInstance();
+        final @NotNull Minecraft minecraft = Minecraft.getInstance();
         final Vec3 cameraPos = levelRenderState.cameraRenderState.pos;
         final VertexConsumer buffer = bufferSource.getBuffer(RenderTypes.lines());
         final float lineWidth = minecraft.gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth;
@@ -118,7 +142,7 @@ public abstract class CustomOutlinesMixin {
             final BlockOutlineRenderState outlineState = new BlockOutlineRenderState(pos, false, false, shape);
 
             // Draw outline: Default black for visible block, thicker gray for hidden ones
-            if(i == customOutlineBlocks.size() - 1 && RenderingFilterHandler.getActiveBlocks().contains(minecraft.level.getBlockState(pos).getBlock())) {
+            if(i == customOutlineBlocks.size() - 1 && RenderingFilterHandler.shouldStateRender(state)) {
                 this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.black(102), lineWidth);
             }
             else {

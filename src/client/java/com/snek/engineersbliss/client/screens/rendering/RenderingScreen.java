@@ -1,33 +1,26 @@
-//FIXME make this a subclass of __base_SidebarScreen
-//FIXME make __base_FeatureSetScreen a subclass of __base_SidebarScreen
-
-//FIXME move settings to the left sidebar
-//FIXME move presets to the right sidebar
-
-
-
-
-
 package com.snek.engineersbliss.client.screens.rendering;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.mojang.blaze3d.platform.InputConstants;
+import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.base.__base_UiSidebarScreen;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiEditBox;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.chunk.LevelChunkSection;
@@ -35,30 +28,9 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
-public class RenderingScreen extends __base_UiScreen {
-    @SuppressWarnings("java:S1450")
-    private int panelWidthCenter;
-    @SuppressWarnings("java:S1450")
-    private int panelWidthSide;
-    @SuppressWarnings("java:S1450")
-    private int halfButtonWidth;
-
-
+public class RenderingScreen extends __base_UiSidebarScreen {
     private UiEditBox searchField;
     private BlockListWidget blockList;
-
-
-    UiButton renderBlockOutlinesButton = null;
-    UiButton renderBlocksButton = null;
-    UiButton renderBlockEntitiesButton = null;
-    UiButton renderFluidsButton = null;
-    UiButton shadingFixButton = null;
-    UiButton renderParticlesButton = null;
-    UiButton renderEntitiesButton = null;
-
-    UiButton targetHiddenBlocksButton = null;
-    UiButton resetFiltersButton = null;
-    UiButton recalculateLightButton = null;
 
 
     public RenderingScreen() {
@@ -69,30 +41,6 @@ public class RenderingScreen extends __base_UiScreen {
     @Override
     public boolean isPauseScreen() {
         return false;
-    }
-
-
-    @Override
-    public boolean keyPressed(final KeyEvent event) {
-        if(!searchField.isFocused()) {
-            if(event.key() == InputConstants.KEY_O) {
-                toggleRenderBlockOutlines(renderBlockOutlinesButton);
-                return true;
-            }
-            if(event.key() == InputConstants.KEY_E) {
-                toggleRenderBlockEntities(renderBlockEntitiesButton);
-                return true;
-            }
-            if(event.key() == InputConstants.KEY_F) {
-                toggleRenderFluids(renderFluidsButton);
-                return true;
-            }
-            if(event.key() == InputConstants.KEY_B) {
-                toggleRenderBlocks(renderBlocksButton);
-                return true;
-            }
-        }
-        return super.keyPressed(event);
     }
 
 
@@ -109,72 +57,59 @@ public class RenderingScreen extends __base_UiScreen {
 
     @Override
     protected void init() {
-
-        // Left sidebar
-
-        searchField = new UiEditBox(this, new UiTxt("Search...").get());
-        searchField.setHint(new UiTxt("Search...").get());
-        searchField.setMaxLength(Integer.MAX_VALUE);
-        searchField.setResponder(searchString -> blockList.filter(searchString));
-        this.addRenderableWidget(searchField);
-
-        targetHiddenBlocksButton = addButton(
-            getToggleText_targetHiddenBlocks(RenderingFilterHandler.getTargetHiddenBlocks()),
-            new UiTxt("Toggle targeting hidden blocks"),
-            RenderingScreen::toggleTargetHiddenBlocks, 0, 0, 0
-        );
+        super.init();
 
 
+        // Add left sidebar title //TODO move to a generic featureSetScreen, rename old featureSetScreen to featureSetScreenWithPreview
+        final UiTxt titleText = RenderingClientFeatureSet.INSTANCE.calcName();
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
 
 
-        // Right sidebar
+        // Rendering filter
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, new UiTxt("Search..."), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_OUTLINES, null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCKS,         null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_FLUIDS,         null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_ENTITIES, null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_ENTITIES,       null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_PARTICLES,      null), Layout.BORDER_HEIGHT);
 
-        resetFiltersButton = addButton(
+
+        // Misc
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.TARGET_HIDDEN_BLOCKS,  null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.SMOOTH_SHADING,        null), Layout.BORDER_HEIGHT);
+
+
+
+
+        // Actions
+        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Actions", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiButton(
+            this,
             new UiTxt("Reset filters"),
-            new UiTxt("Reset all rendering filters to their default state."),
-            this::resetFilters, 0, 0, 0
-        );
-        recalculateLightButton = addButton(
+            b -> {
+                final String query = searchField.getValue();
+                RenderingFilterHandler.init();
+                rebuildWidgets();
+                searchField.setValue(query);
+            }
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiButton(
+            this,
             new UiTxt("Recalculate light"),
-            new UiTxt("Recalculate all the light. This is a very resource intensive process that might take many seconds or minutes depending on your hardware."),
-            RenderingScreen::recalculateLight, 0, 0, 0
-        );
-
-        renderBlockOutlinesButton = addButton(
-            getToggleText_renderBlockOutlines(RenderingFilterHandler.getRenderBlockOutlines()),
-            new UiTxt("Toggle whether block outlines should be rendered at all"),
-            RenderingScreen::toggleRenderBlockOutlines, 0, 0, 0
-        );
-        renderBlocksButton = addButton(
-            getToggleText_renderBlocks(RenderingFilterHandler.getRenderBlocks()),
-            new UiTxt("Toggle whether blocks without custom block entity rendering should be rendered at all."),
-            RenderingScreen::toggleRenderBlocks, 0, 0, 0
-        );
-        renderBlockEntitiesButton = addButton(
-            getToggleText_renderBlockEntities(RenderingFilterHandler.getRenderBlockEntities()),
-            new UiTxt("Toggle whether blocks with custom block entity rendering should be rendered at all."),
-            RenderingScreen::toggleRenderBlockEntities, 0, 0, 0
-        );
-        renderFluidsButton = addButton(
-            getToggleText_renderFluids(RenderingFilterHandler.getRenderFluids()),
-            new UiTxt("Toggle whether fluids should be rendered at all."),
-            RenderingScreen::toggleRenderFluids, 0, 0, 0
-        );
-        shadingFixButton = addButton(
-            getToggleText_shadingFix(RenderingFilterHandler.getFixShading()),
-            new UiTxt("Fixes the weird shading Vanilla applies to certain blocks. This is most visible on Dirt Path and Farmland blocks."),
-            RenderingScreen::toggleShadingFix, 0, 0, 0
-        );
-        renderParticlesButton = addButton(
-            getToggleText_renderParticles(RenderingFilterHandler.getRenderParticles()),
-            new UiTxt("Toggle whether particles should be rendered at all."),
-            RenderingScreen::toggleRenderParticles,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 8, panelWidthSide
-        );
-        renderEntitiesButton = addButton(
-            getToggleText_renderEntities(RenderingFilterHandler.getRenderEntities()),
-            new UiTxt("Toggle whether entities should be rendered at all."),
-            RenderingScreen::toggleRenderEntities,          this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 9, panelWidthSide
-        );
+            b -> {
+                final String query = searchField.getValue();
+                RenderingFilterHandler.recalculateLight();
+                rebuildWidgets();
+                searchField.setValue(query);
+            }
+        ), Layout.BORDER_HEIGHT);
 
 
 
@@ -190,37 +125,19 @@ public class RenderingScreen extends __base_UiScreen {
 
     @Override
     public void layoutWidgets() {
-
-        this.panelWidthCenter = this.width / 2;
-        this.panelWidthSide = (this.width - panelWidthCenter) / 2 - BORDER_WIDTH * 2;
-        this.halfButtonWidth = (panelWidthSide - BORDER_WIDTH) / 2;
-
-        // Left sidebar
-        searchField.setSize(panelWidthSide, 20);
-        searchField.setPosition(BORDER_WIDTH, LIST_TOP);
-        targetHiddenBlocksButton.setSize(panelWidthSide, BUTTON_HEIGHT);
-        targetHiddenBlocksButton.setPosition(BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
-
-        // Right sidebar
-        resetFiltersButton       .setSize(panelWidthSide, BUTTON_HEIGHT);
-        recalculateLightButton   .setSize(panelWidthSide, BUTTON_HEIGHT);
-        renderBlockOutlinesButton.setSize(panelWidthSide, BUTTON_HEIGHT);
-        renderBlocksButton       .setSize(panelWidthSide, BUTTON_HEIGHT);
-        renderBlockEntitiesButton.setSize(panelWidthSide, BUTTON_HEIGHT);
-        renderFluidsButton       .setSize(panelWidthSide, BUTTON_HEIGHT);
-        shadingFixButton         .setSize(panelWidthSide, BUTTON_HEIGHT);
-        resetFiltersButton       .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP);
-        recalculateLightButton   .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT));
-        renderBlockOutlinesButton.setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 3);
-        renderBlocksButton       .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 4);
-        renderBlockEntitiesButton.setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 5);
-        renderFluidsButton       .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 6);
-        shadingFixButton         .setPosition(this.width - panelWidthSide - BORDER_WIDTH, LIST_TOP + (BUTTON_HEIGHT + BORDER_HEIGHT) * 7);
+        final int leftSidebarWidthPx  = (int)(width * leftSidebarWidth);
+        final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
 
         // Main list
-        blockList.setSize(panelWidthCenter, this.height - LIST_TOP);
-        blockList.setPosition(panelWidthSide + BORDER_WIDTH * 2, 0);
+        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
+        blockList.setPosition(leftSidebarWidthPx, 0);
+
+        super.layoutWidgets();
     }
+
+
+
+
 
 
 
@@ -253,7 +170,7 @@ public class RenderingScreen extends __base_UiScreen {
         final ClientLevel level = Minecraft.getInstance().level;
         if(level != null) {
             final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-            final int rightTextX = this.width - panelWidthSide;
+            final int rightTextX = this.width - (int)(width * rightSidebarWidth);
             final int lightProgress = RenderingFilterHandler.getLightRecalcProgress();
             final int lightMax = RenderingFilterHandler.getLightRecalcMax();
             final String[] renderStats = {
@@ -278,124 +195,4 @@ public class RenderingScreen extends __base_UiScreen {
 
         //TODO optimize stuff. put static elements in init()
     }
-
-
-
-
-    public void resetFilters(final Button b) {
-
-        // Reset settings
-        RenderingFilterHandler.init(false, true, true, true, true);
-        MinecraftUtils.refreshRendering();
-
-        // Respawn the entire screen to update buttons and checkboxes. Manually restore search query
-        final String searchQuery = searchField.getValue();
-        final RenderingScreen newScreen = new RenderingScreen();
-        minecraft.setScreen(newScreen);
-        newScreen.searchField.setValue(searchQuery);
-    }
-
-
-
-
-    public static void recalculateLight(final Button b) {
-        RenderingFilterHandler.recalculateLight();
-    }
-
-
-
-    public static UiTxt getToggleText_targetHiddenBlocks(final boolean state) {
-        return new UiTxt("Target hidden blocks: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleTargetHiddenBlocks(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getTargetHiddenBlocks();
-        RenderingFilterHandler.setTargetHiddenBlocks(newState);
-        b.setLabel(getToggleText_targetHiddenBlocks(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_renderBlockOutlines(final boolean state) {
-        return new UiTxt("[O] Render block outlines: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleRenderBlockOutlines(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getRenderBlockOutlines();
-        RenderingFilterHandler.setRenderBlockOutlines(newState);
-        RenderingFilterHandler.recalculate();
-        MinecraftUtils.refreshRendering();
-        b.setLabel(getToggleText_renderBlockOutlines(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_renderBlocks(final boolean state) {
-        return new UiTxt("[B] Render blocks: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleRenderBlocks(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getRenderBlocks();
-        RenderingFilterHandler.setRenderBlocks(newState);
-        RenderingFilterHandler.recalculate();
-        MinecraftUtils.refreshRendering();
-        b.setLabel(getToggleText_renderBlocks(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_renderBlockEntities(final boolean state) {
-        return new UiTxt("[E] Render block entities: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleRenderBlockEntities(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getRenderBlockEntities();
-        RenderingFilterHandler.setRenderBlockEntities(newState);
-        RenderingFilterHandler.recalculate();
-        MinecraftUtils.refreshRendering();
-        b.setLabel(getToggleText_renderBlockEntities(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_renderFluids(final boolean state) {
-        return new UiTxt("[F] Render fluids: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleRenderFluids(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getRenderFluids();
-        RenderingFilterHandler.setRenderFluids(newState);
-        RenderingFilterHandler.recalculate();
-        MinecraftUtils.refreshRendering();
-        b.setLabel(getToggleText_renderFluids(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_shadingFix(final boolean state) {
-        return new UiTxt("Smooth Shading: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleShadingFix(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getFixShading();
-        RenderingFilterHandler.setShadingFix(newState);
-        MinecraftUtils.refreshRendering();
-        b.setLabel(getToggleText_shadingFix(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_renderParticles(final boolean state) {
-        return new UiTxt("Render particles: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleRenderParticles(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getRenderParticles();
-        RenderingFilterHandler.setRenderParticles(newState);
-        b.setLabel(getToggleText_renderParticles(newState).get());
-    }
-
-
-    public static UiTxt getToggleText_renderEntities(final boolean state) {
-        return new UiTxt("Render entities: " + (state ? "ON" : "OFF"));
-    }
-    public static void toggleRenderEntities(final UiButton b) {
-        final boolean newState = !RenderingFilterHandler.getRenderEntities();
-        RenderingFilterHandler.setRenderEntities(newState);
-        b.setLabel(getToggleText_renderEntities(newState).get());
-    }
 }
-
-
-
-
-//TODO add presets to the left
-//TODO save and load buttons on the right of the preset name (which is editable)
-//TODO storage them in the config folder of the client

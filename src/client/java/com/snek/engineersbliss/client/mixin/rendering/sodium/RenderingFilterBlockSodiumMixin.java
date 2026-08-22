@@ -32,7 +32,7 @@ public class RenderingFilterBlockSodiumMixin {
     private void eb$getBlockState(final int blockX, final int blockY, final int blockZ, final CallbackInfoReturnable<BlockState> cir) {
         final BlockState state = cir.getReturnValue();
 
-        if(!RenderingFilterHandler.shouldBlockRender(state)) {
+        if(!RenderingFilterHandler.shouldStateRender(state)) {
             cir.setReturnValue(Blocks.AIR.defaultBlockState());
         }
     }
