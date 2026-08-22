@@ -122,6 +122,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         for(final Block block : orResults) {
             addEntry(new Entry(block));
         }
+        layoutEntries();
     }
 
 

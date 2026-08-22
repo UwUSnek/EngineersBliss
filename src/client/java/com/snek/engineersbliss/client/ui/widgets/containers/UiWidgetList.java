@@ -20,6 +20,7 @@ import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
@@ -101,12 +102,64 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     public void layoutWidgets() {
         _repositionEntries();
 		if(getSelected() != null) {
-			scrollToEntry(getSelected());
+			scrollToEntry(getSelected()); //! This  calls setScrollAmount -> layoutWidgets on entries.
 		}
 		this.refreshScrollAmount();
-        UiWidgetBase.super.layoutWidgets();
+        UiWidgetBase.super.layoutWidgets(); //! This also calls layoutWidgets on entries but there isnt rly a way to avoid that.
     }
 
+
+    public void layoutEntries() {
+        for(final var c : children()) {
+            if(c instanceof UiWidgetBase w) {
+                w.layoutWidgets();
+            }
+        }
+    }
+
+
+	// @Override
+	// protected int addEntry(final Entry entry) {
+    //     //! Reposition entries doenst call layoutWidgets and is also private idfk why.
+    //     final int r = super.addEntry(entry);
+    //     for(final var c : children()) if(c instanceof UiWidgetBase w) w.layoutWidgets();
+    //     return r;
+	// }
+
+	@Override
+	protected void removeEntry(final Entry entry) {
+        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
+        super.removeEntry(entry);
+        layoutEntries();
+	}
+
+	@Override
+	public void setScrollAmount(final double scrollAmount) {
+        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
+        super.setScrollAmount(scrollAmount);
+        layoutEntries();
+	}
+
+	@Override
+	protected void addEntryToTop(final Entry entry, final int height) {
+        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
+        super.addEntryToTop(entry, height);
+        layoutEntries();
+	}
+
+	@Override
+	protected void sort(final Comparator<Entry> comparator) {
+        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
+        super.sort(comparator);
+        layoutEntries();
+	}
+
+	@Override
+	protected void swap(final int firstIndex, final int secondIndex) {
+        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
+        super.swap(firstIndex, secondIndex);
+        layoutEntries();
+	}
 
 
 
