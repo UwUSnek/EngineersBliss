@@ -291,11 +291,16 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     public static class Entry extends AbstractSelectionList.Entry<Entry> {
         private final AbstractWidget widget;
 
+        //! For subclasses that manage their own content
+        protected Entry() {
+            this.widget = null;
+        }
+
         public Entry(AbstractWidget widget) {
             this.widget = widget;
         }
 
-        public AbstractWidget getWidget() {
+        public @Nullable AbstractWidget getWidget() {
             return widget;
         }
 
@@ -309,51 +314,39 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
         }
 
 
-        // @Override
-        // public void setFocused(boolean focused) {
-        //     super.setFocused(focused);
-        //     widget.setFocused(focused);
-        // }
-
-        // @Override
-        // public boolean isFocused() {
-        //     return widget.isFocused();
-        // }
-
-
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-            return widget.mouseClicked(event, doubleClick);
+            return widget != null && widget.mouseClicked(event, doubleClick);
         }
 
         @Override
         public boolean mouseReleased(final MouseButtonEvent event) {
-            return widget.mouseReleased(event);
+            return widget != null && widget.mouseReleased(event);
         }
 
         @Override
         public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-            return widget.mouseDragged(event, dx, dy);
+            return widget != null && widget.mouseDragged(event, dx, dy);
         }
 
         @Override
         public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
-            return widget.mouseScrolled(x, y, scrollX, scrollY);
+            return widget != null && widget.mouseScrolled(x, y, scrollX, scrollY);
         }
 
         @Override
         public boolean keyPressed(final KeyEvent event) {
-            return widget.keyPressed(event);
+            return widget != null && widget.keyPressed(event);
         }
 
         @Override
         public boolean keyReleased(final KeyEvent event) {
-            return widget.keyReleased(event);
+            return widget != null && widget.keyReleased(event);
         }
 
         @Override
         public boolean charTyped(final CharacterEvent event) {
-            return widget.charTyped(event);
+            return widget != null && widget.charTyped(event);
         }
     }
 }

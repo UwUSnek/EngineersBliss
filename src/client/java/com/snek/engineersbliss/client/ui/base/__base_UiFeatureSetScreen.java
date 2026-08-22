@@ -115,8 +115,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Update hovered feature entry data
         final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
-        final AbstractWidget widget = entry != null ? entry.getWidget() : null;
-        if(widget instanceof FeatureInputWidget featureWidget) {
+        final @Nullable AbstractWidget widget = entry != null ? entry.getWidget() : null;
+        if(widget != null && widget instanceof FeatureInputWidget featureWidget) {
             lastHoverTime = System.currentTimeMillis();
             if(featureWidget != lastHoveredFeatureWidget) {
                 lastHoveredFeatureWidget = featureWidget;

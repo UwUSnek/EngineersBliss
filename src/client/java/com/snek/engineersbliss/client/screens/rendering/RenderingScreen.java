@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
-import com.snek.engineersbliss.client.screens.rendering.widgets.BlockListWidget;
+import com.snek.engineersbliss.client.screens.rendering.widgets.RenderingScreenBlockListWidget;
 import com.snek.engineersbliss.client.ui.base.__base_UiSidebarScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -21,6 +21,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.chunk.LevelChunkSection;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 public class RenderingScreen extends __base_UiSidebarScreen {
     private UiEditBox searchField;
-    private BlockListWidget blockList;
+    private RenderingScreenBlockListWidget blockList;
 
 
     public RenderingScreen() {
@@ -50,6 +51,19 @@ public class RenderingScreen extends __base_UiSidebarScreen {
         searchField.setFocused(searchField.isHovered());
         return super.mouseClicked(event, doubleClick);
     }
+
+
+    // Stop keybinds from activating while typing in the search bar by redirecting any key even to it while its focused.
+    @Override
+    public boolean keyPressed(final KeyEvent event) {
+        if(!searchField.isFocused()) {
+            return super.keyPressed(event);
+        }
+        else {
+            return searchField.keyPressed(event);
+        }
+    }
+
 
 
 
@@ -97,6 +111,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 final String query = searchField.getValue();
                 RenderingFilterHandler.init();
                 rebuildWidgets();
+                layoutWidgets();
                 searchField.setValue(query);
             }
         ), Layout.BORDER_HEIGHT);
@@ -107,6 +122,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 final String query = searchField.getValue();
                 RenderingFilterHandler.recalculateLight();
                 rebuildWidgets();
+                layoutWidgets();
                 searchField.setValue(query);
             }
         ), Layout.BORDER_HEIGHT);
@@ -116,7 +132,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
 
         // Main list
         //! This needs to be rendered last to let tooltips show on top of right side buttons
-        blockList = new BlockListWidget(this.minecraft, 0, 0, LIST_TOP, 24);
+        blockList = new RenderingScreenBlockListWidget(this, 24);
         this.addRenderableWidget(blockList);
         blockList.filter("");
     }
@@ -130,7 +146,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
 
         // Main list
         blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
-        blockList.setPosition(leftSidebarWidthPx, 0);
+        blockList.setPosition(leftSidebarWidthPx, LIST_TOP);
 
         super.layoutWidgets();
     }
