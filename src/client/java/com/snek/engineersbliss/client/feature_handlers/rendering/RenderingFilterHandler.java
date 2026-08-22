@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderersAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
@@ -41,12 +42,12 @@ public class RenderingFilterHandler {
     public static int getLightRecalcProgress() { return lightRecalcProgress; }
 
 
-    private static final Map<Block, Boolean> enabledBlocks  = new ConcurrentHashMap<>();
-    private static final Map<Block, Boolean> isolatedBlocks = new ConcurrentHashMap<>();
-    public static void  setEnabled(final Block block, final boolean  enabled) { enabledBlocks.put(block, enabled); }
-    public static void setIsolated(final Block block, final boolean isolated) { isolatedBlocks.put(block, isolated); }
-    public static boolean  getEnabled(final Block block) { return enabledBlocks.get(block); }
-    public static boolean getIsolated(final Block block) { return isolatedBlocks.get(block); }
+    private static final Set<Block> enabledBlocks  = ConcurrentHashMap.newKeySet();
+    private static final Set<Block> isolatedBlocks = ConcurrentHashMap.newKeySet();
+    public static void  setEnabled(final Block block, final boolean  enabled) { if(enabled)   enabledBlocks.add(block); else  enabledBlocks.remove(block); }
+    public static void setIsolated(final Block block, final boolean isolated) { if(isolated) isolatedBlocks.add(block); else isolatedBlocks.remove(block); }
+    public static boolean  getEnabled(final Block block) { return enabledBlocks.contains(block); }
+    public static boolean getIsolated(final Block block) { return isolatedBlocks.contains(block); }
 
 
 
@@ -82,7 +83,7 @@ public class RenderingFilterHandler {
         findBlocksWithBlockEntityRendering();
         resetStateCache();
 
-        //! This inclused the 3 air blocks but it doesn't really matter, they only need to be hidden in the UI
+        //! This includes the 3 air blocks but it doesn't really matter, they only need to be hidden in the UI
         BuiltInRegistries.BLOCK.forEach(block -> {
             setEnabled(block, true);
             setIsolated(block, false);
@@ -90,18 +91,21 @@ public class RenderingFilterHandler {
     }
 
 
-
-
-    public static void resetStateCache() {
-        stateShouldRenderCache.clear();
+    public static void resetFilters() {
+        for(final __base_ServerFeature feature : RenderingServerFeatureSet.INSTANCE.getFeatures().values()) {
+            ClientFeatureSync.setFeature(feature, feature.getDefault());
+        }
+        RenderingFilterHandler.init(); //! This calls resetStatetCache()
+        MinecraftUtils.refreshRendering();
     }
 
 
-
-
-    public void resetFilters() {
-        RenderingFilterHandler.init(); //! This calls resetStatetCache()
+    public static void resetStateCacheAndRefresh() {
+        resetStateCache();
         MinecraftUtils.refreshRendering();
+    }
+    public static void resetStateCache() {
+        stateShouldRenderCache.clear();
     }
 
 
@@ -178,7 +182,7 @@ public class RenderingFilterHandler {
 
         // Check isolated blocks and enabled blocks lists
         final boolean isAnyIsolated = !isolatedBlocks.isEmpty();
-        final boolean r = isAnyIsolated ? isolatedBlocks.containsKey(block) : enabledBlocks.containsKey(block);
+        final boolean r = isAnyIsolated ? isolatedBlocks.contains(block) : enabledBlocks.contains(block);
         if(!r) return false;
 
 

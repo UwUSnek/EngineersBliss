@@ -58,7 +58,7 @@ public abstract class CustomOutlinesMixin {
             ci.cancel();
             return;
         }
-        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
+        if(ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
             return;
         }
         customOutlineBlocks.clear();
@@ -117,7 +117,7 @@ public abstract class CustomOutlinesMixin {
             ci.cancel();
             return;
         }
-        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
+        if(ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
             return;
         }
         if(customOutlineBlocks.isEmpty()) return;

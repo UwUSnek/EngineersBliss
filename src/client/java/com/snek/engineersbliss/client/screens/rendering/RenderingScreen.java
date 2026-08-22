@@ -85,9 +85,9 @@ public class RenderingScreen extends __base_UiSidebarScreen {
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, new UiTxt("Search..."), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_OUTLINES, null), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCKS,         null), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_FLUIDS,         null), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_ENTITIES, null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCKS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_FLUIDS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_ENTITIES, b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_ENTITIES,       null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_PARTICLES,      null), Layout.BORDER_HEIGHT);
 
@@ -96,7 +96,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.TARGET_HIDDEN_BLOCKS,  null), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.SMOOTH_SHADING,        null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.SMOOTH_SHADING,        b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
 
 
 
@@ -109,7 +109,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
             new UiTxt("Reset filters"),
             b -> {
                 final String query = searchField.getValue();
-                RenderingFilterHandler.init();
+                RenderingFilterHandler.resetFilters();
                 rebuildWidgets();
                 layoutWidgets();
                 searchField.setValue(query);

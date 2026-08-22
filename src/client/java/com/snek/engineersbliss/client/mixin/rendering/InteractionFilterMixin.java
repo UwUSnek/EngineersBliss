@@ -30,7 +30,7 @@ public class InteractionFilterMixin {
     @SuppressWarnings("unused")
     @Inject(method = "pick", at = @At("RETURN"), cancellable = false, require = 1)
     private void eb$onPick(final float partialTicks, final CallbackInfo ci) {
-        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
+        if(ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.TARGET_HIDDEN_BLOCKS)) {
             return;
         }
         final Minecraft minecraft = Minecraft.getInstance();
@@ -54,7 +54,7 @@ public class InteractionFilterMixin {
             (context, pos) -> {
                 final BlockState state = minecraft.level.getBlockState(pos);
                 if(state.isAir()) return null;
-                if(!RenderingFilterHandler.shouldStateRender(targeted)) return null;
+                if(!RenderingFilterHandler.shouldStateRender(state)) return null;
                 final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player)).clip(start, end, pos);
                 return hit != null ? hit : BlockHitResult.miss(end, Direction.UP, pos);
             },
