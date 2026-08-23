@@ -63,7 +63,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
     @Override
     public Entry getHoveredEntry() {
-        return (Entry)super.getHovered();
+        return (Entry)super.getHoveredEntry();
     }
 
 
@@ -245,14 +245,12 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
                 RenderingFilterHandler.resetStateCache();
                 RenderingFilterHandler.setEnabled(block, enableBox.selected());
                 MinecraftUtils.refreshSectionsContaining(block);
-                System.out.println("CLICKED: " + block.getName().getString());
                 return true;
             }
             if(isolateBox.mouseClicked(event, doubleClick)) {
                 RenderingFilterHandler.resetStateCache();
                 RenderingFilterHandler.setIsolated(block, isolateBox.selected());
                 MinecraftUtils.refreshRendering();
-                System.out.println("CLICKED: " + block.getName().getString());
                 return true;
             }
             return super.mouseClicked(event, doubleClick);
