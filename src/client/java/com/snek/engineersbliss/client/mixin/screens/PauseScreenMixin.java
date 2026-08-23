@@ -21,6 +21,7 @@ import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.PlayerMannequin;
@@ -248,7 +249,7 @@ public class PauseScreenMixin extends Screen {
         //FIXME move visible block overlays to alternative texture maybe?
 
         // Julia set
-        final Button juliaScreenButton = new UiPauseScreenButton(screen, new UiTxt("??"), null, JuliaSetScreen::new, '\0');
+        final UiButton juliaScreenButton = new UiPauseScreenButton(screen, new UiTxt("??"), null, JuliaSetScreen::new, '\0');
         addRenderableWidget(juliaScreenButton);
         juliaScreenButton.setSize(BUTTON_HEIGHT, BUTTON_HEIGHT);
         juliaScreenButton.setX(width  - BUTTON_HEIGHT - BUTTON_MARGIN);
