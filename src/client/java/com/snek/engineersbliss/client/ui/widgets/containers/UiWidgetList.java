@@ -55,7 +55,7 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     public void setBgColor(final int newColor) {
         bgColor = newColor; markBgDirty();
     }
-	@Override public TextureCache getBgTextureCache() {
+    @Override public TextureCache getBgTextureCache() {
         return bgCache;
     }
     @Override public int getBgBaseColor() {
@@ -81,9 +81,9 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     /**
      * Verbatim copy of Vanilla's getFirstEntryY bc for some reason they made it private.
      */
-	protected int _getFirstEntryY() {
-		return getY() + 2;
-	}
+    protected int _getFirstEntryY() {
+        return getY() + 2;
+    }
     /**
      * Verbatim copy of Vanilla's repositionEntries bc for some reason they made it private.
      */
@@ -101,11 +101,11 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     @Override
     public void layoutWidgets() {
         _repositionEntries();
-		if(getSelected() != null) {
-			scrollToEntry(getSelected()); //! This  calls setScrollAmount -> layoutWidgets on entries.
-		}
-		this.refreshScrollAmount();
-        UiWidgetBase.super.layoutWidgets(); //! This also calls layoutWidgets on entries but there isnt rly a way to avoid that.
+        if(getSelected() != null) {
+            scrollToEntry(getSelected()); //! This  calls setScrollAmount -> layoutWidgets on entries.
+        }
+        this.refreshScrollAmount();
+        layoutWidgets(); //! This also calls layoutWidgets on entries but there isnt rly a way to avoid that.
     }
 
 
@@ -118,48 +118,30 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
     }
 
 
-	// @Override
-	// protected int addEntry(final Entry entry) {
-    //     //! Reposition entries doenst call layoutWidgets and is also private idfk why.
-    //     final int r = super.addEntry(entry);
-    //     for(final var c : children()) if(c instanceof UiWidgetBase w) w.layoutWidgets();
-    //     return r;
-	// }
 
-	@Override
-	protected void removeEntry(final Entry entry) {
-        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
-        super.removeEntry(entry);
-        layoutEntries();
-	}
+    //! layoutEntries() must be called manually after adding or removing entries.
+    //! This helps with performance. It forces the caller to batch operations.
 
-	@Override
-	public void setScrollAmount(final double scrollAmount) {
+    @Override
+    public void setScrollAmount(final double scrollAmount) {
         //! Reposition entries doenst call layoutWidgets and is also private idfk why.
         super.setScrollAmount(scrollAmount);
         layoutEntries();
-	}
+    }
 
-	@Override
-	protected void addEntryToTop(final Entry entry, final int height) {
-        //! Reposition entries doenst call layoutWidgets and is also private idfk why.
-        super.addEntryToTop(entry, height);
-        layoutEntries();
-	}
-
-	@Override
-	protected void sort(final Comparator<Entry> comparator) {
+    @Override
+    protected void sort(final Comparator<Entry> comparator) {
         //! Reposition entries doenst call layoutWidgets and is also private idfk why.
         super.sort(comparator);
         layoutEntries();
-	}
+    }
 
-	@Override
-	protected void swap(final int firstIndex, final int secondIndex) {
+    @Override
+    protected void swap(final int firstIndex, final int secondIndex) {
         //! Reposition entries doenst call layoutWidgets and is also private idfk why.
         super.swap(firstIndex, secondIndex);
         layoutEntries();
-	}
+    }
 
 
 
@@ -172,10 +154,10 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
         return false;
     }
 
-	@Override
-	protected void updateWidgetNarration(NarrationElementOutput output) {
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput output) {
         // Empty
-	}
+    }
 
     @Override
     public boolean keyPressed(final KeyEvent event) {
