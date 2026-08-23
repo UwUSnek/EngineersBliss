@@ -63,23 +63,19 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         selected = null;
     }
 
-    protected int addEntry(final T entry) { //FIXME rename all "entry" stuff to "child"
-        children.add(entry);
+    protected int addChild(final T e) {
+        children.add(e);
         return children.size() - 1;
-    }
-
-    protected final @Nullable T getEntryAtPosition(final double posX, final double posY) {
-        for(final @NotNull T child : children) {
-            if(child.isMouseOver(posX, posY)) {
-                return child;
-            }
-        }
-        return null;
     }
 
     @Override
     public Optional<GuiEventListener> getChildAt(final double x, final double y) {
-        return Optional.ofNullable(this.getEntryAtPosition(x, y));
+        for(final @NotNull T child : children) {
+            if(child.isMouseOver(x, y)) {
+                return Optional.of(child);
+            }
+        }
+        return Optional.empty();
     }
 
     protected boolean entriesCanBeSelected() {

@@ -267,7 +267,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         entry.setWidth(getRowWidth());
         entry.setY(getNextY());
         entry.setHeight(height);
-        final int r = super.addEntry(entry);
+        final int r = super.addChild(entry);
         repositionEntries();
         return r;
     }
@@ -353,7 +353,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         extractBackground(graphics, mouseX, mouseY, a);
 
-        this.hovered = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
+        this.hovered = this.isMouseOver(mouseX, mouseY) ? this.getChildAtPosition(mouseX, mouseY) : null;
 
         graphics.enableScissor(this.getX(), this.getY(), this.getRight(), this.getBottom());
         for(final Entry child : children) {

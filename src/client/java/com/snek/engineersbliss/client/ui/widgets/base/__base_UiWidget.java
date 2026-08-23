@@ -3,12 +3,16 @@ package com.snek.engineersbliss.client.ui.widgets.base;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Txt;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -24,25 +28,26 @@ import net.minecraft.network.chat.Component;
 
 public abstract class __base_UiWidget extends AbstractWidget implements BgCacheWidget, UiWidgetBase {
 
-
     // Screen reference
     private final Screen screen;
-    public Screen getScreen() { return screen; }
+    public Screen getScreen() {
+        return screen;
+    }
+
+
 
 
     // Cached background
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
     public void setBgColor(final int newColor) {
-        bgColor = newColor; markBgDirty();
+        bgColor = newColor;
+        markBgDirty();
     }
-    @Override public TextureCache getBgTextureCache() {
-        return bgCache;
-    }
-    @Override public int getBgBaseColor() {
-        return bgColor;
-    }
-    @Override public boolean isGuiScaleTransitioning() {
+    @Override public TextureCache getBgTextureCache() { return bgCache; }
+    @Override public int getBgBaseColor() { return bgColor; }
+    @Override
+    public boolean isGuiScaleTransitioning() {
         return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
     }
 
@@ -50,17 +55,51 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     // Label
     private UiTxt label;
     public UiTxt getLabel() { return label; }
-    public void setLabel(final UiTxt label) { this.label = (UiTxt)label.copy(); }
+    public void setLabel(final UiTxt     label) { this.label = (UiTxt) label.copy(); }
     public void setLabel(final Component label) { this.label = new UiTxt(label); }
 
 
+    // Label layout
+    private TextAlignment alignment;
+    public TextAlignment getAlignment() { return alignment; }
+    public void setAlignment(final TextAlignment alignment) { this.alignment = alignment; }
+    private float labelOffset;
+    public float getLabelOffset() { return labelOffset; }
+    public void setLabelOffset(final float labelOffset) { this.labelOffset = labelOffset; }
 
 
-    protected __base_UiWidget(final Screen screen, final UiTxt label) {
+
+
+    protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
         super(50, 50, 50, 50, new Txt().get());
         this.screen = screen;
         this.label = label;
+        this.alignment = alignment;
+        this.labelOffset = 0;
         this.bgCache = new TextureCache(screen);
+    }
+
+    protected __base_UiWidget(final Screen screen, final UiTxt label) {
+        this(screen, label, TextAlignment.LEFT);
+    }
+
+
+
+    @Override
+    protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+
+        // Draw background
+        extractBackground(graphics, mouseX, mouseY, a);
+
+
+        // Draw label
+        final UiTxt label = getLabel();
+        if(label != null && label.length() > 0) {
+            final ScaledFont scaledFont = label.getScaledFont();
+            final int textX = getX() + (int)(height * getLabelOffset()) + Layout.textMarginPx;
+            final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
+            RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, getAlignment(), width, false);
+        }
     }
 
 
@@ -77,9 +116,6 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     public void setMessage(final Component message) {
         throw new UnsupportedOperationException("Use .setLabel(label) instead.");
     }
-
-
-
 
     @Override
     protected void updateWidgetNarration(final NarrationElementOutput output) {

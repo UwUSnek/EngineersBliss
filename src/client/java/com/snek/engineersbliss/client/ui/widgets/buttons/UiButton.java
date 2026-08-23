@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
@@ -34,8 +35,6 @@ public class UiButton extends __base_UiWidget {
     private static final int KEYBIND_ICON_WIDTH = 16;
 
     private char key;
-    private final TextAlignment alignment;
-    private float labelOffset;
     private final AnimatedColor overlayColor;
     private final @Nullable Consumer<UiButton> pressCallback;
 
@@ -50,12 +49,10 @@ public class UiButton extends __base_UiWidget {
 
 
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        super(screen, label);
+        super(screen, label, alignment);
         this.pressCallback = pressCallback;
         this.key = Character.toLowerCase(key);
-        this.alignment = alignment;
         this.bgSpriteId = null;
-        this.labelOffset = 0;
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
@@ -73,12 +70,12 @@ public class UiButton extends __base_UiWidget {
         return withSpriteBg(id, 0);
     }
     public UiButton withSpriteBg(final Identifier id, final float width) {
-        return withSpriteBg(id, width, labelOffset);
+        return withSpriteBg(id, width, getLabelOffset());
     }
     public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffset) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
-        this.labelOffset = labelOffset;
+        setLabelOffset(labelOffset);
         return this;
     }
 
@@ -102,7 +99,7 @@ public class UiButton extends __base_UiWidget {
 
     @Override
     public void onClick(final MouseButtonEvent event, final boolean doubleClick) {
-        if (pressCallback != null) pressCallback.accept(this);
+        if(pressCallback != null) pressCallback.accept(this);
     }
 
     @Override
@@ -134,24 +131,17 @@ public class UiButton extends __base_UiWidget {
 
     @Override
     protected void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-
-        // Draw background
-        extractBackground(graphics, mouseX, mouseY, a);
-
-
-        // Draw label
-        final UiTxt label = getLabel();
-        final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final int textX = getX() + (int)(height * labelOffset) + Layout.textMarginPx;
-        final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, false);
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
 
         // Draw keybind if present
         if(key != '\0') {
-            final UiTxt keybindText = new UiTxt(String.valueOf(key), Fonts.mono.medium);
+            final FontFamily fontFamily = Fonts.mono.medium;
+            final ScaledFont scaledFont = fontFamily.get(1f);
+            final int keybindY = getY() + (height - scaledFont.getLineHeight()) / 2;
+            final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);
             final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2;
-            RenderingUtils.extractTxt(graphics, keybindText, keybindX, textY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
+            RenderingUtils.extractTxt(graphics, keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
         }
 
 

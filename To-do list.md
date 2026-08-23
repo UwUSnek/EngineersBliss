@@ -263,6 +263,10 @@ ADD ALL OF THIS TO THE README
     - grow selection (maxes out to connected blocks)
     - shrink selection (makes it as small as possible)
     - regenerate
+    - "view slice" - view a 1-block slice of the selection on a specific axis
+      - use the scroll wheel to cycle the active slice
+      - invisible slices are fully intangible for the player, but they still exist in the world and interact with everything else. 
+        - (use the same block rendering filter system but add support for slices)
     - [open replace block menu, affects the whole selection]
     - [open area analysis menu]
       - Count and find items within containers in a selected area
