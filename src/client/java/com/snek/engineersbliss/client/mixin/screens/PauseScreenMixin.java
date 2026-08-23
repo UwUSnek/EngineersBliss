@@ -213,7 +213,6 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Version Control" ), "version_control",  ()->{return null;},        'V'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Block Properties"), "block_properties", ()->{return null;},        'P'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Block Groups"    ), "block_groups",     ()->{return null;},        'G'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Container tools" ), "container_tools",  ()->{return null;},        'C'), Layout.BORDER_HEIGHT);
 
             // QoL
             leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);

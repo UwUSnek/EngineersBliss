@@ -1,15 +1,7 @@
 # To-do list
 
 - **Misc**:
-  - ~~Player model rendering in the pause menu~~
   - In-game status bar
-  - ~~Stop the pause menu from pausing the game~~
-
-- **Rendering**:
-  - ~~Selectively hide blocks by type or rendering method~~
-  - ~~Click through hidden blocks~~
-  - ~~Custom block outlines~~
-  - ~~Force light recalculation~~
 
 - **In-game calculator**:
   - Basic scientific calculator operations
@@ -17,53 +9,19 @@
   - History
 
 - **Alternative textures**
-  - ~~Minimal Redstone Wire~~
-  - ~~Disable Redstone Wire particles~~
-  - ~~Disable Campfire particles~~
-  - ~~Disable Fire particles~~
-  - ~~Disable Lava particles~~
   - Disable Water Stream particles
-  - ~~Disable drip particles~~
-  - ~~Transparent Slime Block~~
-  - ~~Transparent Honey Block~~
-  - ~~Unobstructive Mangrove Roots~~
-  - ~~Unobstructive Scaffolding~~
-  
-  - ~~Consistent sloped rails~~
-  - ~~Alternative Barrier rendering~~
-  - ~~Alternative Structure Void rendering~~
-  - ~~Alternative Light Block rendering~~
-  - ~~Static Sign models~~
-  - ~~Static Chest models~~
-  - ~~Static Banner models~~
-  - ~~static decorated pot models~~
-  - ~~static bell models~~
-  - ~~static copper golem statue models~~
-  - ~~static lectern models~~
-  - ~~Optimized Shelf rendering logic~~
-  - ~~Optimized Campfire rendering logic~~
-
-  - ~~3D Redstone Wire~~
-  - ~~3D Rails~~
-  - ~~3D Ladders~~
-  - ~~3D Iron Chains & Copper Chains~~
-  - ~~3D Iron Bars & Copper Bars~~
-  - ~~3D Vines~~
-  - ~~3D Glow Lichen~~
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Highlight unstable blockstates //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
   - Display scheduled tick timers
   - Display Hopper cooldown timers
-  - ~~Show Redstone Wire power level~~
-  - ~~Show Powered Rail and Activator Rail power levels~~
-  - ~~Show Comparator power levels~~
   - Show distance value of Leaves
   - Show distance value of Scaffoldings
   - Show level value of Composters
   - Show level value of Cauldrons
   - Show current fuel and item of Furnaces, Smokers and Blast Furnaces
+  - Show marker entities
   - Highlight the power source of Rail blocks
   - Highlight the power source of Redstone Wires
   - Visualize Comparator output logic
@@ -82,12 +40,6 @@
   - Disable explosion block and entity damage
 
 - **Creative mode tweaks**
-  - ~~Control flying speed~~
-  - ~~Control walking speed~~
-  - ~~Control player scale~~
-  - ~~Control reach distance~~
-  - ~~Control interaction radius (click multiple blocks at once)~~
-  - ~~Control interaction count~~
   - Control block placement delay
   - add in-game UI for these. display their current values with icons and such
 
@@ -106,28 +58,10 @@
   - Teleport to the block you are looking at with a keybind
   - Zoom view with a keybind
   - Toggle full brightness with a keybind
-
-  - ~~Phase through blocks while flying~~
-  - ~~Phase through entities~~
-  - ~~Disable bouncing on Slime Blocks~~
-  - ~~Disable not being able to jump from Honey Blocks~~
-  - ~~Disable sliding on the sides of Honey Blocks~~
-  - ~~Disable being slowed down by Slime Blocks~~
-  - ~~Disable being slowed down by Honey Blocks~~
-  - ~~Disable being slowed down by Soul Sand~~
-  - ~~Disable being slowed down by powder snow~~
-  - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
-  - ~~Disable being moved by Water and Lava currents~~
-  - ~~Disable being dragged by Bubble Columns~~
   - Disable punching End Crystals
 
-  - ~~Disable item change animation~~
-  - ~~Disable hand swing animation~~
-  - ~~Disable being on fire~~
-  - ~~Disable freezing effect~~
   - Disable dimension change loading screens
   - Disable reduced FOV when inside a body of Water
-  - ~~Disable overlay effect of Water~~
   - Disable overlay effect of Lava
   - Disable overlay effect of Nether Portals
 
@@ -150,70 +84,9 @@
   - Easily fill open containers with specific items
 
 - **Custom blocks and items**
-  - ~~Cosmetic Black Hole~~
-  - ~~Cosmetic White Hole~~
   - Item Source
   - Item Sink (storage block with infinite capacity)
   - Item Pipe
-  - ~~0 Friction blocks~~
-  - ~~∞ Friction blocks~~
-  - ~~Green Screen block~~
-  - ~~Blue Screen block~~
-  - ~~[Vanilla Item] Stick item with Custom Name ~~
-  - ~~[Vanilla Item] Cobblestone item with Custom Name~~
-  - ~~[Vanilla Item] Name Tag item with Custom Name~~
-  - ~~[Vanilla block] Fire item~~
-  - ~~[Vanilla block] Nether Portal item~~
-  - ~~[Vanilla block] End Portal item~~
-  - ~~[Vanilla block] End Gateway item~~
-  - ~~[Vanilla block] Frosted Ice item~~
-  - ~~[Vanilla block] Water Cauldron items~~
-  - ~~[Vanilla block] Powder Snow Cauldron items~~
-  - ~~[Vanilla block] Lava Cauldron item~~
-  - ~~[Vanilla block] Unlit Campfire item~~
-  - ~~[Vanilla block] Unlit Soul Campfire item~~
-  - ~~[Vanilla block] Headless Piston item~~
-  - ~~[Vanilla block] Headless Sticky Piston item~~
-  - ~~[Vanilla block] Sticky Piston Head item~~
-  - ~~[Vanilla block] Piston Head item~~
-  - ~~[Vanilla block] Short Sticky Piston Head item~~
-  - ~~[Vanilla block] Short Piston Head item~~
-  - ~~[Vanilla blocks] Door Part items~~
-  - ~~[Vanilla blocks] Bed Part items~~
-  - ~~[Vanilla block] Rose Bush Stem item~~
-  - ~~[Vanilla block] Rose Bush Crown item~~
-  - ~~[Vanilla block] Sunflower Stem item~~
-  - ~~[Vanilla block] Sunflower Crown item~~
-  - ~~[Vanilla block] Tall Grass Stem item~~
-  - ~~[Vanilla block] Tall Grass Crown item~~
-  - ~~[Vanilla block] Pitcher Plant Stem item~~
-  - ~~[Vanilla block] Pitcher Plant Crown item~~
-  - ~~[Vanilla block] Peony Stem item~~
-  - ~~[Vanilla block] Peony Crown item~~
-  - ~~[Vanilla block] Large Fern Stem item~~
-  - ~~[Vanilla block] Large Fern Crown item~~
-  - ~~[Vanilla block] Lilac Stem item~~
-  - ~~[Vanilla block] Lilac Crown item~~
-  - ~~[Vanilla block] Kelp Stem item~~
-  - ~~[Vanilla block] Kelp Crown item~~
-  - ~~[Vanilla block] Cave Vines Stem item~~
-  - ~~[Vanilla block] Cave Vines Stem with Berries item~~
-  - ~~[Vanilla block] Cave Vines Crown item~~
-  - ~~[Vanilla block] Cave Vines Crown with Berries item~~
-  - ~~[Vanilla block] Twisting Vines Stem item~~
-  - ~~[Vanilla block] Twisting Vines Crown item~~
-  - ~~[Vanilla block] Weeping Vines Stem item~~
-  - ~~[Vanilla block] Weeping Vines Crown item~~
-  - ~~[Vanilla blocks] Cake with Candle items~~
-  - ~~[Vanilla blocks] Potted plant items~~
-  - ~~[Vanilla block & item] Your Player Head as an item~~
-  - ~~[Vanilla block] Bee Nest with Bees and Honey~~
-  - ~~[Vanilla block] Bee Nest with Honey but no Bees~~
-  - ~~[Vanilla block] Beehive with Bees and Honey~~
-  - ~~[Vanilla block] Beehive with Honey but no Bees~~
-  - ~~[Vanilla entity] Armor Stand with arms~~
-  - ~~[Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu~~
-  - ~~[Vanilla item & entity] Wither Spawn Egg in the Creative menu~~
 
 
 
@@ -235,16 +108,10 @@
 
 # Not features:
 
-- ~~Update UI, draw one with a more modern style~~
 - render stats //TODO minecraft.getGpuUtilization()
 
 
-- ~~add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign~~
-- ~~add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block~~
-
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
-
-- ~~Add small pretty custom icons for all the settings~~
 
 
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
@@ -265,15 +132,7 @@
   - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
 
 
-- ~~add a generic "hide all entities" toggle in rendering screen~~
-- add a generic "hide all particles" toggle in rendering screen
-
-
-- ~~static lectern models? or optimized, idk~~
-
-
 - add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
-
 
 
 - add scrolling items in inventories with the scroll wheel

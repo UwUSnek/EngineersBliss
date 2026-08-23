@@ -136,7 +136,12 @@ It helps a lot :3
   - Show Redstone Wire power level
   - Show Powered Rail and Activator Rail power levels
   - Show Comparator power levels
+  - Show distance value of Leaves
+  - Show distance value of Scaffoldings
+  - Show level value of Composters
+  - Show level value of Cauldrons
   - Show current fuel and item of Furnaces, Smokers and Blast Furnaces
+  - Show marker entities
   - Highlight the power source of Rail blocks
   - Highlight the power source of Redstone Wires
   - Visualize Comparator output logic
