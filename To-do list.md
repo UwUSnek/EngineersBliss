@@ -5,8 +5,9 @@
 
 - **In-game calculator**:
   - Basic scientific calculator operations
+  - Graphing calculator
   - Unit conversion
-  - History
+  - Expression history
 
 - **Alternative textures**
   - Disable Water Stream particles
@@ -235,6 +236,22 @@
 
 
 
+
+
+
+
+
+
+
+
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+
+
 - maybe add an "area block distribution" tool?
   - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
     - call them "Area analysis" or something
@@ -248,6 +265,9 @@
     - regenerate
     - [open replace block menu, affects the whole selection]
     - [open area analysis menu]
+      - Count and find items within containers in a selected area
+      - Replace item stacks remotely
+      - Easily fill open containers with specific items
 
 
 - GIT INTEGRATION

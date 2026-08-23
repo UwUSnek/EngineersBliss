@@ -211,6 +211,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor),      Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Action history"  ), "action_history",   ()->{return null;},        'U'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Version Control" ), "version_control",  ()->{return null;},        'V'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Calculator"      ), "calculator",       ()->{return null;},        'C'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Block Properties"), "block_properties", ()->{return null;},        'P'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Block Groups"    ), "block_groups",     ()->{return null;},        'G'), Layout.BORDER_HEIGHT);
 
@@ -219,6 +220,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Creative tweaks" ), "creative_tweaks",  CreativeTweaksScreen::new, 'Y'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Gameplay tweaks" ), "gameplay_tweaks",  ()->{return null;},        'X'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Macros"          ), "macros",           ()->{return null;},        'Q'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Sound muffler"   ), "sound_muffler",    ()->{return null;},        'M'), Layout.BORDER_HEIGHT);
 
             // Preferences
