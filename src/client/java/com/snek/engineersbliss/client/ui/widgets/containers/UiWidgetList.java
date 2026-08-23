@@ -1,16 +1,12 @@
 package com.snek.engineersbliss.client.ui.widgets.containers;
 
-import net.minecraft.client.gui.components.AbstractContainerWidget;
-import net.minecraft.client.gui.components.AbstractScrollArea;
+
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.events.ContainerEventHandler;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
 import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.navigation.ScreenDirection;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
@@ -19,28 +15,21 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 
-import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
-import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
+import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.mixin.accessors.AbstractScrollAreaAccessor;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
-import com.snek.engineersbliss.client.utils.Layout;
 
 
 
@@ -53,49 +42,47 @@ import com.snek.engineersbliss.client.utils.Layout;
  * A scrollable vertical list capable of containing other widgets.
  */
 
-public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidget, UiWidgetBase {
+public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
-
-    // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
 
     private final Minecraft minecraft;
     private final int defaultEntryHeight;
-    private final List<Entry> children = new ArrayList<>();
-    @Nullable private Entry hovered;
-    @Nullable private Entry selected;
+    private final float rowMargin;
 
-    // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) {
-        bgColor = newColor; markBgDirty();
-    }
-    @Override public TextureCache getBgTextureCache() {
-        return bgCache;
-    }
-    @Override public int getBgBaseColor() {
-        return bgColor;
-    }
-    @Override public boolean isGuiScaleTransitioning() {
-        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
-    }
+    private double scrollAmount;
+    private boolean scrolling;
+    private final int scrollRateBase;
 
 
 
 
     public UiWidgetList(final Screen screen, final int itemHeight) {
-        super(50, 50, 50, 50, CommonComponents.EMPTY, AbstractScrollArea.defaultSettings(itemHeight / 2));
-        this.screen = screen;
+        this(screen, itemHeight, 0f);
+    }
+    public UiWidgetList(final Screen screen, final int itemHeight, final float rowMargin) {
+        super(screen, new UiTxt(CommonComponents.EMPTY));
         this.minecraft = Minecraft.getInstance();
         this.defaultEntryHeight = itemHeight;
-        this.bgCache = new TextureCache(screen);
+        this.scrollRateBase = itemHeight;
+        this.rowMargin = rowMargin;
     }
 
 
 
 
+
+
+
+
+    private void repositionEntries() {
+        int y = getY() - (int)scrollAmount();
+        for(final @NotNull Entry child : children) {
+            child.setY(y);
+            y += child.getHeight();
+            child.setX(getRowLeft());
+            child.setWidth(getRowWidth());
+        }
+    }
 
     @Override
     public void layoutWidgets() {
@@ -104,27 +91,10 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
             scrollToEntry(getSelected()); //! This calls setScrollAmount -> layoutWidgets on entries.
         }
         this.refreshScrollAmount();
-        layoutEntries(); //! This also calls layoutWidget on entries but there isnt really a way to avoid that.
-    }
 
-    public void layoutEntries() {
-        for(final var c : children) {
-            if(c instanceof UiWidgetBase w) {
-                w.layoutWidgets();
-            }
-        }
-    }
-
-    //! layoutEntries() must be called manually after adding or removing entries.
-    //! This helps with performance. It forces the caller to batch operations.
-    private void repositionEntries() {
-        int y = getY() - (int) scrollAmount();
-        for(final Entry child : children) {
-            child.setY(y);
-            y += child.getHeight();
-            child.setX(getRowLeft());
-            child.setWidth(getRowWidth());
-        }
+        //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.
+        repositionEntries();
+        super.layoutWidgets();
     }
 
     public int getNextY() {
@@ -135,7 +105,6 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         return y;
     }
 
-    @Override
     protected int contentHeight() {
         int totalHeight = 0;
         for(final Entry child : children) {
@@ -144,26 +113,8 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         return totalHeight + 4;
     }
 
-    public void updateSize(final int width, final HeaderAndFooterLayout layout) {
-        this.updateSizeAndPosition(width, layout.getContentHeight(), layout.getHeaderHeight());
-    }
-
-    public void updateSizeAndPosition(final int width, final int height, final int y) {
-        this.updateSizeAndPosition(width, height, 0, y);
-    }
-
-    public void updateSizeAndPosition(final int width, final int height, final int x, final int y) {
-        this.setSize(width, height);
-        this.setPosition(x, y);
-        this.repositionEntries();
-        if(this.getSelected() != null) {
-            this.scrollToEntry(this.getSelected());
-        }
-        this.refreshScrollAmount();
-    }
-
     public int getRowLeft() {
-        return getX();
+        return getX() + (int)(this.width * rowMargin);
     }
 
     public int getRowRight() {
@@ -171,7 +122,9 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
     }
 
     public int getRowWidth() {
-        return this.width - scrollbarWidth();
+        final int marginPx = (int)(width * rowMargin);
+        final int scrollbarEncroachment = Math.max(0, scrollbarWidth() - marginPx);
+        return this.width - marginPx * 2 - scrollbarEncroachment;
     }
 
     public int getRowTop(final int row) {
@@ -183,132 +136,158 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         return child.getY() + child.getHeight();
     }
 
-    @Override
     public int scrollbarWidth() {
         return 2;
     }
 
-    @Override
     protected int scrollBarX() {
-        return getX() + this.width - scrollbarWidth();
+        return getRowRight();
     }
 
 
 
 
 
-    public final List<Entry> children() {
-        return children;
-    }
 
-    protected int getItemCount() {
-        return children.size();
-    }
 
-    protected void sort(final Comparator<Entry> comparator) {
-        children.sort(comparator);
-        repositionEntries();
-        layoutEntries();
-    }
 
-    protected void swap(final int firstIndex, final int secondIndex) {
-        Collections.swap(children, firstIndex, secondIndex);
-        repositionEntries();
-        scrollToEntry(children.get(secondIndex));
-        layoutEntries();
-    }
 
+
+
+
+
+    @Override
     protected void clearEntries() {
-        children.clear();
-        selected = null;
+        super.clearEntries();
+        setScrollAmount(0);
     }
 
-    protected void clearEntriesExcept(final Entry exception) {
-        children.removeIf(entry -> entry != exception);
-        if(selected != exception) {
-            setSelected(null);
+    public double scrollAmount() {
+        return this.scrollAmount;
+    }
+
+    public void setScrollAmount(final double scrollAmount) {
+        this.scrollAmount = Mth.clamp(scrollAmount, 0.0, this.maxScrollAmount());
+        repositionEntries();
+        super.layoutWidgets(); //! This is fine. Caller is expected to not call setScrollAmount() more than once at a time.
+    }
+
+    public void refreshScrollAmount() {
+        this.setScrollAmount(this.scrollAmount);
+    }
+
+    public int maxScrollAmount() {
+        return Math.max(0, this.contentHeight() - this.height);
+    }
+
+    protected boolean scrollable() {
+        return this.maxScrollAmount() > 0;
+    }
+
+    public boolean updateScrolling(final MouseButtonEvent event) {
+        this.scrolling = this.scrollable() && this.isValidClickButton(event.buttonInfo()) && this.isOverScrollbar(event.x(), event.y());
+        return this.scrolling;
+    }
+
+    protected boolean isOverScrollbar(final double x, final double y) {
+        return x >= this.scrollBarX() && x <= this.scrollBarX() + this.scrollbarWidth() && y >= this.getY() && y < this.getBottom();
+    }
+
+    protected int scrollerHeight() {
+        return Mth.clamp((int) ((float) (this.height * this.height) / this.contentHeight()), 32, this.height - 8);
+    }
+
+    public int scrollBarY() {
+        return this.maxScrollAmount() == 0
+            ? this.getY()
+            : Math.max(this.getY(), (int) this.scrollAmount * (this.height - this.scrollerHeight()) / this.maxScrollAmount() + this.getY())
+        ;
+    }
+
+    protected double scrollRate() {
+        return this.scrollRateBase;
+    }
+
+    private void scroll(final int amount) {
+        this.setScrollAmount(this.scrollAmount() + amount);
+    }
+
+    @Override
+    public boolean mouseScrolled(final double mx, final double my, final double scrollX, final double scrollY) {
+        if(!this.visible) {
+            return false;
         }
+        this.setScrollAmount(this.scrollAmount() - scrollY * this.scrollRate());
+        return true;
     }
 
-    public void replaceEntries(final List<Entry> newChildren) {
-        clearEntries();
-        for(final Entry newChild : newChildren) {
-            addEntry(newChild);
+    @Override
+    public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
+        final boolean scrollClicked = this.updateScrolling(event);
+        return super.mouseClicked(event, doubleClick) || scrollClicked;
+    }
+
+    @Override
+    public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
+        if(this.scrolling) {
+            if(event.y() < this.getY()) {
+                this.setScrollAmount(0.0);
+            }
+            else if(event.y() > this.getBottom()) {
+                this.setScrollAmount(this.maxScrollAmount());
+            }
+            else {
+                final double max = Math.max(1, this.maxScrollAmount());
+                final int barHeight = this.scrollerHeight();
+                final double yDragScale = Math.max(1.0, max / (this.height - barHeight));
+                this.setScrollAmount(this.scrollAmount() + dy * yDragScale);
+            }
         }
+        return super.mouseDragged(event, dx, dy);
     }
 
-    protected int addEntry(final Entry entry) {
-        return addEntry(entry, defaultEntryHeight);
+    @Override
+    public void onRelease(final MouseButtonEvent event) {
+        this.scrolling = false;
     }
 
-    protected int addEntry(final Entry entry, final int height) {
+
+
+
+
+
+
+
+    protected int __internal_addWidget(final Entry entry) {
+        return __internal_addWidget(entry, defaultEntryHeight);
+    }
+    protected int __internal_addWidget(final Entry entry, final int height) {
         entry.list = this;
         entry.setX(getRowLeft());
         entry.setWidth(getRowWidth());
         entry.setY(getNextY());
         entry.setHeight(height);
-        children.add(entry);
-        return children.size() - 1;
-    }
-
-    protected void addEntryToTop(final Entry entry) {
-        addEntryToTop(entry, defaultEntryHeight);
-    }
-
-    protected void addEntryToTop(final Entry entry, final int height) {
-        final double scrollFromBottom = maxScrollAmount() - scrollAmount();
-        entry.list = this;
-        entry.setHeight(height);
-        children.addFirst(entry);
+        final int r = super.addEntry(entry);
         repositionEntries();
-        setScrollAmount(maxScrollAmount() - scrollFromBottom);
+        return r;
     }
-
-    protected void removeEntryFromTop(final Entry entry) {
-        final double scrollFromBottom = maxScrollAmount() - scrollAmount();
-        removeEntry(entry);
-        setScrollAmount(maxScrollAmount() - scrollFromBottom);
-    }
-
-    protected void removeEntries(final List<Entry> entries) {
-        entries.forEach(this::removeEntry);
-    }
-
-    protected void removeEntry(final Entry entry) {
-        final boolean removed = children.remove(entry);
-        if(removed) {
-            repositionEntries();
-            if(entry == selected) {
-                setSelected(null);
-            }
-        }
-    }
-
-    @Nullable
-    protected final Entry getEntryAtPosition(final double posX, final double posY) {
-        for(final Entry child : children) {
-            if(child.isMouseOver(posX, posY)) {
-                return child;
-            }
-        }
-        return null;
-    }
-
     public void addWidget(final AbstractWidget widget) {
-        this.addEntry(new Entry(widget));
+        this.__internal_addWidget(new Entry(widget));
     }
     public void addWidget(final AbstractWidget widget, final int height) {
-        this.addEntry(new Entry(widget), height);
+        this.__internal_addWidget(new Entry(widget), height);
     }
 
+
     public void addWidgetAndSpacer(final AbstractWidget widget, final int marginBottom) {
-        this.addEntry(new Entry(widget));
+        this.__internal_addWidget(new Entry(widget));
         this.addWidget(new UiSpacer(), marginBottom);
     }
     public void addWidgetAndSpacer(final AbstractWidget widget, final int height, final int marginBottom) {
-        this.addEntry(new Entry(widget), height);
+        this.__internal_addWidget(new Entry(widget), height);
         this.addWidget(new UiSpacer(), marginBottom);
     }
+
 
     public void addWidgetAndSpacers(final AbstractWidget widget, final int marginTop, final int marginBottom) {
         this.addWidget(new UiSpacer(), marginTop);
@@ -322,38 +301,12 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
 
 
 
-    @Nullable
-    public Entry getSelected() {
-        return selected;
-    }
-
-    public void setSelected(@Nullable final Entry selected) {
-        this.selected = selected;
-        if(selected != null) {
-            final boolean topClipped = selected.getContentY() < this.getY();
-            final boolean bottomClipped = selected.getContentBottom() > this.getBottom();
-            if(this.minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
-                this.scrollToEntry(selected);
-            }
-        }
-    }
-
-    @Nullable
     @Override
-    public Entry getFocused() {
-        return (Entry) super.getFocused();
-    }
-
-    @Override
-    public void setFocused(@Nullable final GuiEventListener focused) {
-        final GuiEventListener oldFocus = this.getFocused();
-        if(oldFocus != focused && oldFocus instanceof ContainerEventHandler oldFocusContainer) {
-            oldFocusContainer.setFocused(null);
-        }
-        super.setFocused(focused);
-        final int index = children.indexOf(focused);
-        if(index >= 0) {
-            setSelected(children.get(index));
+    protected void onSelected(final Entry selected) {
+        final boolean topClipped = selected.getContentY() < this.getY();
+        final boolean bottomClipped = selected.getContentBottom() > this.getBottom();
+        if(this.minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
+            this.scrollToEntry(selected);
         }
     }
 
@@ -380,56 +333,6 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         this.setScrollAmount(y - this.height / 2.0);
     }
 
-    private void scroll(final int amount) {
-        this.setScrollAmount(this.scrollAmount() + amount);
-    }
-
-    @Override
-    public void setScrollAmount(final double scrollAmount) {
-        super.setScrollAmount(scrollAmount);
-        repositionEntries();
-        layoutEntries();
-    }
-
-    @Nullable
-    protected Entry nextEntry(final ScreenDirection dir) {
-        return this.nextEntry(dir, entry -> true);
-    }
-
-    @Nullable
-    protected Entry nextEntry(final ScreenDirection dir, final Predicate<Entry> canSelect) {
-        return this.nextEntry(dir, canSelect, this.getSelected());
-    }
-
-    @Nullable
-    protected Entry nextEntry(final ScreenDirection dir, final Predicate<Entry> canSelect, @Nullable final Entry startEntry) {
-        final int delta = switch (dir) {
-            case RIGHT, LEFT -> 0;
-            case UP -> -1;
-            case DOWN -> 1;
-        };
-        if(!children.isEmpty() && delta != 0) {
-            int index;
-            if(startEntry == null) {
-                index = delta > 0 ? 0 : children.size() - 1;
-            } else {
-                index = children.indexOf(startEntry) + delta;
-            }
-            for(int i = index; i >= 0 && i < children.size(); i += delta) {
-                final Entry candidate = children.get(i);
-                if(canSelect.test(candidate)) {
-                    return candidate;
-                }
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Optional<GuiEventListener> getChildAt(final double x, final double y) {
-        return Optional.ofNullable(this.getEntryAtPosition(x, y));
-    }
-
     //! Let clicks through if they don't hit a sub element.
     @Override
     public boolean isMouseOver(final double mouseX, final double mouseY) {
@@ -442,48 +345,13 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         return false;
     }
 
-    public Entry getHoveredEntry() {
-        return hovered;
-    }
-
-    protected boolean entriesCanBeSelected() {
-        return false;
-    }
-
-
-
-
-
-    @Override
-    public boolean keyPressed(final KeyEvent event) {
-        boolean r = false;
-        for(final Entry c : children) {
-            if(c.keyPressed(event)) r = true;
-        }
-        return r;
-    }
-
-    @Override
-    public boolean charTyped(final CharacterEvent event) {
-        boolean r = false;
-        for(final Entry c : children) {
-            if(c.charTyped(event)) r = true;
-        }
-        return r;
-    }
-
-    @Override
-    protected double scrollRate() {
-        return super.scrollRate() * 2d;
-    }
-
 
 
 
 
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
+        extractBackground(graphics, mouseX, mouseY, a);
 
         this.hovered = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
 
@@ -506,7 +374,6 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         graphics.blit(RenderPipelines.GUI_TEXTURED, footerSeparator, this.getX(), this.getBottom(), 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
     }
 
-    @Override
     protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
         final int scrollBarX = this.scrollBarX();
         final int scrollerHeight = this.scrollerHeight();
@@ -521,7 +388,7 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
             final int handleColor = hoveredBar ? Layout.handleColorActive : Layout.handleColor;
             graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, handleColor);
             if(hoveredBar) {
-                graphics.requestCursor(((AbstractScrollAreaAccessor) this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+                graphics.requestCursor(this.scrolling ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
                 graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.highlightOverlay);
             }
         }
@@ -531,7 +398,15 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
 
 
 
-    public static class Entry implements LayoutElement, GuiEventListener {
+
+
+
+
+
+
+
+
+    public static class Entry implements LayoutElement, GuiEventListener, UiWidgetBase {
         public static final int CONTENT_PADDING = 2;
 
         private int x = 0;
@@ -539,17 +414,43 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         private int width = 0;
         private int height;
         private UiWidgetList list;
+        private final @Nullable List<AbstractWidget> children;
 
         private final AbstractWidget widget;
+
+
+
 
         //! For subclasses that manage their own content
         protected Entry() {
             this.widget = null;
+            this.children = null;
         }
-
         public Entry(final AbstractWidget widget) {
             this.widget = widget;
+            this.children = List.of(widget);
         }
+
+
+
+
+        @Override
+        public @Nullable List<?> children() {
+            return children;
+        }
+        @Override
+        public void layoutWidgets() {
+            widget.setSize(getWidth(), getHeight());
+            widget.setPosition(getX(), getY());
+            UiWidgetBase.super.layoutWidgets();
+        }
+        @Override
+        public Screen getScreen() {
+            return list.getScreen();
+        }
+
+
+
 
         public @Nullable AbstractWidget getWidget() {
             return widget;
@@ -566,10 +467,6 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         }
 
         public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float a) {
-            widget.setX(getX());
-            widget.setY(getY());
-            widget.setWidth(getWidth());
-            widget.setHeight(getHeight());
             widget.extractRenderState(graphics, mouseX, mouseY, a);
         }
 
@@ -649,7 +546,7 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         }
 
         @Override
-        public void visitWidgets(final Consumer<AbstractWidget> widgetVisitor) {
+        public void visitWidgets(final java.util.function.Consumer<AbstractWidget> widgetVisitor) {
             throw new UnsupportedOperationException();
         }
 
@@ -657,6 +554,9 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
         public ScreenRectangle getRectangle() {
             return LayoutElement.super.getRectangle();
         }
+
+
+
 
         @Override
         public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
@@ -698,8 +598,8 @@ public class UiWidgetList extends AbstractContainerWidget implements BgCacheWidg
 
 
 
-	@Override
-	protected void updateWidgetNarration(NarrationElementOutput output) {
+    @Override
+    protected void updateWidgetNarration(final NarrationElementOutput output) {
         // Empty
-	}
+    }
 }

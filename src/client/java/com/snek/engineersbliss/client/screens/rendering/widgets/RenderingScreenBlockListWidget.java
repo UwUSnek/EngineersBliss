@@ -2,69 +2,48 @@ package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
+import com.snek.engineersbliss.utils.ServerMinecraftUtils;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
-import net.minecraft.client.input.MouseButtonEvent;
+
+
+
+
 
 
 
 
 public class RenderingScreenBlockListWidget extends UiWidgetList {
     public static final int CHECKBOX_AREA_WIDTH = 40;
+    public static final float LIST_MARGIN = 0.1f;
 
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
-    private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual). Reset when the UI is closed
+    private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual)
 
 
     public RenderingScreenBlockListWidget(final Screen screen, final int itemHeight) {
-        super(screen, itemHeight);
+        super(screen, itemHeight, LIST_MARGIN);
 
         // Create list of all blocks
-        allBlocks = new ArrayList<>();
-        BuiltInRegistries.BLOCK.forEach(block -> {
-            if(block != Blocks.AIR && block != Blocks.CAVE_AIR && block != Blocks.VOID_AIR) {
-                allBlocks.add(block);
-            }
-        });
+        allBlocks = ServerMinecraftUtils.fetchAllBlocks();
 
         // Loaded blocks are only calculated when needed
         loadedBlocks = new ArrayList<>();
     }
 
-
-
-
-	public void clear() {
-		this.clearEntries();
-        setScrollAmount(0);
-	}
-
-
-    @Override
-    public Entry getHoveredEntry() {
-        return (Entry)super.getHoveredEntry();
-    }
 
 
 
@@ -118,18 +97,11 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         //TODO          Any of the tags contains "uwu"
 
         // Clear block list and load the filtered entries
-        clear();
+        clearEntries();
         for(final Block block : orResults) {
-            addEntry(new Entry(block));
+            addWidget(new BlockEntryContents(this, block));
         }
-        layoutEntries();
-    }
-
-
-
-
-    public int addEntry(final Entry entry) {
-        return super.addEntry(entry);
+        layoutWidgets();
     }
 
 
@@ -138,7 +110,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
+        final Font font = Fonts.ui.regular.get(1f).getFont();
 
         // draw header above list
         final int headerY = this.getY() - 12;
@@ -150,13 +122,13 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
         // Handle hover events
-        final Entry hoveredEntry = getHoveredEntry();
-        if(hoveredEntry != null) {
+        final UiWidgetList.Entry hoveredEntry = getHoveredEntry();
+        if(hoveredEntry != null && hoveredEntry.getWidget() instanceof BlockEntryContents contents) {
             setSelected(hoveredEntry);
 
             // If hovering on the left half of the entry, spawn block info tooltip
             if(mouseX < hoveredEntry.getX() + getRowWidth() - CHECKBOX_AREA_WIDTH * 2) {
-                final Block block = hoveredEntry.block;
+                final Block block = contents.getBlock();
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
                 tooltipLines.add(ClientTooltipComponent.create(new UiTxt(BuiltInRegistries.BLOCK.getKey(block).toString()).lightBlue().get().getVisualOrderText()));
@@ -172,88 +144,5 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
     @Override
     protected boolean entriesCanBeSelected() {
         return true;
-    }
-
-
-
-
-
-
-
-
-    public class Entry extends UiWidgetList.Entry implements UiWidgetBase {
-        private final Block block;
-        private final Checkbox enableBox;
-        private final Checkbox isolateBox;
-        public Block getBlock() { return block; }
-
-
-        private final List<Object> children;
-        @Override
-        public @Nullable List<?> children() {
-            return children;
-        }
-        @Override
-        public Screen getScreen() {
-            return RenderingScreenBlockListWidget.this.getScreen();
-        }
-
-
-
-
-        public Entry(final Block block) {
-            super();
-            final @NotNull Font font = Fonts.ui.regular.get(1f).getFont();
-            this.block = block;
-            children = new ArrayList<>();
-            children.add(this.enableBox  = Checkbox.builder(new UiTxt().get(), font).selected(RenderingFilterHandler.getEnabled(block)).build()); //FIXME replace with UiCheckbox
-            children.add(this.isolateBox = Checkbox.builder(new UiTxt().get(), font).selected(RenderingFilterHandler.getIsolated(block)).build()); //FIXME replace with UiCheckbox
-        }
-
-
-        @Override
-        public void layoutWidgets() {
-            final int rowWidth = RenderingScreenBlockListWidget.this.getRowWidth();
-            final int checkboxY = this.getY() + (this.getHeight() - 20) / 2;
-            enableBox.setX(this.getX() + rowWidth - CHECKBOX_AREA_WIDTH * 2 + (CHECKBOX_AREA_WIDTH - enableBox.getWidth()) / 2);
-            enableBox.setY(checkboxY);
-            isolateBox.setX(this.getX() + rowWidth - CHECKBOX_AREA_WIDTH + (CHECKBOX_AREA_WIDTH - isolateBox.getWidth()) / 2);
-            isolateBox.setY(checkboxY);
-            UiWidgetBase.super.layoutWidgets();
-        }
-
-
-        @Override
-        public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
-            final int midY = this.getY() + this.getHeight() / 2;
-
-            // Block icon and name
-            BlockRenderer.extractBlockIcon(graphics, block, this.getContentX(), midY - 8);
-            BlockRenderer.extractBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
-
-            // Checkboxes
-            enableBox. extractRenderState(graphics, mouseX, mouseY, tickDelta);
-            isolateBox.extractRenderState(graphics, mouseX, mouseY, tickDelta);
-        }
-
-
-
-
-        @Override
-        public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-            if(enableBox.mouseClicked(event, doubleClick)) {
-                RenderingFilterHandler.resetStateCache();
-                RenderingFilterHandler.setEnabled(block, enableBox.selected());
-                MinecraftUtils.refreshSectionsContaining(block);
-                return true;
-            }
-            if(isolateBox.mouseClicked(event, doubleClick)) {
-                RenderingFilterHandler.resetStateCache();
-                RenderingFilterHandler.setIsolated(block, isolateBox.selected());
-                MinecraftUtils.refreshRendering();
-                return true;
-            }
-            return super.mouseClicked(event, doubleClick);
-        }
     }
 }

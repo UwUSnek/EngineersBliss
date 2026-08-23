@@ -28,10 +28,10 @@ public class ServerMinecraftUtils {
      */
     public static List<Block> fetchAllBlocks() {
         final List<Block> r = new ArrayList<>(BuiltInRegistries.BLOCK.size());
+        for(final var b : BuiltInRegistries.BLOCK) r.add(b);
         if(r.isEmpty()) {
             throw new IllegalStateException("ServerMinecraftUtils.fetchAllBlocks() called before block registration");
         }
-        for(final var b : BuiltInRegistries.BLOCK) r.add(b);
         return r;
     }
 

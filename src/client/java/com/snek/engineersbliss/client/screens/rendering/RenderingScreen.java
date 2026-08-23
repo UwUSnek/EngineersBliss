@@ -139,6 +139,14 @@ public class RenderingScreen extends __base_UiSidebarScreen {
 
 
 
+
+    @Override
+    protected void rebuildWidgets() {
+        final String query = searchField.getValue();
+        super.rebuildWidgets();
+        searchField.setValue(query);
+    }
+
     @Override
     public void layoutWidgets() {
         final int leftSidebarWidthPx  = (int)(width * leftSidebarWidth);
@@ -169,6 +177,8 @@ public class RenderingScreen extends __base_UiSidebarScreen {
         super._extractRenderState(graphics, mouseX, mouseY, delta);
 
 
+
+
         // Draw find syntax instructions
         final String[] syntaxInstructions = {
             "@", "Search blocks in loaded chunks",
@@ -176,17 +186,25 @@ public class RenderingScreen extends __base_UiSidebarScreen {
             "&", "Search multiple strings",
             "|", "Search either of two strings"
         };
-        for(int i = 0; i < syntaxInstructions.length / 2; i++) {
-            graphics.text(font, syntaxInstructions[i * 2    ], BORDER_WIDTH,      lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
-            graphics.text(font, syntaxInstructions[i * 2 + 1], BORDER_WIDTH + 16, lineBase - lineHeight * (5 - i), 0xFFAAAAAA);
+        int leftTextPrefixWidth = 0;
+        for(int i = 0; i < syntaxInstructions.length; i += 2) {
+            final int w = scaledFont.calcWidth(syntaxInstructions[i]);
+            if(w > leftTextPrefixWidth) leftTextPrefixWidth = w;
         }
+        for(int i = 0; i < syntaxInstructions.length; i += 2) {
+            final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
+            graphics.text(font, syntaxInstructions[i    ], Layout.textMarginPx,                       lineY, 0xFFAAAAAA);
+            graphics.text(font, syntaxInstructions[i + 1], Layout.textMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
+        }
+
+
 
 
         // Draw render stats
         final ClientLevel level = Minecraft.getInstance().level;
         if(level != null) {
             final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-            final int rightTextX = this.width - (int)(width * rightSidebarWidth);
+            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textMarginPx;
             final int lightProgress = RenderingFilterHandler.getLightRecalcProgress();
             final int lightMax = RenderingFilterHandler.getLightRecalcMax();
             final String[] renderStats = {
@@ -195,18 +213,16 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
             };
 
-            graphics.text(font, renderStats[0], rightTextX, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(font, renderStats[2], rightTextX, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(font, renderStats[4], rightTextX, lineBase - lineHeight * 2, 0xFFAAAAAA);
             int rightTextPrefixWidth = 0;
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int w = scaledFont.calcWidth(renderStats[i]);
                 if(w > rightTextPrefixWidth) rightTextPrefixWidth = w;
             }
-
-            graphics.text(font, renderStats[1], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 4, 0xFFAAAAAA);
-            graphics.text(font, renderStats[3], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 3, 0xFFAAAAAA);
-            graphics.text(font, renderStats[5], rightTextX + rightTextPrefixWidth, lineBase - lineHeight * 2, 0xFFAAAAAA);
+            for(int i = 0; i < renderStats.length; i += 2) {
+                final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
+                graphics.text(font, renderStats[i    ], rightTextX,                        lineY, 0xFFAAAAAA);
+                graphics.text(font, renderStats[i + 1], rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
+            }
         }
 
         //TODO optimize stuff. put static elements in init()
