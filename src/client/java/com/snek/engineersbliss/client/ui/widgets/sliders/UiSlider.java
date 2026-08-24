@@ -54,7 +54,6 @@ public class UiSlider extends __base_UiWidget {
     private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
 
     // Mouse handling
-    private boolean dragged = false;
     private double virtualX = 0;
 
     // Cached textures
@@ -117,7 +116,6 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
         boolean result = super.mouseClicked(event, doubled);
-        dragged = true;
         GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
         virtualX = event.x();
         updateValueFromVirtualX();
@@ -143,7 +141,6 @@ public class UiSlider extends __base_UiWidget {
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
         float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
         GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
-        dragged = false;
         return super.mouseReleased(event);
     }
 
@@ -179,14 +176,6 @@ public class UiSlider extends __base_UiWidget {
         if(onChange != null) onChange.accept(value);
         visualValue.startNewTransition(value);
         markBgDirty();
-    }
-
-    public boolean isBeingDragged() {
-        return dragged;
-    }
-
-    public boolean isHoveredOrBeingDragged() {
-        return isHovered() || isBeingDragged();
     }
 
 

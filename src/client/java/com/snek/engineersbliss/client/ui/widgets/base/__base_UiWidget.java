@@ -17,6 +17,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 
@@ -27,6 +28,10 @@ import net.minecraft.network.chat.Component;
 
 
 public abstract class __base_UiWidget extends AbstractWidget implements BgCacheWidget, UiWidgetBase {
+
+    // Input handling
+    private boolean dragged;
+
 
     // Screen reference
     private final Screen screen;
@@ -82,6 +87,7 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
 
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
         super(50, 50, 50, 50, new Txt().get());
+        this.dragged = false;
         this.screen = screen;
         this.label = label;
         this.alignment = alignment;
@@ -118,6 +124,10 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
 
 
 
+
+
+
+
     // Stop vanilla's key handling from doing stupid random stuff on custom widgets.
     @Override
     public boolean keyPressed(final KeyEvent event) {
@@ -134,6 +144,30 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     protected void updateWidgetNarration(final NarrationElementOutput output) {
         this.defaultButtonNarrationText(output);
     }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
+        boolean result = super.mouseClicked(event, doubled);
+        dragged = true;
+        return result;
+    }
+
+    @Override
+    public boolean mouseReleased(MouseButtonEvent event) {
+        dragged = false;
+        return super.mouseReleased(event);
+    }
+
+    public boolean isBeingDragged() {
+        return dragged;
+    }
+
+    public boolean isHoveredOrBeingDragged() {
+        return isHovered() || isBeingDragged();
+    }
+
+
+
 
 
 

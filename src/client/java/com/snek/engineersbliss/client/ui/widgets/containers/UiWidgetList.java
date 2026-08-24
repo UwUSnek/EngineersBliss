@@ -25,7 +25,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
