@@ -73,7 +73,7 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
 
     // Layout logic
     @Override
-    public void layoutWidgets() {
+    public void relayoutSelf() {
         if(hasLeftSidebar) {
             final int leftSidebarWidthPx = (int)(width * leftSidebarWidth);
             leftSidebar.setSize( leftSidebarWidthPx, height);
@@ -84,6 +84,5 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
             rightSidebar.setSize(rightSidebarWidthPx, height);
             rightSidebar.setPosition(width - rightSidebarWidthPx, 0);
         }
-        super.layoutWidgets();
     }
 }

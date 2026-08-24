@@ -109,7 +109,7 @@ public abstract class __base_UiScreen extends Screen {
 
     /**
      * Sets the resize flags, but only if needed.
-     * Flags the cheaper layoutWidgets() during transitions to improve performance.
+     * Flags the cheaper relayoutWidgets() during transitions to improve performance.
      * NOTICE: The actual resize operation is done by the rendering loop when needed.
      */
     protected void maybeFlagResize() {
@@ -232,19 +232,30 @@ public abstract class __base_UiScreen extends Screen {
 
 
     /**
-     * Custom lightweight layout update function.
-     * ! For some dumb reason, Vanilla's repositionElements() is just an alias for rebuildWidgets() like- WHY.
-     *
      * This function is called after the first init call, during resize animations, and after widget rebuilds (equivalent to destroy+init).
-     * Subclasses are expected to include all of the widget positioning logic in this function and call super.layoutWidgets() at the end.
+     * Subclasses are expected to include all of the widget positioning logic in this function and call super.layoutContent() at the very beginning.
      */
-    protected void layoutWidgets() {
+    protected abstract void relayoutSelf();
+
+
+    protected void relayoutContent() {
         for(final var e : children()) {
             if(e instanceof final @NotNull UiWidgetBase w) {
-                w.layoutWidgets();
+                w.relayout();
             }
         }
     }
+
+    /**
+     * Custom lightweight layout update function.
+     * ! For some dumb reason, Vanilla's repositionElements() is just an alias for rebuildWidgets() like- WHY.
+     */
+    protected void relayout() {
+        relayoutSelf();
+        relayoutContent();
+    }
+
+
 
 
     @Override
@@ -255,12 +266,12 @@ public abstract class __base_UiScreen extends Screen {
         maybeFlagResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.
         if(needsRebuild) {
             rebuildWidgets();
-            layoutWidgets();
+            relayout();
             needsRebuild = false;
             needsRelayout = false;
         }
         else if(needsRelayout) {
-            layoutWidgets();
+            relayout();
             needsRelayout = false;
         }
 

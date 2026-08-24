@@ -111,7 +111,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 final String query = searchField.getValue();
                 RenderingFilterHandler.resetFilters();
                 rebuildWidgets();
-                layoutWidgets();
+                relayout();
                 searchField.setValue(query);
             }
         ), Layout.BORDER_HEIGHT);
@@ -122,7 +122,7 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 final String query = searchField.getValue();
                 RenderingFilterHandler.recalculateLight();
                 rebuildWidgets();
-                layoutWidgets();
+                relayout();
                 searchField.setValue(query);
             }
         ), Layout.BORDER_HEIGHT);
@@ -148,15 +148,15 @@ public class RenderingScreen extends __base_UiSidebarScreen {
     }
 
     @Override
-    public void layoutWidgets() {
+    public void relayoutSelf() {
+        super.relayoutSelf();
+
         final int leftSidebarWidthPx  = (int)(width * leftSidebarWidth);
         final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
 
         // Main list
         blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
         blockList.setPosition(leftSidebarWidthPx, LIST_TOP);
-
-        super.layoutWidgets();
     }
 
 

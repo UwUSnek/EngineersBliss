@@ -100,6 +100,11 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWid
         return null;
     }
 
+    @Override
+    public void relayoutSelf() {
+        // Empty
+    }
+
 
 
 

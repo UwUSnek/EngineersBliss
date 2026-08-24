@@ -131,6 +131,11 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         return null;
     }
 
+    @Override
+    public void relayoutSelf() {
+        // Empty
+    }
+
 
 
 

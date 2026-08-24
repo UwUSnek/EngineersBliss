@@ -89,8 +89,8 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     // Layout logic
     @Override
-    public void layoutWidgets() {
-        super.layoutWidgets();
+    public void relayoutSelf() {
+        super.relayoutSelf();
 
         final int descriptionWidthPx = (int)(width * descriptionWidth);
         final int descriptionX = (width - descriptionWidthPx) / 2;

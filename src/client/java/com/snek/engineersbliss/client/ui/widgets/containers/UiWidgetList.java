@@ -83,10 +83,13 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             child.setX(getRowLeft());
             child.setWidth(getRowWidth());
         }
+        relayoutContent();
     }
 
     @Override
-    public void layoutWidgets() {
+    public void relayoutSelf() {
+        //! Nothing to call from parent classes, this is the first implementation
+
         repositionEntries();
         if(getSelected() != null) {
             scrollToEntry(getSelected()); //! This calls setScrollAmount -> layoutWidgets on entries.
@@ -95,7 +98,6 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
         //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.
         repositionEntries();
-        super.layoutWidgets();
     }
 
     public int getNextY() {
@@ -170,7 +172,6 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public void setScrollAmount(final double newScrollAmount) {
         scrollAmount = Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
         repositionEntries();
-        super.layoutWidgets(); //! This is fine. Caller is expected to not call setScrollAmount() more than once at a time.
     }
 
     public void refreshScrollAmount() {
@@ -447,10 +448,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             return children;
         }
         @Override
-        public void layoutWidgets() {
+        public void relayoutSelf() {
             widget.setSize(getWidth(), getHeight());
             widget.setPosition(getX(), getY());
-            UiWidgetBase.super.layoutWidgets();
         }
         @Override
         public Screen getScreen() {

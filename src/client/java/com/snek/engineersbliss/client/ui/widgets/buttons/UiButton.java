@@ -90,6 +90,11 @@ public class UiButton extends __base_UiWidget {
         return null;
     }
 
+    @Override
+    public void relayoutSelf() {
+        // Empty
+    }
+
 
 
 

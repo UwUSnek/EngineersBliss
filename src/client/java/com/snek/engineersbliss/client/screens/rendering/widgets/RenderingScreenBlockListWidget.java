@@ -101,7 +101,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         for(final Block block : orResults) {
             addWidget(new BlockEntryContents(this, block));
         }
-        layoutWidgets();
+        relayoutSelf();
     }
 
 

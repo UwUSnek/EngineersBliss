@@ -20,12 +20,17 @@ public interface UiWidgetBase {
     public @Nullable List<?> children();
 
 
-    public default void layoutWidgets() {
+    public void relayoutSelf();
+    public default void relayoutContent() {
         final @Nullable List<?> children = children();
         if(children != null) for(final var e : children) {
             if(e instanceof final @NotNull UiWidgetBase w) {
-                w.layoutWidgets();
+                w.relayout();
             }
         }
+    }
+    public default void relayout() {
+        relayoutSelf();
+        relayoutContent();
     }
 }

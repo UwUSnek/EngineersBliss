@@ -239,7 +239,7 @@ public class PauseScreenMixin extends Screen {
         }
         leftSidebar.setSize((int)(width * leftSidebarWidth), height); //TODO move to .layoutWidgets... though this mixin doesn't have that
         leftSidebar.setPosition(0, 0); //TODO move to .layoutWidgets... though this mixin doesn't have that
-        leftSidebar.layoutWidgets(); //TODO move to .layoutWidgets... though this mixin doesn't have that
+        leftSidebar.relayout(); //TODO move to .layoutWidgets... though this mixin doesn't have that
         addRenderableWidget(leftSidebar);
 
 

@@ -16,7 +16,6 @@ import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -69,6 +68,11 @@ public class UiEditBox extends EditBox implements BgCacheWidget, UiWidgetBase {
     @Override
     public @Nullable List<?> children() {
         return null;
+    }
+
+    @Override
+    public void relayoutSelf() {
+        // Empty
     }
 
 

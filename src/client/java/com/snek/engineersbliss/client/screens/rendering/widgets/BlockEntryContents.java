@@ -64,7 +64,7 @@ public class BlockEntryContents extends __base_UiWidget {
 
 
     @Override
-    public void layoutWidgets() {
+    public void relayoutSelf() {
         final int rowWidth = list.getRowWidth();
         final int checkboxY = this.getY() + (this.getHeight() - 20) / 2;
 
@@ -73,8 +73,6 @@ public class BlockEntryContents extends __base_UiWidget {
 
         isolateBox.setX(this.getX() + rowWidth - RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH + (RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH - isolateBox.getWidth()) / 2);
         isolateBox.setY(checkboxY);
-
-        super.layoutWidgets();
     }
 
 

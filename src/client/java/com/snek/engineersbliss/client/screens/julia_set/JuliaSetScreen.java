@@ -13,7 +13,7 @@ public class JuliaSetScreen extends __base_UiScreen {
     }
 
     @Override
-    public void layoutWidgets() {
+    public void relayoutSelf() {
         // Empty
     }
 }
