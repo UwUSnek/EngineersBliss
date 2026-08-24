@@ -121,4 +121,33 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     protected void updateWidgetNarration(final NarrationElementOutput output) {
         this.defaultButtonNarrationText(output);
     }
+
+
+
+    //! Vanilla's hovering system checks for scissors. Unlike clicks, which don't do that, for whatever reason.
+    //! Scissors always use screen coordinates because Minecraft only ever manages 1 coordinate space.
+    //! They end up reporting an incorrect boundary when the custom GUI Scale doesn't match Vanilla's, making hover detection very unrealiable.
+    //! This override fixes that by changing isHovered's behaviour for widgets that are children of __base_UiScreen
+    //! (the only screen that can use custom scale), making it convert from screen to virtual coordinates before checking boundaries.
+
+    @Override
+    public boolean isHovered() {
+        if(!isActive()) return false;
+        if(screen instanceof @NotNull __base_UiScreen s) {
+            return !(
+                s.getMirrorHoverMouseX() <  getX()      ||
+                s.getMirrorHoverMouseX() >= getRight()  ||
+                s.getMirrorHoverMouseY() <  getY()      ||
+                s.getMirrorHoverMouseY() >= getBottom() ||
+                s.getMirrorHoverGraphics() == null      ||
+                !s.getMirrorHoverGraphics().containsPointInScissor(
+                    s.getMirrorHoverScreenMouseX(),
+                    s.getMirrorHoverScreenMouseY()
+                )
+            );
+        }
+        else {
+            return super.isHovered();
+        }
+    }
 }

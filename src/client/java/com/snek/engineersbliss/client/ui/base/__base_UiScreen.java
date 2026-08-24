@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui.base;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -46,18 +47,35 @@ import net.minecraft.client.input.MouseButtonInfo;
  * By default, all screens pause the game.
  */
 public abstract class __base_UiScreen extends Screen {
+
     private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
     protected final AnimatedFloat animatedGuiScale;
+    public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; }
     public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
+
 
     public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
     public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
     public static final int LIST_TOP      = Layout.LIST_TOP;
     public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
+
     private boolean needsRelayout;
     private boolean needsRebuild;
 
+
+    //! Mirror hover tracking, needed for the vanilla scissor fix.
+    //! See __base_UiWidget's isHovered().
+    private int mirrorHoverMouseX = Integer.MIN_VALUE;
+    private int mirrorHoverMouseY = Integer.MIN_VALUE;
+    private int mirrorHoverScreenMouseX = Integer.MIN_VALUE;
+    private int mirrorHoverScreenMouseY = Integer.MIN_VALUE;
+    private @Nullable GuiGraphicsExtractor mirrorHoverGraphics;
+    public int getMirrorHoverMouseX() { return mirrorHoverMouseX; }
+    public int getMirrorHoverMouseY() { return mirrorHoverMouseY; }
+    public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
+    public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
+    public @Nullable GuiGraphicsExtractor getMirrorHoverGraphics() { return mirrorHoverGraphics; }
 
 
 
@@ -68,8 +86,13 @@ public abstract class __base_UiScreen extends Screen {
         this.needsRebuild = true;
         this.needsRelayout = false;
     }
-
-
+    private void updateMirrorHoverState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
+        mirrorHoverGraphics = graphics;
+        mirrorHoverMouseX = mouseX;
+        mirrorHoverMouseY = mouseY;
+        mirrorHoverScreenMouseX = screenMouseX;
+        mirrorHoverScreenMouseY = screenMouseY;
+    }
 
 
 
@@ -227,6 +250,8 @@ public abstract class __base_UiScreen extends Screen {
     @Override
     public final void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
+
+        // Check for resizes and rebuild/layout widgets if needed
         maybeFlagResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.
         if(needsRebuild) {
             rebuildWidgets();
@@ -239,7 +264,7 @@ public abstract class __base_UiScreen extends Screen {
             needsRelayout = false;
         }
 
-        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale.
+        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything.
         float factor = animatedGuiScale.compute() / realGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
@@ -252,11 +277,22 @@ public abstract class __base_UiScreen extends Screen {
         int adjMouseX = (int)fx(mouseX);
         int adjMouseY = (int)fx(mouseY);
 
-        //! Stop other widgets from updating hover state while dragging.
+        //! This stops other widgets from updating hover state while dragging.
         //! This is done by calling the superclass's extractRenderState with a fake invalid mouse position that no widget can cover.
         //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
-        if(isDragging()) super.extractRenderState(graphics, -1,        -1,        delta);
-        else             super.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
+
+        //! Different mirror hover state update calls (updateMirrorHoverState) aren't actually needed because
+        //! render calls are supposed to check the mouse position that is provided to them through the parameters,
+        //! but updating both makes the whole system less bug prone.
+
+        if(isDragging()) {
+            updateMirrorHoverState  (graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF);
+            super.extractRenderState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, delta);
+        }
+        else {
+            updateMirrorHoverState  (graphics, adjMouseX, adjMouseY, mouseX, mouseY);
+            super.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
+        }
     }
 
 

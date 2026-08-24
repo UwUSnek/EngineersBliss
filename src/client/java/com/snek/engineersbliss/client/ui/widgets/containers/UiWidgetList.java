@@ -25,6 +25,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -163,84 +164,84 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     public double scrollAmount() {
-        return this.scrollAmount;
+        return scrollAmount;
     }
 
-    public void setScrollAmount(final double scrollAmount) {
-        this.scrollAmount = Mth.clamp(scrollAmount, 0.0, this.maxScrollAmount());
+    public void setScrollAmount(final double newScrollAmount) {
+        scrollAmount = Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
         repositionEntries();
         super.layoutWidgets(); //! This is fine. Caller is expected to not call setScrollAmount() more than once at a time.
     }
 
     public void refreshScrollAmount() {
-        this.setScrollAmount(this.scrollAmount);
+        setScrollAmount(scrollAmount);
     }
 
     public int maxScrollAmount() {
-        return Math.max(0, this.contentHeight() - this.height);
+        return Math.max(0, contentHeight() - height);
     }
 
     protected boolean scrollable() {
-        return this.maxScrollAmount() > 0;
+        return maxScrollAmount() > 0;
     }
 
     public boolean updateScrolling(final MouseButtonEvent event) {
-        this.scrolling = this.scrollable() && this.isValidClickButton(event.buttonInfo()) && this.isOverScrollbar(event.x(), event.y());
-        return this.scrolling;
+        scrolling = scrollable() && isValidClickButton(event.buttonInfo()) && isOverScrollbar(event.x(), event.y());
+        return scrolling;
     }
 
     protected boolean isOverScrollbar(final double x, final double y) {
-        return x >= this.scrollBarX() && x <= this.scrollBarX() + this.scrollbarWidth() && y >= this.getY() && y < this.getBottom();
+        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth() && y >= getY() && y < getBottom();
     }
 
     protected int scrollerHeight() {
-        return Mth.clamp((int) ((float) (this.height * this.height) / this.contentHeight()), 32, this.height - 8);
+        return Mth.clamp((int) ((float) (height * height) / contentHeight()), 32, height - 8);
     }
 
     public int scrollBarY() {
-        return this.maxScrollAmount() == 0
-            ? this.getY()
-            : Math.max(this.getY(), (int) this.scrollAmount * (this.height - this.scrollerHeight()) / this.maxScrollAmount() + this.getY())
+        return maxScrollAmount() == 0
+            ? getY()
+            : Math.max(getY(), (int) scrollAmount * (height - scrollerHeight()) / maxScrollAmount() + getY())
         ;
     }
 
     protected double scrollRate() {
-        return this.scrollRateBase;
+        return scrollRateBase;
     }
 
     private void scroll(final int amount) {
-        this.setScrollAmount(this.scrollAmount() + amount);
+        setScrollAmount(scrollAmount() + amount);
     }
 
     @Override
     public boolean mouseScrolled(final double mx, final double my, final double scrollX, final double scrollY) {
-        if(!this.visible) {
+        if(!visible) {
             return false;
         }
-        this.setScrollAmount(this.scrollAmount() - scrollY * this.scrollRate());
+        setScrollAmount(scrollAmount() - scrollY * scrollRate());
         return true;
     }
 
     @Override
     public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-        final boolean scrollClicked = this.updateScrolling(event);
+        final boolean scrollClicked = updateScrolling(event);
         return super.mouseClicked(event, doubleClick) || scrollClicked;
     }
 
     @Override
     public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-        if(this.scrolling) {
-            if(event.y() < this.getY()) {
-                this.setScrollAmount(0.0);
+        if(scrolling) {
+            if(event.y() < getY()) {
+                setScrollAmount(0.0);
             }
-            else if(event.y() > this.getBottom()) {
-                this.setScrollAmount(this.maxScrollAmount());
+            else if(event.y() > getBottom()) {
+                setScrollAmount(maxScrollAmount());
             }
             else {
-                final double max = Math.max(1, this.maxScrollAmount());
-                final int barHeight = this.scrollerHeight();
-                final double yDragScale = Math.max(1.0, max / (this.height - barHeight));
-                this.setScrollAmount(this.scrollAmount() + dy * yDragScale);
+                final double max = Math.max(1, maxScrollAmount());
+                final int barHeight = scrollerHeight();
+                final double yDragScale = Math.max(1.0, max / (height - barHeight));
+                setScrollAmount(scrollAmount() + dy * yDragScale);
             }
         }
         return super.mouseDragged(event, dx, dy);
@@ -248,7 +249,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     public void onRelease(final MouseButtonEvent event) {
-        this.scrolling = false;
+        scrolling = false;
     }
 
 
@@ -262,7 +263,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         return __internal_addWidget(entry, defaultEntryHeight);
     }
     protected int __internal_addWidget(final Entry entry, final int height) {
-        entry.list = this;
+        entry.parentList = this;
         entry.setX(getRowLeft());
         entry.setWidth(getRowWidth());
         entry.setY(getNextY());
@@ -272,52 +273,52 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         return r;
     }
     public void addWidget(final AbstractWidget widget) {
-        this.__internal_addWidget(new Entry(widget));
+        __internal_addWidget(new Entry(widget));
     }
     public void addWidget(final AbstractWidget widget, final int height) {
-        this.__internal_addWidget(new Entry(widget), height);
+        __internal_addWidget(new Entry(widget), height);
     }
 
 
     public void addWidgetAndSpacer(final AbstractWidget widget, final int marginBottom) {
-        this.__internal_addWidget(new Entry(widget));
-        this.addWidget(new UiSpacer(), marginBottom);
+        __internal_addWidget(new Entry(widget));
+        addWidget(new UiSpacer(), marginBottom);
     }
     public void addWidgetAndSpacer(final AbstractWidget widget, final int height, final int marginBottom) {
-        this.__internal_addWidget(new Entry(widget), height);
-        this.addWidget(new UiSpacer(), marginBottom);
+        __internal_addWidget(new Entry(widget), height);
+        addWidget(new UiSpacer(), marginBottom);
     }
 
 
     public void addWidgetAndSpacers(final AbstractWidget widget, final int marginTop, final int marginBottom) {
-        this.addWidget(new UiSpacer(), marginTop);
-        this.addWidgetAndSpacer(widget, marginBottom);
+        addWidget(new UiSpacer(), marginTop);
+        addWidgetAndSpacer(widget, marginBottom);
     }
     public void addWidgetAndSpacers(final AbstractWidget widget, final int height, final int marginTop, final int marginBottom) {
-        this.addWidget(new UiSpacer(), marginTop);
-        this.addWidgetAndSpacer(widget, height, marginBottom);
+        addWidget(new UiSpacer(), marginTop);
+        addWidgetAndSpacer(widget, height, marginBottom);
     }
 
 
 
 
     @Override
-    protected void onSelected(final Entry selected) {
-        final boolean topClipped = selected.getContentY() < this.getY();
-        final boolean bottomClipped = selected.getContentBottom() > this.getBottom();
-        if(this.minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
-            this.scrollToEntry(selected);
+    protected void onSelected(final Entry selectedEntry) {
+        final boolean topClipped = selectedEntry.getContentY() < getY();
+        final boolean bottomClipped = selectedEntry.getContentBottom() > getBottom();
+        if(minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
+            scrollToEntry(selectedEntry);
         }
     }
 
     protected void scrollToEntry(final Entry entry) {
-        final int topDelta = entry.getY() - this.getY() - 2;
+        final int topDelta = entry.getY() - getY() - 2;
         if(topDelta < 0) {
-            this.scroll(topDelta);
+            scroll(topDelta);
         }
-        final int bottomDelta = this.getBottom() - entry.getY() - entry.getHeight() - 2;
+        final int bottomDelta = getBottom() - entry.getY() - entry.getHeight() - 2;
         if(bottomDelta < 0) {
-            this.scroll(-bottomDelta);
+            scroll(-bottomDelta);
         }
     }
 
@@ -330,14 +331,14 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             }
             y += child.getHeight();
         }
-        this.setScrollAmount(y - this.height / 2.0);
+        setScrollAmount(y - height / 2.0);
     }
 
     //! Let clicks through if they don't hit a sub element.
     @Override
     public boolean isMouseOver(final double mouseX, final double mouseY) {
         if(super.isMouseOver(mouseX, mouseY)) {
-            if(this.isOverScrollbar(mouseX, mouseY)) return true;
+            if(isOverScrollbar(mouseX, mouseY)) return true;
             else for(final var c : children) {
                 if(c.isMouseOver(mouseX, mouseY)) return true;
             }
@@ -353,12 +354,11 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         extractBackground(graphics, mouseX, mouseY, a);
 
-        this.hovered = this.isMouseOver(mouseX, mouseY) ? this.getChildAtPosition(mouseX, mouseY) : null;
-
-        graphics.enableScissor(this.getX(), this.getY(), this.getRight(), this.getBottom());
-        for(final Entry child : children) {
-            if(child.getY() + child.getHeight() >= this.getY() && child.getY() <= this.getBottom()) {
-                child.extractContent(graphics, mouseX, mouseY, Objects.equals(this.hovered, child), a);
+        hovered = (Entry)getChildAt(mouseX, mouseY).orElseGet(() -> null);
+        graphics.enableScissor(getX(), getY(), getRight(), getBottom());
+        for(final @NotNull Entry child : children) {
+            if(child.getY() + child.getHeight() >= getY() && child.getY() <= getBottom()) {
+                child.extractContent(graphics, mouseX, mouseY, Objects.equals(hovered, child), a);
             }
         }
         graphics.disableScissor();
@@ -367,18 +367,20 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         extractScrollbar(graphics, mouseX, mouseY);
     }
 
+
     protected void extractListSeparators(final GuiGraphicsExtractor graphics) {
-        final Identifier headerSeparator = this.minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
-        final Identifier footerSeparator = this.minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, headerSeparator, this.getX(), this.getY() - 2, 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, footerSeparator, this.getX(), this.getBottom(), 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
+        final Identifier headerSeparator = minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
+        final Identifier footerSeparator = minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
+        graphics.blit(RenderPipelines.GUI_TEXTURED, headerSeparator, getX(), getY() - 2, 0.0F, 0.0F, getWidth(), 2, 32, 2);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, footerSeparator, getX(), getBottom(), 0.0F, 0.0F, getWidth(), 2, 32, 2);
     }
 
+
     protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
-        final int scrollBarX = this.scrollBarX();
-        final int scrollerHeight = this.scrollerHeight();
-        final int scrollerY = this.scrollBarY();
-        final int barWidth = this.scrollbarWidth();
+        final int scrollBarX = scrollBarX();
+        final int scrollerHeight = scrollerHeight();
+        final int scrollerY = scrollBarY();
+        final int barWidth = scrollbarWidth();
 
         // If there are hidden elements
         if(scrollable()) {
@@ -388,7 +390,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             final int handleColor = hoveredBar ? Layout.handleColorActive : Layout.handleColor;
             graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, handleColor);
             if(hoveredBar) {
-                graphics.requestCursor(this.scrolling ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
+                graphics.requestCursor(scrolling ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
                 graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.highlightOverlay);
             }
         }
@@ -413,9 +415,15 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         private int y = 0;
         private int width = 0;
         private int height;
-        private UiWidgetList list;
-        private final @Nullable List<AbstractWidget> children;
 
+        @Override public int getX() { return x; }
+        @Override public int getY() { return y; }
+        @Override public int getWidth() { return width; }
+        @Override public int getHeight() { return height; }
+
+
+        private UiWidgetList parentList;
+        private final @Nullable List<AbstractWidget> children;
         private final AbstractWidget widget;
 
 
@@ -446,7 +454,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         }
         @Override
         public Screen getScreen() {
-            return list.getScreen();
+            return parentList.getScreen();
         }
 
 
@@ -463,7 +471,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
         @Override
         public boolean isFocused() {
-            return this.list.getFocused() == this;
+            return parentList.getFocused() == this;
         }
 
         public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float a) {
@@ -472,77 +480,57 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
         @Override
         public boolean isMouseOver(final double mx, final double my) {
-            return this.getRectangle().containsPoint((int) mx, (int) my);
+            return getRectangle().containsPoint((int) mx, (int) my);
         }
 
         @Override
-        public void setX(final int x) {
-            this.x = x;
+        public void setX(final int newX) {
+            x = newX;
         }
 
         @Override
-        public void setY(final int y) {
-            this.y = y;
+        public void setY(final int newY) {
+            y = newY;
         }
 
-        public void setWidth(final int width) {
-            this.width = width;
+        public void setWidth(final int newWidth) {
+            width = newWidth;
         }
 
-        public void setHeight(final int height) {
-            this.height = height;
+        public void setHeight(final int newHeight) {
+            height = newHeight;
         }
 
         public int getContentX() {
-            return this.getX() + CONTENT_PADDING;
+            return getX() + CONTENT_PADDING;
         }
 
         public int getContentY() {
-            return this.getY() + CONTENT_PADDING;
+            return getY() + CONTENT_PADDING;
         }
 
         public int getContentHeight() {
-            return this.getHeight() - CONTENT_PADDING * 2;
+            return getHeight() - CONTENT_PADDING * 2;
         }
 
         public int getContentYMiddle() {
-            return this.getContentY() + this.getContentHeight() / 2;
+            return getContentY() + getContentHeight() / 2;
         }
 
         public int getContentBottom() {
-            return this.getContentY() + this.getContentHeight();
+            return getContentY() + getContentHeight();
         }
 
         public int getContentWidth() {
-            return this.getWidth() - CONTENT_PADDING * 2;
+            return getWidth() - CONTENT_PADDING * 2;
         }
 
         public int getContentXMiddle() {
-            return this.getContentX() + this.getContentWidth() / 2;
+            return getContentX() + getContentWidth() / 2;
         }
 
         public int getContentRight() {
-            return this.getContentX() + this.getContentWidth();
-        }
-
-        @Override
-        public int getX() {
-            return this.x;
-        }
-
-        @Override
-        public int getY() {
-            return this.y;
-        }
-
-        @Override
-        public int getWidth() {
-            return this.width;
-        }
-
-        @Override
-        public int getHeight() {
-            return this.height;
+            return getContentX() + getContentWidth();
         }
 
         @Override

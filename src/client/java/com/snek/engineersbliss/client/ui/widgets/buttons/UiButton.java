@@ -3,7 +3,6 @@ package com.snek.engineersbliss.client.ui.widgets.buttons;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -53,7 +52,7 @@ public class UiButton extends __base_UiWidget {
         this.pressCallback = pressCallback;
         this.key = Character.toLowerCase(key);
         this.bgSpriteId = null;
-        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
+        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadInOut);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
         this(screen, label, pressCallback, '\0', alignment);
