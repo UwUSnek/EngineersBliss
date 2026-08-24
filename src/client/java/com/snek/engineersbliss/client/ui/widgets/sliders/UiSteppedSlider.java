@@ -13,6 +13,7 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 
@@ -64,6 +65,7 @@ public class UiSteppedSlider<T> extends UiSlider {
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
         this.valueFormatter = valueFormatter != null ? valueFormatter::format : (n, u) -> String.valueOf(n);
+        setRightLabelMargin(1f);
         updateMessage();
     }
 

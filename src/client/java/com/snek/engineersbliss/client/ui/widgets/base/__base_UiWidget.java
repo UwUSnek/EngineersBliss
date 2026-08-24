@@ -44,10 +44,7 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     // Cached background
     private final TextureCache bgCache;
     private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) {
-        bgColor = newColor;
-        markBgDirty();
-    }
+    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
     @Override public TextureCache getBgTextureCache() { return bgCache; }
     @Override public int getBgBaseColor() { return bgColor; }
 
@@ -66,6 +63,12 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     private float labelOffset;
     public float getLabelOffset() { return labelOffset; }
     public void setLabelOffset(final float labelOffset) { this.labelOffset = labelOffset; }
+    private float leftLabelMargin;
+    public float getLeftLabelMargin() { return leftLabelMargin; }
+    public void setLeftLabelMargin(final float leftLabelMargin) { this.leftLabelMargin = leftLabelMargin; }
+    private float rightLabelMargin;
+    public float getRightLabelMargin() { return rightLabelMargin; }
+    public void setRightLabelMargin(final float rightLabelMargin) { this.rightLabelMargin = rightLabelMargin; }
 
 
     // Relayout handling
@@ -92,6 +95,8 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         this.label = label;
         this.alignment = alignment;
         this.labelOffset = 0;
+        this.leftLabelMargin = 0;
+        this.rightLabelMargin = 0;
         this.bgCache = new TextureCache(screen);
         this.selfRelayoutDisabled = false;
         this.contentRelayoutDisabled = false;
@@ -112,12 +117,15 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
 
 
         // Draw label
-        final UiTxt label = getLabel();
         if(label != null && label.length() > 0) {
-            final ScaledFont scaledFont = label.getScaledFont();
+            final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int textX = getX() + (int)(height * getLabelOffset()) + Layout.textMarginPx;
             final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
+            final int scissorLeft =      getX() + (int)(height * leftLabelMargin);
+            final int scissorRight = getRight() - (int)(height * rightLabelMargin);
+            graphics.enableScissor(scissorLeft, getY(), scissorRight, getBottom());
             RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, getAlignment(), width, false);
+            graphics.disableScissor();
         }
     }
 

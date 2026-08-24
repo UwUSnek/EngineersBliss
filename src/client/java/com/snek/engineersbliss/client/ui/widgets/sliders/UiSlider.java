@@ -89,8 +89,10 @@ public class UiSlider extends __base_UiWidget {
     public UiSlider withSpriteBg(final Identifier id, final float width) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
+        setLeftLabelMargin(width);
         return this;
     }
+
 
 
 

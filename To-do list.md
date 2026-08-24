@@ -299,3 +299,8 @@ ADD ALL OF THIS TO THE README
 
 
 - Improve sprite of Player Scale feature
+
+
+
+- fix pause screen not resizing visually, even when the setting is different from default
+  - The text does scale with the gui scale, but the actual visual size doesn't

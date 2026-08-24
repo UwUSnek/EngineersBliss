@@ -20,7 +20,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 
 public class UiToggleButton extends UiButton {
-	protected static final int INDICATOR_WIDTH = 4;
+	protected static final float INDICATOR_WIDTH = 0.25f;
     protected boolean value;
 
     // Background toggle indicator
@@ -64,6 +64,7 @@ public class UiToggleButton extends UiButton {
         this.value = initialValue;
         this.valueFormatter = valueFormatter != null ? valueFormatter : (n, u) -> n.booleanValue() ? "ON" : "OFF";
         this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), Layout.toggleTransitionDuration, Easings.sineIn);
+        setRightLabelMargin(INDICATOR_WIDTH);
     }
 
 
@@ -86,7 +87,7 @@ public class UiToggleButton extends UiButton {
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.fill(getRight() - INDICATOR_WIDTH, getY(), getRight(), getBottom(), indicatorColor.compute());
+        graphics.fill(getRight() - (int)(height * INDICATOR_WIDTH), getY(), getRight(), getBottom(), indicatorColor.compute());
     }
 
     public int calculateNewIndicatorColor() {
