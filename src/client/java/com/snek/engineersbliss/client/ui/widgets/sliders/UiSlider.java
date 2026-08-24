@@ -4,22 +4,15 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
-import com.snek.engineersbliss.client.ui.font.ScaledFont;
-import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
-import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.Easings;
@@ -27,12 +20,10 @@ import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 
@@ -42,23 +33,21 @@ import net.minecraft.resources.Identifier;
 
 
 
-public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiWidgetBase {
+public class UiSlider extends __base_UiWidget {
 	public static final int HANDLE_BASE_WIDTH = 8;
     private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
 
 
     private final UiTxt baseLabel;
-    private UiTxt label;
     private final @Nullable Consumer<Double> onChange;
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
     private AnimatedDouble visualValue; //! The visual interpolated value, 0 to 1
     private AnimatedColor overlayColor;
     private AnimatedColor handleColor;
 
-    // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
+    // Slider value
+    protected double value;
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
@@ -69,26 +58,12 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
     private double virtualX = 0;
 
     // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
     private int bgColorAlt = Layout.bgColorAlt;
-    public void setBgColor(final int newColor) {
-        bgColor = newColor; markBgDirty();
-    }
     public void setBgColorAlt(final int newColor) {
         bgColorAlt = newColor; markBgDirty();
     }
-	@Override public TextureCache getBgTextureCache() {
-        return bgCache;
-    }
-    @Override public int getBgBaseColor() {
-        return bgColor;
-    }
     public int getBgBaseColorAlt() {
         return bgColorAlt;
-    }
-    @Override public boolean isGuiScaleTransitioning() {
-        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
     }
 
 
@@ -96,17 +71,16 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
 
     public UiSlider(
         final Screen screen,
-        final UiTxt label, final double initialValue,
+        final UiTxt baseLabel, final double initialValue,
         final @Nullable Consumer<Double> onChange,
         final @Nullable Function<UiSlider, UiTxt> valueFormatter
     ) {
         //! Pass empty text to super and store a custom UiTxt instance locally
-        super(50, 50, 50, 50, new Txt().get(), initialValue);
-        this.screen = screen;
-        this.baseLabel = label;
+        super(screen, new UiTxt(new Txt().get()), TextAlignment.CENTER);
+        this.value = initialValue;
+        this.baseLabel = baseLabel;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
-        this.bgCache = new TextureCache(screen);
         this.visualValue = new AnimatedDouble(initialValue, Layout.slideTransitionDuration, Easings.cubicInOut);
         this.overlayColor = new AnimatedColor(0x0,                Layout.hoverTransitionDuration, Easings.quadIn);
         this.handleColor  = new AnimatedColor(Layout.handleColor, Layout.hoverTransitionDuration, Easings.quadIn);
@@ -118,10 +92,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         this.bgSpriteWidth = width;
         return this;
     }
-
-
-
-
 
 
 
@@ -140,45 +110,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
 
 
 
-
-
-
-    @Override
-    protected void updateMessage() {
-        this.label = ((UiTxt)new UiTxt(baseLabel.get()).cat(" : ")).cat(valueFormatter.apply(this));
-    }
-    public void setLabel(final Component label) {
-        super.setMessage(label);
-        this.label = new UiTxt(label);
-    }
-    public void setLabel(final UiTxt label) {
-        super.setMessage(label.get());
-        this.label = (UiTxt)label.copy();
-    }
-    @Override
-    public void setMessage(Component message) {
-        throw new UnsupportedOperationException("Use .setLabel(label) instead.");
-    }
-
-
-
-
-
-
-
-
-    @Override
-    protected void onDrag(MouseButtonEvent event, double dx, double dy) {
-        //! Override with no-op to skip the default setValueFromMouse call.
-        //! setValueFromMouse is private and cannot be changed.
-    }
-
-
-    @Override
-    public void onClick(MouseButtonEvent event, boolean doubleClick) {
-        //! Override with no-op to skip the default setValueFromMouse call.
-        //! setValueFromMouse is private and cannot be changed.
-    }
 
 
     //! Disable the cursor so it doesn't wander off screen or out of bounds while dragging.
@@ -217,7 +148,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
     }
 
 
-
     //! Default keyPressed moves the handle when the left or right arrow key is pressed.
     //! This stops that behaviour.
     @Override
@@ -225,6 +155,9 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         return true;
     }
 
+    protected void updateMessage() {
+        setLabel(((UiTxt)new UiTxt(baseLabel.get()).cat(" : ")).cat(valueFormatter.apply(this)));
+    }
 
     private void updateValueFromVirtualX() {
         final double newValue = (virtualX - (this.getX() + height)) / (getWidth() - 2d * height);
@@ -233,8 +166,15 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         }
     }
 
+    protected void setValue(final double newValue) {
+        double oldValue = this.value;
+        this.value = Math.clamp(newValue, 0.0, 1.0);
+        if(oldValue != this.value) {
+            this.applyValue();
+        }
+        this.updateMessage();
+    }
 
-    @Override
     protected void applyValue() {
         if(onChange != null) onChange.accept(value);
         visualValue.startNewTransition(value);
@@ -259,8 +199,8 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
 
-        // Draw background
-        extractBackground(graphics, mouseX, mouseY, a);
+        // Draw background and label
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
 
         // Draw slider handle //! Clamp to slider inner width
@@ -274,14 +214,6 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
         graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
         if(handleL <  innerL) graphics.fill(handleL, getY(), innerL,  getBottom(), Layout.handleColorTransparent);
         if(handleR >= innerR) graphics.fill(innerR,  getY(), handleR, getBottom(), Layout.handleColorTransparent);
-
-
-
-        // Draw label
-        final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final int textX = getX() + Layout.textMarginPx;
-        final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, TextAlignment.CENTER, width, false);
 
 
         // Recalculate and draw hover highlight
@@ -301,22 +233,13 @@ public class UiSlider extends AbstractSliderButton implements BgCacheWidget, UiW
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
+        super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
-        final boolean usingSprite = bgSpriteId != null;
-        if(usingSprite) {
+        if(bgSpriteId != null) {
             final int spriteWidth = (int)(getHeight() * bgSpriteWidth);
             graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
         }
-    }
-
-
-
-
-    @Override
-    public void drawCachedBackground(NativeImage img, int w, int h) {
-        BgCacheWidget.super.drawCachedBackground(img, w, h);
     }
 
 

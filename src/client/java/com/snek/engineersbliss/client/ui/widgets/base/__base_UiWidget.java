@@ -30,11 +30,10 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
 
     // Screen reference
     private final Screen screen;
-    public Screen getScreen() {
-        return screen;
+    public Screen getScreen() { return screen; }
+    public boolean isGuiScaleTransitioning() {
+        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
     }
-
-
 
 
     // Cached background
@@ -46,10 +45,6 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     }
     @Override public TextureCache getBgTextureCache() { return bgCache; }
     @Override public int getBgBaseColor() { return bgColor; }
-    @Override
-    public boolean isGuiScaleTransitioning() {
-        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
-    }
 
 
     // Label
@@ -68,6 +63,21 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     public void setLabelOffset(final float labelOffset) { this.labelOffset = labelOffset; }
 
 
+    // Relayout handling
+    private boolean selfRelayoutDisabled;
+    private boolean contentRelayoutDisabled;
+    private boolean relayoutDisabled;
+    public void    disableSelfRelayout() {    selfRelayoutDisabled = true;  }
+    public void     enableSelfRelayout() {    selfRelayoutDisabled = false; }
+    public void disableContentRelayout() { contentRelayoutDisabled = true;  }
+    public void  enableContentRelayout() { contentRelayoutDisabled = false; }
+    public void        disableRelayout() {        relayoutDisabled = true;  }
+    public void         enableRelayout() {        relayoutDisabled = false; }
+
+
+
+
+
 
 
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
@@ -77,6 +87,9 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         this.alignment = alignment;
         this.labelOffset = 0;
         this.bgCache = new TextureCache(screen);
+        this.selfRelayoutDisabled = false;
+        this.contentRelayoutDisabled = false;
+        this.relayoutDisabled = false;
     }
 
     protected __base_UiWidget(final Screen screen, final UiTxt label) {
@@ -148,6 +161,17 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         }
         else {
             return super.isHovered();
+        }
+    }
+
+
+
+
+    @Override
+    public void relayout() {
+        if(!relayoutDisabled) {
+            if(   !selfRelayoutDisabled) relayoutSelf();
+            if(!contentRelayoutDisabled) relayoutContent();
         }
     }
 }

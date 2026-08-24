@@ -58,7 +58,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         return children;
     }
 
-    protected void clearEntries() {
+    protected void clearChildren() {
         children.clear();
         selected = null;
     }

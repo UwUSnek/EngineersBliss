@@ -98,10 +98,12 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
         // Clear block list and load the filtered entries
         clearEntries();
+        disableContentRelayout();
         for(final Block block : orResults) {
             addWidget(new BlockEntryContents(this, block));
         }
-        relayoutSelf();
+        enableContentRelayout();
+        relayout();
     }
 
 
