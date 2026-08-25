@@ -13,7 +13,6 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 
@@ -111,6 +110,10 @@ public class UiSteppedSlider<T> extends UiSlider {
     @Override
     protected void applyValue() {
         super.applyValue();
+        fireChangeCallback();
+    }
+
+    protected void fireChangeCallback() {
         if(afterChangeCallback != null) {
             final int selectedIndex = unitToIndex(value, stepValues.size());
             afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));

@@ -24,11 +24,6 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
 
     public static final ServerToggleFeature PAUSE_GAME_IN_PAUSE_MENU  = INSTANCE.registerFeature(new ServerToggleFeature("pause_game_in_pause_menu",  true));
     public static final ServerToggleFeature PAUSE_GAME_IN_MOD_SCREENS = INSTANCE.registerFeature(new ServerToggleFeature("pause_game_in_mod_screens", true));
-    public static final ServerSteppedFeature<Float> GUI_SCALE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
-        "gui_scale",
-        List.of(1f, 1.5f, 2f, 2.5f, 3f), 2
-        //! No client feature for the GUI scale
-    ));
 
 
 
@@ -44,6 +39,11 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
 
 
 
+    public static final ServerSteppedFeature<Float> GUI_SCALE = INSTANCE.registerFeature(new ServerSteppedFeature<Float>(
+        "gui_scale",
+        List.of(1f, 1.5f, 2f, 2.5f, 3f), 2
+    ));
+    public static final ServerToggleFeature DEBUG_OVERLAYS               = INSTANCE.registerFeature(new ServerToggleFeature("debug_overlays", false));
     public static final ServerToggleFeature PLAYER_MODEL_IN_PAUSE_SCREEN = INSTANCE.registerFeature(new ServerToggleFeature("player_model_in_pause_screen", true));
     public static final ServerToggleFeature BLOCK_SHADERS                = INSTANCE.registerFeature(new ServerToggleFeature("block_shaders", true));
     public static final ServerSteppedFeature<Integer> BLOCK_SHADER_LIMIT = INSTANCE.registerFeature(new ServerSteppedFeature<Integer>(

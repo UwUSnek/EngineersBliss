@@ -295,3 +295,11 @@ ADD ALL OF THIS TO THE README
 
 - fix pause screen not resizing visually, even when the setting is different from default
   - The text does scale with the gui scale, but the actual visual size doesn't
+
+
+
+
+
+- FEATURE VIEWER
+  - view all possible shapes of a renewable feature
+  - trees, idk what else

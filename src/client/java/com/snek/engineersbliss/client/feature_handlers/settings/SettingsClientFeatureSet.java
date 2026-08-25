@@ -62,6 +62,16 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
 
 
+    public static final ClientFeature<?> GUI_SCALE = new ClientFeature<>(
+        SettingsServerFeatureSet.GUI_SCALE,
+        () -> new UiTxt("Gui scale"),
+        () -> (UiTxt)new UiTxt("The visual scale of GUI elements.")
+    );
+    public static final ClientFeature<?> DEBUG_OVERLAYS = new ClientFeature<>(
+        SettingsServerFeatureSet.DEBUG_OVERLAYS,
+        () -> new UiTxt("Debug overlays"),
+        () -> (UiTxt)new UiTxt("Enable GUI debug overlays.")
+    );
     public static final ClientFeature<?> PLAYER_MODEL_IN_PAUSE_SCREEN = new ClientFeature<>(
         SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
         () -> new UiTxt("Display player model in pause screen"),

@@ -47,19 +47,20 @@ import net.minecraft.client.input.MouseButtonInfo;
  * By default, all screens pause the game.
  */
 public abstract class __base_UiScreen extends Screen {
-
-    private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
-    protected final AnimatedFloat animatedGuiScale;
-    public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; }
-    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
-
-
     public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
     public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
     public static final int LIST_TOP      = Layout.LIST_TOP;
     public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
 
+    // Virtual gui scale & sclae animation
+    private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
+    protected final AnimatedFloat animatedGuiScale;
+    public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; }
+    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
+
+
+    // Relayout/rebuild flags
     private boolean needsRelayout;
     private boolean needsRebuild;
 
@@ -126,8 +127,6 @@ public abstract class __base_UiScreen extends Screen {
             this.width  = fixedWidth;
             this.height = fixedHeight;
 
-            System.out.println("new width: " + width + ", new height: " + height);
-
             if(transitioning) {
                 needsRelayout = true;
             }
@@ -176,15 +175,15 @@ public abstract class __base_UiScreen extends Screen {
     @Override
     public boolean keyPressed(final KeyEvent event) {
         switch(event.key()) {
-            case InputConstants.KEY_ESCAPE: {
+            case GLFW.GLFW_KEY_ESCAPE: {
                 onClose();
                 return true;
             }
-            case InputConstants.KEY_TAB: {
+            case GLFW.GLFW_KEY_TAB: {
                 tabPressed = true;
                 return true;
             }
-            case InputConstants.KEY_ADD: {
+            case GLFW.GLFW_KEY_KP_ADD: {
                 final int newScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE) + 1;
                 final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1); //TODO replace with utility method in ClientFeatureSync
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
@@ -196,6 +195,11 @@ public abstract class __base_UiScreen extends Screen {
                 final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
                 resize(0, 0);
+                return true;
+            }
+            case GLFW.GLFW_KEY_KP_MULTIPLY: {
+                final boolean newDebugOverlays = !ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS);
+                ClientFeatureSync.setFeature(SettingsServerFeatureSet.DEBUG_OVERLAYS, newDebugOverlays);
                 return true;
             }
             default: {

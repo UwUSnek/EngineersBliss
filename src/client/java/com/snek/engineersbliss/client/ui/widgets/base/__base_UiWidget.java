@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.ui.widgets.base;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
@@ -11,6 +12,7 @@ import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -145,7 +147,9 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     }
 
     protected void extractDebugOverlay(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        // graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
+        if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS)) {
+            graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
+        }
     }
 
 
