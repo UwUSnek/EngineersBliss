@@ -251,7 +251,6 @@ ADD ALL OF THIS TO THE README
 ADD ALL OF THIS TO THE README
 ADD ALL OF THIS TO THE README
 
-
 - maybe add an "area block distribution" tool?
   - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
     - call them "Area analysis" or something
@@ -273,7 +272,6 @@ ADD ALL OF THIS TO THE README
       - Replace item stacks remotely
       - Easily fill open containers with specific items
 
-
 - GIT INTEGRATION
   - add a UI for it with the branch tree and all
   - ONE REPO PER WORLD OR SERVER
@@ -284,11 +282,7 @@ ADD ALL OF THIS TO THE README
     - multiplayer users share the same repo and are all on the same commit, as the versioning system is global.
     - all of the dimensions are committed together. This avoids breaking multi-dimensional machines
 
-
-
-
 - Improve readability of glsl shaders
-
 
 - Fix static black hole and white hole block models
 - Fix item models of Item Sink, Item Source, Cosmetic Black Hole, Cosmetic White Hole
@@ -297,10 +291,7 @@ ADD ALL OF THIS TO THE README
 
 - Add a despawn cooldown option for invisible block overlays
 
-
 - Improve sprite of Player Scale feature
-
-
 
 - fix pause screen not resizing visually, even when the setting is different from default
   - The text does scale with the gui scale, but the actual visual size doesn't

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
@@ -58,8 +59,11 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
 
     // Label layout
     private TextAlignment alignment;
+    private TextAlignmentY verticalAlignment;
     public TextAlignment getAlignment() { return alignment; }
+    public TextAlignmentY getVerticalAlignment() { return verticalAlignment; }
     public void setAlignment(final TextAlignment alignment) { this.alignment = alignment; }
+    public void setVerticalAlignment(final TextAlignmentY verticalAlignment) { this.verticalAlignment = verticalAlignment; }
     private float labelOffset;
     public float getLabelOffset() { return labelOffset; }
     public void setLabelOffset(final float labelOffset) { this.labelOffset = labelOffset; }
@@ -94,6 +98,7 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         this.screen = screen;
         this.label = label;
         this.alignment = alignment;
+        this.verticalAlignment = TextAlignmentY.CENTER;
         this.labelOffset = 0;
         this.leftLabelMargin = 0;
         this.rightLabelMargin = 0;
@@ -109,24 +114,38 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
 
 
 
+
+
+
+
+
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        extractBackground  (graphics, mouseX, mouseY, a);
+        extractLabel       (graphics, mouseX, mouseY, a);
+        extractDebugOverlay(graphics, mouseX, mouseY, a);
+    }
 
-        // Draw background
-        extractBackground(graphics, mouseX, mouseY, a);
-
-
-        // Draw label
+    protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if(label != null && label.length() > 0) {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
-            final int textX = getX() + (int)(height * getLabelOffset()) + Layout.textMarginPx;
-            final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
+            final int lineHeight = scaledFont.getLineHeight();
+            final int x = getX() + (int)(height * getLabelOffset()) + Layout.textMarginPx;
+            final int y = switch(getVerticalAlignment()) {
+                case TOP    -> getY() + Layout.textMarginPx;
+                case CENTER -> getY() + (height - lineHeight) / 2;
+                case BOTTOM -> getBottom() - lineHeight;
+            };
             final int scissorLeft =      getX() + (int)(height * leftLabelMargin);
             final int scissorRight = getRight() - (int)(height * rightLabelMargin);
             graphics.enableScissor(scissorLeft, getY(), scissorRight, getBottom());
-            RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, getAlignment(), width, false);
+            RenderingUtils.extractTxt(graphics, label, x, y, Layout.fgColor, getAlignment(), width, false);
             graphics.disableScissor();
         }
+    }
+
+    protected void extractDebugOverlay(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        // graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
     }
 
 

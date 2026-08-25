@@ -126,6 +126,8 @@ public abstract class __base_UiScreen extends Screen {
             this.width  = fixedWidth;
             this.height = fixedHeight;
 
+            System.out.println("new width: " + width + ", new height: " + height);
+
             if(transitioning) {
                 needsRelayout = true;
             }

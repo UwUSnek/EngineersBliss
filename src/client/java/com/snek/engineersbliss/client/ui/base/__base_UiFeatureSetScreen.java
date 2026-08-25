@@ -73,15 +73,17 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
         // Add left sidebar title
-        final UiTxt titleText = featureSet.calcName();
+        final UiTxt titleText = new UiTxt(featureSet.calcName().get(), 2f);
+        final int titleHeight = titleText.getScaledFont().getLineHeight();
         leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
+        leftSidebar.addWidget(new UiTextWidget(this, titleText, TextAlignment.LEFT, Layout.fgColor), titleHeight);
 
 
         // Add description name and text elements
         //! Preview is added dynamically
-        descriptionNameWidget = new UiTextWidget(this, new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor);
-        descriptionTextWidget = new UiTextWidget(this, new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor).withVerticalAlignment(TextAlignmentY.TOP);
+        descriptionNameWidget = new UiTextWidget(this, new UiTxt(), TextAlignment.CENTER, true, Layout.fgColor, Layout.bgColor);
+        descriptionTextWidget = new UiTextWidget(this, new UiTxt(), TextAlignment.CENTER, true, Layout.fgColor, Layout.bgColor);
+        descriptionTextWidget.setVerticalAlignment(TextAlignmentY.TOP);
         addRenderableWidget(descriptionNameWidget);
         addRenderableWidget(descriptionTextWidget);
     }
