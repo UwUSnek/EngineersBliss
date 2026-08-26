@@ -150,7 +150,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
-    protected void clearEntries() {
+    public void clearEntries() {
         super.clearChildren();
         setScrollAmount(0);
     }

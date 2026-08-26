@@ -125,15 +125,6 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
         extractDebugOverlay(graphics, mouseX, mouseY, a);
-
-        // Render children recursively
-        for(final var child : children()) {
-            if(child instanceof @NotNull AbstractWidget w) {
-                if(w.getY() + w.getHeight() >= getY() && w.getY() <= getBottom()) {
-                    w.extractRenderState(graphics, mouseX, mouseY, a);
-                }
-            }
-        }
     }
 
 

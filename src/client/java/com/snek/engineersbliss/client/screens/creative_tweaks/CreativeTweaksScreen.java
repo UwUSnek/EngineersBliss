@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
-import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreenWithPreview;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
@@ -23,7 +23,7 @@ import com.snek.engineersbliss.utils.Utils;
 
 
 
-public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
+public class CreativeTweaksScreen extends __base_UiFeatureSetScreenWithPreview {
     private static final DecimalFormat decimalFormatter = new DecimalFormat("0.#####");
 
 

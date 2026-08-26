@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.ui.widgets.base;
 
 
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,6 +10,7 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.client.gui.components.AbstractWidget;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -56,6 +58,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
+    @Override
     public final @NotNull List<T> children() {
         return children;
     }
@@ -80,8 +83,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         return Optional.empty();
     }
 
-    @Nullable
-    public T getHoveredChild() {
+    public @Nullable T getHoveredChild() {
         return hovered;
     }
 
@@ -91,16 +93,40 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
+    @Override
+    protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
-    @Nullable
-    public T getSelected() {
+        // Update hovered widget reference
+        hovered = isMouseOver(mouseX, mouseY) ? (T)getChildAt(mouseX, mouseY).orElse(null) : null;
+
+        // Normal rendering
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+
+        // Render children recursively
+        for(final var child : children()) {
+            if(child instanceof @NotNull AbstractWidget w) {
+                if(w.getY() + w.getHeight() >= getY() && w.getY() <= getBottom()) {
+                    w.extractRenderState(graphics, mouseX, mouseY, a);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+    public @Nullable T getSelected() {
         return selected;
     }
 
-    public void setSelected(@Nullable final T selected) {
-        this.selected = selected;
-        if(selected != null) {
-            onSelected(selected);
+    public void setSelected(@Nullable final T _selected) {
+        selected = _selected;
+        if(_selected != null) {
+            onSelected(_selected);
         }
     }
 
@@ -118,36 +144,35 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
     @Override
     public final boolean isDragging() {
-        return this.isDragging;
+        return isDragging;
     }
 
     @Override
     public final void setDragging(final boolean dragging) {
-        this.isDragging = dragging;
+        isDragging = dragging;
     }
 
-    @Nullable
     @Override
-    public T getFocused() {
-        return this.focused;
+    public @Nullable GuiEventListener getFocused() {
+        return focused;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public void setFocused(@Nullable final GuiEventListener focused) {
-        final GuiEventListener oldFocus = this.focused;
-        if(oldFocus != focused && oldFocus instanceof ContainerEventHandler oldFocusContainer) {
+    public void setFocused(@Nullable final GuiEventListener _focused) {
+        final GuiEventListener oldFocus = focused;
+        if(oldFocus != _focused && oldFocus instanceof ContainerEventHandler oldFocusContainer) {
             oldFocusContainer.setFocused(null);
         }
-        if(this.focused != null) {
-            this.focused.setFocused(false);
-        }
         if(focused != null) {
-            focused.setFocused(true);
+            focused.setFocused(false);
         }
-        this.focused = (T)focused;
+        if(_focused != null) {
+            _focused.setFocused(true);
+        }
+        focused = (T)_focused;
 
-        final int index = children.indexOf(this.focused);
+        final int index = children.indexOf(focused);
         if(index >= 0) {
             setSelected(children.get(index));
         }

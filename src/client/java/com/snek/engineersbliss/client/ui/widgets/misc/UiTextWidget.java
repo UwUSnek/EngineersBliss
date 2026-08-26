@@ -3,7 +3,6 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -72,6 +71,12 @@ public class UiTextWidget extends __base_UiWidget {
         recalculateLines();
     }
 
+    @Override
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        recalculateLines();
+    }
+
 
     protected void recalculateLines() {
         final int wrapWidth = width - Layout.textMarginPx * 2;
@@ -113,9 +118,9 @@ public class UiTextWidget extends __base_UiWidget {
 
 
             // Draw text lines
-            final int scissorLeft  =     getX() + (int)(height * getLeftLabelMargin());
-            final int scissorRight = getRight() - (int)(height * getRightLabelMargin());
-            graphics.enableScissor(scissorLeft, getY(), scissorRight, getBottom());
+            final int marginLeft  =     getX() + (int)(height * getLeftLabelMargin());
+            final int marginRight = getRight() - (int)(height * getRightLabelMargin());
+            graphics.enableScissor(marginLeft, getY(), marginRight, getBottom());
             for(final UiTxt l : cachedLines) {
                 RenderingUtils.extractTxt(graphics, l, x, y + lineHeight * curLineNum, color, getAlignment(), wrapWidth);
                 ++curLineNum;
