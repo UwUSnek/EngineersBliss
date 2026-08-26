@@ -1,14 +1,8 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Checkbox;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.world.level.block.Block;
 
@@ -16,7 +10,6 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilter
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
-import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -39,7 +32,7 @@ public class BlockEntryContents extends __base_UiContainer {
 
 
     public BlockEntryContents(final RenderingScreenBlockListWidget list, final Block block) {
-        super(list.getScreen(), new UiTxt());
+        super(list.getScreen());
         this.list = list;
         this.block = block;
 
@@ -87,7 +80,6 @@ public class BlockEntryContents extends __base_UiContainer {
             MinecraftUtils.refreshRendering();
             return true;
         }
-        // return super.mouseClicked(event, doubleClick);
         return false;
     }
 }

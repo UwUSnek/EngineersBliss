@@ -113,7 +113,6 @@ public class UiTextWidget extends __base_UiWidget {
 
 
             // Draw text lines
-            // System.out.println("width: " + width + ", height: " + height); //TODO remove
             final int scissorLeft  =     getX() + (int)(height * getLeftLabelMargin());
             final int scissorRight = getRight() - (int)(height * getRightLabelMargin());
             graphics.enableScissor(scissorLeft, getY(), scissorRight, getBottom());

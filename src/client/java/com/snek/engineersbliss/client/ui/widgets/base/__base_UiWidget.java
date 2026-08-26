@@ -35,7 +35,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
     // Cached background
     private TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
+    private int bgColor;
     public void setBgColor(final int newColor) {
         bgColor = newColor;
         markBgDirty();
@@ -89,6 +89,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
         super(screen);
+        bgColor = 0x0; //! Default to no background, this also improves performance
         this.label = label;
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;

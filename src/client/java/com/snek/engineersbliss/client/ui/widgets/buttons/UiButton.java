@@ -49,6 +49,7 @@ public class UiButton extends __base_UiWidget {
 
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         super(screen, label, alignment);
+        setBgColor(Layout.bgColor);
         this.pressCallback = pressCallback;
         this.key = Character.toLowerCase(key);
         this.bgSpriteId = null;

@@ -76,6 +76,7 @@ public class UiSlider extends __base_UiWidget {
     ) {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(screen, new UiTxt(new Txt().get()), TextAlignment.CENTER);
+        setBgColor(Layout.bgColor);
         this.value = initialValue;
         this.baseLabel = baseLabel;
         this.onChange = onChange;

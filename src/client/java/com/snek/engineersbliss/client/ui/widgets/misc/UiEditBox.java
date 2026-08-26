@@ -55,6 +55,7 @@ public class UiEditBox extends __base_UiWidget {
 
     public UiEditBox(final Screen screen, final UiTxt hint, final Consumer<String> responder) {
         super(screen, new UiTxt(Component.empty()), TextAlignment.LEFT);
+        setBgColor(Layout.bgColor);
         font = Fonts.ui.regular.get(1f).getFont();
         this.hint = hint;
         this.responder = responder;

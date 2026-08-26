@@ -7,9 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
@@ -52,6 +50,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
     public UiWidgetList(final Screen screen, final int itemHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
+        setBgColor(Layout.bgColor);
         this.minecraft = Minecraft.getInstance();
         this.defaultEntryHeight = itemHeight;
         this.scrollRateBase = itemHeight;
@@ -296,9 +295,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     protected void onSelected(final Entry selectedEntry) {
-        // final boolean topClipped = selectedEntry.getContentY() < getY();
-        final boolean topClipped = selectedEntry.getY() < getY();
-        // final boolean bottomClipped = selectedEntry.getContentBottom() > getBottom();
+        final boolean topClipped    = selectedEntry.getY()      < getY();
         final boolean bottomClipped = selectedEntry.getBottom() > getBottom();
         if(minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
             scrollToEntry(selectedEntry);
@@ -328,46 +325,16 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         setScrollAmount(y - height / 2.0);
     }
 
-    // //! Let clicks through if they don't hit a sub element. //TODO remove
-    // @Override
-    // public boolean isMouseOver(final double mouseX, final double mouseY) {
-    //     if(super.isMouseOver(mouseX, mouseY)) {
-    //         if(isOverScrollbar(mouseX, mouseY)) return true;
-    //         else for(final var c : children) {
-    //             if(c.isMouseOver(mouseX, mouseY)) return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-
 
 
 
 
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        // extractBackground(graphics, mouseX, mouseY, a); //TODO remove
-
-        // hovered = (Entry)getChildAt(mouseX, mouseY).orElseGet(() -> null); //TODO remove
         graphics.enableScissor(getX(), getY(), getRight(), getBottom());
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        // for(final @NotNull Entry child : children) { //TODO remove
-        //     if(child.getY() + child.getHeight() >= getY() && child.getY() <= getBottom()) {
-        //         child.extract(graphics, mouseX, mouseY, Objects.equals(hovered, child), a);
-        //     }
-        // }
         graphics.disableScissor();
-
-        extractListSeparators(graphics);
         extractScrollbar(graphics, mouseX, mouseY);
-    }
-
-
-    protected void extractListSeparators(final GuiGraphicsExtractor graphics) {
-        final Identifier headerSeparator = minecraft.level == null ? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
-        final Identifier footerSeparator = minecraft.level == null ? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, headerSeparator, getX(), getY() - 2, 0.0F, 0.0F, getWidth(), 2, 32, 2);
-        graphics.blit(RenderPipelines.GUI_TEXTURED, footerSeparator, getX(), getBottom(), 0.0F, 0.0F, getWidth(), 2, 32, 2);
     }
 
 
@@ -404,9 +371,6 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
     public static class Entry extends __base_UiContainer implements GuiEventListener {
-        // public static final int CONTENT_PADDING = 2;
-
-
         private UiWidgetList parentList;
         private final AbstractWidget widget;
 
@@ -430,7 +394,6 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
         @Override
-        // public void relayoutSelf() {
         public void relayoutSelf() {
             widget.setSize(getWidth(), getHeight());
             widget.setPosition(getX(), getY());
@@ -452,80 +415,5 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         public boolean isFocused() {
             return parentList.getFocused() == this;
         }
-
-        // public int getContentX() {
-        //     return getX() + CONTENT_PADDING;
-        // }
-
-        // public int getContentY() {
-        //     return getY() + CONTENT_PADDING;
-        // }
-
-        // public int getContentHeight() {
-        //     return getHeight() - CONTENT_PADDING * 2;
-        // }
-
-        // public int getContentYMiddle() {
-        //     return getContentY() + getContentHeight() / 2;
-        // }
-
-        // public int getContentBottom() {
-        //     return getContentY() + getContentHeight();
-        // }
-
-        // public int getContentWidth() {
-        //     return getWidth() - CONTENT_PADDING * 2;
-        // }
-
-        // public int getContentXMiddle() {
-        //     return getContentX() + getContentWidth() / 2;
-        // }
-
-        // public int getContentRight() {
-        //     return getContentX() + getContentWidth();
-        // }
-
-        // @Override
-        // public void visitWidgets(final java.util.function.Consumer<AbstractWidget> widgetVisitor) { //TODO remove
-        //     throw new UnsupportedOperationException();
-        // }
-
-
-
-
-        // @Override
-        // public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-        //     return widget != null && widget.mouseClicked(event, doubleClick);
-        // }
-
-        // @Override
-        // public boolean mouseReleased(final MouseButtonEvent event) {
-        //     return widget != null && widget.mouseReleased(event);
-        // }
-
-        // @Override
-        // public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-        //     return widget != null && widget.mouseDragged(event, dx, dy);
-        // }
-
-        // @Override
-        // public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
-        //     return widget != null && widget.mouseScrolled(x, y, scrollX, scrollY);
-        // }
-
-        // @Override
-        // public boolean keyPressed(final KeyEvent event) {
-        //     return widget != null && widget.keyPressed(event);
-        // }
-
-        // @Override
-        // public boolean keyReleased(final KeyEvent event) {
-        //     return widget != null && widget.keyReleased(event);
-        // }
-
-        // @Override
-        // public boolean charTyped(final CharacterEvent event) {
-        //     return widget != null && widget.charTyped(event);
-        // }
     }
 }

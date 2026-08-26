@@ -51,10 +51,6 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
         super(50, 50, 50, 50, new Txt().get());
         this.dragged = false;
         this.screen = screen;
-        // this.selfRelayoutDisabled = false; //TODO remove
-        // this.contentRelayoutDisabled = false;
-        // this.relayoutDisabled = false;
-
     }
     public abstract @NotNull List<?> children();
 
