@@ -39,15 +39,10 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
 
 
     // Relayout handling
-    private boolean selfRelayoutDisabled;
-    private boolean contentRelayoutDisabled;
-    private boolean relayoutDisabled;
-    public void    disableSelfRelayout() {    selfRelayoutDisabled = true;  }
-    public void     enableSelfRelayout() {    selfRelayoutDisabled = false; }
-    public void disableContentRelayout() { contentRelayoutDisabled = true;  }
-    public void  enableContentRelayout() { contentRelayoutDisabled = false; }
-    public void        disableRelayout() {        relayoutDisabled = true;  }
-    public void         enableRelayout() {        relayoutDisabled = false; }
+    private static boolean relayoutDisabled = false;
+    public static void    disableRelayout() { relayoutDisabled = true;  }
+    public static void     enableRelayout() { relayoutDisabled = false; }
+    public static boolean isRelayoutDisabled() { return relayoutDisabled; }
 
 
 
@@ -56,12 +51,12 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
         super(50, 50, 50, 50, new Txt().get());
         this.dragged = false;
         this.screen = screen;
-        this.selfRelayoutDisabled = false;
-        this.contentRelayoutDisabled = false;
-        this.relayoutDisabled = false;
+        // this.selfRelayoutDisabled = false; //TODO remove
+        // this.contentRelayoutDisabled = false;
+        // this.relayoutDisabled = false;
 
     }
-    public abstract @Nullable List<?> children();
+    public abstract @NotNull List<?> children();
 
 
 
@@ -73,8 +68,7 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
     public abstract void relayoutSelf();
 
     public void relayoutContent() {
-        final @Nullable List<?> children = children();
-        if(children != null) for(final var e : children) {
+        if(!isRelayoutDisabled()) for(final var e : children()) {
             if(e instanceof final @NotNull __base_UiLayoutElm w) {
                 w.relayout();
             }
@@ -82,9 +76,9 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
     }
 
     public void relayout() {
-        if(!relayoutDisabled) {
-            if(   !selfRelayoutDisabled) relayoutSelf();
-            if(!contentRelayoutDisabled) relayoutContent();
+        if(!isRelayoutDisabled()) {
+            relayoutSelf();
+            relayoutContent();
         }
     }
 

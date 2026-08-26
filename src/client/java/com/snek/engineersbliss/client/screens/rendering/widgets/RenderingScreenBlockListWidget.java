@@ -49,7 +49,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
     private static final Pattern CLEAN_PATTERN = Pattern.compile("\\s*([&|#@])\\s*");
     public void filter(final String query) {
-
+long t0 = System.nanoTime();
         // Remove spaces near operators and prefixes
         final String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
 
@@ -98,12 +98,13 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
         // Clear block list and load the filtered entries
         clearEntries();
-        disableContentRelayout();
+        disableRelayout();
         for(final Block block : orResults) {
             addWidget(new BlockEntryContents(this, block));
         }
-        enableContentRelayout();
+        enableRelayout();
         relayout();
+System.out.println("filter took " + (System.nanoTime()-t0)/1_000_000 + "ms");
     }
 
 

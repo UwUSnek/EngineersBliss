@@ -6,8 +6,6 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.CommonComponents;
@@ -16,13 +14,8 @@ import net.minecraft.util.Mth;
 
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
-import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
-import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-
-import java.util.List;
-import java.util.Objects;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,28 +66,30 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
     private void repositionEntries() {
-        int y = getY() - (int)scrollAmount();
-        for(final @NotNull Entry child : children) {
-            child.setY(y);
-            y += child.getHeight();
-            child.setX(getRowLeft());
-            child.setWidth(getRowWidth());
+        if(!isRelayoutDisabled()) {
+            int y = getY() - (int)scrollAmount();
+            for(final @NotNull Entry child : children) {
+                child.setY(y);
+                y += child.getHeight();
+                child.setX(getRowLeft());
+                child.setWidth(getRowWidth());
+            }
+            relayoutContent();
         }
-        relayoutContent();
     }
 
     @Override
     public void relayoutSelf() {
-        //! Nothing to call from parent classes, this is the first implementation
+        if(!isRelayoutDisabled()) {
+            repositionEntries();
+            if(getSelected() != null) {
+                scrollToEntry(getSelected()); //! This calls setScrollAmount -> layoutWidgets on entries.
+            }
+            this.refreshScrollAmount();
 
-        repositionEntries();
-        if(getSelected() != null) {
-            scrollToEntry(getSelected()); //! This calls setScrollAmount -> layoutWidgets on entries.
+            //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.
+            repositionEntries();
         }
-        this.refreshScrollAmount();
-
-        //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.
-        repositionEntries();
     }
 
     public int getNextY() {

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -26,22 +27,13 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 
-public class BlockEntryContents extends __base_UiWidget {
-    private static final int CONTENT_PADDING = 2;
-
+public class BlockEntryContents extends __base_UiContainer {
     private final RenderingScreenBlockListWidget list;
     private final Block block;
     private final Checkbox enableBox;
     private final Checkbox isolateBox;
 
     public Block getBlock() { return block; }
-
-
-    private final List<Object> children;
-    @Override
-    public @Nullable List<?> children() {
-        return children;
-    }
 
 
 
@@ -52,15 +44,10 @@ public class BlockEntryContents extends __base_UiWidget {
         this.block = block;
 
         final Font font = Fonts.ui.regular.get(1f).getFont();
-        children = new ArrayList<>();
-        children.add(this.enableBox  = Checkbox.builder(new UiTxt().get(), font).selected(RenderingFilterHandler.getEnabled(block)).build());
-        children.add(this.isolateBox = Checkbox.builder(new UiTxt().get(), font).selected(RenderingFilterHandler.getIsolated(block)).build());
+        addChild(this.enableBox  = Checkbox.builder(new UiTxt().get(), font).selected(RenderingFilterHandler.getEnabled(block)).build());
+        addChild(this.isolateBox = Checkbox.builder(new UiTxt().get(), font).selected(RenderingFilterHandler.getIsolated(block)).build());
     }
 
-
-    private int getContentX() {
-        return this.getX() + CONTENT_PADDING;
-    }
 
 
     @Override
@@ -78,13 +65,11 @@ public class BlockEntryContents extends __base_UiWidget {
 
     @Override
     protected void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+
         final int midY = this.getY() + this.getHeight() / 2;
-
-        BlockRenderer.extractBlockIcon(graphics, block, this.getContentX(), midY - 8);
-        BlockRenderer.extractBlockName(graphics, block, this.getContentX() + 20, midY - 4, 0xFFFFFFFF);
-
-        enableBox. extractRenderState(graphics, mouseX, mouseY, a);
-        isolateBox.extractRenderState(graphics, mouseX, mouseY, a);
+        BlockRenderer.extractBlockIcon(graphics, block, this.getX(), midY - 8);
+        BlockRenderer.extractBlockName(graphics, block, this.getX() + 20, midY - 4, 0xFFFFFFFF);
     }
 
 
@@ -102,6 +87,7 @@ public class BlockEntryContents extends __base_UiWidget {
             MinecraftUtils.refreshRendering();
             return true;
         }
-        return super.mouseClicked(event, doubleClick);
+        // return super.mouseClicked(event, doubleClick);
+        return false;
     }
 }

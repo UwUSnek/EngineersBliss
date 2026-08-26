@@ -153,6 +153,7 @@
   - display player position here? maybe? and tps and fps and ping
   - display tab/+/- default keybinds in UIs
     - add these to the pause menu too somehow
+  - display game pause status: > if running, || if paused.
 
 
 - maybe add a "center crosshair" feature in alt textures? Vanilla's crosshair isnt centered

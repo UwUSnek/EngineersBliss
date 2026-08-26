@@ -1,8 +1,10 @@
 package com.snek.engineersbliss.client.ui.widgets.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -28,14 +30,31 @@ import net.minecraft.network.chat.Component;
 
 
 public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCacheWidget {
+    private static final List<AbstractWidget> emptyChildList = new ArrayList<>();
 
 
     // Cached background
-    private final TextureCache bgCache;
+    private TextureCache bgCache;
     private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-    @Override public TextureCache getBgTextureCache() { return bgCache; }
+    public void setBgColor(final int newColor) {
+        bgColor = newColor;
+        markBgDirty();
+    }
     @Override public int getBgBaseColor() { return bgColor; }
+    public @Nullable TextureCache getBgTextureCache() {
+        if(bgCache == null) {
+            if((bgColor & 0xFF000000) != 0) {
+                bgCache = new TextureCache(getScreen());
+                return bgCache;
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return bgCache;
+        }
+    }
 
 
     // Label
@@ -76,7 +95,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         this.labelOffset = 0;
         this.leftLabelMargin = 0;
         this.rightLabelMargin = 0;
-        this.bgCache = new TextureCache(screen);
+        this.bgCache = null;
     }
     protected __base_UiWidget(final Screen screen, final UiTxt label) {
         this(screen, label, TextAlignment.LEFT);
@@ -86,6 +105,11 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     }
     protected __base_UiWidget(final Screen screen) {
         this(screen, new UiTxt());
+    }
+
+    @Override
+    public @NotNull List<?> children() {
+        return emptyChildList;
     }
 
 
@@ -102,10 +126,11 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         extractDebugOverlay(graphics, mouseX, mouseY, a);
 
         // Render children recursively
-        final List<?> children = children();
-        if(children != null) for(final var child : children) {
-            if(child instanceof AbstractWidget w) {
-                w.extractRenderState(graphics, mouseX, mouseY, a);
+        for(final var child : children()) {
+            if(child instanceof @NotNull AbstractWidget w) {
+                if(w.getY() + w.getHeight() >= getY() && w.getY() <= getBottom()) {
+                    w.extractRenderState(graphics, mouseX, mouseY, a);
+                }
             }
         }
     }

@@ -55,7 +55,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
-    public final List<T> children() {
+    public final @NotNull List<T> children() {
         return children;
     }
 

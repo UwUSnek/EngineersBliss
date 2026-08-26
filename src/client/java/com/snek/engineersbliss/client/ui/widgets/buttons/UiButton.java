@@ -86,11 +86,6 @@ public class UiButton extends __base_UiWidget {
 
 
     @Override
-    public @Nullable List<?> children() {
-        return null;
-    }
-
-    @Override
     public void relayoutSelf() {
         // Empty
     }

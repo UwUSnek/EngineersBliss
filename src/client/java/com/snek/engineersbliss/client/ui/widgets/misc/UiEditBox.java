@@ -65,11 +65,6 @@ public class UiEditBox extends __base_UiWidget {
 
 
     @Override
-    public @Nullable List<?> children() {
-        return null;
-    }
-
-    @Override
     public void relayoutSelf() {
         updateLabel();
     }
@@ -143,6 +138,7 @@ public class UiEditBox extends __base_UiWidget {
                 if(start != end) {
                     value = new StringBuilder(value).delete(start, end).toString();
                     setCursorPosition(start);
+                    setHighlightPos(start);
                     onValueChange();
                 }
             }

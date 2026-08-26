@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -41,10 +43,14 @@ public interface BgCacheWidget {
         final int pixelW = Math.max(1, Math.round(w * guiScale));
         final int pixelH = Math.max(1, Math.round(h * guiScale));
 
-        if(!isGuiScaleTransitioning()) {
-            getBgTextureCache().update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
+        // Draw background cache if present
+        final @Nullable TextureCache bgCache = getBgTextureCache();
+        if(bgCache != null) {
+            if(!isGuiScaleTransitioning()) {
+                bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
+            }
+            bgCache.blit(graphics, getX(), getY(), w, h);
         }
-        getBgTextureCache().blit(graphics, getX(), getY(), w, h);
     }
 
 
@@ -68,7 +74,10 @@ public interface BgCacheWidget {
      * Marks the background texture cache as dirty, forcing it to be redrawn before the next frame.
      */
     public default void markBgDirty() {
-        getBgTextureCache().markDirty();
+        final @Nullable TextureCache bgCache = getBgTextureCache();
+        if(bgCache != null) {
+            getBgTextureCache().markDirty();
+        }
     }
 
 
