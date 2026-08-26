@@ -1,9 +1,6 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
-import java.util.List;
 import java.util.function.Consumer;
-
-import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;

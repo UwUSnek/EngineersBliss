@@ -130,7 +130,7 @@ public class UiTextWidget extends __base_UiWidget {
 
 
 
-
+    // Text widgets reject clicks by default
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         return false;

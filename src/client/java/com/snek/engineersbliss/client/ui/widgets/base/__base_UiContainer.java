@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.sounds.SoundManager;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -203,5 +204,10 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
             if(c.charTyped(event)) r = true;
         }
         return r;
+    }
+
+    @Override
+    public void playDownSound(final SoundManager soundManager) {
+        // Empty. Stop containers from playing the click sound.
     }
 }

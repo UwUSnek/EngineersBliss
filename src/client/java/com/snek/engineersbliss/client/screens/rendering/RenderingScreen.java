@@ -113,7 +113,8 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 rebuildWidgets();
                 relayout();
                 searchField.setValue(query);
-            }
+            },
+            TextAlignment.CENTER
         ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiButton(
             this,
@@ -124,7 +125,8 @@ public class RenderingScreen extends __base_UiSidebarScreen {
                 rebuildWidgets();
                 relayout();
                 searchField.setValue(query);
-            }
+            },
+            TextAlignment.CENTER
         ), Layout.BORDER_HEIGHT);
 
 
