@@ -5,9 +5,6 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.layouts.LayoutElement;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -19,7 +16,8 @@ import net.minecraft.util.Mth;
 
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -272,29 +270,29 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         return r;
     }
     public void addWidget(final AbstractWidget widget) {
-        __internal_addWidget(new Entry(widget));
+        __internal_addWidget(new Entry(getScreen(), widget));
     }
     public void addWidget(final AbstractWidget widget, final int height) {
-        __internal_addWidget(new Entry(widget), height);
+        __internal_addWidget(new Entry(getScreen(), widget), height);
     }
 
 
     public void addWidgetAndSpacer(final AbstractWidget widget, final int marginBottom) {
-        __internal_addWidget(new Entry(widget));
-        addWidget(new UiSpacer(), marginBottom);
+        __internal_addWidget(new Entry(getScreen(), widget));
+        addWidget(new UiSpacer(getScreen()), marginBottom);
     }
     public void addWidgetAndSpacer(final AbstractWidget widget, final int height, final int marginBottom) {
-        __internal_addWidget(new Entry(widget), height);
-        addWidget(new UiSpacer(), marginBottom);
+        __internal_addWidget(new Entry(getScreen(), widget), height);
+        addWidget(new UiSpacer(getScreen()), marginBottom);
     }
 
 
     public void addWidgetAndSpacers(final AbstractWidget widget, final int marginTop, final int marginBottom) {
-        addWidget(new UiSpacer(), marginTop);
+        addWidget(new UiSpacer(getScreen()), marginTop);
         addWidgetAndSpacer(widget, marginBottom);
     }
     public void addWidgetAndSpacers(final AbstractWidget widget, final int height, final int marginTop, final int marginBottom) {
-        addWidget(new UiSpacer(), marginTop);
+        addWidget(new UiSpacer(getScreen()), marginTop);
         addWidgetAndSpacer(widget, height, marginBottom);
     }
 
@@ -303,8 +301,10 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     protected void onSelected(final Entry selectedEntry) {
-        final boolean topClipped = selectedEntry.getContentY() < getY();
-        final boolean bottomClipped = selectedEntry.getContentBottom() > getBottom();
+        // final boolean topClipped = selectedEntry.getContentY() < getY();
+        final boolean topClipped = selectedEntry.getY() < getY();
+        // final boolean bottomClipped = selectedEntry.getContentBottom() > getBottom();
+        final boolean bottomClipped = selectedEntry.getBottom() > getBottom();
         if(minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
             scrollToEntry(selectedEntry);
         }
@@ -333,17 +333,17 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         setScrollAmount(y - height / 2.0);
     }
 
-    //! Let clicks through if they don't hit a sub element.
-    @Override
-    public boolean isMouseOver(final double mouseX, final double mouseY) {
-        if(super.isMouseOver(mouseX, mouseY)) {
-            if(isOverScrollbar(mouseX, mouseY)) return true;
-            else for(final var c : children) {
-                if(c.isMouseOver(mouseX, mouseY)) return true;
-            }
-        }
-        return false;
-    }
+    // //! Let clicks through if they don't hit a sub element. //TODO remove
+    // @Override
+    // public boolean isMouseOver(final double mouseX, final double mouseY) {
+    //     if(super.isMouseOver(mouseX, mouseY)) {
+    //         if(isOverScrollbar(mouseX, mouseY)) return true;
+    //         else for(final var c : children) {
+    //             if(c.isMouseOver(mouseX, mouseY)) return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
 
 
@@ -351,15 +351,16 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        extractBackground(graphics, mouseX, mouseY, a);
+        // extractBackground(graphics, mouseX, mouseY, a); //TODO remove
 
-        hovered = (Entry)getChildAt(mouseX, mouseY).orElseGet(() -> null);
+        // hovered = (Entry)getChildAt(mouseX, mouseY).orElseGet(() -> null); //TODO remove
         graphics.enableScissor(getX(), getY(), getRight(), getBottom());
-        for(final @NotNull Entry child : children) {
-            if(child.getY() + child.getHeight() >= getY() && child.getY() <= getBottom()) {
-                child.extractContent(graphics, mouseX, mouseY, Objects.equals(hovered, child), a);
-            }
-        }
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+        // for(final @NotNull Entry child : children) { //TODO remove
+        //     if(child.getY() + child.getHeight() >= getY() && child.getY() <= getBottom()) {
+        //         child.extract(graphics, mouseX, mouseY, Objects.equals(hovered, child), a);
+        //     }
+        // }
         graphics.disableScissor();
 
         extractListSeparators(graphics);
@@ -407,52 +408,37 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
-    public static class Entry implements LayoutElement, GuiEventListener, UiWidgetBase {
-        public static final int CONTENT_PADDING = 2;
-
-        private int x = 0;
-        private int y = 0;
-        private int width = 0;
-        private int height;
-
-        @Override public int getX() { return x; }
-        @Override public int getY() { return y; }
-        @Override public int getWidth() { return width; }
-        @Override public int getHeight() { return height; }
+    public static class Entry extends __base_UiContainer implements GuiEventListener {
+        // public static final int CONTENT_PADDING = 2;
 
 
         private UiWidgetList parentList;
-        private final @Nullable List<AbstractWidget> children;
         private final AbstractWidget widget;
 
 
 
 
         //! For subclasses that manage their own content
-        protected Entry() {
+        protected Entry(final Screen screen) {
+            super(screen);
+            setBgColor(0x0);
             this.widget = null;
-            this.children = null;
         }
-        public Entry(final AbstractWidget widget) {
+        public Entry(final Screen screen, final AbstractWidget widget) {
+            super(screen);
+            setBgColor(0x0);
             this.widget = widget;
-            this.children = List.of(widget);
+            addChild(widget);
         }
 
 
 
 
         @Override
-        public @Nullable List<?> children() {
-            return children;
-        }
-        @Override
+        // public void relayoutSelf() {
         public void relayoutSelf() {
             widget.setSize(getWidth(), getHeight());
             widget.setPosition(getX(), getY());
-        }
-        @Override
-        public Screen getScreen() {
-            return parentList.getScreen();
         }
 
 
@@ -464,7 +450,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
         @Override
         public void setFocused(final boolean focused) {
-            // Empty
+            // Empty. Entry elements cannot be focused. Focus state is forwarded to the containe widget.
         }
 
         @Override
@@ -472,120 +458,79 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             return parentList.getFocused() == this;
         }
 
-        public void extractContent(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final boolean hovered, final float a) {
-            widget.extractRenderState(graphics, mouseX, mouseY, a);
-        }
+        // public int getContentX() {
+        //     return getX() + CONTENT_PADDING;
+        // }
 
-        @Override
-        public boolean isMouseOver(final double mx, final double my) {
-            return getRectangle().containsPoint((int) mx, (int) my);
-        }
+        // public int getContentY() {
+        //     return getY() + CONTENT_PADDING;
+        // }
 
-        @Override
-        public void setX(final int newX) {
-            x = newX;
-        }
+        // public int getContentHeight() {
+        //     return getHeight() - CONTENT_PADDING * 2;
+        // }
 
-        @Override
-        public void setY(final int newY) {
-            y = newY;
-        }
+        // public int getContentYMiddle() {
+        //     return getContentY() + getContentHeight() / 2;
+        // }
 
-        public void setWidth(final int newWidth) {
-            width = newWidth;
-        }
+        // public int getContentBottom() {
+        //     return getContentY() + getContentHeight();
+        // }
 
-        public void setHeight(final int newHeight) {
-            height = newHeight;
-        }
+        // public int getContentWidth() {
+        //     return getWidth() - CONTENT_PADDING * 2;
+        // }
 
-        public int getContentX() {
-            return getX() + CONTENT_PADDING;
-        }
+        // public int getContentXMiddle() {
+        //     return getContentX() + getContentWidth() / 2;
+        // }
 
-        public int getContentY() {
-            return getY() + CONTENT_PADDING;
-        }
+        // public int getContentRight() {
+        //     return getContentX() + getContentWidth();
+        // }
 
-        public int getContentHeight() {
-            return getHeight() - CONTENT_PADDING * 2;
-        }
-
-        public int getContentYMiddle() {
-            return getContentY() + getContentHeight() / 2;
-        }
-
-        public int getContentBottom() {
-            return getContentY() + getContentHeight();
-        }
-
-        public int getContentWidth() {
-            return getWidth() - CONTENT_PADDING * 2;
-        }
-
-        public int getContentXMiddle() {
-            return getContentX() + getContentWidth() / 2;
-        }
-
-        public int getContentRight() {
-            return getContentX() + getContentWidth();
-        }
-
-        @Override
-        public void visitWidgets(final java.util.function.Consumer<AbstractWidget> widgetVisitor) {
-            throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public ScreenRectangle getRectangle() {
-            return LayoutElement.super.getRectangle();
-        }
+        // @Override
+        // public void visitWidgets(final java.util.function.Consumer<AbstractWidget> widgetVisitor) { //TODO remove
+        //     throw new UnsupportedOperationException();
+        // }
 
 
 
 
-        @Override
-        public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-            return widget != null && widget.mouseClicked(event, doubleClick);
-        }
+        // @Override
+        // public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
+        //     return widget != null && widget.mouseClicked(event, doubleClick);
+        // }
 
-        @Override
-        public boolean mouseReleased(final MouseButtonEvent event) {
-            return widget != null && widget.mouseReleased(event);
-        }
+        // @Override
+        // public boolean mouseReleased(final MouseButtonEvent event) {
+        //     return widget != null && widget.mouseReleased(event);
+        // }
 
-        @Override
-        public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-            return widget != null && widget.mouseDragged(event, dx, dy);
-        }
+        // @Override
+        // public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
+        //     return widget != null && widget.mouseDragged(event, dx, dy);
+        // }
 
-        @Override
-        public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
-            return widget != null && widget.mouseScrolled(x, y, scrollX, scrollY);
-        }
+        // @Override
+        // public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
+        //     return widget != null && widget.mouseScrolled(x, y, scrollX, scrollY);
+        // }
 
-        @Override
-        public boolean keyPressed(final KeyEvent event) {
-            return widget != null && widget.keyPressed(event);
-        }
+        // @Override
+        // public boolean keyPressed(final KeyEvent event) {
+        //     return widget != null && widget.keyPressed(event);
+        // }
 
-        @Override
-        public boolean keyReleased(final KeyEvent event) {
-            return widget != null && widget.keyReleased(event);
-        }
+        // @Override
+        // public boolean keyReleased(final KeyEvent event) {
+        //     return widget != null && widget.keyReleased(event);
+        // }
 
-        @Override
-        public boolean charTyped(final CharacterEvent event) {
-            return widget != null && widget.charTyped(event);
-        }
-    }
-
-
-
-
-
-    @Override
-    protected void updateWidgetNarration(final NarrationElementOutput output) {
-        // Empty
+        // @Override
+        // public boolean charTyped(final CharacterEvent event) {
+        //     return widget != null && widget.charTyped(event);
+        // }
     }
 }

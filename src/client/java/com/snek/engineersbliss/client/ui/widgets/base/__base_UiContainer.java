@@ -2,10 +2,8 @@ package com.snek.engineersbliss.client.ui.widgets.base;
 
 
 
-import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -44,6 +42,9 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
+    protected __base_UiContainer(final Screen screen) {
+        super(screen);
+    }
     protected __base_UiContainer(final Screen screen, final UiTxt label) {
         super(screen, label);
     }
@@ -78,12 +79,8 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         return Optional.empty();
     }
 
-    protected boolean entriesCanBeSelected() {
-        return false;
-    }
-
     @Nullable
-    public T getHoveredEntry() {
+    public T getHoveredChild() {
         return hovered;
     }
 
@@ -155,13 +152,6 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         }
     }
 
-    @Nullable
-    @Override
-    public ComponentPath nextFocusPath(final FocusNavigationEvent navigationEvent) {
-        // Empty. Tab focusing is disabled.
-        return null;
-    }
-
 
 
 
@@ -171,6 +161,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
     @Override
     public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
+        super.mouseClicked(event, doubleClick);
         return ContainerEventHandler.super.mouseClicked(event, doubleClick);
     }
 

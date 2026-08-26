@@ -234,19 +234,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-ADD ALL OF THIS TO THE README
-ADD ALL OF THIS TO THE README
-ADD ALL OF THIS TO THE README
 ADD ALL OF THIS TO THE README
 ADD ALL OF THIS TO THE README
 ADD ALL OF THIS TO THE README
@@ -307,3 +294,49 @@ ADD ALL OF THIS TO THE README
 - IMPORTANT but idk if it should be in 1.0.0
   - add a creative tweaks feature that lets the player move at normal speed even when the TPS is slower than 20
   - RELEASE A SEPARATE MOD CONTAINING ONLY THIS FEATURE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# After v1.0.0 release
+
+- Make text translatable
+- Add GB versions of text
+- Add more languages

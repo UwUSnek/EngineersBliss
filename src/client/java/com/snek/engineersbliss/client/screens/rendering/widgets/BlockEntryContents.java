@@ -104,10 +104,4 @@ public class BlockEntryContents extends __base_UiWidget {
         }
         return super.mouseClicked(event, doubleClick);
     }
-
-
-    @Override
-    protected void updateWidgetNarration(final NarrationElementOutput output) {
-        // Empty
-    }
 }

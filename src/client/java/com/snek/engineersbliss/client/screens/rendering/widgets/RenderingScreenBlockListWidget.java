@@ -124,7 +124,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
         // Handle hover events
-        final UiWidgetList.Entry hoveredEntry = getHoveredEntry();
+        final UiWidgetList.Entry hoveredEntry = getHoveredChild();
         if(hoveredEntry != null && hoveredEntry.getWidget() instanceof BlockEntryContents contents) {
             setSelected(hoveredEntry);
 
@@ -140,11 +140,5 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
                 graphics.tooltip(font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
             }
         }
-    }
-
-    //! UiWidgetList forces this to false.
-    @Override
-    protected boolean entriesCanBeSelected() {
-        return true;
     }
 }

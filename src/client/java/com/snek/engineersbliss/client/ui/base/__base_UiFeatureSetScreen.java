@@ -75,7 +75,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         // Add left sidebar title
         final UiTxt titleText = new UiTxt(featureSet.calcName().get(), 2f);
         final int titleHeight = titleText.getScaledFont().getLineHeight();
-        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, titleText, TextAlignment.LEFT, Layout.fgColor), titleHeight);
 
 
@@ -116,7 +116,7 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     public void _extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
         // Update hovered feature entry data
-        final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
+        final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredChild();
         final @Nullable AbstractWidget widget = entry != null ? entry.getWidget() : null;
         if(widget != null && widget instanceof FeatureInputWidget featureWidget) {
             lastHoverTime = System.currentTimeMillis();

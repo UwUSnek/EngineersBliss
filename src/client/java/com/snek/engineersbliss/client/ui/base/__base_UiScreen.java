@@ -7,7 +7,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
@@ -246,7 +246,7 @@ public abstract class __base_UiScreen extends Screen {
 
     protected void relayoutContent() {
         for(final var e : children()) {
-            if(e instanceof final @NotNull UiWidgetBase w) {
+            if(e instanceof final @NotNull __base_UiLayoutElm w) {
                 w.relayout();
             }
         }

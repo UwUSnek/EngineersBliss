@@ -1,9 +1,10 @@
 package com.snek.engineersbliss.client.ui.widgets.base;
 
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -13,14 +14,10 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
-import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 
@@ -30,18 +27,7 @@ import net.minecraft.network.chat.Component;
 
 
 
-public abstract class __base_UiWidget extends AbstractWidget implements BgCacheWidget, UiWidgetBase {
-
-    // Input handling
-    private boolean dragged;
-
-
-    // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
-    public boolean isGuiScaleTransitioning() {
-        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
-    }
+public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCacheWidget {
 
 
     // Cached background
@@ -77,27 +63,13 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
     public void setRightLabelMargin(final float rightLabelMargin) { this.rightLabelMargin = rightLabelMargin; }
 
 
-    // Relayout handling
-    private boolean selfRelayoutDisabled;
-    private boolean contentRelayoutDisabled;
-    private boolean relayoutDisabled;
-    public void    disableSelfRelayout() {    selfRelayoutDisabled = true;  }
-    public void     enableSelfRelayout() {    selfRelayoutDisabled = false; }
-    public void disableContentRelayout() { contentRelayoutDisabled = true;  }
-    public void  enableContentRelayout() { contentRelayoutDisabled = false; }
-    public void        disableRelayout() {        relayoutDisabled = true;  }
-    public void         enableRelayout() {        relayoutDisabled = false; }
-
-
 
 
 
 
 
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
-        super(50, 50, 50, 50, new Txt().get());
-        this.dragged = false;
-        this.screen = screen;
+        super(screen);
         this.label = label;
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;
@@ -105,13 +77,15 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         this.leftLabelMargin = 0;
         this.rightLabelMargin = 0;
         this.bgCache = new TextureCache(screen);
-        this.selfRelayoutDisabled = false;
-        this.contentRelayoutDisabled = false;
-        this.relayoutDisabled = false;
     }
-
     protected __base_UiWidget(final Screen screen, final UiTxt label) {
         this(screen, label, TextAlignment.LEFT);
+    }
+    protected __base_UiWidget(final Screen screen, final TextAlignment alignment) {
+        this(screen, new UiTxt(), alignment);
+    }
+    protected __base_UiWidget(final Screen screen) {
+        this(screen, new UiTxt());
     }
 
 
@@ -126,7 +100,16 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
         extractDebugOverlay(graphics, mouseX, mouseY, a);
+
+        // Render children recursively
+        final List<?> children = children();
+        if(children != null) for(final var child : children) {
+            if(child instanceof AbstractWidget w) {
+                w.extractRenderState(graphics, mouseX, mouseY, a);
+            }
+        }
     }
+
 
     protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if(label != null && label.length() > 0) {
@@ -146,97 +129,10 @@ public abstract class __base_UiWidget extends AbstractWidget implements BgCacheW
         }
     }
 
+
     protected void extractDebugOverlay(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS)) {
             graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
-        }
-    }
-
-
-
-
-
-
-
-
-    // Stop vanilla's key handling from doing stupid random stuff on custom widgets.
-    @Override
-    public boolean keyPressed(final KeyEvent event) {
-        return false;
-    }
-
-    // Forbid vanilla setMessage() in favor of setLabel()
-    @Override
-    public void setMessage(final Component message) {
-        throw new UnsupportedOperationException("Use .setLabel(label) instead.");
-    }
-
-    @Override
-    protected void updateWidgetNarration(final NarrationElementOutput output) {
-        this.defaultButtonNarrationText(output);
-    }
-
-    @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
-        boolean result = super.mouseClicked(event, doubled);
-        dragged = true;
-        return result;
-    }
-
-    @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
-        dragged = false;
-        return super.mouseReleased(event);
-    }
-
-    public boolean isBeingDragged() {
-        return dragged;
-    }
-
-    public boolean isHoveredOrBeingDragged() {
-        return isHovered() || isBeingDragged();
-    }
-
-
-
-
-
-
-    //! Vanilla's hovering system checks for scissors. Unlike clicks, which don't do that, for whatever reason.
-    //! Scissors always use screen coordinates because Minecraft only ever manages 1 coordinate space.
-    //! They end up reporting an incorrect boundary when the custom GUI Scale doesn't match Vanilla's, making hover detection very unrealiable.
-    //! This override fixes that by changing isHovered's behaviour for widgets that are children of __base_UiScreen
-    //! (the only screen that can use custom scale), making it convert from screen to virtual coordinates before checking boundaries.
-
-    @Override
-    public boolean isHovered() {
-        if(!isActive()) return false;
-        if(screen instanceof @NotNull __base_UiScreen s) {
-            return !(
-                s.getMirrorHoverMouseX() <  getX()      ||
-                s.getMirrorHoverMouseX() >= getRight()  ||
-                s.getMirrorHoverMouseY() <  getY()      ||
-                s.getMirrorHoverMouseY() >= getBottom() ||
-                s.getMirrorHoverGraphics() == null      ||
-                !s.getMirrorHoverGraphics().containsPointInScissor(
-                    s.getMirrorHoverScreenMouseX(),
-                    s.getMirrorHoverScreenMouseY()
-                )
-            );
-        }
-        else {
-            return super.isHovered();
-        }
-    }
-
-
-
-
-    @Override
-    public void relayout() {
-        if(!relayoutDisabled) {
-            if(   !selfRelayoutDisabled) relayoutSelf();
-            if(!contentRelayoutDisabled) relayoutContent();
         }
     }
 }
