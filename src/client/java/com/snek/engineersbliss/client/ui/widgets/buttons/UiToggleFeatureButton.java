@@ -69,7 +69,7 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
 
         // Calculate sprite id
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
-        this.withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f, 1f);
+        withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f, 1f + getLeftLabelMargin());
     }
 
 

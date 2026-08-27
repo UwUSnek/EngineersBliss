@@ -59,9 +59,13 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
     // Label
     private UiTxt label;
+    private int labelWidth;
     public UiTxt getLabel() { return label; }
-    public void setLabel(final UiTxt     label) { this.label = (UiTxt) label.copy(); }
-    public void setLabel(final Component label) { this.label = new UiTxt(label); }
+    public void setLabel(final Component label) { setLabel(new UiTxt(label)); }
+    public void setLabel(final UiTxt     label) {
+        this.label = (UiTxt)label.copy();
+        labelWidth = this.label.getScaledFont().calcWidth(this.label.get());
+    }
 
 
     // Label layout
@@ -71,15 +75,28 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     public TextAlignmentY getVerticalAlignment() { return verticalAlignment; }
     public void setAlignment(final TextAlignment alignment) { this.alignment = alignment; }
     public void setVerticalAlignment(final TextAlignmentY verticalAlignment) { this.verticalAlignment = verticalAlignment; }
-    private float labelOffset;
-    public float getLabelOffset() { return labelOffset; }
-    public void setLabelOffset(final float labelOffset) { this.labelOffset = labelOffset; }
     private float leftLabelMargin;
     public float getLeftLabelMargin() { return leftLabelMargin; }
     public void setLeftLabelMargin(final float leftLabelMargin) { this.leftLabelMargin = leftLabelMargin; }
     private float rightLabelMargin;
     public float getRightLabelMargin() { return rightLabelMargin; }
     public void setRightLabelMargin(final float rightLabelMargin) { this.rightLabelMargin = rightLabelMargin; }
+
+    public int getInnerWidth() {
+        return getWidth() - (int)(getHeight() * (getLeftLabelMargin() + getRightLabelMargin()));
+    }
+    public int getInnerLeftShift() {
+        return (int)(height * leftLabelMargin);
+    }
+    public int getInnerX() {
+        return getX() + getInnerLeftShift();
+    }
+    public int getInnerRightShift() {
+        return (int)(height * rightLabelMargin);
+    }
+    public int getInnerRight() {
+        return getRight() - getInnerRightShift();
+    }
 
 
 
@@ -90,12 +107,11 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
         super(screen);
         bgColor = 0x0; //! Default to no background, this also improves performance
-        this.label = label;
+        this.leftLabelMargin  = 0.5f; //FIXME
+        this.rightLabelMargin = 0.5f; //FIXME
+        setLabel(label); //! Sets label and label width
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;
-        this.labelOffset = 0;
-        this.leftLabelMargin = 0;
-        this.rightLabelMargin = 0;
         this.bgCache = null;
     }
     protected __base_UiWidget(final Screen screen, final UiTxt label) {
@@ -131,17 +147,41 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if(label != null && label.length() > 0) {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
+            final float scale = scaledFont.getScale();
             final int lineHeight = scaledFont.getLineHeight();
-            final int x = getX() + (int)(height * getLabelOffset()) + Layout.textMarginPx;
+
+            final int pauseMs = 1000;
+            final int pxPerSecond = 20;
+            final int overflow = labelWidth - getInnerWidth();
+
+            int shift = 0;
+            if(overflow > 0) {
+                final int scrollMs = (int)(overflow * 1000L / pxPerSecond);
+                final int cycleMs  = pauseMs * 2 + scrollMs;
+                final long t = System.currentTimeMillis() % cycleMs;
+
+                if(t < pauseMs) {
+                    shift = 0;
+                } else if(t < pauseMs + scrollMs) {
+                    shift = (int)((t - pauseMs) * pxPerSecond / 1000);
+                } else {
+                    shift = overflow;
+                }
+            }
+
+            final TextAlignment drawAlignment = overflow > 0 ? TextAlignment.LEFT : getAlignment();
+
+            final int innerX = getInnerX();
+            // final int textX = innerX - (int)(shift / scale); //TODO remove
+            final int textX = innerX - shift;
             final int y = switch(getVerticalAlignment()) {
                 case TOP    -> getY() + Layout.textMarginPx;
                 case CENTER -> getY() + (height - lineHeight) / 2;
                 case BOTTOM -> getBottom() - lineHeight;
             };
-            final int scissorLeft =      getX() + (int)(height * leftLabelMargin);
-            final int scissorRight = getRight() - (int)(height * rightLabelMargin);
-            graphics.enableScissor(scissorLeft, getY(), scissorRight, getBottom());
-            RenderingUtils.extractTxt(graphics, label, x, y, Layout.fgColor, getAlignment(), width, false);
+
+            graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
+            RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, width, false);
             graphics.disableScissor();
         }
     }

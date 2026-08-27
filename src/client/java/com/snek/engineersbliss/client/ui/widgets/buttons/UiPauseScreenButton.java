@@ -41,6 +41,6 @@ public class UiPauseScreenButton extends UiButton {
 
     private void finalizeInit(final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pause_screen/" + spriteName);
-        withSpriteBg(bgSpriteId, 4f, 1f);
+        withSpriteBg(bgSpriteId, 4f, 1f + getLeftLabelMargin());
     }
 }

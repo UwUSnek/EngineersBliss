@@ -79,8 +79,8 @@ public class UiTextWidget extends __base_UiWidget {
 
 
     protected void recalculateLines() {
-        final int wrapWidth = width - Layout.textMarginPx * 2;
-        cachedLines = RenderingUtils.wrapLines(getLabel(), wrapWidth);
+        final int innerWidth = getInnerWidth();
+        cachedLines = RenderingUtils.wrapLines(getLabel(), innerWidth);
     }
 
 
@@ -108,21 +108,18 @@ public class UiTextWidget extends __base_UiWidget {
             final @NotNull ScaledFont scaledFont = getLabel().getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
             final int textHeight = lineHeight * cachedLines.size();
-            final int x = getAlignment() == TextAlignment.LEFT ? getX() + Layout.textMarginPx : getX();
+            final int x = getAlignment() == TextAlignment.LEFT ? getInnerX() : getX();
             final int y = switch(getVerticalAlignment()) {
                 case TOP    -> getY() + Layout.textMarginPx;
                 case CENTER -> getY() + (height - textHeight) / 2;
                 case BOTTOM -> getBottom() - textHeight;
             };
-            final int wrapWidth = width - Layout.textMarginPx * 2;
 
 
             // Draw text lines
-            final int marginLeft  =     getX() + (int)(height * getLeftLabelMargin());
-            final int marginRight = getRight() - (int)(height * getRightLabelMargin());
-            graphics.enableScissor(marginLeft, getY(), marginRight, getBottom());
+            graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
             for(final UiTxt l : cachedLines) {
-                RenderingUtils.extractTxt(graphics, l, x, y + lineHeight * curLineNum, color, getAlignment(), wrapWidth);
+                RenderingUtils.extractTxt(graphics, l, x, y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
                 ++curLineNum;
             }
             graphics.disableScissor();

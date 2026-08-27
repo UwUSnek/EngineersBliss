@@ -4,9 +4,9 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
-import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.ChatFormatting;
@@ -31,11 +31,18 @@ import net.minecraft.util.Util;
 
 
 
+
+
+
+
+
+
+
+
 public class UiEditBox extends __base_UiWidget {
 
     private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
 
-    private final Font font;
     private final UiTxt hint;
     private final Consumer<String> responder;
 
@@ -43,23 +50,22 @@ public class UiEditBox extends __base_UiWidget {
     private int maxLength = Integer.MAX_VALUE;
     private int cursorPos;
     private int highlightPos;
-    private int displayPos;
+    private int scrollPx; // horizontal scroll offset, in pixels
     private boolean editable = true;
     private long focusedTime = Util.getMillis();
-
-
 
 
     public UiEditBox(final Screen screen, final UiTxt hint, final Consumer<String> responder) {
         super(screen, new UiTxt(Component.empty()), TextAlignment.LEFT);
         setBgColor(Layout.bgColor);
-        font = Fonts.ui.regular.get(1f).getFont();
         this.hint = hint;
         this.responder = responder;
         updateLabel();
     }
 
-
+    private Font getFont() {
+        return getLabel().getScaledFont().getFont();
+    }
 
 
     @Override
@@ -68,17 +74,13 @@ public class UiEditBox extends __base_UiWidget {
     }
 
 
-
-
-    public String getValue() {
-        return value;
-    }
+    public String getValue() { return value; }
 
     public void setValue(final String newValue) {
         value = newValue.length() > maxLength ? newValue.substring(0, maxLength) : newValue;
         cursorPos = value.length();
         highlightPos = cursorPos;
-        displayPos = 0;
+        scrollPx = 0;
         onValueChange();
     }
 
@@ -90,9 +92,7 @@ public class UiEditBox extends __base_UiWidget {
         }
     }
 
-    public void setEditable(final boolean editable) {
-        this.editable = editable;
-    }
+    public void setEditable(final boolean editable) { this.editable = editable; }
 
     public String getHighlighted() {
         final int start = Math.min(cursorPos, highlightPos);
@@ -104,8 +104,6 @@ public class UiEditBox extends __base_UiWidget {
         if(responder != null) responder.accept(value);
         updateLabel();
     }
-
-
 
 
     public void insertText(final String input) {
@@ -178,8 +176,6 @@ public class UiEditBox extends __base_UiWidget {
     }
 
 
-
-
     public void moveCursor(final int dir, final boolean extendSelection) {
         moveCursorTo(Util.offsetByCodepoints(value, cursorPos, dir), extendSelection);
     }
@@ -190,13 +186,8 @@ public class UiEditBox extends __base_UiWidget {
         updateLabel();
     }
 
-    public void moveCursorToStart(final boolean extendSelection) {
-        moveCursorTo(0, extendSelection);
-    }
-
-    public void moveCursorToEnd(final boolean extendSelection) {
-        moveCursorTo(value.length(), extendSelection);
-    }
+    public void moveCursorToStart(final boolean extendSelection) { moveCursorTo(0, extendSelection); }
+    public void moveCursorToEnd(final boolean extendSelection) { moveCursorTo(value.length(), extendSelection); }
 
     private void setCursorPosition(final int pos) {
         cursorPos = Mth.clamp(pos, 0, value.length());
@@ -208,32 +199,23 @@ public class UiEditBox extends __base_UiWidget {
         scrollTo(highlightPos);
     }
 
-    private int getInnerWidth() {
-        return getWidth() - Layout.textMarginPx * 2;
-    }
-
     private void scrollTo(final int pos) {
-        displayPos = Math.min(displayPos, value.length());
+        final Font font = getFont();
         final int innerWidth = getInnerWidth();
-        final String displayed = font.plainSubstrByWidth(value.substring(displayPos), innerWidth);
-        final int lastPos = displayed.length() + displayPos;
-        if(pos == displayPos) displayPos -= font.plainSubstrByWidth(value, innerWidth, true).length();
-        if(pos > lastPos) displayPos += pos - lastPos;
-        else if(pos <= displayPos) displayPos -= displayPos - pos;
-        displayPos = Mth.clamp(displayPos, 0, value.length());
+        final int posX = font.width(value.substring(0, pos));
+
+        if(posX - scrollPx > innerWidth) scrollPx = posX - innerWidth;
+        if(posX - scrollPx < 0) scrollPx = posX;
+
+        final int maxScroll = Math.max(0, font.width(value) - innerWidth);
+        scrollPx = Mth.clamp(scrollPx, 0, maxScroll);
     }
-
-
 
 
     private void updateLabel() {
-        final int innerWidth = getInnerWidth();
-        final String displayed = font.plainSubstrByWidth(value.substring(Math.min(displayPos, value.length())), innerWidth);
-        if(displayed.isEmpty() && !isFocused() && hint != null) setLabel(hint.get().copy().withStyle(HINT_STYLE));
-        else setLabel(Component.literal(displayed));
+        if(value.isEmpty() && !isFocused() && hint != null) setLabel(hint.get().copy().withStyle(HINT_STYLE));
+        else setLabel(Component.literal(value));
     }
-
-
 
 
     @Override
@@ -292,12 +274,9 @@ public class UiEditBox extends __base_UiWidget {
     }
 
 
-
-
     private int findClickedPositionInText(final MouseButtonEvent event) {
-        final int positionInText = Math.min(Mth.floor(event.x()) - (getX() + Layout.textMarginPx), getInnerWidth());
-        final String displayed = value.substring(displayPos);
-        return displayPos + font.plainSubstrByWidth(displayed, positionInText).length();
+        final int targetPx = Math.max(0, Mth.floor(event.x()) - getInnerX() + scrollPx);
+        return getFont().plainSubstrByWidth(value, targetPx).length();
     }
 
     @Override
@@ -324,24 +303,18 @@ public class UiEditBox extends __base_UiWidget {
     }
 
 
-
-
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         updateLabel();
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
         if(isFocused() || highlightPos != cursorPos) {
-            final int innerWidth = getInnerWidth();
-            final String displayed = font.plainSubstrByWidth(value.substring(displayPos), innerWidth);
-            final int relCursorPos = Mth.clamp(cursorPos - displayPos, 0, displayed.length());
-            final int relHighlightPos = Mth.clamp(highlightPos - displayPos, 0, displayed.length());
-            final int textX = getX() + Layout.textMarginPx;
+            final Font font = getFont();
+            final int textX = getInnerX() - scrollPx;
             final int textY = getY() + (getHeight() - 9) / 2;
-            final int cursorX = textX + font.width(displayed.substring(0, relCursorPos));
+            final int cursorX = textX + font.width(value.substring(0, cursorPos));
 
-            if(relHighlightPos != relCursorPos) {
-                final int highlightX = textX + font.width(displayed.substring(0, relHighlightPos));
+            if(highlightPos != cursorPos) {
+                final int highlightX = textX + font.width(value.substring(0, highlightPos));
                 graphics.textHighlight(Math.min(cursorX, getRight()), textY - 1, Math.min(highlightX - 1, getRight()), textY + 1 + 9, true);
             }
             else if(isFocused() && TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime)) {
@@ -350,6 +323,19 @@ public class UiEditBox extends __base_UiWidget {
             }
         }
 
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         if(isHovered()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
+    }
+
+
+    @Override
+    protected void extractLabel(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        final UiTxt label = getLabel();
+        if(label != null && label.length() > 0) {
+            final int y = getY() + (getHeight() - label.getScaledFont().getLineHeight()) / 2;
+            graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
+            RenderingUtils.extractTxt(graphics, label, getInnerX() - scrollPx, y, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
+            graphics.disableScissor();
+        }
     }
 }

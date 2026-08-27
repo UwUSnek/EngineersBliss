@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.client.ui.widgets.buttons;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
@@ -70,12 +69,12 @@ public class UiButton extends __base_UiWidget {
         return withSpriteBg(id, 0);
     }
     public UiButton withSpriteBg(final Identifier id, final float width) {
-        return withSpriteBg(id, width, getLabelOffset());
+        return withSpriteBg(id, width, getLeftLabelMargin());
     }
-    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffset) {
+    public UiButton withSpriteBg(final Identifier id, final float width, final float leftLabelMargin) {
         this.bgSpriteId = id;
         this.bgSpriteWidth = width;
-        setLabelOffset(labelOffset);
+        setLeftLabelMargin(leftLabelMargin);
         return this;
     }
 
