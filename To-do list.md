@@ -302,6 +302,9 @@ ADD ALL OF THIS TO THE README
   - typing sound for edit boxes and text boxes
   - click sounds for buttons
   - dragging sounds for stepped sliders, each step makes one sound. pitch is based on the %
+  - OPTIONS
+    - disable sound <sound type> for each sound type
+    - replace all sounds with metal pipe sound
 
 
 

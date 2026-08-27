@@ -169,7 +169,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             }
 
             final TextAlignment drawAlignment = overflow > 0 ? TextAlignment.LEFT : getAlignment();
-            final int textX = getInnerX() - shift;
+            final int textX = getInnerX();
             final int y = switch(getVerticalAlignment()) {
                 case TOP    -> getY() + Layout.textMarginPx;
                 case CENTER -> getY() + (height - lineHeight) / 2;
@@ -177,7 +177,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             };
 
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-            RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false);
+            RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
         }
     }

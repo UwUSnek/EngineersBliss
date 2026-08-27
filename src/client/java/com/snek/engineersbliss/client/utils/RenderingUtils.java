@@ -191,19 +191,6 @@ public class RenderingUtils {
 
 
 
-
-    /**
-     * Draws formatted text at the specified location.
-     * @param graphics The GuiGraphicsExtractor to draw on.
-     * @param text The text to draw.
-     * @param scaledFont The ScaledFont instance used to determine the Font Family and text scale.
-     * @param x The X position, in pixels.
-     * @param y The Y position, in pixels.
-     * @param color The default text color. Individual styled text segments can override this.
-     * @param textAlignment The horizontal alignment of the text.
-     * @param elmWidth The width of the element. This is used for alignment calculations. Can safely be 0 if textAlignment is LEFT or CENTER_ANCHORED.
-     * @param dropShadow Whether to draw a shadow behind the rendered text.
-     */
     public static void extractTxt(
         final GuiGraphicsExtractor graphics,
         final Component text,
@@ -212,47 +199,65 @@ public class RenderingUtils {
         final int color,
         final TextAlignment textAlignment,
         final int elmWidth,
-        final boolean dropShadow
+        final boolean dropShadow,
+        final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
     ) {
 
         // Retrieve font and text scale, apply drop shadow option
         final float textScale = scaledFont.getScale();
-        final float stringWidth = scaledFont.calcWidth(text); //! Width of the string in screen space
+        final float stringWidth = scaledFont.calcWidth(text);
 
-        // Compute x and y positions (calculate in screen space, resize to scaled coords)
+        // Compute x and y positions
         final int _x = (int)(switch(textAlignment) {
             case LEFT            -> x;
             case CENTER          -> x + (elmWidth - stringWidth) / 2;
             case RIGHT           -> x + elmWidth - stringWidth;
-            case CENTER_ANCHORED -> x - stringWidth / 2; //! Vanilla's .centeredText
+            case CENTER_ANCHORED -> x - stringWidth / 2;
         } / textScale);
         final int _y = (int)(y / textScale);
 
         // Draw scaled text
         graphics.pose().pushMatrix();
+        graphics.pose().translate(shiftX, shiftY);
         graphics.pose().scale(textScale, textScale);
         graphics.text(scaledFont.getFont(), text, _x, _y, color, dropShadow);
         graphics.pose().popMatrix();
     }
+
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final Component text, final ScaledFont scaledFont, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
+        extractTxt(graphics, text, scaledFont, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
+    }
     public static void extractTxt(final GuiGraphicsExtractor graphics, final Component text, final ScaledFont scaledFont, final int x, final int y, final int color) {
-        extractTxt(graphics, text, scaledFont, x, y, color, TextAlignment.LEFT, 0, true);
+        extractTxt(graphics, text, scaledFont, x, y, color, TextAlignment.LEFT, 0, true, 0f, 0f);
     }
 
 
     public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
+        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
+    }
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
         final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        extractTxt(graphics, text.get(), scaledFont, x, y, color, textAlignment, elmWidth, dropShadow);
+        extractTxt(graphics, text.get(), scaledFont, x, y, color, textAlignment, elmWidth, dropShadow, shiftX, shiftY);
     }
     public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
-        extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, 0, dropShadow);
+        extractTxt(graphics, text, x, y, color, dropShadow, 0f, 0f);
+    }
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final boolean dropShadow, final float shiftX, final float shiftY) {
+        extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, 0, dropShadow, shiftX, shiftY);
     }
 
 
     public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
-        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, false);
+        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, 0f, 0f);
+    }
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final float shiftX, final float shiftY) {
+        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
     }
     public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color) {
-        extractTxt(graphics, text, x, y, color, false);
+        extractTxt(graphics, text, x, y, color, 0f, 0f);
+    }
+    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
+        extractTxt(graphics, text, x, y, color, false, shiftX, shiftY);
     }
 
 
