@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -38,7 +39,7 @@ public class UiButton extends __base_UiWidget {
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
-    private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
+    private UiSize bgSpriteWidth;
 
     // Mouse handling
     private boolean dragged = false;
@@ -52,6 +53,7 @@ public class UiButton extends __base_UiWidget {
         this.pressCallback = pressCallback;
         this.key = Character.toLowerCase(key);
         this.bgSpriteId = null;
+        this.bgSpriteWidth = new UiSize(this);
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadInOut);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
@@ -65,16 +67,9 @@ public class UiButton extends __base_UiWidget {
     }
 
 
-    public UiButton withSpriteBg(final Identifier id) {
-        return withSpriteBg(id, 0);
-    }
-    public UiButton withSpriteBg(final Identifier id, final float width) {
-        return withSpriteBg(id, width, getLeftLabelMargin());
-    }
-    public UiButton withSpriteBg(final Identifier id, final float width, final float leftLabelMargin) {
+    public UiButton withSpriteBg(final Identifier id, final float width_heightFraction) {
         this.bgSpriteId = id;
-        this.bgSpriteWidth = width;
-        setLeftLabelMargin(leftLabelMargin);
+        this.bgSpriteWidth.clear().setHF(width_heightFraction);
         return this;
     }
 
@@ -164,8 +159,7 @@ public class UiButton extends __base_UiWidget {
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            final int spriteWidth = (int)(getHeight() * bgSpriteWidth);
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth.getPx(), getHeight());
         }
     }
 

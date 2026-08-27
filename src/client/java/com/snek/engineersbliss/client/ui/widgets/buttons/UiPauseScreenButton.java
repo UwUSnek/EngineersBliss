@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
@@ -41,6 +42,7 @@ public class UiPauseScreenButton extends UiButton {
 
     private void finalizeInit(final @Nullable String spriteName) {
         final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pause_screen/" + spriteName);
-        withSpriteBg(bgSpriteId, 4f, 1f + getLeftLabelMargin());
+        withSpriteBg(bgSpriteId, 4f);
+        getLeftLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
     }
 }

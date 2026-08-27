@@ -64,7 +64,7 @@ public class UiSteppedSlider<T> extends UiSlider {
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
         this.valueFormatter = valueFormatter != null ? valueFormatter::format : (n, u) -> String.valueOf(n);
-        setRightLabelMargin(1f + getRightLabelMargin());
+        getRightLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
         updateMessage();
     }
 

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
@@ -75,24 +76,22 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     public TextAlignmentY getVerticalAlignment() { return verticalAlignment; }
     public void setAlignment(final TextAlignment alignment) { this.alignment = alignment; }
     public void setVerticalAlignment(final TextAlignmentY verticalAlignment) { this.verticalAlignment = verticalAlignment; }
-    private float leftLabelMargin;
-    public float getLeftLabelMargin() { return leftLabelMargin; }
-    public void setLeftLabelMargin(final float leftLabelMargin) { this.leftLabelMargin = leftLabelMargin; }
-    private float rightLabelMargin;
-    public float getRightLabelMargin() { return rightLabelMargin; }
-    public void setRightLabelMargin(final float rightLabelMargin) { this.rightLabelMargin = rightLabelMargin; }
+    private UiSize leftLabelMargin;
+    private UiSize rightLabelMargin;
+    public UiSize getLeftLabelMargin() { return leftLabelMargin; }
+    public UiSize getRightLabelMargin() { return rightLabelMargin; }
 
     public int getInnerWidth() {
-        return getWidth() - (int)(getHeight() * (getLeftLabelMargin() + getRightLabelMargin()));
+        return getWidth() - leftLabelMargin.getPx() - rightLabelMargin.getPx();
     }
     public int getInnerLeftShift() {
-        return (int)(height * leftLabelMargin);
+        return leftLabelMargin.getPx();
     }
     public int getInnerX() {
         return getX() + getInnerLeftShift();
     }
     public int getInnerRightShift() {
-        return (int)(height * rightLabelMargin);
+        return rightLabelMargin.getPx();
     }
     public int getInnerRight() {
         return getRight() - getInnerRightShift();
@@ -107,8 +106,8 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
         super(screen);
         bgColor = 0x0; //! Default to no background, this also improves performance
-        this.leftLabelMargin  = 0.5f; //FIXME
-        this.rightLabelMargin = 0.5f; //FIXME
+        this.leftLabelMargin  = new UiSize(this);  leftLabelMargin.setPx(Layout.textMarginPx);
+        this.rightLabelMargin = new UiSize(this); rightLabelMargin.setPx(Layout.textMarginPx);
         setLabel(label); //! Sets label and label width
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;
@@ -170,10 +169,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             }
 
             final TextAlignment drawAlignment = overflow > 0 ? TextAlignment.LEFT : getAlignment();
-
-            final int innerX = getInnerX();
-            // final int textX = innerX - (int)(shift / scale); //TODO remove
-            final int textX = innerX - shift;
+            final int textX = getInnerX() - shift;
             final int y = switch(getVerticalAlignment()) {
                 case TOP    -> getY() + Layout.textMarginPx;
                 case CENTER -> getY() + (height - lineHeight) / 2;
@@ -181,7 +177,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             };
 
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-            RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, width, false);
+            RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false);
             graphics.disableScissor();
         }
     }

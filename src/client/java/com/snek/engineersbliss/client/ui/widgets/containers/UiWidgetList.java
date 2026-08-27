@@ -34,10 +34,10 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
-    private final Minecraft minecraft;
     private final int defaultEntryHeight;
     private final float rowMargin;
 
+    private boolean isScrollable;
     private double scrollAmount;
     private boolean scrolling;
     private final int scrollRateBase;
@@ -51,7 +51,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public UiWidgetList(final Screen screen, final int itemHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
-        this.minecraft = Minecraft.getInstance();
+        this.isScrollable = true;
         this.defaultEntryHeight = itemHeight;
         this.scrollRateBase = itemHeight;
         this.rowMargin = rowMargin;
@@ -138,6 +138,10 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         return getRowRight();
     }
 
+    public void setIsScrollable(final boolean newIsScrollable) {
+        isScrollable = newIsScrollable;
+    }
+
 
 
 
@@ -173,7 +177,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected boolean scrollable() {
-        return maxScrollAmount() > 0;
+        return isScrollable && maxScrollAmount() > 0;
     }
 
     public boolean updateScrolling(final MouseButtonEvent event) {
@@ -297,7 +301,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     protected void onSelected(final Entry selectedEntry) {
         final boolean topClipped    = selectedEntry.getY()      < getY();
         final boolean bottomClipped = selectedEntry.getBottom() > getBottom();
-        if(minecraft.getLastInputType().isKeyboard() || topClipped || bottomClipped) {
+        if(Minecraft.getInstance().getLastInputType().isKeyboard() || topClipped || bottomClipped) {
             scrollToEntry(selectedEntry);
         }
     }

@@ -12,6 +12,7 @@ import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
+import com.snek.engineersbliss.client.utils.Layout;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
@@ -82,6 +83,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         // Calculate sprite id
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
         withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f);
+        getLeftLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
     }
 
 

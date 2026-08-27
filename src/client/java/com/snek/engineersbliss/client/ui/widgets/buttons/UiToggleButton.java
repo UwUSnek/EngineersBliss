@@ -64,7 +64,7 @@ public class UiToggleButton extends UiButton {
         this.value = initialValue;
         this.valueFormatter = valueFormatter != null ? valueFormatter : (n, u) -> n.booleanValue() ? "ON" : "OFF";
         this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), Layout.toggleTransitionDuration, Easings.sineIn);
-        setRightLabelMargin(INDICATOR_WIDTH);
+        getRightLabelMargin().clear().setHF(INDICATOR_WIDTH);
     }
 
 
@@ -87,7 +87,7 @@ public class UiToggleButton extends UiButton {
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.fill(getRight() - (int)(height * INDICATOR_WIDTH), getY(), getRight(), getBottom(), indicatorColor.compute());
+        graphics.fill(getRight() - getRightLabelMargin().getPx(), getY(), getRight(), getBottom(), indicatorColor.compute());
     }
 
     public int calculateNewIndicatorColor() {

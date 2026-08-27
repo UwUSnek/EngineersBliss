@@ -114,6 +114,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
         // Show profile UI if no new widget is being hovered
         if(newWidget == null) {
+            rightSidebar.setIsScrollable(true); //! Re-enable scrolling in case the feature info branch disabled it.
             //TODO
         }
 
@@ -127,8 +128,9 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             rightSidebar.addWidget(new UiTextWidget(this, nameText, TextAlignment.CENTER, Layout.fgColor), nameHeight);
 
             // Feature description
+            rightSidebar.setIsScrollable(false); //! Disable scrolling so the element doesn't show a scroll bar. There is always enough space for the description.
             final UiTxt descriptionText = newWidget.getClientFeature().calcDesc();
-            final int descriptionHeight = 20000; //TODO ??
+            final int descriptionHeight = height - nameHeight - Layout.BIG_SEPARATOR_HEIGHT; //! Might not be pixel perfect but it doesn't matter, can't scroll the element anyway.
             final UiTextWidget descriptionWidget = new UiTextWidget(this, descriptionText, TextAlignment.CENTER, true, Layout.fgColor);
             descriptionWidget.setVerticalAlignment(TextAlignmentY.TOP);
             rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);

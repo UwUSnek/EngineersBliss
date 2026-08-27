@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -9,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
@@ -51,7 +51,7 @@ public class UiSlider extends __base_UiWidget {
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
-    private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
+    private UiSize bgSpriteWidth;
 
     // Mouse handling
     private double virtualX = 0;
@@ -78,19 +78,20 @@ public class UiSlider extends __base_UiWidget {
         super(screen, new UiTxt(new Txt().get()), TextAlignment.CENTER);
         setBgColor(Layout.bgColor);
         this.value = initialValue;
+        this.bgSpriteId = null;
+        this.bgSpriteWidth = new UiSize(this);
         this.baseLabel = baseLabel;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
-        this.visualValue = new AnimatedDouble(initialValue, Layout.slideTransitionDuration, Easings.cubicInOut);
+        this.visualValue = new AnimatedDouble(initialValue,       Layout.slideTransitionDuration, Easings.cubicInOut);
         this.overlayColor = new AnimatedColor(0x0,                Layout.hoverTransitionDuration, Easings.quadIn);
         this.handleColor  = new AnimatedColor(Layout.handleColor, Layout.hoverTransitionDuration, Easings.quadIn);
         updateMessage();
     }
 
-    public UiSlider withSpriteBg(final Identifier id, final float width) {
+    public UiSlider withSpriteBg(final Identifier id, final float width_heightFraction) {
         this.bgSpriteId = id;
-        this.bgSpriteWidth = width;
-        setLeftLabelMargin(width + getLeftLabelMargin());
+        this.bgSpriteWidth.clear().setHF(width_heightFraction);
         return this;
     }
 
@@ -224,8 +225,7 @@ public class UiSlider extends __base_UiWidget {
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(bgSpriteId != null) {
-            final int spriteWidth = (int)(getHeight() * bgSpriteWidth);
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth.getPx(), getHeight());
         }
     }
 

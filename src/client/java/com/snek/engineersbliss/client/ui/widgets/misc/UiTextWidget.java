@@ -108,7 +108,6 @@ public class UiTextWidget extends __base_UiWidget {
             final @NotNull ScaledFont scaledFont = getLabel().getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
             final int textHeight = lineHeight * cachedLines.size();
-            final int x = getAlignment() == TextAlignment.LEFT ? getInnerX() : getX();
             final int y = switch(getVerticalAlignment()) {
                 case TOP    -> getY() + Layout.textMarginPx;
                 case CENTER -> getY() + (height - textHeight) / 2;
@@ -119,7 +118,7 @@ public class UiTextWidget extends __base_UiWidget {
             // Draw text lines
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
             for(final UiTxt l : cachedLines) {
-                RenderingUtils.extractTxt(graphics, l, x, y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
+                RenderingUtils.extractTxt(graphics, l, getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
                 ++curLineNum;
             }
             graphics.disableScissor();

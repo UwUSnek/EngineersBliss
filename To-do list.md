@@ -298,7 +298,10 @@ ADD ALL OF THIS TO THE README
 
 
 
-
+- add sounds. something nice and not too loud.
+  - typing sound for edit boxes and text boxes
+  - click sounds for buttons
+  - dragging sounds for stepped sliders, each step makes one sound. pitch is based on the %
 
 
 
