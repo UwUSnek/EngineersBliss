@@ -87,7 +87,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
         // Render children recursively
-        for(final var child : children()) {
+        for(final var child : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
             if(child instanceof @NotNull AbstractWidget w) {
                 if(w.getY() + w.getHeight() >= getY() && w.getY() <= getBottom()) {
                     w.extractRenderState(graphics, mouseX, mouseY, a);

@@ -12,6 +12,7 @@ import org.joml.Vector4i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 
 
 
@@ -360,6 +361,34 @@ public class Txt {
             Math.max(0, start),
             Math.max(start, end)
         );
+    }
+
+
+
+
+    /** //TODO add this to frameworklib / new library 's Txt
+     * Builds a raw FormattedCharSequence from a String using a single Style. This allows for displaying '§' without triggering Vanilla's legacy formatting.
+     * @param text  The raw text.
+     * @param style The style to apply to every codepoint.
+     * @return The formatted sequence.
+     */
+    public static @NotNull FormattedCharSequence toRawSequence(final @NotNull String text, final @NotNull Style style) {
+        final List<FormattedCharSequence> parts = new ArrayList<>(text.length());
+        text.codePoints().forEach(cp -> parts.add(FormattedCharSequence.codepoint(cp, style)));
+        return FormattedCharSequence.composite(parts);
+    }
+
+    /** //TODO add this to frameworklib / new library 's Txt
+     * Builds a raw FormattedCharSequence from this Txt. This allows for displaying '§' without triggering Vanilla's legacy formatting.
+     * @return The formatted sequence.
+     */
+    public @NotNull FormattedCharSequence toRawVisualOrder() {
+        final List<FormattedCharSequence> parts = new ArrayList<>();
+        get().visit((nodeStyle, text) -> {
+            parts.add(toRawSequence(text, nodeStyle));
+            return Optional.<Void>empty();
+        }, style);
+        return FormattedCharSequence.composite(parts);
     }
 }
 

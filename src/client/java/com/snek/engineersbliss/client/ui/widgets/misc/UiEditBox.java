@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
@@ -23,7 +25,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.util.StringUtil;
 import net.minecraft.util.Util;
 
 
@@ -53,7 +54,8 @@ public class UiEditBox extends __base_UiWidget {
     private int cursorPos;
     private AnimatedInt visualCursorPosPx;
     private int highlightPos;
-    private AnimatedInt scrollPx; // horizontal scroll offset, in pixels
+    private int scrollPx; // horizontal scroll offset, in pixels
+    private AnimatedInt visualScrollPx;
     private boolean editable;
     private long focusedTime;
 
@@ -65,9 +67,10 @@ public class UiEditBox extends __base_UiWidget {
         this.value        = "";
         this.maxLength    = Integer.MAX_VALUE;
         this.cursorPos    = 0;
-        this.visualCursorPosPx = new AnimatedInt(0, 50);
+        this.visualCursorPosPx = new AnimatedInt(cursorPos, 50);
         this.highlightPos = 0;
-        this.scrollPx     = new AnimatedInt(0, 50);
+        this.scrollPx     = 0;
+        this.visualScrollPx = new AnimatedInt(scrollPx, 50);
         this.editable     = true;
         this.focusedTime  = Util.getMillis();
         setBgColor(Layout.bgColor);
@@ -91,7 +94,7 @@ public class UiEditBox extends __base_UiWidget {
         value = newValue.length() > maxLength ? newValue.substring(0, maxLength) : newValue;
         cursorPos = value.length();
         highlightPos = cursorPos;
-        scrollPx.startNewTransition(0); //BUG idk why this is set to 0
+        scrollPx = 0;
         onValueChange();
     }
 
@@ -117,12 +120,29 @@ public class UiEditBox extends __base_UiWidget {
     }
 
 
+
+    public static boolean isValidCharacter(final int c) {
+        return c >= 32 && c != 127;
+    }
+
+    public static String sanitizeText(final String input, final boolean allowMultiline) {
+        StringBuilder builder = new StringBuilder();
+
+        //! Exclude control characters and DEL
+        for(char c : input.toCharArray()) {
+            if(isValidCharacter(c) || (allowMultiline && c == '\n')) {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
+
     public void insertText(final String input) {
         final int start = Math.min(cursorPos, highlightPos);
         final int end = Math.max(cursorPos, highlightPos);
         int maxInsertionLength = maxLength - value.length() - (start - end);
         if(maxInsertionLength > 0) {
-            String text = StringUtil.filterText(input);
+            String text = sanitizeText(input, false);
             int insertionLength = text.length();
             if(maxInsertionLength < insertionLength) {
                 if(Character.isHighSurrogate(text.charAt(maxInsertionLength - 1))) maxInsertionLength--;
@@ -132,7 +152,10 @@ public class UiEditBox extends __base_UiWidget {
             value = new StringBuilder(value).replace(start, end, text).toString();
             setCursorPosition(start + insertionLength);
             setHighlightPos(cursorPos);
-            onValueChange();
+            //! Delay to improve the cursor animation
+            CompletableFuture.runAsync(() -> { //FIXME use the new scheduler stuff instead of java's raw methods
+                onValueChange();
+            }, CompletableFuture.delayedExecutor(visualCursorPosPx.getTransitionDuration(), TimeUnit.MILLISECONDS));
         }
     }
 
@@ -214,13 +237,12 @@ public class UiEditBox extends __base_UiWidget {
         final Font font = getFont();
         final int innerWidth = getInnerWidth();
         final int posX = font.width(value.substring(0, pos));
-        int curScrollPx = scrollPx.compute();
 
-        if(posX - curScrollPx > innerWidth) curScrollPx = posX - innerWidth;
-        if(posX - curScrollPx < 0)          curScrollPx = posX;
+        if(posX - scrollPx > innerWidth) scrollPx = posX - innerWidth;
+        if(posX - scrollPx < 0)          scrollPx = posX;
 
         final int maxScroll = Math.max(0, font.width(value) - innerWidth);
-        scrollPx.startNewTransition(Math.clamp(curScrollPx, 0, maxScroll));
+        visualScrollPx.startNewTransition(Math.clamp(scrollPx, 0, maxScroll));
     }
 
 
@@ -287,14 +309,14 @@ public class UiEditBox extends __base_UiWidget {
 
     @Override
     public boolean charTyped(final CharacterEvent event) {
-        if(!isActive() || !isFocused() || !editable || !event.isAllowedChatCharacter()) return false;
+        if(!isActive() || !isFocused() || !editable || !isValidCharacter(event.codepoint())) return false;
         insertText(event.codepointAsString());
         return true;
     }
 
 
     private int findClickedPositionInText(final MouseButtonEvent event) {
-        final int targetPx = Math.max(0, (int)Math.floor(event.x()) - getInnerX() + scrollPx.compute());
+        final int targetPx = Math.max(0, (int)Math.floor(event.x()) - getInnerX() + visualScrollPx.compute());
         return getFont().plainSubstrByWidth(value, targetPx).length();
     }
 
@@ -324,11 +346,9 @@ public class UiEditBox extends __base_UiWidget {
 
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        updateLabel();
-
         if(isFocused() || highlightPos != cursorPos) {
             final Font font = getFont();
-            final int textX = getInnerX() - scrollPx.compute();
+            final int textX = getInnerX() - visualScrollPx.compute();
             final int textY = getY() + (getHeight() - 9) / 2;
             visualCursorPosPx.startNewTransition(textX + font.width(value.substring(0, cursorPos)));
             final int cursorX = visualCursorPosPx.compute();
@@ -354,7 +374,7 @@ public class UiEditBox extends __base_UiWidget {
         if(label != null && label.length() > 0) {
             final int y = getY() + (getHeight() - label.getScaledFont().getLineHeight()) / 2;
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-            RenderingUtils.extractTxt(graphics, label, getInnerX() - scrollPx.compute(), y, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
+            RenderingUtils.extractTxt(graphics, label, getInnerX() - visualScrollPx.compute(), y, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
             graphics.disableScissor();
         }
     }

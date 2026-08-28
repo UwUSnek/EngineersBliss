@@ -1,5 +1,8 @@
 package com.snek.engineersbliss.client.ui.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -286,7 +289,7 @@ public abstract class __base_UiScreen extends Screen {
 
 
     protected void relayoutContent() {
-        for(final var e : children()) {
+        for(final var e : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
             if(e instanceof final @NotNull __base_UiLayoutElm w) {
                 w.relayout();
             }
@@ -353,19 +356,10 @@ public abstract class __base_UiScreen extends Screen {
         }
 
 
-        // //! This stops other widgets from updating hover state while dragging.
-        // //! This is done by calling the wdiget's extractRenderState with a fake invalid mouse position that it can never cover.
-        // //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
-        // //! Only the dragged element is fed the right cursor coordinates.
-        for(final @NotNull GuiEventListener c : children()) {
+        // Extract widgets
+        for(final @NotNull GuiEventListener c : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
             if(c instanceof @NotNull Renderable r) {
-        //         if(!isDragging() || (c instanceof @NotNull __base_UiLayoutElm w && w.isBeingDragged())) {
-        //             System.out.println("!isDragging: " + !isDragging() + ", instance: " + (c instanceof __base_UiLayoutElm) + ", isBeingDragged: " + ((c instanceof @NotNull __base_UiLayoutElm w) ? w.isBeingDragged() : false));
-                    r.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
-            //     }
-            //     else {
-            //         r.extractRenderState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, delta);
-            //     }
+                r.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
             }
         }
     }
