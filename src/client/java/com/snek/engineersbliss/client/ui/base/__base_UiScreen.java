@@ -6,6 +6,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -99,8 +100,7 @@ public abstract class __base_UiScreen extends Screen {
 
     protected __base_UiScreen() {
         super(new UiTxt().get());
-        final float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
-        this.animatedGuiScale = new AnimatedFloat(guiScale, Layout.guiScaleTransitionDuration);
+        this.animatedGuiScale = new AnimatedFloat(SettingsFeatureHandler.getCurrentGuiScale(), Layout.guiScaleTransitionDuration);
         this.needsRebuild = true;
         this.needsRelayout = false;
     }
@@ -119,8 +119,7 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public void resize(final int width, final int height) {
-        final float newGuiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE)); //TODO replace all instances with a utility method in ClientFeatureSync
-        animatedGuiScale.startNewTransition(newGuiScale);
+        animatedGuiScale.startNewTransition(SettingsFeatureHandler.getCurrentGuiScale());
         maybeFlagResize();
     }
 
@@ -222,15 +221,15 @@ public abstract class __base_UiScreen extends Screen {
                 return true;
             }
             case GLFW.GLFW_KEY_KP_ADD: {
-                final int newScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE) + 1;
-                final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1); //TODO replace with utility method in ClientFeatureSync
+                final int newScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex() + 1;
+                final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
                 resize(0, 0);
                 return true;
             }
             case GLFW.GLFW_KEY_KP_SUBTRACT: {
-                final int newScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE) - 1;
-                final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1);
+                final int newScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex() - 1;
+                final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
                 resize(0, 0);
                 return true;

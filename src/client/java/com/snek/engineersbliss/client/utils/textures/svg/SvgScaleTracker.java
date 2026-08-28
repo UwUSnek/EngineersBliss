@@ -1,8 +1,7 @@
 package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -20,7 +19,7 @@ public final class SvgScaleTracker {
 
 
     public static void tick() {
-        final int guiScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE);
+        final int guiScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex();
         if(guiScaleIndex == lastGuiScaleIndex) return;
         lastGuiScaleIndex = guiScaleIndex;
 

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.rendering.PixelFiller;
@@ -57,7 +58,7 @@ public class RenderingUtils {
      */
     public static double pushFullResRendering(final GuiGraphicsExtractor graphics) {
         final var window = Minecraft.getInstance().getWindow();
-        final float guiScale = window.getWidth() / SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
+        final float guiScale = window.getWidth() / SettingsFeatureHandler.getCurrentGuiScale();
         graphics.pose().pushMatrix();
         graphics.pose().scale(1.0f / guiScale, 1.0f / guiScale);
         return guiScale;

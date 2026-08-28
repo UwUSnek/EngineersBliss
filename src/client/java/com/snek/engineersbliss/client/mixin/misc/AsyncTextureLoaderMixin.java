@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.utils.textures.atlases.AtlasMetadataSection;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgMetadataSection;
@@ -113,8 +114,7 @@ public class AsyncTextureLoaderMixin {
                 }
 
                 SvgTextureTracker.getOrRegister(id, bytes, svgMeta);
-                final int guiScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE);
-                final NativeImage svgImage = SvgTextureTracker.acquire(id, guiScaleIndex);
+                final NativeImage svgImage = SvgTextureTracker.acquire(id, SettingsFeatureHandler.getCurrentGuiScaleIndex());
                 cir.setReturnValue(new TextureContents(svgImage, null));
                 return;
             }

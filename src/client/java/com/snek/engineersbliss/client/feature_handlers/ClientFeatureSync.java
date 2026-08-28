@@ -94,27 +94,4 @@ public class ClientFeatureSync {
             default -> EngineerSBliss.LOGGER.error("Invalid feature type {}", value.getClass().getName(), new Throwable());
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TODO gui scale
 }

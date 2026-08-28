@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
@@ -139,7 +140,7 @@ public class UiSlider extends __base_UiWidget {
     public boolean mouseReleased(MouseButtonEvent event) {
         long handle = Minecraft.getInstance().getWindow().handle();
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-        float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
+        float guiScale = SettingsFeatureHandler.getCurrentGuiScale();
         GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
         return super.mouseReleased(event);
     }

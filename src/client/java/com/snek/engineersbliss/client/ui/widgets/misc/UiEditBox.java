@@ -236,25 +236,31 @@ public class UiEditBox extends __base_UiWidget {
         final boolean ctrl = event.hasControlDownWithQuirk();
         final boolean shift = event.hasShiftDown();
         switch(event.key()) {
-            case GLFW.GLFW_KEY_BACKSPACE:
+            case GLFW.GLFW_KEY_BACKSPACE: {
                 if(editable) deleteCharsToPos(ctrl ? getWordPosition(-1) : Util.offsetByCodepoints(value, cursorPos, -1));
                 return true;
-            case 261: //TODO
+            }
+            case GLFW.GLFW_KEY_DELETE: {
                 if(editable) deleteCharsToPos(ctrl ? getWordPosition(1) : Util.offsetByCodepoints(value, cursorPos, 1));
                 return true;
-            case 262:
+            }
+            case GLFW.GLFW_KEY_RIGHT: {
                 moveCursorTo(ctrl ? getWordPosition(1) : Util.offsetByCodepoints(value, cursorPos, 1), shift);
                 return true;
-            case 263:
+            }
+            case GLFW.GLFW_KEY_LEFT: {
                 moveCursorTo(ctrl ? getWordPosition(-1) : Util.offsetByCodepoints(value, cursorPos, -1), shift);
                 return true;
-            case 268:
+            }
+            case GLFW.GLFW_KEY_HOME: {
                 moveCursorToStart(shift);
                 return true;
-            case 269:
+            }
+            case GLFW.GLFW_KEY_END: {
                 moveCursorToEnd(shift);
                 return true;
-            default:
+            }
+            default: {
                 if(event.isSelectAll()) {
                     moveCursorToEnd(false);
                     setHighlightPos(0);
@@ -275,6 +281,7 @@ public class UiEditBox extends __base_UiWidget {
                     return true;
                 }
                 return false;
+            }
         }
     }
 

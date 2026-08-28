@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
@@ -39,7 +40,7 @@ public interface BgCacheWidget {
     public default void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         final int w = getWidth();
         final int h = getHeight();
-        final float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
+        final float guiScale = SettingsFeatureHandler.getCurrentGuiScale()
         final int pixelW = Math.max(1, Math.round(w * guiScale));
         final int pixelH = Math.max(1, Math.round(h * guiScale));
 

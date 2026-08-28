@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
@@ -66,7 +67,7 @@ public record SvgSpriteSource(String sourcePath) implements SpriteSource {
             SvgTextureTracker.getOrRegister(spriteId, bytes, meta);
 
             // Register a sprite for each GUI Scale
-            for(int scaleIndex = 0; scaleIndex < SettingsServerFeatureSet.GUI_SCALE.getValues().size(); scaleIndex++) {
+            for(int scaleIndex = 0; scaleIndex < SettingsFeatureHandler.getGuiScalesNumber(); scaleIndex++) {
                 final int _scaleIndex = scaleIndex;
                 final Identifier scaledSpriteId = SvgTextureTracker.getOptimalSprite(spriteId, _scaleIndex);
                 output.add(scaledSpriteId, resourceLoader -> {

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.mixin.accessors.FontAccessor;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.data_types.Pair;
@@ -92,8 +93,8 @@ public class Fonts {
 
 
     private static ScaledFont createScaledFont(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier) {
-        final int guiScaleIndex = ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE);
-        final @NotNull Pair<Font, FontDescription> font = createFontIfNeeded(fontList, fontName, scaleMultiplier, guiScaleIndex);
+        final int currentScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex();
+        final @NotNull Pair<Font, FontDescription> font = createFontIfNeeded(fontList, fontName, scaleMultiplier, currentScaleIndex);
         return new ScaledFont(null, font.getFirst(), scaleMultiplier, font.getSecond());
     }
 

@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
@@ -22,7 +23,7 @@ public final class SvgTextureTracker {
     public static final class Entry {
         public final byte[] svgBytes;
         public final SvgMetadataSection meta;
-        public final NativeImage[] cached = new NativeImage[SettingsServerFeatureSet.GUI_SCALE.getValues().size()];
+        public final NativeImage[] cached = new NativeImage[SettingsFeatureHandler.getGuiScalesNumber()];
 
         public Entry(final byte[] svgBytes, final SvgMetadataSection meta) {
             this.svgBytes = svgBytes;
@@ -86,7 +87,7 @@ public final class SvgTextureTracker {
      * @return The complete sprite ID.
      */
     public static Identifier getOptimalSprite(final Identifier baseId) {
-        return getOptimalSprite(baseId, ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_SCALE));
+        return getOptimalSprite(baseId, SettingsFeatureHandler.getCurrentGuiScaleIndex());
     }
 
 
@@ -97,7 +98,7 @@ public final class SvgTextureTracker {
      * @return The complete sprite ID.
      */
     public static Identifier getOptimalSprite(final Identifier baseId, final int scaleIndex) {
-        final int clamped = Math.clamp(scaleIndex, 0, SettingsServerFeatureSet.GUI_SCALE.getValues().size() - 1);
+        final int clamped = Math.clamp(scaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
         return baseId.withSuffix(".x" + clamped);
     }
 }
