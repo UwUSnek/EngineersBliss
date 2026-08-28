@@ -35,14 +35,7 @@ import org.jetbrains.annotations.Nullable;
  */
 
 public abstract class __base_UiContainer<T extends GuiEventListener> extends __base_UiWidget implements ContainerEventHandler {
-
-
     protected final List<T> children = new ArrayList<>();
-    @Nullable protected T focused;
-    @Nullable protected T selected;
-    @Nullable protected T hovered;
-    private boolean isDragging;
-
 
 
 
@@ -66,7 +59,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
     protected void clearChildren() {
         children.clear();
-        selected = null;
+        // selected = null; //TODO remove
     }
 
     protected int addChild(final T e) {
@@ -84,9 +77,34 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         return Optional.empty();
     }
 
-    public @Nullable T getHoveredChild() {
-        return hovered;
-    }
+    // // public @Nullable T getHoveredChild() {
+    // //     if(getScreen() instanceof __base_UiScreen uiScreen) {
+    // //         final GuiEventListener h = uiScreen.getHoveredElm(); //TODO optimize
+    // //         return children.contains(h) ? (T) h : null;
+    // //     }
+    // //     else return null; //TODO ???
+    // // }
+
+    // // public @Nullable T getSelectedChild() {
+    // //     if(getScreen() instanceof __base_UiScreen uiScreen) {
+    // //         final GuiEventListener h = uiScreen.getSelectedElm(); //TODO optimize
+    // //         return children.contains(h) ? (T) h : null;
+    // //     }
+    // //     else return null; //TODO ???
+    // // }
+
+    // // public @Nullable T getFocusedChild() {
+    // //     if(getScreen() instanceof __base_UiScreen uiScreen) {
+    // //         final GuiEventListener h = uiScreen.getFocusedElm(); //TODO optimize
+    // //         return children.contains(h) ? (T) h : null;
+    // //     }
+    // //     else return null; //TODO ???
+    // // }
+
+//TODO remove
+    // public @Nullable T getHoveredChild() { //TODO calling screen's getHoveredElement can return elements that aren't children of this contianer
+    //     return (getScreen() instanceof __base_UiScreen s) ? ((T)s.getHoveredElm()) : null; //FIXME fix this mess
+    // }
 
 
 
@@ -97,8 +115,8 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
-        // Update hovered widget reference
-        hovered = isMouseOver(mouseX, mouseY) ? (T)getChildAt(mouseX, mouseY).orElse(null) : null;
+        // // Update hovered widget reference
+        // hovered = isMouseOver(mouseX, mouseY) ? (T)getChildAt(mouseX, mouseY).orElse(null) : null; //TODO remove?
 
         // Normal rendering
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
@@ -119,17 +137,17 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
+//TODO remove
+    // public @Nullable T getSelected() { //TODO calling screen's getHoveredElement can return elements that aren't children of this contianer
+    //     return (getScreen() instanceof __base_UiScreen s) ? ((T)s.getSelectedElm()) : null; //FIXME fix this mess
+    // }
 
-    public @Nullable T getSelected() {
-        return selected;
-    }
-
-    public void setSelected(@Nullable final T _selected) {
-        selected = _selected;
-        if(_selected != null) {
-            onSelected(_selected);
-        }
-    }
+    // public void setSelected(@Nullable final T _selected) { //TODO remove?
+    //     selected = _selected;
+    //     if(_selected != null) {
+    //         onSelected(_selected);
+    //     }
+    // }
 
     //! Hook for subclasses that need to react to a new selection.
     protected void onSelected(final T selected) {
@@ -137,47 +155,66 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
     }
 
 
-
-
-
-
-
-
+    //! Abstract stuff
+    private boolean __isDragging = false;
+    private GuiEventListener __focused = null;
     @Override
-    public final boolean isDragging() {
-        return isDragging;
+    public boolean isDragging() {
+        return __isDragging;
+    }
+    @Override
+    public void setDragging(boolean dragging) {
+        __isDragging = dragging;
+    }
+    @Override
+    public GuiEventListener getFocused() {
+        return __focused;
+    }
+    @Override
+    public void setFocused(GuiEventListener focused) {
+        __focused = focused;
     }
 
-    @Override
-    public final void setDragging(final boolean dragging) {
-        isDragging = dragging;
-    }
 
-    @Override
-    public @Nullable GuiEventListener getFocused() {
-        return focused;
-    }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public void setFocused(@Nullable final GuiEventListener _focused) {
-        final GuiEventListener oldFocus = focused;
-        if(oldFocus != _focused && oldFocus instanceof ContainerEventHandler oldFocusContainer) {
-            oldFocusContainer.setFocused(null);
-        }
-        if(focused != null) {
-            focused.setFocused(false);
-        }
-        if(_focused != null) {
-            _focused.setFocused(true);
-        }
-        focused = (T)_focused;
 
-        final int index = children.indexOf(focused);
-        if(index >= 0) {
-            setSelected(children.get(index));
-        }
-    }
+
+
+    // @Override
+    // public final boolean isDragging() { //TODO remove
+    //     return isDragging;
+    // }
+
+    // @Override
+    // public final void setDragging(final boolean dragging) { //TODO remove
+    //     isDragging = dragging;
+    // }
+
+    // @Override
+    // public @Nullable GuiEventListener getFocused() { //TODO remove
+    //     return focused;
+    // }
+
+    // @Override
+    // @SuppressWarnings("unchecked")
+    // public void setFocused(@Nullable final GuiEventListener _focused) { //TODO remove
+    //     final GuiEventListener oldFocus = focused;
+    //     if(oldFocus != _focused && oldFocus instanceof ContainerEventHandler oldFocusContainer) {
+    //         oldFocusContainer.setFocused(null);
+    //     }
+    //     if(focused != null) {
+    //         focused.setFocused(false);
+    //     }
+    //     if(_focused != null) {
+    //         _focused.setFocused(true);
+    //     }
+    //     focused = (T)_focused;
+
+    //     final int index = children.indexOf(focused);
+    //     if(index >= 0) {
+    //         setSelected(children.get(index));
+    //     }
+    // }
 
 
 

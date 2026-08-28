@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 
 
 
@@ -82,8 +83,12 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     private void updateHoveredFeatureReference(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 
         // Update hovered feature entry data
-        final @Nullable UiWidgetList.Entry entry = (UiWidgetList.Entry)leftSidebar.getHoveredChild();
-        final @Nullable AbstractWidget widget = entry != null ? entry.getWidget() : null;
+        // final @Nullable UiWidgetList.Entry entry = (UiWidgetList.Entry)leftSidebar.getHoveredChild(); //TODO remove
+        // final @Nullable AbstractWidget widget = entry != null ? entry.getWidget() : null;
+
+        // final @Nullable AbstractWidget widget = leftSidebar.getHoveredChild();
+        final @Nullable GuiEventListener widget = getHoveredElm();
+        System.out.println("WIDGET: " + widget);
         if(widget != null && widget instanceof FeatureInputWidget featureWidget) {
             lastHoverTime = System.currentTimeMillis();
             if(featureWidget != lastHoveredFeatureWidget) {

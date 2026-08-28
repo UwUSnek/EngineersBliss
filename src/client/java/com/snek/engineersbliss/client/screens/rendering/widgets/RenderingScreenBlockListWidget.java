@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.level.block.Block;
@@ -12,6 +13,7 @@ import java.util.regex.Pattern;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.ServerMinecraftUtils;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -123,12 +125,14 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
         // Handle hover events
-        final UiWidgetList.Entry hoveredEntry = getHoveredChild();
-        if(hoveredEntry != null && hoveredEntry.getWidget() instanceof BlockEntryContents contents) {
-            setSelected(hoveredEntry);
+        // final UiWidgetList.Entry hoveredEntry = getHoveredChild(); //TODO remove
+        final GuiEventListener hovered = ((__base_UiScreen)getScreen()).getHoveredElm(); //FIXME remove blind cast
+        // if(hoveredEntry != null && hoveredEntry.getWidget() instanceof BlockEntryContents contents) { //TODO remove
+        if(hovered != null && hovered instanceof BlockEntryContents contents) {
+            // setSelected(hoveredEntry); //TODO remove
 
-            // If hovering on the left half of the entry, spawn block info tooltip
-            if(mouseX < hoveredEntry.getX() + getRowWidth() - CHECKBOX_AREA_WIDTH * 2) {
+            // If hovering on the left half of the entry, spawn block info tooltip //! Checkboxes are on the right half.
+            if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getX() + getRowWidth() / 2) {
                 final Block block = contents.getBlock();
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));

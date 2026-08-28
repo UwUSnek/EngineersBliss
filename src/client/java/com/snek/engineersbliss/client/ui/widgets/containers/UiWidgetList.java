@@ -81,9 +81,10 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public void relayoutSelf() {
         if(!isRelayoutDisabled()) {
             repositionEntries();
-            if(getSelected() != null) {
-                scrollToEntry(getSelected()); //! This calls setScrollAmount -> layoutWidgets on entries.
-            }
+            // final GuiEventListener selectedChild = getSelectedChild(); //TODO remove?? idk
+            // if(selectedChild != null) {
+                // scrollToEntry(selectedChild); //! This calls setScrollAmount -> layoutWidgets on entries.
+            // }
             this.refreshScrollAmount();
 
             //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.

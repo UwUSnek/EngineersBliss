@@ -15,6 +15,7 @@ import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSe
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -66,6 +67,17 @@ public abstract class __base_UiScreen extends Screen {
     private boolean needsRebuild;
 
 
+    // Element tracking
+    private @Nullable GuiEventListener hoveredElm;
+    private @Nullable GuiEventListener selectedElm;
+    private @Nullable GuiEventListener focusedElm;
+    private @Nullable GuiEventListener draggedElm;
+    public  @Nullable GuiEventListener getHoveredElm()  { return hoveredElm; }
+    public  @Nullable GuiEventListener getSelectedElm() { return selectedElm; }
+    public  @Nullable GuiEventListener getFocusedElm()  { return focusedElm; }
+    public  @Nullable GuiEventListener getDraggedElm()  { return draggedElm; }
+
+
     //! Mirror hover tracking, needed for the vanilla scissor fix.
     //! See __base_UiWidget's isHovered().
     private int mirrorHoverMouseX = Integer.MIN_VALUE;
@@ -78,6 +90,7 @@ public abstract class __base_UiScreen extends Screen {
     public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
     public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
     public @Nullable GuiGraphicsExtractor getMirrorHoverGraphics() { return mirrorHoverGraphics; }
+
 
 
 
@@ -138,6 +151,20 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
+    private @Nullable GuiEventListener computeHoveredElm(final double mouseX, final double mouseY) {
+        GuiEventListener current = this;
+        GuiEventListener result  = null;
+        while(current instanceof ContainerEventHandler containerCurrent) {
+            GuiEventListener next = null;
+            for(final GuiEventListener child : containerCurrent.children()) {
+                if(child.isMouseOver(mouseX, mouseY)) { next = child; break; }
+            }
+            if(next == null) break;
+            result  = next;
+            current = next;
+        }
+        return result;
+    }
 
     // Converts an mouse coord from GuiScale-dependant coords to the fake screen size.
     private double fx(double v) {
@@ -146,12 +173,19 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent e, boolean doubleClick) {
-        return super.mouseClicked(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())), doubleClick);
+        final MouseButtonEvent fixed = new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers()));
+        final GuiEventListener hit = computeHoveredElm(fixed.x(), fixed.y());
+        if(hit != null) draggedElm = hit;
+        return super.mouseClicked(fixed, doubleClick);
     }
+
     @Override
     public boolean mouseReleased(MouseButtonEvent e) {
-        return super.mouseReleased(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())));
+        final boolean r = super.mouseReleased(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())));
+        draggedElm = null;
+        return r;
     }
+
     @Override
     public boolean mouseDragged(MouseButtonEvent e, double dx, double dy) {
         return super.mouseDragged(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())), fx(dx), fx(dy));
@@ -238,6 +272,10 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
+
+
+
+
     /**
      * This function is called after the first init call, during resize animations, and after widget rebuilds (equivalent to destroy+init).
      * Subclasses are expected to include all of the widget positioning logic in this function and call super.layoutContent() at the very beginning.
@@ -294,6 +332,10 @@ public abstract class __base_UiScreen extends Screen {
     public void _extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         int adjMouseX = (int)fx(mouseX);
         int adjMouseY = (int)fx(mouseY);
+
+
+        // Update hovered element
+        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(adjMouseX, adjMouseY);
 
 
         //! Mirror hover state must be global and identical for all widgets.
