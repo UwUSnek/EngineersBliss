@@ -6,14 +6,12 @@ import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeature
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
-import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 
 
@@ -83,12 +81,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     private void updateHoveredFeatureReference(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 
         // Update hovered feature entry data
-        // final @Nullable UiWidgetList.Entry entry = (UiWidgetList.Entry)leftSidebar.getHoveredChild(); //TODO remove
-        // final @Nullable AbstractWidget widget = entry != null ? entry.getWidget() : null;
-
-        // final @Nullable AbstractWidget widget = leftSidebar.getHoveredChild();
-        final @Nullable GuiEventListener widget = getHoveredElm();
-        System.out.println("WIDGET: " + widget);
+        final @Nullable GuiEventListener widget = getHoveredOrDraggedElm();
         if(widget != null && widget instanceof FeatureInputWidget featureWidget) {
             lastHoverTime = System.currentTimeMillis();
             if(featureWidget != lastHoveredFeatureWidget) {

@@ -188,14 +188,4 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
         }
     }
-
-
-
-
-
-
-    // @Override //TODO remove
-    // protected void handleCursor(final GuiGraphicsExtractor graphics) {
-    //     // Empty
-    // }
 }

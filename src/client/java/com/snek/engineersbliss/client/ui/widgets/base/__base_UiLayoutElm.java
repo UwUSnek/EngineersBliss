@@ -113,7 +113,7 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
     }
 
     public boolean isHoveredOrBeingDragged() {
-        return isHovered() || isBeingDragged();
+        return isBeingDragged() || isHovered();
     }
 
 

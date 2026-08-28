@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
@@ -123,6 +124,13 @@ public class UiButton extends __base_UiWidget {
         graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
 
         handleCursor(graphics);
+    }
+
+    @Override
+    protected void handleCursor(final GuiGraphicsExtractor graphics) {
+        if(isHoveredOrBeingDragged()) {
+            graphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
+        }
     }
 
 

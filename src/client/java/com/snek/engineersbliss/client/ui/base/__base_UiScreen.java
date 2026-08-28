@@ -76,6 +76,9 @@ public abstract class __base_UiScreen extends Screen {
     public  @Nullable GuiEventListener getSelectedElm() { return selectedElm; }
     public  @Nullable GuiEventListener getFocusedElm()  { return focusedElm; }
     public  @Nullable GuiEventListener getDraggedElm()  { return draggedElm; }
+    public  @Nullable GuiEventListener getHoveredOrDraggedElm()  {
+        return hoveredElm == null ? draggedElm : hoveredElm;
+    }
 
 
     //! Mirror hover tracking, needed for the vanilla scissor fix.
@@ -166,7 +169,7 @@ public abstract class __base_UiScreen extends Screen {
         return result;
     }
 
-    // Converts an mouse coord from GuiScale-dependant coords to the fake screen size.
+    // Converts a mouse coord from GuiScale-dependant coords to virtual screen coords
     private double fx(double v) {
         return v * (realGuiScale / animatedGuiScale.compute());
     }
@@ -351,18 +354,19 @@ public abstract class __base_UiScreen extends Screen {
         }
 
 
-        //! This stops other widgets from updating hover state while dragging.
-        //! This is done by calling the wdiget's extractRenderState with a fake invalid mouse position that it can never cover.
-        //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
-        //! Only the dragged element is fed the right cursor coordinates.
+        // //! This stops other widgets from updating hover state while dragging.
+        // //! This is done by calling the wdiget's extractRenderState with a fake invalid mouse position that it can never cover.
+        // //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
+        // //! Only the dragged element is fed the right cursor coordinates.
         for(final @NotNull GuiEventListener c : children()) {
             if(c instanceof @NotNull Renderable r) {
-                if(!isDragging() || (c instanceof @NotNull __base_UiLayoutElm w && w.isBeingDragged())) {
+        //         if(!isDragging() || (c instanceof @NotNull __base_UiLayoutElm w && w.isBeingDragged())) {
+        //             System.out.println("!isDragging: " + !isDragging() + ", instance: " + (c instanceof __base_UiLayoutElm) + ", isBeingDragged: " + ((c instanceof @NotNull __base_UiLayoutElm w) ? w.isBeingDragged() : false));
                     r.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
-                }
-                else {
-                    r.extractRenderState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, delta);
-                }
+            //     }
+            //     else {
+            //         r.extractRenderState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, delta);
+            //     }
             }
         }
     }

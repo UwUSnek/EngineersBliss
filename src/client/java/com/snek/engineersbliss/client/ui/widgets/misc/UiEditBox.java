@@ -332,7 +332,7 @@ public class UiEditBox extends __base_UiWidget {
         }
 
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        if(isHovered()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
+        if(isHoveredOrBeingDragged()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
     }
 
 

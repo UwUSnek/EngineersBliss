@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -213,7 +214,14 @@ public class UiSlider extends __base_UiWidget {
 
 
         // Handle cursor shape and position
-        this.handleCursor(graphics);
+        handleCursor(graphics);
+    }
+
+    @Override
+    protected void handleCursor(final GuiGraphicsExtractor graphics) {
+        if(isHoveredOrBeingDragged()) {
+            graphics.requestCursor(isActive() ? CursorTypes.RESIZE_EW : CursorTypes.NOT_ALLOWED);
+        }
     }
 
 
