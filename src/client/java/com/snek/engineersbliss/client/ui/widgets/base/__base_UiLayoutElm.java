@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.utils.Txt;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 
+import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;

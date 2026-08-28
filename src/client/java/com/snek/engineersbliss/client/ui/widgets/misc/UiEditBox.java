@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -20,7 +21,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.util.Mth;
 import net.minecraft.util.StringUtil;
 import net.minecraft.util.Util;
 
@@ -46,20 +46,27 @@ public class UiEditBox extends __base_UiWidget {
     private final UiTxt hint;
     private final Consumer<String> responder;
 
-    private String value = "";
-    private int maxLength = Integer.MAX_VALUE;
+    private String value;
+    private int maxLength;
     private int cursorPos;
     private int highlightPos;
-    private int scrollPx; // horizontal scroll offset, in pixels
-    private boolean editable = true;
-    private long focusedTime = Util.getMillis();
+    private AnimatedInt scrollPx; // horizontal scroll offset, in pixels
+    private boolean editable;
+    private long focusedTime;
 
 
     public UiEditBox(final Screen screen, final UiTxt hint, final Consumer<String> responder) {
         super(screen, new UiTxt(Component.empty()), TextAlignment.LEFT);
+        this.hint         = hint;
+        this.responder    = responder;
+        this.value        = "";
+        this.maxLength    = Integer.MAX_VALUE;
+        this.cursorPos    = 0;
+        this.highlightPos = 0;
+        this.scrollPx     = new AnimatedInt(0, 50);
+        this.editable     = true;
+        this.focusedTime  = Util.getMillis();
         setBgColor(Layout.bgColor);
-        this.hint = hint;
-        this.responder = responder;
         updateLabel();
     }
 
@@ -80,7 +87,7 @@ public class UiEditBox extends __base_UiWidget {
         value = newValue.length() > maxLength ? newValue.substring(0, maxLength) : newValue;
         cursorPos = value.length();
         highlightPos = cursorPos;
-        scrollPx = 0;
+        scrollPx.startNewTransition(0); //BUG idk why this is set to 0
         onValueChange();
     }
 
@@ -190,12 +197,12 @@ public class UiEditBox extends __base_UiWidget {
     public void moveCursorToEnd(final boolean extendSelection) { moveCursorTo(value.length(), extendSelection); }
 
     private void setCursorPosition(final int pos) {
-        cursorPos = Mth.clamp(pos, 0, value.length());
+        cursorPos = Math.clamp(pos, 0, value.length());
         scrollTo(cursorPos);
     }
 
     private void setHighlightPos(final int pos) {
-        highlightPos = Mth.clamp(pos, 0, value.length());
+        highlightPos = Math.clamp(pos, 0, value.length());
         scrollTo(highlightPos);
     }
 
@@ -203,12 +210,13 @@ public class UiEditBox extends __base_UiWidget {
         final Font font = getFont();
         final int innerWidth = getInnerWidth();
         final int posX = font.width(value.substring(0, pos));
+        int curScrollPx = scrollPx.compute();
 
-        if(posX - scrollPx > innerWidth) scrollPx = posX - innerWidth;
-        if(posX - scrollPx < 0) scrollPx = posX;
+        if(posX - curScrollPx > innerWidth) curScrollPx = posX - innerWidth;
+        if(posX - curScrollPx < 0)          curScrollPx = posX;
 
         final int maxScroll = Math.max(0, font.width(value) - innerWidth);
-        scrollPx = Mth.clamp(scrollPx, 0, maxScroll);
+        scrollPx.startNewTransition(Math.clamp(curScrollPx, 0, maxScroll));
     }
 
 
@@ -275,7 +283,7 @@ public class UiEditBox extends __base_UiWidget {
 
 
     private int findClickedPositionInText(final MouseButtonEvent event) {
-        final int targetPx = Math.max(0, Mth.floor(event.x()) - getInnerX() + scrollPx);
+        final int targetPx = Math.max(0, (int)Math.floor(event.x()) - getInnerX() + scrollPx.compute());
         return getFont().plainSubstrByWidth(value, targetPx).length();
     }
 
@@ -309,7 +317,7 @@ public class UiEditBox extends __base_UiWidget {
 
         if(isFocused() || highlightPos != cursorPos) {
             final Font font = getFont();
-            final int textX = getInnerX() - scrollPx;
+            final int textX = getInnerX() - scrollPx.compute();
             final int textY = getY() + (getHeight() - 9) / 2;
             final int cursorX = textX + font.width(value.substring(0, cursorPos));
 
@@ -334,7 +342,7 @@ public class UiEditBox extends __base_UiWidget {
         if(label != null && label.length() > 0) {
             final int y = getY() + (getHeight() - label.getScaledFont().getLineHeight()) / 2;
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-            RenderingUtils.extractTxt(graphics, label, getInnerX() - scrollPx, y, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
+            RenderingUtils.extractTxt(graphics, label, getInnerX() - scrollPx.compute(), y, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
             graphics.disableScissor();
         }
     }

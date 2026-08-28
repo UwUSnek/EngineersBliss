@@ -14,6 +14,7 @@ import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSe
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -294,21 +295,33 @@ public abstract class __base_UiScreen extends Screen {
         int adjMouseX = (int)fx(mouseX);
         int adjMouseY = (int)fx(mouseY);
 
-        //! This stops other widgets from updating hover state while dragging.
-        //! This is done by calling the superclass's extractRenderState with a fake invalid mouse position that no widget can cover.
-        //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
 
-        //! Different mirror hover state update calls (updateMirrorHoverState) aren't actually needed because
-        //! render calls are supposed to check the mouse position that is provided to them through the parameters,
-        //! but updating both makes the whole system less bug prone.
-
-        if(isDragging()) {
-            updateMirrorHoverState  (graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF);
-            super.extractRenderState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, delta);
+        //! Mirror hover state must be global and identical for all widgets.
+        //! Setting a global it once for each widget makes widgets reading it from outside the render loop go out of sync,
+        //! while keeping a separate cached value for each individual widget is a maintainability nightmare.
+        //! One global state for all widgets has the drawback of it reporting [not hovered] for the widget thats currently being dragged,
+        //! but the widget itself can simply use isBeingHoveredOrDragged(), which checks for both.
+        if(!isDragging()) {
+            updateMirrorHoverState(graphics, adjMouseX, adjMouseY, mouseX, mouseY);
         }
         else {
-            updateMirrorHoverState  (graphics, adjMouseX, adjMouseY, mouseX, mouseY);
-            super.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
+            updateMirrorHoverState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF);
+        }
+
+
+        //! This stops other widgets from updating hover state while dragging.
+        //! This is done by calling the wdiget's extractRenderState with a fake invalid mouse position that it can never cover.
+        //! This stops the cursor from highlighting other stuff while dragging, making controls feel tidier.
+        //! Only the dragged element is fed the right cursor coordinates.
+        for(final @NotNull GuiEventListener c : children()) {
+            if(c instanceof @NotNull Renderable r) {
+                if(!isDragging() || (c instanceof @NotNull __base_UiLayoutElm w && w.isBeingDragged())) {
+                    r.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
+                }
+                else {
+                    r.extractRenderState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, delta);
+                }
+            }
         }
     }
 

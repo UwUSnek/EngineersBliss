@@ -41,9 +41,6 @@ public class UiButton extends __base_UiWidget {
     private @Nullable Identifier bgSpriteId;
     private UiSize bgSpriteWidth;
 
-    // Mouse handling
-    private boolean dragged = false;
-
 
 
 
@@ -94,27 +91,6 @@ public class UiButton extends __base_UiWidget {
     @Override
     public void onClick(final MouseButtonEvent event, final boolean doubleClick) {
         if(pressCallback != null) pressCallback.accept(this);
-    }
-
-    @Override
-    public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-        final boolean r = super.mouseClicked(event, doubleClick);
-        dragged = true;
-        return r;
-    }
-
-    @Override
-    public boolean mouseReleased(final MouseButtonEvent event) {
-        dragged = false;
-        return super.mouseReleased(event);
-    }
-
-    public boolean isBeingDragged() {
-        return dragged;
-    }
-
-    public boolean isHoveredOrBeingDragged() {
-        return isHovered() || isBeingDragged();
     }
 
 
