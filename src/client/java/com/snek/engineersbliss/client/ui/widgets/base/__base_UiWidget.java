@@ -31,6 +31,10 @@ import net.minecraft.network.chat.Component;
 
 
 public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCacheWidget {
+    private static final int SCROLL_PAUSE_MS = 1000;
+    private static final int SCROLL_SPEED    = 20; // The scroll speed, in pixels/s
+
+
     private static final List<AbstractWidget> emptyChildList = new ArrayList<>();
 
 
@@ -146,24 +150,23 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if(label != null && label.length() > 0) {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
-            final float scale = scaledFont.getScale();
             final int lineHeight = scaledFont.getLineHeight();
 
-            final int pauseMs = 1000;
-            final int pxPerSecond = 20;
             final int overflow = labelWidth - getInnerWidth();
 
             int shift = 0;
             if(overflow > 0) {
-                final int scrollMs = (int)(overflow * 1000L / pxPerSecond);
-                final int cycleMs  = pauseMs * 2 + scrollMs;
+                final int scrollMs = (int)(overflow * 1000L / SCROLL_SPEED);
+                final int cycleMs  = SCROLL_PAUSE_MS * 2 + scrollMs;
                 final long t = System.currentTimeMillis() % cycleMs;
 
-                if(t < pauseMs) {
+                if(t < SCROLL_PAUSE_MS) {
                     shift = 0;
-                } else if(t < pauseMs + scrollMs) {
-                    shift = (int)((t - pauseMs) * pxPerSecond / 1000);
-                } else {
+                }
+                else if(t < SCROLL_PAUSE_MS + scrollMs) {
+                    shift = (int)((t - SCROLL_PAUSE_MS) * SCROLL_SPEED / 1000);
+                }
+                else {
                     shift = overflow;
                 }
             }

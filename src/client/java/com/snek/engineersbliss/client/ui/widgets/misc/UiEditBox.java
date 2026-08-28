@@ -2,6 +2,8 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 
 import java.util.function.Consumer;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
@@ -49,6 +51,7 @@ public class UiEditBox extends __base_UiWidget {
     private String value;
     private int maxLength;
     private int cursorPos;
+    private AnimatedInt visualCursorPosPx;
     private int highlightPos;
     private AnimatedInt scrollPx; // horizontal scroll offset, in pixels
     private boolean editable;
@@ -62,6 +65,7 @@ public class UiEditBox extends __base_UiWidget {
         this.value        = "";
         this.maxLength    = Integer.MAX_VALUE;
         this.cursorPos    = 0;
+        this.visualCursorPosPx = new AnimatedInt(0, 50);
         this.highlightPos = 0;
         this.scrollPx     = new AnimatedInt(0, 50);
         this.editable     = true;
@@ -232,10 +236,10 @@ public class UiEditBox extends __base_UiWidget {
         final boolean ctrl = event.hasControlDownWithQuirk();
         final boolean shift = event.hasShiftDown();
         switch(event.key()) {
-            case 259:
+            case GLFW.GLFW_KEY_BACKSPACE:
                 if(editable) deleteCharsToPos(ctrl ? getWordPosition(-1) : Util.offsetByCodepoints(value, cursorPos, -1));
                 return true;
-            case 261:
+            case 261: //TODO
                 if(editable) deleteCharsToPos(ctrl ? getWordPosition(1) : Util.offsetByCodepoints(value, cursorPos, 1));
                 return true;
             case 262:
@@ -319,7 +323,8 @@ public class UiEditBox extends __base_UiWidget {
             final Font font = getFont();
             final int textX = getInnerX() - scrollPx.compute();
             final int textY = getY() + (getHeight() - 9) / 2;
-            final int cursorX = textX + font.width(value.substring(0, cursorPos));
+            visualCursorPosPx.startNewTransition(textX + font.width(value.substring(0, cursorPos)));
+            final int cursorX = visualCursorPosPx.compute();
 
             if(highlightPos != cursorPos) {
                 final int highlightX = textX + font.width(value.substring(0, highlightPos));
