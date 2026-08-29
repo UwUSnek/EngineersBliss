@@ -158,7 +158,7 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
         // Empty by default
     }
     private void checkHoverTransition() {
-        boolean hovered = isHovered();
+        boolean hovered = isHoveredOrBeingDragged();
         if(hovered && !wasHovered) onHoverStart();
         if(!hovered && wasHovered) onHoverEnd();
         wasHovered = hovered;
