@@ -92,6 +92,7 @@ public class UiButton extends __base_UiWidget {
     @Override
     public void onClick(final MouseButtonEvent event, final boolean doubleClick) {
         if(pressCallback != null) pressCallback.accept(this);
+        playClickSound();
     }
 
 

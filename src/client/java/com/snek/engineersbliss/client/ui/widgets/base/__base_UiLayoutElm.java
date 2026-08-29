@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.utils.Txt;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 
-import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -16,6 +15,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 
 
@@ -164,5 +164,14 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
     @Override
     public @Nullable ComponentPath nextFocusPath(final FocusNavigationEvent navigationEvent) {
         return null; // Empty. Tab focusing is disabled.
+    }
+
+
+
+
+    // Mute default Vanilla sounds
+    @Override
+    public final void playDownSound(final SoundManager soundManager) {
+        // Empty
     }
 }

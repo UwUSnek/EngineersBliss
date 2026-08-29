@@ -90,6 +90,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
     protected void onValueChange() {
         updateLabel();
+        playTypeSound();
     }
 
 

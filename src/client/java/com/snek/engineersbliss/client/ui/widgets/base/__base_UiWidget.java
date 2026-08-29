@@ -6,6 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
@@ -18,10 +19,16 @@ import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
 
 
 
@@ -32,7 +39,33 @@ import net.minecraft.network.chat.Component;
 
 public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCacheWidget {
     private static final int SCROLL_PAUSE_MS = 1000;
-    private static final int SCROLL_SPEED    = 20; // The scroll speed, in pixels/s
+    private static final int SCROLL_SPEED    = 20;  // The scroll speed, in pixels/s
+
+
+    public static SoundEvent CUSTOM_TYPE_SOUND;
+    public static SoundEvent CUSTOM_CLICK_SOUND;
+
+    // Custom sounds
+    public static void register() {
+        CUSTOM_TYPE_SOUND = Registry.register(
+            BuiltInRegistries.SOUND_EVENT,
+            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "type"),
+            SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "type"))
+        );
+        CUSTOM_CLICK_SOUND = Registry.register(
+            BuiltInRegistries.SOUND_EVENT,
+            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "click"),
+            SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "click"))
+        );
+    }
+    public static void playTypeSound() {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_TYPE_SOUND, 1f));
+    }
+    public static void playClickSound() {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_CLICK_SOUND, 1f, 1.2f));
+    }
+
+
 
 
     private static final List<AbstractWidget> emptyChildList = new ArrayList<>();

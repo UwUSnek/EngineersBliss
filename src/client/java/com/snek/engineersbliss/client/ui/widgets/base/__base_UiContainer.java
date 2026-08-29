@@ -181,9 +181,4 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
         }
         return r;
     }
-
-    @Override
-    public void playDownSound(final SoundManager soundManager) {
-        // Empty. Stop containers from playing the click sound.
-    }
 }

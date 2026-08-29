@@ -1,0 +1,15 @@
+{
+    "type": {
+        "sounds": [
+            "engineers-bliss:type_0",
+            "engineers-bliss:type_1",
+            "engineers-bliss:type_2"
+        ]
+    },
+    "click": {
+        "sounds": [
+            "engineers-bliss:click_0",
+            "engineers-bliss:click_1"
+        ]
+    }
+}
