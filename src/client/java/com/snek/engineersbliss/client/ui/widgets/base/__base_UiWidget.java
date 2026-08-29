@@ -44,25 +44,34 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
     public static SoundEvent CUSTOM_TYPE_SOUND;
     public static SoundEvent CUSTOM_CLICK_SOUND;
+    public static SoundEvent CUSTOM_DRAG_SOUND;
+    public static SoundEvent CUSTOM_HOVER_SOUND;
 
     // Custom sounds
     public static void register() {
-        CUSTOM_TYPE_SOUND = Registry.register(
-            BuiltInRegistries.SOUND_EVENT,
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "type"),
-            SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "type"))
-        );
-        CUSTOM_CLICK_SOUND = Registry.register(
-            BuiltInRegistries.SOUND_EVENT,
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "click"),
-            SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "click"))
-        );
+        CUSTOM_TYPE_SOUND  = registerSound("ui.type");
+        CUSTOM_CLICK_SOUND = registerSound("ui.click");
+        CUSTOM_DRAG_SOUND  = registerSound("ui.drag");
+        CUSTOM_HOVER_SOUND = registerSound("ui.hover");
+    }
+    private static SoundEvent registerSound(final String id) {
+        final Identifier identifier = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, id);
+        return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
     }
     public static void playTypeSound() {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_TYPE_SOUND, 1f));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_TYPE_SOUND, 1f, 1f));
     }
     public static void playClickSound() {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_CLICK_SOUND, 1f, 1.2f));
+    }
+    public static void playDragSound() {
+        playDragSound(0.5);
+    }
+    public static void playDragSound(final double position) {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_DRAG_SOUND, 1f + ((float)position * 0.2f - 0.1f), 1f));
+    }
+    public static void playHoverSound() {
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_HOVER_SOUND, 1f, 0.5f));
     }
 
 
@@ -172,6 +181,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
         extractDebugOverlay(graphics, mouseX, mouseY, a);

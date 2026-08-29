@@ -90,7 +90,6 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
     protected void onValueChange() {
         updateLabel();
-        playTypeSound();
     }
 
 
@@ -221,56 +220,60 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     @Override
     public boolean keyPressed(final KeyEvent event) {
         if(!isActive() || !isFocused()) return false;
+        boolean r;
+
         final boolean ctrl = event.hasControlDownWithQuirk();
         final boolean shift = event.hasShiftDown();
         switch(event.key()) {
             case GLFW.GLFW_KEY_BACKSPACE: {
                 if(editable) deleteCharsToPos(ctrl ? getWordPosition(-1) : Util.offsetByCodepoints(value, cursorPos, -1));
-                return true;
+                r = true; break;
             }
             case GLFW.GLFW_KEY_DELETE: {
                 if(editable) deleteCharsToPos(ctrl ? getWordPosition(1) : Util.offsetByCodepoints(value, cursorPos, 1));
-                return true;
+                r = true; break;
             }
             case GLFW.GLFW_KEY_RIGHT: {
                 moveCursorTo(ctrl ? getWordPosition(1) : Util.offsetByCodepoints(value, cursorPos, 1), shift);
-                return true;
+                r = true; break;
             }
             case GLFW.GLFW_KEY_LEFT: {
                 moveCursorTo(ctrl ? getWordPosition(-1) : Util.offsetByCodepoints(value, cursorPos, -1), shift);
-                return true;
+                r = true; break;
             }
             case GLFW.GLFW_KEY_HOME: {
                 moveCursorToStart(shift);
-                return true;
+                r = true; break;
             }
             case GLFW.GLFW_KEY_END: {
                 moveCursorToEnd(shift);
-                return true;
+                r = true; break;
             }
             default: {
                 if(event.isSelectAll()) {
                     moveCursorToEnd(false);
                     setHighlightPos(0);
                     updateLabel();
-                    return true;
+                    r = true; break;
                 }
                 if(event.isCopy()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
-                    return true;
+                    r = true; break;
                 }
                 if(event.isPaste()) {
                     if(editable) insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
-                    return true;
+                    r = true; break;
                 }
                 if(event.isCut()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
                     if(editable) insertText("");
-                    return true;
+                    r = true; break;
                 }
-                return false;
+                r = false; break;
             }
         }
+        if(r) playTypeSound();
+        return r;
     }
 
     @Override

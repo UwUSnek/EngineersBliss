@@ -1,15 +1,25 @@
 {
-    "type": {
+    "ui.type": {
         "sounds": [
-            "engineers-bliss:type_0",
-            "engineers-bliss:type_1",
-            "engineers-bliss:type_2"
+            "engineers-bliss:ui/type_0",
+            "engineers-bliss:ui/type_1",
+            "engineers-bliss:ui/type_2"
         ]
     },
-    "click": {
+    "ui.click": {
         "sounds": [
-            "engineers-bliss:click_0",
-            "engineers-bliss:click_1"
+            "engineers-bliss:ui/click_0",
+            "engineers-bliss:ui/click_1"
+        ]
+    },
+    "ui.drag": {
+        "sounds": [
+            "engineers-bliss:ui/drag"
+        ]
+    },
+    "ui.hover": {
+        "sounds": [
+            "engineers-bliss:ui/hover"
         ]
     }
 }

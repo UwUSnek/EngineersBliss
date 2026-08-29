@@ -95,6 +95,12 @@ public class UiButton extends __base_UiWidget {
         playClickSound();
     }
 
+    @Override
+    protected void onHoverStart() {
+        super.onHoverStart();
+        playHoverSound();
+    }
+
 
 
 

@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -16,7 +15,6 @@ import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
@@ -176,7 +174,14 @@ public class UiSlider extends __base_UiWidget {
     protected void applyValue() {
         if(onChange != null) onChange.accept(value);
         visualValue.startNewTransition(value);
+        playDragSound(value);
         markBgDirty();
+    }
+
+    @Override
+    protected void onHoverStart() {
+        super.onHoverStart();
+        playHoverSound();
     }
 
 

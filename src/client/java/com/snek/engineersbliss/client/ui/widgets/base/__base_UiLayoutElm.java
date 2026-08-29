@@ -29,6 +29,7 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
 
     // Input handling
     private boolean dragged;
+    private boolean wasHovered = false;
 
 
     // Screen reference
@@ -150,10 +151,29 @@ public abstract class __base_UiLayoutElm extends AbstractWidget {
 
 
 
+    protected void onHoverStart() {
+        // Empty by default
+    }
+    protected void onHoverEnd() {
+        // Empty by default
+    }
+    private void checkHoverTransition() {
+        boolean hovered = isHovered();
+        if(hovered && !wasHovered) onHoverStart();
+        if(!hovered && wasHovered) onHoverEnd();
+        wasHovered = hovered;
+    }
+
+
+
+
+
+
+
 
     @Override
     protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        // Empty by default
+        checkHoverTransition();
     }
 
     @Override
