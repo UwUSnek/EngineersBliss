@@ -21,5 +21,10 @@
         "sounds": [
             "engineers-bliss:ui/hover"
         ]
+    },
+    "ui.metal_pipe": {
+        "sounds": [
+            "engineers-bliss:ui/metal_pipe"
+        ]
     }
 }

@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;

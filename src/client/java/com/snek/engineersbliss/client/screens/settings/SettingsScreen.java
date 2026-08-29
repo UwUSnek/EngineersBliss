@@ -92,5 +92,14 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
             this, SettingsClientFeatureSet.BLOCK_SHADER_LIMIT,
             null, blockShaderLimitFormatter, 0, 0
         ), Layout.BORDER_HEIGHT);
+
+
+        // Misc
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
+            this, SettingsClientFeatureSet.METAL_PIPE_SOUNDS,
+            null
+        ), Layout.BORDER_HEIGHT);
     }
 }

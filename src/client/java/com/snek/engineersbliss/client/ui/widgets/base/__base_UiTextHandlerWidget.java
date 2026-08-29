@@ -280,6 +280,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     public boolean charTyped(final CharacterEvent event) {
         if(!isActive() || !isFocused() || !editable || !isValidCharacter(event.codepoint())) return false;
         insertText(event.codepointAsString());
+        playTypeSound();
         return true;
     }
 

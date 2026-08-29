@@ -42,36 +42,47 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     private static final int SCROLL_SPEED    = 20;  // The scroll speed, in pixels/s
 
 
+
+
+    // Custom sounds
     public static SoundEvent CUSTOM_TYPE_SOUND;
     public static SoundEvent CUSTOM_CLICK_SOUND;
     public static SoundEvent CUSTOM_DRAG_SOUND;
     public static SoundEvent CUSTOM_HOVER_SOUND;
+    public static SoundEvent METAL_PIPE_SOUND;
 
-    // Custom sounds
+
+    private static SoundEvent registerSound(final String id) {
+        final Identifier identifier = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, id);
+        return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
+    }
     public static void register() {
         CUSTOM_TYPE_SOUND  = registerSound("ui.type");
         CUSTOM_CLICK_SOUND = registerSound("ui.click");
         CUSTOM_DRAG_SOUND  = registerSound("ui.drag");
         CUSTOM_HOVER_SOUND = registerSound("ui.hover");
+        METAL_PIPE_SOUND   = registerSound("ui.metal_pipe");
     }
-    private static SoundEvent registerSound(final String id) {
-        final Identifier identifier = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, id);
-        return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
+
+
+    private static void playUiSound(final SoundEvent sound, final float pitch, final float volume) {
+        final SoundEvent actualSound = ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.METAL_PIPE_SOUNDS) ? METAL_PIPE_SOUND : sound;
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(actualSound, pitch, volume));
     }
     public static void playTypeSound() {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_TYPE_SOUND, 1f, 1f));
+        playUiSound(CUSTOM_TYPE_SOUND, 1f, 1f);
     }
     public static void playClickSound() {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_CLICK_SOUND, 1f, 1.2f));
+        playUiSound(CUSTOM_CLICK_SOUND, 1f, 1.2f);
     }
     public static void playDragSound() {
         playDragSound(0.5);
     }
     public static void playDragSound(final double position) {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_DRAG_SOUND, 1f + ((float)position * 0.2f - 0.1f), 1f));
+        playUiSound(CUSTOM_DRAG_SOUND, 1f + ((float)position * 0.2f - 0.1f), 1f);
     }
     public static void playHoverSound() {
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(CUSTOM_HOVER_SOUND, 1f, 0.5f));
+        playUiSound(CUSTOM_HOVER_SOUND, 1f, 0.5f);
     }
 
 

@@ -95,6 +95,15 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
 
 
+    public static final ClientFeature<?> METAL_PIPE_SOUNDS = new ClientFeature<>(
+        SettingsServerFeatureSet.METAL_PIPE_SOUNDS,
+        () -> new UiTxt("Metal pipe UI sounds"),
+        () -> new UiTxt("Replaces all UI sounds with the Metal Pipe Falling sound.")
+    );
+
+
+
+
 
 
 

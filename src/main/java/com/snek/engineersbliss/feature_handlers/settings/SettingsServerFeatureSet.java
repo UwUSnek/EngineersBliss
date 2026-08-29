@@ -50,4 +50,9 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
         "block_shader_limit",
         List.of(2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, BLOCK_SHADER_LIMIT_INFINITE), 6
     ));
+
+
+
+
+    public static final ServerToggleFeature METAL_PIPE_SOUNDS = INSTANCE.registerFeature(new ServerToggleFeature("metal_pipe_sounds", false));
 }
