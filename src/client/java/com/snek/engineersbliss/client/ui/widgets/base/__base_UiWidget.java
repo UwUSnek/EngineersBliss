@@ -70,7 +70,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(actualSound, pitch, volume));
     }
     public static void playTypeSound() {
-        playUiSound(CUSTOM_TYPE_SOUND, 1f, 1f);
+        playUiSound(CUSTOM_TYPE_SOUND, 1f, 0.75f);
     }
     public static void playClickSound() {
         playUiSound(CUSTOM_CLICK_SOUND, 1f, 1.2f);
