@@ -1,16 +1,18 @@
 package com.snek.engineersbliss.client.feature_handlers.rendering;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderersAccessor;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
+import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
 import com.snek.engineersbliss.utils.scheduler.LoopTaskHandler;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
@@ -30,43 +32,22 @@ import net.minecraft.world.level.lighting.LevelLightEngine;
 public class RenderingFilterHandler {
     private RenderingFilterHandler() {}
 
+
+    private static final Map<BlockState, Boolean> stateShouldRenderCache = new ConcurrentHashMap<>();
+
+
     private static int lightRecalcMax = 0;
     private static int lightRecalcProgress = 0;
     public static int getLightRecalcMax() { return lightRecalcMax; }
     public static int getLightRecalcProgress() { return lightRecalcProgress; }
 
 
-
-
-    private static final Map<Block, Boolean> enabledStates  = new HashMap<>();
-    private static final Map<Block, Boolean> isolatedStates = new HashMap<>();
-    private static boolean targetHiddenBlocks;
-    public static void  setEnabled(final Block block, final boolean  enabled) { enabledStates.put(block, enabled); }
-    public static void setIsolated(final Block block, final boolean isolated) { isolatedStates.put(block, isolated); }
-    public static void setTargetHiddenBlocks(final boolean newTargetHiddenBlocks) { targetHiddenBlocks = newTargetHiddenBlocks; }
-    public static boolean  getEnabled(final Block block) { return enabledStates.get(block); }
-    public static boolean getIsolated(final Block block) { return isolatedStates.get(block); }
-    public static boolean getTargetHiddenBlocks() { return targetHiddenBlocks; }
-
-
-
-
-    private static boolean renderBlockOutlines;
-    private static boolean renderBlocks;
-    private static boolean renderBlockEntities;
-    private static boolean renderFluids;
-    private static boolean shadingFix;
-    public static void setRenderBlockOutlines(final boolean newRenderBlockOutlines) { renderBlockOutlines = newRenderBlockOutlines; }
-    public static void setRenderBlocks       (final boolean newRenderBlocks)        { renderBlocks        = newRenderBlocks;        }
-    public static void setRenderBlockEntities(final boolean newRenderBlockEntities) { renderBlockEntities = newRenderBlockEntities; }
-    public static void setRenderFluids       (final boolean newRenderFluids)        { renderFluids        = newRenderFluids;        }
-    public static void setShadingFix         (final boolean newShadingFix)          { shadingFix          = newShadingFix;          }
-    public static boolean getRenderBlockOutlines() { return renderBlockOutlines; }
-    public static boolean getRenderBlocks       () { return renderBlocks;        }
-    public static boolean getRenderBlockEntities() { return renderBlockEntities; }
-    public static boolean getRenderFluids       () { return renderFluids;        }
-    public static boolean getFixShading         () { return shadingFix;          }
-
+    private static final Set<Block> enabledBlocks  = ConcurrentHashMap.newKeySet();
+    private static final Set<Block> isolatedBlocks = ConcurrentHashMap.newKeySet();
+    public static void  setEnabled(final Block block, final boolean  enabled) { if(enabled)   enabledBlocks.add(block); else  enabledBlocks.remove(block); }
+    public static void setIsolated(final Block block, final boolean isolated) { if(isolated) isolatedBlocks.add(block); else isolatedBlocks.remove(block); }
+    public static boolean  getEnabled(final Block block) { return enabledBlocks.contains(block); }
+    public static boolean getIsolated(final Block block) { return isolatedBlocks.contains(block); }
 
 
 
@@ -98,44 +79,38 @@ public class RenderingFilterHandler {
      * Init function. Must be called during the mod's initialization.
      * This function can be called again to reset the filter back to the default state.
      */
-    public static void init(
-        final boolean defaultTargetHiddenBlocks,
-        final boolean defaultRenderBlockOutlines,
-        final boolean defaultRenderBlocks,
-        final boolean defaultRenderBlockEntities,
-        final boolean defaultRenderFluids
-    ) {
+    public static void init() {
         findBlocksWithBlockEntityRendering();
+        resetStateCache();
 
-        targetHiddenBlocks = defaultTargetHiddenBlocks;
-        renderBlockOutlines = defaultRenderBlockOutlines;
-        renderBlocks        = defaultRenderBlocks;
-        renderBlockEntities = defaultRenderBlockEntities;
-        renderFluids        = defaultRenderFluids;
-
-        //! This inclused the 3 air blocks but it doesn't really matter, they only ned to be hidden in the UI
+        //! This includes the 3 air blocks but it doesn't really matter, they only need to be hidden in the UI
         BuiltInRegistries.BLOCK.forEach(block -> {
             setEnabled(block, true);
             setIsolated(block, false);
         });
-        recalculate();
+    }
+
+
+    public static void resetFilters() {
+        for(final __base_ServerFeature feature : RenderingServerFeatureSet.INSTANCE.getFeatures().values()) {
+            ClientFeatureSync.setFeature(feature, feature.getDefault());
+        }
+        RenderingFilterHandler.init(); //! This calls resetStatetCache()
+        MinecraftUtils.refreshRendering();
+    }
+
+
+    public static void resetStateCacheAndRefresh() {
+        resetStateCache();
+        MinecraftUtils.refreshRendering();
+    }
+    public static void resetStateCache() {
+        stateShouldRenderCache.clear();
     }
 
 
 
 
-    private static final Set<Block> activeBlocks = new HashSet<>();
-    public static Set<Block> getActiveBlocks() { return activeBlocks; }
-
-    public static void recalculate() {
-        activeBlocks.clear();
-        for(final Entry<Block, Boolean> entry : isolatedStates.entrySet()) {
-            if(entry.getValue().booleanValue()) activeBlocks.add(entry.getKey());
-        }
-        if(activeBlocks.isEmpty()) for(final Entry<Block, Boolean> entry : enabledStates.entrySet()) {
-            if(entry.getValue().booleanValue()) activeBlocks.add(entry.getKey());
-        }
-    }
 
 
 
@@ -184,28 +159,40 @@ public class RenderingFilterHandler {
 
 
 
+
+
+
+
     /**
      * Checks if the specified block state should render, based on the current rendering filter settings.
      * ! This doesn't takes into account the static block entity model system for performance and maintainability reasons.
-     * @param state The blockstate of the block to check.
-     * @return True if the block should render, false otherwise.
+     * @param state The blockstate to check.
+     * @return True if the block state should render, false otherwise.
      */
-    public static boolean shouldBlockRender(final BlockState state) {
+    public static boolean shouldStateRender(final BlockState state) {
+        return stateShouldRenderCache.computeIfAbsent(state, k -> calculateRenderStateForState(k));
+    }
+
+
+    @SuppressWarnings("java:S1126")
+    private static boolean calculateRenderStateForState(final BlockState state) {
         if(state == null) return false;
+        final Block block = state.getBlock();
 
 
-        //Check category rendering. Return false if disabled
-        final boolean hasBlockEntityRendering = state.hasBlockEntity() && blocksWithBlockEntityRendering.contains(state.getBlock());
-        if(
-            !RenderingFilterHandler.getRenderFluids()        && !state.getFluidState().isEmpty()  ||
-            !RenderingFilterHandler.getRenderBlockEntities() && hasBlockEntityRendering           ||
-            !RenderingFilterHandler.getRenderBlocks()        && state.getFluidState().isEmpty() && !hasBlockEntityRendering
-        ) {
-            return false;
-        }
+        // Check isolated blocks and enabled blocks lists
+        final boolean isAnyIsolated = !isolatedBlocks.isEmpty();
+        final boolean r = isAnyIsolated ? isolatedBlocks.contains(block) : enabledBlocks.contains(block);
+        if(!r) return false;
 
 
-        // If rendering of the block category is enabled, check the individual filters
-        return RenderingFilterHandler.getActiveBlocks().contains(state.getBlock());
+        // Check category rendering
+        final boolean hasFluid                = !state.getFluidState().isEmpty();
+        final boolean hasBlockEntityRendering = state.hasBlockEntity() && blocksWithBlockEntityRendering.contains(block);
+        final boolean isPlainBlock            = !hasFluid && !hasBlockEntityRendering;
+        if(hasFluid                && !ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_FLUIDS))         return false;
+        if(hasBlockEntityRendering && !ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_BLOCK_ENTITIES)) return false;
+        if(isPlainBlock            && !ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_BLOCKS))         return false;
+        return true;
     }
 }

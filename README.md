@@ -79,146 +79,180 @@ It helps a lot :3
 
 ## Full list of features
 
-- **Misc**:
+- ### Misc
+
   - Player model rendering in the pause menu
   - In-game status bar
   - Stop the pause menu from pausing the game
-  <br><br>
-- **Rendering**:
-  - Selectively hide blocks by type or rendering method
-  - Click through hidden blocks
-  - Custom block outlines
-  - Force light recalculation
-  <br><br>
-- **In-game calculator**:
-  - Basic scientific calculator operations
-  - Unit conversion
-  - History
-  <br><br>
-- **Alternative textures**:
-  - Minimal Redstone Wire
-  - Disable Redstone Wire particles
-  - Disable Campfire particles
-  - Disable redstone wire particles
-  - Disable Fire particles
-  - Disable Lava particles
-  - Disable Water Stream particles
-  - Disable drip particles
-  - Less opaque Slime Blocks
-  - Less opaque Honey Blocks
-  - Unobstructive Mangrove Roots
-  - Unobstructive Scaffoldings<br><br>
-  - Consistent sloped Rails
-  - Alternative Barrier rendering
-  - Alternative Structure Void rendering
-  - Alternative Light Block rendering
-  - Static Sign models
-  - Static Chest models
-  - Static Banner models
-  - static decorated pot models
-  - static bell models
-  - static copper golem statue models
-  - static lectern models
-  - Optimized Shelf rendering logic
-  - Optimized Campfire rendering logic<br><br>
-  - 3D Redstone Wire
-  - 3D Rails
-  - 3D Ladders
-  - 3D Iron Chains & Copper Chains
-  - 3D Iron Bars & Copper Bars
-  - 3D Vines
-  - 3D Glow Lichen
-  <br><br>
-- **Overlays**:
-  - Highlight the blocks moved by a piston
-  - Display scheduled tick timers
-  - Display Hopper cooldown timers
-  - Show Redstone Wire power level
-  - Show Powered Rail and Activator Rail power levels
-  - Show Comparator power levels
-  - Show current fuel and item of Furnaces, Smokers and Blast Furnaces
-  - Highlight the power source of Rail blocks
-  - Highlight the power source of Redstone Wires
-  - Visualize Comparator output logic
-  - Visualize the order in which pistons move blocks
-  - Visualize the neighbor updates redstone components send when their state changes
-  - Visualize Quasi-connectivity interactions
-  <br><br>
-- **Block groups**:
-  - Group blocks together to recognize circuits at a glance
-  - Name and color groups
-  - Copy and move groups around or across worlds
-  <br><br>
-- **Gameplay tweaks**:
-  - Disable redstone wire particles
-  - Disable fluid flushing
-  - Disable block gravity
-  - Disable explosion block damage
-  <br><br>
-- **Creative mode tweaks**
-  - Control flying speed
-  - Control walking speed
-  - Control player scale
-  - Control reach distance
-  - Control interaction radius (click multiple blocks at once)
-  - Control interaction count
-  - Control block placement delay
-  - add in-game UI for these. display their current values with icons and such
-  - Autoclicker with configurable delay
-  - Toggle clicks
-  - Disable Sign GUI
-  - Disable picking up items
-  - Open obstructed containers
-  - Snap view to specific angles
-  - Place blocks facing away from the player
-  - Place blocks with an offset
-  - Insta kill mobs<br><br>
-  - Scroll block delays and container levels with your mouse wheel >:3
-  - Teleport to the block you are looking at with a keybind
-  - Zoom view with a keybind
-  - Toggle full brightness with a keybind<br><br>
-  - Phase through blocks while flying
-  - Phase through entities
-  - Disable bouncing on Slime Blocks
-  - Disable not being able to jump from Honey Blocks
-  - Disable sliding on the sides of Honey Blocks
-  - Disable being slowed down by Slime Blocks
-  - Disable being slowed down by Honey Blocks
-  - Disable being slowed down by Soul Sand
-  - Disable being slowed down by Powder Snow
-  - Disable sliding on Ice, Packed Ice and Blue Ice
-  - Disable being moved by Water and Lava currents
-  - Disable being dragged by Bubble Columns
-  - Disable punching End Crystals<br><br>
-  - Disable item change animation
-  - Disable hand swing animation
-  - Disable being on fire
-  - Disable freezing effect
-  - Disable dimension change loading screens
-  - Disable reduced FOV when inside a body of Water
-  - Disable overlay effect of Water
-  - Disable overlay effect of Lava
-  - Disable overlay effect of Nether Portals
-  <br><br>
-- **Property lookup**:
-  - Quickly find blocks based on their properties
-  - Find alternatives to existing blocks and replace them in-game
-  <br><br>
-- **Macros**:
-  - Save lists of commands to execute when needed
-  - Save stacks of items and create copies at any time (bypasses the 100 stacks limit!)
-  - Bind keys to macros
-  <br><br>
-- **Sound muffler**:
-  - Control the volume level of redstone components and minecarts
-  - Fully mute individual components
-  <br><br>
-- **Container tools**:
-  - Count and find items within containers in a selected area
-  - Replace item stacks remotely
-  - Easily fill open containers with specific items
-  <br><br>
-- **Custom blocks and items**
+  - Create, save and export profiles for feature sets
+  - Assign keybinds to feature profiles
+
+- ### Rendering
+
+  - #### Rendering filter
+  
+    - Selectively hide blocks by type or rendering method
+    - Hide all entities
+    - Hide all particles
+    - Click through hidden blocks
+    - Custom block outlines
+    - Force light recalculation
+
+  - #### Overlays
+
+    - Highlight the blocks moved by a piston
+    - Display scheduled tick timers
+    - Display Hopper cooldown timers
+    - Show Redstone Wire power level
+    - Show Powered Rail and Activator Rail power levels
+    - Show Comparator power levels
+    - Show distance value of Leaves
+    - Show distance value of Scaffoldings
+    - Show level value of Composters
+    - Show level value of Cauldrons
+    - Show current fuel and item of Furnaces, Smokers and Blast Furnaces
+    - Show marker entities
+    - Highlight the power source of Rail blocks
+    - Highlight the power source of Redstone Wires
+    - Visualize Comparator output logic
+    - Visualize the order in which pistons move blocks
+    - Visualize the neighbor updates redstone components send when their state changes
+    - Visualize Quasi-connectivity interactions
+
+  - #### Alternative textures
+
+    - Minimal Redstone Wire
+    - Disable Redstone Wire particles
+    - Disable Campfire particles
+    - Disable redstone wire particles
+    - Disable Fire particles
+    - Disable Lava particles
+    - Disable Water Stream particles
+    - Disable drip particles
+    - Less opaque Slime Blocks
+    - Less opaque Honey Blocks
+    - Unobstructive Mangrove Roots
+    - Unobstructive Scaffoldings<br><br>
+    - Consistent sloped Rails
+    - Alternative Barrier rendering
+    - Alternative Structure Void rendering
+    - Alternative Light Block rendering
+    - Static Sign models
+    - Static Chest models
+    - Static Banner models
+    - static decorated pot models
+    - static bell models
+    - static copper golem statue models
+    - static lectern models
+    - Optimized Shelf rendering logic
+    - Optimized Campfire rendering logic<br><br>
+    - 3D Redstone Wire
+    - 3D Rails
+    - 3D Ladders
+    - 3D Iron Chains & Copper Chains
+    - 3D Iron Bars & Copper Bars
+    - 3D Vines
+    - 3D Glow Lichen
+
+- ### Tools
+
+  - #### Action History
+
+    - Undo/redo actions & side effects
+    - Inspect and navigate the undo tree
+
+  - #### In-game calculator
+
+    - Basic scientific calculator operations
+    - Graphing calculator
+    - Unit conversion
+    - Expression history
+
+  - #### Version control
+
+    - Create, merge, and delete, and checkout branches
+    - Commit changes
+    - Create and manage tags
+    - Checkout previous commit
+
+  - #### Block properties lookup
+
+    - Find blocks by property
+
+  - #### Block groups
+
+    - Group blocks together to recognize circuits at a glance
+    - Name and color groups
+    - Copy and move groups around or across worlds
+
+- ### QOL
+
+  - #### Creative mode tweaks
+
+    - Control flying speed
+    - Control walking speed
+    - Control player scale
+    - Control reach distance
+    - Control interaction radius (click multiple blocks at once)
+    - Control interaction count
+    - Control block placement delay
+    - add in-game UI for these. display their current values with icons and such
+    - Autoclicker with configurable delay
+    - Toggle clicks
+    - Disable Sign GUI
+    - Disable picking up items
+    - Open obstructed containers
+    - Snap view to specific angles
+    - Place blocks facing away from the player
+    - Place blocks with an offset
+    - Insta kill mobs<br><br>
+    - Scroll block delays and container levels with your mouse wheel >:3
+    - Teleport to the block you are looking at with a keybind
+    - Zoom view with a keybind
+    - Toggle full brightness with a keybind<br><br>
+    - Phase through blocks while flying
+    - Phase through entities
+    - Disable bouncing on Slime Blocks
+    - Disable not being able to jump from Honey Blocks
+    - Disable sliding on the sides of Honey Blocks
+    - Disable being slowed down by Slime Blocks
+    - Disable being slowed down by Honey Blocks
+    - Disable being slowed down by Soul Sand
+    - Disable being slowed down by Powder Snow
+    - Disable sliding on Ice, Packed Ice and Blue Ice
+    - Disable being moved by Water and Lava currents
+    - Disable being dragged by Bubble Columns
+    - Disable punching End Crystals<br><br>
+    - Disable item change animation
+    - Disable hand swing animation
+    - Disable being on fire
+    - Disable freezing effect
+    - Disable dimension change loading screens
+    - Disable reduced FOV when inside a body of Water
+    - Disable overlay effect of Water
+    - Disable overlay effect of Lava
+    - Disable overlay effect of Nether Portals
+
+  - #### Gameplay tweaks
+
+    - Disable redstone wire particles
+    - Disable fluid flushing
+    - Disable block gravity
+    - Disable explosion block damage
+
+  - #### Macros
+
+    - Save lists of commands to execute when needed
+    - Save stacks of items and create copies at any time (bypasses the 100 stacks limit!)
+    - Bind keys to macros
+
+  - #### Sound muffler
+
+    - Control the volume level of redstone components and minecarts
+    - Fully mute individual components
+
+- ### Custom blocks and items
+
   - Cosmetic Black Hole
   - Cosmetic White Hole
   - Item Source

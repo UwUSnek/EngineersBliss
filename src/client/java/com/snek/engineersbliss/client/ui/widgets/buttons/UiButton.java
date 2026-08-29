@@ -2,117 +2,72 @@ package com.snek.engineersbliss.client.ui.widgets.buttons;
 
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
-import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
-import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
-import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
 
 
 
-public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
-    private static final int KEYBIND_BADGE_WIDTH = 16;
 
-    private UiTxt label;
+
+
+
+public class UiButton extends __base_UiWidget {
+    private static final int KEYBIND_ICON_WIDTH = 16;
+
     private char key;
-    private final TextAlignment alignment;
-    private int labelOffset;   // Label offset from the left edge, in pixels.
     private final AnimatedColor overlayColor;
-
-    // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
+    private final @Nullable Consumer<UiButton> pressCallback;
 
     // Sprite
     private @Nullable Identifier bgSpriteId;
-    private float bgSpriteWidth; // Sprite width compared to the height. 1 means square.
-
-    // Mouse handling
-    private boolean dragged = false;
-
-    // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+    private UiSize bgSpriteWidth;
 
 
 
 
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        //! Pass empty text to super and store a custom UiTxt isntance locally
-        super(x, y, width, height, new Txt().get(), b -> { if(pressCallback != null) pressCallback.accept((UiButton)b); }, DEFAULT_NARRATION);
-        this.screen = screen;
-        this.key = Character.toLowerCase(key);
-        this.alignment = alignment;
-        this.label = label;
-        this.bgSpriteId = null;
-        this.labelOffset = Layout.textMarginPx;
-        this.bgCache = new TextureCache(screen);
-        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadIn);
-    }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, key, alignment);
-    }
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(screen, x, y, width, height, label, pressCallback, '\0', alignment);
+        super(screen, label, alignment);
+        setBgColor(Layout.bgColor);
+        this.pressCallback = pressCallback;
+        this.key = Character.toLowerCase(key);
+        this.bgSpriteId = null;
+        this.bgSpriteWidth = new UiSize(this);
+        this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadInOut);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, alignment);
-    }
-
-
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
-        this(screen, x, y, width, height, label, pressCallback, key, TextAlignment.LEFT);
+        this(screen, label, pressCallback, '\0', alignment);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, key, TextAlignment.LEFT);
-    }
-    public UiButton(final Screen screen, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
-        this(screen, x, y, width, height, label, pressCallback, '\0', TextAlignment.LEFT);
+        this(screen, label, pressCallback, key, TextAlignment.LEFT);
     }
     public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
-        this(screen, 50, 50, 50, 50, label, pressCallback, TextAlignment.LEFT);
+        this(screen, label, pressCallback, TextAlignment.LEFT);
     }
 
 
-    public UiButton withSpriteBg(final Identifier id) {
-        return withSpriteBg(id, 0);
-    }
-    public UiButton withSpriteBg(final Identifier id, final float width) {
-        return withSpriteBg(id, width, labelOffset);
-    }
-    public UiButton withSpriteBg(final Identifier id, final float width, final float labelOffsetUnit) {
+    public UiButton withSpriteBg(final Identifier id, final float width_heightFraction) {
         this.bgSpriteId = id;
-        this.bgSpriteWidth = width;
-        this.labelOffset = (int)(height * labelOffsetUnit);
-        return this;
-    }
-    public UiButton withSpriteBg(final Identifier id, final float width, final int labelOffsetPx) {
-        this.bgSpriteId = id;
-        this.bgSpriteWidth = width;
-        this.labelOffset = labelOffsetPx;
+        this.bgSpriteWidth.clear().setHF(width_heightFraction);
         return this;
     }
 
@@ -122,27 +77,11 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
 
 
 
-    @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        final boolean r = super.mouseClicked(event, doubleClick);
-        dragged = true;
-        return r;
-    }
 
     @Override
-    public boolean mouseReleased(MouseButtonEvent event) {
-        dragged = false;
-        return super.mouseReleased(event);
+    public void relayoutSelf() {
+        // Empty
     }
-
-    public boolean isBeingDragged() {
-        return dragged;
-    }
-
-    public boolean isHoveredOrBeingDragged() {
-        return isHovered() || isBeingDragged();
-    }
-
 
 
 
@@ -151,25 +90,36 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
 
 
     @Override
-    protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void onClick(final MouseButtonEvent event, final boolean doubleClick) {
+        if(pressCallback != null) pressCallback.accept(this);
+        playClickSound();
+    }
 
-        // Draw background
-        extractBackground(graphics, mouseX, mouseY, a);
+    @Override
+    protected void onHoverStart() {
+        super.onHoverStart();
+        playHoverSound();
+    }
 
 
-        // Draw label
-        final boolean usingSprite = bgSpriteId != null;
-        final ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final int textX = getX() + labelOffset;
-        final int textY = getY() + (height - scaledFont.getLineHeight()) / 2;
-        RenderingUtils.extractTxt(graphics, label, textX, textY, Layout.fgColor, alignment, width, usingSprite);
+
+
+
+
+
+    @Override
+    protected void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
 
         // Draw keybind if present
         if(key != '\0') {
-            final UiTxt keybindText = new UiTxt(String.valueOf(key), Fonts.mono.medium);
-            final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_BADGE_WIDTH / 2;
-            RenderingUtils.extractTxt(graphics, keybindText, keybindX, textY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
+            final FontFamily fontFamily = Fonts.mono.medium;
+            final ScaledFont scaledFont = fontFamily.get(1f);
+            final int keybindY = getY() + (height - scaledFont.getLineHeight()) / 2;
+            final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);
+            final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2;
+            RenderingUtils.extractTxt(graphics, keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
         }
 
 
@@ -179,6 +129,15 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
         graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
+
+        handleCursor(graphics);
+    }
+
+    @Override
+    protected void handleCursor(final GuiGraphicsExtractor graphics) {
+        if(isHoveredOrBeingDragged()) {
+            graphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
+        }
     }
 
 
@@ -186,13 +145,12 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
 
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
+        super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            final int spriteWidth = (int)(getHeight() * bgSpriteWidth);
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), spriteWidth, getHeight());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth.getPx(), getHeight());
         }
     }
 
@@ -206,23 +164,11 @@ public class UiButton extends Button implements BgCacheWidget, UiWidgetBase {
     @Override
     public boolean charTyped(CharacterEvent event) {
         if(key != '\0' && Character.toLowerCase((char)event.codepoint()) == Character.toLowerCase(key)) {
-            onPress.onPress(this);
+            if(pressCallback != null) pressCallback.accept(this);
             return true;
         }
         else {
             return super.charTyped(event);
         }
-    }
-
-
-    @Override
-    public void setMessage(Component message) {
-        throw new UnsupportedOperationException("Use .setLabel(label) instead.");
-    }
-    public void setLabel(Component label) {
-        this.label = new UiTxt(label);
-    }
-    public void setLabel(UiTxt label) {
-        this.label = (UiTxt)label.copy();
     }
 }

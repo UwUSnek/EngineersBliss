@@ -20,7 +20,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 
 public class UiToggleButton extends UiButton {
-	protected static final int INDICATOR_WIDTH = 4;
+	protected static final float INDICATOR_WIDTH = 0.25f;
     protected boolean value;
 
     // Background toggle indicator
@@ -40,17 +40,8 @@ public class UiToggleButton extends UiButton {
 
 
 
-
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
-        super(screen, x, y, width, height, label, pressCallback, key, alignment);
-        finalizeInit(initialValue, valueFormatter);
-    }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key, final TextAlignment alignment) {
         super(screen, label, pressCallback, key, alignment);
-        finalizeInit(initialValue, valueFormatter);
-    }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final TextAlignment alignment) {
-        super(screen, x, y, width, height, label, pressCallback, alignment);
         finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
@@ -59,16 +50,8 @@ public class UiToggleButton extends UiButton {
     }
 
 
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter, final char key) {
-        super(screen, x, y, width, height, label, pressCallback, key);
-        finalizeInit(initialValue, valueFormatter);
-    }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
         super(screen, label, pressCallback, key);
-        finalizeInit(initialValue, valueFormatter);
-    }
-    public UiToggleButton(final Screen screen, final boolean initialValue, final int x, final int y, final int width, final int height, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
-        super(screen, x, y, width, height, label, pressCallback);
         finalizeInit(initialValue, valueFormatter);
     }
     public UiToggleButton(final Screen screen, final boolean initialValue, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
@@ -81,6 +64,7 @@ public class UiToggleButton extends UiButton {
         this.value = initialValue;
         this.valueFormatter = valueFormatter != null ? valueFormatter : (n, u) -> n.booleanValue() ? "ON" : "OFF";
         this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), Layout.toggleTransitionDuration, Easings.sineIn);
+        getRightLabelMargin().clear().setHF(INDICATOR_WIDTH);
     }
 
 
@@ -103,7 +87,7 @@ public class UiToggleButton extends UiButton {
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.fill(getRight() - INDICATOR_WIDTH, getY(), getRight(), getBottom(), indicatorColor.compute());
+        graphics.fill(getRight() - getRightLabelMargin().getPx(), getY(), getRight(), getBottom(), indicatorColor.compute());
     }
 
     public int calculateNewIndicatorColor() {

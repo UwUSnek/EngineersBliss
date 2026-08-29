@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
-import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreenWithPreview;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
@@ -23,7 +23,7 @@ import com.snek.engineersbliss.utils.Utils;
 
 
 
-public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
+public class CreativeTweaksScreen extends __base_UiFeatureSetScreenWithPreview {
     private static final DecimalFormat decimalFormatter = new DecimalFormat("0.#####");
 
 
@@ -70,24 +70,24 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
 
         // Player properties
-        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Player properties", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.WALKING_SPEED,
             null, multiplierFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.FLYING_SPEED,
             CreativeTweaksClientHandler::onFlyingSpeedChange, multiplierFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.PLAYER_SCALE,
             null, multiplierFormatter,
             0, 0 //FIXME fix preview text indices
         ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>  (
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, CreativeTweaksClientFeatureSet.INTERACTION_DISTANCE,
             null, blockFormatter,
             0, 0 //FIXME fix preview text indices
@@ -120,7 +120,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
 
         // Player properties
-        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("World interactions", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.PHASE_THROUGH_BLOCKS_FLY,             null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.PHASE_THROUGH_ENTITIES,               null), Layout.BORDER_HEIGHT);
@@ -136,7 +136,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
 
         // World interations
-        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Speed debuffs", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_HONEY_SLOWDOWN,               null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_SLIME_SLOWDOWN,               null), Layout.BORDER_HEIGHT);
@@ -153,7 +153,7 @@ public class CreativeTweaksScreen extends __base_UiFeatureSetScreen {
 
 
         // Visual clutter
-        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Visual clutter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_BLOCK_BREAK_PARTICLES,   null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, CreativeTweaksClientFeatureSet.DISABLE_ITEM_CHANGE_ANIMATION,   null), Layout.BORDER_HEIGHT);

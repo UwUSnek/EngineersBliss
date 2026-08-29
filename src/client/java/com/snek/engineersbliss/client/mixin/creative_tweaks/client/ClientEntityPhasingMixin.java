@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 
 import net.minecraft.world.entity.Entity;
 
@@ -20,8 +20,8 @@ public class ClientEntityPhasingMixin {
     @Inject(method = "push", at = @At("HEAD"), cancellable = true, require = 1)
     private void eb$push(final Entity entity, final CallbackInfo ci) {
         if(
-            ClientFeatureSync.shouldPlayerPhaseThroughEntities(entity) ||
-            ClientFeatureSync.shouldPlayerPhaseThroughEntities(this)
+            CreativeTweaksClientHandler.shouldPlayerPhaseThroughEntities(entity) ||
+            CreativeTweaksClientHandler.shouldPlayerPhaseThroughEntities(this)
         ) {
             ci.cancel();
         }

@@ -11,4 +11,9 @@ public class JuliaSetScreen extends __base_UiScreen {
     public boolean isPauseScreen() {
         return false;
     }
+
+    @Override
+    public void relayoutSelf() {
+        // Empty
+    }
 }

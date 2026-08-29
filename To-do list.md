@@ -1,65 +1,28 @@
 # To-do list
 
 - **Misc**:
-  - ~~Player model rendering in the pause menu~~
   - In-game status bar
-  - ~~Stop the pause menu from pausing the game~~
-
-- **Rendering**:
-  - ~~Selectively hide blocks by type or rendering method~~
-  - ~~Click through hidden blocks~~
-  - ~~Custom block outlines~~
-  - ~~Force light recalculation~~
 
 - **In-game calculator**:
   - Basic scientific calculator operations
+  - Graphing calculator
   - Unit conversion
-  - History
+  - Expression history
 
 - **Alternative textures**
-  - ~~Minimal Redstone Wire~~
-  - ~~Disable Redstone Wire particles~~
-  - ~~Disable Campfire particles~~
-  - ~~Disable Fire particles~~
-  - ~~Disable Lava particles~~
   - Disable Water Stream particles
-  - ~~Disable drip particles~~
-  - ~~Transparent Slime Block~~
-  - ~~Transparent Honey Block~~
-  - ~~Unobstructive Mangrove Roots~~
-  - ~~Unobstructive Scaffolding~~
-  
-  - ~~Consistent sloped rails~~
-  - ~~Alternative Barrier rendering~~
-  - ~~Alternative Structure Void rendering~~
-  - ~~Alternative Light Block rendering~~
-  - ~~Static Sign models~~
-  - ~~Static Chest models~~
-  - ~~Static Banner models~~
-  - ~~static decorated pot models~~
-  - ~~static bell models~~
-  - ~~static copper golem statue models~~
-  - ~~static lectern models~~
-  - ~~Optimized Shelf rendering logic~~
-  - ~~Optimized Campfire rendering logic~~
-
-  - ~~3D Redstone Wire~~
-  - ~~3D Rails~~
-  - ~~3D Ladders~~
-  - ~~3D Iron Chains & Copper Chains~~
-  - ~~3D Iron Bars & Copper Bars~~
-  - ~~3D Vines~~
-  - ~~3D Glow Lichen~~
 
 - **Overlays**:
   - Highlight the blocks moved by a piston
   - Highlight unstable blockstates //TODO idk if this is needed or even possible to implement. If it is, add this to the readme
   - Display scheduled tick timers
   - Display Hopper cooldown timers
-  - ~~Show Redstone Wire power level~~
-  - ~~Show Powered Rail and Activator Rail power levels~~
-  - ~~Show Comparator power levels~~
+  - Show distance value of Leaves
+  - Show distance value of Scaffoldings
+  - Show level value of Composters
+  - Show level value of Cauldrons
   - Show current fuel and item of Furnaces, Smokers and Blast Furnaces
+  - Show marker entities
   - Highlight the power source of Rail blocks
   - Highlight the power source of Redstone Wires
   - Visualize Comparator output logic
@@ -78,12 +41,6 @@
   - Disable explosion block and entity damage
 
 - **Creative mode tweaks**
-  - ~~Control flying speed~~
-  - ~~Control walking speed~~
-  - ~~Control player scale~~
-  - ~~Control reach distance~~
-  - ~~Control interaction radius (click multiple blocks at once)~~
-  - ~~Control interaction count~~
   - Control block placement delay
   - add in-game UI for these. display their current values with icons and such
 
@@ -102,28 +59,10 @@
   - Teleport to the block you are looking at with a keybind
   - Zoom view with a keybind
   - Toggle full brightness with a keybind
-
-  - ~~Phase through blocks while flying~~
-  - ~~Phase through entities~~
-  - ~~Disable bouncing on Slime Blocks~~
-  - ~~Disable not being able to jump from Honey Blocks~~
-  - ~~Disable sliding on the sides of Honey Blocks~~
-  - ~~Disable being slowed down by Slime Blocks~~
-  - ~~Disable being slowed down by Honey Blocks~~
-  - ~~Disable being slowed down by Soul Sand~~
-  - ~~Disable being slowed down by powder snow~~
-  - ~~Disable sliding on Ice, Packed Ice and Blue Ice~~
-  - ~~Disable being moved by Water and Lava currents~~
-  - ~~Disable being dragged by Bubble Columns~~
   - Disable punching End Crystals
 
-  - ~~Disable item change animation~~
-  - ~~Disable hand swing animation~~
-  - ~~Disable being on fire~~
-  - ~~Disable freezing effect~~
   - Disable dimension change loading screens
   - Disable reduced FOV when inside a body of Water
-  - ~~Disable overlay effect of Water~~
   - Disable overlay effect of Lava
   - Disable overlay effect of Nether Portals
 
@@ -146,70 +85,9 @@
   - Easily fill open containers with specific items
 
 - **Custom blocks and items**
-  - ~~Cosmetic Black Hole~~
-  - ~~Cosmetic White Hole~~
   - Item Source
   - Item Sink (storage block with infinite capacity)
   - Item Pipe
-  - ~~0 Friction blocks~~
-  - ~~∞ Friction blocks~~
-  - ~~Green Screen block~~
-  - ~~Blue Screen block~~
-  - ~~[Vanilla Item] Stick item with Custom Name ~~
-  - ~~[Vanilla Item] Cobblestone item with Custom Name~~
-  - ~~[Vanilla Item] Name Tag item with Custom Name~~
-  - ~~[Vanilla block] Fire item~~
-  - ~~[Vanilla block] Nether Portal item~~
-  - ~~[Vanilla block] End Portal item~~
-  - ~~[Vanilla block] End Gateway item~~
-  - ~~[Vanilla block] Frosted Ice item~~
-  - ~~[Vanilla block] Water Cauldron items~~
-  - ~~[Vanilla block] Powder Snow Cauldron items~~
-  - ~~[Vanilla block] Lava Cauldron item~~
-  - ~~[Vanilla block] Unlit Campfire item~~
-  - ~~[Vanilla block] Unlit Soul Campfire item~~
-  - ~~[Vanilla block] Headless Piston item~~
-  - ~~[Vanilla block] Headless Sticky Piston item~~
-  - ~~[Vanilla block] Sticky Piston Head item~~
-  - ~~[Vanilla block] Piston Head item~~
-  - ~~[Vanilla block] Short Sticky Piston Head item~~
-  - ~~[Vanilla block] Short Piston Head item~~
-  - ~~[Vanilla blocks] Door Part items~~
-  - ~~[Vanilla blocks] Bed Part items~~
-  - ~~[Vanilla block] Rose Bush Stem item~~
-  - ~~[Vanilla block] Rose Bush Crown item~~
-  - ~~[Vanilla block] Sunflower Stem item~~
-  - ~~[Vanilla block] Sunflower Crown item~~
-  - ~~[Vanilla block] Tall Grass Stem item~~
-  - ~~[Vanilla block] Tall Grass Crown item~~
-  - ~~[Vanilla block] Pitcher Plant Stem item~~
-  - ~~[Vanilla block] Pitcher Plant Crown item~~
-  - ~~[Vanilla block] Peony Stem item~~
-  - ~~[Vanilla block] Peony Crown item~~
-  - ~~[Vanilla block] Large Fern Stem item~~
-  - ~~[Vanilla block] Large Fern Crown item~~
-  - ~~[Vanilla block] Lilac Stem item~~
-  - ~~[Vanilla block] Lilac Crown item~~
-  - ~~[Vanilla block] Kelp Stem item~~
-  - ~~[Vanilla block] Kelp Crown item~~
-  - ~~[Vanilla block] Cave Vines Stem item~~
-  - ~~[Vanilla block] Cave Vines Stem with Berries item~~
-  - ~~[Vanilla block] Cave Vines Crown item~~
-  - ~~[Vanilla block] Cave Vines Crown with Berries item~~
-  - ~~[Vanilla block] Twisting Vines Stem item~~
-  - ~~[Vanilla block] Twisting Vines Crown item~~
-  - ~~[Vanilla block] Weeping Vines Stem item~~
-  - ~~[Vanilla block] Weeping Vines Crown item~~
-  - ~~[Vanilla blocks] Cake with Candle items~~
-  - ~~[Vanilla blocks] Potted plant items~~
-  - ~~[Vanilla block & item] Your Player Head as an item~~
-  - ~~[Vanilla block] Bee Nest with Bees and Honey~~
-  - ~~[Vanilla block] Bee Nest with Honey but no Bees~~
-  - ~~[Vanilla block] Beehive with Bees and Honey~~
-  - ~~[Vanilla block] Beehive with Honey but no Bees~~
-  - ~~[Vanilla entity] Armor Stand with arms~~
-  - ~~[Vanilla item & entity] Ender Dragon Spawn Egg in the Creative menu~~
-  - ~~[Vanilla item & entity] Wither Spawn Egg in the Creative menu~~
 
 
 
@@ -231,16 +109,10 @@
 
 # Not features:
 
-- ~~Update UI, draw one with a more modern style~~
 - render stats //TODO minecraft.getGpuUtilization()
 
 
-- ~~add a "suppress sign GUI" option in creative tweaks to stop sign UIS from opening when placing any kind of sign or hanging sign~~
-- ~~add a "open obstructed containers" that lets creative players open chests, trapped chests, copper chests and ender chests even when they are blocked by a solid block~~
-
 - Fix changes caused by the custom interaction radius not sending block updates to the client //TODO /fill command also does this?????
-
-- ~~Add small pretty custom icons for all the settings~~
 
 
 - maybe for future versions: a "profiler" menu that tracks CPU time usage of each mob category / block type / stuff
@@ -248,7 +120,9 @@
 
 - add a "about" screen that talks about the mod, basically just copy the readme.
   - display my skin/drawing in there too and name
-  - say that no part of the mod was generated by ai
+  - say that no part of the mod was AI-generated.
+    - sounds, textures, code, are all made or designed by humans.
+  - credit kai for the sounds
 
 
 - add images to the readme?
@@ -257,18 +131,11 @@
 
 - ~~add a "keybinds" section~~
   - this is where you can set the keybinds for scrolling containers, teleporting, hiding the screen and everything
+    - Activating the scroll key makes the status bar change color or something like that
   - add a "panic button" keybind that hides all entities and block entities, hides all particles, runs /tick freeze and lowers render distance to 2 chunks
 
 
-- add a generic "hide all entities" toggle in rendering screen
-- add a generic "hide all particles" toggle in rendering screen
-
-
-- ~~static lectern models? or optimized, idk~~
-
-
 - add a tool that connects 2 positions using an algorithm-generated redstone circuit of a specified tick delay. can be 0 too
-
 
 
 - add scrolling items in inventories with the scroll wheel
@@ -282,12 +149,13 @@
   - size of the world directory
 
 
-- 3am water thats normal water fluid but has shaders
+- 3am water thats normal water but has shaders
 
 - Add a status bar at the bottom of the screen
   - display player position here? maybe? and tps and fps and ping
   - display tab/+/- default keybinds in UIs
     - add these to the pause menu too somehow
+  - display game pause status: > if running, || if paused.
 
 
 - maybe add a "center crosshair" feature in alt textures? Vanilla's crosshair isnt centered
@@ -302,11 +170,6 @@
 - add static bed models for 26.1
 - remove static bed models in 26.2+
 - remove static sign models in 26.2+
-
-
-- maybe add an "area block distribution" tool?
-  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
-    - call them "Area analysis" or something
 
 
 
@@ -374,11 +237,30 @@
 
 
 
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+ADD ALL OF THIS TO THE README
+
+- maybe add an "area block distribution" tool?
+  - MAYBE MERGE IT WITH THE CONTAINER TOOLS TOOL?
+    - call them "Area analysis" or something
+
 - SELECTION TOOL
   - left/right click to select an area, infinite reach with preview
-  - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game)
-    - menu lets you do things with the selection
-
+  - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game). EACH ACTION HAS A KEYBIND
+    - discard selection
+    - grow selection (maxes out to connected blocks)
+    - shrink selection (makes it as small as possible)
+    - regenerate
+    - "view slice" - view a 1-block slice of the selection on a specific axis
+      - use the scroll wheel to cycle the active slice
+      - invisible slices are fully intangible for the player, but they still exist in the world and interact with everything else. 
+        - (use the same block rendering filter system but add support for slices)
+    - [open replace block menu, affects the whole selection]
+    - [open area analysis menu]
+      - Count and find items within containers in a selected area
+      - Replace item stacks remotely
+      - Easily fill open containers with specific items
 
 - GIT INTEGRATION
   - add a UI for it with the branch tree and all
@@ -390,11 +272,7 @@
     - multiplayer users share the same repo and are all on the same commit, as the versioning system is global.
     - all of the dimensions are committed together. This avoids breaking multi-dimensional machines
 
-
-
-
 - Improve readability of glsl shaders
-
 
 - Fix static black hole and white hole block models
 - Fix item models of Item Sink, Item Source, Cosmetic Black Hole, Cosmetic White Hole
@@ -403,5 +281,71 @@
 
 - Add a despawn cooldown option for invisible block overlays
 
-
 - Improve sprite of Player Scale feature
+
+- fix pause screen not resizing visually, even when the setting is different from default
+  - The text does scale with the gui scale, but the actual visual size doesn't
+
+
+
+
+
+- FEATURE VIEWER
+  - view all possible shapes of a renewable feature
+  - trees, idk what else
+
+- IMPORTANT but idk if it should be in 1.0.0
+  - add a creative tweaks feature that lets the player move at normal speed even when the TPS is slower than 20
+  - RELEASE A SEPARATE MOD CONTAINING ONLY THIS FEATURE
+
+
+
+- add sounds. something nice and not too loud.
+  - typing sound for edit boxes and text boxes
+  - click sounds for buttons
+  - dragging sounds for stepped sliders, each step makes one sound. pitch is based on the %
+  - OPTIONS
+    - disable sound <sound type> for each sound type
+    - replace all sounds with metal pipe sound
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# After v1.0.0 release
+
+- Make text translatable
+- Add GB versions of text
+- Add more languages

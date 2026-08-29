@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,6 +22,7 @@ import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
+import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.PlayerMannequin;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
@@ -45,7 +45,6 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 
 
 
@@ -182,6 +181,7 @@ public class PauseScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
     public void eb$init(final CallbackInfo ci) {
+        final Screen screen = (Screen)(Object)this;
         clusterCenterX = eb$getButtonClusterCenterX().getAsInt();
         clusterCenterY = eb$getButtonClusterCenterY().getAsInt();
         clusterSizeX   = eb$getButtonClusterWidth().getAsInt();
@@ -193,49 +193,53 @@ public class PauseScreenMixin extends Screen {
 
 
 
-        leftSidebar = new UiWidgetList(this, (int)(width * leftSidebarWidth), height, 0, 0, BUTTON_HEIGHT); {
+        leftSidebar = new UiWidgetList(this, BUTTON_HEIGHT); {
             final UiTxt titleText   = new UiTxt(EngineerSBliss.MOD_NAME, Fonts.ui.light, 2f);
             final UiTxt versionText = new UiTxt(String.format("v%s", EngineerSBlissClient.getModVersion()), Fonts.ui.regular, 1f);
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, titleText,   TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
             leftSidebar.addWidget(new UiTextWidget(this, versionText, TextAlignment.LEFT, Layout.fgColor), versionText.getScaledFont().getLineHeight());
 
             // Rendering
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Rendering filter",  RenderingScreen  ::new, 'R', "pause_screen/rendering_filter"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Overlays",          OverlaysScreen   ::new, 'O', "pause_screen/overlays"),         Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Alt textures",      AltTexturesScreen::new, 'T', "pause_screen/alt_textures"),     Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Rendering filter"), "rendering_filter", RenderingScreen  ::new,    'R'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Overlays"        ), "overlays",         OverlaysScreen   ::new,    'O'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Alt textures"    ), "alt_textures",     AltTexturesScreen::new,    'T'), Layout.BORDER_HEIGHT);
 
             // Tools
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor),      Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Action history",   ()->{return null;}, 'U', "pause_screen/action_history"),   Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Version Control",  ()->{return null;}, 'V', "pause_screen/version_control"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Properties", ()->{return null;}, 'P', "pause_screen/block_properties"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Block Groups",     ()->{return null;}, 'G', "pause_screen/block_groups"),     Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Container tools",  ()->{return null;}, 'C', "pause_screen/container_tools"),  Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Action history"  ), "action_history",   ()->{return null;},        'U'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Version Control" ), "version_control",  ()->{return null;},        'V'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Calculator"      ), "calculator",       ()->{return null;},        'C'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Block Properties"), "block_properties", ()->{return null;},        'P'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Block Groups"    ), "block_groups",     ()->{return null;},        'G'), Layout.BORDER_HEIGHT);
 
             // QoL
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Creative tweaks",  CreativeTweaksScreen::new, 'Y', "pause_screen/creative_tweaks"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Gameplay tweaks",  ()->{return null;},      'X', "pause_screen/gameplay_tweaks"), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Sound muffler",    ()->{return null;},      'M', "pause_screen/sound_muffler"),   Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Creative tweaks" ), "creative_tweaks",  CreativeTweaksScreen::new, 'Y'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Gameplay tweaks" ), "gameplay_tweaks",  ()->{return null;},        'X'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Macros"          ), "macros",           ()->{return null;},        'Q'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Sound muffler"   ), "sound_muffler",    ()->{return null;},        'M'), Layout.BORDER_HEIGHT);
 
             // Preferences
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Preferences", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Settings",         SettingsScreen::new, 'S', "pause_screen/settings"),         Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Keybinds",         ()->{return null;}, 'K', "pause_screen/keybinds"),         Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Settings"        ), "settings",         SettingsScreen::new,       'S'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Keybinds"        ), "keybinds",         ()->{return null;},        'K'), Layout.BORDER_HEIGHT);
 
             // Info
-            leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
+            leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Info", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("Render stats", ()->{return null;}, '\0', "pause_screen/render_stats"),  Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("World stats",  ()->{return null;}, '\0', "pause_screen/world_stats"),   Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(eb$createButton("About",        ()->{return null;}, '\0', "pause_screen/about"),         Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Render stats"    ), "render_stats",     ()->{return null;}), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("World stats"     ), "world_stats",      ()->{return null;}), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("About"           ), "about",            ()->{return null;}), Layout.BORDER_HEIGHT);
         }
+        leftSidebar.setSize((int)(width * leftSidebarWidth), height); //TODO move to .layoutWidgets... though this mixin doesn't have that
+        leftSidebar.setPosition(0, 0); //TODO move to .layoutWidgets... though this mixin doesn't have that
+        leftSidebar.relayout(); //TODO move to .layoutWidgets... though this mixin doesn't have that
         addRenderableWidget(leftSidebar);
 
 
@@ -245,7 +249,7 @@ public class PauseScreenMixin extends Screen {
         //FIXME move visible block overlays to alternative texture maybe?
 
         // Julia set
-        final Button juliaScreenButton = eb$createButton("??", JuliaSetScreen::new, '\0', null);
+        final UiButton juliaScreenButton = new UiPauseScreenButton(screen, new UiTxt("??"), null, JuliaSetScreen::new, '\0');
         addRenderableWidget(juliaScreenButton);
         juliaScreenButton.setSize(BUTTON_HEIGHT, BUTTON_HEIGHT);
         juliaScreenButton.setX(width  - BUTTON_HEIGHT - BUTTON_MARGIN);
@@ -303,18 +307,6 @@ public class PauseScreenMixin extends Screen {
             RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
             RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
         }
-    }
-
-
-
-
-    //TODO remove. use the new system or something, idk
-    private UiButton eb$createButton(final String label, final Supplier<Screen> screenFactory, char keybind, final @Nullable String spriteName) {
-        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, spriteName);
-        return new UiButton(this, new UiTxt(label), b -> {
-            minecraft.setScreen(screenFactory.get());
-            b.setFocused(false);
-        }, keybind, TextAlignment.LEFT).withSpriteBg(bgSpriteId, 4f, BUTTON_HEIGHT);
     }
 }
 

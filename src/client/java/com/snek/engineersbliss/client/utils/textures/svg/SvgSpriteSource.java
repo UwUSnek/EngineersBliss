@@ -5,6 +5,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
@@ -21,12 +23,17 @@ import java.util.Map;
 
 
 
+
+
+
+
 public record SvgSpriteSource(String sourcePath) implements SpriteSource {
 
 
     public static final MapCodec<SvgSpriteSource> MAP_CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
         Codec.STRING.optionalFieldOf("source", "textures/gui/sprites").forGetter(SvgSpriteSource::sourcePath)
     ).apply(inst, SvgSpriteSource::new));
+
 
 
 
@@ -60,21 +67,19 @@ public record SvgSpriteSource(String sourcePath) implements SpriteSource {
             SvgTextureTracker.getOrRegister(spriteId, bytes, meta);
 
             // Register a sprite for each GUI Scale
-            for(int scale = 1; scale <= 4; scale++) {
-                final int guiScale = scale;
-                final Identifier scaledSpriteId = SvgTextureTracker.getOptimalSprite(spriteId, guiScale);
+            for(int scaleIndex = 0; scaleIndex < SettingsFeatureHandler.getGuiScalesNumber(); scaleIndex++) {
+                final int _scaleIndex = scaleIndex;
+                final Identifier scaledSpriteId = SvgTextureTracker.getOptimalSprite(spriteId, _scaleIndex);
                 output.add(scaledSpriteId, resourceLoader -> {
-                    final NativeImage scaledImage = SvgTextureTracker.acquire(spriteId, guiScale);
+                    final NativeImage scaledImage = SvgTextureTracker.acquire(spriteId, _scaleIndex);
                     return new SpriteContents(scaledSpriteId, new FrameSize(scaledImage.getWidth(), scaledImage.getHeight()), scaledImage);
                 });
             }
-
-            output.add(spriteId, resourceLoader -> {
-                final NativeImage image = SvgTextureTracker.acquire(spriteId, 4);
-                return new SpriteContents(spriteId, new FrameSize(image.getWidth(), image.getHeight()), image);
-            });
         }
     }
+
+
+
 
     private static SvgMetadataSection eb$readSvgMeta(final ResourceManager resourceManager, final Identifier mcmetaId) {
         final Resource mcmetaResource = resourceManager.getResource(mcmetaId).orElse(null);
@@ -87,6 +92,9 @@ public record SvgSpriteSource(String sourcePath) implements SpriteSource {
             return null;
         }
     }
+
+
+
 
     @Override
     public MapCodec<SvgSpriteSource> codec() {

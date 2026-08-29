@@ -1,29 +1,18 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
-import com.snek.engineersbliss.client.ui.font.FontFamily;
-import com.snek.engineersbliss.client.ui.font.Fonts;
-import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
-import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
-import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
-import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.resources.Identifier;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 
 
 
@@ -33,26 +22,21 @@ import net.minecraft.resources.Identifier;
 
 
 /**
- * A special __base_UiScreen that can properly handle UiToggleFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
- * It comes with left and a right sidebars and a feature previews.
+ * A __base_UiSidebarScreen for a feature set.
+ * It provides an interface for creating and loading presets, keeping the central part of the screen empty.
  */
-public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
+public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
-    // Elements and layout
-    protected static UiTextWidget descriptionTextWidget;
-    protected static UiTextWidget descriptionNameWidget;
-    public static final float DESCRIPTION_HEIGHT = 0.15f;
-    public static final float DESCRIPTION_NAME_HEIGHT = 0.06f;
-    public static final float DESCRIPTION_TEXT_HEIGHT = DESCRIPTION_HEIGHT - DESCRIPTION_NAME_HEIGHT;
-    public static final float PREVIEW_WIDTH = 0.25f;
-    private final float descriptionWidth;
-
-    // Hover data cache
+    // Hover data
     public static final long HOVER_OFF_DELAY_MS = 250;
     private long lastHoverTime = 0;
-    private Identifier[] hoveredPreviewAtlasIds = null;
-    private FeatureInputWidget lastHoveredFeatureWidget = null;
+    protected FeatureInputWidget lastHoveredFeatureWidget = null;
 
+    //! "is (preview OFF) on cooldown?"
+    protected boolean isPreviewOffOnCooldown() {
+        final long now = System.currentTimeMillis();
+        return now - lastHoverTime < HOVER_OFF_DELAY_MS;
+    }
 
 
 
@@ -60,9 +44,12 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     protected final __base_ClientFeatureSet<?> featureSet;
     protected __base_UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
         super();
-        this.descriptionWidth = 1f - leftSidebarWidth - rightSidebarWidth;
         this.featureSet = featureSet;
     }
+
+
+
+
 
 
 
@@ -72,59 +59,34 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
     protected void init() {
         super.init();
 
-
         // Add left sidebar title
-        final UiTxt titleText = featureSet.calcName();
-        leftSidebar.addWidget(new UiSpacer(), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt(titleText.get(), 2f), TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
-
-
-        // Add description name and text elements
-        //! Preview is added dynamically
-        final int descriptionWidthPx = (int)(width * descriptionWidth);
-        final int descriptionX = (width - descriptionWidthPx) / 2;
-        final int descriptionNameHeight = (int)(height * DESCRIPTION_NAME_HEIGHT);
-        final int descriptionTextHeight = (int)(height * DESCRIPTION_TEXT_HEIGHT);
-        descriptionNameWidget = new UiTextWidget(
-            this,
-            descriptionX, height - descriptionTextHeight - descriptionNameHeight, descriptionWidthPx, descriptionNameHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
-        );
-        descriptionTextWidget = new UiTextWidget(
-            this,
-            descriptionX, height - descriptionTextHeight, descriptionWidthPx, descriptionTextHeight,
-            new UiTxt(), TextAlignment.CENTER, Layout.fgColor, true, Layout.bgColor
-        ).withVerticalAlignment(TextAlignmentY.TOP);
-        addRenderableWidget(descriptionNameWidget);
-        addRenderableWidget(descriptionTextWidget);
+        final UiTxt titleText = new UiTxt(featureSet.calcName().get(), 2f);
+        final int titleHeight = titleText.getScaledFont().getLineHeight();
+        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, titleText, TextAlignment.LEFT, Layout.fgColor), titleHeight);
     }
 
 
 
 
-
-
-
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        if(tabPressed) return;
+    public void _extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        updateHoveredFeatureReference(graphics, mouseX, mouseY, delta);
+        super._extractRenderState(graphics, mouseX, mouseY, delta);
+    }
 
 
 
+
+    private void updateHoveredFeatureReference(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 
         // Update hovered feature entry data
-        final @Nullable UiWidgetList.Entry entry = leftSidebar.getHoveredEntry();
-        final AbstractWidget widget = entry != null ? entry.getWidget() : null;
-        if(widget instanceof FeatureInputWidget featureWidget) {
+        final @Nullable GuiEventListener widget = getHoveredOrDraggedElm();
+        if(widget != null && widget instanceof FeatureInputWidget featureWidget) {
             lastHoverTime = System.currentTimeMillis();
             if(featureWidget != lastHoveredFeatureWidget) {
                 lastHoveredFeatureWidget = featureWidget;
-
-                // Update preview elements if the hovered element has changed
-                switch(featureWidget) {
-                    case DualPreviewFeatureInputWidget dpw -> updateToggleFeaturePreviewElements(dpw);
-                    default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
-                }
+                onFeatureHoverChange(lastHoveredFeatureWidget);
             }
         }
 
@@ -133,135 +95,44 @@ public abstract class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             lastHoverTime = System.currentTimeMillis();
         }
 
-        // CLear preview if not dragging, not hovering, and the cooldown has expired
+        // Clear preview if not dragging, not hovering, and the cooldown has expired
         else if(!isPreviewOffOnCooldown()) {
             lastHoveredFeatureWidget = null;
-            clearPreview();
-        }
-
-
-
-        // Draw immediate feature preview elements if needed
-        if(lastHoveredFeatureWidget != null && hoveredPreviewAtlasIds != null) {
-            switch(lastHoveredFeatureWidget) {
-                case DualPreviewFeatureInputWidget dpw -> renderImmediateToggleFeaturePreview(graphics, dpw);
-                default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
-            }
-        }
-
-
-
-
-        // Normal rendering
-        super.extractRenderState(graphics, mouseX, mouseY, a);
-    }
-
-
-
-
-
-
-
-
-    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final DualPreviewFeatureInputWidget featureInputWidget) {
-
-        // Calculate data
-        final float ratio = 9f / 4f;
-        final int w = (int)(width * PREVIEW_WIDTH);
-        final int h = (int)(w * ratio);
-        final int hPlaceholder = w;
-        final int xL = (width  - w) / 2 - w / 2;
-        final int xR = (width  - w) / 2 + w / 2;
-        final int y    = (height - h) / 2;
-        final int yPlaceholder = (height - hPlaceholder) / 2;
-
-
-        // Render background text
-        {
-            final int descriptionWidthPx = (int)(width * descriptionWidth);
-            final int descriptionX = (width - descriptionWidthPx) / 2;
-            final int descriptionHeight = (int)(height * DESCRIPTION_HEIGHT);
-            graphics.fill(descriptionX, 0, descriptionX + descriptionWidthPx, descriptionHeight, Layout.bgColor);
-
-            final int scale = 5;
-            final @NotNull FontFamily fontFamily = Fonts.ui.bold;
-            final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
-            final int textXL = xL + w / 2;
-            final int textXR = xR + w / 2;
-            final int textY    = (descriptionHeight - scaledFont.getLineHeight()) / 2;
-            final String textL = featureInputWidget.getLeftTitle();
-            final String textR = featureInputWidget.getRightTitle();
-            RenderingUtils.extractTxt(graphics, new UiTxt(textL, fontFamily, scale), textXL, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
-            RenderingUtils.extractTxt(graphics, new UiTxt(textR, fontFamily, scale), textXR, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
-            //FIXME replace on/off text with something from the interface
-        }
-
-
-        // Render the feature preview
-        {
-            final Identifier atlasIdL = hoveredPreviewAtlasIds[0];
-            final Identifier atlasIdR = hoveredPreviewAtlasIds[1];
-            if(!TextureAtlasTracker.isTextureReady(atlasIdL)) {
-                graphics.blit(atlasIdL, xL, yPlaceholder, xL + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
-            }
-            else {
-                final float[] uv = TextureAtlasTracker.getUV(atlasIdL, 0, System.currentTimeMillis());
-                graphics.blit(atlasIdL, xL, y, xL + w, y + h, uv[0], uv[1], uv[2], uv[3]);
-            }
-            if(!TextureAtlasTracker.isTextureReady(atlasIdR)) {
-                graphics.blit(atlasIdR,  xR, yPlaceholder, xR + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
-            }
-            else {
-                final float[] uv  = TextureAtlasTracker.getUV(atlasIdR,  0, System.currentTimeMillis());
-                graphics.blit(atlasIdR,  xR, y, xR + w, y + h, uv[0], uv[1], uv[2], uv[3]);
-            }
+            onFeatureHoverChange(lastHoveredFeatureWidget);
         }
     }
 
 
 
 
-    private void clearPreview() {
-        hoveredPreviewAtlasIds = null;
-        lastHoveredFeatureWidget = null;
-        descriptionNameWidget.setLabel(new UiTxt());
-        descriptionNameWidget.setBgColor(0x0);
-        descriptionTextWidget.setLabel(new UiTxt());
-        descriptionTextWidget.setBgColor(0x0);
-    }
+    protected void onFeatureHoverChange(final @Nullable FeatureInputWidget newWidget) {
 
+        // Clear right sidebar
+        rightSidebar.clearEntries();
 
+        // Show profile UI if no new widget is being hovered
+        if(newWidget == null) {
+            rightSidebar.setIsScrollable(true); //! Re-enable scrolling in case the feature info branch disabled it.
+            //TODO
+        }
 
+        // Show feature info UI otherwise
+        else {
 
-    private void updateToggleFeaturePreviewElements(DualPreviewFeatureInputWidget featureInputWidget) {
+            // Feature name
+            final UiTxt nameText = new UiTxt(newWidget.getClientFeature().calcName().get(), 2f);
+            final int nameHeight = nameText.getScaledFont().getLineHeight();
+            rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+            rightSidebar.addWidget(new UiTextWidget(this, nameText, TextAlignment.CENTER, Layout.fgColor), nameHeight);
 
-        // Draw feature preview
-        lastHoveredFeatureWidget = featureInputWidget;
-        final __base_ServerFeature<?> serverFeature = featureInputWidget.getServerFeature();
-        final String featureSetId = serverFeature.getFeatureSet().getId();
-        final String fatureId = serverFeature.getId();
-        final String atlasPathL = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix()); //FIXME indices?
-        final String atlasPathR = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix()); //FIXME indices?
-        hoveredPreviewAtlasIds = new Identifier[] {
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathL),
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathR)
-        };
-
-        // Update description name text
-        final UiTxt descriptionName = new UiTxt(featureInputWidget.getClientFeature().calcName().get(), 2f);
-        descriptionNameWidget.setLabel(descriptionName);
-        descriptionNameWidget.setBgColor(Layout.bgColor);
-
-        // Update description text
-        final UiTxt description = featureInputWidget.getClientFeature().calcDesc();
-        descriptionTextWidget.setLabel(description);
-        descriptionTextWidget.setBgColor(Layout.bgColor);
-    }
-
-
-
-    private boolean isPreviewOffOnCooldown() {
-        final long now = System.currentTimeMillis();
-        return now - lastHoverTime < HOVER_OFF_DELAY_MS;
+            // Feature description
+            rightSidebar.setIsScrollable(false); //! Disable scrolling so the element doesn't show a scroll bar. There is always enough space for the description.
+            final UiTxt descriptionText = newWidget.getClientFeature().calcDesc();
+            final int descriptionHeight = height - nameHeight - Layout.BIG_SEPARATOR_HEIGHT; //! Might not be pixel perfect but it doesn't matter, can't scroll the element anyway.
+            final UiTextWidget descriptionWidget = new UiTextWidget(this, descriptionText, TextAlignment.CENTER, true, Layout.fgColor);
+            descriptionWidget.setVerticalAlignment(TextAlignmentY.TOP);
+            rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+            rightSidebar.addWidget(descriptionWidget, descriptionHeight);
+        }
     }
 }

@@ -6,8 +6,10 @@
 
 
 
-    "item.engineers-bliss.green_screen": "Green Screen",
-    "item.engineers-bliss.blue_screen":   "Blue Screen",
+    "item.engineers-bliss.green_screen"  : "Green Screen",
+    "block.engineers-bliss.green_screen" : "Green Screen",
+    "item.engineers-bliss.blue_screen"   : "Blue Screen",
+    "block.engineers-bliss.blue_screen"  : "Blue Screen",
 
 
     "item.engineers-bliss.full_bee_nest"         : "Full Bee Nest",
@@ -80,15 +82,22 @@
     "item.engineers-bliss.frosted_ice" : "Frosted Ice",
 
 
-    "item.engineers-bliss.frictionless_surface" : "Frictionless Surface",
-    "item.engineers-bliss.frictionful_surface"  : "Frictionful Surface",
+    "item.engineers-bliss.frictionless_surface"  : "Frictionless Surface",
+    "block.engineers-bliss.frictionless_surface" : "Frictionless Surface",
+    "item.engineers-bliss.frictionful_surface"   : "Frictionful Surface",
+    "block.engineers-bliss.frictionful_surface"  : "Frictionful Surface",
 
 
-    "item.engineers-bliss.cosmetic_black_hole" : "Cosmetic Black Hole",
-    "item.engineers-bliss.cosmetic_white_hole" : "Cosmetic White Hole",
-    "item.engineers-bliss.item_source"         : "Item Source",
-    "item.engineers-bliss.item_sink"           : "Item Sink",
-    "item.engineers-bliss.item_pipe"           : "Item Pipe",
+    "item.engineers-bliss.cosmetic_black_hole"  : "Cosmetic Black Hole",
+    "block.engineers-bliss.cosmetic_black_hole" : "Cosmetic Black Hole",
+    "item.engineers-bliss.cosmetic_white_hole"  : "Cosmetic White Hole",
+    "block.engineers-bliss.cosmetic_white_hole" : "Cosmetic White Hole",
+    "item.engineers-bliss.item_source"          : "Item Source",
+    "block.engineers-bliss.item_source"         : "Item Source",
+    "item.engineers-bliss.item_sink"            : "Item Sink",
+    "block.engineers-bliss.item_sink"           : "Item Sink",
+    "item.engineers-bliss.item_pipe"            : "Item Pipe",
+    "block.engineers-bliss.item_pipe"           : "Item Pipe",
 
 
     "item.engineers-bliss.acacia_door_bottom"           : "Acacia Door Bottom",

@@ -12,6 +12,7 @@ import org.joml.Vector4i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 
 
 
@@ -360,6 +361,49 @@ public class Txt {
             Math.max(0, start),
             Math.max(start, end)
         );
+    }
+
+
+
+
+    /** //TODO add this to frameworklib / new library 's Txt
+     * Builds a raw FormattedCharSequence from a String using a single Style. This allows for displaying '§' without triggering Vanilla's legacy formatting.
+     * @param text  The raw text.
+     * @param style The style to apply to every codepoint.
+     * @return The formatted sequence.
+     */
+    public static FormattedCharSequence toRawSequence(String text, Style style) {
+        return sink -> {
+            int i = 0;
+            for(int idx = 0; idx < text.length(); ) {
+                int c = text.codePointAt(idx);
+                if (!sink.accept(i, style, c)) return false;
+                idx += Character.charCount(c);
+                i++;
+            }
+            return true;
+        };
+    }
+
+    /** //TODO add this to frameworklib / new library 's Txt
+     * Builds a raw FormattedCharSequence from the provided Txt. This allows for displaying '§' without triggering Vanilla's legacy formatting.
+     * @return The formatted sequence.
+     */
+    public static @NotNull FormattedCharSequence toRawVisualOrder(final Txt txt) {
+        final List<FormattedCharSequence> parts = new ArrayList<>();
+        txt.get().visit((nodeStyle, text) -> {
+            parts.add(toRawSequence(text, nodeStyle));
+            return Optional.<Void>empty();
+        }, txt.style);
+        return FormattedCharSequence.composite(parts);
+    }
+
+    /** //TODO add this to frameworklib / new library 's Txt
+     * Builds a raw FormattedCharSequence from this Txt. This allows for displaying '§' without triggering Vanilla's legacy formatting.
+     * @return The formatted sequence.
+     */
+    public @NotNull FormattedCharSequence toRawVisualOrder() {
+        return toRawVisualOrder(this);
     }
 }
 

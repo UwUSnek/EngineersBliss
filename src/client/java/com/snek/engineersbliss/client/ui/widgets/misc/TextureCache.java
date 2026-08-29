@@ -63,20 +63,21 @@ public class TextureCache implements AutoCloseable {
      * @param width The height of the texture.
      */
     public void update(final int width, final int height, final Consumer<NativeImage> painter) {
-        if(texture != null && !dirty && width == this.width && height == this.height) return;
+        if(texture == null || dirty || width != this.width || height != this.height) {
 
-        // useCalloc=true initializes the buffer to 0 so unpainted pixels start transparent
-        final NativeImage image = new NativeImage(NativeImage.Format.RGBA, Math.max(1, width), Math.max(1, height), true);
-        painter.accept(image);
+            // useCalloc=true initializes the buffer to 0 so unpainted pixels start transparent
+            final NativeImage image = new NativeImage(NativeImage.Format.RGBA, Math.max(1, width), Math.max(1, height), true);
+            painter.accept(image);
 
-        final DynamicTexture newTexture = new DynamicTexture(() -> "", image);
-        Minecraft.getInstance().getTextureManager().register(location, newTexture);
+            final DynamicTexture newTexture = new DynamicTexture(() -> "", image);
+            Minecraft.getInstance().getTextureManager().register(location, newTexture);
 
-        if(texture != null) texture.close(); // Close the old GPU texture to avoid memory leaks
-        texture = newTexture;
-        this.width  = width;
-        this.height = height;
-        this.dirty = false;
+            if(texture != null) texture.close(); // Close the old GPU texture to avoid memory leaks
+            texture = newTexture;
+            this.width  = width;
+            this.height = height;
+            this.dirty = false;
+        }
     }
 
 

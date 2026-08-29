@@ -5,6 +5,9 @@ import java.util.function.Predicate;
 
 import org.jspecify.annotations.Nullable;
 
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
+
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.ShadeMode;
@@ -87,7 +90,7 @@ public class ShadingFixModelPlugin implements ModelLoadingPlugin {
             final RandomSource random,
             final Predicate<@Nullable Direction> cullTest
         ) {
-            if(RenderingFilterHandler.getFixShading()) {
+        if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.SMOOTH_SHADING)) {
                 emitter.pushTransform(quad -> {
                     quad.shadeMode(ShadeMode.ENHANCED);
                     return true;

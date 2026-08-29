@@ -1,12 +1,16 @@
 package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.system.MemoryUtil;
 
 
@@ -19,8 +23,7 @@ public final class SvgTextureTracker {
     public static final class Entry {
         public final byte[] svgBytes;
         public final SvgMetadataSection meta;
-        // Index 0 = 1x, 1 = 2x, 2 = 3x, 3 = 4x. null until that scale has been requested
-        public final NativeImage[] cached = new NativeImage[4];
+        public final NativeImage[] cached = new NativeImage[SettingsFeatureHandler.getGuiScalesNumber()];
 
         public Entry(final byte[] svgBytes, final SvgMetadataSection meta) {
             this.svgBytes = svgBytes;
@@ -60,16 +63,16 @@ public final class SvgTextureTracker {
      * Creates a copy of the requested texture.
      * This also rasterizes and caches the texture on first request.
      */
-    public static NativeImage acquire(final Identifier id, final int scale) {
-        final Entry e = REGISTRY.get(id);
+    public static NativeImage acquire(final Identifier id, final int scaleIndex) {
+        final @NotNull Entry e = REGISTRY.get(id);
         if(e == null) return null;
-        final int idx = scale - 1;
-        NativeImage master = e.cached[idx];
-        if(master == null) {
-            master = SvgRasterizer.rasterize(e.svgBytes, e.meta.width() * scale, e.meta.height() * scale);
-            e.cached[idx] = master;
+        NativeImage cached = e.cached[scaleIndex];
+        if(cached == null) {
+            final float scale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(scaleIndex);
+            cached = SvgRasterizer.rasterize(e.svgBytes, (int)(e.meta.width() * scale), (int)(e.meta.height() * scale));
+            e.cached[scaleIndex] = cached;
         }
-        return copy(master);
+        return copy(cached);
     }
 
 
@@ -84,7 +87,7 @@ public final class SvgTextureTracker {
      * @return The complete sprite ID.
      */
     public static Identifier getOptimalSprite(final Identifier baseId) {
-        return getOptimalSprite(baseId, Minecraft.getInstance().getWindow().getGuiScale());
+        return getOptimalSprite(baseId, SettingsFeatureHandler.getCurrentGuiScaleIndex());
     }
 
 
@@ -94,8 +97,8 @@ public final class SvgTextureTracker {
      * @param scale The target GUI Scale.
      * @return The complete sprite ID.
      */
-    public static Identifier getOptimalSprite(final Identifier baseId, final int scale) {
-        final int clamped = Math.clamp(scale, 1, 4);
+    public static Identifier getOptimalSprite(final Identifier baseId, final int scaleIndex) {
+        final int clamped = Math.clamp(scaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
         return baseId.withSuffix(".x" + clamped);
     }
 }

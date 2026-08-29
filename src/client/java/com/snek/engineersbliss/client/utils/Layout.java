@@ -35,8 +35,9 @@ public class Layout {
 
 
     public static int toggleTransitionDuration = 250;
-    public static int hoverTransitionDuration  = 80;
+    public static int hoverTransitionDuration  = 100;
     public static int slideTransitionDuration  = 120;
+    public static int guiScaleTransitionDuration  = 250;
 
 
 

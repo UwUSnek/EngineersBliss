@@ -12,6 +12,7 @@ import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
+import com.snek.engineersbliss.client.utils.Layout;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
@@ -44,22 +45,9 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
 
 
 
-    public UiSteppedFeatureSlider(
-        final Screen screen,
-        final ClientFeature<?> feature,
-        final @Nullable BiConsumer<Integer, T> afterChangeCallback,
-        final @Nullable ValueFormatter<T> valueFormatter,
-        final int leftPreviewIndex,
-        final int rightPreviewIndex
-    ) {
-        this(screen, 50, 50, 50, 50, feature, afterChangeCallback, valueFormatter, leftPreviewIndex, rightPreviewIndex);
-    }
-
     @SuppressWarnings("unchecked")
     public UiSteppedFeatureSlider(
         final Screen screen,
-        final int x, final int y,
-        final int w, final int h,
         final ClientFeature<?> feature,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
         final @Nullable ValueFormatter<T> valueFormatter,
@@ -79,7 +67,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         // Proceed with normal initialization
         final @NotNull ServerSteppedFeature<T> _serverFeature = (ServerSteppedFeature<T>)genericServerFeature;
         super(
-            screen, x, y, w, h,
+            screen,
             feature.calcName(),
             _serverFeature.getValues(),
             ClientFeatureSync.getFeatureI(_serverFeature),
@@ -95,6 +83,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         // Calculate sprite id
         final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
         withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f);
+        getLeftLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
     }
 
 

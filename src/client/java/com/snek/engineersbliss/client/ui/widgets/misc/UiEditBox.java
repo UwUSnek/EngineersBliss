@@ -1,14 +1,15 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
-import com.snek.engineersbliss.client.ui.font.Fonts;
-import com.snek.engineersbliss.client.utils.Layout;
+import java.util.function.Consumer;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiTextHandlerWidget;
+import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.util.FormattedCharSequence;
 
 
 
@@ -17,33 +18,31 @@ import net.minecraft.util.FormattedCharSequence;
 
 
 
-public class UiEditBox extends EditBox implements BgCacheWidget {
+public class UiEditBox extends __base_UiTextHandlerWidget {
+    private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
 
-    // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+    private final UiTxt hint;
+    private final Consumer<String> responder;
 
 
-
-
-    public UiEditBox(final Screen screen, final int x, final int y, final int width, final int height, final Component narration) {
-        super(Fonts.ui.regular.get(1f).getFont(), x, y, width, height, narration);
-        this.setTextShadow(false);
-        this.addFormatter((text, offset) ->
-            FormattedCharSequence.forward(text, Style.EMPTY.withFont(Fonts.ui.regular.get(1f).getDescription()))
-        );
-        bgCache = new TextureCache(screen);
+    public UiEditBox(final net.minecraft.client.gui.screens.Screen screen, final UiTxt hint, final Consumer<String> responder) {
+        super(screen, new UiTxt(Component.empty()), TextAlignment.LEFT);
+        this.hint      = hint;
+        this.responder = responder;
+        setBgColor(Layout.bgColor);
+        updateLabel();
     }
 
 
-
+    @Override
+    protected void onValueChange() {
+        if(responder != null) responder.accept(value);
+        super.onValueChange();
+    }
 
     @Override
-    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    protected void updateLabel() {
+        if(value.isEmpty() && !isFocused() && hint != null) setLabel(hint.get().copy().withStyle(HINT_STYLE));
+        else setLabel(Component.literal(value));
     }
 }

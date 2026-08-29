@@ -62,6 +62,16 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
 
 
+    public static final ClientFeature<?> GUI_SCALE = new ClientFeature<>(
+        SettingsServerFeatureSet.GUI_SCALE,
+        () -> new UiTxt("Gui scale"),
+        () -> (UiTxt)new UiTxt("The visual scale of GUI elements.")
+    );
+    public static final ClientFeature<?> DEBUG_OVERLAYS = new ClientFeature<>(
+        SettingsServerFeatureSet.DEBUG_OVERLAYS,
+        () -> new UiTxt("Debug overlays"),
+        () -> (UiTxt)new UiTxt("Enable GUI debug overlays.")
+    );
     public static final ClientFeature<?> PLAYER_MODEL_IN_PAUSE_SCREEN = new ClientFeature<>(
         SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
         () -> new UiTxt("Display player model in pause screen"),
@@ -80,6 +90,15 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("The maximum number of shaded block models to display at once. This can help control lag in busy areas.\n"))
             .cat(new UiTxt("Only available when [Block Shaders] is ON.").Orange())
+    );
+
+
+
+
+    public static final ClientFeature<?> METAL_PIPE_SOUNDS = new ClientFeature<>(
+        SettingsServerFeatureSet.METAL_PIPE_SOUNDS,
+        () -> new UiTxt("Metal pipe UI sounds"),
+        () -> new UiTxt("Replaces all UI sounds with the Metal Pipe Falling sound.")
     );
 
 

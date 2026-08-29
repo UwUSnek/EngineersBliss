@@ -11,11 +11,22 @@ import net.minecraft.client.Minecraft;
 
 
 
+
+
+
+
 /**
  * Handles status bar positioning and display logic
  */
 public class StatusBarHandler {
+
+    //! Reference bar height in screen pixels at GUI scale 1. STATUS_BAR_HEIGHT values are multipliers of this base size.
+    public static final int DEFAULT_BAR_HEIGHT_PX = 24;
+
+
     private StatusBarHandler() {}
+
+
 
 
     public static boolean shouldRender() {
@@ -33,7 +44,10 @@ public class StatusBarHandler {
 
 
     public static int getHeight() {
-        return SettingsServerFeatureSet.STATUS_BAR_HEIGHT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT));
+        final float heightMultiplier = SettingsServerFeatureSet.STATUS_BAR_HEIGHT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT));
+        final int guiScale = Math.max(1, Minecraft.getInstance().getWindow().getGuiScale());
+        final float realPixelHeight = DEFAULT_BAR_HEIGHT_PX * heightMultiplier;
+        return Math.max(1, Math.round(realPixelHeight / guiScale));
     }
 
 

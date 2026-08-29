@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,23 +51,20 @@ public class UiSteppedSlider<T> extends UiSlider {
     @SuppressWarnings("unchecked")
     public UiSteppedSlider(
         final Screen screen,
-        final int x, final int y, final int w, final int h, final UiTxt label,
+        final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
         final @Nullable ValueFormatter<T> valueFormatter
     ) {
-        super(
-            screen,
-            x, y, w, h,
-            label, indexToUnit(defaultValueIndex, stepValues.size()),
-            null,
-            valueFormatter != null
-                ? s -> new UiTxt(valueFormatter.format(((UiSteppedSlider<T>)s).getSelectedValue(), false))
-                : s -> new UiTxt(       String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue()))
-        );
+        final Function<UiSlider, UiTxt> _valueFormatter = valueFormatter != null
+            ? s -> new UiTxt(valueFormatter.format(((UiSteppedSlider<T>)s).getSelectedValue(), false))
+            : s -> new UiTxt(       String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue()))
+        ;
+        super(screen, label, indexToUnit(defaultValueIndex, stepValues.size()), null, _valueFormatter);
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
         this.valueFormatter = valueFormatter != null ? valueFormatter::format : (n, u) -> String.valueOf(n);
+        getRightLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
         updateMessage();
     }
 
@@ -112,6 +110,10 @@ public class UiSteppedSlider<T> extends UiSlider {
     @Override
     protected void applyValue() {
         super.applyValue();
+        fireChangeCallback();
+    }
+
+    protected void fireChangeCallback() {
         if(afterChangeCallback != null) {
             final int selectedIndex = unitToIndex(value, stepValues.size());
             afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));

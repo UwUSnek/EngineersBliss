@@ -1,7 +1,6 @@
 package com.snek.engineersbliss.client.ui.widgets.base;
 
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
-import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import org.jetbrains.annotations.Nullable;
