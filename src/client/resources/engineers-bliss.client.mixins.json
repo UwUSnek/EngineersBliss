@@ -3,7 +3,6 @@
     "package": "com.snek.engineersbliss.client.mixin",
     "compatibilityLevel": "JAVA_25",
     "client": [
-        "TestMixin",
         "accessors.GameRendererAccessor",
         "accessors.LevelRendererAccessor",
         "accessors.BlockEntityRenderersAccessor",

@@ -64,12 +64,10 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
     // Label
     private UiTxt label;
-    private int labelWidth;
     public UiTxt getLabel() { return label; }
     public void setLabel(final Component label) { setLabel(new UiTxt(label)); }
     public void setLabel(final UiTxt     label) {
         this.label = (UiTxt)label.copy();
-        labelWidth = this.label.getScaledFont().calcWidth(this.label.get());
     }
 
 
@@ -152,7 +150,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
 
-            final int overflow = labelWidth - getInnerWidth();
+            final int overflow = label.getWidth() - getInnerWidth();
 
             int shift = 0;
             if(overflow > 0) {

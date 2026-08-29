@@ -9,6 +9,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
+import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -77,8 +78,8 @@ public class UiEditBox extends __base_UiWidget {
         updateLabel();
     }
 
-    private Font getFont() {
-        return getLabel().getScaledFont().getFont();
+    private ScaledFont getFont() {
+        return getLabel().getScaledFont();
     }
 
 
@@ -152,10 +153,11 @@ public class UiEditBox extends __base_UiWidget {
             value = new StringBuilder(value).replace(start, end, text).toString();
             setCursorPosition(start + insertionLength);
             setHighlightPos(cursorPos);
-            //! Delay to improve the cursor animation
-            CompletableFuture.runAsync(() -> { //FIXME use the new scheduler stuff instead of java's raw methods
-                onValueChange();
-            }, CompletableFuture.delayedExecutor(visualCursorPosPx.getTransitionDuration(), TimeUnit.MILLISECONDS));
+            onValueChange();
+            // //! Delay to improve the cursor animation //TODO remove
+            // CompletableFuture.runAsync(() -> { //FIXME use the new scheduler stuff instead of java's raw methods
+            //     Minecraft.getInstance().execute(this::onValueChange); //! This is required to run the function on the minecraft thread. Other threads cause concurrent modification exception
+            // }, CompletableFuture.delayedExecutor(visualCursorPosPx.getTransitionDuration(), TimeUnit.MILLISECONDS));
         }
     }
 
@@ -234,14 +236,14 @@ public class UiEditBox extends __base_UiWidget {
     }
 
     private void scrollTo(final int pos) {
-        final Font font = getFont();
+        final ScaledFont font = getFont();
         final int innerWidth = getInnerWidth();
-        final int posX = font.width(value.substring(0, pos));
+        final int posX = font.calcWidth(value.substring(0, pos));
 
         if(posX - scrollPx > innerWidth) scrollPx = posX - innerWidth;
         if(posX - scrollPx < 0)          scrollPx = posX;
 
-        final int maxScroll = Math.max(0, font.width(value) - innerWidth);
+        final int maxScroll = Math.max(0, font.calcWidth(value) - innerWidth);
         visualScrollPx.startNewTransition(Math.clamp(scrollPx, 0, maxScroll));
     }
 
@@ -317,7 +319,7 @@ public class UiEditBox extends __base_UiWidget {
 
     private int findClickedPositionInText(final MouseButtonEvent event) {
         final int targetPx = Math.max(0, (int)Math.floor(event.x()) - getInnerX() + visualScrollPx.compute());
-        return getFont().plainSubstrByWidth(value, targetPx).length();
+        return getFont().getFont().plainSubstrByWidth(value, targetPx).length();
     }
 
     @Override
@@ -347,19 +349,19 @@ public class UiEditBox extends __base_UiWidget {
     @Override
     public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         if(isFocused() || highlightPos != cursorPos) {
-            final Font font = getFont();
+            final ScaledFont font = getFont();
             final int textX = getInnerX() - visualScrollPx.compute();
             final int textY = getY() + (getHeight() - 9) / 2;
-            visualCursorPosPx.startNewTransition(textX + font.width(value.substring(0, cursorPos)));
+            visualCursorPosPx.startNewTransition(textX + font.calcWidth(value.substring(0, cursorPos)));
             final int cursorX = visualCursorPosPx.compute();
 
             if(highlightPos != cursorPos) {
-                final int highlightX = textX + font.width(value.substring(0, highlightPos));
+                final int highlightX = textX + font.calcWidth(value.substring(0, highlightPos));
                 graphics.textHighlight(Math.min(cursorX, getRight()), textY - 1, Math.min(highlightX - 1, getRight()), textY + 1 + 9, true);
             }
             else if(isFocused() && TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime)) {
                 if(cursorPos < value.length()) TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, textY, Layout.fgColor, 9 + 1);
-                else TextCursorUtils.extractAppendCursor(graphics, font, cursorX, textY, Layout.fgColor, false);
+                else TextCursorUtils.extractAppendCursor(graphics, font.getFont(), cursorX, textY, Layout.fgColor, false);
             }
         }
 

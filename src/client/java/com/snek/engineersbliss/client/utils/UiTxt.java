@@ -22,6 +22,7 @@ public class UiTxt extends Txt {
     // Font family and scale
     private final FontFamily fontFamily;
     private final float scale;
+    private int width;
 
     // Getters
     public @NotNull FontFamily getFontFamily() { return fontFamily; }
@@ -46,10 +47,15 @@ public class UiTxt extends Txt {
     public UiTxt(final @NotNull MutableComponent s, final float scale) { this(s, Fonts.ui.light, scale); }
     public UiTxt(final @NotNull Component        s, final float scale) { this(s, Fonts.ui.light, scale); }
 
-    public UiTxt(                                   final FontFamily fontFamily, final float scale) { super( ); this.fontFamily = fontFamily; this.scale = scale; }
-    public UiTxt(final @NotNull String           s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }
-    public UiTxt(final @NotNull MutableComponent s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }
-    public UiTxt(final @NotNull Component        s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }
+    public UiTxt(                                   final FontFamily fontFamily, final float scale) { this(Component.empty(),    fontFamily, scale); }
+    public UiTxt(final @NotNull String           s, final FontFamily fontFamily, final float scale) { this(Component.literal(s), fontFamily, scale); }
+    public UiTxt(final @NotNull MutableComponent s, final FontFamily fontFamily, final float scale) { this((Component)s,         fontFamily, scale); }
+    public UiTxt(final @NotNull Component        s, final FontFamily fontFamily, final float scale) {
+        super(s);
+        this.fontFamily = fontFamily;
+        this.scale = scale;
+        this.width = -1; //! Width is calculated lazily to avoid using 'this' before full initialization
+    }
 
 
 
@@ -74,5 +80,15 @@ public class UiTxt extends Txt {
     /** Wrapper for Txt.cat that returns a UiTxt instead of a Txt. */
     public UiTxt cat(final @NotNull UiTxt s) {
         return (UiTxt)super.cat(s);
+    }
+
+
+
+
+    public int getWidth() {
+        if(width == -1) {
+            width = fontFamily.get(scale).calcWidth(this);
+        }
+        return width;
     }
 }
