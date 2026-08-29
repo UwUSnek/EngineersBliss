@@ -79,7 +79,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         playDragSound(0.5);
     }
     public static void playDragSound(final double position) {
-        playUiSound(CUSTOM_DRAG_SOUND, 1f + ((float)position * 0.2f - 0.1f), 1f);
+        playUiSound(CUSTOM_DRAG_SOUND, 1f + ((float)position * 0.2f - 0.1f), 0.75f);
     }
     public static void playHoverSound() {
         playUiSound(CUSTOM_HOVER_SOUND, 1f, 0.5f);
