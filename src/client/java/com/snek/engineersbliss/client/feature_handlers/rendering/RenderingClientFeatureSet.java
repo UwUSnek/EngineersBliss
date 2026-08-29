@@ -26,7 +26,7 @@ public class RenderingClientFeatureSet extends __base_ClientFeatureSet<Rendering
     public static final ClientFeature<?> RENDER_BLOCK_OUTLINES = new ClientFeature<>(
         RenderingServerFeatureSet.RENDER_BLOCK_OUTLINES,
         () -> new UiTxt("Render block outlines"),
-        () -> new UiTxt("Whether to render block outlines.§§§§§§§§§§§§§§§aaa")
+        () -> new UiTxt("Whether to render block outlines.")
     );
     public static final ClientFeature<?> RENDER_BLOCKS = new ClientFeature<>(
         RenderingServerFeatureSet.RENDER_BLOCKS,

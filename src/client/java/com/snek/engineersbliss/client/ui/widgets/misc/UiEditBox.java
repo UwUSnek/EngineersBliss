@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
@@ -17,7 +15,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.TextCursorUtils;
 import net.minecraft.client.gui.screens.Screen;
@@ -44,7 +41,7 @@ import net.minecraft.util.Util;
 
 
 public class UiEditBox extends __base_UiWidget {
-
+    public static final long CURSOR_BLINK_START_MS = 500;
     private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
 
     private final UiTxt hint;
@@ -59,6 +56,7 @@ public class UiEditBox extends __base_UiWidget {
     private AnimatedInt visualScrollPx;
     private boolean editable;
     private long focusedTime;
+    private long lastMoveTime;
 
 
     public UiEditBox(final Screen screen, final UiTxt hint, final Consumer<String> responder) {
@@ -74,6 +72,7 @@ public class UiEditBox extends __base_UiWidget {
         this.visualScrollPx = new AnimatedInt(scrollPx, 50);
         this.editable     = true;
         this.focusedTime  = Util.getMillis();
+        this.lastMoveTime = Util.getMillis();
         setBgColor(Layout.bgColor);
         updateLabel();
     }
@@ -154,10 +153,6 @@ public class UiEditBox extends __base_UiWidget {
             setCursorPosition(start + insertionLength);
             setHighlightPos(cursorPos);
             onValueChange();
-            // //! Delay to improve the cursor animation //TODO remove
-            // CompletableFuture.runAsync(() -> { //FIXME use the new scheduler stuff instead of java's raw methods
-            //     Minecraft.getInstance().execute(this::onValueChange); //! This is required to run the function on the minecraft thread. Other threads cause concurrent modification exception
-            // }, CompletableFuture.delayedExecutor(visualCursorPosPx.getTransitionDuration(), TimeUnit.MILLISECONDS));
         }
     }
 
@@ -227,6 +222,7 @@ public class UiEditBox extends __base_UiWidget {
 
     private void setCursorPosition(final int pos) {
         cursorPos = Math.clamp(pos, 0, value.length());
+        lastMoveTime = Util.getMillis();
         scrollTo(cursorPos);
     }
 
@@ -359,7 +355,7 @@ public class UiEditBox extends __base_UiWidget {
                 final int highlightX = textX + font.calcWidth(value.substring(0, highlightPos));
                 graphics.textHighlight(Math.min(cursorX, getRight()), textY - 1, Math.min(highlightX - 1, getRight()), textY + 1 + 9, true);
             }
-            else if(isFocused() && TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime)) {
+            else if(isFocused() && (Util.getMillis() - lastMoveTime < CURSOR_BLINK_START_MS || TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime))) {
                 if(cursorPos < value.length()) TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, textY, Layout.fgColor, 9 + 1);
                 else TextCursorUtils.extractAppendCursor(graphics, font.getFont(), cursorX, textY, Layout.fgColor, false);
             }

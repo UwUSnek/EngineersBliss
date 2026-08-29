@@ -18,7 +18,6 @@ import com.snek.engineersbliss.utils.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -211,7 +210,7 @@ public class RenderingUtils {
         final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
     ) {
 
-        // Retrieve font and text scale, ////apply drop shadow option //TODO remove
+        // Retrieve font and text scale
         final float textScale = scaledFont.getScale();
 
         // Compute x and y positions
