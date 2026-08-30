@@ -15,7 +15,7 @@ import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
  * A __base_UiScreen that comes with sidebars.
  */
 public abstract class __base_UiSidebarScreen extends __base_UiScreen {
-    public static float DEFAULT_SIDEBAR_WIDTH = 0.25f;
+    public static float DEFAULT_SIDEBAR_WIDTH = 0.2f;
 
     // Elements and layout
     protected final boolean hasLeftSidebar;
