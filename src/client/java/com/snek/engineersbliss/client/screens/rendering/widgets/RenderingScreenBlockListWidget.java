@@ -30,7 +30,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPosition
 
 public class RenderingScreenBlockListWidget extends UiWidgetList {
     public static final int CHECKBOX_AREA_WIDTH = 40;
-    public static final float LIST_MARGIN = 0.1f;
+    public static final float LIST_MARGIN = 0.2f;
 
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual)

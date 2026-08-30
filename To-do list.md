@@ -123,6 +123,7 @@
   - say that no part of the mod was AI-generated.
     - sounds, textures, code, are all made or designed by humans.
   - credit kai for the sounds
+  - 2.5d style with the mod's name sliding in the background at different angles above background colored bars at different z heights
 
 
 - add images to the readme?
@@ -300,13 +301,7 @@ ADD ALL OF THIS TO THE README
 
 
 
-- add sounds. something nice and not too loud.
-  - typing sound for edit boxes and text boxes
-  - click sounds for buttons
-  - dragging sounds for stepped sliders, each step makes one sound. pitch is based on the %
-  - OPTIONS
-    - disable sound <sound type> for each sound type
-    - replace all sounds with metal pipe sound
+- disable sound <sound type> for each sound type
 
 
 

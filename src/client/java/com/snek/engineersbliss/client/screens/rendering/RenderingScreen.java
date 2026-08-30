@@ -126,7 +126,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
         // Main list
         //! This needs to be rendered last to let tooltips show on top of right side buttons
-        blockList = new RenderingScreenBlockListWidget(this, 24);
+        blockList = new RenderingScreenBlockListWidget(this, 20);
         this.addRenderableWidget(blockList);
         blockList.filter("");
     }
