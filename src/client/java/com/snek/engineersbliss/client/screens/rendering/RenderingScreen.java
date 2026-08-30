@@ -44,7 +44,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return false;
     }
 
-
+//FIXME prob not needed anymore??
     //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
     @Override
     public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
@@ -52,7 +52,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return super.mouseClicked(event, doubleClick);
     }
 
-
+//FIXME prob not needed anymore??
     // Stop keybinds from activating while typing in the search bar by redirecting any key even to it while its focused.
     @Override
     public boolean keyPressed(final KeyEvent event) {

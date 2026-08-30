@@ -306,7 +306,10 @@ ADD ALL OF THIS TO THE README
 
 
 
-
+- screen background
+  - slowly fade out the colors using a dark fill layer.
+  - can be disabled from settings
+  - can disable blur from settings
 
 
 
