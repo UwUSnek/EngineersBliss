@@ -101,13 +101,13 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     @Override public int getBgBaseColor() { return bgColor; }
     public @Nullable TextureCache getBgTextureCache() {
         if(bgCache == null) {
-            if((bgColor & 0xFF000000) != 0) {
+            // if((bgColor & 0xFF000000) != 0) {
                 bgCache = new TextureCache(getScreen());
                 return bgCache;
-            }
-            else {
-                return null;
-            }
+            // }
+            // else {
+            //     return null;
+            // }
         }
         else {
             return bgCache;
@@ -151,6 +151,11 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     public int getInnerRight() {
         return getRight() - getInnerRightShift();
     }
+
+
+
+
+    // Borders
 
 
 

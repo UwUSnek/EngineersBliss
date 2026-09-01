@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
@@ -17,6 +18,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.TextCursorUtils;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -42,7 +44,11 @@ import net.minecraft.util.Util;
 public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     public static final long CURSOR_BLINK_START_MS = 500;
 
+    private final FontFamily fontFamily;
+    private final ScaledFont font;
+    private final UiTxt hint;
     protected final List<StringBuilder> lines;
+    private final List<UiTxt> renderLines;
     protected int totalLength;
     protected int maxLength;
     protected final boolean multiline;
@@ -64,21 +70,17 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     protected long lastMoveTime;
 
 
-    private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
-
-    private final UiTxt hint;
-    // private final Consumer<String> responder; //TODO
-    private final List<UiTxt> renderLines;
 
 
 
-
-
-    protected __base_UiTextHandlerWidget(final net.minecraft.client.gui.screens.Screen screen, final UiTxt label, final TextAlignment alignment, final boolean multiline) {
-        super(screen, label, alignment);
-        this.multiline    = multiline;
-        this.lines        = new ArrayList<>();
+    protected __base_UiTextHandlerWidget(final Screen screen, final FontFamily fontFamily, final UiTxt hint, final TextAlignment alignment, final boolean multiline) {
+        super(screen, new UiTxt(), alignment);
+        this.fontFamily         = fontFamily;
+        this.font               = fontFamily.get(1f);
+        this.hint               = hint;
+        this.lines              = new ArrayList<>();
         this.lines.add(new StringBuilder());
+        this.multiline    = multiline;
         this.totalLength        = 0;
         this.maxLength          = Integer.MAX_VALUE;
         this.cursorLine         = 0;
@@ -94,12 +96,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         this.editable           = true;
         this.focusedTime        = Util.getMillis();
         this.lastMoveTime       = Util.getMillis();
-        this.hint = null; //FIXME allow subclases to specify a hint text
         this.renderLines = new ArrayList<>();
-    }
-
-    protected ScaledFont getFont() {
-        return getLabel().getScaledFont();
     }
 
     @Override
@@ -112,10 +109,12 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     protected void updateLabel() {
         renderLines.clear();
         if(lines.size() == 1 && lines.get(0).isEmpty() && !isFocused() && hint != null) {
-            renderLines.add(new UiTxt(hint.get().copy().withStyle(HINT_STYLE)));
+            renderLines.add(hint);
         }
         else {
-            for(final StringBuilder line : lines) renderLines.add(new UiTxt(Component.literal(line.toString())));
+            for(final StringBuilder line : lines) {
+                renderLines.add(new UiTxt(line.toString(), fontFamily));
+            }
             //FIXME this is rly inefficient. this should cache each line when it's changed, not recalculate everything every time anything changes
         }
         // setLabel(renderLines.get(0)); //TODO remove
@@ -142,14 +141,20 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
     public void setValue(final String newValue) {
         lines.clear();
-        for(final String line : newValue.split("\n", -1)) lines.add(new StringBuilder(line));
+        for(final String line : newValue.split("\n", -1)) {
+            lines.add(new StringBuilder(line));
+        }
         totalLength = lines.size() - 1;
-        for(final StringBuilder line : lines) totalLength += line.length();
+        for(final StringBuilder line : lines) {
+            totalLength += line.length();
+        }
 
         if(totalLength > maxLength) {
             final int[] cut = positionAtIndex(maxLength);
             lines.get(cut[0]).setLength(cut[1]);
-            for(int l = lines.size() - 1; l > cut[0]; l--) lines.remove(l);
+            for(int l = lines.size() - 1; l > cut[0]; l--) {
+                lines.remove(l);
+            }
             totalLength = maxLength;
         }
 
@@ -169,8 +174,8 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
             for(int l = lines.size() - 1; l > cut[0]; l--) lines.remove(l);
             totalLength = maxLength;
 
-            if(comparePos(cursorLine, cursorCol, cut[0], cut[1]) > 0) setCursorPosition(cut[0], cut[1]);
-            if(comparePos(highlightLine, highlightCol, cut[0], cut[1]) > 0) setHighlightPos(cut[0], cut[1]);
+            if(comparePos(   cursorLine,    cursorCol, cut[0], cut[1]) > 0) setCursorPosition(cut[0], cut[1]);
+            if(comparePos(highlightLine, highlightCol, cut[0], cut[1]) > 0)   setHighlightPos(cut[0], cut[1]);
             onValueChange();
         }
     }
@@ -383,8 +388,8 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     public boolean moveCursorVertical(final int dir, final boolean extendSelection) {
         final int targetLine = cursorLine + dir;
         if(targetLine < 0 || targetLine >= lines.size()) return false;
-        final int columnPx = getFont().calcWidth(lines.get(cursorLine).substring(0, cursorCol));  //TODO this is prob very inefficient
-        final int targetCol = getFont().getFont().plainSubstrByWidth(lines.get(targetLine).toString(), columnPx).length();  //TODO this is prob very inefficient
+        final int columnPx = font.calcWidth(lines.get(cursorLine).substring(0, cursorCol));  //TODO this is prob very inefficient
+        final int targetCol = font.getFont().plainSubstrByWidth(lines.get(targetLine).toString(), columnPx).length();  //TODO this is prob very inefficient
         moveCursorTo(targetLine, targetCol, extendSelection);
         return true;
     }
@@ -404,7 +409,6 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
     protected void scrollTo(final int line, final int col) {
-        final ScaledFont font = getFont();
         final int innerWidth = getInnerWidth();
         final int posX = font.calcWidth(lines.get(line).substring(0, col));  //TODO this is prob very inefficient
 
@@ -513,11 +517,11 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
 
     protected int[] findClickedPositionInText(final MouseButtonEvent event) {
-        final int lineHeight = getFont().getLineHeight();
+        final int lineHeight = font.getLineHeight();
         final int relY = (int)Math.floor(event.y()) - getY() + visualScrollLinePx.compute();
         final int line = Math.clamp(relY / lineHeight, 0, lines.size() - 1);
         final int targetPx = Math.max(0, (int)Math.floor(event.x()) - getInnerX() + visualScrollPx.compute());
-        final int col = getFont().getFont().plainSubstrByWidth(lines.get(line).toString(), targetPx).length();  //TODO this is prob very inefficient
+        final int col = font.getFont().plainSubstrByWidth(lines.get(line).toString(), targetPx).length();  //TODO this is prob very inefficient
         return new int[]{line, col};
     }
 
@@ -547,7 +551,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         updateLabel();
     }
     protected int getTextOriginY() {
-        final int lineHeight = getFont().getLineHeight();
+        final int lineHeight = font.getLineHeight();
         return multiline ? getY() : getY() + (getHeight() - lineHeight) / 2;
     }
 
@@ -557,7 +561,6 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
             final int computedCursorLine = Math.min(lines.size() - 1, visualCursorLine.compute()); //! Ensure the visual line number doesn't exceed the number of current lines
             final int computedCursorCol = Math.min(lines.get(computedCursorLine).length(), cursorCol); //! Ensure the cursor column doesn't exceed the line length in case of clamped line number
-            final ScaledFont font = getFont();
             final int lineHeight = font.getLineHeight();
             final int textX = getInnerX() - visualScrollPx.compute();
             final int textY = getTextOriginY() - visualScrollLinePx.compute();
@@ -588,12 +591,12 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
                 }
             }
             else if(isFocused() && (Util.getMillis() - lastMoveTime < CURSOR_BLINK_START_MS || TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime))) {
-                if(cursorCol < lines.get(computedCursorLine).length() || computedCursorLine < lines.size() - 1) {
+                // if(cursorCol < lines.get(computedCursorLine).length() || computedCursorLine < lines.size() - 1) {//TODO remove
                     TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, cursorY, Layout.fgColor, lineHeight);
-                }
-                else {
-                    TextCursorUtils.extractAppendCursor(graphics, font.getFont(), cursorX, cursorY, Layout.fgColor, false);
-                }
+                // }//TODO remove
+                // else {//TODO remove
+                //     TextCursorUtils.extractAppendCursor(graphics, font.getFont(), cursorX, cursorY, Layout.fgColor, false);//TODO remove
+                // }//TODO remove
             }
         }
 
@@ -604,7 +607,6 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     @Override
     protected void extractLabel(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         if(renderLines.isEmpty()) return;
-        final ScaledFont font = getFont();
         final int lineHeight = font.getLineHeight();
         final int x = getInnerX() - visualScrollPx.compute();
         final int y = getTextOriginY() - visualScrollLinePx.compute();

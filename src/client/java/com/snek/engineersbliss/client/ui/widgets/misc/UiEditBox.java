@@ -3,13 +3,12 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 import java.util.function.Consumer;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiTextHandlerWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.client.gui.screens.Screen;
 
 
 
@@ -21,14 +20,12 @@ import net.minecraft.network.chat.Style;
 public class UiEditBox extends __base_UiTextHandlerWidget {
     // private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY); //TODO remove
 
-    private final UiTxt hint;
     private final Consumer<String> responder; //FIXME pass to superclass
     private String valueCache;
 
 
-    public UiEditBox(final net.minecraft.client.gui.screens.Screen screen, final UiTxt hint, final Consumer<String> responder) {
-        super(screen, new UiTxt(Component.empty()), TextAlignment.LEFT, false);
-        this.hint      = hint; //FIXME pass to superclass
+    public UiEditBox(final Screen screen, final FontFamily fontFamily, final UiTxt hint, final Consumer<String> responder) {
+        super(screen, fontFamily, hint, TextAlignment.LEFT, false);
         this.responder = responder;
         this.valueCache = "";
         setBgColor(Layout.bgColor);
