@@ -20,8 +20,8 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
     // Elements and layout
     protected final boolean hasLeftSidebar;
     protected final boolean hasRightSidebar;
-    protected final float leftSidebarWidth;
-    protected final float rightSidebarWidth;
+    protected final float leftSidebarWidth;  //TODO replace with UiSiz
+    protected final float rightSidebarWidth; //TODO replace with UiSize
     protected UiWidgetList leftSidebar;
     protected UiWidgetList rightSidebar;
 

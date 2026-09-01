@@ -44,7 +44,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return false;
     }
 
-
+//FIXME prob not needed anymore??
     //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
     @Override
     public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
@@ -52,7 +52,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return super.mouseClicked(event, doubleClick);
     }
 
-
+//FIXME prob not needed anymore??
     // Stop keybinds from activating while typing in the search bar by redirecting any key even to it while its focused.
     @Override
     public boolean keyPressed(final KeyEvent event) {
@@ -77,7 +77,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         // Rendering filter
         leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, new UiTxt("Search..."), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, Fonts.ui.regular, (UiTxt)new UiTxt("Search...").gray(), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_OUTLINES, null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCKS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_FLUIDS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);

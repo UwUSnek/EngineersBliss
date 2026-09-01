@@ -306,7 +306,10 @@ ADD ALL OF THIS TO THE README
 
 
 
-
+- screen background
+  - slowly fade out the colors using a dark fill layer.
+  - can be disabled from settings
+  - can disable blur from settings
 
 
 
@@ -344,3 +347,10 @@ ADD ALL OF THIS TO THE README
 - Make text translatable
 - Add GB versions of text
 - Add more languages
+
+- add togglable procedural rain sounds
+  - mix sounds randomly
+  - a few long background rain recordings
+  - long wind background
+  - a few shorter sounds of larger, more sparse rain drops
+  - sounds of individual water droplets falling on metal surfaces, plastic buckets, that kind of stuff

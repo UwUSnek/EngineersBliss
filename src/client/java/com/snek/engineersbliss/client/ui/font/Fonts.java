@@ -42,7 +42,7 @@ public class Fonts {
     //! Scale advanced by FONT_SCALE_STEP each index.
 
     private static       List<@Nullable Pair<Font, FontDescription>>       defaultFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>>    monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>   monoRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
     private static final List<@Nullable Pair<Font, FontDescription>>   smoothLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>> smoothRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
@@ -51,6 +51,10 @@ public class Fonts {
     private static final List<@Nullable Pair<Font, FontDescription>>       uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>>     uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>>        uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+
+    private static final List<@Nullable Pair<Font, FontDescription>>     codeLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>   codeRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>      codeBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
 
 
@@ -65,7 +69,7 @@ public class Fonts {
     /** A monospace font. All characters have the same width. */
     public static final class mono {
         private mono() {}
-        public static FontFamily medium = (final float scaleMultiplier) -> createScaledFont(monoMediumFonts, "mono_medium", scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(monoRegularFonts, "mono_regular", scaleMultiplier);
     }
 
     /** A smoother, more symmetrical font than the default UI font. */
@@ -82,6 +86,14 @@ public class Fonts {
         public static FontFamily   light = (final float scaleMultiplier) -> createScaledFont(uiLightFonts,   "ui_light",   scaleMultiplier);
         public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(uiRegularFonts, "ui_regular", scaleMultiplier);
         public static FontFamily    bold = (final float scaleMultiplier) -> createScaledFont(uiBoldFonts,    "ui_bold",    scaleMultiplier);
+    }
+
+    /** A monospace font meant for code snippets. */
+    public static final class code {
+        private code() {}
+        public static FontFamily   light = (final float scaleMultiplier) -> createScaledFont(codeLightFonts,   "code_light",   scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(codeRegularFonts, "code_regular", scaleMultiplier);
+        public static FontFamily    bold = (final float scaleMultiplier) -> createScaledFont(codeBoldFonts,    "code_bold",    scaleMultiplier);
     }
 
 

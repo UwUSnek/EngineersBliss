@@ -18,6 +18,7 @@ import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
 import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScreen;
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
+import com.snek.engineersbliss.client.screens.macros.MacrosScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -221,7 +222,7 @@ public class PauseScreenMixin extends Screen {
             leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Creative tweaks" ), "creative_tweaks",  CreativeTweaksScreen::new, 'Y'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Gameplay tweaks" ), "gameplay_tweaks",  ()->{return null;},        'X'), Layout.BORDER_HEIGHT);
-            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Macros"          ), "macros",           ()->{return null;},        'Q'), Layout.BORDER_HEIGHT);
+            leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Macros"          ), "macros",           MacrosScreen::new,         'Q'), Layout.BORDER_HEIGHT);
             leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(screen, new UiTxt("Sound muffler"   ), "sound_muffler",    ()->{return null;},        'M'), Layout.BORDER_HEIGHT);
 
             // Preferences

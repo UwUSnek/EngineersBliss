@@ -3,13 +3,12 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 import java.util.function.Consumer;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiTextHandlerWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
+import net.minecraft.client.gui.screens.Screen;
 
 
 
@@ -19,30 +18,34 @@ import net.minecraft.network.chat.Style;
 
 
 public class UiEditBox extends __base_UiTextHandlerWidget {
-    private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
+    // private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY); //TODO remove
 
-    private final UiTxt hint;
-    private final Consumer<String> responder;
+    private final Consumer<String> responder; //FIXME pass to superclass
+    private String valueCache;
 
 
-    public UiEditBox(final net.minecraft.client.gui.screens.Screen screen, final UiTxt hint, final Consumer<String> responder) {
-        super(screen, new UiTxt(Component.empty()), TextAlignment.LEFT);
-        this.hint      = hint;
+    public UiEditBox(final Screen screen, final FontFamily fontFamily, final UiTxt hint, final Consumer<String> responder) {
+        super(screen, fontFamily, hint, TextAlignment.LEFT, false);
         this.responder = responder;
+        this.valueCache = "";
         setBgColor(Layout.bgColor);
         updateLabel();
     }
 
+    public String getValue() {
+        return valueCache;
+    }
 
     @Override
     protected void onValueChange() {
-        if(responder != null) responder.accept(value);
         super.onValueChange();
+        valueCache = lines.get(0).toString();
+        if(responder != null) responder.accept(getValue());
     }
 
-    @Override
-    protected void updateLabel() {
-        if(value.isEmpty() && !isFocused() && hint != null) setLabel(hint.get().copy().withStyle(HINT_STYLE));
-        else setLabel(Component.literal(value));
-    }
+    // @Override //TODO remove
+    // protected void updateLabel() {
+    //     if(value.isEmpty() && !isFocused() && hint != null) setLabel(hint.get().copy().withStyle(HINT_STYLE));
+    //     else setLabel(Component.literal(value));
+    // }
 }
