@@ -1,0 +1,30 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "engineers-bliss:font/mono_regular_2x.png",
+      "height": 10,
+      "ascent": 6,
+      "chars": [
+        "!\"#$%&()+-/012345678",
+        "9<=>[\\]_abcdefghijkl",
+        "mnopqrstuvwxyz{|}~¦§",
+        "«±·»×\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+      ]
+    },
+    {
+      "type": "space",
+      "advances": {
+        " ": 6
+      }
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:include/default"
+    },
+    {
+      "type": "reference",
+      "id": "minecraft:include/unifont"
+    }
+  ]
+}

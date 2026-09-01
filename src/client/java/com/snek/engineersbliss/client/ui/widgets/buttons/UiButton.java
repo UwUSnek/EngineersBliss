@@ -114,7 +114,7 @@ public class UiButton extends __base_UiWidget {
 
         // Draw keybind if present
         if(key != '\0') {
-            final FontFamily fontFamily = Fonts.mono.medium;
+            final FontFamily fontFamily = Fonts.mono.regular;
             final ScaledFont scaledFont = fontFamily.get(1f);
             final int keybindY = getY() + (height - scaledFont.getLineHeight()) / 2;
             final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);

@@ -42,7 +42,7 @@ public class Fonts {
     //! Scale advanced by FONT_SCALE_STEP each index.
 
     private static       List<@Nullable Pair<Font, FontDescription>>       defaultFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>>    monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>   monoRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
     private static final List<@Nullable Pair<Font, FontDescription>>   smoothLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>> smoothRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
@@ -69,7 +69,7 @@ public class Fonts {
     /** A monospace font. All characters have the same width. */
     public static final class mono {
         private mono() {}
-        public static FontFamily medium = (final float scaleMultiplier) -> createScaledFont(monoMediumFonts, "mono_medium", scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(monoRegularFonts, "mono_regular", scaleMultiplier);
     }
 
     /** A smoother, more symmetrical font than the default UI font. */
