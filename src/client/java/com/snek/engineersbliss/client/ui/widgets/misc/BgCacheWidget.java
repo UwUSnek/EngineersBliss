@@ -3,11 +3,8 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
-import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 
@@ -44,6 +41,14 @@ public interface BgCacheWidget {
         final int pixelW = Math.max(1, Math.round(w * guiScale));
         final int pixelH = Math.max(1, Math.round(h * guiScale));
 
+
+        // Draw background color if needed
+        final int bgColor = getBgBaseColor();
+        if((bgColor & 0xFF000000) != 0) {
+            graphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), bgColor);
+        }
+
+
         // Draw background cache if present
         final @Nullable TextureCache bgCache = getBgTextureCache();
         if(bgCache != null) {
@@ -65,7 +70,7 @@ public interface BgCacheWidget {
      * @param h The height of the image and widget.
      */
     public default void drawCachedBackground(final NativeImage img, final int w, final int h) {
-        RenderingUtils.fillImageArea(img, 0, 0, w, h, getBgBaseColor());
+        // Empty by default
     }
 
 

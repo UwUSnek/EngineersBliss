@@ -21,6 +21,8 @@ public class Layout {
     public static int handleColorActive      = 0x80DDDDDD;
     public static int handleColorTransparent = 0x10999999;
 
+    public static int borderColor            = 0xFF2E2C2C;
+
     public static int textMarginPx = 4;
 
     public static int SliderGraphFillColor = bgColorAlt;

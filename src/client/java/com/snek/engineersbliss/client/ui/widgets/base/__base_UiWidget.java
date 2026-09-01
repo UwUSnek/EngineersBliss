@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.base.__base_UiSidebarScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -101,17 +103,11 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     @Override public int getBgBaseColor() { return bgColor; }
     public @Nullable TextureCache getBgTextureCache() {
         if(bgCache == null) {
-            // if((bgColor & 0xFF000000) != 0) {
-                bgCache = new TextureCache(getScreen());
-                return bgCache;
-            // }
-            // else {
-            //     return null;
-            // }
+            bgCache = new TextureCache(getScreen());
+            //! Creating a texture for each element is slow but not that important.
+            //! Subclasses expect a texture to be available. Allocating the texture selectively would only create issues.
         }
-        else {
-            return bgCache;
-        }
+        return bgCache;
     }
 
 
@@ -156,6 +152,26 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
 
     // Borders
+    private int borderTop    = 0;
+    private int borderRight  = 0;
+    private int borderBottom = 0;
+    private int borderLeft   = 0;
+    private int borderTopColor    = Layout.borderColor;
+    private int borderRightColor  = Layout.borderColor;
+    private int borderBottomColor = Layout.borderColor;
+    private int borderLeftColor   = Layout.borderColor;
+    public void setBorderTopPx      (final int    px) { borderTop         = px;    }
+    public void setBorderRightPx    (final int    px) { borderRight       = px;    }
+    public void setBorderBottomPx   (final int    px) { borderBottom      = px;    }
+    public void setBorderLeftPx     (final int    px) { borderLeft        = px;    }
+    public void setBorderTopColor   (final int color) { borderTopColor    = color; }
+    public void setBorderRightColor (final int color) { borderRightColor  = color; }
+    public void setBorderBottomColor(final int color) { borderBottomColor = color; }
+    public void setBorderLeftColor  (final int color) { borderLeftColor   = color; }
+    public void setBorderTop   (final int px, final int color) { setBorderTopPx   (px); setBorderTopColor   (color); }
+    public void setBorderRight (final int px, final int color) { setBorderRightPx (px); setBorderRightColor (color); }
+    public void setBorderBottom(final int px, final int color) { setBorderBottomPx(px); setBorderBottomColor(color); }
+    public void setBorderLeft  (final int px, final int color) { setBorderLeftPx  (px); setBorderLeftColor  (color); }
 
 
 
@@ -200,6 +216,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
+        extractBorders     (graphics, mouseX, mouseY, a);
         extractDebugOverlay(graphics, mouseX, mouseY, a);
     }
 
@@ -239,6 +256,37 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
             RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
+        }
+    }
+
+
+    protected void extractBorders(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+        final boolean hasTop    = borderTop    > 0;
+        final boolean hasRight  = borderRight  > 0;
+        final boolean hasBottom = borderBottom > 0;
+        final boolean hasLeft   = borderLeft   > 0;
+        if(hasTop || hasRight || hasBottom || hasLeft) {
+
+
+
+            // RenderingUtils.pushFullResRendering(graphics); //TODO remove
+            // final float scale = (getScreen() instanceof @NotNull __base_UiScreen uiScreen) ? uiScreen.getAnimatedGuiScale().compute() : 1f;
+
+            final double scale = RenderingUtils.pushFullResRendering(graphics);
+        final double factor = (getScreen() instanceof __base_UiScreen uiScreen)
+            ? uiScreen.getAnimatedGuiScale().compute() / 1.0
+            : 1.0;
+        final double totalScale = scale / factor;
+            final int x = (int)(scale * getX());
+            final int y = (int)(scale * getY());
+            final int r = (int)(scale * getRight());
+            final int b = (int)(scale * getBottom());
+// EngineerSBliss.LOGGER.info("sidebar={} scale={} x={} y={} r={} b={} borderRight={} borderLeft={}", (getScreen() instanceof __base_UiSidebarScreen uiScreen) ? (this == uiScreen.leftSidebar ? "left" : "right") : "none", scale, x, y, r, b, borderRight, borderLeft); //TODO remove
+            if(hasTop   ) graphics.fill(x, y, r, y + (int)Math.round(totalScale * borderTop   ),    borderTopColor);
+            if(hasRight ) graphics.fill(r, y, r    - (int)Math.round(totalScale * borderRight ), b, borderRightColor);
+            if(hasBottom) graphics.fill(x, b, r, b - (int)Math.round(totalScale * borderBottom),    borderBottomColor);
+            if(hasLeft  ) graphics.fill(x, y, x    + (int)Math.round(totalScale * borderLeft  ), b, borderLeftColor);
+            RenderingUtils.popFullResRendering(graphics);
         }
     }
 
