@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.ui.base;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
@@ -70,15 +71,15 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
     @Override
-    public void _extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(UiGraphics graphics, int mouseX, int mouseY, float delta) {
         updateHoveredFeatureReference(graphics, mouseX, mouseY, delta);
-        super._extractRenderState(graphics, mouseX, mouseY, delta);
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
 
 
 
 
-    private void updateHoveredFeatureReference(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    private void updateHoveredFeatureReference(UiGraphics graphics, int mouseX, int mouseY, float delta) {
 
         // Update hovered feature entry data
         final @Nullable GuiEventListener widget = getHoveredOrDraggedElm();

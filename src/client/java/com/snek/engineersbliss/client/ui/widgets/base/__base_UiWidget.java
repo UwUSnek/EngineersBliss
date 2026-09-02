@@ -6,10 +6,11 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
-import com.snek.engineersbliss.client.ui.base.__base_UiSidebarScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -17,13 +18,11 @@ import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Registry;
@@ -90,7 +89,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
 
 
-    private static final List<AbstractWidget> emptyChildList = new ArrayList<>();
+    private static final List<__base_UiLayoutElm> emptyChildList = new ArrayList<>();
 
 
     // Cached background
@@ -210,9 +209,8 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
 
 
-
     @Override
-    protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractWidgetRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
@@ -221,7 +219,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     }
 
 
-    protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    protected void extractLabel(UiGraphics graphics, int mouseX, int mouseY, float a) {
         if(label != null && label.length() > 0) {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
@@ -254,46 +252,45 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             };
 
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-            RenderingUtils.extractTxt(graphics, label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
+            graphics.extractTxt(label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
         }
     }
 
 
-    protected void extractBorders(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    protected void extractBorders(UiGraphics graphics, int mouseX, int mouseY, float a) {
         final boolean hasTop    = borderTop    > 0;
         final boolean hasRight  = borderRight  > 0;
         final boolean hasBottom = borderBottom > 0;
         final boolean hasLeft   = borderLeft   > 0;
         if(hasTop || hasRight || hasBottom || hasLeft) {
-
-
-
-            // RenderingUtils.pushFullResRendering(graphics); //TODO remove
-            // final float scale = (getScreen() instanceof @NotNull __base_UiScreen uiScreen) ? uiScreen.getAnimatedGuiScale().compute() : 1f;
-
-            final double scale = RenderingUtils.pushFullResRendering(graphics);
-        final double factor = (getScreen() instanceof __base_UiScreen uiScreen)
-            ? uiScreen.getAnimatedGuiScale().compute() / 1.0
-            : 1.0;
-        final double totalScale = scale / factor;
-            final int x = (int)(scale * getX());
-            final int y = (int)(scale * getY());
-            final int r = (int)(scale * getRight());
-            final int b = (int)(scale * getBottom());
-// EngineerSBliss.LOGGER.info("sidebar={} scale={} x={} y={} r={} b={} borderRight={} borderLeft={}", (getScreen() instanceof __base_UiSidebarScreen uiScreen) ? (this == uiScreen.leftSidebar ? "left" : "right") : "none", scale, x, y, r, b, borderRight, borderLeft); //TODO remove
-            if(hasTop   ) graphics.fill(x, y, r, y + (int)Math.round(totalScale * borderTop   ),    borderTopColor);
-            if(hasRight ) graphics.fill(r, y, r    - (int)Math.round(totalScale * borderRight ), b, borderRightColor);
-            if(hasBottom) graphics.fill(x, b, r, b - (int)Math.round(totalScale * borderBottom),    borderBottomColor);
-            if(hasLeft  ) graphics.fill(x, y, x    + (int)Math.round(totalScale * borderLeft  ), b, borderLeftColor);
-            RenderingUtils.popFullResRendering(graphics);
+            final double scale = graphics.pushFullResRendering();
+            final double factor = (getScreen() instanceof __base_UiScreen uiScreen) ? uiScreen.getAnimatedGuiScale().compute() / 1.0 : 1.0;
+            final float totalScale = (float)(scale / factor);
+            final float x = (float)scale * getX();
+            final float y = (float)scale * getY();
+            final float r = (float)scale * getRight();
+            final float b = (float)scale * getBottom();
+            if(hasTop   ) graphics.fill(x, y, r, y + totalScale * borderTop,       borderTopColor);
+            if(hasRight ) graphics.fill(r, y, r    - totalScale * borderRight,  b, borderRightColor);
+            if(hasBottom) graphics.fill(x, b, r, b - totalScale * borderBottom,    borderBottomColor);
+            if(hasLeft  ) graphics.fill(x, y, x    + totalScale * borderLeft,   b, borderLeftColor);
+            graphics.popFullResRendering();
         }
     }
 
 
-    protected void extractDebugOverlay(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    protected void extractDebugOverlay(UiGraphics graphics, int mouseX, int mouseY, float a) {
         if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS)) {
-            graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
+            // graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
+            //FIXME add outlines but draw them manually 1px thick at full res
         }
+    }
+
+    @Override
+    protected void handleCursor(UiGraphics graphics) {
+		if(this.isHovered()) {
+			graphics.requestCursor(this.isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
+		}
     }
 }

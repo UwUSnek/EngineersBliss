@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
-import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.rendering.PixelFiller;
 import com.snek.engineersbliss.client.utils.rendering.PixelSetter;
@@ -19,7 +17,6 @@ import com.snek.engineersbliss.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 
 
@@ -47,39 +44,6 @@ public class RenderingUtils {
 
 
 
-
-
-
-
-
-
-
-    /**
-     * Forces the GuiGraphicsExtractor to render at full resolution instead of whatever the GUI Scale option decides.
-     * This allows for sharper edges and proper antialiasing at high GUI Scales.
-     * ! Use the returned scale factor to multiply coordinates and dimensions.
-     * ! Call popFullResRendering(GuiGraphicsExtractor) after rendering is done to revert the custom transform.
-     * @param graphics The GuiGraphicsExtractor to modify.
-     * @return The current scale factor. Use this for coordinate calculations.
-     */
-    public static double pushFullResRendering(final GuiGraphicsExtractor graphics) {
-        final var window = Minecraft.getInstance().getWindow();
-        final float guiScale = window.getWidth() / SettingsFeatureHandler.getCurrentGuiScale();
-        graphics.pose().pushMatrix();
-        graphics.pose().scale(1.0f / guiScale, 1.0f / guiScale);
-        return guiScale;
-    }
-
-
-
-
-    /**
-     * Reverts the transform pushed by pushFullResRendering(GuiGraphicsExtractor).
-     * @param graphics The GuiGraphicsExtractor to modify.
-     */
-    public static void popFullResRendering(final GuiGraphicsExtractor graphics) {
-        graphics.pose().popMatrix();
-    }
 
 
 
@@ -194,72 +158,6 @@ public class RenderingUtils {
 
 
 
-
-
-
-
-    private static void extractTxt(
-        final GuiGraphicsExtractor graphics,
-        final FormattedCharSequence text,
-        final int textWidth,
-        final ScaledFont scaledFont,
-        final int x, final int y,
-        final int color,
-        final TextAlignment textAlignment,
-        final int elmWidth,
-        final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
-    ) {
-
-        // Retrieve font and text scale
-        final float textScale = scaledFont.getScale();
-
-        // Compute x and y positions
-        final int _x = (int)(switch(textAlignment) {
-            case LEFT            -> x;
-            case CENTER          -> x + (elmWidth - textWidth) / 2;
-            case RIGHT           -> x + elmWidth - textWidth;
-            case CENTER_ANCHORED -> x - textWidth / 2;
-        } / textScale);
-        final int _y = (int)(y / textScale);
-
-        // Draw scaled text
-        graphics.pose().pushMatrix();
-        graphics.pose().translate(shiftX, shiftY);
-        graphics.pose().scale(textScale, textScale);
-        graphics.text(scaledFont.getFont(), text, _x, _y, color);
-        graphics.pose().popMatrix();
-    }
-
-
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
-        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
-    }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
-        //! All overloads go through this which calls the true extractTxt.
-        //! Using toRawVisualOrder() is required in order to render '§' properly.
-        final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        extractTxt(graphics, (dropShadow ? text : text.noShadow()).toRawVisualOrder(), text.getWidth(), scaledFont, x, y, color, textAlignment, elmWidth, shiftX, shiftY);
-    }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
-        extractTxt(graphics, text, x, y, color, dropShadow, 0f, 0f);
-    }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final boolean dropShadow, final float shiftX, final float shiftY) {
-        extractTxt(graphics, text, x, y, color, TextAlignment.LEFT, 0, dropShadow, shiftX, shiftY);
-    }
-
-
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
-        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, 0f, 0f);
-    }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final float shiftX, final float shiftY) {
-        extractTxt(graphics, text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
-    }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color) {
-        extractTxt(graphics, text, x, y, color, 0f, 0f);
-    }
-    public static void extractTxt(final GuiGraphicsExtractor graphics, final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
-        extractTxt(graphics, text, x, y, color, false, shiftX, shiftY);
-    }
 
 
     /**

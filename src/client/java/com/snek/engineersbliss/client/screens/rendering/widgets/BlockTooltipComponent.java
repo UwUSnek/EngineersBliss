@@ -31,7 +31,9 @@ public class BlockTooltipComponent implements ClientTooltipComponent {
 
     @Override
     public void extractImage(final Font font, final int x, final int y, final int width, final int height, final GuiGraphicsExtractor graphics) {
-        BlockRenderer.extractBlockSpriteSheet(graphics, block, x, y, ICON_SIZE);
-        BlockRenderer.extractBlockName(graphics, block, x + ICON_SIZE + 8, y + ICON_SIZE - TEXT_SIZE, 0xFFFFFFFF, TEXT_SIZE);
+        // BlockRenderer.extractBlockSpriteSheet(graphics, block, x, y, ICON_SIZE);
+        // BlockRenderer.extractBlockName(graphics, block, x + ICON_SIZE + 8, y + ICON_SIZE - TEXT_SIZE, 0xFFFFFFFF, TEXT_SIZE);
+        //FIXME this needs a UiGraphics but using UiGraphics doesnt allow extending ClientTooltipComponent
+        //FIXME USE A CUSTOM TOOLTIP ITEM
     }
 }

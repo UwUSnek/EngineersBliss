@@ -9,8 +9,10 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
@@ -90,12 +92,12 @@ public abstract class __base_UiScreen extends Screen {
     private int mirrorHoverMouseY = Integer.MIN_VALUE;
     private int mirrorHoverScreenMouseX = Integer.MIN_VALUE;
     private int mirrorHoverScreenMouseY = Integer.MIN_VALUE;
-    private @Nullable GuiGraphicsExtractor mirrorHoverGraphics;
+    private @Nullable UiGraphics mirrorHoverGraphics;
     public int getMirrorHoverMouseX() { return mirrorHoverMouseX; }
     public int getMirrorHoverMouseY() { return mirrorHoverMouseY; }
     public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
     public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
-    public @Nullable GuiGraphicsExtractor getMirrorHoverGraphics() { return mirrorHoverGraphics; }
+    public @Nullable UiGraphics getMirrorHoverGraphics() { return mirrorHoverGraphics; }
 
 
 
@@ -106,7 +108,7 @@ public abstract class __base_UiScreen extends Screen {
         this.needsRebuild = true;
         this.needsRelayout = false;
     }
-    private void updateMirrorHoverState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
+    private void updateMirrorHoverState(UiGraphics graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
         mirrorHoverGraphics = graphics;
         mirrorHoverMouseX = mouseX;
         mirrorHoverMouseY = mouseY;
@@ -328,12 +330,15 @@ public abstract class __base_UiScreen extends Screen {
         float factor = animatedGuiScale.compute() / realGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
-        _extractRenderState(graphics, mouseX, mouseY, delta);
+        extractRenderState(new UiGraphics(graphics), mouseX, mouseY, delta);
         graphics.pose().popMatrix();
     }
 
 
-    public void _extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
+    /**
+     * Custom render function that uses a UiGraphics instead of Vanill'as graphics extractor.
+     */
+    public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
         int adjMouseX = (int)fx(mouseX);
         int adjMouseY = (int)fx(mouseY);
 
@@ -354,27 +359,32 @@ public abstract class __base_UiScreen extends Screen {
             updateMirrorHoverState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF);
         }
 
+        // Extract background
+        extractBackground(graphics, adjMouseX, mouseY, adjMouseY);
 
         // Extract widgets
         for(final @NotNull GuiEventListener c : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
-            if(c instanceof @NotNull Renderable r) {
-                r.extractRenderState(graphics, adjMouseX, adjMouseY, delta);
+            if(c instanceof @NotNull __base_UiWidget r) {
+                r.extractWidgetRenderState(graphics, adjMouseX, adjMouseY, delta);
             }
         }
     }
 
 
     @Override
-    public void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        if(!tabPressed) {
-            graphics.blurBeforeThisStratum();
-        }
+    public final void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
+        // Empty
+    }
+    @Override
+	public final void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+        // Empty
     }
 
 
-    @Override
-	public void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        this.extractBlurredBackground(graphics);
+	public void extractBackground(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+        if(!tabPressed) {
+            graphics.blurBeforeThisStratum();
+        }
     }
 
 

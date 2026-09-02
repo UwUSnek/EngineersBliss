@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
@@ -13,11 +14,9 @@ import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -108,7 +107,7 @@ public class UiButton extends __base_UiWidget {
 
 
     @Override
-    protected void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
 
@@ -119,7 +118,7 @@ public class UiButton extends __base_UiWidget {
             final int keybindY = getY() + (height - scaledFont.getLineHeight()) / 2;
             final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);
             final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2;
-            RenderingUtils.extractTxt(graphics, keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
+            graphics.extractTxt(keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
         }
 
 
@@ -129,12 +128,10 @@ public class UiButton extends __base_UiWidget {
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
         graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
-
-        handleCursor(graphics);
     }
 
     @Override
-    protected void handleCursor(final GuiGraphicsExtractor graphics) {
+    protected void handleCursor(final UiGraphics graphics) {
         if(isHoveredOrBeingDragged()) {
             graphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
         }
@@ -144,7 +141,7 @@ public class UiButton extends __base_UiWidget {
 
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractBackground(UiGraphics graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved

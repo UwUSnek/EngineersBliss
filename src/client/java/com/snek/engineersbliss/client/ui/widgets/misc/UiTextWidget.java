@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
@@ -97,7 +98,7 @@ public class UiTextWidget extends __base_UiWidget {
 
 
     @Override
-    protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    protected void extractLabel(UiGraphics graphics, int mouseX, int mouseY, float a) {
         if(!wrapLines) {
             super.extractLabel(graphics, mouseX, mouseY, a);
         }
@@ -118,7 +119,7 @@ public class UiTextWidget extends __base_UiWidget {
             // Draw text lines
             graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
             for(final UiTxt l : cachedLines) {
-                RenderingUtils.extractTxt(graphics, l, getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
+                graphics.extractTxt(l, getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
                 ++curLineNum;
             }
             graphics.disableScissor();

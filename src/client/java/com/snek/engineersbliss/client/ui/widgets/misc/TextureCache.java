@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.ScreenMixinAccessor;
 
 import net.minecraft.client.Minecraft;
@@ -86,13 +87,13 @@ public class TextureCache implements AutoCloseable {
     /**
      * Draws the cached texture at the provided coordinates.
      * The texture is stretched to fit the provided width and height.
-     * @param graphics The GuiGraphicsExtractor to blit to.
+     * @param graphics The UiGraphics to blit to.
      * @param x The X position of the texture.
      * @param y The Y position of the texture.
      * @param w The final width of the drawn texture.
      * @param h The final height of the drawn texture.
      */
-    public void blit(final GuiGraphicsExtractor graphics, final int x, final int y, final int w, final int h) {
+    public void blit(final UiGraphics graphics, final int x, final int y, final int w, final int h) {
         if(texture == null) return;
         graphics.blit(RenderPipelines.GUI_TEXTURED, location, x, y, 0, 0, w, h, width, height, width, height);
     }

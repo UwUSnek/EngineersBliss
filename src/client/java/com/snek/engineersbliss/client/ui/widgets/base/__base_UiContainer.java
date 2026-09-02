@@ -2,16 +2,14 @@ package com.snek.engineersbliss.client.ui.widgets.base;
 
 
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.sounds.SoundManager;
-import net.minecraft.client.gui.components.AbstractWidget;
 
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.ArrayList;
@@ -81,16 +79,16 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
     @Override
-    protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractWidgetRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
 
         // Normal rendering
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
         // Render children recursively
         for(final var child : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
-            if(child instanceof @NotNull AbstractWidget w) {
+            if(child instanceof @NotNull __base_UiWidget w) {
                 if(w.getY() + w.getHeight() >= getY() && w.getY() <= getBottom()) {
-                    w.extractRenderState(graphics, mouseX, mouseY, a);
+                    w.extractWidgetRenderState(graphics, mouseX, mouseY, a);
                 }
             }
         }

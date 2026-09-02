@@ -13,7 +13,9 @@ import java.util.regex.Pattern;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.ServerMinecraftUtils;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -111,17 +113,17 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
     @Override
-    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        final Font font = Fonts.ui.regular.get(1f).getFont();
+        final FontFamily fontFamily = Fonts.ui.regular;
 
         // draw header above list
         final int headerY = this.getY() - 12;
         final int rowLeft = this.getRowLeft();
         final int rowWidth = this.getRowWidth();
-        graphics.text(font, "Block"  , rowLeft, headerY, 0xFFAAAAAA);
-        graphics.text(font, "Enable" , rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(font, "Isolate", rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.extractTxt(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
+        graphics.extractTxt(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.extractTxt(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events
@@ -137,7 +139,8 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
                 BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().forEach(tag ->
                     tooltipLines.add(ClientTooltipComponent.create(new UiTxt("#" + tag.location()).gray().get().getVisualOrderText()))
                 );
-                graphics.tooltip(font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+                // graphics.tooltip(font, tooltipLines, mouseX, mouseY + 4, DefaultTooltipPositioner.INSTANCE, null);
+                //FIXME add tooltip rendering to UiGraphics
             }
         }
     }

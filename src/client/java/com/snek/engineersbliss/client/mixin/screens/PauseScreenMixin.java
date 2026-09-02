@@ -20,6 +20,7 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.macros.MacrosScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
@@ -305,8 +306,10 @@ public class PauseScreenMixin extends Screen {
             int titleY = nameY + playerName.getScaledFont().getLineHeight() + 2;
 
             // Draw player name an title
-            RenderingUtils.extractTxt(graphics, playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
-            RenderingUtils.extractTxt(graphics,   playTime, textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
+            //FIXME pause screen can't use UiGraphics normally
+            final UiGraphics uiGraphics = new UiGraphics(graphics);
+            uiGraphics.extractTxt(playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
+            uiGraphics.extractTxt(playTime,   textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
         }
     }
 }

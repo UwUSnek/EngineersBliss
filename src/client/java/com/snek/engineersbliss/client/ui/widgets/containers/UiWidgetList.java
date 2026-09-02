@@ -1,16 +1,16 @@
 package com.snek.engineersbliss.client.ui.widgets.containers;
 
 
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -264,29 +264,29 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         repositionEntries();
         return r;
     }
-    public void addWidget(final AbstractWidget widget) {
+    public void addWidget(final __base_UiLayoutElm widget) {
         __internal_addWidget(new Entry(getScreen(), widget));
     }
-    public void addWidget(final AbstractWidget widget, final int height) {
+    public void addWidget(final __base_UiLayoutElm widget, final int height) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
     }
 
 
-    public void addWidgetAndSpacer(final AbstractWidget widget, final int marginBottom) {
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final int marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget));
         addWidget(new UiSpacer(getScreen()), marginBottom);
     }
-    public void addWidgetAndSpacer(final AbstractWidget widget, final int height, final int marginBottom) {
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final int height, final int marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
         addWidget(new UiSpacer(getScreen()), marginBottom);
     }
 
 
-    public void addWidgetAndSpacers(final AbstractWidget widget, final int marginTop, final int marginBottom) {
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final int marginTop, final int marginBottom) {
         addWidget(new UiSpacer(getScreen()), marginTop);
         addWidgetAndSpacer(widget, marginBottom);
     }
-    public void addWidgetAndSpacers(final AbstractWidget widget, final int height, final int marginTop, final int marginBottom) {
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final int height, final int marginTop, final int marginBottom) {
         addWidget(new UiSpacer(getScreen()), marginTop);
         addWidgetAndSpacer(widget, height, marginBottom);
     }
@@ -331,7 +331,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
     @Override
-    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         graphics.enableScissor(getX(), getY(), getRight(), getBottom());
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         graphics.disableScissor();
@@ -339,7 +339,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
 
-    protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
+    protected void extractScrollbar(final UiGraphics graphics, final int mouseX, final int mouseY) {
         final int scrollBarX = scrollBarX();
         final int scrollerHeight = scrollerHeight();
         final int scrollerY = scrollBarY();
@@ -373,7 +373,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public static class Entry extends __base_UiContainer implements GuiEventListener {
         private UiWidgetList parentList;
-        private final AbstractWidget widget;
+        private final __base_UiLayoutElm widget;
 
 
 
@@ -384,7 +384,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             setBgColor(0x0);
             this.widget = null;
         }
-        public Entry(final Screen screen, final AbstractWidget widget) {
+        public Entry(final Screen screen, final __base_UiLayoutElm widget) {
             super(screen);
             setBgColor(0x0);
             this.widget = widget;
@@ -403,7 +403,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
-        public @Nullable AbstractWidget getWidget() {
+        public @Nullable __base_UiLayoutElm getWidget() {
             return widget;
         }
 

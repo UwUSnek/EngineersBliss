@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.screens.rendering;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
@@ -46,7 +47,7 @@ public class BlockRenderer {
      * @param y         The Y position
      * @param size      The rendered size in pixels
      */
-    public static void extractBlockSpriteSheet(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int size) {
+    public static void extractBlockSpriteSheet(final UiGraphics graphics, final Block block, final int x, final int y, final int size) {
 
         // Get block index, fallback to default icon if absent
         final Identifier id = BuiltInRegistries.BLOCK.getKey(block);
@@ -74,7 +75,7 @@ public class BlockRenderer {
      * @param x         The X position
      * @param y         The Y position
      */
-    public static void extractBlockSpriteSheet(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y) {
+    public static void extractBlockSpriteSheet(final UiGraphics graphics, final Block block, final int x, final int y) {
         extractBlockSpriteSheet(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
     }
 
@@ -89,7 +90,7 @@ public class BlockRenderer {
      * @param x The X position
      * @param y The Y position
      */
-    public static void extractBlockIcon(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y) {
+    public static void extractBlockIcon(final UiGraphics graphics, final Block block, final int x, final int y) {
         extractBlockIcon(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
     }
 
@@ -103,21 +104,25 @@ public class BlockRenderer {
      * @param y The Y position
      * @param size The size of the icon
      */
-    public static void extractBlockIcon(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int size) {
+    public static void extractBlockIcon(final UiGraphics graphics, final Block block, final int x, final int y, final int size) {
 
-        // Set up pose
-        final float scale = (float)size / DEFAULT_ITEM_SPRITE_SIZE;
-        graphics.pose().pushMatrix();
-        graphics.pose().translate(x, y);
-        graphics.pose().scale(scale, scale);
 
-        // Load sprite
-        //! Blocks with no item form return AIR from .asItem()
-        if(block.asItem() == Items.AIR) graphics.blit(MISSING_ITEM_SPRITE, 0, 0, DEFAULT_ITEM_SPRITE_SIZE, DEFAULT_ITEM_SPRITE_SIZE, 0f, 1f, 0f, 1f);
-        else graphics.item(new ItemStack(block), 0, 0);
+//FIXME UiGraphics might need pose or other stuff
+//FIXME UiGraphics might need pose or other stuff
+//FIXME UiGraphics might need pose or other stuff
+        // // Set up pose
+        // final float scale = (float)size / DEFAULT_ITEM_SPRITE_SIZE;
+        // graphics.pose().pushMatrix();
+        // graphics.pose().translate(x, y);
+        // graphics.pose().scale(scale, scale);
 
-        // Pop pose
-        graphics.pose().popMatrix();
+        // // Load sprite
+        // //! Blocks with no item form return AIR from .asItem()
+        // if(block.asItem() == Items.AIR) graphics.blit(MISSING_ITEM_SPRITE, 0, 0, DEFAULT_ITEM_SPRITE_SIZE, DEFAULT_ITEM_SPRITE_SIZE, 0f, 1f, 0f, 1f);
+        // else graphics.item(new ItemStack(block), 0, 0);
+
+        // // Pop pose
+        // graphics.pose().popMatrix();
     }
 
 
@@ -132,10 +137,10 @@ public class BlockRenderer {
      * @param y The Y position
      * @param height The height of each line
      */
-    public static void extractBlockName(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int color, final int height) {
+    public static void extractBlockName(final UiGraphics graphics, final Block block, final int x, final int y, final int color, final int height) {
         final float scale = (float)height / DEFAULT_ITEM_SPRITE_SIZE;
         final @NotNull UiTxt text = new UiTxt(block.getName(), scale);
-        RenderingUtils.extractTxt(graphics, text, x, y, color, false);
+        graphics.extractTxt(text, x, y, color, false);
     }
 
 
@@ -149,7 +154,7 @@ public class BlockRenderer {
      * @param x The X position
      * @param y The Y position
      */
-    public static void extractBlockName(final GuiGraphicsExtractor graphics, final Block block, final int x, final int y, final int color) {
+    public static void extractBlockName(final UiGraphics graphics, final Block block, final int x, final int y, final int color) {
         extractBlockName(graphics, block, x, y, color, DEFAULT_ITEM_SPRITE_SIZE);
     }
 }

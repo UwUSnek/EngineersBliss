@@ -5,25 +5,20 @@ import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.TextCursorUtils;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.util.Util;
 
 
@@ -556,7 +551,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
     @Override
-    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         if(isFocused() || cursorLine != highlightLine || cursorCol != highlightCol) {
 
             final int computedCursorLine = Math.min(lines.size() - 1, visualCursorLine.compute()); //! Ensure the visual line number doesn't exceed the number of current lines
@@ -587,25 +582,23 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
                     final int highlightX1 = startEdgeIsCursor ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selStart));  //TODO this is prob very inefficient
                     final int highlightX2 = endEdgeIsCursor   ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selEnd));  //TODO this is prob very inefficient
                     final int highlightY  = line == computedCursorLine ? cursorY : textY + line * lineHeight;
-                    graphics.textHighlight(Math.min(highlightX1, getRight()), highlightY, Math.min(highlightX2 - 1, getRight()), highlightY + lineHeight, true);
+                    // graphics.textHighlight(Math.min(highlightX1, getRight()), highlightY, Math.min(highlightX2 - 1, getRight()), highlightY + lineHeight, true);
+                    //FIXME add highlight to UiGraphics
                 }
             }
             else if(isFocused() && (Util.getMillis() - lastMoveTime < CURSOR_BLINK_START_MS || TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime))) {
-                // if(cursorCol < lines.get(computedCursorLine).length() || computedCursorLine < lines.size() - 1) {//TODO remove
-                    TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, cursorY, Layout.fgColor, lineHeight);
-                // }//TODO remove
-                // else {//TODO remove
-                //     TextCursorUtils.extractAppendCursor(graphics, font.getFont(), cursorX, cursorY, Layout.fgColor, false);//TODO remove
-                // }//TODO remove
+                // TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, cursorY, Layout.fgColor, lineHeight);
+                //FIXME add cursor to UiGraphics
             }
         }
 
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        if(isHoveredOrBeingDragged()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
+        // if(isHoveredOrBeingDragged()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
+        //FIXME add cursor to UiGraphics
     }
 
     @Override
-    protected void extractLabel(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    protected void extractLabel(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         if(renderLines.isEmpty()) return;
         final int lineHeight = font.getLineHeight();
         final int x = getInnerX() - visualScrollPx.compute();
@@ -615,21 +608,9 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         for(int i = 0; i < renderLines.size(); i++) {
             final UiTxt line = renderLines.get(i);
             if(line.length() > 0) {
-                RenderingUtils.extractTxt(graphics, line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
+                graphics.extractTxt(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
             }
         }
         graphics.disableScissor();
     }
-
-
-    // @Override
-    // protected void extractLabel(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-    //     final UiTxt label = getLabel();
-    //     if(label != null && label.length() > 0) {
-    //         final int y = getY() + (getHeight() - label.getScaledFont().getLineHeight()) / 2;
-    //         graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-    //         RenderingUtils.extractTxt(graphics, label, getInnerX() - visualScrollPx.compute(), y, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
-    //         graphics.disableScissor();
-    //     }
-    // }
 }

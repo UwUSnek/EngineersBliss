@@ -5,8 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.RenderingScreenBlockListWidget;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
@@ -19,8 +21,6 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -161,14 +161,14 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
     @Override
-    public void _extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
-        final @NotNull ScaledFont scaledFont = Fonts.ui.regular.get(1f);
-        final @NotNull Font font = scaledFont.getFont();
+    public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
+        final @NotNull FontFamily fontFamily = Fonts.ui.regular;
+        final @NotNull ScaledFont scaledFont = fontFamily.get(1f);
         final int lineBase = this.height;
         final int lineHeight = scaledFont.getLineHeight();
         if(tabPressed) return;
 
-        super._extractRenderState(graphics, mouseX, mouseY, delta);
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
 
 
 
@@ -187,8 +187,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         }
         for(int i = 0; i < syntaxInstructions.length; i += 2) {
             final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-            graphics.text(font, syntaxInstructions[i    ], Layout.textMarginPx,                       lineY, 0xFFAAAAAA);
-            graphics.text(font, syntaxInstructions[i + 1], Layout.textMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
+            graphics.extractTxt(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textMarginPx,                       lineY, 0xFFAAAAAA);
+            graphics.extractTxt(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
         }
 
 
@@ -214,8 +214,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
             }
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-                graphics.text(font, renderStats[i    ], rightTextX,                        lineY, 0xFFAAAAAA);
-                graphics.text(font, renderStats[i + 1], rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
+                graphics.extractTxt(new UiTxt(renderStats[i    ], fontFamily), rightTextX,                        lineY, 0xFFAAAAAA);
+                graphics.extractTxt(new UiTxt(renderStats[i + 1], fontFamily), rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
             }
         }
 

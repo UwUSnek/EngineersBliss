@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.utils.Layout;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -27,14 +28,14 @@ public interface BgCacheWidget {
 
 
     /**
-     * Draws the cached background to the provided GuiGraphicsExtractor, recomputing it if needed.
+     * Draws the cached background to the provided UiGraphics, recomputing it if needed.
      * This must be called from the widget's rendering function, before any foreground and overlay is drawn.
-     * @param graphics The GuiGraphicsExtractor to draw to.
+     * @param graphics The UiGraphics to draw to.
      * @param mouseX The X position of the mouse.
      * @param mouseY The Y position of the mouse.
      * @param a
      */
-    public default void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public default void extractBackground(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         final int w = getWidth();
         final int h = getHeight();
         final float guiScale = SettingsFeatureHandler.getCurrentGuiScale();

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -67,8 +68,8 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
 
     @Override
-    public void _extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        super._extractRenderState(graphics, mouseX, mouseY, a);
+    public void extractRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(graphics, mouseX, mouseY, a);
 
         // Draw immediate feature preview elements if needed
         if(lastHoveredFeatureWidget != null && hoveredPreviewAtlasIds != null) {
@@ -83,7 +84,7 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
 
     private static final float DESCRIPTION_HEIGHT = 0.25f;
-    private void renderImmediateToggleFeaturePreview(GuiGraphicsExtractor graphics, final DualPreviewFeatureInputWidget featureInputWidget) {
+    private void renderImmediateToggleFeaturePreview(UiGraphics graphics, final DualPreviewFeatureInputWidget featureInputWidget) {
 
         // Calculate data
         final float ratio = 9f / 4f;
@@ -106,8 +107,8 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
             final int textY    = ((int)(height * DESCRIPTION_HEIGHT) - scaledFont.getLineHeight()) / 2;
             final String textL = featureInputWidget.getLeftTitle();
             final String textR = featureInputWidget.getRightTitle();
-            RenderingUtils.extractTxt(graphics, new UiTxt(textL, fontFamily, scale), textXL, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
-            RenderingUtils.extractTxt(graphics, new UiTxt(textR, fontFamily, scale), textXR, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            graphics.extractTxt(new UiTxt(textL, fontFamily, scale), textXL, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            graphics.extractTxt(new UiTxt(textR, fontFamily, scale), textXR, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
         }
 
 

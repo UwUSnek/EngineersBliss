@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
@@ -192,7 +193,7 @@ public class UiSlider extends __base_UiWidget {
 
 
     @Override
-    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
 
         // Draw background and label
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
@@ -217,14 +218,10 @@ public class UiSlider extends __base_UiWidget {
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
         graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
-
-
-        // Handle cursor shape and position
-        handleCursor(graphics);
     }
 
     @Override
-    protected void handleCursor(final GuiGraphicsExtractor graphics) {
+    protected void handleCursor(final UiGraphics graphics) {
         if(isHoveredOrBeingDragged()) {
             graphics.requestCursor(isActive() ? CursorTypes.RESIZE_EW : CursorTypes.NOT_ALLOWED);
         }
@@ -234,7 +231,7 @@ public class UiSlider extends __base_UiWidget {
 
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractBackground(UiGraphics graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
