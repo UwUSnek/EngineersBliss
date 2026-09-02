@@ -404,23 +404,23 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
     protected void scrollTo(final int line, final int col) {
-        final int innerWidth = getInnerWidth();
+        final float innerWidth = getInnerWidth();
         final int posX = font.calcWidth(lines.get(line).substring(0, col));  //TODO this is prob very inefficient
 
-        if(posX - scrollPx > innerWidth) scrollPx = posX - innerWidth;
+        if(posX - scrollPx > innerWidth) scrollPx = posX - (int)innerWidth;
         if(posX - scrollPx < 0)          scrollPx = posX;
 
-        final int maxScrollX = Math.max(0, font.calcWidth(lines.get(line).toString()) - innerWidth);  //TODO this is prob very inefficient
+        final int maxScrollX = Math.max(0, font.calcWidth(lines.get(line).toString()) - (int)innerWidth);  //TODO this is prob very inefficient
         visualScrollPx.startNewTransition(Math.clamp(scrollPx, 0, maxScrollX));
 
         final int lineHeight = font.getLineHeight();
-        final int innerHeight = getBottom() - getY();
+        final float innerHeight = getBottom() - getYF();
         final int posY = line * lineHeight;
 
-        if(posY - scrollLinePx > innerHeight - lineHeight) scrollLinePx = posY - innerHeight + lineHeight;
+        if(posY - scrollLinePx > innerHeight - lineHeight) scrollLinePx = posY - (int)innerHeight + lineHeight;
         if(posY - scrollLinePx < 0)                         scrollLinePx = posY;
 
-        final int maxScrollY = Math.max(0, lines.size() * lineHeight - innerHeight);
+        final int maxScrollY = Math.max(0, lines.size() * lineHeight - (int)innerHeight);
         visualScrollLinePx.startNewTransition(Math.clamp(scrollLinePx, 0, maxScrollY));
     }
 
@@ -513,9 +513,9 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
     protected int[] findClickedPositionInText(final MouseButtonEvent event) {
         final int lineHeight = font.getLineHeight();
-        final int relY = (int)Math.floor(event.y()) - getY() + visualScrollLinePx.compute();
+        final int relY = (int)(Math.floor(event.y()) - getYF() + visualScrollLinePx.compute());
         final int line = Math.clamp(relY / lineHeight, 0, lines.size() - 1);
-        final int targetPx = Math.max(0, (int)Math.floor(event.x()) - getInnerX() + visualScrollPx.compute());
+        final int targetPx = Math.max(0, (int)Math.floor(event.x() - getInnerX()) + visualScrollPx.compute());
         final int col = font.getFont().plainSubstrByWidth(lines.get(line).toString(), targetPx).length();  //TODO this is prob very inefficient
         return new int[]{line, col};
     }
@@ -547,7 +547,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
     protected int getTextOriginY() {
         final int lineHeight = font.getLineHeight();
-        return multiline ? getY() : getY() + (getHeight() - lineHeight) / 2;
+        return multiline ? getY() : (int)(getYF() + (getHeightF() - lineHeight) / 2);
     }
 
     @Override
@@ -557,7 +557,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
             final int computedCursorLine = Math.min(lines.size() - 1, visualCursorLine.compute()); //! Ensure the visual line number doesn't exceed the number of current lines
             final int computedCursorCol = Math.min(lines.get(computedCursorLine).length(), cursorCol); //! Ensure the cursor column doesn't exceed the line length in case of clamped line number
             final int lineHeight = font.getLineHeight();
-            final int textX = getInnerX() - visualScrollPx.compute();
+            final int textX = (int)(getInnerX() - visualScrollPx.compute());
             final int textY = getTextOriginY() - visualScrollLinePx.compute();
 
 
@@ -601,14 +601,14 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     protected void extractLabel(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         if(renderLines.isEmpty()) return;
         final int lineHeight = font.getLineHeight();
-        final int x = getInnerX() - visualScrollPx.compute();
+        final int x = (int)(getInnerX() - visualScrollPx.compute());
         final int y = getTextOriginY() - visualScrollLinePx.compute();
 
-        graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
+        graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
         for(int i = 0; i < renderLines.size(); i++) {
             final UiTxt line = renderLines.get(i);
             if(line.length() > 0) {
-                graphics.extractTxt(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
+                graphics.extractTxt(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, (int)getInnerWidth(), false);
             }
         }
         graphics.disableScissor();

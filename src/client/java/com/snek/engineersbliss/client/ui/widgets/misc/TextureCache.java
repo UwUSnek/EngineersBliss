@@ -10,7 +10,6 @@ import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.ScreenMixinAccessor;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -93,7 +92,7 @@ public class TextureCache implements AutoCloseable {
      * @param w The final width of the drawn texture.
      * @param h The final height of the drawn texture.
      */
-    public void blit(final UiGraphics graphics, final int x, final int y, final int w, final int h) {
+    public void blit(final UiGraphics graphics, final float x, final float y, final float w, final float h) {
         if(texture == null) return;
         graphics.blit(RenderPipelines.GUI_TEXTURED, location, x, y, 0, 0, w, h, width, height, width, height);
     }

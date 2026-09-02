@@ -77,14 +77,14 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
     @Override
     public void relayoutSelf() {
         if(hasLeftSidebar) {
-            final int leftSidebarWidthPx = (int)(width * leftSidebarWidth);
+            final float leftSidebarWidthPx = width * leftSidebarWidth;
             leftSidebar.setSize( leftSidebarWidthPx, height);
             leftSidebar.setPosition(0, 0);
         }
         if(hasRightSidebar) {
-            final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
+            final float rightSidebarWidthPx = width * rightSidebarWidth;
             rightSidebar.setSize(rightSidebarWidthPx, height);
-            rightSidebar.setPosition(width - rightSidebarWidthPx, 0);
+            rightSidebar.setPos(width - rightSidebarWidthPx, 0);
         }
     }
 }

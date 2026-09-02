@@ -10,7 +10,7 @@ import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 
 
 public class UiSize {
-    private int px;
+    private float px;
     private float widthFrac;
     private float heightFrac;
     private final __base_UiWidget widget; //! Width and height are read from this element
@@ -25,7 +25,7 @@ public class UiSize {
 
 
 
-    public UiSize addPx(final int v) {
+    public UiSize addPx(final float v) {
         px += v; return this;
     }
     public UiSize addWF(final float v) {
@@ -38,7 +38,7 @@ public class UiSize {
 
 
 
-    public UiSize setPx(final int v) {
+    public UiSize setPx(final float v) {
         px = v; return this;
     }
     public UiSize setWF(final float v) {
@@ -61,7 +61,7 @@ public class UiSize {
 
 
 
-    public int getPx() {
-        return px + (int)(widthFrac  * widget.getWidth() + heightFrac * widget.getHeight());
+    public float getPx() {
+        return px + widthFrac  * widget.getWidthF() + heightFrac * widget.getHeightF();
     }
 }

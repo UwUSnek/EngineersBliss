@@ -131,19 +131,19 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     public UiSize getLeftLabelMargin() { return leftLabelMargin; }
     public UiSize getRightLabelMargin() { return rightLabelMargin; }
 
-    public int getInnerWidth() {
-        return getWidth() - leftLabelMargin.getPx() - rightLabelMargin.getPx();
+    public float getInnerWidth() {
+        return getWidthF() - leftLabelMargin.getPx() - rightLabelMargin.getPx();
     }
-    public int getInnerLeftShift() {
+    public float getInnerLeftShift() {
         return leftLabelMargin.getPx();
     }
-    public int getInnerX() {
-        return getX() + getInnerLeftShift();
+    public float getInnerX() {
+        return getXF() + getInnerLeftShift();
     }
-    public int getInnerRightShift() {
+    public float getInnerRightShift() {
         return rightLabelMargin.getPx();
     }
-    public int getInnerRight() {
+    public float getInnerRight() {
         return getRight() - getInnerRightShift();
     }
 
@@ -224,7 +224,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
 
-            final int overflow = label.getWidth() - getInnerWidth();
+            final float overflow = label.getWidth() - getInnerWidth();
 
             int shift = 0;
             if(overflow > 0) {
@@ -239,20 +239,20 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
                     shift = (int)((t - SCROLL_PAUSE_MS) * SCROLL_SPEED / 1000);
                 }
                 else {
-                    shift = overflow;
+                    shift = (int)overflow;
                 }
             }
 
             final TextAlignment drawAlignment = overflow > 0 ? TextAlignment.LEFT : getAlignment();
-            final int textX = getInnerX();
-            final int y = switch(getVerticalAlignment()) {
-                case TOP    -> getY() + Layout.textMarginPx;
-                case CENTER -> getY() + (height - lineHeight) / 2;
-                case BOTTOM -> getBottom() - lineHeight;
+            final int textX = (int)getInnerX();
+            final int textY = switch(getVerticalAlignment()) {
+                case TOP    -> (int)(getYF() + Layout.textMarginPx);
+                case CENTER -> (int)(getYF() + (getHeightF() - lineHeight) / 2);
+                case BOTTOM -> (int)getBottom() - lineHeight;
             };
 
-            graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
-            graphics.extractTxt(label, textX, y, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
+            graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
+            graphics.extractTxt(label, textX, textY, Layout.fgColor, drawAlignment, (int)getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
         }
     }

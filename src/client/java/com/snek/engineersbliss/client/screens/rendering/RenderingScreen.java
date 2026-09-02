@@ -145,12 +145,12 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
     public void relayoutSelf() {
         super.relayoutSelf();
 
-        final int leftSidebarWidthPx  = (int)(width * leftSidebarWidth);
-        final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
+        final float leftSidebarWidthPx  = width * leftSidebarWidth;
+        final float rightSidebarWidthPx = width * rightSidebarWidth;
 
         // Main list
         blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
-        blockList.setPosition(leftSidebarWidthPx, LIST_TOP);
+        blockList.setPos(leftSidebarWidthPx, LIST_TOP);
     }
 
 

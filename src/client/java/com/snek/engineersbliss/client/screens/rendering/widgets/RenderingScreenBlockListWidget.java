@@ -118,9 +118,9 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         final FontFamily fontFamily = Fonts.ui.regular;
 
         // draw header above list
-        final int headerY = this.getY() - 12;
-        final int rowLeft = this.getRowLeft();
-        final int rowWidth = this.getRowWidth();
+        final int headerY = getY() - 12;
+        final int rowLeft = (int)getRowLeft();
+        final int rowWidth = (int)getRowWidth();
         graphics.extractTxt(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
         graphics.extractTxt(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
         graphics.extractTxt(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);

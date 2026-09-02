@@ -222,9 +222,9 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         }
         else if(screen instanceof @NotNull __base_UiScreen s) {
             return !(
-                s.getMirrorHoverMouseX() <  getX()      ||
+                s.getMirrorHoverMouseX() <  getXF()     ||
                 s.getMirrorHoverMouseX() >= getRight()  ||
-                s.getMirrorHoverMouseY() <  getY()      ||
+                s.getMirrorHoverMouseY() <  getYF()     ||
                 s.getMirrorHoverMouseY() >= getBottom() ||
                 s.getMirrorHoverGraphics() == null      ||
                 !s.getMirrorHoverGraphics().containsPointInScissor(
@@ -332,7 +332,7 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     }
 
     private boolean areCoordinatesInRectangle(final double x, final double y) {
-        return x >= this.getX() && y >= this.getY() && x < this.getRight() && y < this.getBottom();
+        return x >= getXF() && y >= getYF() && x < getRight() && y < getBottom();
     }
 
     @Override

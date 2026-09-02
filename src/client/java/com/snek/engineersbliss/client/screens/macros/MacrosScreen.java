@@ -37,9 +37,9 @@ public class MacrosScreen extends __base_UiSidebarScreen {
     @Override
     public void relayoutSelf() {
         super.relayoutSelf();
-        final int textFieldX = (int)(width * leftSidebarWidth);
-        final int textFieldWidth = (int)(width * (1 - leftSidebarWidth));
+        final float textFieldX = width * leftSidebarWidth;
+        final float textFieldWidth = width * (1 - leftSidebarWidth);
         textField.setSize(textFieldWidth, height);
-        textField.setPosition(textFieldX, 0);
+        textField.setPos(textFieldX, 0);
     }
 }

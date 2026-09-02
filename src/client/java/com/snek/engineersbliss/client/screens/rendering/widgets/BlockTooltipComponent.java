@@ -21,10 +21,10 @@ public class BlockTooltipComponent implements ClientTooltipComponent {
 
 
     @Override
-    public int getHeight(final Font font) { return ICON_SIZE + 4; }
+    public int getHeight(final Font font) { return ICON_SIZE + 4; } //TODO should be float?
 
     @Override
-    public int getWidth(final Font font) {
+    public int getWidth(final Font font) { //TODO should be float?
         final int textWidth = (int)(font.width(block.getName()) * ((float)TEXT_SIZE / BlockRenderer.DEFAULT_ITEM_SPRITE_SIZE));
         return ICON_SIZE + 8 + textWidth + 4;
     }

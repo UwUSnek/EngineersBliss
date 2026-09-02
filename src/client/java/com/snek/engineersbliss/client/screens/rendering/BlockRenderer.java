@@ -47,7 +47,7 @@ public class BlockRenderer {
      * @param y         The Y position
      * @param size      The rendered size in pixels
      */
-    public static void extractBlockSpriteSheet(final UiGraphics graphics, final Block block, final int x, final int y, final int size) {
+    public static void extractBlockSpriteSheet(final UiGraphics graphics, final Block block, final float x, final float y, final float size) {
 
         // Get block index, fallback to default icon if absent
         final Identifier id = BuiltInRegistries.BLOCK.getKey(block);
@@ -75,7 +75,7 @@ public class BlockRenderer {
      * @param x         The X position
      * @param y         The Y position
      */
-    public static void extractBlockSpriteSheet(final UiGraphics graphics, final Block block, final int x, final int y) {
+    public static void extractBlockSpriteSheet(final UiGraphics graphics, final Block block, final float x, final float y) {
         extractBlockSpriteSheet(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
     }
 
@@ -90,7 +90,7 @@ public class BlockRenderer {
      * @param x The X position
      * @param y The Y position
      */
-    public static void extractBlockIcon(final UiGraphics graphics, final Block block, final int x, final int y) {
+    public static void extractBlockIcon(final UiGraphics graphics, final Block block, final float x, final float y) {
         extractBlockIcon(graphics, block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
     }
 
@@ -104,7 +104,7 @@ public class BlockRenderer {
      * @param y The Y position
      * @param size The size of the icon
      */
-    public static void extractBlockIcon(final UiGraphics graphics, final Block block, final int x, final int y, final int size) {
+    public static void extractBlockIcon(final UiGraphics graphics, final Block block, final float x, final float y, final float size) {
 
 
 //FIXME UiGraphics might need pose or other stuff

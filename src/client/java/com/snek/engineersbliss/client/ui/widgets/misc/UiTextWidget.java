@@ -67,20 +67,20 @@ public class UiTextWidget extends __base_UiWidget {
 
     //! Recalculate lines when the width changes
     @Override
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         super.setWidth(width);
         recalculateLines();
     }
 
     @Override
-    public void setSize(int width, int height) {
+    public void setSize(float width, float height) {
         super.setSize(width, height);
         recalculateLines();
     }
 
 
     protected void recalculateLines() {
-        final int innerWidth = getInnerWidth();
+        final int innerWidth = (int)getInnerWidth();
         cachedLines = RenderingUtils.wrapLines(getLabel(), innerWidth);
     }
 
@@ -110,16 +110,16 @@ public class UiTextWidget extends __base_UiWidget {
             final int lineHeight = scaledFont.getLineHeight();
             final int textHeight = lineHeight * cachedLines.size();
             final int y = switch(getVerticalAlignment()) {
-                case TOP    -> getY() + Layout.textMarginPx;
-                case CENTER -> getY() + (height - textHeight) / 2;
-                case BOTTOM -> getBottom() - textHeight;
+                case TOP    -> (int)(getYF() + Layout.textMarginPx);
+                case CENTER -> (int)(getYF() + (height - textHeight) / 2);
+                case BOTTOM -> (int)(getBottom() - textHeight);
             };
 
 
             // Draw text lines
-            graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
+            graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
             for(final UiTxt l : cachedLines) {
-                graphics.extractTxt(l, getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
+                graphics.extractTxt(l, (int)getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), (int)getInnerWidth());
                 ++curLineNum;
             }
             graphics.disableScissor();

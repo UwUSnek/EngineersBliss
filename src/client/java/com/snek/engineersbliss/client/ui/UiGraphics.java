@@ -228,17 +228,11 @@ public class UiGraphics {
 
     // Textures
 
-	public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int textureWidth, final int textureHeight, final int color) {
-        raw.blit(renderPipeline, texture, x, y, u, v, width, height, textureWidth, textureHeight, color);
-    }
 	public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int textureWidth, final int textureHeight) {
         raw.blit(renderPipeline, texture, x, y, u, v, width, height, textureWidth, textureHeight);
     }
 	public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int srcWidth, final int srcHeight, final int textureWidth, final int textureHeight) {
         raw.blit(renderPipeline, texture, x, y, u, v, width, height, srcWidth, srcHeight, textureWidth, textureHeight);
-    }
-	public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int srcWidth, final int srcHeight, final int textureWidth, final int textureHeight, final int color) {
-        raw.blit(renderPipeline, texture, x, y, u, v, width, height, srcWidth, srcHeight, textureWidth, textureHeight, color);
     }
 	public void blit(final Identifier location, final int x0, final int y0, final int x1, final int y1, final float u0, final float u1, final float v0, final float v1) {
         raw.blit(location, x0, y0, x1, y1, u0, u1, v0, v1);
@@ -252,19 +246,192 @@ public class UiGraphics {
 	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height, final float alpha) {
         raw.blitSprite(renderPipeline, location, x, y, width, height, alpha);
     }
-	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height, final int color) {
-        raw.blitSprite(renderPipeline, location, x, y, width, height, color);
-    }
 	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int spriteWidth, final int spriteHeight, final int textureX, final int textureY, final int x, final int y, final int width, final int height) {
         raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x, y, width, height);
-    }
-	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int spriteWidth, final int spriteHeight, final int textureX, final int textureY, final int x, final int y, final int width, final int height, final int color) {
-        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x, y, width, height, color);
     }
 	public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height) {
         raw.blitSprite(renderPipeline, sprite, x, y, width, height);
     }
-	public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height, final int color) {
-        raw.blitSprite(renderPipeline, sprite, x, y, width, height, color);
+
+
+
+
+
+
+    // Floating point blit
+
+    public void blit(final RenderPipeline renderPipeline, final Identifier texture, final float x, final float y, final float u, final float v, final float width, final float height, final int textureWidth, final int textureHeight) {
+        final int col = 0xFFFFFFFF;
+        final float x0 = x, y0 = y, x1 = x + width, y1 = y + height;
+        final float u0 = u, v0 = v;
+
+        // Calculate integer boundaries //! Integer x1 and y1 are not inclusive as for Minecraft Vanilla's behaviour.
+        final int x0i = (int)Math.ceil (x0);
+        final int x1i = (int)Math.floor(x1) + 1;
+        final int y0i = (int)Math.ceil (y0);
+        final int y1i = (int)Math.floor(y1) + 1;
+
+        // Calculate antialiased weights (Alpha 0-1)
+        final float lWeight =  x0i - x0;
+        final float rWeight = -x1  + x1i; //FIXME this might be inverted. prob needs 1 - n
+        final float tWeight =  y0i - y0;
+        final float bWeight = -y1  + y1i; //FIXME this might be inverted. prob needs 1 - n
+        final float tlWeight = (tWeight + lWeight) / 2f;
+        final float trWeight = (tWeight + rWeight) / 2f;
+        final float blWeight = (bWeight + lWeight) / 2f;
+        final float brWeight = (bWeight + rWeight) / 2f;
+
+        // Blit geometry
+        raw.blit(renderPipeline, texture, x0i,     y0i,     u0 + (x0i     - x0), v0 + (y0i     - y0), x1i - 1 - x0i, y1i - 1 - y0i, textureWidth, textureHeight, col                      ); // Solid square
+        raw.blit(renderPipeline, texture, x0i - 1, y0i,     u0 + (x0i - 1 - x0), v0 + (y0i     - y0), 1,             y1i - 1 - y0i, textureWidth, textureHeight, alphaColor(col, lWeight )); // Left   edge
+        raw.blit(renderPipeline, texture, x1i - 1, y0i,     u0 + (x1i - 1 - x0), v0 + (y0i     - y0), 1,             y1i - 1 - y0i, textureWidth, textureHeight, alphaColor(col, rWeight )); // Right  edge
+        raw.blit(renderPipeline, texture, x0i,     y0i - 1, u0 + (x0i     - x0), v0 + (y0i - 1 - y0), x1i - 1 - x0i, 1,             textureWidth, textureHeight, alphaColor(col, tWeight )); // Top    edge
+        raw.blit(renderPipeline, texture, x0i,     y1i - 1, u0 + (x0i     - x0), v0 + (y1i - 1 - y0), x1i - 1 - x0i, 1,             textureWidth, textureHeight, alphaColor(col, bWeight )); // Bottom edge
+        raw.blit(renderPipeline, texture, x0i - 1, y0i - 1, u0 + (x0i - 1 - x0), v0 + (y0i - 1 - y0), 1,             1,             textureWidth, textureHeight, alphaColor(col, tlWeight)); // Top-left     corner
+        raw.blit(renderPipeline, texture, x1i - 1, y0i - 1, u0 + (x1i - 1 - x0), v0 + (y0i - 1 - y0), 1,             1,             textureWidth, textureHeight, alphaColor(col, trWeight)); // Top-right    corner
+        raw.blit(renderPipeline, texture, x0i - 1, y1i - 1, u0 + (x0i - 1 - x0), v0 + (y1i - 1 - y0), 1,             1,             textureWidth, textureHeight, alphaColor(col, blWeight)); // Bottom-left  corner
+        raw.blit(renderPipeline, texture, x1i - 1, y1i - 1, u0 + (x1i - 1 - x0), v0 + (y1i - 1 - y0), 1,             1,             textureWidth, textureHeight, alphaColor(col, brWeight)); // Bottom-right corner
+    }
+
+
+    public void blit(final RenderPipeline renderPipeline, final Identifier texture, final float x, final float y, final float u, final float v, final float width, final float height, final int srcWidth, final int srcHeight, final int textureWidth, final int textureHeight) {
+        final int col = 0xFFFFFFFF;
+
+        final float x0 = x, y0 = y, x1 = x + width, y1 = y + height;
+        final float u0 = u, v0 = v;
+
+        final int x0i = (int)Math.ceil (x0);
+        final int x1i = (int)Math.floor(x1) + 1;
+        final int y0i = (int)Math.ceil (y0);
+        final int y1i = (int)Math.floor(y1) + 1;
+
+        final float lWeight =  x0i - x0;
+        final float rWeight = -x1  + x1i; //FIXME this might be inverted. prob needs 1 - n
+        final float tWeight =  y0i - y0;
+        final float bWeight = -y1  + y1i; //FIXME this might be inverted. prob needs 1 - n
+        final float tlWeight = (tWeight + lWeight) / 2f;
+        final float trWeight = (tWeight + rWeight) / 2f;
+        final float blWeight = (bWeight + lWeight) / 2f;
+        final float brWeight = (bWeight + rWeight) / 2f;
+
+        final float scaleX = srcWidth  / width;
+        final float scaleY = srcHeight / height;
+        final int edgeSrcW = Math.max(1, Math.round(scaleX));
+        final int edgeSrcH = Math.max(1, Math.round(scaleY));
+
+        raw.blit(renderPipeline, texture, x0i,     y0i,     u0 + (x0i     - x0) * scaleX, v0 + (y0i     - y0) * scaleY, x1i - 1 - x0i, y1i - 1 - y0i, srcWidth,  srcHeight, textureWidth, textureHeight, col                      ); // Solid square
+        raw.blit(renderPipeline, texture, x0i - 1, y0i,     u0 + (x0i - 1 - x0) * scaleX, v0 + (y0i     - y0) * scaleY, 1,             y1i - 1 - y0i, edgeSrcW,  srcHeight, textureWidth, textureHeight, alphaColor(col, lWeight )); // Left   edge
+        raw.blit(renderPipeline, texture, x1i - 1, y0i,     u0 + (x1i - 1 - x0) * scaleX, v0 + (y0i     - y0) * scaleY, 1,             y1i - 1 - y0i, edgeSrcW,  srcHeight, textureWidth, textureHeight, alphaColor(col, rWeight )); // Right  edge
+        raw.blit(renderPipeline, texture, x0i,     y0i - 1, u0 + (x0i     - x0) * scaleX, v0 + (y0i - 1 - y0) * scaleY, x1i - 1 - x0i, 1,             srcWidth,   edgeSrcH, textureWidth, textureHeight, alphaColor(col, tWeight )); // Top    edge
+        raw.blit(renderPipeline, texture, x0i,     y1i - 1, u0 + (x0i     - x0) * scaleX, v0 + (y1i - 1 - y0) * scaleY, x1i - 1 - x0i, 1,             srcWidth,   edgeSrcH, textureWidth, textureHeight, alphaColor(col, bWeight )); // Bottom edge
+        raw.blit(renderPipeline, texture, x0i - 1, y0i - 1, u0 + (x0i - 1 - x0) * scaleX, v0 + (y0i - 1 - y0) * scaleY, 1,             1,             edgeSrcW,   edgeSrcH, textureWidth, textureHeight, alphaColor(col, tlWeight)); // Top-left     corner
+        raw.blit(renderPipeline, texture, x1i - 1, y0i - 1, u0 + (x1i - 1 - x0) * scaleX, v0 + (y0i - 1 - y0) * scaleY, 1,             1,             edgeSrcW,   edgeSrcH, textureWidth, textureHeight, alphaColor(col, trWeight)); // Top-right    corner
+        raw.blit(renderPipeline, texture, x0i - 1, y1i - 1, u0 + (x0i - 1 - x0) * scaleX, v0 + (y1i - 1 - y0) * scaleY, 1,             1,             edgeSrcW,   edgeSrcH, textureWidth, textureHeight, alphaColor(col, blWeight)); // Bottom-left  corner
+        raw.blit(renderPipeline, texture, x1i - 1, y1i - 1, u0 + (x1i - 1 - x0) * scaleX, v0 + (y1i - 1 - y0) * scaleY, 1,             1,             edgeSrcW,   edgeSrcH, textureWidth, textureHeight, alphaColor(col, brWeight)); // Bottom-right corner
+    }
+
+
+
+
+
+    public void blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1) {
+        raw.blit(location, Math.round(x0), Math.round(y0), Math.round(x1), Math.round(y1), u0, u1, v0, v1);
+    }
+    public void blit(final GpuTextureView textureView, final GpuSampler sampler, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1) {
+        raw.blit(textureView, sampler, Math.round(x0), Math.round(y0), Math.round(x1), Math.round(y1), u0, u1, v0, v1);
+    }
+
+
+    // Floating point blitSprite
+
+    public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final float x, final float y, final float width, final float height) {
+        blitSprite(renderPipeline, location, x, y, width, height, 1.0f);
+    }
+    public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final float x, final float y, final float width, final float height, final float alpha) {
+        final float x0 = x, y0 = y, x1 = x + width, y1 = y + height;
+
+        final int x0i = (int)Math.ceil (x0);
+        final int x1i = (int)Math.floor(x1) + 1;
+        final int y0i = (int)Math.ceil (y0);
+        final int y1i = (int)Math.floor(y1) + 1;
+
+        final float lWeight =  x0i - x0;
+        final float rWeight = -x1  + x1i;
+        final float tWeight =  y0i - y0;
+        final float bWeight = -y1  + y1i;
+        final float tlWeight = (tWeight + lWeight) / 2f;
+        final float trWeight = (tWeight + rWeight) / 2f;
+        final float blWeight = (bWeight + lWeight) / 2f;
+        final float brWeight = (bWeight + rWeight) / 2f;
+
+        raw.blitSprite(renderPipeline, location, x0i,     y0i,     x1i - 1 - x0i, y1i - 1 - y0i, alpha             );
+        raw.blitSprite(renderPipeline, location, x0i - 1, y0i,     1,             y1i - 1 - y0i, alpha * lWeight  );
+        raw.blitSprite(renderPipeline, location, x1i - 1, y0i,     1,             y1i - 1 - y0i, alpha * rWeight  );
+        raw.blitSprite(renderPipeline, location, x0i,     y0i - 1, x1i - 1 - x0i, 1,             alpha * tWeight  );
+        raw.blitSprite(renderPipeline, location, x0i,     y1i - 1, x1i - 1 - x0i, 1,             alpha * bWeight  );
+        raw.blitSprite(renderPipeline, location, x0i - 1, y0i - 1, 1,             1,             alpha * tlWeight );
+        raw.blitSprite(renderPipeline, location, x1i - 1, y0i - 1, 1,             1,             alpha * trWeight );
+        raw.blitSprite(renderPipeline, location, x0i - 1, y1i - 1, 1,             1,             alpha * blWeight );
+        raw.blitSprite(renderPipeline, location, x1i - 1, y1i - 1, 1,             1,             alpha * brWeight );
+    }
+
+
+    public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int spriteWidth, final int spriteHeight, final int textureX, final int textureY, final float x, final float y, final float width, final float height) {
+        final int col = 0xFFFFFFFF;
+        final float x0 = x, y0 = y, x1 = x + width, y1 = y + height;
+
+        final int x0i = (int)Math.ceil (x0);
+        final int x1i = (int)Math.floor(x1) + 1;
+        final int y0i = (int)Math.ceil (y0);
+        final int y1i = (int)Math.floor(y1) + 1;
+
+        final float lWeight =  x0i - x0;
+        final float rWeight = -x1  + x1i;
+        final float tWeight =  y0i - y0;
+        final float bWeight = -y1  + y1i;
+        final float tlWeight = (tWeight + lWeight) / 2f;
+        final float trWeight = (tWeight + rWeight) / 2f;
+        final float blWeight = (bWeight + lWeight) / 2f;
+        final float brWeight = (bWeight + rWeight) / 2f;
+
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i,     y0i,     x1i - 1 - x0i, y1i - 1 - y0i, col                      );
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i - 1, y0i,     1,             y1i - 1 - y0i, alphaColor(col, lWeight ));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x1i - 1, y0i,     1,             y1i - 1 - y0i, alphaColor(col, rWeight ));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i,     y0i - 1, x1i - 1 - x0i, 1,             alphaColor(col, tWeight ));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i,     y1i - 1, x1i - 1 - x0i, 1,             alphaColor(col, bWeight ));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i - 1, y0i - 1, 1,             1,             alphaColor(col, tlWeight));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x1i - 1, y0i - 1, 1,             1,             alphaColor(col, trWeight));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i - 1, y1i - 1, 1,             1,             alphaColor(col, blWeight));
+        raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x1i - 1, y1i - 1, 1,             1,             alphaColor(col, brWeight));
+    }
+
+
+    public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final float x, final float y, final float width, final float height) {
+        final int col = 0xFFFFFFFF;
+        final float x0 = x, y0 = y, x1 = x + width, y1 = y + height;
+
+        final int x0i = (int)Math.ceil (x0);
+        final int x1i = (int)Math.floor(x1) + 1;
+        final int y0i = (int)Math.ceil (y0);
+        final int y1i = (int)Math.floor(y1) + 1;
+
+        final float lWeight =  x0i - x0;
+        final float rWeight = -x1  + x1i;
+        final float tWeight =  y0i - y0;
+        final float bWeight = -y1  + y1i;
+        final float tlWeight = (tWeight + lWeight) / 2f;
+        final float trWeight = (tWeight + rWeight) / 2f;
+        final float blWeight = (bWeight + lWeight) / 2f;
+        final float brWeight = (bWeight + rWeight) / 2f;
+
+        raw.blitSprite(renderPipeline, sprite, x0i,     y0i,     x1i - 1 - x0i, y1i - 1 - y0i, col                      );
+        raw.blitSprite(renderPipeline, sprite, x0i - 1, y0i,     1,             y1i - 1 - y0i, alphaColor(col, lWeight ));
+        raw.blitSprite(renderPipeline, sprite, x1i - 1, y0i,     1,             y1i - 1 - y0i, alphaColor(col, rWeight ));
+        raw.blitSprite(renderPipeline, sprite, x0i,     y0i - 1, x1i - 1 - x0i, 1,             alphaColor(col, tWeight ));
+        raw.blitSprite(renderPipeline, sprite, x0i,     y1i - 1, x1i - 1 - x0i, 1,             alphaColor(col, bWeight ));
+        raw.blitSprite(renderPipeline, sprite, x0i - 1, y0i - 1, 1,             1,             alphaColor(col, tlWeight));
+        raw.blitSprite(renderPipeline, sprite, x1i - 1, y0i - 1, 1,             1,             alphaColor(col, trWeight));
+        raw.blitSprite(renderPipeline, sprite, x0i - 1, y1i - 1, 1,             1,             alphaColor(col, blWeight));
+        raw.blitSprite(renderPipeline, sprite, x1i - 1, y1i - 1, 1,             1,             alphaColor(col, brWeight));
     }
 }

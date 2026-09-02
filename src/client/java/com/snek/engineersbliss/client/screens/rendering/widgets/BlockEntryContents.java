@@ -45,14 +45,14 @@ public class BlockEntryContents extends __base_UiContainer {
 
     @Override
     public void relayoutSelf() {
-        final int rowWidth = list.getRowWidth();
-        final int checkboxY = this.getY() + (this.getHeight() - 20) / 2;
+        final float rowWidth = list.getRowWidth();
+        final float checkboxY = getYF() + (getHeightF() - 20) / 2;
 
-        enableBox.setX(this.getX() + rowWidth - RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH * 2 + (RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH - enableBox.getWidth()) / 2);
-        enableBox.setY(checkboxY);
+        enableBox.setX((int)(getXF() + rowWidth - RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH * 2 + (RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH - enableBox.getWidth()) / 2));
+        enableBox.setY((int)(checkboxY));
 
-        isolateBox.setX(this.getX() + rowWidth - RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH + (RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH - isolateBox.getWidth()) / 2);
-        isolateBox.setY(checkboxY);
+        isolateBox.setX((int)(getXF() + rowWidth - RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH + (RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH - isolateBox.getWidth()) / 2));
+        isolateBox.setY((int)(checkboxY));
     }
 
 
@@ -60,9 +60,9 @@ public class BlockEntryContents extends __base_UiContainer {
     public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
-        final int midY = this.getY() + this.getHeight() / 2;
-        BlockRenderer.extractBlockIcon(graphics, block, this.getX(), midY - 8);
-        BlockRenderer.extractBlockName(graphics, block, this.getX() + 20, midY - 4, 0xFFFFFFFF);
+        final float midY = getYF() + getHeightF() / 2;
+        BlockRenderer.extractBlockIcon(graphics, block, getXF(), midY - 8);
+        BlockRenderer.extractBlockName(graphics, block, (int)getXF() + 20, (int)midY - 4, 0xFFFFFFFF);
     }
 
 

@@ -87,7 +87,7 @@ public class UiToggleButton extends UiButton {
     @Override
     public void extractBackground(UiGraphics graphics, int mouseX, int mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.fill(getRight() - getRightLabelMargin().getPx(), getY(), getRight(), getBottom(), indicatorColor.compute());
+        graphics.fill(getRight() - getRightLabelMargin().getPx(), getYF(), getRight(), getBottom(), indicatorColor.compute());
     }
 
     public int calculateNewIndicatorColor() {

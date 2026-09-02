@@ -139,8 +139,11 @@ public abstract class __base_UiScreen extends Screen {
 
         int fbWidth  = mc.getWindow().getScreenWidth();
         int fbHeight = mc.getWindow().getScreenHeight();
-        int fixedWidth  = (int)Math.floor(fbWidth  / animatedGuiScale.compute());
-        int fixedHeight = (int)Math.floor(fbHeight / animatedGuiScale.compute());
+        int fixedWidth  = (int)Math.floor(fbWidth  / animatedGuiScale.compute()); //TODO power of 2 might help layouts
+        int fixedHeight = (int)Math.floor(fbHeight / animatedGuiScale.compute()); //TODO power of 2 might help layouts
+        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
+        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
+        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
 
         boolean transitioning = isGuiScaleTransitioning();
         if(this.width != fixedWidth || this.height != fixedHeight) {

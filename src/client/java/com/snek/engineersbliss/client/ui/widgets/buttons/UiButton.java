@@ -115,10 +115,10 @@ public class UiButton extends __base_UiWidget {
         if(key != '\0') {
             final FontFamily fontFamily = Fonts.mono.regular;
             final ScaledFont scaledFont = fontFamily.get(1f);
-            final int keybindY = getY() + (height - scaledFont.getLineHeight()) / 2;
+            final int keybindX = (int)(getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2);
+            final int keybindY = (int)(getYF() + (getHeightF() - scaledFont.getLineHeight()) / 2);
             final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);
-            final int keybindX = getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2;
-            graphics.extractTxt(keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, width);
+            graphics.extractTxt(keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, getWidth());
         }
 
 
@@ -127,7 +127,7 @@ public class UiButton extends __base_UiWidget {
         //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
-        graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
+        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute());
     }
 
     @Override
@@ -147,7 +147,7 @@ public class UiButton extends __base_UiWidget {
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth.getPx(), getHeight());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
         }
 
         //

@@ -20,7 +20,6 @@ import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -128,7 +127,7 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
         boolean result = super.mouseDragged(event, dx, dy);
-        virtualX = Math.clamp(virtualX + dx, getX(), (double)getX() + getWidth());
+        virtualX = Math.clamp(virtualX + dx, getXF(), getXF() + getWidthF());
         updateValueFromVirtualX();
         return result;
     }
@@ -140,7 +139,7 @@ public class UiSlider extends __base_UiWidget {
         long handle = Minecraft.getInstance().getWindow().handle();
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
         float guiScale = SettingsFeatureHandler.getCurrentGuiScale();
-        GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
+        GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getYF() + getHeightF() / 2d) * guiScale);
         return super.mouseReleased(event);
     }
 
@@ -157,7 +156,7 @@ public class UiSlider extends __base_UiWidget {
     }
 
     private void updateValueFromVirtualX() {
-        final double newValue = (virtualX - (this.getX() + height)) / (getWidth() - 2d * height);
+        final double newValue = (virtualX - (getXF() + height)) / (getWidthF() - 2d * height);
         if(value != newValue) {
             this.setValue(newValue);
         }
@@ -200,16 +199,16 @@ public class UiSlider extends __base_UiWidget {
 
 
         // Draw slider handle //! Clamp to slider inner width
-        final int handleX = calcHandleX();
-        final int handleWidth = calcHandleWidth();
-        final int handleL = handleX - handleWidth / 2;
-        final int handleR = handleX + handleWidth / 2;
-        final int innerL = calcInnerLeft();
-        final int innerR = calcInnerRight();
+        final float handleX = calcHandleX();
+        final float handleWidth = calcHandleWidth();
+        final float handleL = handleX - handleWidth / 2;
+        final float handleR = handleX + handleWidth / 2;
+        final float innerL = calcInnerLeft();
+        final float innerR = calcInnerRight();
         handleColor.startNewTransition(isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor);
-        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
-        if(handleL <  innerL) graphics.fill(handleL, getY(), innerL,  getBottom(), Layout.handleColorTransparent);
-        if(handleR >= innerR) graphics.fill(innerR,  getY(), handleR, getBottom(), Layout.handleColorTransparent);
+        graphics.fill(Math.max(innerL, handleL), getYF(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
+        if(handleL <  innerL) graphics.fill(handleL, getYF(), innerL,  getBottom(), Layout.handleColorTransparent);
+        if(handleR >= innerR) graphics.fill(innerR,  getYF(), handleR, getBottom(), Layout.handleColorTransparent);
 
 
         // Recalculate and draw hover highlight
@@ -217,7 +216,7 @@ public class UiSlider extends __base_UiWidget {
         //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
-        graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
+        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute());
     }
 
     @Override
@@ -236,34 +235,34 @@ public class UiSlider extends __base_UiWidget {
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(bgSpriteId != null) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth.getPx(), getHeight());
+            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
         }
     }
 
 
 
 
-    public int calcHandleWidth() {
+    public float calcHandleWidth() {
         final double magnitude = Math.abs(value - visualValue.getLast());
         final double speed = Math.abs(visualValue.calcSpeed()) * magnitude;
         final double widthFactor = Math.clamp(1.0 + speed * HANDLE_SPEED_SENSITIVITY, 1.0, HANDLE_MAX_WIDTH_SCALE);
-        return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
+        return HANDLE_BASE_WIDTH * (float)widthFactor;
     }
 
-    public int calcHandleX() {
-        return calcInnerLeft() + (int)(visualValue.compute() * calcInnerWidth());
+    public float calcHandleX() {
+        return calcInnerLeft() + visualValue.compute().floatValue() * calcInnerWidth();
     }
 
-    public int calcInnerLeft() {
-        return getX() + height;
+    public float calcInnerLeft() {
+        return getXF() + getHeightF();
     }
 
-    public int calcInnerRight() {
-        return getRight() - height;
+    public float calcInnerRight() {
+        return getRight() - getHeightF();
     }
 
-    public int calcInnerWidth() {
-        return getWidth() - 2 * height;
+    public float calcInnerWidth() {
+        return getWidthF() - 2 * getHeightF();
     }
 }
 

@@ -7,8 +7,6 @@ import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureH
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.utils.Layout;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-
 
 
 
@@ -18,10 +16,10 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 public interface BgCacheWidget {
 
 
-    public int getX();
-    public int getY();
-    public int getWidth();
-    public int getHeight();
+    public float getXF();
+    public float getYF();
+    public float getWidthF();
+    public float getHeightF();
     public boolean isGuiScaleTransitioning();
     public TextureCache getBgTextureCache();
 
@@ -36,8 +34,8 @@ public interface BgCacheWidget {
      * @param a
      */
     public default void extractBackground(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
-        final int w = getWidth();
-        final int h = getHeight();
+        final float w = getWidthF();
+        final float h = getHeightF();
         final float guiScale = SettingsFeatureHandler.getCurrentGuiScale();
         final int pixelW = Math.max(1, Math.round(w * guiScale));
         final int pixelH = Math.max(1, Math.round(h * guiScale));
@@ -46,7 +44,7 @@ public interface BgCacheWidget {
         // Draw background color if needed
         final int bgColor = getBgBaseColor();
         if((bgColor & 0xFF000000) != 0) {
-            graphics.fill(getX(), getY(), getX() + getWidth(), getY() + getHeight(), bgColor);
+            graphics.fill(getXF(), getYF(), getXF() + getWidthF(), getYF() + getHeightF(), bgColor);
         }
 
 
@@ -56,7 +54,7 @@ public interface BgCacheWidget {
             if(!isGuiScaleTransitioning()) {
                 bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
             }
-            bgCache.blit(graphics, getX(), getY(), w, h);
+            bgCache.blit(graphics, getXF(), getYF(), w, h);
         }
     }
 
