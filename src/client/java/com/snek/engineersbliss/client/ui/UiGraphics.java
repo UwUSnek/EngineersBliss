@@ -272,14 +272,14 @@ public class UiGraphics {
         final int y1i = (int)Math.floor(y1) + 1;
 
         // Calculate antialiased weights (Alpha 0-1)
-        final float lWeight =  x0i - x0;
-        final float rWeight = -x1  + x1i; //FIXME this might be inverted. prob needs 1 - n
-        final float tWeight =  y0i - y0;
-        final float bWeight = -y1  + y1i; //FIXME this might be inverted. prob needs 1 - n
-        final float tlWeight = (tWeight + lWeight) / 2f;
-        final float trWeight = (tWeight + rWeight) / 2f;
-        final float blWeight = (bWeight + lWeight) / 2f;
-        final float brWeight = (bWeight + rWeight) / 2f;
+        final float lWeight = x0i - x0;
+        final float rWeight = x1  - x1i + 1;
+        final float tWeight = y0i - y0;
+        final float bWeight = y1  - y1i + 1;
+        final float tlWeight = tWeight * lWeight;
+        final float trWeight = tWeight * rWeight;
+        final float blWeight = bWeight * lWeight;
+        final float brWeight = bWeight * rWeight;
 
         // Blit geometry
         raw.blit(renderPipeline, texture, x0i,     y0i,     u0 + (x0i     - x0), v0 + (y0i     - y0), x1i - 1 - x0i, y1i - 1 - y0i, textureWidth, textureHeight, col                      ); // Solid square
@@ -305,14 +305,14 @@ public class UiGraphics {
         final int y0i = (int)Math.ceil (y0);
         final int y1i = (int)Math.floor(y1) + 1;
 
-        final float lWeight =  x0i - x0;
-        final float rWeight = -x1  + x1i; //FIXME this might be inverted. prob needs 1 - n
-        final float tWeight =  y0i - y0;
-        final float bWeight = -y1  + y1i; //FIXME this might be inverted. prob needs 1 - n
-        final float tlWeight = (tWeight + lWeight) / 2f;
-        final float trWeight = (tWeight + rWeight) / 2f;
-        final float blWeight = (bWeight + lWeight) / 2f;
-        final float brWeight = (bWeight + rWeight) / 2f;
+        final float lWeight = x0i - x0;
+        final float rWeight = x1  - x1i + 1;
+        final float tWeight = y0i - y0;
+        final float bWeight = y1  - y1i + 1;
+        final float tlWeight = tWeight * lWeight;
+        final float trWeight = tWeight * rWeight;
+        final float blWeight = bWeight * lWeight;
+        final float brWeight = bWeight * rWeight;
 
         final float scaleX = srcWidth  / width;
         final float scaleY = srcHeight / height;
@@ -355,14 +355,14 @@ public class UiGraphics {
         final int y0i = (int)Math.ceil (y0);
         final int y1i = (int)Math.floor(y1) + 1;
 
-        final float lWeight =  x0i - x0;
-        final float rWeight = -x1  + x1i;
-        final float tWeight =  y0i - y0;
-        final float bWeight = -y1  + y1i;
-        final float tlWeight = (tWeight + lWeight) / 2f;
-        final float trWeight = (tWeight + rWeight) / 2f;
-        final float blWeight = (bWeight + lWeight) / 2f;
-        final float brWeight = (bWeight + rWeight) / 2f;
+        final float lWeight = x0i - x0;
+        final float rWeight = x1  - x1i + 1;
+        final float tWeight = y0i - y0;
+        final float bWeight = y1  - y1i + 1;
+        final float tlWeight = tWeight * lWeight;
+        final float trWeight = tWeight * rWeight;
+        final float blWeight = bWeight * lWeight;
+        final float brWeight = bWeight * rWeight;
 
         raw.blitSprite(renderPipeline, location, x0i,     y0i,     x1i - 1 - x0i, y1i - 1 - y0i, alpha             );
         raw.blitSprite(renderPipeline, location, x0i - 1, y0i,     1,             y1i - 1 - y0i, alpha * lWeight  );
@@ -385,14 +385,14 @@ public class UiGraphics {
         final int y0i = (int)Math.ceil (y0);
         final int y1i = (int)Math.floor(y1) + 1;
 
-        final float lWeight =  x0i - x0;
-        final float rWeight = -x1  + x1i;
-        final float tWeight =  y0i - y0;
-        final float bWeight = -y1  + y1i;
-        final float tlWeight = (tWeight + lWeight) / 2f;
-        final float trWeight = (tWeight + rWeight) / 2f;
-        final float blWeight = (bWeight + lWeight) / 2f;
-        final float brWeight = (bWeight + rWeight) / 2f;
+        final float lWeight = x0i - x0;
+        final float rWeight = x1  - x1i + 1;
+        final float tWeight = y0i - y0;
+        final float bWeight = y1  - y1i + 1;
+        final float tlWeight = tWeight * lWeight;
+        final float trWeight = tWeight * rWeight;
+        final float blWeight = bWeight * lWeight;
+        final float brWeight = bWeight * rWeight;
 
         raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i,     y0i,     x1i - 1 - x0i, y1i - 1 - y0i, col                      );
         raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x0i - 1, y0i,     1,             y1i - 1 - y0i, alphaColor(col, lWeight ));
@@ -415,14 +415,14 @@ public class UiGraphics {
         final int y0i = (int)Math.ceil (y0);
         final int y1i = (int)Math.floor(y1) + 1;
 
-        final float lWeight =  x0i - x0;
-        final float rWeight = -x1  + x1i;
-        final float tWeight =  y0i - y0;
-        final float bWeight = -y1  + y1i;
-        final float tlWeight = (tWeight + lWeight) / 2f;
-        final float trWeight = (tWeight + rWeight) / 2f;
-        final float blWeight = (bWeight + lWeight) / 2f;
-        final float brWeight = (bWeight + rWeight) / 2f;
+        final float lWeight = x0i - x0;
+        final float rWeight = x1  - x1i + 1;
+        final float tWeight = y0i - y0;
+        final float bWeight = y1  - y1i + 1;
+        final float tlWeight = tWeight * lWeight;
+        final float trWeight = tWeight * rWeight;
+        final float blWeight = bWeight * lWeight;
+        final float brWeight = bWeight * rWeight;
 
         raw.blitSprite(renderPipeline, sprite, x0i,     y0i,     x1i - 1 - x0i, y1i - 1 - y0i, col                      );
         raw.blitSprite(renderPipeline, sprite, x0i - 1, y0i,     1,             y1i - 1 - y0i, alphaColor(col, lWeight ));
