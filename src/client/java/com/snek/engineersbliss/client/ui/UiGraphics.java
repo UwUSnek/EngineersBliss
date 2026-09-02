@@ -6,12 +6,10 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.textures.GpuSampler;
 import com.mojang.blaze3d.textures.GpuTextureView;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -78,22 +76,22 @@ public class UiGraphics {
 
 
 
-	public void enableScissor(final int x0, final int y0, final int x1, final int y1) {
+    public void enableScissor(final int x0, final int y0, final int x1, final int y1) {
         raw.enableScissor(x0, y0, x1, y1);
-	}
-	public void disableScissor() {
+    }
+    public void disableScissor() {
         raw.disableScissor();
-	}
-	public boolean containsPointInScissor(final int x, final int y) {
+    }
+    public boolean containsPointInScissor(final int x, final int y) {
         return raw.containsPointInScissor(x, y);
-	}
+    }
 
 
 
 
-	public void blurBeforeThisStratum() {
-		raw.blurBeforeThisStratum();
-	}
+    public void blurBeforeThisStratum() {
+        raw.blurBeforeThisStratum();
+    }
 
 
 
@@ -125,10 +123,10 @@ public class UiGraphics {
         final int y1i = (int)Math.floor(y1) + 1;
 
         // Calculate antialiased weights (Alpha 0-1)
-        final float lWeight =  x0i - x0;
-        final float rWeight = -x1  + x1i; //FIXME this might be inverted. prob needs 1 - n
-        final float tWeight =  y0i - y0;
-        final float bWeight = -y1  + y1i; //FIXME this might be inverted. prob needs 1 - n
+        final float lWeight = x0i - x0;
+        final float rWeight = x1  - x1i + 1;
+        final float tWeight = y0i - y0;
+        final float bWeight = y1  - y1i + 1;
         final float tlWeight = (tWeight + lWeight) / 2f;
         final float trWeight = (tWeight + rWeight) / 2f;
         final float blWeight = (bWeight + lWeight) / 2f;
@@ -148,6 +146,7 @@ public class UiGraphics {
     public int alphaColor(final int baseARGB, final float alpha) {
         return (Math.round(((baseARGB & 0xFF000000) >>> 24) * alpha) << 24) | (baseARGB & 0x00FFFFFF);
     }
+
 
 
 
@@ -228,30 +227,32 @@ public class UiGraphics {
 
     // Textures
 
-	public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int textureWidth, final int textureHeight) {
+    public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int textureWidth, final int textureHeight) {
         raw.blit(renderPipeline, texture, x, y, u, v, width, height, textureWidth, textureHeight);
     }
-	public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int srcWidth, final int srcHeight, final int textureWidth, final int textureHeight) {
+    public void blit(final RenderPipeline renderPipeline, final Identifier texture, final int x, final int y, final float u, final float v, final int width, final int height, final int srcWidth, final int srcHeight, final int textureWidth, final int textureHeight) {
         raw.blit(renderPipeline, texture, x, y, u, v, width, height, srcWidth, srcHeight, textureWidth, textureHeight);
     }
-	public void blit(final Identifier location, final int x0, final int y0, final int x1, final int y1, final float u0, final float u1, final float v0, final float v1) {
+    public void blit(final Identifier location, final int x0, final int y0, final int x1, final int y1, final float u0, final float u1, final float v0, final float v1) {
         raw.blit(location, x0, y0, x1, y1, u0, u1, v0, v1);
     }
-	public void blit(final GpuTextureView textureView, final GpuSampler sampler, final int x0, final int y0, final int x1, final int y1, final float u0, final float u1, final float v0, final float v1) {
+    public void blit(final GpuTextureView textureView, final GpuSampler sampler, final int x0, final int y0, final int x1, final int y1, final float u0, final float u1, final float v0, final float v1) {
         raw.blit(textureView, sampler, x0, y0, x1, y1, u0, u1, v0, v1);
     }
-	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height) {
+    public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height) {
         raw.blitSprite(renderPipeline, location, x, y, width, height);
     }
-	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height, final float alpha) {
+    public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int x, final int y, final int width, final int height, final float alpha) {
         raw.blitSprite(renderPipeline, location, x, y, width, height, alpha);
     }
-	public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int spriteWidth, final int spriteHeight, final int textureX, final int textureY, final int x, final int y, final int width, final int height) {
+    public void blitSprite(final RenderPipeline renderPipeline, final Identifier location, final int spriteWidth, final int spriteHeight, final int textureX, final int textureY, final int x, final int y, final int width, final int height) {
         raw.blitSprite(renderPipeline, location, spriteWidth, spriteHeight, textureX, textureY, x, y, width, height);
     }
-	public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height) {
+    public void blitSprite(final RenderPipeline renderPipeline, final TextureAtlasSprite sprite, final int x, final int y, final int width, final int height) {
         raw.blitSprite(renderPipeline, sprite, x, y, width, height);
     }
+
+
 
 
 
