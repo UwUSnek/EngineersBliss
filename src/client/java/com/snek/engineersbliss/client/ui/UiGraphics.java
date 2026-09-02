@@ -6,6 +6,7 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.textures.GpuSampler;
 import com.mojang.blaze3d.textures.GpuTextureView;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -35,38 +36,8 @@ public class UiGraphics {
 
 
 
-	public void requestCursor(final CursorType cursorType) {
-		raw.requestCursor(cursorType);
-	}
-
-
-
-
-
-
-
-
-    /** //TODO prob not needed? bake the math into dedicated methods?
-     * Forces the GuiGraphicsExtractor to render at full resolution instead of whatever the GUI Scale option decides.
-     * This allows for sharper edges and proper antialiasing at high GUI Scales.
-     * ! Use the returned scale factor to multiply coordinates and dimensions.
-     * ! Call popFullResRendering(GuiGraphicsExtractor) after rendering is done to revert the custom transform.
-     * @return The current scale factor. Use this for coordinate calculations.
-     */
-    public double pushFullResRendering() {
-        final var window = Minecraft.getInstance().getWindow();
-        final float guiScale = window.getWidth() / SettingsFeatureHandler.getCurrentGuiScale();
-        raw.pose().pushMatrix();
-        raw.pose().scale(1.0f / guiScale, 1.0f / guiScale);
-        return guiScale;
-    }
-
-
-    /** //TODO prob not needed? bake the math into dedicated methods?
-     * Reverts the transform pushed by pushFullResRendering(GuiGraphicsExtractor).
-     */
-    public void popFullResRendering() {
-        raw.pose().popMatrix();
+    public void requestCursor(final CursorType cursorType) {
+        raw.requestCursor(cursorType);
     }
 
 
@@ -168,7 +139,7 @@ public class UiGraphics {
     ) {
 
         // Retrieve font and text scale
-        final float textScale = scaledFont.getScale();
+        final float textScale = scaledFont.getScale() * SettingsFeatureHandler.getCurrentGuiScale();
 
         // Compute x and y positions
         final int _x = (int)(switch(textAlignment) {

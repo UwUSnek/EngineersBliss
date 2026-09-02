@@ -60,11 +60,13 @@ public abstract class __base_UiScreen extends Screen {
     public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
 
-    // Virtual gui scale & sclae animation
+    // Virtual gui scale & scale animation
     private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
     protected final AnimatedFloat animatedGuiScale;
-    public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; }
+    // public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; } //TODO remove
     public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
+    private float lastScale = -1;
+    public float getGuiScale() { return animatedGuiScale.compute(); }
 
 
     // Relayout/rebuild flags
@@ -137,18 +139,16 @@ public abstract class __base_UiScreen extends Screen {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         realGuiScale = mc.getWindow().getGuiScale();
 
-        int fbWidth  = mc.getWindow().getScreenWidth();
-        int fbHeight = mc.getWindow().getScreenHeight();
-        int fixedWidth  = (int)Math.floor(fbWidth  / animatedGuiScale.compute()); //TODO power of 2 might help layouts
-        int fixedHeight = (int)Math.floor(fbHeight / animatedGuiScale.compute()); //TODO power of 2 might help layouts
-        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
-        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
+        int newWidth  = mc.getWindow().getScreenWidth();
+        int newHeight = mc.getWindow().getScreenHeight();
+        float newScale = animatedGuiScale.compute();
         //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
 
         boolean transitioning = isGuiScaleTransitioning();
-        if(this.width != fixedWidth || this.height != fixedHeight) {
-            this.width  = fixedWidth;
-            this.height = fixedHeight;
+        if(lastScale != newScale || width != newWidth || height != newHeight) {
+            lastScale = newScale;
+            width  = newWidth;
+            height = newHeight;
 
             if(transitioning) {
                 needsRelayout = true;
@@ -330,7 +330,7 @@ public abstract class __base_UiScreen extends Screen {
         }
 
         // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything.
-        float factor = animatedGuiScale.compute() / realGuiScale;
+        float factor = 1f / realGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
         extractRenderState(new UiGraphics(graphics), mouseX, mouseY, delta);

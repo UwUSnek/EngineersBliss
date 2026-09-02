@@ -264,18 +264,21 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         final boolean hasBottom = borderBottom > 0;
         final boolean hasLeft   = borderLeft   > 0;
         if(hasTop || hasRight || hasBottom || hasLeft) {
-            final double scale = graphics.pushFullResRendering();
             final double factor = (getScreen() instanceof __base_UiScreen uiScreen) ? uiScreen.getAnimatedGuiScale().compute() / 1.0 : 1.0;
-            final float totalScale = (float)(scale / factor);
-            final float x = (float)scale * getX();
-            final float y = (float)scale * getY();
-            final float r = (float)scale * getRight();
-            final float b = (float)scale * getBottom();
+            // final float totalScale = (float)(scale / factor); //TODO
+            final float totalScale = (float)factor;
+            // final float x = (float)scale * getX(); //TODO
+            final float x = getX();
+            // final float y = (float)scale * getY(); //TODO
+            final float y = getY();
+            // final float r = (float)scale * getRight(); //TODO
+            final float r = getRight();
+            // final float b = (float)scale * getBottom(); //TODO
+            final float b = getBottom();
             if(hasTop   ) graphics.fill(x, y, r, y + totalScale * borderTop,       borderTopColor);
             if(hasRight ) graphics.fill(r, y, r    - totalScale * borderRight,  b, borderRightColor);
             if(hasBottom) graphics.fill(x, b, r, b - totalScale * borderBottom,    borderBottomColor);
             if(hasLeft  ) graphics.fill(x, y, x    + totalScale * borderLeft,   b, borderLeftColor);
-            graphics.popFullResRendering();
         }
     }
 
