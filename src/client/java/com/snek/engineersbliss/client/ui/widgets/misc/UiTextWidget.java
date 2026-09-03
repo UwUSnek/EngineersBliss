@@ -56,9 +56,10 @@ public class UiTextWidget extends __base_UiWidget {
 
     @Override
     public void relayoutSelf() {
-        // Empty
+        if(wrapLines) {
+            recalculateLines();
+        }
     }
-
 
 
 

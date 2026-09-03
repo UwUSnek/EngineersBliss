@@ -8,6 +8,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
@@ -197,7 +198,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected double scrollRate() {
-        return defaultEntryHeight;
+        return defaultEntryHeight * SettingsFeatureHandler.getCurrentGuiScale();
     }
 
     private void scroll(final float amount) {
