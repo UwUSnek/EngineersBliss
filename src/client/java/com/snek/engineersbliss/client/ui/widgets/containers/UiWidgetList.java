@@ -35,26 +35,24 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
-    private final int defaultEntryHeight;
+    private final float defaultEntryHeight;
     private final float rowMargin;
 
     private boolean isScrollable;
     private double scrollAmount;
     private boolean scrolling;
-    private final int scrollRateBase;
 
 
 
 
-    public UiWidgetList(final Screen screen, final int itemHeight) {
-        this(screen, itemHeight, 0f);
+    public UiWidgetList(final Screen screen, final float defaultEntryHeight) {
+        this(screen, defaultEntryHeight, 0f);
     }
-    public UiWidgetList(final Screen screen, final int itemHeight, final float rowMargin) {
+    public UiWidgetList(final Screen screen, final float defaultEntryHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
         this.isScrollable = true;
-        this.defaultEntryHeight = itemHeight;
-        this.scrollRateBase = itemHeight;
+        this.defaultEntryHeight = defaultEntryHeight;
         this.rowMargin = rowMargin;
     }
 
@@ -199,7 +197,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected double scrollRate() {
-        return scrollRateBase;
+        return defaultEntryHeight;
     }
 
     private void scroll(final float amount) {
@@ -255,7 +253,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     protected int __internal_addWidget(final Entry entry) {
         return __internal_addWidget(entry, defaultEntryHeight);
     }
-    protected int __internal_addWidget(final Entry entry, final int height) {
+    protected int __internal_addWidget(final Entry entry, final float height) {
         entry.parentList = this;
         entry.setXF(getRowLeft());
         entry.setWidth(getRowWidth());
@@ -268,26 +266,26 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public void addWidget(final __base_UiLayoutElm widget) {
         __internal_addWidget(new Entry(getScreen(), widget));
     }
-    public void addWidget(final __base_UiLayoutElm widget, final int height) {
+    public void addWidget(final __base_UiLayoutElm widget, final float height) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
     }
 
 
-    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final int marginBottom) {
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget));
         addWidget(new UiSpacer(getScreen()), marginBottom);
     }
-    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final int height, final int marginBottom) {
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float height, final float marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
         addWidget(new UiSpacer(getScreen()), marginBottom);
     }
 
 
-    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final int marginTop, final int marginBottom) {
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float marginTop, final float marginBottom) {
         addWidget(new UiSpacer(getScreen()), marginTop);
         addWidgetAndSpacer(widget, marginBottom);
     }
-    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final int height, final int marginTop, final int marginBottom) {
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float height, final float marginTop, final float marginBottom) {
         addWidget(new UiSpacer(getScreen()), marginTop);
         addWidgetAndSpacer(widget, height, marginBottom);
     }
@@ -375,7 +373,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public static class Entry extends __base_UiContainer implements GuiEventListener {
         private UiWidgetList parentList;
         private final __base_UiLayoutElm widget;
-
+        @Override public boolean scaleHeightWithGui() {
+            return true;
+        }
 
 
 

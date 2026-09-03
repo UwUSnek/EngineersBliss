@@ -48,12 +48,14 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     @Override public final int  getWidth() { return (int)getWidthF(); }
     @Override public final int      getX() { return (int)getXF(); }
     @Override public final int      getY() { return (int)getYF(); }
-    public float getHeightF() { return height; }
-    public float  getWidthF() { return width; }
+    public float getHeightF() { return scaleHeightWithGui() ? getGuiScale() * height : height; }
+    public float  getWidthF() { return  scaleWidthWithGui() ? getGuiScale() * width  : width;  }
     public float      getXF() { return x; }
     public float      getYF() { return y; }
     public float   getRight() { return getXF() + getWidthF(); }
     public float  getBottom() { return getYF() + getHeightF(); }
+    public boolean scaleWidthWithGui() { return false; }
+    public boolean scaleHeightWithGui() { return false; }
 
     // Basic data - setters
     @Override public void setX(final int x) { setXF(x); }
@@ -87,6 +89,17 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     public boolean isGuiScaleTransitioning() {
         return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
     }
+    public float getGuiScale() {
+        if(getScreen() instanceof __base_UiScreen uiScreen) {
+            return uiScreen.getGuiScale();
+        }
+        else {
+            return 1f;
+        }
+    }
+    // public float scaleToGui(final float n) { //TODO remove
+    //     return n * getGuiScale();
+    // }
 
 
     // Relayout handling

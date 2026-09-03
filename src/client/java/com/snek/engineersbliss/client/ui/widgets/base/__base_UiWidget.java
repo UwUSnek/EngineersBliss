@@ -264,9 +264,10 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         final boolean hasBottom = borderBottom > 0;
         final boolean hasLeft   = borderLeft   > 0;
         if(hasTop || hasRight || hasBottom || hasLeft) {
-            final double factor = (getScreen() instanceof __base_UiScreen uiScreen) ? uiScreen.getAnimatedGuiScale().compute() / 1.0 : 1.0;
+            // final double factor = getGuiScale();
             // final float totalScale = (float)(scale / factor); //TODO
-            final float totalScale = (float)factor;
+            // final float totalScale = (float)factor;
+            // final float totalScale = getGuiScale();
             // final float x = (float)scale * getX(); //TODO
             final float x = getX();
             // final float y = (float)scale * getY(); //TODO
@@ -275,10 +276,14 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             final float r = getRight();
             // final float b = (float)scale * getBottom(); //TODO
             final float b = getBottom();
-            if(hasTop   ) graphics.fill(x, y, r, y + totalScale * borderTop,       borderTopColor);
-            if(hasRight ) graphics.fill(r, y, r    - totalScale * borderRight,  b, borderRightColor);
-            if(hasBottom) graphics.fill(x, b, r, b - totalScale * borderBottom,    borderBottomColor);
-            if(hasLeft  ) graphics.fill(x, y, x    + totalScale * borderLeft,   b, borderLeftColor);
+            // if(hasTop   ) graphics.fill(x, y, r, y + totalScale * borderTop,       borderTopColor); //TODO remove
+            if(hasTop   ) graphics.fill(x, y, r, y + borderTop,       borderTopColor);
+            // if(hasRight ) graphics.fill(r, y, r    - totalScale * borderRight,  b, borderRightColor); //TODO remove
+            if(hasRight ) graphics.fill(r, y, r    - borderRight,  b, borderRightColor);
+            // if(hasBottom) graphics.fill(x, b, r, b - totalScale * borderBottom,    borderBottomColor); //TODO remove
+            if(hasBottom) graphics.fill(x, b, r, b - borderBottom,    borderBottomColor);
+            // if(hasLeft  ) graphics.fill(x, y, x    + totalScale * borderLeft,   b, borderLeftColor); //TODO remove
+            if(hasLeft  ) graphics.fill(x, y, x    + borderLeft,   b, borderLeftColor);
         }
     }
 

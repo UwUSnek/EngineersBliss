@@ -1,5 +1,8 @@
 package com.snek.engineersbliss.client.ui.data_types;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 
 
@@ -20,6 +23,9 @@ public class UiSize {
 
     public UiSize(final __base_UiWidget widget) {
         this.widget = widget;
+        this.px = 0;
+        this.widthFrac = 0;
+        this.heightFrac = 0;
     }
 
 
@@ -62,6 +68,6 @@ public class UiSize {
 
 
     public float getPx() {
-        return px + widthFrac  * widget.getWidthF() + heightFrac * widget.getHeightF();
+        return px + widthFrac * widget.getWidthF() + heightFrac * widget.getHeightF();
     }
 }

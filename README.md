@@ -14,8 +14,8 @@ custom items, and render filters.
 <br>
 
 Mod written and tested by **UwU_Snek**.<br>
-Minecraft 26.1+.<br>
-Fabric Loader 0.19.3+.
+Minecraft **26.1+**.<br>
+Fabric Loader **0.19.3+**.
 
 <br>
 

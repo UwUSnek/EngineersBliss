@@ -63,9 +63,9 @@ public abstract class __base_UiScreen extends Screen {
     // Virtual gui scale & scale animation
     private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
     protected final AnimatedFloat animatedGuiScale;
+    private float lastGuiScale = -1;
     // public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; } //TODO remove
     public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
-    private float lastScale = -1;
     public float getGuiScale() { return animatedGuiScale.compute(); }
 
 
@@ -145,8 +145,8 @@ public abstract class __base_UiScreen extends Screen {
         //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
 
         boolean transitioning = isGuiScaleTransitioning();
-        if(lastScale != newScale || width != newWidth || height != newHeight) {
-            lastScale = newScale;
+        if(lastGuiScale != newScale || width != newWidth || height != newHeight) {
+            lastGuiScale = newScale;
             width  = newWidth;
             height = newHeight;
 
@@ -177,8 +177,9 @@ public abstract class __base_UiScreen extends Screen {
 
     // Converts a mouse coord from GuiScale-dependant coords to virtual screen coords
     private double fx(double v) {
-        return v * (realGuiScale / animatedGuiScale.compute());
+        return v * realGuiScale;
     }
+    //FIXME remove the whole scissors mess? if possible?? idk
 
     @Override
     public boolean mouseClicked(MouseButtonEvent e, boolean doubleClick) {

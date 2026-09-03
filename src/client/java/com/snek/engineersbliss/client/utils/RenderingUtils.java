@@ -193,7 +193,7 @@ public class RenderingUtils {
                 lastSpace = i;
             }
 
-            if(scaledFont.calcWidth(raw.substring(lineStart, i + 1)) > maxWidth) { //TODO this is prob inefficient and idk if it counts §
+            if(scaledFont.calcWidth(raw.substring(lineStart, i + 1)) > maxWidth) { //TODO this is prob inefficient
                 if(lastSpace >= lineStart) {
                     lines.add((UiTxt)text.substring(lineStart, lastSpace));
                     lineStart = lastSpace + 1;
