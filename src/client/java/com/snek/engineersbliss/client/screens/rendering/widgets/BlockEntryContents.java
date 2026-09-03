@@ -60,7 +60,7 @@ public class BlockEntryContents extends __base_UiContainer {
     public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
-        final float midY = getYF() + getHeightF() / 2;
+        final float midY = getHeightCenter();
         BlockRenderer.extractBlockIcon(graphics, block, getXF(), midY - 8);
         BlockRenderer.extractBlockName(graphics, block, (int)getXF() + 20, (int)midY - 4, 0xFFFFFFFF);
     }

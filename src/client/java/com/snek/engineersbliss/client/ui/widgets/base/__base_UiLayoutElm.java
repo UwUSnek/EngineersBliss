@@ -48,12 +48,14 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     @Override public final int  getWidth() { return (int)getWidthF(); }
     @Override public final int      getX() { return (int)getXF(); }
     @Override public final int      getY() { return (int)getYF(); }
-    public float getHeightF() { return scaleHeightWithGui() ? getGuiScale() * height : height; }
-    public float  getWidthF() { return  scaleWidthWithGui() ? getGuiScale() * width  : width;  }
-    public float      getXF() { return x; }
-    public float      getYF() { return y; }
-    public float   getRight() { return getXF() + getWidthF(); }
-    public float  getBottom() { return getYF() + getHeightF(); }
+    public float      getHeightF() { return scaleHeightWithGui() ? getGuiScale() * height : height; }
+    public float       getWidthF() { return  scaleWidthWithGui() ? getGuiScale() * width  : width;  }
+    public float           getXF() { return x; }
+    public float           getYF() { return y; }
+    public float        getRight() { return getXF() + getWidthF(); }
+    public float       getBottom() { return getYF() + getHeightF(); }
+    public float  getWidthCenter() { return getXF() + getWidthF() / 2; }
+    public float getHeightCenter() { return getYF() + getHeightF() / 2; }
     public boolean scaleWidthWithGui() { return false; }
     public boolean scaleHeightWithGui() { return false; }
 

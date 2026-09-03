@@ -3,11 +3,12 @@ package com.snek.engineersbliss.client.ui.widgets.sliders;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.mixin.accessors.MouseHandlerAccessor;
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -18,6 +19,7 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -115,8 +117,20 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
         boolean result = super.mouseClicked(event, doubled);
-        GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
-        virtualX = event.x();
+
+        final long handle = Minecraft.getInstance().getWindow().handle();
+
+        double[] px = new double[1];
+        double[] py = new double[1];
+        GLFW.glfwGetCursorPos(handle, px, py);
+
+        final var window = Minecraft.getInstance().getWindow();
+        final double scaleX = (double) window.getGuiScaledWidth() / window.getScreenWidth();
+        final double scaleY = (double) window.getGuiScaledHeight() / window.getScreenHeight();
+
+        virtualX = px[0] * scaleX;
+
+        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
         updateValueFromVirtualX();
         return result;
     }
@@ -137,9 +151,20 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
         long handle = Minecraft.getInstance().getWindow().handle();
-        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-        float guiScale = SettingsFeatureHandler.getCurrentGuiScale();
-        GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getYF() + getHeightF() / 2d) * guiScale);
+        double targetX = getInnerX() + getInnerWidth() * value;
+        double targetY = getHeightCenter();
+
+        // Re-activate GLFW's cursor
+        // // //! This must be done after 2 ticks because something in Vanilla's stupid ass code
+        // // //! sets the cursor back to the initial click position AFTER the current client tick ends,
+        // ClientScheduler.run(() -> {
+        System.out.println("Moving to value " + value);
+            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+            GLFW.glfwSetCursorPos(handle, targetX, targetY);
+        //     System.out.println("SET");
+        // });
+
+
         return super.mouseReleased(event);
     }
 
@@ -156,7 +181,7 @@ public class UiSlider extends __base_UiWidget {
     }
 
     private void updateValueFromVirtualX() {
-        final double newValue = (virtualX - (getXF() + height)) / (getWidthF() - 2d * height);
+        final double newValue = (virtualX - getInnerX()) / getInnerWidth();
         if(value != newValue) {
             this.setValue(newValue);
         }
@@ -165,6 +190,7 @@ public class UiSlider extends __base_UiWidget {
     protected void setValue(final double newValue) {
         double oldValue = this.value;
         this.value = Math.clamp(newValue, 0.0, 1.0);
+        System.out.println("Set new value " + value);
         if(oldValue != this.value) {
             this.applyValue();
         }

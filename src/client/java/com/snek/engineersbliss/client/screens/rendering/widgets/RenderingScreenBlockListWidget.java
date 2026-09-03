@@ -131,7 +131,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         if(hovered != null && hovered instanceof BlockEntryContents contents) {
 
             // If hovering on the left half of the entry, spawn block info tooltip //! Checkboxes are on the right half.
-            if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getX() + getRowWidth() / 2) {
+            if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getWidthCenter()) {
                 final Block block = contents.getBlock();
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));
