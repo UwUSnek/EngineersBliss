@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -18,11 +16,9 @@ import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
-import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -142,6 +138,7 @@ public abstract class __base_UiScreen extends Screen {
 
 
     private @Nullable GuiEventListener computeHoveredElm(final double mouseX, final double mouseY) {
+        if(!isWindowActive()) return null;
         GuiEventListener current = this;
         GuiEventListener result  = null;
         while(current instanceof ContainerEventHandler containerCurrent) {
@@ -160,19 +157,33 @@ public abstract class __base_UiScreen extends Screen {
     /**
      * Calculates the true position of the cursor by calling GLFW's functions directly.
      * ! This bypasses Minecraft Vanilla's mouse handling logic which can return stale values in specific conditions.
+     * ! NOTICE: This returns proper cursor coords even while the window is not focused or visible. Use .isWindowActive() to check for that.
      * @return
      */
-    private Vector2f calcTrueCursorPos() {
+    public Vector2f calcTrueCursorPos() {
         final @NotNull Window window = Minecraft.getInstance().getWindow();
         double[] px = new double[1];
         double[] py = new double[1];
         GLFW.glfwGetCursorPos(window.handle(), px, py);
         return new Vector2f((float)px[0], (float)py[0]);
     }
+    /**
+     * Checks if the Minecraft window is currently visible, focused, and not iconified.
+     */
+    public boolean isWindowActive() {
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
+        final long handle = window.handle();
+        return
+            GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_VISIBLE)   == GLFW.GLFW_TRUE  &&
+            GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_ICONIFIED) == GLFW.GLFW_FALSE &&
+            GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_FOCUSED)   == GLFW.GLFW_TRUE
+        ;
+    }
 
 
     @Override
     public boolean mouseClicked(MouseButtonEvent e, boolean doubleClick) {
+        if(!isWindowActive()) return true;
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
         final GuiEventListener hit = computeHoveredElm(fixedPos.x, fixedPos.y);
@@ -182,6 +193,7 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean mouseReleased(MouseButtonEvent e) {
+        if(!isWindowActive()) return true;
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
         final boolean r = super.mouseReleased(fixedEvent);
@@ -191,18 +203,23 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean mouseDragged(MouseButtonEvent e, double dx, double dy) {
+        if(!isWindowActive()) return true;
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
         final int vanillaScale = Minecraft.getInstance().options.guiScale().get();
         return super.mouseDragged(fixedEvent, dx * vanillaScale, dy * vanillaScale);
     }
+
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
+        if(!isWindowActive()) return;
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         super.mouseMoved(fixedPos.x, fixedPos.y);
     }
+
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double sx, double sy) {
+        if(!isWindowActive()) return true;
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         return super.mouseScrolled(fixedPos.x, fixedPos.y, sx, sy);
     }
@@ -217,6 +234,7 @@ public abstract class __base_UiScreen extends Screen {
     protected boolean tabPressed = false;
     @Override
     public boolean keyPressed(final KeyEvent event) {
+        if(!isWindowActive()) return true;
         switch(event.key()) {
             case GLFW.GLFW_KEY_ESCAPE: {
                 onClose();
@@ -260,6 +278,7 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean keyReleased(final KeyEvent event) {
+        if(!isWindowActive()) return true;
         switch(event.key()) {
             case InputConstants.KEY_TAB: {
                 tabPressed = false;
