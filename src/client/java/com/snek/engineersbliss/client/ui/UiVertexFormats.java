@@ -1,0 +1,23 @@
+package com.snek.engineersbliss.client.ui;
+
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
+
+
+
+
+public final class UiVertexFormats {
+    private UiVertexFormats() {}
+
+    public static final VertexFormat AA_RECT = VertexFormat.builder()
+        .add("Position", VertexFormatElement.POSITION)
+        .add("Color",    VertexFormatElement.COLOR)
+        .add("UV0",      VertexFormatElement.UV0)
+        .add("UV1",      VertexFormatElement.UV1)
+        .build()
+    ;
+
+    public static void init() {
+        // Empty, starts static init
+    }
+}

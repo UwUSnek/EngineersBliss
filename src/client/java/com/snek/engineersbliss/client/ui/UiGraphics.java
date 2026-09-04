@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.ui;
 
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3x2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
@@ -14,6 +15,7 @@ import com.snek.engineersbliss.utils.Utils;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
+import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.Identifier;
@@ -116,14 +118,9 @@ public class UiGraphics {
 
 
 
-    // Integer fills
 
-    public void fill(final int x0, final int y0, final int x1, final int y1, final int col) {
-        fill(RenderPipelines.GUI, x0, y0, x1, y1, col);
-    }
-    public void fill(final RenderPipeline pipeline, int x0, int y0, int x1, int y1, final int col) {
-        raw.fill(pipeline, x0, y0, x1, y1, col);
-    }
+
+
 
 
     // Floating point fills
@@ -134,13 +131,10 @@ public class UiGraphics {
     public void fill(final RenderPipeline pipeline, float x0, float y0, float x1, float y1, final int col) {
         if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
         if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
-
-        if(isPixelAligned(x0, y0, x1, y1)) {
-            raw.fill(pipeline, (int)x0, (int)y0, (int)x1, (int)y1, col);
-        }
-        else emitNine(split(x0, y0, x1, y1), (px, py, pw, ph, w) -> {
-            raw.fill(pipeline, px, py, px + pw, py + ph, alphaColor(col, w));
-        });
+        raw.guiRenderState.addGuiElement(new AaRectRenderState(
+            UiRenderPipelines.AA_RECT, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1, col, getScissorStack().peek()
+        ));
     }
     public int alphaColor(final int baseARGB, final float alpha) {
         return (Math.round(((baseARGB & 0xFF000000) >>> 24) * alpha) << 24) | (baseARGB & 0x00FFFFFF);
