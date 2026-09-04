@@ -120,15 +120,16 @@ public class UiSlider extends __base_UiWidget {
 
         final long handle = Minecraft.getInstance().getWindow().handle();
 
-        double[] px = new double[1];
-        double[] py = new double[1];
-        GLFW.glfwGetCursorPos(handle, px, py);
+        // double[] px = new double[1];
+        // double[] py = new double[1];
+        // GLFW.glfwGetCursorPos(handle, px, py);
 
-        final var window = Minecraft.getInstance().getWindow();
-        final double scaleX = (double) window.getGuiScaledWidth() / window.getScreenWidth();
-        final double scaleY = (double) window.getGuiScaledHeight() / window.getScreenHeight();
+        // final var window = Minecraft.getInstance().getWindow(); //TODO remove
+        // final double scaleX = (double) window.getGuiScaledWidth() / window.getScreenWidth();
+        // final double scaleY = (double) window.getGuiScaledHeight() / window.getScreenHeight();
 
-        virtualX = px[0] * scaleX;
+        // virtualX = px[0] * scaleX;
+        virtualX = event.x();
 
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
         updateValueFromVirtualX();
@@ -218,7 +219,7 @@ public class UiSlider extends __base_UiWidget {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
 
         // Draw background and label
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
@@ -256,7 +257,7 @@ public class UiSlider extends __base_UiWidget {
 
 
     @Override
-    public void extractBackground(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    public void extractBackground(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved

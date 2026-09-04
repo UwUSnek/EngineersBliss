@@ -23,6 +23,7 @@ import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
+import net.minecraft.client.input.MouseButtonInfo.MouseButton;
 
 
 
@@ -136,19 +137,29 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
 
     // Input handling
 
-    public void onClick(final MouseButtonEvent event, final boolean doubleClick) { }
-    public void onRelease(final MouseButtonEvent event) { }
-    protected void onDrag(final MouseButtonEvent event, final double dx, final double dy) { }
-    protected boolean isValidClickButton(final MouseButtonInfo buttonInfo) {
-        return buttonInfo.button() == 0;
+    public void onClick(final MouseButtonEvent event, final boolean doubleClick) {
+        // Empty by default
+    }
+    public void onRelease(final MouseButtonEvent event) {
+        // Empty by default
+     }
+    protected void onDrag(final MouseButtonEvent event, final double dx, final double dy) {
+        // Empty by default
+    }
+    protected boolean isLeftClick(final MouseButtonEvent event) {
+        return event.button() == 0;
+    }
+    protected boolean isRightClick(final MouseButtonEvent event) {
+        return event.button() == 1;
     }
 
     @Override
     public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-        if (this.isValidClickButton(event.buttonInfo())) {
-            this.onDrag(event, dx, dy);
+        if(isActive() && isLeftClick(event)) {
+            onDrag(event, dx, dy);
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -160,55 +171,45 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         return null;
     }
 
+    //! Override used by the screen and Vanilla.
+    //! This class and its users should call .isHovered()
     @Override
     public boolean isMouseOver(final double mouseX, final double mouseY) {
         return this.isActive() && this.areCoordinatesInRectangle(mouseX, mouseY);
     }
 
-    public void setAlpha(final float alpha) { this.alpha = alpha; }
-    public float getAlpha() { return this.alpha; }
+    public void setAlpha(final float newAlpha) { alpha = newAlpha; }
+    public float getAlpha() { return alpha; }
 
     @Override
-    public boolean isFocused() { return this.focused; }
-    public boolean isHoveredOrFocused() { return this.isHovered() || this.isFocused(); }
+    public boolean isFocused() { return focused; }
+    public boolean isHoveredOrFocused() { return isHovered() || isFocused(); }
 
     @Override
     public boolean isActive() {
-        return this.visible && this.active;
+        return visible && active;
     }
     @Override
-    public void setFocused(final boolean focused) {
-        this.focused = focused;
+    public void setFocused(final boolean newFocused) {
+        focused = newFocused;
     }
 
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-
-        if(!this.isActive()) {
-            return false;
+        if(isActive() && isLeftClick(event) && isHovered()) {
+            onClick(event, doubleClick);
+            return true;
         }
         else {
-            if(this.isValidClickButton(event.buttonInfo())) {
-                boolean isMouseOver = this.isMouseOver(event.x(), event.y());
-                if(isMouseOver) {
-                    this.onClick(event, doubleClick);
-                    return true;
-                }
-            }
-            dragged = true;
             return false;
         }
     }
 
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
-        if(!this.isActive()) {
-            return false;
-        }
-        else if(this.isValidClickButton(event.buttonInfo())) {
-            this.onRelease(event);
-            dragged = false;
+        if(isActive() && isLeftClick(event)) {
+            onRelease(event);
             return true;
         }
         else {
@@ -217,40 +218,41 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     }
 
     public boolean isBeingDragged() {
-        return dragged;
+        return isActive() && dragged;
     }
 
     public boolean isHoveredOrBeingDragged() {
         return isBeingDragged() || isHovered();
     }
 
-
-    //! Vanilla's hovering system checks for scissors. Unlike clicks, which don't do that, for whatever reason.
-    //! Scissors always use screen coordinates because Minecraft only ever manages 1 coordinate space.
-    //! They end up reporting an incorrect boundary when the custom GUI Scale doesn't match Vanilla's, making hover detection very unrealiable.
-    //! This override fixes that by changing isHovered's behaviour for widgets that are children of __base_UiScreen
-    //! (the only screen that can use custom scale), making it convert from screen to virtual coordinates before checking boundaries.
+//BUG scirrors stuff. remove
+    // // //! Vanilla's hovering system checks for scissors. Unlike clicks, which don't do that, for whatever reason.
+    // // //! Scissors always use screen coordinates because Minecraft only ever manages 1 coordinate space.
+    // // //! They end up reporting an incorrect boundary when the custom GUI Scale doesn't match Vanilla's, making hover detection very unrealiable.
+    // // //! This override fixes that by changing isHovered's behaviour for widgets that are children of __base_UiScreen
+    // // //! (the only screen that can use custom scale), making it convert from screen to virtual coordinates before checking boundaries.
 
     public boolean isHovered() {
-        if(!isActive()) {
-            return false;
-        }
-        else if(screen instanceof @NotNull __base_UiScreen s) {
-            return !(
-                s.getMirrorHoverMouseX() <  getXF()     ||
-                s.getMirrorHoverMouseX() >= getRight()  ||
-                s.getMirrorHoverMouseY() <  getYF()     ||
-                s.getMirrorHoverMouseY() >= getBottom() ||
-                s.getMirrorHoverGraphics() == null      ||
-                !s.getMirrorHoverGraphics().containsPointInScissor(
-                    s.getMirrorHoverScreenMouseX(),
-                    s.getMirrorHoverScreenMouseY()
-                )
-            );
-        }
-        else {
-            return isHovered;
-        }
+        // if(!isActive()) {
+        //     return false;
+        // }
+        // // else if(screen instanceof @NotNull __base_UiScreen s) {
+        // //     return !(
+        // //         s.getMirrorHoverMouseX() <  getXF()     ||
+        // //         s.getMirrorHoverMouseX() >= getRight()  ||
+        // //         s.getMirrorHoverMouseY() <  getYF()     ||
+        // //         s.getMirrorHoverMouseY() >= getBottom() ||
+        // //         s.getMirrorHoverGraphics() == null      ||
+        // //         !s.getMirrorHoverGraphics().containsPointInScissor(
+        // //             s.getMirrorHoverScreenMouseX(),
+        // //             s.getMirrorHoverScreenMouseY()
+        // //         )
+        // //     );
+        // // }
+        // else {
+        //     return isHovered;
+        // }
+        return isActive() && isHovered;
     }
 
 
@@ -299,10 +301,12 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         // Empty.
         //! Block Vanilla's extractRenderState so the __base_UiScreen can call extractWidgetRenderState directly using its UiGraphics.
     }
-    public void extractWidgetRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
-        if(isActive()) {
-            this.isHovered = graphics.containsPointInScissor(mouseX, mouseY) && this.areCoordinatesInRectangle(mouseX, mouseY);
-        }
+    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        // if(isActive()) { //TODO remove
+            // isHovered = graphics.containsPointInScissor((int)mouseX, (int)mouseY) && areCoordinatesInRectangle(mouseX, mouseY);
+        // }
+        dragged = ((__base_UiScreen)getScreen()).getDraggedElm() == this;
+        isHovered = ((__base_UiScreen)getScreen()).getHoveredElm() == this;
         checkHoverTransition();
         handleCursor(graphics);
     }

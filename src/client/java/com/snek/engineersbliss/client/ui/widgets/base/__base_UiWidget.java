@@ -210,7 +210,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
 
 
     @Override
-    public void extractWidgetRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
@@ -219,7 +219,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     }
 
 
-    protected void extractLabel(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    protected void extractLabel(UiGraphics graphics, float mouseX, float mouseY, float a) {
         if(label != null && label.length() > 0) {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
@@ -258,7 +258,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     }
 
 
-    protected void extractBorders(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    protected void extractBorders(UiGraphics graphics, float mouseX, float mouseY, float a) {
         final boolean hasTop    = borderTop    > 0;
         final boolean hasRight  = borderRight  > 0;
         final boolean hasBottom = borderBottom > 0;
@@ -288,7 +288,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     }
 
 
-    protected void extractDebugOverlay(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    protected void extractDebugOverlay(UiGraphics graphics, float mouseX, float mouseY, float a) {
         if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS)) {
             // graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
             //FIXME add outlines but draw them manually 1px thick at full res

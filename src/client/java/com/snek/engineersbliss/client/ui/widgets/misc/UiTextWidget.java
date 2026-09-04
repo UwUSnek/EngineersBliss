@@ -99,7 +99,7 @@ public class UiTextWidget extends __base_UiWidget {
 
 
     @Override
-    protected void extractLabel(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    protected void extractLabel(UiGraphics graphics, float mouseX, float mouseY, float a) {
         if(!wrapLines) {
             super.extractLabel(graphics, mouseX, mouseY, a);
         }

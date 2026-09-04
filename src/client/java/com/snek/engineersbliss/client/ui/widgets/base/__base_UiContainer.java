@@ -79,7 +79,7 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
     @Override
-    public void extractWidgetRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
 
         // Normal rendering
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);

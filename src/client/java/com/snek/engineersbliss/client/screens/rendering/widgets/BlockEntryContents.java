@@ -57,7 +57,7 @@ public class BlockEntryContents extends __base_UiContainer {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
         final float midY = getHeightCenter();

@@ -551,7 +551,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(isFocused() || cursorLine != highlightLine || cursorCol != highlightCol) {
 
             final int computedCursorLine = Math.min(lines.size() - 1, visualCursorLine.compute()); //! Ensure the visual line number doesn't exceed the number of current lines
@@ -598,7 +598,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
     @Override
-    protected void extractLabel(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    protected void extractLabel(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(renderLines.isEmpty()) return;
         final int lineHeight = font.getLineHeight();
         final int x = (int)(getInnerX() - visualScrollPx.compute());

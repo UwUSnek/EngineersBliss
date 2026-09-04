@@ -178,7 +178,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     public boolean updateScrolling(final MouseButtonEvent event) {
-        scrolling = scrollable() && isValidClickButton(event.buttonInfo()) && isOverScrollbar(event.x(), event.y());
+        scrolling = scrollable() && isLeftClick(event) && isOverScrollbar(event.x(), event.y());
         return scrolling;
     }
 
@@ -331,7 +331,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         graphics.enableScissor(getX(), getY(), (int)getRight(), (int)getBottom());
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         graphics.disableScissor();
@@ -339,7 +339,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
 
-    protected void extractScrollbar(final UiGraphics graphics, final int mouseX, final int mouseY) {
+    protected void extractScrollbar(final UiGraphics graphics, final float mouseX, final float mouseY) {
         final float scrollBarX     = scrollBarX();
         final float scrollerHeight = scrollerHeight();
         final float scrollerY      = scrollBarY();

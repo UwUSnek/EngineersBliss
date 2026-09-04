@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.UiGraphics;
@@ -16,6 +18,7 @@ import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
+import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -87,19 +90,19 @@ public abstract class __base_UiScreen extends Screen {
         return hoveredElm == null ? draggedElm : hoveredElm;
     }
 
-
-    //! Mirror hover tracking, needed for the vanilla scissor fix.
-    //! See __base_UiWidget's isHovered().
-    private int mirrorHoverMouseX = Integer.MIN_VALUE;
-    private int mirrorHoverMouseY = Integer.MIN_VALUE;
-    private int mirrorHoverScreenMouseX = Integer.MIN_VALUE;
-    private int mirrorHoverScreenMouseY = Integer.MIN_VALUE;
-    private @Nullable UiGraphics mirrorHoverGraphics;
-    public int getMirrorHoverMouseX() { return mirrorHoverMouseX; }
-    public int getMirrorHoverMouseY() { return mirrorHoverMouseY; }
-    public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
-    public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
-    public @Nullable UiGraphics getMirrorHoverGraphics() { return mirrorHoverGraphics; }
+//BUG scirrors stuff. remove
+    // // //! Mirror hover tracking, needed for the vanilla scissor fix. //BUG scirrors stuff. remove
+    // // //! See __base_UiWidget's isHovered().
+    // private int mirrorHoverMouseX = Integer.MIN_VALUE;
+    // private int mirrorHoverMouseY = Integer.MIN_VALUE;
+    // private int mirrorHoverScreenMouseX = Integer.MIN_VALUE;
+    // private int mirrorHoverScreenMouseY = Integer.MIN_VALUE;
+    // private @Nullable UiGraphics mirrorHoverGraphics;
+    // public int getMirrorHoverMouseX() { return mirrorHoverMouseX; }
+    // public int getMirrorHoverMouseY() { return mirrorHoverMouseY; }
+    // public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
+    // public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
+    // public @Nullable UiGraphics getMirrorHoverGraphics() { return mirrorHoverGraphics; }
 
 
 
@@ -110,13 +113,14 @@ public abstract class __base_UiScreen extends Screen {
         this.needsRebuild = true;
         this.needsRelayout = false;
     }
-    private void updateMirrorHoverState(UiGraphics graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
-        mirrorHoverGraphics = graphics;
-        mirrorHoverMouseX = mouseX;
-        mirrorHoverMouseY = mouseY;
-        mirrorHoverScreenMouseX = screenMouseX;
-        mirrorHoverScreenMouseY = screenMouseY;
-    }
+    //BUG scirrors stuff. remove
+    // private void updateMirrorHoverState(UiGraphics graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
+    //     mirrorHoverGraphics = graphics;
+    //     mirrorHoverMouseX = mouseX;
+    //     mirrorHoverMouseY = mouseY;
+    //     mirrorHoverScreenMouseX = screenMouseX;
+    //     mirrorHoverScreenMouseY = screenMouseY;
+    // }
 
 
 
@@ -175,38 +179,58 @@ public abstract class __base_UiScreen extends Screen {
         return result;
     }
 
-    // Converts a mouse coord from GuiScale-dependant coords to virtual screen coords
-    private double fx(double v) {
-        return v * realGuiScale;
-    }
     //FIXME remove the whole scissors mess? if possible?? idk
+
+    /**
+     * Calculates the true position of the cursor by calling GLFW's functions directly.
+     * ! This bypasses Minecraft Vanilla's mouse handling logic which can return stale values in specific conditions.
+     * @return
+     */
+    private Vector2f calcTrueCursorPos() {
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
+
+        // Get GLFW position
+        double[] px = new double[1];
+        double[] py = new double[1];
+        GLFW.glfwGetCursorPos(window.handle(), px, py);
+        return new Vector2f((float)px[0], (float)py[0]);
+    }
+
 
     @Override
     public boolean mouseClicked(MouseButtonEvent e, boolean doubleClick) {
-        final MouseButtonEvent fixed = new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers()));
-        final GuiEventListener hit = computeHoveredElm(fixed.x(), fixed.y());
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
+        final GuiEventListener hit = computeHoveredElm(fixedPos.x, fixedPos.y);
         if(hit != null) draggedElm = hit;
-        return super.mouseClicked(fixed, doubleClick);
+        return super.mouseClicked(fixedEvent, doubleClick);
     }
 
     @Override
     public boolean mouseReleased(MouseButtonEvent e) {
-        final boolean r = super.mouseReleased(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())));
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
+        final boolean r = super.mouseReleased(fixedEvent);
         draggedElm = null;
         return r;
     }
 
     @Override
     public boolean mouseDragged(MouseButtonEvent e, double dx, double dy) {
-        return super.mouseDragged(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())), fx(dx), fx(dy));
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
+        final int vanillaScale = Minecraft.getInstance().options.guiScale().get();
+        return super.mouseDragged(fixedEvent, dx * vanillaScale, dy * vanillaScale);
     }
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
-        super.mouseMoved(fx(mouseX), fx(mouseY));
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        super.mouseMoved(fixedPos.x, fixedPos.y);
     }
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double sx, double sy) {
-        return super.mouseScrolled(fx(mouseX), fx(mouseY), sx, sy);
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        return super.mouseScrolled(fixedPos.x, fixedPos.y, sx, sy);
     }
 
 
@@ -343,33 +367,32 @@ public abstract class __base_UiScreen extends Screen {
      * Custom render function that uses a UiGraphics instead of Vanill'as graphics extractor.
      */
     public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-        int adjMouseX = (int)fx(mouseX);
-        int adjMouseY = (int)fx(mouseY);
+        final Vector2f fixedPos = calcTrueCursorPos();
 
 
         // Update hovered element
-        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(adjMouseX, adjMouseY);
+        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(fixedPos.x, fixedPos.y);
 
-
-        //! Mirror hover state must be global and identical for all widgets.
-        //! Setting a global it once for each widget makes widgets reading it from outside the render loop go out of sync,
-        //! while keeping a separate cached value for each individual widget is a maintainability nightmare.
-        //! One global state for all widgets has the drawback of it reporting [not hovered] for the widget thats currently being dragged,
-        //! but the widget itself can simply use isBeingHoveredOrDragged(), which checks for both.
-        if(!isDragging()) {
-            updateMirrorHoverState(graphics, adjMouseX, adjMouseY, mouseX, mouseY);
-        }
-        else {
-            updateMirrorHoverState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF);
-        }
+//BUG scirrors stuff. remove
+        // // //! Mirror hover state must be global and identical for all widgets.
+        // // //! Setting a global it once for each widget makes widgets reading it from outside the render loop go out of sync,
+        // // //! while keeping a separate cached value for each individual widget is a maintainability nightmare.
+        // // //! One global state for all widgets has the drawback of it reporting [not hovered] for the widget thats currently being dragged,
+        // // //! but the widget itself can simply use isBeingHoveredOrDragged(), which checks for both.
+        // // if(!isDragging()) {
+        // //     updateMirrorHoverState(graphics, (int)fixedPos.x, (int)fixedPos.y, mouseX, mouseY); //FIXME remove if not needed anymore
+        // // }
+        // // else {
+        // //     updateMirrorHoverState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF); //FIXME remove if not needed anymore
+        // // }
 
         // Extract background
-        extractBackground(graphics, adjMouseX, mouseY, adjMouseY);
+        extractBackground(graphics, fixedPos.x, fixedPos.y, delta);
 
         // Extract widgets
         for(final @NotNull GuiEventListener c : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
             if(c instanceof @NotNull __base_UiWidget r) {
-                r.extractWidgetRenderState(graphics, adjMouseX, adjMouseY, delta);
+                r.extractWidgetRenderState(graphics, fixedPos.x, fixedPos.y, delta);
             }
         }
     }
@@ -385,7 +408,7 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
-	public void extractBackground(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(!tabPressed) {
             graphics.blurBeforeThisStratum();
         }

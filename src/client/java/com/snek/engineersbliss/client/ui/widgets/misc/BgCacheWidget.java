@@ -33,7 +33,7 @@ public interface BgCacheWidget {
      * @param mouseY The Y position of the mouse.
      * @param a
      */
-    public default void extractBackground(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public default void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         final float w = getWidthF();
         final float h = getHeightF();
         final float guiScale = SettingsFeatureHandler.getCurrentGuiScale();

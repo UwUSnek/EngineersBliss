@@ -113,7 +113,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         final FontFamily fontFamily = Fonts.ui.regular;
 
@@ -131,7 +131,8 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         if(hovered != null && hovered instanceof BlockEntryContents contents) {
 
             // If hovering on the left half of the entry, spawn block info tooltip //! Checkboxes are on the right half.
-            if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getWidthCenter()) {
+            // if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getWidthCenter()) { //BUG scirrors stuff. remove
+            if(mouseX < contents.getWidthCenter()) {
                 final Block block = contents.getBlock();
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));

@@ -107,7 +107,7 @@ public class UiButton extends __base_UiWidget {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
 
@@ -141,7 +141,7 @@ public class UiButton extends __base_UiWidget {
 
 
     @Override
-    public void extractBackground(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    public void extractBackground(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
