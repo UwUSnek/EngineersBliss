@@ -21,6 +21,8 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Registry;
@@ -266,18 +268,39 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             final float y = getY();
             final float r = getRight();
             final float b = getBottom();
-            if(hasTop   ) graphics.fill(x, y, r, y + borderTop,       borderTopColor);
-            if(hasRight ) graphics.fill(r, y, r    - borderRight,  b, borderRightColor);
-            if(hasBottom) graphics.fill(x, b, r, b - borderBottom,    borderBottomColor);
-            if(hasLeft  ) graphics.fill(x, y, x    + borderLeft,   b, borderLeftColor);
+            if(hasTop   ) extractBorderTop   (graphics, x, y, r, b, borderTop,    borderTopColor);
+            if(hasRight ) extractBorderRight (graphics, x, y, r, b, borderRight,  borderRightColor);
+            if(hasBottom) extractBorderBottom(graphics, x, y, r, b, borderBottom, borderBottomColor);
+            if(hasLeft  ) extractBorderLeft  (graphics, x, y, r, b, borderLeft,   borderLeftColor);
         }
     }
 
 
     protected void extractDebugOverlay(UiGraphics graphics, float mouseX, float mouseY, float a) {
         if(ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS)) {
-            // graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
-            //FIXME add outlines but draw them manually 1px thick at full res
+            final int outlineColor = 0xFFFF0000;
+            final float ox = getX();
+            final float oy = getY();
+            final float or = getRight();
+            final float ob = getBottom();
+            extractBorderTop   (graphics, ox, oy, or, ob, 1, outlineColor);
+            extractBorderRight (graphics, ox, oy, or, ob, 1, outlineColor);
+            extractBorderBottom(graphics, ox, oy, or, ob, 1, outlineColor);
+            extractBorderLeft  (graphics, ox, oy, or, ob, 1, outlineColor);
         }
+    }
+
+
+    protected void extractBorderTop(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+        g.fill(x, y, r, y + thickness, color);
+    }
+    protected void extractBorderRight(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+        g.fill(r, y, r - thickness, b, color);
+    }
+    protected void extractBorderBottom(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+        g.fill(x, b, r, b - thickness, color);
+    }
+    protected void extractBorderLeft(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+        g.fill(x, y, x + thickness, b, color);
     }
 }
