@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -131,10 +132,8 @@ public class UiButton extends __base_UiWidget {
     }
 
     @Override
-    protected void handleCursor(final UiGraphics graphics) {
-        if(isHoveredOrBeingDragged()) {
-            graphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
-        }
+    protected CursorType selectCursor(final UiGraphics graphics) {
+        return CursorTypes.POINTING_HAND;
     }
 
 

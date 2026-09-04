@@ -18,8 +18,6 @@ import net.minecraft.client.gui.screens.Screen;
 
 
 public class UiEditBox extends __base_UiTextHandlerWidget {
-    // private static final Style HINT_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY); //TODO remove
-
     private final Consumer<String> responder; //FIXME pass to superclass
     private String valueCache;
 
@@ -42,10 +40,4 @@ public class UiEditBox extends __base_UiTextHandlerWidget {
         valueCache = lines.get(0).toString();
         if(responder != null) responder.accept(getValue());
     }
-
-    // @Override //TODO remove
-    // protected void updateLabel() {
-    //     if(value.isEmpty() && !isFocused() && hint != null) setLabel(hint.get().copy().withStyle(HINT_STYLE));
-    //     else setLabel(Component.literal(value));
-    // }
 }

@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.gui.screens.Screen;
@@ -21,7 +19,6 @@ import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 
 
 
@@ -131,7 +128,6 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         if(hovered != null && hovered instanceof BlockEntryContents contents) {
 
             // If hovering on the left half of the entry, spawn block info tooltip //! Checkboxes are on the right half.
-            // if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getWidthCenter()) { //BUG scirrors stuff. remove
             if(mouseX < contents.getWidthCenter()) {
                 final Block block = contents.getBlock();
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();

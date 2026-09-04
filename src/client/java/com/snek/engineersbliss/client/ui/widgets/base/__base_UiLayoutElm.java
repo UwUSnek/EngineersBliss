@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
@@ -22,8 +23,6 @@ import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.input.MouseButtonInfo;
-import net.minecraft.client.input.MouseButtonInfo.MouseButton;
 
 
 
@@ -100,9 +99,6 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
             return 1f;
         }
     }
-    // public float scaleToGui(final float n) { //TODO remove
-    //     return n * getGuiScale();
-    // }
 
 
     // Relayout handling
@@ -225,33 +221,7 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         return isBeingDragged() || isHovered();
     }
 
-//BUG scirrors stuff. remove
-    // // //! Vanilla's hovering system checks for scissors. Unlike clicks, which don't do that, for whatever reason.
-    // // //! Scissors always use screen coordinates because Minecraft only ever manages 1 coordinate space.
-    // // //! They end up reporting an incorrect boundary when the custom GUI Scale doesn't match Vanilla's, making hover detection very unrealiable.
-    // // //! This override fixes that by changing isHovered's behaviour for widgets that are children of __base_UiScreen
-    // // //! (the only screen that can use custom scale), making it convert from screen to virtual coordinates before checking boundaries.
-
     public boolean isHovered() {
-        // if(!isActive()) {
-        //     return false;
-        // }
-        // // else if(screen instanceof @NotNull __base_UiScreen s) {
-        // //     return !(
-        // //         s.getMirrorHoverMouseX() <  getXF()     ||
-        // //         s.getMirrorHoverMouseX() >= getRight()  ||
-        // //         s.getMirrorHoverMouseY() <  getYF()     ||
-        // //         s.getMirrorHoverMouseY() >= getBottom() ||
-        // //         s.getMirrorHoverGraphics() == null      ||
-        // //         !s.getMirrorHoverGraphics().containsPointInScissor(
-        // //             s.getMirrorHoverScreenMouseX(),
-        // //             s.getMirrorHoverScreenMouseY()
-        // //         )
-        // //     );
-        // // }
-        // else {
-        //     return isHovered;
-        // }
         return isActive() && isHovered;
     }
 
@@ -302,20 +272,25 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         //! Block Vanilla's extractRenderState so the __base_UiScreen can call extractWidgetRenderState directly using its UiGraphics.
     }
     public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
-        // if(isActive()) { //TODO remove
-            // isHovered = graphics.containsPointInScissor((int)mouseX, (int)mouseY) && areCoordinatesInRectangle(mouseX, mouseY);
-        // }
         dragged = ((__base_UiScreen)getScreen()).getDraggedElm() == this;
         isHovered = ((__base_UiScreen)getScreen()).getHoveredElm() == this;
         checkHoverTransition();
-        handleCursor(graphics);
+
+        // Handle cursor
+        if(isHoveredOrBeingDragged()) {
+            if(!isActive()) graphics.requestCursor(CursorTypes.NOT_ALLOWED);
+            else            graphics.requestCursor(selectCursor(graphics));
+        }
     }
 
 
-    protected void handleCursor(UiGraphics graphics) {
-        if(this.isHovered()) {
-            graphics.requestCursor(this.isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
-        }
+    /**
+     * This function lets widgets change the displayed cursor sprite.
+     * This is only called on active widgets that are being hovered or dragged.
+     * @return The chosen cursor type.
+     */
+    protected CursorType selectCursor(UiGraphics graphics) {
+        return CursorTypes.ARROW;
     }
 
 

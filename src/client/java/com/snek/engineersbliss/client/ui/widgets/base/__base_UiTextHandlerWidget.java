@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.cursor.CursorType;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
@@ -112,27 +114,9 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
             }
             //FIXME this is rly inefficient. this should cache each line when it's changed, not recalculate everything every time anything changes
         }
-        // setLabel(renderLines.get(0)); //TODO remove
         //! No setLabel call. This class handles text rendering on its own.
     }
 
-    // @Override
-    // public void relayoutSelf() {
-    //     updateLabel();
-    // }
-
-    // protected abstract void updateLabel();
-
-
-    // public String getValue() { //TODO remove
-    //     if(lines.size() == 1) return lines.get(0).toString();
-    //     final StringBuilder sb = new StringBuilder();
-    //     for(int i = 0; i < lines.size(); i++) {
-    //         if(i > 0) sb.append('\n');
-    //         sb.append(lines.get(i));
-    //     }
-    //     return sb.toString();
-    // }
 
     public void setValue(final String newValue) {
         lines.clear();
@@ -593,9 +577,8 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         }
 
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        // if(isHoveredOrBeingDragged()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
-        //FIXME add cursor to UiGraphics
     }
+
 
     @Override
     protected void extractLabel(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
@@ -612,5 +595,11 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
             }
         }
         graphics.disableScissor();
+    }
+
+
+    @Override
+    protected CursorType selectCursor(UiGraphics graphics) {
+        return editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED;
     }
 }

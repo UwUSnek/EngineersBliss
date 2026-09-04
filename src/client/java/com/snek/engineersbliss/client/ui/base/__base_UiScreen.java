@@ -67,7 +67,6 @@ public abstract class __base_UiScreen extends Screen {
     private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
-    // public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; } //TODO remove
     public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
     public float getGuiScale() { return animatedGuiScale.compute(); }
 
@@ -90,20 +89,6 @@ public abstract class __base_UiScreen extends Screen {
         return hoveredElm == null ? draggedElm : hoveredElm;
     }
 
-//BUG scirrors stuff. remove
-    // // //! Mirror hover tracking, needed for the vanilla scissor fix. //BUG scirrors stuff. remove
-    // // //! See __base_UiWidget's isHovered().
-    // private int mirrorHoverMouseX = Integer.MIN_VALUE;
-    // private int mirrorHoverMouseY = Integer.MIN_VALUE;
-    // private int mirrorHoverScreenMouseX = Integer.MIN_VALUE;
-    // private int mirrorHoverScreenMouseY = Integer.MIN_VALUE;
-    // private @Nullable UiGraphics mirrorHoverGraphics;
-    // public int getMirrorHoverMouseX() { return mirrorHoverMouseX; }
-    // public int getMirrorHoverMouseY() { return mirrorHoverMouseY; }
-    // public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
-    // public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
-    // public @Nullable UiGraphics getMirrorHoverGraphics() { return mirrorHoverGraphics; }
-
 
 
 
@@ -113,14 +98,6 @@ public abstract class __base_UiScreen extends Screen {
         this.needsRebuild = true;
         this.needsRelayout = false;
     }
-    //BUG scirrors stuff. remove
-    // private void updateMirrorHoverState(UiGraphics graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
-    //     mirrorHoverGraphics = graphics;
-    //     mirrorHoverMouseX = mouseX;
-    //     mirrorHoverMouseY = mouseY;
-    //     mirrorHoverScreenMouseX = screenMouseX;
-    //     mirrorHoverScreenMouseY = screenMouseY;
-    // }
 
 
 
@@ -179,7 +156,6 @@ public abstract class __base_UiScreen extends Screen {
         return result;
     }
 
-    //FIXME remove the whole scissors mess? if possible?? idk
 
     /**
      * Calculates the true position of the cursor by calling GLFW's functions directly.
@@ -188,8 +164,6 @@ public abstract class __base_UiScreen extends Screen {
      */
     private Vector2f calcTrueCursorPos() {
         final @NotNull Window window = Minecraft.getInstance().getWindow();
-
-        // Get GLFW position
         double[] px = new double[1];
         double[] py = new double[1];
         GLFW.glfwGetCursorPos(window.handle(), px, py);
@@ -318,7 +292,7 @@ public abstract class __base_UiScreen extends Screen {
 
 
     protected void relayoutContent() {
-        for(final var e : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
+        for(final var e : children()) {
             if(e instanceof final @NotNull __base_UiLayoutElm w) {
                 w.relayout();
             }
@@ -367,30 +341,17 @@ public abstract class __base_UiScreen extends Screen {
      * Custom render function that uses a UiGraphics instead of Vanill'as graphics extractor.
      */
     public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-        final Vector2f fixedPos = calcTrueCursorPos();
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
 
 
         // Update hovered element
         hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(fixedPos.x, fixedPos.y);
 
-//BUG scirrors stuff. remove
-        // // //! Mirror hover state must be global and identical for all widgets.
-        // // //! Setting a global it once for each widget makes widgets reading it from outside the render loop go out of sync,
-        // // //! while keeping a separate cached value for each individual widget is a maintainability nightmare.
-        // // //! One global state for all widgets has the drawback of it reporting [not hovered] for the widget thats currently being dragged,
-        // // //! but the widget itself can simply use isBeingHoveredOrDragged(), which checks for both.
-        // // if(!isDragging()) {
-        // //     updateMirrorHoverState(graphics, (int)fixedPos.x, (int)fixedPos.y, mouseX, mouseY); //FIXME remove if not needed anymore
-        // // }
-        // // else {
-        // //     updateMirrorHoverState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF); //FIXME remove if not needed anymore
-        // // }
-
         // Extract background
         extractBackground(graphics, fixedPos.x, fixedPos.y, delta);
 
         // Extract widgets
-        for(final @NotNull GuiEventListener c : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
+        for(final @NotNull GuiEventListener c : children()) {
             if(c instanceof @NotNull __base_UiWidget r) {
                 r.extractWidgetRenderState(graphics, fixedPos.x, fixedPos.y, delta);
             }

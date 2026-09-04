@@ -10,7 +10,6 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.ui.UiGraphics;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -22,7 +21,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Registry;
@@ -264,25 +262,13 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         final boolean hasBottom = borderBottom > 0;
         final boolean hasLeft   = borderLeft   > 0;
         if(hasTop || hasRight || hasBottom || hasLeft) {
-            // final double factor = getGuiScale();
-            // final float totalScale = (float)(scale / factor); //TODO
-            // final float totalScale = (float)factor;
-            // final float totalScale = getGuiScale();
-            // final float x = (float)scale * getX(); //TODO
             final float x = getX();
-            // final float y = (float)scale * getY(); //TODO
             final float y = getY();
-            // final float r = (float)scale * getRight(); //TODO
             final float r = getRight();
-            // final float b = (float)scale * getBottom(); //TODO
             final float b = getBottom();
-            // if(hasTop   ) graphics.fill(x, y, r, y + totalScale * borderTop,       borderTopColor); //TODO remove
             if(hasTop   ) graphics.fill(x, y, r, y + borderTop,       borderTopColor);
-            // if(hasRight ) graphics.fill(r, y, r    - totalScale * borderRight,  b, borderRightColor); //TODO remove
             if(hasRight ) graphics.fill(r, y, r    - borderRight,  b, borderRightColor);
-            // if(hasBottom) graphics.fill(x, b, r, b - totalScale * borderBottom,    borderBottomColor); //TODO remove
             if(hasBottom) graphics.fill(x, b, r, b - borderBottom,    borderBottomColor);
-            // if(hasLeft  ) graphics.fill(x, y, x    + totalScale * borderLeft,   b, borderLeftColor); //TODO remove
             if(hasLeft  ) graphics.fill(x, y, x    + borderLeft,   b, borderLeftColor);
         }
     }
@@ -293,12 +279,5 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             // graphics.outline(getX(), getY(), getWidth(), getHeight(), 0xFFFF0000);
             //FIXME add outlines but draw them manually 1px thick at full res
         }
-    }
-
-    @Override
-    protected void handleCursor(UiGraphics graphics) {
-		if(this.isHovered()) {
-			graphics.requestCursor(this.isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
-		}
     }
 }

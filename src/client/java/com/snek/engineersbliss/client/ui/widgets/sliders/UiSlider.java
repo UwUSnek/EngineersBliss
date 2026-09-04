@@ -3,12 +3,11 @@ package com.snek.engineersbliss.client.ui.widgets.sliders;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.mixin.accessors.MouseHandlerAccessor;
 import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -19,7 +18,6 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
-import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -119,16 +117,6 @@ public class UiSlider extends __base_UiWidget {
         boolean result = super.mouseClicked(event, doubled);
 
         final long handle = Minecraft.getInstance().getWindow().handle();
-
-        // double[] px = new double[1];
-        // double[] py = new double[1];
-        // GLFW.glfwGetCursorPos(handle, px, py);
-
-        // final var window = Minecraft.getInstance().getWindow(); //TODO remove
-        // final double scaleX = (double) window.getGuiScaledWidth() / window.getScreenWidth();
-        // final double scaleY = (double) window.getGuiScaledHeight() / window.getScreenHeight();
-
-        // virtualX = px[0] * scaleX;
         virtualX = event.x();
 
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
@@ -152,20 +140,8 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
         long handle = Minecraft.getInstance().getWindow().handle();
-        double targetX = getInnerX() + getInnerWidth() * value;
-        double targetY = getHeightCenter();
-
-        // Re-activate GLFW's cursor
-        // // //! This must be done after 2 ticks because something in Vanilla's stupid ass code
-        // // //! sets the cursor back to the initial click position AFTER the current client tick ends,
-        // ClientScheduler.run(() -> {
-        System.out.println("Moving to value " + value);
-            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-            GLFW.glfwSetCursorPos(handle, targetX, targetY);
-        //     System.out.println("SET");
-        // });
-
-
+        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+        GLFW.glfwSetCursorPos(handle, getInnerX() + getInnerWidth() * value, getHeightCenter());
         return super.mouseReleased(event);
     }
 
@@ -191,7 +167,6 @@ public class UiSlider extends __base_UiWidget {
     protected void setValue(final double newValue) {
         double oldValue = this.value;
         this.value = Math.clamp(newValue, 0.0, 1.0);
-        System.out.println("Set new value " + value);
         if(oldValue != this.value) {
             this.applyValue();
         }
@@ -230,8 +205,8 @@ public class UiSlider extends __base_UiWidget {
         final float handleWidth = calcHandleWidth();
         final float handleL = handleX - handleWidth / 2;
         final float handleR = handleX + handleWidth / 2;
-        final float innerL = calcInnerLeft();
-        final float innerR = calcInnerRight();
+        final float innerL = getInnerX();
+        final float innerR = getInnerRight();
         handleColor.startNewTransition(isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor);
         graphics.fill(Math.max(innerL, handleL), getYF(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
         if(handleL <  innerL) graphics.fill(handleL, getYF(), innerL,  getBottom(), Layout.handleColorTransparent);
@@ -247,10 +222,8 @@ public class UiSlider extends __base_UiWidget {
     }
 
     @Override
-    protected void handleCursor(final UiGraphics graphics) {
-        if(isHoveredOrBeingDragged()) {
-            graphics.requestCursor(isActive() ? CursorTypes.RESIZE_EW : CursorTypes.NOT_ALLOWED);
-        }
+    protected CursorType selectCursor(final UiGraphics graphics) {
+        return CursorTypes.RESIZE_EW;
     }
 
 
@@ -277,22 +250,6 @@ public class UiSlider extends __base_UiWidget {
     }
 
     public float calcHandleX() {
-        return calcInnerLeft() + visualValue.compute().floatValue() * calcInnerWidth();
-    }
-
-    public float calcInnerLeft() {
-        return getXF() + getHeightF();
-    }
-
-    public float calcInnerRight() {
-        return getRight() - getHeightF();
-    }
-
-    public float calcInnerWidth() {
-        return getWidthF() - 2 * getHeightF();
+        return getInnerX() + visualValue.compute().floatValue() * getInnerWidth();
     }
 }
-
-
-
-//TODO add a sound when the value changes. The pitch changes based on the %
