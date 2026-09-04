@@ -9,8 +9,8 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;

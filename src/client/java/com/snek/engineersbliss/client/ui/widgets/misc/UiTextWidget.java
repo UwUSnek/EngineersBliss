@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;

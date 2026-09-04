@@ -5,11 +5,11 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.utils.Layout;

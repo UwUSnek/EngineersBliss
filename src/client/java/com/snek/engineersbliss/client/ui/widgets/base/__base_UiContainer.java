@@ -9,7 +9,7 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 
-import com.snek.engineersbliss.client.ui.UiGraphics;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.ArrayList;

@@ -3,9 +3,9 @@ package com.snek.engineersbliss.client.ui.base;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.base.__base_ClientFeatureSet;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;

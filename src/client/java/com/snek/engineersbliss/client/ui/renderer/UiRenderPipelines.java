@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui;
+package com.snek.engineersbliss.client.ui.renderer;
 
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;

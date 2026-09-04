@@ -5,8 +5,8 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilter
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
-import com.snek.engineersbliss.client.ui.UiRenderPipelines;
-import com.snek.engineersbliss.client.ui.UiVertexFormats;
+import com.snek.engineersbliss.client.ui.renderer.UiRenderPipelines;
+import com.snek.engineersbliss.client.ui.renderer.UiVertexFormats;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.custom.block_entities.renderers.CustomBlockEntityRendererHandler;
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.SceneSnapshotHandler;

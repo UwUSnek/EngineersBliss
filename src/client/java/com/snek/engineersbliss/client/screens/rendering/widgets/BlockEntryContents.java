@@ -7,8 +7,8 @@ import net.minecraft.world.level.block.Block;
 
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;

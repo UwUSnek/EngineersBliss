@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
-import com.snek.engineersbliss.client.ui.UiGraphics;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.utils.Layout;
 
 

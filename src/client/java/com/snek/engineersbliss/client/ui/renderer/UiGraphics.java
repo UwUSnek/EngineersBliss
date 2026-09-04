@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui;
+package com.snek.engineersbliss.client.ui.renderer;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3x2f;

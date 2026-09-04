@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.GuiGraphicsExtractor;

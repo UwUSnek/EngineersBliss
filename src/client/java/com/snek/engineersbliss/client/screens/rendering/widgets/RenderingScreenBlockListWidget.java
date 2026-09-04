@@ -11,10 +11,10 @@ import java.util.regex.Pattern;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.ServerMinecraftUtils;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 

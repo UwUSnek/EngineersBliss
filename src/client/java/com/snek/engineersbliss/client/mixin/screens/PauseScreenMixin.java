@@ -20,9 +20,9 @@ import com.snek.engineersbliss.client.screens.creative_tweaks.CreativeTweaksScre
 import com.snek.engineersbliss.client.screens.julia_set.JuliaSetScreen;
 import com.snek.engineersbliss.client.screens.macros.MacrosScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
