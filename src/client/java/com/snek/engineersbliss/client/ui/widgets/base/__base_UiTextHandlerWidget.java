@@ -417,6 +417,10 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         final boolean ctrl = event.hasControlDownWithQuirk();
         final boolean shift = event.hasShiftDown();
         switch(event.key()) {
+            case GLFW.GLFW_KEY_ESCAPE: {
+                setFocused(false);
+                r = true; break;
+            }
             case GLFW.GLFW_KEY_BACKSPACE: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 deleteCharsToPos(pos[0], pos[1]);
