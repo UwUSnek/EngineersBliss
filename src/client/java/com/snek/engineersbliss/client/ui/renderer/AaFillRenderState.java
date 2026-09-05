@@ -5,7 +5,6 @@ import org.joml.Matrix3x2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -32,10 +31,10 @@ public record AaFillRenderState(
         final float ey1 = y1 + 1;
         final int w = Math.round(x1 - x0);
         final int h = Math.round(y1 - y0);
-        emit(vc, ex0, ey0, ex0 - x0, ey0 - y0, w, h);
-        emit(vc, ex0, ey1, ex0 - x0, ey1 - y0, w, h);
-        emit(vc, ex1, ey1, ex1 - x0, ey1 - y0, w, h);
         emit(vc, ex1, ey0, ex1 - x0, ey0 - y0, w, h);
+        emit(vc, ex1, ey1, ex1 - x0, ey1 - y0, w, h);
+        emit(vc, ex0, ey1, ex0 - x0, ey1 - y0, w, h);
+        emit(vc, ex0, ey0, ex0 - x0, ey0 - y0, w, h);
     }
 
 

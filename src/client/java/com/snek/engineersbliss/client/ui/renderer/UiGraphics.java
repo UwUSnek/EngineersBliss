@@ -5,9 +5,6 @@ import org.joml.Matrix3x2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
-import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -32,7 +29,7 @@ import net.minecraft.util.FormattedCharSequence;
 
 
 /**
- * A wrapper for Minecraft's GuiGraphicsExtractor which adds support for full resolution rendering, UiTxt rendering, and antialiased operations.
+ * A wrapper for Minecraft's GuiGraphicsExtractor which adds support for UiTxt rendering and antialiased operations.
  */
 public class UiGraphics {
     GuiGraphicsExtractor raw;
@@ -179,23 +176,18 @@ public class UiGraphics {
 
 
     // Internal blit methods
-    public int alphaColor(final int baseARGB, final float alpha) {
-        return (Math.round(((baseARGB & 0xFF000000) >>> 24) * alpha) << 24) | (baseARGB & 0x00FFFFFF);
-    }
     private static TextureSetup textureSetupFor(final Identifier location) {
         final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
 
-// EngineerSBliss.LOGGER.info("textureSetupFor({}) -> view={} class={}", location, texture.getTextureView(), texture.getClass().getSimpleName());//TODO remove
         return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
     }
-    private void __internal_blit(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final int color) {
+    private void __internal_blit(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
         raw.guiRenderState.addGuiElement(new AaBlitRenderState(
             UiRenderPipelines.AA_BLIT, setup, new Matrix3x2f(raw.pose()),
             x0, y0, x1, y1,
             u0, v0, u1, v1,
-            color, getScissorStack().peek()
+            alpha, getScissorStack().peek()
         ));
-            // EngineerSBliss.LOGGER.info("blit rect ({},{})-({},{}) uv ({},{})-({},{})", x0, y0, x1, y1, u0, v0, u1, v1); //TODO remove
     }
 
 
@@ -204,17 +196,13 @@ public class UiGraphics {
         blit(texture, x, y, u, v, width, height, textureWidth, textureHeight, 1.0f);
     }
     public void blit(final Identifier texture, final float x, final float y, final float u, final float v, final float width, final float height, final int textureWidth, final int textureHeight, final float alpha) {
-        // raw.blit(texture, (int)x, (int)y, (int)x + (int)width, (int)y + (int)height, u / textureWidth, v / textureHeight, (u + width) / textureWidth, (v + height) / textureHeight); //! Vanilla. This works
-        // __internal_blit(textureSetupFor(texture), x, y, x + width, y + height, u / textureWidth, v / textureHeight, (u + width) / textureWidth, (v + height) / textureHeight, alphaColor(0xFFFFFFFF, alpha)); //! Old alpha calculation
-        __internal_blit(textureSetupFor(texture), x, y, x + width, y + height, u / textureWidth, v / textureHeight, (u + width) / textureWidth, (v + height) / textureHeight, 0xFFFFFFFF); //! Ignores alpha. Still, nothing shows up
+        __internal_blit(textureSetupFor(texture), x, y, x + width, y + height, u / textureWidth, v / textureHeight, (u + width) / textureWidth, (v + height) / textureHeight, alpha);
     }
     public void blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1) {
         blit(location, x0, y0, x1, y1, u0, u1, v0, v1, 1.0f);
     }
     public void blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1, final float alpha) {
-        // raw.blit(location, (int)x0, (int)y0, (int)x1, (int)y1, u0, u1, v0, v1); //! Vanilla. This works
-        // __internal_blit(textureSetupFor(location), x0, y0, x1, y1, u0, v0, u1, v1, alphaColor(0xFFFFFFFF, alpha)); //! Old alpha calculation
-        __internal_blit(textureSetupFor(location), x0, y0, x1, y1, u0, v0, u1, v1, 0xFFFFFFFF); //! Ignores alpha. Still, nothing shows up
+        __internal_blit(textureSetupFor(location), x0, y0, x1, y1, u0, v0, u1, v1, alpha);
     }
 
 
@@ -230,6 +218,6 @@ public class UiGraphics {
         blitSprite(sprite, x, y, width, height, 1.0f);
     }
     public void blitSprite(final TextureAtlasSprite sprite, final float x, final float y, final float width, final float height, final float alpha) {
-        __internal_blit(textureSetupFor(sprite.atlasLocation()), x, y, x + width, y + height, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), alphaColor(0xFFFFFFFF, alpha));
+        __internal_blit(textureSetupFor(sprite.atlasLocation()), x, y, x + width, y + height, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), alpha);
     }
 }
