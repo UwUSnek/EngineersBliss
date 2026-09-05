@@ -235,7 +235,7 @@ public class UiSlider extends __base_UiWidget {
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(bgSpriteId != null) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
+            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
         }
     }
 

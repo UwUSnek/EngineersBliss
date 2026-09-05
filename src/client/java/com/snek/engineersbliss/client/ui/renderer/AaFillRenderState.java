@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
  * A GuiElementRenderState for antialiased rects.
  * This is used by UiGraphics to produce antialiased regions without multiple draw calls, improving performance.
  */
-public record AaRectRenderState(
+public record AaFillRenderState(
     RenderPipeline pipeline, TextureSetup textureSetup, Matrix3x2f pose,
     float x0, float y0, float x1, float y1,
     int color, @Nullable ScreenRectangle scissorArea
@@ -49,6 +49,7 @@ public record AaRectRenderState(
 
     @Override
     public @Nullable ScreenRectangle bounds() {
-        return scissorArea;
+		ScreenRectangle bounds = new ScreenRectangle((int)x0, (int)y0, (int)x1 - (int)x0, (int)y1 - (int)y0).transformMaxBounds(pose);
+		return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
     }
 }

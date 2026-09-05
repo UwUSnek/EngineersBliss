@@ -21,7 +21,6 @@ import com.snek.engineersbliss.utils.Easings;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 
@@ -146,10 +145,8 @@ public class UiButton extends __base_UiWidget {
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
+            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
         }
-
-        //
     }
 
 

@@ -124,11 +124,11 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
                 graphics.blit(atlasIdL, xL, y, xL + w, y + h, uv[0], uv[1], uv[2], uv[3]);
             }
             if(!TextureAtlasTracker.isTextureReady(atlasIdR)) {
-                graphics.blit(atlasIdR,  xR, yPlaceholder, xR + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+                graphics.blit(atlasIdR, xR, yPlaceholder, xR + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
             }
             else {
                 final float[] uv  = TextureAtlasTracker.getUV(atlasIdR,  0, System.currentTimeMillis());
-                graphics.blit(atlasIdR,  xR, y, xR + w, y + h, uv[0], uv[1], uv[2], uv[3]);
+                graphics.blit(atlasIdR, xR, y, xR + w, y + h, uv[0], uv[1], uv[2], uv[3]);
             }
         }
     }

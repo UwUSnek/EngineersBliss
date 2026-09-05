@@ -5,7 +5,6 @@ in vec4 vertexColor;
 in vec2 localPos;
 in vec2 rectSize;
 
-
 out vec4 fragColor;
 
 

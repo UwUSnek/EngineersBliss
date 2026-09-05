@@ -20,15 +20,28 @@ public final class UiRenderPipelines {
     private UiRenderPipelines() {}
 
 
-    public static final RenderPipeline AA_RECT = RenderPipelines.register(
+    public static final RenderPipeline AA_FILL = RenderPipelines.register(
         RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
-            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_rect"))
-            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_rect"))
-            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_rect"))
-            .withVertexFormat(UiVertexFormats.AA_RECT, VertexFormat.Mode.QUADS)         // Custom antialiased rect data.
+            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_fill"))
+            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_fill"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_fill"))
+            .withVertexFormat(UiVertexFormats.AA_FILL, VertexFormat.Mode.QUADS)         // Custom antialiased rect data.
             .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))      // Translucent is required for transparent pixels.
             .withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, false)) // No depth testing, no depth writes.
             .withCull(false)                                                            // Makes UI rendering more reliable.
+            .build()
+        )
+    ;
+    public static final RenderPipeline AA_BLIT = RenderPipelines.register(
+        RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
+            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_blit"))
+            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
+            .withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
+            .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
+            .withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, false))
+            .withCull(false)
+            .withSampler("Sampler0")
             .build()
         )
     ;
