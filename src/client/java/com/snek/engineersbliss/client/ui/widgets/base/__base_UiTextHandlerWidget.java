@@ -595,7 +595,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         for(int i = 0; i < renderLines.size(); i++) {
             final UiTxt line = renderLines.get(i);
             if(line.length() > 0) {
-                graphics.extractTxt(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, (int)getInnerWidth(), false);
+                graphics.text(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, (int)getInnerWidth(), false);
             }
         }
         graphics.disableScissor();

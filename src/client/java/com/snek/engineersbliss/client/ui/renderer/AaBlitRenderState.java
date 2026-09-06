@@ -87,7 +87,7 @@ public record AaBlitRenderState(
 
 
     @Override
-    public @Nullable ScreenRectangle bounds() {
+    public @Nullable ScreenRectangle bounds() { //FIXME this might clip a few edge pixels
 		ScreenRectangle bounds = new ScreenRectangle((int)x0, (int)y0, (int)x1 - (int)x0, (int)y1 - (int)y0).transformMaxBounds(pose);
 		return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
 	}

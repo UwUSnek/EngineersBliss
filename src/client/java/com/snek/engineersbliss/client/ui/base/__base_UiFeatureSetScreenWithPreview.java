@@ -107,8 +107,8 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
             final int textY    = ((int)(height * DESCRIPTION_HEIGHT) - scaledFont.getLineHeight()) / 2;
             final String textL = featureInputWidget.getLeftTitle();
             final String textR = featureInputWidget.getRightTitle();
-            graphics.extractTxt(new UiTxt(textL, fontFamily, scale), textXL, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
-            graphics.extractTxt(new UiTxt(textR, fontFamily, scale), textXR, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            graphics.text(new UiTxt(textL, fontFamily, scale), textXL, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
+            graphics.text(new UiTxt(textR, fontFamily, scale), textXR, textY, Layout.fgColor, TextAlignment.CENTER_ANCHORED, 0);
         }
 
 

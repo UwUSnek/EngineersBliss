@@ -64,8 +64,8 @@ public abstract class __base_UiScreen extends Screen {
     private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
-    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
-    public float getGuiScale() { return animatedGuiScale.compute(); }
+    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
+    public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
 
 
     // Relayout/rebuild flags

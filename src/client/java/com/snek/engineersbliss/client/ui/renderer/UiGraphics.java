@@ -107,7 +107,7 @@ public class UiGraphics {
 
     // Text rendering
 
-    public void extractTxt(
+    public void text(
         final FormattedCharSequence text,
         final int textWidth,
         final ScaledFont scaledFont,
@@ -139,35 +139,36 @@ public class UiGraphics {
     }
 
 
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
-        extractTxt(text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
+        text(text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
     }
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
         //! All overloads go through this which calls the true extractTxt.
         //! Using toRawVisualOrder() is required in order to render '§' properly.
         final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        extractTxt((dropShadow ? text : text.noShadow()).toRawVisualOrder(), text.getWidth(), scaledFont, x, y, color, textAlignment, elmWidth, shiftX, shiftY);
+        text((dropShadow ? text : text.noShadow()).toRawVisualOrder(), text.getWidth(), scaledFont, x, y, color, textAlignment, elmWidth, shiftX, shiftY);
     }
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
-        extractTxt(text, x, y, color, dropShadow, 0f, 0f);
+    public void text(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
+        text(text, x, y, color, dropShadow, 0f, 0f);
     }
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow, final float shiftX, final float shiftY) {
-        extractTxt(text, x, y, color, TextAlignment.LEFT, 0, dropShadow, shiftX, shiftY);
+    public void text(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow, final float shiftX, final float shiftY) {
+        text(text, x, y, color, TextAlignment.LEFT, 0, dropShadow, shiftX, shiftY);
     }
 
 
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
-        extractTxt(text, x, y, color, textAlignment, elmWidth, 0f, 0f);
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
+        text(text, x, y, color, textAlignment, elmWidth, 0f, 0f);
     }
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final float shiftX, final float shiftY) {
-        extractTxt(text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final float shiftX, final float shiftY) {
+        text(text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
     }
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color) {
-        extractTxt(text, x, y, color, 0f, 0f);
+    public void text(final UiTxt text, final int x, final int y, final int color) {
+        text(text, x, y, color, 0f, 0f);
     }
-    public void extractTxt(final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
-        extractTxt(text, x, y, color, false, shiftX, shiftY);
+    public void text(final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
+        text(text, x, y, color, false, shiftX, shiftY);
     }
+
 
 
 
@@ -219,5 +220,30 @@ public class UiGraphics {
     }
     public void blitSprite(final TextureAtlasSprite sprite, final float x, final float y, final float width, final float height, final float alpha) {
         __internal_blit(textureSetupFor(sprite.atlasLocation()), x, y, x + width, y + height, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), alpha);
+    }
+
+
+
+
+
+
+
+
+    // Multilines
+    public void multiLine(final float x0, final float y0, final float x1, final float y1, float[] xs, float[] ys, float thickness, int color) {
+        raw.guiRenderState.addGuiElement(new AaMultilineRenderState(
+            UiRenderPipelines.AA_MULTILINE, new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1,
+            xs, ys, thickness, color,
+            getScissorStack().peek()
+        ));
+    }
+    public void multiLineArea(final float x0, final float y0, final float x1, final float y1, float[] xs, float[] ys, int color) {
+        raw.guiRenderState.addGuiElement(new MultilineAreaRenderState(
+            UiRenderPipelines.MULTILINE_AREA, new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1,
+            xs, ys, color,
+            getScissorStack().peek()
+        ));
     }
 }

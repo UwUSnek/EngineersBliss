@@ -308,8 +308,8 @@ public class PauseScreenMixin extends Screen {
             // Draw player name an title
             //FIXME pause screen can't use UiGraphics normally
             final UiGraphics uiGraphics = new UiGraphics(graphics);
-            uiGraphics.extractTxt(playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
-            uiGraphics.extractTxt(playTime,   textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
+            uiGraphics.text(playerName, textCenterX,  nameY, 0xFFFFC200, TextAlignment.CENTER_ANCHORED, 0, true);
+            uiGraphics.text(playTime,   textCenterX, titleY, 0xFFDDDDDD, TextAlignment.CENTER_ANCHORED, 0, true);
         }
     }
 }

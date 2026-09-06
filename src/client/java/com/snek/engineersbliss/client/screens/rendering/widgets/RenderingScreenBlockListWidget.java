@@ -118,9 +118,9 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         final int headerY = getY() - 12;
         final int rowLeft = (int)getRowLeft();
         final int rowWidth = (int)getRowWidth();
-        graphics.extractTxt(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
-        graphics.extractTxt(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.extractTxt(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        graphics.text(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
+        graphics.text(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        graphics.text(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events

@@ -120,7 +120,7 @@ public class UiTextWidget extends __base_UiWidget {
             // Draw text lines
             graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
             for(final UiTxt l : cachedLines) {
-                graphics.extractTxt(l, (int)getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), (int)getInnerWidth());
+                graphics.text(l, (int)getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), (int)getInnerWidth());
                 ++curLineNum;
             }
             graphics.disableScissor();

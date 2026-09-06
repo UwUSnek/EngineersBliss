@@ -24,6 +24,17 @@ public final class UiVertexFormats {
         .add("UV2",      VertexFormatElement.UV2)
         .add("Color",    VertexFormatElement.COLOR)
     .build();
+    public static final VertexFormat AA_MULTILINE = VertexFormat.builder()
+        .add("Position", VertexFormatElement.POSITION)
+        .add("LineWidth",VertexFormatElement.LINE_WIDTH)
+        .add("UV0",      VertexFormatElement.UV0)
+        .add("Color",    VertexFormatElement.COLOR)
+    .build();
+    public static final VertexFormat MULTILINE_AREA = VertexFormat.builder()
+        .add("Position", VertexFormatElement.POSITION)
+        .add("Color",    VertexFormatElement.COLOR)
+    .build();
+
 
     public static void init() {
         // Empty, starts static init

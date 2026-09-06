@@ -373,7 +373,7 @@ public class RenderingUtils {
 
 
 
-
+//TODO remove all the CPU rendering stuff. remove background cache too.
     private static void extractLine(final PixelSetter pixelSetter, final double[] xs, final double[] ys, final float thickness, final int color) {
         if(xs.length < 2) return;
         final double halfThickness = thickness / 2.0;

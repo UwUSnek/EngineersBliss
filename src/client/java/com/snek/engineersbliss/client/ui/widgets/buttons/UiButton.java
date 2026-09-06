@@ -118,7 +118,7 @@ public class UiButton extends __base_UiWidget {
             final int keybindX = (int)(getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2);
             final int keybindY = (int)(getYF() + (getHeightF() - scaledFont.getLineHeight()) / 2);
             final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);
-            graphics.extractTxt(keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, getWidth());
+            graphics.text(keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, getWidth());
         }
 
 

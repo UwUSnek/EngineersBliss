@@ -140,7 +140,7 @@ public class BlockRenderer {
     public static void extractBlockName(final UiGraphics graphics, final Block block, final int x, final int y, final int color, final int height) {
         final float scale = (float)height / DEFAULT_ITEM_SPRITE_SIZE;
         final @NotNull UiTxt text = new UiTxt(block.getName(), scale);
-        graphics.extractTxt(text, x, y, color, false);
+        graphics.text(text, x, y, color, false);
     }
 
 

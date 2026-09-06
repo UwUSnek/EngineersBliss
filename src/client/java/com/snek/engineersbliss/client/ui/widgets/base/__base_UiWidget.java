@@ -252,7 +252,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
             };
 
             graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
-            graphics.extractTxt(label, textX, textY, Layout.fgColor, drawAlignment, (int)getInnerWidth(), false, -shift, 0f);
+            graphics.text(label, textX, textY, Layout.fgColor, drawAlignment, (int)getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
         }
     }
