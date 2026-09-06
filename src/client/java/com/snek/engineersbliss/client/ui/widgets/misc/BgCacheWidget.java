@@ -20,7 +20,6 @@ public interface BgCacheWidget {
     public float getYF();
     public float getWidthF();
     public float getHeightF();
-    public boolean isGuiScaleTransitioning();
     public TextureCache getBgTextureCache();
 
 
@@ -51,9 +50,9 @@ public interface BgCacheWidget {
         // Draw background cache if present
         final @Nullable TextureCache bgCache = getBgTextureCache();
         if(bgCache != null) {
-            if(!isGuiScaleTransitioning()) {
+            // if(!isGuiScaleTransitioning()) {
                 bgCache.update(pixelW, pixelH, image -> drawCachedBackground(image, pixelW, pixelH));
-            }
+            // }
             bgCache.blit(graphics, getXF(), getYF(), w, h);
         }
     }

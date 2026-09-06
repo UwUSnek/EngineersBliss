@@ -25,7 +25,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
-import net.minecraft.resources.Identifier;
 
 
 
@@ -64,7 +63,6 @@ public abstract class __base_UiScreen extends Screen {
     private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
-    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
     public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
 
 
@@ -122,17 +120,18 @@ public abstract class __base_UiScreen extends Screen {
         float newScale = animatedGuiScale.compute();
         //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
 
-        boolean transitioning = isGuiScaleTransitioning();
-        if(lastGuiScale != newScale || width != newWidth || height != newHeight) {
+
+        boolean windowResized = width != newWidth || height != newHeight;
+        boolean scaleChanged  = lastGuiScale != newScale;
+        if(scaleChanged || windowResized) {
             lastGuiScale = newScale;
             width  = newWidth;
             height = newHeight;
-
-            if(transitioning) {
-                needsRelayout = true;
+            if(windowResized) {
+                needsRebuild = true;
             }
             else {
-                needsRebuild = true;
+                needsRelayout = true;
             }
         }
     }
@@ -352,7 +351,7 @@ public abstract class __base_UiScreen extends Screen {
         float factor = 1f / realGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
-        extractRenderState(new UiGraphics(graphics), mouseX, mouseY, delta);
+        extractRenderState(new UiGraphics(graphics, this), mouseX, mouseY, delta);
         graphics.pose().popMatrix();
     }
 

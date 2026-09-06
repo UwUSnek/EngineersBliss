@@ -88,9 +88,6 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     // Screen reference
     private final Screen screen;
     public Screen getScreen() { return screen; }
-    public boolean isGuiScaleTransitioning() {
-        return (screen instanceof @NotNull __base_UiScreen uiScreen) && uiScreen.isGuiScaleTransitioning();
-    }
     public float getGuiScale() {
         if(getScreen() instanceof __base_UiScreen uiScreen) {
             return uiScreen.getGuiScale();

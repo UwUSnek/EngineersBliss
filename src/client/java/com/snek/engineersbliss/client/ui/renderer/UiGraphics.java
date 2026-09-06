@@ -5,7 +5,7 @@ import org.joml.Matrix3x2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -33,6 +33,7 @@ import net.minecraft.util.FormattedCharSequence;
  */
 public class UiGraphics {
     GuiGraphicsExtractor raw;
+    __base_UiScreen screen;
 
 
 
@@ -40,8 +41,9 @@ public class UiGraphics {
 
 
 
-    public UiGraphics(final GuiGraphicsExtractor raw) {
+    public UiGraphics(final GuiGraphicsExtractor raw, __base_UiScreen screen) {
         this.raw = raw;
+        this.screen = screen;
     }
 
 
@@ -119,7 +121,7 @@ public class UiGraphics {
     ) {
 
         // Retrieve font and text scale
-        final float textScale = scaledFont.getScale() * SettingsFeatureHandler.getCurrentGuiScale();
+        final float textScale = scaledFont.getScale() * screen.getGuiScale();
 
         // Compute x and y positions
         final int _x = (int)(switch(textAlignment) {
