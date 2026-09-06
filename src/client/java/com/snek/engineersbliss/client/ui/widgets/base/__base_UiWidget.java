@@ -13,7 +13,6 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
-import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -35,7 +34,7 @@ import net.minecraft.sounds.SoundEvent;
 
 
 
-public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCacheWidget {
+public abstract class __base_UiWidget extends __base_UiLayoutElm {
     private static final int SCROLL_PAUSE_MS = 1000;
     private static final int SCROLL_SPEED    = 20;  // The scroll speed, in pixels/s
 
@@ -89,21 +88,10 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
     private static final List<__base_UiLayoutElm> emptyChildList = new ArrayList<>();
 
 
-    // Cached background
-    private TextureCache bgCache;
+    // Background color
     private int bgColor;
     public void setBgColor(final int newColor) {
         bgColor = newColor;
-        markBgDirty();
-    }
-    @Override public int getBgBaseColor() { return bgColor; }
-    public @Nullable TextureCache getBgTextureCache() {
-        if(bgCache == null) {
-            bgCache = new TextureCache(getScreen());
-            //! Creating a texture for each element is slow but not that important.
-            //! Subclasses expect a texture to be available. Allocating the texture selectively would only create issues.
-        }
-        return bgCache;
     }
 
 
@@ -183,7 +171,6 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         setLabel(label); //! Sets label and label width
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;
-        this.bgCache = null;
     }
     protected __base_UiWidget(final Screen screen, final UiTxt label) {
         this(screen, label, TextAlignment.LEFT);
@@ -213,6 +200,15 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm implements BgCa
         extractLabel       (graphics, mouseX, mouseY, a);
         extractBorders     (graphics, mouseX, mouseY, a);
         extractDebugOverlay(graphics, mouseX, mouseY, a);
+    }
+
+
+    public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+
+        // Draw background color if needed
+        if((bgColor & 0xFF000000) != 0) {
+            graphics.fill(getXF(), getYF(), getXF() + getWidthF(), getYF() + getHeightF(), bgColor);
+        }
     }
 
 

@@ -13,12 +13,10 @@ import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 
 
@@ -88,13 +86,13 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
         // Calculate data
         final float ratio = 9f / 4f;
-        final int w = (int)(width * PREVIEW_WIDTH);
-        final int h = (int)(w * ratio);
-        final int hPlaceholder = w;
-        final int xL = (width  - w) / 2 - w / 2;
-        final int xR = (width  - w) / 2 + w / 2;
-        final int y    = (height - h) / 2;
-        final int yPlaceholder = (height - hPlaceholder) / 2;
+        final float w = width * PREVIEW_WIDTH;
+        final float h = w * ratio;
+        final float hPlaceholder = w;
+        final float xL = (width  - w) / 2 - w / 2;
+        final float xR = (width  - w) / 2 + w / 2;
+        final float y  = (height - h) / 2;
+        final float yPlaceholder = (height - hPlaceholder) / 2;
 
 
         // Render background text
@@ -102,8 +100,8 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
             final int scale = 5;
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
             final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
-            final int textXL = xL + w / 2;
-            final int textXR = xR + w / 2;
+            final int textXL = (int)(xL + w / 2);
+            final int textXR = (int)(xR + w / 2);
             final int textY    = ((int)(height * DESCRIPTION_HEIGHT) - scaledFont.getLineHeight()) / 2;
             final String textL = featureInputWidget.getLeftTitle();
             final String textR = featureInputWidget.getRightTitle();
@@ -114,8 +112,8 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
         // Render the feature preview
         {
-            final Identifier atlasIdL = hoveredPreviewAtlasIds[0];
-            final Identifier atlasIdR = hoveredPreviewAtlasIds[1];
+            final @NotNull Identifier atlasIdL = hoveredPreviewAtlasIds[0];
+            final @NotNull Identifier atlasIdR = hoveredPreviewAtlasIds[1];
             if(!TextureAtlasTracker.isTextureReady(atlasIdL)) {
                 graphics.blit(atlasIdL, xL, yPlaceholder, xL + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
             }

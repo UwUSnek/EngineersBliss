@@ -22,7 +22,6 @@ import com.snek.engineersbliss.client.screens.macros.MacrosScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
-import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
@@ -31,7 +30,6 @@ import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
@@ -317,11 +315,6 @@ public class PauseScreenMixin extends Screen {
 
 
 
-//TODO
-//TODO
-//TODO
-//TODO
-//TODO
 //TODO
 //TODO
 //TODO

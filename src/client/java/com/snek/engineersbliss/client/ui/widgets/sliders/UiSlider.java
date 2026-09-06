@@ -59,7 +59,7 @@ public class UiSlider extends __base_UiWidget {
     // Cached textures
     private int bgColorAlt = Layout.bgColorAlt;
     public void setBgColorAlt(final int newColor) {
-        bgColorAlt = newColor; markBgDirty();
+        bgColorAlt = newColor;
     }
     public int getBgBaseColorAlt() {
         return bgColorAlt;
@@ -177,7 +177,6 @@ public class UiSlider extends __base_UiWidget {
         if(onChange != null) onChange.accept(value);
         visualValue.startNewTransition(value);
         playDragSound(value);
-        markBgDirty();
     }
 
     @Override

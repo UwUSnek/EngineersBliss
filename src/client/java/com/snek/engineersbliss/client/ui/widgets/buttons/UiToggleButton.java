@@ -26,7 +26,7 @@ public class UiToggleButton extends UiButton {
     // Background toggle indicator
     private int bgColorAlt = Layout.bgColorAlt;
     private AnimatedColor indicatorColor;
-    public void setBgColorAlt(final int newColor) { bgColorAlt = newColor; markBgDirty(); }
+    public void setBgColorAlt(final int newColor) { bgColorAlt = newColor; }
     public int getBgBaseColorAlt() { return bgColorAlt; }
 
     // Value formatters
