@@ -28,14 +28,14 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 
 
 public class RenderingScreenBlockListWidget extends UiWidgetList {
-    public static final int CHECKBOX_AREA_WIDTH = 40;
-    public static final float LIST_MARGIN = 0.2f;
+    public static final int CHECKBOX_AREA_WIDTH = 40; //TODO replace with UiSize
+    public static final float LIST_MARGIN = 0.2f; //TODO replace with UiSize
 
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual)
 
 
-    public RenderingScreenBlockListWidget(final Screen screen, final int itemHeight) {
+    public RenderingScreenBlockListWidget(final Screen screen, final float itemHeight) {
         super(screen, itemHeight, LIST_MARGIN);
 
         // Create list of all blocks

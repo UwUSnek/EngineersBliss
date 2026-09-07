@@ -65,7 +65,7 @@ public record MultilineAreaRenderState(
 
     @Override
     public @Nullable ScreenRectangle bounds() { //FIXME this might clip a few edge pixels
-		ScreenRectangle bounds = new ScreenRectangle((int)x0, (int)y0, (int)x1 - (int)x0, (int)y1 - (int)y0).transformMaxBounds(pose);
+		ScreenRectangle bounds = new ScreenRectangle(Math.round(x0), Math.round(y0), Math.round(x1 - x0), Math.round(y1 - y0)).transformMaxBounds(pose);
 		return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
 	}
 

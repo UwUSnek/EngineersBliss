@@ -53,14 +53,10 @@ import net.minecraft.client.input.MouseButtonInfo;
  * By default, all screens pause the game.
  */
 public abstract class __base_UiScreen extends Screen {
-    public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
-    public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
-    public static final int LIST_TOP      = Layout.LIST_TOP;
-    public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
 
-    // Virtual gui scale & scale animation
-    private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
+    // True Screen size & virtual gui scale
+    private int realGuiScale = 1;  // The window's actual current scale, refreshed each vanilla resize. //! Always int.
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
     public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
@@ -115,24 +111,17 @@ public abstract class __base_UiScreen extends Screen {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         realGuiScale = mc.getWindow().getGuiScale();
 
-        int newWidth  = mc.getWindow().getScreenWidth();
-        int newHeight = mc.getWindow().getScreenHeight();
+        // Retrieve current true dimensions and virtual scale
         float newScale = animatedGuiScale.compute();
-        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
+        int newWidth  = mc.getWindow().getScreenWidth();    //! Vanilla updates these when the Vanilla GUI Scale is changed.
+        int newHeight = mc.getWindow().getScreenHeight();   //! Vanilla updates these when the Vanilla GUI Scale is changed.
 
-
-        boolean windowResized = width != newWidth || height != newHeight;
-        boolean scaleChanged  = lastGuiScale != newScale;
-        if(scaleChanged || windowResized) {
+        // Update dimensions and relayout if the scale changed or the window was resized
+        if(lastGuiScale != newScale || width != newWidth || height != newHeight) {
             lastGuiScale = newScale;
             width  = newWidth;
             height = newHeight;
-            if(windowResized) {
-                needsRebuild = true;
-            }
-            else {
-                needsRelayout = true;
-            }
+            needsRelayout = true;
         }
     }
 
@@ -334,24 +323,19 @@ public abstract class __base_UiScreen extends Screen {
     public final void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
 
-        // Check for resizes and rebuild/layout widgets if needed
+        // Check for resizes and relayout widgets if needed
         maybeFlagResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.
-        if(needsRebuild) {
-            rebuildWidgets();
-            relayout();
-            needsRebuild = false;
-            needsRelayout = false;
-        }
-        else if(needsRelayout) {
+        if(needsRelayout) {
             relayout();
             needsRelayout = false;
         }
 
-        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything.
+        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything. Compensate mouse coords too.
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         float factor = 1f / realGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
-        extractRenderState(new UiGraphics(graphics, this), mouseX, mouseY, delta);
+        extractRenderState(new UiGraphics(graphics, this), fixedPos.x, fixedPos.y, delta);
         graphics.pose().popMatrix();
     }
 
@@ -359,20 +343,18 @@ public abstract class __base_UiScreen extends Screen {
     /**
      * Custom render function that uses a UiGraphics instead of Vanill'as graphics extractor.
      */
-    public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
-
+    public void extractRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float delta) {
 
         // Update hovered element
-        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(fixedPos.x, fixedPos.y);
+        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(mouseX, mouseY);
 
         // Extract background
-        extractBackground(graphics, fixedPos.x, fixedPos.y, delta);
+        extractBackground(graphics, mouseX, mouseY, delta);
 
         // Extract widgets
         for(final @NotNull GuiEventListener c : children()) {
             if(c instanceof @NotNull __base_UiWidget r) {
-                r.extractWidgetRenderState(graphics, fixedPos.x, fixedPos.y, delta);
+                r.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
             }
         }
     }
@@ -380,14 +362,12 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public final void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        // Empty
+        // Empty. Suppress Vanilla background.
     }
     @Override
 	public final void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        // Empty
+        // Empty. Suppress Vanilla background.
     }
-
-
 	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(!tabPressed) {
             graphics.blurBeforeThisStratum();
@@ -403,8 +383,6 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public void onClose() {
-
-        // Close screen and go back to game
         this.minecraft.setScreen(null);
     }
 

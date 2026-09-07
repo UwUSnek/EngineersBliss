@@ -591,11 +591,11 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         final int x = (int)(getInnerX() - visualScrollPx.compute());
         final int y = getTextOriginY() - visualScrollLinePx.compute();
 
-        graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
+        graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
         for(int i = 0; i < renderLines.size(); i++) {
             final UiTxt line = renderLines.get(i);
             if(line.length() > 0) {
-                graphics.text(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, (int)getInnerWidth(), false);
+                graphics.text(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
             }
         }
         graphics.disableScissor();

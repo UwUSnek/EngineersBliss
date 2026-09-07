@@ -129,7 +129,7 @@ public class ScaledFont {
     private int __internal_calcWidth(final FormattedCharSequence s, final float scale) {
         return (int)(font.width(s) * getScale() * scale);
     }
-
+//TODO add float support to text
 
 
 

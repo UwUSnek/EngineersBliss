@@ -11,28 +11,28 @@ public final class UiVertexFormats {
 
 
     public static final VertexFormat AA_FILL = VertexFormat.builder()
-        .add("Position", VertexFormatElement.POSITION)
-        .add("Color",    VertexFormatElement.COLOR)
-        .add("UV0",      VertexFormatElement.UV0)
-        .add("UV1",      VertexFormatElement.UV1)
+        .add("Position",  VertexFormatElement.POSITION)
+        .add("LineWidth", VertexFormatElement.LINE_WIDTH)
+        .add("UV0",       VertexFormatElement.UV0)
+        .add("Color",     VertexFormatElement.COLOR)
     .build();
     public static final VertexFormat AA_BLIT = VertexFormat.builder()
-        .add("Position", VertexFormatElement.POSITION)
-        .add("LineWidth",VertexFormatElement.LINE_WIDTH)
-        .add("UV0",      VertexFormatElement.UV0)
-        .add("UV1",      VertexFormatElement.UV1)
-        .add("UV2",      VertexFormatElement.UV2)
-        .add("Color",    VertexFormatElement.COLOR)
+        .add("Position",  VertexFormatElement.POSITION)
+        .add("LineWidth", VertexFormatElement.LINE_WIDTH)
+        .add("UV0",       VertexFormatElement.UV0)
+        .add("UV1",       VertexFormatElement.UV1)
+        .add("UV2",       VertexFormatElement.UV2)
+        .add("Color",     VertexFormatElement.COLOR)
     .build();
     public static final VertexFormat AA_MULTILINE = VertexFormat.builder()
-        .add("Position", VertexFormatElement.POSITION)
-        .add("LineWidth",VertexFormatElement.LINE_WIDTH)
-        .add("UV0",      VertexFormatElement.UV0)
-        .add("Color",    VertexFormatElement.COLOR)
+        .add("Position",  VertexFormatElement.POSITION)
+        .add("LineWidth", VertexFormatElement.LINE_WIDTH)
+        .add("UV0",       VertexFormatElement.UV0)
+        .add("Color",     VertexFormatElement.COLOR)
     .build();
     public static final VertexFormat MULTILINE_AREA = VertexFormat.builder()
-        .add("Position", VertexFormatElement.POSITION)
-        .add("Color",    VertexFormatElement.COLOR)
+        .add("Position",  VertexFormatElement.POSITION)
+        .add("Color",     VertexFormatElement.COLOR)
     .build();
 
 

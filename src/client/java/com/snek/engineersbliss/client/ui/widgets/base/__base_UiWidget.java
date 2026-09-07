@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
@@ -13,7 +12,6 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
-import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
@@ -136,26 +134,26 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
 
     // Borders
-    private int borderTop    = 0;
-    private int borderRight  = 0;
-    private int borderBottom = 0;
-    private int borderLeft   = 0;
+    private float borderTop    = 0;
+    private float borderRight  = 0;
+    private float borderBottom = 0;
+    private float borderLeft   = 0;
     private int borderTopColor    = Layout.borderColor;
     private int borderRightColor  = Layout.borderColor;
     private int borderBottomColor = Layout.borderColor;
     private int borderLeftColor   = Layout.borderColor;
-    public void setBorderTopPx      (final int    px) { borderTop         = px;    }
-    public void setBorderRightPx    (final int    px) { borderRight       = px;    }
-    public void setBorderBottomPx   (final int    px) { borderBottom      = px;    }
-    public void setBorderLeftPx     (final int    px) { borderLeft        = px;    }
+    public void setBorderTopPx      (final float  px) { borderTop         =    px; }
+    public void setBorderRightPx    (final float  px) { borderRight       =    px; }
+    public void setBorderBottomPx   (final float  px) { borderBottom      =    px; }
+    public void setBorderLeftPx     (final float  px) { borderLeft        =    px; }
     public void setBorderTopColor   (final int color) { borderTopColor    = color; }
     public void setBorderRightColor (final int color) { borderRightColor  = color; }
     public void setBorderBottomColor(final int color) { borderBottomColor = color; }
     public void setBorderLeftColor  (final int color) { borderLeftColor   = color; }
-    public void setBorderTop   (final int px, final int color) { setBorderTopPx   (px); setBorderTopColor   (color); }
-    public void setBorderRight (final int px, final int color) { setBorderRightPx (px); setBorderRightColor (color); }
-    public void setBorderBottom(final int px, final int color) { setBorderBottomPx(px); setBorderBottomColor(color); }
-    public void setBorderLeft  (final int px, final int color) { setBorderLeftPx  (px); setBorderLeftColor  (color); }
+    public void setBorderTop   (final float px, final int color) { setBorderTopPx   (px); setBorderTopColor   (color); }
+    public void setBorderRight (final float px, final int color) { setBorderRightPx (px); setBorderRightColor (color); }
+    public void setBorderBottom(final float px, final int color) { setBorderBottomPx(px); setBorderBottomColor(color); }
+    public void setBorderLeft  (final float px, final int color) { setBorderLeftPx  (px); setBorderLeftColor  (color); }
 
 
 
@@ -216,23 +214,21 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
         if(label != null && label.length() > 0) {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
-
             final float overflow = label.getWidth() - getInnerWidth();
-
-            int shift = 0;
+            float shift = 0;
             if(overflow > 0) {
-                final int scrollMs = (int)(overflow * 1000L / SCROLL_SPEED);
-                final int cycleMs  = SCROLL_PAUSE_MS * 2 + scrollMs;
-                final long t = System.currentTimeMillis() % cycleMs;
+                final float scrollMs = overflow * 1000 / SCROLL_SPEED;
+                final float cycleMs  = SCROLL_PAUSE_MS * 2 + scrollMs;
+                final float t = (float)((double)System.currentTimeMillis() % cycleMs);
 
                 if(t < SCROLL_PAUSE_MS) {
                     shift = 0;
                 }
                 else if(t < SCROLL_PAUSE_MS + scrollMs) {
-                    shift = (int)((t - SCROLL_PAUSE_MS) * SCROLL_SPEED / 1000);
+                    shift = (t - SCROLL_PAUSE_MS) * SCROLL_SPEED / 1000;
                 }
                 else {
-                    shift = (int)overflow;
+                    shift = overflow;
                 }
             }
 
@@ -244,8 +240,8 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
                 case BOTTOM -> (int)getBottom() - lineHeight;
             };
 
-            graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
-            graphics.text(label, textX, textY, Layout.fgColor, drawAlignment, (int)getInnerWidth(), false, -shift, 0f);
+            graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
+            graphics.text(label, textX, textY, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
         }
     }

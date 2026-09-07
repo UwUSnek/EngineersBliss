@@ -31,7 +31,7 @@ import net.minecraft.resources.Identifier;
 
 
 public class UiButton extends __base_UiWidget {
-    private static final int KEYBIND_ICON_WIDTH = 16;
+    private static final float KEYBIND_ICON_WIDTH = 16;
 
     private char key;
     private final AnimatedColor overlayColor;

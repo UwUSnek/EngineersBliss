@@ -12,7 +12,6 @@ import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 
 
@@ -71,7 +70,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
     @Override
-    public void extractRenderState(UiGraphics graphics, int mouseX, int mouseY, float delta) {
+    public void extractRenderState(UiGraphics graphics, float mouseX, float mouseY, float delta) {
         updateHoveredFeatureReference(graphics, mouseX, mouseY, delta);
         super.extractRenderState(graphics, mouseX, mouseY, delta);
     }
@@ -79,7 +78,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
 
 
-    private void updateHoveredFeatureReference(UiGraphics graphics, int mouseX, int mouseY, float delta) {
+    private void updateHoveredFeatureReference(UiGraphics graphics, float mouseX, float mouseY, float delta) {
 
         // Update hovered feature entry data
         final @Nullable GuiEventListener widget = getHoveredOrDraggedElm();
@@ -122,14 +121,14 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
             // Feature name
             final UiTxt nameText = new UiTxt(newWidget.getClientFeature().calcName().get(), 2f);
-            final int nameHeight = nameText.getScaledFont().getLineHeight();
+            final float nameHeight = nameText.getScaledFont().getLineHeight();
             rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
             rightSidebar.addWidget(new UiTextWidget(this, nameText, TextAlignment.CENTER, Layout.fgColor), nameHeight);
 
             // Feature description
             rightSidebar.setIsScrollable(false); //! Disable scrolling so the element doesn't show a scroll bar. There is always enough space for the description.
             final UiTxt descriptionText = newWidget.getClientFeature().calcDesc();
-            final int descriptionHeight = height - nameHeight - Layout.BIG_SEPARATOR_HEIGHT; //! Might not be pixel perfect but it doesn't matter, can't scroll the element anyway.
+            final float descriptionHeight = height - nameHeight - Layout.BIG_SEPARATOR_HEIGHT; //! Might not be pixel perfect but it doesn't matter, can't scroll the element anyway.
             final UiTextWidget descriptionWidget = new UiTextWidget(this, descriptionText, TextAlignment.CENTER, true, Layout.fgColor);
             descriptionWidget.setVerticalAlignment(TextAlignmentY.TOP);
             rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);

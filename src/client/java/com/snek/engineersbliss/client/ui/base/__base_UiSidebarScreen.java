@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.ui.base;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
+import com.snek.engineersbliss.client.utils.Layout;
 
 
 
@@ -59,14 +60,14 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
 
         // Add left sidebar
         if(hasLeftSidebar) {
-            leftSidebar = new UiWidgetList(this, BUTTON_HEIGHT);
+            leftSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT);
             leftSidebar.setBorderRightPx(1);
             addRenderableWidget(leftSidebar);
         }
 
         // Add right sidebar
         if(hasRightSidebar) {
-            rightSidebar = new UiWidgetList(this, BUTTON_HEIGHT);
+            rightSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT);
             rightSidebar.setBorderLeftPx(1);
             addRenderableWidget(rightSidebar);
         }

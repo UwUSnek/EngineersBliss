@@ -66,7 +66,7 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
 
     @Override
-    public void extractRenderState(UiGraphics graphics, int mouseX, int mouseY, float a) {
+    public void extractRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
         // Draw immediate feature preview elements if needed
@@ -97,7 +97,7 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
         // Render background text
         {
-            final int scale = 5;
+            final float scale = 5; //FIXME make this constant, this must not change with GUI size
             final @NotNull FontFamily fontFamily = Fonts.ui.bold;
             final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
             final int textXL = (int)(xL + w / 2);

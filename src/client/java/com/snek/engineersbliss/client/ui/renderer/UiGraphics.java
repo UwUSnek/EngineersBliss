@@ -107,6 +107,7 @@ public class UiGraphics {
 
 
 
+//TODO add float coords support for text
     // Text rendering
 
     public void text(
@@ -116,7 +117,7 @@ public class UiGraphics {
         final int x, final int y,
         final int color,
         final TextAlignment textAlignment,
-        final int elmWidth,
+        final float elmWidth,
         final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
     ) {
 
@@ -126,25 +127,25 @@ public class UiGraphics {
         // Compute x and y positions
         final int _x = (int)(switch(textAlignment) {
             case LEFT            -> x;
-            case CENTER          -> x + (elmWidth - textWidth) / 2;
-            case RIGHT           -> x + elmWidth - textWidth;
-            case CENTER_ANCHORED -> x - textWidth / 2;
+            case CENTER          -> x + (elmWidth - textWidth) / 2f;
+            case RIGHT           -> x +  elmWidth - textWidth;
+            case CENTER_ANCHORED -> x -             textWidth  / 2f;
         } / textScale);
         final int _y = (int)(y / textScale);
 
         // Draw scaled text
         raw.pose().pushMatrix();
-        raw.pose().translate(shiftX, shiftY);
-        raw.pose().scale(textScale, textScale);
+        raw.pose().translate(shiftX, shiftY); //BUG this might need to be set before the scale if things look wrong
+        raw.pose().scale(textScale);
         raw.text(scaledFont.getFont(), text, _x, _y, color);
         raw.pose().popMatrix();
     }
 
 
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow) {
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow) {
         text(text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
     }
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
         //! All overloads go through this which calls the true extractTxt.
         //! Using toRawVisualOrder() is required in order to render '§' properly.
         final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
@@ -158,10 +159,10 @@ public class UiGraphics {
     }
 
 
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth) {
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth) {
         text(text, x, y, color, textAlignment, elmWidth, 0f, 0f);
     }
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final int elmWidth, final float shiftX, final float shiftY) {
+    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final float shiftX, final float shiftY) {
         text(text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
     }
     public void text(final UiTxt text, final int x, final int y, final int color) {

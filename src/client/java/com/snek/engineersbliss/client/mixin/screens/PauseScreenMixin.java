@@ -51,8 +51,6 @@ import net.minecraft.network.chat.Component;
 
 @Mixin(PauseScreen.class)
 public class PauseScreenMixin extends Screen {
-    private static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
-    private static final int BUTTON_MARGIN = Layout.BORDER_HEIGHT;
 
 
     // Vanilla button dimensions and position. Calculated before any custom element is added.
@@ -193,7 +191,7 @@ public class PauseScreenMixin extends Screen {
 
 
 
-        leftSidebar = new UiWidgetList(this, BUTTON_HEIGHT); {
+        leftSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT); {
             final UiTxt titleText   = new UiTxt(EngineerSBliss.MOD_NAME, Fonts.ui.light, 2f);
             final UiTxt versionText = new UiTxt(String.format("v%s", EngineerSBlissClient.getModVersion()), Fonts.ui.regular, 1f);
             leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
@@ -251,9 +249,9 @@ public class PauseScreenMixin extends Screen {
         // Julia set
         final UiButton juliaScreenButton = new UiPauseScreenButton(screen, new UiTxt("??"), null, JuliaSetScreen::new, '\0');
         addRenderableWidget(juliaScreenButton);
-        juliaScreenButton.setSize(BUTTON_HEIGHT, BUTTON_HEIGHT);
-        juliaScreenButton.setX(width  - BUTTON_HEIGHT - BUTTON_MARGIN);
-        juliaScreenButton.setY(height - BUTTON_HEIGHT - BUTTON_MARGIN);
+        juliaScreenButton.setSize(Layout.BUTTON_HEIGHT, Layout.BUTTON_HEIGHT);
+        juliaScreenButton.setX(width  - Layout.BUTTON_HEIGHT - Layout.BUTTON_HEIGHT);
+        juliaScreenButton.setY(height - Layout.BUTTON_HEIGHT - Layout.BUTTON_HEIGHT);
     }
 
 
@@ -279,7 +277,7 @@ public class PauseScreenMixin extends Screen {
             int boxSize = Math.max(width, height);
             int heightDiff = boxSize - clusterSizeY;
             int widthDiff = boxSize - clusterSizeX;
-            int x0 = clusterRight - widthDiff / 2 + BUTTON_MARGIN;
+            int x0 = clusterRight - widthDiff / 2 + Layout.BUTTON_HEIGHT;
             int x1 = x0 + boxSize;
             int y0 = clusterTop - heightDiff / 2;
             int y1 = y0 + boxSize;

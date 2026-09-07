@@ -29,7 +29,7 @@ import net.minecraft.resources.Identifier;
 
 
 public class Fonts {
-    private static final int   FONT_MAX_SIZE   = 10;                                                // Maximum available font size
+    private static final float FONT_MAX_SIZE   = 10;                                                // Maximum available font size
     private static final float FONT_SCALE_STEP = 0.25f;                                             // Increment between adjacent font sizes
     private static final float FONT_UNIT_RATIO = 1f / FONT_SCALE_STEP;                              // The inverse of the step
     private static final int   FONT_SIZES_NUMBER = Math.round(FONT_MAX_SIZE * FONT_UNIT_RATIO);     // The number of available sizes for a font

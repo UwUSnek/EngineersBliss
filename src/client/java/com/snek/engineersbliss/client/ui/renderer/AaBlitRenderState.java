@@ -39,8 +39,8 @@ public record AaBlitRenderState(
         final float ey0 = y0 - 1;
         final float ex1 = x1 + 1;
         final float ey1 = y1 + 1;
-        final int w = Math.round(x1 - x0);
-        final int h = Math.round(y1 - y0);
+        final float w = x1 - x0;
+        final float h = y1 - y0;
 
         emit(vc, ex1, ey0, w, h);
         emit(vc, ex1, ey1, w, h);
@@ -51,7 +51,7 @@ public record AaBlitRenderState(
 
 
 
-    private void emit(VertexConsumer vc, float x, float y, int w, int h) {
+    private void emit(VertexConsumer vc, float x, float y, float w, float h) {
 
         //! Name      Type  Norm  Count
         // POSITION   FLOAT false   3   |  xy needed. z holds X position     |  1x float
@@ -63,7 +63,7 @@ public record AaBlitRenderState(
         // NORMAL     BYTE  true    3   |  Unusable. Bad alignment           |  -
 
 
-        // Position
+        // Position & local position
         final @NotNull Vector2f pos = pose.transformPosition(x, y, new Vector2f());
         vc.addVertex(pos.x, pos.y, x - x0);
         vc.setLineWidth(y - y0);
@@ -88,7 +88,7 @@ public record AaBlitRenderState(
 
     @Override
     public @Nullable ScreenRectangle bounds() { //FIXME this might clip a few edge pixels
-		ScreenRectangle bounds = new ScreenRectangle((int)x0, (int)y0, (int)x1 - (int)x0, (int)y1 - (int)y0).transformMaxBounds(pose);
+		ScreenRectangle bounds = new ScreenRectangle(Math.round(x0), Math.round(y0), Math.round(x1 - x0), Math.round(y1 - y0)).transformMaxBounds(pose);
 		return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
 	}
 }

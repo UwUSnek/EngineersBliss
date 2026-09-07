@@ -188,7 +188,7 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
         // Draw graph area
-        graphics.enableScissor(getX(), getY(), (int)Math.ceil(graphLeft + value * size) + 1, (int)Math.ceil(getBottom()) + 1);
+        graphics.enableScissor(getX(), getY(), Math.round(graphLeft + (float)value * size) + 1, Math.round(getBottom()) + 1);
         graphics.multiLineArea(graphLeft, getYF(), getRight(), getBottom(), px, py, Layout.SliderGraphFillColor);
         graphics.disableScissor();
 

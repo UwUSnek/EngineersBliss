@@ -154,3 +154,7 @@ public class BlockRenderer {
         extractBlockName(graphics, block, x, y, color, DEFAULT_ITEM_SPRITE_SIZE);
     }
 }
+
+
+
+//TODO REMOVE THIS CLASS. move to UiGraphics

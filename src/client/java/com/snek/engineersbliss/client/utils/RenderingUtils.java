@@ -26,7 +26,7 @@ public class RenderingUtils {
      * @param maxWidth The maximum width of a line.
      * @return A list of UiTxt, each containing the formatted characters in a line.
      */
-    public static List<UiTxt> wrapLines(final UiTxt text, final int maxWidth) {
+    public static List<UiTxt> wrapLines(final UiTxt text, final float maxWidth) {
 
 
         // Create line list and calculate data

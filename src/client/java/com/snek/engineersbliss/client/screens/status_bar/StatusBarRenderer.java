@@ -25,11 +25,11 @@ public class StatusBarRenderer {
     }
 
 
-    private static void render(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
+    private static void render(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) { //FIXME this might need the custom UiGraphics
         if(StatusBarHandler.shouldRender()) {
-            final int top    = StatusBarHandler.calcTop();
-            final int bottom = StatusBarHandler.calcBottom();
-            final int width  = StatusBarHandler.getWidth();
+            final int top    = StatusBarHandler.calcTop();    //FIXME this is prob fine as int bc the in game bar is always int and doesnt change with GUI scale
+            final int bottom = StatusBarHandler.calcBottom(); //FIXME this is prob fine as int bc the in game bar is always int and doesnt change with GUI scale
+            final int width  = StatusBarHandler.getWidth();   //FIXME this is prob fine as int bc the in game bar is always int and doesnt change with GUI scale
             graphics.fill(0, top, width, bottom, Layout.statusBarBgColor);
         }
     }

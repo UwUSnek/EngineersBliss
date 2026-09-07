@@ -168,8 +168,7 @@ public final class SvgRasterizer {
     /**
      * This builds a small SVG file with the same viewBox and defs as the root and rasterizes it in isolation.
      */
-    private static byte[] rasterizeIsolatedSubtree(final Element node, final Element root,
-            final int width, final int height, final float opacity) {
+    private static byte[] rasterizeIsolatedSubtree(final Element node, final Element root, final int width, final int height, final float opacity) {
         try {
             final Document miniDoc = newDocumentBuilder().newDocument();
 

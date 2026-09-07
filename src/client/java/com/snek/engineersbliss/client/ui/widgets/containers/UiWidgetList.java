@@ -89,15 +89,15 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public float getNextY() {
         float y = getYF() - (float)scrollAmount();
-        for(final Entry child : children) {
+        for(final @NotNull Entry child : children) {
             y += child.getHeightF();
         }
         return y;
     }
 
-    protected int contentHeight() {
-        int totalHeight = 0;
-        for(final Entry child : children) {
+    protected float contentHeight() {
+        float totalHeight = 0;
+        for(final @NotNull Entry child : children) {
             totalHeight += child.getHeightF();
         }
         return totalHeight + 4;
@@ -117,15 +117,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         return getWidthF() - marginPx * 2 - scrollbarEncroachment;
     }
 
-    public float getRowTop(final int row) {
-        return children.get(row).getY();
-    }
-
-    public int getRowBottom(final int row) {
-        final Entry child = children.get(row);
-        return (int)(child.getYF() + child.getHeightF());
-    }
-
+    //FIXME replace with a UiSize member
     public int scrollbarWidth() {
         return 2;
     }
@@ -315,15 +307,15 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected void centerScrollOn(final Entry entry) {
-        int y = 0;
-        for(final Entry child : children) {
+        float y = 0;
+        for(final @NotNull Entry child : children) {
             if(child == entry) {
-                y += child.getHeightF() / 2;
+                y += child.getHeightF() / 2f;
                 break;
             }
             y += child.getHeightF();
         }
-        setScrollAmount(y - height / 2.0);
+        setScrollAmount(y - height / 2f);
     }
 
 
@@ -332,7 +324,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        graphics.enableScissor(getX(), getY(), (int)getRight(), (int)getBottom());
+        graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
         super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
         graphics.disableScissor();
         extractScrollbar(graphics, mouseX, mouseY);

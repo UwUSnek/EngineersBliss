@@ -44,9 +44,7 @@ public class Layout {
 
 
 
-    public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 2;
-    public static final int LIST_TOP = 32;
     public static final int BUTTON_HEIGHT = 16;
 
     public static final int   SEPARATOR_HEIGHT = 1;

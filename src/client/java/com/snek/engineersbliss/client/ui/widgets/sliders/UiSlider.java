@@ -34,7 +34,7 @@ import net.minecraft.resources.Identifier;
 
 
 public class UiSlider extends __base_UiWidget {
-	public static final int HANDLE_BASE_WIDTH = 8;
+	public static final int HANDLE_BASE_WIDTH = 8; //FIXME replace with a proper UiSize
     private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
 
