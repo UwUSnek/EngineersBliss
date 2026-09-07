@@ -319,7 +319,16 @@ ADD ALL OF THIS TO THE README
 
 
 
-
+- some tool or keybind that shows all the data about the block behind the cursor/crosshair
+  - accessible from UIs. this yoinks the block behind the actual movable cursor
+  - display block name
+  - display block id
+  - display block mod name
+  - display block tags
+  - display blockstates
+  - display render type (block/fluid/blockentity)
+  - if present, display block entity data
+  - if present, display custom renderer class path & name
 
 
 
