@@ -91,6 +91,9 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
     public void setBgColor(final int newColor) {
         bgColor = newColor;
     }
+    public int getBgColor() {
+        return bgColor;
+    }
 
 
     // Label

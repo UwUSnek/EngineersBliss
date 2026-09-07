@@ -21,6 +21,12 @@ public class UiSize {
 
 
 
+    public UiSize(final __base_UiWidget widget, final UiSize copy) {
+        this.widget     = widget;
+        this.px         = copy.px;
+        this.widthFrac  = copy.widthFrac;
+        this.heightFrac = copy.heightFrac;
+    }
     public UiSize(final __base_UiWidget widget) {
         this.widget = widget;
         this.px = 0;
@@ -52,6 +58,12 @@ public class UiSize {
     }
     public UiSize setHF(final float v) {
         heightFrac = v; return this;
+    }
+    public UiSize set(final UiSize from) {
+        this.px         = from.px;
+        this.widthFrac  = from.widthFrac;
+        this.heightFrac = from.heightFrac;
+        return this;
     }
 
 

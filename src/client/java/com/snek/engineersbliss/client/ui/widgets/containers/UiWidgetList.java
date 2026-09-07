@@ -233,6 +233,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     public void onRelease(final MouseButtonEvent event) {
+        super.onRelease(event);
         scrolling = false;
     }
 

@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
@@ -20,7 +21,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 
 public class UiToggleButton extends UiButton {
-	protected static final float INDICATOR_WIDTH = 0.25f;
+	protected UiSize indicatorWidth;
     protected boolean value;
 
     // Background toggle indicator
@@ -63,8 +64,9 @@ public class UiToggleButton extends UiButton {
     private void finalizeInit(final boolean initialValue, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         this.value = initialValue;
         this.valueFormatter = valueFormatter != null ? valueFormatter : (n, u) -> n.booleanValue() ? "ON" : "OFF";
+        this.indicatorWidth = new UiSize(this); this.indicatorWidth.setHF(0.25f);
         this.indicatorColor = new AnimatedColor(calculateNewIndicatorColor(), Layout.toggleTransitionDuration, Easings.sineIn);
-        getRightLabelMargin().clear().setHF(INDICATOR_WIDTH);
+        getRightLabelMargin().clear().set(indicatorWidth);
     }
 
 
@@ -72,9 +74,9 @@ public class UiToggleButton extends UiButton {
 
     @Override
     public void onClick(MouseButtonEvent event, boolean doubleClick) {
-        super.onClick(event, doubleClick);
         value = !getValue();
         indicatorColor.startNewTransition(calculateNewIndicatorColor());
+        super.onClick(event, doubleClick);
     }
 
     public boolean getValue() {
@@ -87,7 +89,7 @@ public class UiToggleButton extends UiButton {
     @Override
     public void extractBackground(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
-        graphics.fill(getRight() - getRightLabelMargin().getPx(), getYF(), getRight(), getBottom(), indicatorColor.compute());
+        graphics.fill(getRight() - indicatorWidth.getPx(), getYF(), getRight(), getBottom(), indicatorColor.compute());
     }
 
     public int calculateNewIndicatorColor() {

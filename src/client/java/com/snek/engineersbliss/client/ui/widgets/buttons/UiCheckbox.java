@@ -16,30 +16,20 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 
 
-public class UiCheckbox extends UiButton {
-	private boolean selected;
-	public boolean isSelected() { return this.selected; }
+public class UiCheckbox extends UiToggleButton {
 
 
-
-
-    public UiCheckbox(final Screen screen, final @Nullable Consumer<UiCheckbox> pressCallback, final boolean selected) {
-        super(screen, new UiTxt(), pressCallback == null ? null : b -> pressCallback.accept((UiCheckbox)b));
-		this.selected = selected;
+    public UiCheckbox(final Screen screen, final boolean initialValue, final @Nullable Consumer<UiCheckbox> pressCallback) {
+		super(screen, initialValue, new UiTxt(""), pressCallback == null ? null : b -> pressCallback.accept((UiCheckbox)b), '\0');
+		indicatorWidth.clear().setWF(1f);
 	}
-    public UiCheckbox(final Screen screen, final boolean selected) {
-		this(screen, null, selected);
+    public UiCheckbox(final Screen screen, final boolean initialValue) {
+		this(screen, initialValue, null);
 	}
     public UiCheckbox(final Screen screen, final @Nullable Consumer<UiCheckbox> pressCallback) {
-		this(screen, pressCallback, false);
+		this(screen, false, pressCallback);
 	}
     public UiCheckbox(final Screen screen) {
         this(screen, null);
-	}
-
-	@Override
-	public void onClick(MouseButtonEvent event, boolean doubleClick) {
-		this.selected = !this.selected;
-		super.onClick(event, doubleClick);
 	}
 }
