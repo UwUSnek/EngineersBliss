@@ -186,8 +186,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         }
         for(int i = 0; i < syntaxInstructions.length; i += 2) {
             final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-            graphics.text(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textMarginPx,                       lineY, 0xFFAAAAAA);
-            graphics.text(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
+            graphics.text(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textLargeMarginPx,                       lineY, 0xFFAAAAAA);
+            graphics.text(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textLargeMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
         }
 
 
@@ -197,7 +197,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         final ClientLevel level = Minecraft.getInstance().level;
         if(level != null) {
             final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textMarginPx;
+            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textLargeMarginPx;
             final int lightProgress = RenderingFilterHandler.getLightRecalcProgress();
             final int lightMax = RenderingFilterHandler.getLightRecalcMax();
             final String[] renderStats = {

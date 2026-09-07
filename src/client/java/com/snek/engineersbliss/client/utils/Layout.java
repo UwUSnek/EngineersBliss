@@ -24,6 +24,7 @@ public class Layout {
     public static int borderColor            = 0xFF2E2C2C;
 
     public static int textMarginPx = 4;
+    public static int textLargeMarginPx = 16;
 
     public static int SliderGraphFillColor = bgColorAlt;
     public static int SliderGraphLineColor = fgColorHint;

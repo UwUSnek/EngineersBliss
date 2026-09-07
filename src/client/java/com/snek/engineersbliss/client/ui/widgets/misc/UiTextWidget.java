@@ -108,10 +108,12 @@ public class UiTextWidget extends __base_UiWidget {
             final @NotNull ScaledFont scaledFont = getLabel().getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
             final int textHeight = lineHeight * cachedLines.size();
-            final int y = switch(getVerticalAlignment()) {
-                case TOP    -> (int)(getYF() + Layout.textMarginPx);
-                case CENTER -> (int)(getYF() + (getHeightF() - textHeight) / 2f);
-                case BOTTOM -> (int)(getBottom() - textHeight);
+            final int y = (int)switch(getVerticalAlignment()) {
+                case TRUE_TOP    -> getYF();
+                case TOP         -> getYF() + Layout.textMarginPx;
+                case CENTER      -> getYF() + (getHeightF() - textHeight) / 2f;
+                case BOTTOM      -> getBottom() - textHeight;
+                case TRUE_BOTTOM -> getBottom() - textHeight - Layout.textMarginPx;
             };
 
 

@@ -164,8 +164,8 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
     protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
         super(screen);
         bgColor = 0x0; //! Default to no background, this also improves performance
-        this.leftLabelMargin  = new UiSize(this);  leftLabelMargin.setPx(Layout.textMarginPx);
-        this.rightLabelMargin = new UiSize(this); rightLabelMargin.setPx(Layout.textMarginPx);
+        this.leftLabelMargin  = new UiSize(this);  leftLabelMargin.setPx(Layout.textLargeMarginPx);
+        this.rightLabelMargin = new UiSize(this); rightLabelMargin.setPx(Layout.textLargeMarginPx);
         setLabel(label); //! Sets label and label width
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;
@@ -234,10 +234,12 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
             final TextAlignment drawAlignment = overflow > 0 ? TextAlignment.LEFT : getAlignment();
             final int textX = (int)getInnerX();
-            final int textY = switch(getVerticalAlignment()) {
-                case TOP    -> (int)(getYF() + Layout.textMarginPx);
-                case CENTER -> (int)(getYF() + (getHeightF() - lineHeight) / 2);
-                case BOTTOM -> (int)getBottom() - lineHeight;
+            final int textY = (int)switch(getVerticalAlignment()) {
+                case TRUE_TOP    -> getYF();
+                case TOP         -> getYF() + Layout.textMarginPx;
+                case CENTER      -> getYF() + (getHeightF() - lineHeight) / 2f;
+                case BOTTOM      -> getBottom() - lineHeight - Layout.textMarginPx;
+                case TRUE_BOTTOM -> getBottom() - lineHeight;
             };
 
             graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
