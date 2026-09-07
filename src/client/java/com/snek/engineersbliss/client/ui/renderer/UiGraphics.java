@@ -135,8 +135,8 @@ public class UiGraphics {
 
         // Draw scaled text
         raw.pose().pushMatrix();
-        raw.pose().scale(textScale);
         raw.pose().translate(shiftX, shiftY);
+        raw.pose().scale(textScale);
         raw.text(scaledFont.getFont(), text, _x, _y, color);
         raw.pose().popMatrix();
     }
