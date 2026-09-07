@@ -254,11 +254,17 @@ ADD ALL OF THIS TO THE README
 
 - SELECTION TOOL
   - left/right click to select an area, infinite reach with preview
+  - middle click to select any of the 8 corners.
+    - a keybind lets you move them on the looked-at axis using the scroll wheel
   - right click a selection to open an in-game GUI menu (minimal, unobstructive, that doesn't stop the game). EACH ACTION HAS A KEYBIND
     - discard selection
     - grow selection (maxes out to connected blocks)
     - shrink selection (makes it as small as possible)
     - regenerate
+    - fill selection (command? handy UI? idk yet)
+    - replace blocks (command? handy UI? idk yet)
+    - clear (delete all blocks, requires one UI confirmation)
+    - destroy (breaks and drops all blocks, requires one UI confirmation)
     - "view slice" - view a 1-block slice of the selection on a specific axis
       - use the scroll wheel to cycle the active slice
       - invisible slices are fully intangible for the player, but they still exist in the world and interact with everything else. 
@@ -331,7 +337,7 @@ ADD ALL OF THIS TO THE README
   - if present, display custom renderer class path & name
 
 
-
+- Add static shulker box models
 
 
 
