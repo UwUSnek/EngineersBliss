@@ -107,8 +107,8 @@ public class UiButton extends __base_UiWidget {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
 
 
         // Draw keybind if present

@@ -41,6 +41,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     private boolean isScrollable;
     private double scrollAmount;
     private boolean scrolling;
+    private int lockedRows;
 
 
 
@@ -52,6 +53,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
         this.isScrollable = true;
+        this.scrollAmount = 0;
+        this.scrolling = false;
+        this.lockedRows = 0;
         this.defaultEntryHeight = defaultEntryHeight;
         this.rowMargin = rowMargin;
     }
@@ -63,14 +67,29 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
+
+    public void setLockedRows(final int newLockedRows) {
+        lockedRows = newLockedRows;
+        repositionEntries();
+    }
+
     private void repositionEntries() {
         if(!isRelayoutDisabled()) {
             float y = getYF() - (float)scrollAmount();
+            float lockedY = getYF();
+            int i = 0;
             for(final @NotNull Entry child : children) {
-                child.setYF(y);
+                if(i < lockedRows) {
+                    child.setYF(lockedY);
+                    lockedY += child.getHeightF();
+                }
+                else {
+                    child.setYF(y);
+                }
                 y += child.getHeightF();
                 child.setXF(getRowLeft());
                 child.setWidth(getRowWidth());
+                i++;
             }
             relayoutContent();
         }
@@ -323,11 +342,53 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
+
+
+
+    private float calcLockedHeight() {
+        float h = 0;
+        int i = 0;
+        for(final @NotNull Entry c : children) {
+            if(i >= lockedRows) break;
+            h += c.getHeightF();
+            i++;
+        }
+        return h;
+    }
+
+
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    public void extractContent(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        //! Skip default extractContent. This class handles draw recursion on its own.
+
+        // Draw unlocked entries
+        final float lockedBottom = getYF() + calcLockedHeight();
+        graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        int i = 0;
+        for(final @NotNull Entry child : children) {
+            if(i >= lockedRows && elmIsInBounds(child)) {
+                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+            }
+            i++;
+        }
         graphics.disableScissor();
+
+        // Draw locked entries
+        i = 0;
+        graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        for(final @NotNull Entry child : children) {
+            if(i < lockedRows && elmIsInBounds(child)) {
+                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+            }
+            i++;
+        }
+        graphics.disableScissor();
+    }
+
+
+    @Override
+    public void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
         extractScrollbar(graphics, mouseX, mouseY);
     }
 

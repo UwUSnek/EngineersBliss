@@ -193,10 +193,8 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
 
 
-
     @Override
-    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    public void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a) {
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
         extractBorders     (graphics, mouseX, mouseY, a);
@@ -205,8 +203,6 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
 
     public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-
-        // Draw background color if needed
         if((bgColor & 0xFF000000) != 0) {
             graphics.fill(getXF(), getYF(), getXF() + getWidthF(), getYF() + getHeightF(), bgColor);
         }

@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.ServerMinecraftUtils;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
@@ -51,7 +54,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
     private static final Pattern CLEAN_PATTERN = Pattern.compile("\\s*([&|#@])\\s*");
     public void filter(final String query) {
         // Remove spaces near operators and prefixes
-        final String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
+        final @NotNull  String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
 
 
         // Iterate over or groups first, so or operators naturally end up with lower priority
@@ -99,9 +102,11 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         // Clear block list and load the filtered entries
         clearEntries();
         disableRelayout();
+        //TODO add header row
         for(final Block block : orResults) {
             addWidget(new BlockEntryContents(this, block));
         }
+        setLockedRows(2);
         enableRelayout();
         relayout();
     }
@@ -110,17 +115,17 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        final FontFamily fontFamily = Fonts.ui.regular;
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
 
-        // draw header above list
-        final int headerY = getY() - 12;
-        final int rowLeft = (int)getRowLeft();
-        final int rowWidth = (int)getRowWidth();
-        graphics.text(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
-        graphics.text(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.text(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
+        // // draw header above list //FIXME move to the proper header element
+        // final FontFamily fontFamily = Fonts.ui.regular;
+        // final int headerY = getY() - 12;
+        // final int rowLeft = (int)getRowLeft();
+        // final int rowWidth = (int)getRowWidth();
+        // graphics.text(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
+        // graphics.text(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
+        // graphics.text(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
 
 
         // Handle hover events

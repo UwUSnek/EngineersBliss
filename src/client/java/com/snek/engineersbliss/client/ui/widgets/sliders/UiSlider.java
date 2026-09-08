@@ -193,10 +193,10 @@ public class UiSlider extends __base_UiWidget {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
 
         // Draw background and label
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+        super.extractSelf(graphics, mouseX, mouseY, a);
 
 
         // Draw slider handle //! Clamp to slider inner width

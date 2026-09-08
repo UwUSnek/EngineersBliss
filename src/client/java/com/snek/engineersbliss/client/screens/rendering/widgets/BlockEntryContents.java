@@ -41,6 +41,7 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
 
 
 
+
     @Override
     public void relayoutSelf() {
         final float checkboxSizePx = checkboxSize.getPx();
@@ -54,14 +55,17 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
     }
 
 
-    @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
 
+
+    @Override
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
         final float midY = getHeightCenter();
         BlockRenderer.extractBlockIcon(graphics, block, getXF(), midY - 8); //FIXME replace with proper graphics. call
         BlockRenderer.extractBlockName(graphics, block, (int)getXF() + 20, (int)midY - 4, 0xFFFFFFFF); //FIXME replace with proper graphics. call
     }
+
+
 
 
     //FIXME for some reason this doesn't register double-or-more-clicks properly.

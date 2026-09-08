@@ -263,15 +263,53 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     }
 
 
+
+
+
+
+
+
+    public boolean elmIsInBounds(final __base_UiLayoutElm elm) {
+        return !(
+            elm.getYF() > getBottom() ||
+            elm.getBottom() < getYF() ||
+            elm.getXF()  > getRight() ||
+            elm.getRight()  < getXF()
+        );
+    }
+
     @Override
     public final void extractRenderState(final GuiGraphicsExtractor graphics, int mouseX, int mouseY, final float a) {
         // Empty.
         //! Block Vanilla's extractRenderState so the __base_UiScreen can call extractWidgetRenderState directly using its UiGraphics.
     }
-    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
-        dragged = ((__base_UiScreen)getScreen()).getDraggedElm() == this;
-        isHovered = ((__base_UiScreen)getScreen()).getHoveredElm() == this;
+
+    /**
+     * Renders child elements recursively.
+     * By default, this iterates all children and renders them if any part of their bounding box is on screen.
+     */
+    public void extractContent(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        for(final var child : children()) {
+            if(child instanceof @NotNull __base_UiLayoutElm w && elmIsInBounds(w)) {
+                w.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+            }
+        }
+    }
+
+    /**
+     * Renders this element's graphics. This doesn't include child elements.
+     */
+    public abstract void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a);
+
+
+    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) { //TODO rename to "extract"
+        dragged = ((__base_UiScreen)getScreen()).getDraggedElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
+        isHovered = ((__base_UiScreen)getScreen()).getHoveredElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
         checkHoverTransition();
+
+        // Draw self and content
+        extractSelf(graphics, mouseX, mouseY, a);
+        extractContent(graphics, mouseX, mouseY, a);
 
         // Handle cursor
         if(isHoveredOrBeingDragged()) {

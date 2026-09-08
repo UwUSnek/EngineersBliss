@@ -30,7 +30,6 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 public class RenderingScreen extends __base_UiFeatureSetScreen {
-    public static final int LIST_TOP = 32;
     private UiEditBox searchField;
     private RenderingScreenBlockListWidget blockList;
 
@@ -148,8 +147,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         final float rightSidebarWidthPx = width * rightSidebarWidth;
 
         // Main list
-        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
-        blockList.setPos(leftSidebarWidthPx, LIST_TOP);
+        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height);
+        blockList.setPos(leftSidebarWidthPx, 0);
     }
 
 

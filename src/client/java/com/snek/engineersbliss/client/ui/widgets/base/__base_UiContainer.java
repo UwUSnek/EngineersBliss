@@ -9,7 +9,6 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 
-import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.ArrayList;
@@ -45,6 +44,12 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
+    //! Recursive relayout is handled by __base_UiLayoutElm
+    //! Recursive rendering is handled by __base_UiLayoutElm
+
+
+
+
 
 
 
@@ -70,28 +75,6 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
             }
         }
         return Optional.empty();
-    }
-
-
-
-
-
-
-
-    @Override
-    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) {
-
-        // Normal rendering
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-
-        // Render children recursively
-        for(final var child : children()) {
-            if(child instanceof @NotNull __base_UiWidget w) {
-                if(w.getYF() + w.getHeightF() >= getYF() && w.getYF() <= getBottom()) {
-                    w.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-                }
-            }
-        }
     }
 
 
