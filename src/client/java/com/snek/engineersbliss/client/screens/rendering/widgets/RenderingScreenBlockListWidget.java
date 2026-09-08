@@ -102,11 +102,11 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         // Clear block list and load the filtered entries
         clearEntries();
         disableRelayout();
-        //TODO add header row
+        addWidget(new BlockEntryHeader(this));
         for(final Block block : orResults) {
             addWidget(new BlockEntryContents(this, block));
         }
-        setLockedRows(2);
+        setLockedRows(1);
         enableRelayout();
         relayout();
     }
@@ -117,16 +117,6 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
     @Override
     public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         super.extractSelf(graphics, mouseX, mouseY, a);
-
-        // // draw header above list //FIXME move to the proper header element
-        // final FontFamily fontFamily = Fonts.ui.regular;
-        // final int headerY = getY() - 12;
-        // final int rowLeft = (int)getRowLeft();
-        // final int rowWidth = (int)getRowWidth();
-        // graphics.text(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
-        // graphics.text(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        // graphics.text(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
-
 
         // Handle hover events
         final GuiEventListener hovered = ((__base_UiScreen)getScreen()).getHoveredOrDraggedElm(); //FIXME remove blind cast

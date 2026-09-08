@@ -193,17 +193,25 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected boolean isOverScrollbar(final double x, final double y) {
-        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth() && y >= getYF() && y < getBottom();
+        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth() && y >= scrollTrackY() && y < getBottom();
+    }
+
+    protected float scrollTrackY() {
+        return getYF() + calcLockedHeight();
+    }
+
+    protected float scrollTrackHeight() {
+        return height - calcLockedHeight();
     }
 
     protected float scrollerHeight() {
-        return Mth.clamp(height * height / contentHeight(), 32, height - 8);
+        return Mth.clamp(scrollTrackHeight() * scrollTrackHeight() / contentHeight(), 32, scrollTrackHeight() - 8);
     }
 
     public float scrollBarY() {
         return maxScrollAmount() == 0
-            ? getYF()
-            : Math.max(getYF(), (float)scrollAmount * (height - scrollerHeight()) / maxScrollAmount() + getYF())
+            ? scrollTrackY()
+            : Math.max(scrollTrackY(), (float)scrollAmount * (scrollTrackHeight() - scrollerHeight()) / maxScrollAmount() + scrollTrackY())
         ;
     }
 
@@ -391,7 +399,6 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         super.extractSelf(graphics, mouseX, mouseY, a);
         extractScrollbar(graphics, mouseX, mouseY);
     }
-
 
     protected void extractScrollbar(final UiGraphics graphics, final float mouseX, final float mouseY) {
         final float scrollBarX     = scrollBarX();
