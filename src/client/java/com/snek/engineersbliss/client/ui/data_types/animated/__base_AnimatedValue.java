@@ -133,8 +133,8 @@ public abstract class __base_AnimatedValue<T> {
     /**
      * Starts a new interpolation using the stored interpolation time and easing and the provided new target value.
      * Does nothing if the new target value is identical to the current target.
-     * If the previous transition was still in flight, the new one starts from wherever the
-     * value actually is and carries over its entry speed instead of snapping/restarting.
+     * If the previous transition is not finished, the new one starts from wherever the
+     * value actually is and carries over its entry speed instead of snapping or restarting.
      * @param newTarget The new target value.
      */
     public void startNewTransition(final T newTarget) {
@@ -146,5 +146,16 @@ public abstract class __base_AnimatedValue<T> {
             target = newTarget;
             lastChangeTime = System.currentTimeMillis();
         }
+    }
+
+    /**
+     * Makes the animated value instantly reach the desired target, interrupting any unfinished transition.
+     * @param newTarget The new target value.
+     */
+    public void snapTo(final T newTarget) {
+        last   = newTarget;
+        target = newTarget;
+        entryTangent = null;
+        lastChangeTime = System.currentTimeMillis();
     }
 }

@@ -9,12 +9,15 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Easings;
+import com.snek.engineersbliss.utils.data_types.Pair;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +42,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     private final float rowMargin;
 
     private boolean isScrollable;
-    private double scrollAmount;
+    private float scrollAmount;
+    private final AnimatedFloat animatedScrollAmount;
+    private float lastGuiScale;
     private boolean scrolling;
     private int lockedRows;
 
@@ -53,7 +58,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
         this.isScrollable = true;
-        this.scrollAmount = 0;
+        this.scrollAmount = 0f;
+        this.animatedScrollAmount = new AnimatedFloat(scrollAmount, 80, Easings.quadInOut);
+        this.lastGuiScale = -1f;
         this.scrolling = false;
         this.lockedRows = 0;
         this.defaultEntryHeight = defaultEntryHeight;
@@ -70,44 +77,68 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public void setLockedRows(final int newLockedRows) {
         lockedRows = newLockedRows;
-        repositionEntries();
+        // repositionEntries(); //TODO remove
     }
 
-    private void repositionEntries() {
+    // private void repositionEntries() { //TODO remove
+    //     if(!isRelayoutDisabled()) {
+    //         // float y = getYF() - animatedScrollAmount.compute();
+    //         // float lockedY = getYF();
+    //         // int i = 0;
+    //         for(final @NotNull Entry child : children) {
+    //             // if(i < lockedRows) {
+    //             //     child.setYF(lockedY);
+    //             //     lockedY += child.getHeightF();
+    //             // }
+    //             // else {
+    //             //     child.setYF(y);
+    //             // }
+    //             // y += child.getHeightF();
+    //             // child.setXF(getRowLeft());
+    //             child.setWidth(getRowWidth());
+    //             // i++;
+    //         }
+    //         relayoutContent();
+    //     }
+    // }
+
+    @Override
+    public void relayoutContent() {
         if(!isRelayoutDisabled()) {
-            float y = getYF() - (float)scrollAmount();
-            float lockedY = getYF();
-            int i = 0;
-            for(final @NotNull Entry child : children) {
-                if(i < lockedRows) {
-                    child.setYF(lockedY);
-                    lockedY += child.getHeightF();
-                }
-                else {
-                    child.setYF(y);
-                }
-                y += child.getHeightF();
-                child.setXF(getRowLeft());
+            float lockedEntryY = getYF();
+            for(int i = 0; i < children.size(); ++i) {
+                final @NotNull Entry child = children.get(i);
                 child.setWidth(getRowWidth());
-                i++;
+                child.setXF(getRowLeft());
+                if(i < lockedRows) {
+                    child.setYF(lockedEntryY);
+                    lockedEntryY += child.getHeightF();
+                }
+                //! Y positioning of unlocked entries is done in the render loop for performance reasons.
+                //! Only visible entries are moved and drawn.
             }
-            relayoutContent();
         }
+        super.relayoutContent();
     }
 
     @Override
     public void relayoutSelf() {
-        if(!isRelayoutDisabled()) {
-            repositionEntries();
-            this.refreshScrollAmount();
+    //     if(!isRelayoutDisabled()) {
+    //         // repositionEntries(); //TODO remove
+            // this.refreshScrollAmount();
 
-            //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.
-            repositionEntries();
+    //         // // //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds. //TODO remove
+    //         // repositionEntries(); //TODO remove
+    //     }
+        if(!isRelayoutDisabled()) {
+            tickGuiScale();
+            this.refreshScrollAmount();
         }
     }
 
-    public float getNextY() {
-        float y = getYF() - (float)scrollAmount();
+
+    public float getNextY() { //FIXME remove, new system doesnt need that.
+        float y = getYF() - animatedScrollAmount.compute();
         for(final @NotNull Entry child : children) {
             y += child.getHeightF();
         }
@@ -166,13 +197,14 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         setScrollAmount(0);
     }
 
-    public double scrollAmount() {
-        return scrollAmount;
-    }
-
     public void setScrollAmount(final double newScrollAmount) {
-        scrollAmount = Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
-        repositionEntries();
+        setScrollAmount(newScrollAmount, false);
+    }
+    public void setScrollAmount(final double newScrollAmount, final boolean snap) {
+        scrollAmount = (float)Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
+        if(snap) animatedScrollAmount.snapTo            (scrollAmount);
+        else     animatedScrollAmount.startNewTransition(scrollAmount);
+        // repositionEntries(); //TODO remove
     }
 
     public void refreshScrollAmount() {
@@ -211,17 +243,16 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public float scrollBarY() {
         return maxScrollAmount() == 0
             ? scrollTrackY()
-            : Math.max(scrollTrackY(), (float)scrollAmount * (scrollTrackHeight() - scrollerHeight()) / maxScrollAmount() + scrollTrackY())
+            : Math.max(scrollTrackY(), animatedScrollAmount.compute() * (scrollTrackHeight() - scrollerHeight()) / maxScrollAmount() + scrollTrackY())
         ;
     }
 
     protected double scrollRate() {
-        final float guiScale = (getScreen() instanceof __base_UiScreen s) ? s.getGuiScale() : 1f;
-        return defaultEntryHeight * guiScale;
+        return defaultEntryHeight * getGuiScale();
     }
 
     private void scroll(final float amount) {
-        setScrollAmount(scrollAmount() + amount);
+        setScrollAmount(scrollAmount + amount);
     }
 
     @Override
@@ -229,7 +260,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         if(!visible) {
             return false;
         }
-        setScrollAmount(scrollAmount() - scrollY * scrollRate());
+        setScrollAmount(scrollAmount - scrollY * scrollRate());
         return true;
     }
 
@@ -252,7 +283,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
                 final double max = Math.max(1, maxScrollAmount());
                 final float barHeight = scrollerHeight();
                 final double yDragScale = Math.max(1.0, max / (getHeightF() - barHeight));
-                setScrollAmount(scrollAmount() + dy * yDragScale);
+                setScrollAmount(scrollAmount + dy * yDragScale);
             }
         }
         return super.mouseDragged(event, dx, dy);
@@ -281,7 +312,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         entry.setYF(getNextY());
         entry.setHeight(height);
         final int r = super.addChild(entry);
-        repositionEntries();
+        // repositionEntries();  //TODO remove
         return r;
     }
     public void addWidget(final __base_UiLayoutElm widget) {
@@ -365,24 +396,53 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
 
+    /**
+     * Finds the first visible unlocked entry based on the current scroll amount.
+     * @return A Pair containing the index and Y position of the element, or null if no unlocked element is visible.
+     */
+    public @Nullable Pair<Integer, Float> findFirstVisibleUnlockedEntry() {
+        float y = getYF();
+        float curScrollAmount = animatedScrollAmount.compute();
+        float entryY = y - curScrollAmount;
+        for(int i = lockedRows; i < children.size(); ++i) {
+            final @NotNull Entry child = children.get(i);
+            final float h = child.getHeightF();
+            if(entryY + h > y) return Pair.from(i, entryY);
+            entryY += h;
+        }
+        return null;
+    }
+
+
     @Override
     public void extractContent(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         //! Skip default extractContent. This class handles draw recursion on its own.
 
+
+    // repositionEntries(); //TODO remove & optimize  //TODO remove
         // Draw unlocked entries
-        final float lockedBottom = getYF() + calcLockedHeight();
-        graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
-        int i = 0;
-        for(final @NotNull Entry child : children) {
-            if(i >= lockedRows && elmIsInBounds(child)) {
+        final @Nullable Pair<Integer, Float> firstVisible = findFirstVisibleUnlockedEntry();
+        if(firstVisible != null) {
+            final float lockedBottom = getYF() + calcLockedHeight();
+            float entryY = firstVisible.getSecond();
+            graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+            for(int i = firstVisible.getFirst(); i < children.size(); ++i) {
+                final @NotNull Entry child = children.get(i);
+                final float oldEntryY = child.getYF();
+                if(oldEntryY != entryY) { //! Optimize relayout to run only when the y is actually updated
+                    child.setYF(entryY);
+                    child.relayout();
+                }
+                if(!elmIsInBounds(child)) break; //! Stop rendering entries if the current entry's new Y position is out of bounds
                 child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+                entryY += child.getHeightF();
             }
-            i++;
+            graphics.disableScissor();
         }
-        graphics.disableScissor();
+
 
         // Draw locked entries
-        i = 0;
+        int i = 0;
         graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
         for(final @NotNull Entry child : children) {
             if(i < lockedRows && elmIsInBounds(child)) {
@@ -392,6 +452,8 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         }
         graphics.disableScissor();
     }
+
+
 
 
     @Override
@@ -420,10 +482,18 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         }
     }
 
-
-
-
-
+    private void tickGuiScale() {
+        final float scale = getGuiScale();
+        if(lastGuiScale < 0) {
+            lastGuiScale = scale;
+            return;
+        }
+        if(scale != lastGuiScale) {
+            final float ratio = scale / lastGuiScale;
+            setScrollAmount(scrollAmount * ratio, true);
+            lastGuiScale = scale;
+        }
+    }
 
 
 
