@@ -204,7 +204,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
     public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if((bgColor & 0xFF000000) != 0) {
-            graphics.fill(getXF(), getYF(), getXF() + getWidthF(), getYF() + getHeightF(), bgColor);
+            graphics.fill(getXF(), getYF(), getRight(), getBottom(), bgColor);
         }
     }
 

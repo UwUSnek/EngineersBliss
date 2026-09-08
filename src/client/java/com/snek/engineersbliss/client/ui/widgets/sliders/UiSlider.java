@@ -130,7 +130,7 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
         boolean result = super.mouseDragged(event, dx, dy);
-        virtualX = Math.clamp(virtualX + dx, getXF(), getXF() + getWidthF());
+        virtualX = Math.clamp(virtualX + dx, getXF(), getRight());
         updateValueFromVirtualX();
         return result;
     }
