@@ -581,13 +581,11 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
                     final int highlightX1 = startEdgeIsCursor ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selStart));  //TODO this is prob very inefficient
                     final int highlightX2 = endEdgeIsCursor   ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selEnd));  //TODO this is prob very inefficient
                     final int highlightY  = line == computedCursorLine ? cursorY : textY + line * lineHeight;
-                    // graphics.textHighlight(Math.min(highlightX1, getRight()), highlightY, Math.min(highlightX2 - 1, getRight()), highlightY + lineHeight, true);
-                    //FIXME add highlight to UiGraphics
+                    graphics.textSelection((int)Math.min(highlightX1, getRight()), highlightY, (int)Math.min(highlightX2 - 1f, getRight()), highlightY + lineHeight, true);
                 }
             }
             else if(isFocused() && (Util.getMillis() - lastMoveTime < CURSOR_BLINK_START_MS || TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime))) {
-                // TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, cursorY, Layout.fgColor, lineHeight);
-                //FIXME add cursor to UiGraphics
+                graphics.textInsertCursor(cursorX - 1, cursorY, Layout.fgColor, lineHeight);
             }
         }
     }

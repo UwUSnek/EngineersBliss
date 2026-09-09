@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -355,4 +356,26 @@ public class UiGraphics {
         raw.pose().popMatrix();
     }
 
+
+
+
+
+
+
+
+    // Text cursors
+    public static final float CURSOR_INSERT_WIDTH = 1f;
+    private static final String CURSOR_APPEND_CHARACTER = "_";
+
+    public void textInsertCursor(final int x, final float y, final int color, final float lineHeight) {
+        fill(x, y - 1f, x + 1f, y + lineHeight, color);
+    }
+
+    public void textAppendCursor(final Font font, final int x, final int y, final int color, final boolean shadow) {
+        raw.text(font, CURSOR_APPEND_CHARACTER, x, y, color, shadow);
+    }
+
+    public void textSelection(final int x0, final int y0, final int x1, final int y1, final boolean invert){
+        raw.textHighlight(x0, y0, x1, y1, invert);
+    }
 }
