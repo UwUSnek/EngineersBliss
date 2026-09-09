@@ -341,7 +341,8 @@ ADD ALL OF THIS TO THE README
 
 
 
-
+- Replace png atlases with a more compact format
+  - Significantly reduce memory usage of loaded feature previews
 
 
 
@@ -375,3 +376,6 @@ ADD ALL OF THIS TO THE README
   - long wind background
   - a few shorter sounds of larger, more sparse rain drops
   - sounds of individual water droplets falling on metal surfaces, plastic buckets, that kind of stuff
+
+
+

@@ -66,7 +66,9 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     protected long focusedTime;
     protected long lastMoveTime;
 
-
+    // Key presses tracking for the typing sounds
+    private final java.util.Set<Integer> heldKeys = new java.util.HashSet<>();
+    private boolean newCharPress = false;
 
 
 
@@ -409,92 +411,100 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
 
+        @Override
+    public boolean keyReleased(final KeyEvent event) {
+        heldKeys.remove(event.key());  //! Update key tracking for typing sounds
+        return super.keyReleased(event);
+    }
+
+
     @Override
     public boolean keyPressed(final KeyEvent event) {
         if(!isActive() || !editable || !isFocused()) return false;
-        boolean r;
+        newCharPress = heldKeys.add(event.key()); //! Update key tracking for typing sounds
+
 
         final boolean ctrl = event.hasControlDownWithQuirk();
         final boolean shift = event.hasShiftDown();
         switch(event.key()) {
             case GLFW.GLFW_KEY_ESCAPE: {
                 setFocused(false);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_BACKSPACE: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 deleteCharsToPos(pos[0], pos[1]);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_DELETE: {
                 final int[] pos = ctrl ? getWordPosition(1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, 1);
                 deleteCharsToPos(pos[0], pos[1]);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_RIGHT: {
                 final int[] pos = ctrl ? getWordPosition(1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, 1);
                 moveCursorTo(pos[0], pos[1], shift);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_LEFT: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 moveCursorTo(pos[0], pos[1], shift);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_UP: {
-                r = moveCursorVertical(-1, shift);
-                break;
+                return moveCursorVertical(-1, shift);
             }
             case GLFW.GLFW_KEY_DOWN: {
-                r = moveCursorVertical(1, shift);
-                break;
+                return moveCursorVertical(1, shift);
             }
             case GLFW.GLFW_KEY_HOME: {
                 moveCursorToLineStart(shift);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_END: {
                 moveCursorToLineEnd(shift);
-                r = true; break;
+                return true;
             }
             //TODO PAGE UP key
             //TODO PAGE DOWN key
             case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER: {
                 if(multiline) insertText("\n");
-                r = multiline; break;
+                return multiline;
             }
             default: {
                 if(event.isSelectAll()) {
                     moveCursorToEnd(false);
                     setHighlightPos(0, 0);
                     updateLabel();
-                    r = true; break;
+                    return true;
                 }
                 if(event.isCopy()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
-                    r = true; break;
+                    return true;
                 }
                 if(event.isPaste()) {
                     insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
-                    r = true; break;
+                    return true;
                 }
                 if(event.isCut()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
                     insertText("");
-                    r = true; break;
+                    return true;
                 }
-                r = false; break;
+                return false;
             }
         }
-        if(r) playTypeSound();
-        return r;
     }
+
 
     @Override
     public boolean charTyped(final CharacterEvent event) {
         if(!isActive() || !isFocused() || !editable || !isValidCharacter(event.codepoint())) return false;
         insertText(event.codepointAsString());
-        playTypeSound();
+        if(newCharPress) {
+            newCharPress = false;
+            playTypeSound();
+        }
         return true;
     }
 
