@@ -8,6 +8,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
@@ -16,7 +17,6 @@ import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
-import com.snek.engineersbliss.utils.data_types.Pair;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +37,7 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
+    private final UiSize scrollbarWidth;
     private final float defaultEntryHeight;
     private final float rowMargin;
 
@@ -56,6 +57,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public UiWidgetList(final Screen screen, final float defaultEntryHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
+        this.scrollbarWidth = new UiSize(this); scrollbarWidth.setPx(2).setScaleWithUi(true);
         this.isScrollable = true;
         this.scrollAmount = 0f;
         this.animatedScrollAmount = new AnimatedFloat(scrollAmount, 80, Easings.quadInOut);
@@ -123,13 +125,8 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public float getRowWidth() {
         final float marginPx = getWidthF() * rowMargin;
-        final float scrollbarEncroachment = Math.max(0, scrollbarWidth() - marginPx);
+        final float scrollbarEncroachment = Math.max(0, scrollbarWidth.getPx() - marginPx);
         return getWidthF() - marginPx * 2 - scrollbarEncroachment;
-    }
-
-    //FIXME replace with a UiSize member
-    public int scrollbarWidth() {
-        return 2;
     }
 
     protected float scrollBarX() {
@@ -184,7 +181,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected boolean isOverScrollbar(final double x, final double y) {
-        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth() && y >= scrollTrackY() && y < getBottom();
+        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth.getPx() && y >= scrollTrackY() && y < getBottom();
     }
 
     protected float scrollTrackY() {
@@ -196,7 +193,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected float scrollerHeight() {
-        return Mth.clamp(scrollTrackHeight() * scrollTrackHeight() / contentHeight(), 32, scrollTrackHeight() - 8);
+        return Mth.clamp(scrollTrackHeight() * scrollTrackHeight() / contentHeight(), 32, scrollTrackHeight() - 8); //FIXME replace 32 and 8 magic numbers
     }
 
     public float scrollBarY() {
@@ -416,7 +413,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         final float scrollBarX     = scrollBarX();
         final float scrollerHeight = scrollerHeight();
         final float scrollerY      = scrollBarY();
-        final float barWidth       = scrollbarWidth();
+        final float barWidth       = scrollbarWidth.getPx();
 
         // If there are hidden elements
         if(scrollable()) {

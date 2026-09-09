@@ -23,7 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 
@@ -34,11 +33,11 @@ import net.minecraft.resources.Identifier;
 
 
 public class UiSlider extends __base_UiWidget {
-	public static final int HANDLE_BASE_WIDTH = 8; //FIXME replace with a proper UiSize
     private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
 
 
+	public final UiSize baseHandleWidth;
     private final UiTxt baseLabel;
     private final @Nullable Consumer<Double> onChange;
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
@@ -77,6 +76,7 @@ public class UiSlider extends __base_UiWidget {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(screen, new UiTxt(new Txt().get()), TextAlignment.CENTER);
         setBgColor(Layout.bgColor);
+        this.baseHandleWidth = new UiSize(this); baseHandleWidth.setPx(8).setScaleWithUi(true);
         this.value = initialValue;
         this.bgSpriteId = null;
         this.bgSpriteWidth = new UiSize(this);
@@ -245,7 +245,7 @@ public class UiSlider extends __base_UiWidget {
         final double magnitude = Math.abs(value - visualValue.getLast());
         final double speed = Math.abs(visualValue.calcSpeed()) * magnitude;
         final double widthFactor = Math.clamp(1.0 + speed * HANDLE_SPEED_SENSITIVITY, 1.0, HANDLE_MAX_WIDTH_SCALE);
-        return HANDLE_BASE_WIDTH * (float)widthFactor;
+        return baseHandleWidth.getPx() * (float)widthFactor;
     }
 
     public float calcHandleX() {

@@ -16,6 +16,7 @@ public class UiSize {
     private float px;
     private float widthFrac;
     private float heightFrac;
+    private boolean scaleWithUi;
     private final __base_UiWidget widget; //! Width and height are read from this element
 
 
@@ -29,9 +30,7 @@ public class UiSize {
     }
     public UiSize(final __base_UiWidget widget) {
         this.widget = widget;
-        this.px = 0;
-        this.widthFrac = 0;
-        this.heightFrac = 0;
+        clear();
     }
 
 
@@ -65,6 +64,10 @@ public class UiSize {
         this.heightFrac = from.heightFrac;
         return this;
     }
+    public UiSize setScaleWithUi(final boolean newScaleWithUi) {
+        this.scaleWithUi = newScaleWithUi;
+        return this;
+    }
 
 
 
@@ -73,6 +76,7 @@ public class UiSize {
         px = 0;
         widthFrac = 0;
         heightFrac = 0;
+        scaleWithUi = false;
         return this;
     }
 
@@ -80,6 +84,6 @@ public class UiSize {
 
 
     public float getPx() {
-        return px + widthFrac * widget.getWidthF() + heightFrac * widget.getHeightF();
+        return (px + widthFrac * widget.getWidthF() + heightFrac * widget.getHeightF()) * (scaleWithUi ? widget.getGuiScale() : 1f);
     }
 }
