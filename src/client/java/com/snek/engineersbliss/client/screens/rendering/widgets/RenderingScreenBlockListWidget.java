@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.gui.screens.Screen;
@@ -11,17 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.ServerMinecraftUtils;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 
 
 
@@ -31,14 +31,14 @@ import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPosition
 
 
 public class RenderingScreenBlockListWidget extends UiWidgetList {
-    public static final int CHECKBOX_AREA_WIDTH = 40;
-    public static final float LIST_MARGIN = 0.2f;
+    // public static final int CHECKBOX_AREA_WIDTH = 40; //TODO replace with UiSize
+    public static final float LIST_MARGIN = 0.2f; //TODO replace with UiSize
 
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual)
 
 
-    public RenderingScreenBlockListWidget(final Screen screen, final int itemHeight) {
+    public RenderingScreenBlockListWidget(final Screen screen, final float itemHeight) {
         super(screen, itemHeight, LIST_MARGIN);
 
         // Create list of all blocks
@@ -54,7 +54,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
     private static final Pattern CLEAN_PATTERN = Pattern.compile("\\s*([&|#@])\\s*");
     public void filter(final String query) {
         // Remove spaces near operators and prefixes
-        final String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
+        final @NotNull  String cleanQuery = CLEAN_PATTERN.matcher(query).replaceAll("$1");
 
 
         // Iterate over or groups first, so or operators naturally end up with lower priority
@@ -102,9 +102,11 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         // Clear block list and load the filtered entries
         clearEntries();
         disableRelayout();
+        addWidget(new BlockEntryHeader(this));
         for(final Block block : orResults) {
             addWidget(new BlockEntryContents(this, block));
         }
+        setLockedRows(1);
         enableRelayout();
         relayout();
     }
@@ -113,25 +115,15 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
 
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        final FontFamily fontFamily = Fonts.ui.regular;
-
-        // draw header above list
-        final int headerY = getY() - 12;
-        final int rowLeft = (int)getRowLeft();
-        final int rowWidth = (int)getRowWidth();
-        graphics.extractTxt(new UiTxt("Block",   fontFamily), rowLeft,                 headerY, 0xFFAAAAAA);
-        graphics.extractTxt(new UiTxt("Enable",  fontFamily), rowLeft + rowWidth - 80, headerY, 0xFFAAAAAA);
-        graphics.extractTxt(new UiTxt("Isolate", fontFamily), rowLeft + rowWidth - 40, headerY, 0xFFAAAAAA);
-
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
 
         // Handle hover events
         final GuiEventListener hovered = ((__base_UiScreen)getScreen()).getHoveredOrDraggedElm(); //FIXME remove blind cast
         if(hovered != null && hovered instanceof BlockEntryContents contents) {
 
             // If hovering on the left half of the entry, spawn block info tooltip //! Checkboxes are on the right half.
-            if(((__base_UiScreen)getScreen()).getMirrorHoverMouseX() < contents.getX() + getRowWidth() / 2) {
+            if(mouseX < contents.getWidthCenter()) {
                 final Block block = contents.getBlock();
                 final List<ClientTooltipComponent> tooltipLines = new ArrayList<>();
                 tooltipLines.add(0, new BlockTooltipComponent(block));

@@ -10,6 +10,7 @@
         "accessors.FontAccessor",
         "accessors.MinecraftAccessor",
         "accessors.SpriteSourcesAccessor",
+        "accessors.MouseHandlerAccessor",
 
 
         "shaders.JuliaSetShaderMixin",

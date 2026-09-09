@@ -1,16 +1,16 @@
 package com.snek.engineersbliss.client.ui.base;
 
-import java.util.List;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.Window;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
@@ -19,7 +19,6 @@ import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSe
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -54,17 +53,13 @@ import net.minecraft.client.input.MouseButtonInfo;
  * By default, all screens pause the game.
  */
 public abstract class __base_UiScreen extends Screen {
-    public static final int BORDER_WIDTH  = Layout.BORDER_WIDTH;
-    public static final int BORDER_HEIGHT = Layout.BORDER_HEIGHT;
-    public static final int LIST_TOP      = Layout.LIST_TOP;
-    public static final int BUTTON_HEIGHT = Layout.BUTTON_HEIGHT;
 
 
-    // Virtual gui scale & sclae animation
-    private int realGuiScale = 1;  // The window's actual current scale, refreshed each resize
+    // True Screen size & virtual gui scale
+    private int realGuiScale = 1;  // The window's actual current scale, refreshed each vanilla resize. //! Always int.
     protected final AnimatedFloat animatedGuiScale;
-    public AnimatedFloat getAnimatedGuiScale() { return animatedGuiScale; }
-    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
+    private float lastGuiScale = -1;
+    public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
 
 
     // Relayout/rebuild flags
@@ -86,20 +81,6 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
-    //! Mirror hover tracking, needed for the vanilla scissor fix.
-    //! See __base_UiWidget's isHovered().
-    private int mirrorHoverMouseX = Integer.MIN_VALUE;
-    private int mirrorHoverMouseY = Integer.MIN_VALUE;
-    private int mirrorHoverScreenMouseX = Integer.MIN_VALUE;
-    private int mirrorHoverScreenMouseY = Integer.MIN_VALUE;
-    private @Nullable UiGraphics mirrorHoverGraphics;
-    public int getMirrorHoverMouseX() { return mirrorHoverMouseX; }
-    public int getMirrorHoverMouseY() { return mirrorHoverMouseY; }
-    public int getMirrorHoverScreenMouseX() { return mirrorHoverScreenMouseX; }
-    public int getMirrorHoverScreenMouseY() { return mirrorHoverScreenMouseY; }
-    public @Nullable UiGraphics getMirrorHoverGraphics() { return mirrorHoverGraphics; }
-
-
 
 
     protected __base_UiScreen() {
@@ -107,13 +88,6 @@ public abstract class __base_UiScreen extends Screen {
         this.animatedGuiScale = new AnimatedFloat(SettingsFeatureHandler.getCurrentGuiScale(), Layout.guiScaleTransitionDuration);
         this.needsRebuild = true;
         this.needsRelayout = false;
-    }
-    private void updateMirrorHoverState(UiGraphics graphics, int mouseX, int mouseY, int screenMouseX, int screenMouseY) {
-        mirrorHoverGraphics = graphics;
-        mirrorHoverMouseX = mouseX;
-        mirrorHoverMouseY = mouseY;
-        mirrorHoverScreenMouseX = screenMouseX;
-        mirrorHoverScreenMouseY = screenMouseY;
     }
 
 
@@ -137,30 +111,23 @@ public abstract class __base_UiScreen extends Screen {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         realGuiScale = mc.getWindow().getGuiScale();
 
-        int fbWidth  = mc.getWindow().getScreenWidth();
-        int fbHeight = mc.getWindow().getScreenHeight();
-        int fixedWidth  = (int)Math.floor(fbWidth  / animatedGuiScale.compute()); //TODO power of 2 might help layouts
-        int fixedHeight = (int)Math.floor(fbHeight / animatedGuiScale.compute()); //TODO power of 2 might help layouts
-        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
-        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
-        //FIXME maybe use floats in the screen too?? it should be fine since everything thats rendered accepts floats
+        // Retrieve current true dimensions and virtual scale
+        float newScale = animatedGuiScale.compute();
+        int newWidth  = mc.getWindow().getScreenWidth();    //! Vanilla updates these when the Vanilla GUI Scale is changed.
+        int newHeight = mc.getWindow().getScreenHeight();   //! Vanilla updates these when the Vanilla GUI Scale is changed.
 
-        boolean transitioning = isGuiScaleTransitioning();
-        if(this.width != fixedWidth || this.height != fixedHeight) {
-            this.width  = fixedWidth;
-            this.height = fixedHeight;
-
-            if(transitioning) {
-                needsRelayout = true;
-            }
-            else {
-                needsRebuild = true;
-            }
+        // Update dimensions and relayout if the scale changed or the window was resized
+        if(lastGuiScale != newScale || width != newWidth || height != newHeight) {
+            lastGuiScale = newScale;
+            width  = newWidth;
+            height = newHeight;
+            needsRelayout = true;
         }
     }
 
 
     private @Nullable GuiEventListener computeHoveredElm(final double mouseX, final double mouseY) {
+        if(!isWindowActive()) return null;
         GuiEventListener current = this;
         GuiEventListener result  = null;
         while(current instanceof ContainerEventHandler containerCurrent) {
@@ -175,37 +142,75 @@ public abstract class __base_UiScreen extends Screen {
         return result;
     }
 
-    // Converts a mouse coord from GuiScale-dependant coords to virtual screen coords
-    private double fx(double v) {
-        return v * (realGuiScale / animatedGuiScale.compute());
+
+    /**
+     * Calculates the true position of the cursor by calling GLFW's functions directly.
+     * ! This bypasses Minecraft Vanilla's mouse handling logic which can return stale values in specific conditions.
+     * ! NOTICE: This returns proper cursor coords even while the window is not focused or visible. Use .isWindowActive() to check for that.
+     * @return
+     */
+    public Vector2f calcTrueCursorPos() {
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
+        double[] px = new double[1];
+        double[] py = new double[1];
+        GLFW.glfwGetCursorPos(window.handle(), px, py);
+        return new Vector2f((float)px[0], (float)py[0]);
     }
+    /**
+     * Checks if the Minecraft window is currently visible, focused, and not iconified.
+     */
+    public boolean isWindowActive() {
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
+        final long handle = window.handle();
+        return
+            GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_VISIBLE)   == GLFW.GLFW_TRUE  &&
+            GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_ICONIFIED) == GLFW.GLFW_FALSE &&
+            GLFW.glfwGetWindowAttrib(handle, GLFW.GLFW_FOCUSED)   == GLFW.GLFW_TRUE
+        ;
+    }
+
 
     @Override
     public boolean mouseClicked(MouseButtonEvent e, boolean doubleClick) {
-        final MouseButtonEvent fixed = new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers()));
-        final GuiEventListener hit = computeHoveredElm(fixed.x(), fixed.y());
+        if(!isWindowActive()) return true;
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
+        final GuiEventListener hit = computeHoveredElm(fixedPos.x, fixedPos.y);
         if(hit != null) draggedElm = hit;
-        return super.mouseClicked(fixed, doubleClick);
+        return super.mouseClicked(fixedEvent, doubleClick);
     }
 
     @Override
     public boolean mouseReleased(MouseButtonEvent e) {
-        final boolean r = super.mouseReleased(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())));
+        if(!isWindowActive()) return true;
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
+        final boolean r = super.mouseReleased(fixedEvent);
         draggedElm = null;
         return r;
     }
 
     @Override
     public boolean mouseDragged(MouseButtonEvent e, double dx, double dy) {
-        return super.mouseDragged(new MouseButtonEvent(fx(e.x()), fx(e.y()), new MouseButtonInfo(e.button(), e.modifiers())), fx(dx), fx(dy));
+        if(!isWindowActive()) return true;
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
+        final int vanillaScale = Minecraft.getInstance().options.guiScale().get();
+        return super.mouseDragged(fixedEvent, dx * vanillaScale, dy * vanillaScale);
     }
+
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
-        super.mouseMoved(fx(mouseX), fx(mouseY));
+        if(!isWindowActive()) return;
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        super.mouseMoved(fixedPos.x, fixedPos.y);
     }
+
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double sx, double sy) {
-        return super.mouseScrolled(fx(mouseX), fx(mouseY), sx, sy);
+        if(!isWindowActive()) return true;
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        return super.mouseScrolled(fixedPos.x, fixedPos.y, sx, sy);
     }
 
 
@@ -218,6 +223,7 @@ public abstract class __base_UiScreen extends Screen {
     protected boolean tabPressed = false;
     @Override
     public boolean keyPressed(final KeyEvent event) {
+        if(!isWindowActive()) return true;
         switch(event.key()) {
             case GLFW.GLFW_KEY_ESCAPE: {
                 onClose();
@@ -261,6 +267,7 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public boolean keyReleased(final KeyEvent event) {
+        if(!isWindowActive()) return true;
         switch(event.key()) {
             case InputConstants.KEY_TAB: {
                 tabPressed = false;
@@ -293,7 +300,7 @@ public abstract class __base_UiScreen extends Screen {
 
 
     protected void relayoutContent() {
-        for(final var e : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
+        for(final var e : children()) {
             if(e instanceof final @NotNull __base_UiLayoutElm w) {
                 w.relayout();
             }
@@ -316,24 +323,19 @@ public abstract class __base_UiScreen extends Screen {
     public final void extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
         if(tabPressed) return;
 
-        // Check for resizes and rebuild/layout widgets if needed
+        // Check for resizes and relayout widgets if needed
         maybeFlagResize(); //! Check size mismatch every frame to keep the UI synched. This also avoids complex update logic.
-        if(needsRebuild) {
-            rebuildWidgets();
-            relayout();
-            needsRebuild = false;
-            needsRelayout = false;
-        }
-        else if(needsRelayout) {
+        if(needsRelayout) {
             relayout();
             needsRelayout = false;
         }
 
-        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything.
-        float factor = animatedGuiScale.compute() / realGuiScale;
+        // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything. Compensate mouse coords too.
+        final @NotNull Vector2f fixedPos = calcTrueCursorPos();
+        float factor = 1f / realGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
-        extractRenderState(new UiGraphics(graphics), mouseX, mouseY, delta);
+        extractRenderState(new UiGraphics(graphics, this), fixedPos.x, fixedPos.y, delta);
         graphics.pose().popMatrix();
     }
 
@@ -341,34 +343,18 @@ public abstract class __base_UiScreen extends Screen {
     /**
      * Custom render function that uses a UiGraphics instead of Vanill'as graphics extractor.
      */
-    public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-        int adjMouseX = (int)fx(mouseX);
-        int adjMouseY = (int)fx(mouseY);
-
+    public void extractRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float delta) {
 
         // Update hovered element
-        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(adjMouseX, adjMouseY);
-
-
-        //! Mirror hover state must be global and identical for all widgets.
-        //! Setting a global it once for each widget makes widgets reading it from outside the render loop go out of sync,
-        //! while keeping a separate cached value for each individual widget is a maintainability nightmare.
-        //! One global state for all widgets has the drawback of it reporting [not hovered] for the widget thats currently being dragged,
-        //! but the widget itself can simply use isBeingHoveredOrDragged(), which checks for both.
-        if(!isDragging()) {
-            updateMirrorHoverState(graphics, adjMouseX, adjMouseY, mouseX, mouseY);
-        }
-        else {
-            updateMirrorHoverState(graphics, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF, -0xDEAD_BEEF);
-        }
+        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(mouseX, mouseY);
 
         // Extract background
-        extractBackground(graphics, adjMouseX, mouseY, adjMouseY);
+        extractBackground(graphics, mouseX, mouseY, delta);
 
         // Extract widgets
-        for(final @NotNull GuiEventListener c : List.copyOf(children())) { //! Iterate snapshot to avoid concurrent modification issues
+        for(final @NotNull GuiEventListener c : children()) {
             if(c instanceof @NotNull __base_UiWidget r) {
-                r.extractWidgetRenderState(graphics, adjMouseX, adjMouseY, delta);
+                r.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
             }
         }
     }
@@ -376,15 +362,13 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public final void extractBlurredBackground(final GuiGraphicsExtractor graphics) {
-        // Empty
+        // Empty. Suppress Vanilla background.
     }
     @Override
 	public final void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        // Empty
+        // Empty. Suppress Vanilla background.
     }
-
-
-	public void extractBackground(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(!tabPressed) {
             graphics.blurBeforeThisStratum();
         }
@@ -399,8 +383,6 @@ public abstract class __base_UiScreen extends Screen {
 
     @Override
     public void onClose() {
-
-        // Close screen and go back to game
         this.minecraft.setScreen(null);
     }
 

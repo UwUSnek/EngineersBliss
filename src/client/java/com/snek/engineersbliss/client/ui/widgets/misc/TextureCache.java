@@ -6,12 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.ScreenMixinAccessor;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 
@@ -94,7 +93,7 @@ public class TextureCache implements AutoCloseable {
      */
     public void blit(final UiGraphics graphics, final float x, final float y, final float w, final float h) {
         if(texture == null) return;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, location, x, y, 0, 0, w, h, width, height, width, height);
+        graphics.blit(location, x, y, x + w, y + h, 0f, 1f, 0f, 1f);
     }
 
 

@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.snek.engineersbliss.client.ui.UiGraphics;
+import com.mojang.blaze3d.platform.cursor.CursorType;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
@@ -64,7 +66,9 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     protected long focusedTime;
     protected long lastMoveTime;
 
-
+    // Key presses tracking for the typing sounds
+    private final java.util.Set<Integer> heldKeys = new java.util.HashSet<>();
+    private boolean newCharPress = false;
 
 
 
@@ -112,27 +116,9 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
             }
             //FIXME this is rly inefficient. this should cache each line when it's changed, not recalculate everything every time anything changes
         }
-        // setLabel(renderLines.get(0)); //TODO remove
         //! No setLabel call. This class handles text rendering on its own.
     }
 
-    // @Override
-    // public void relayoutSelf() {
-    //     updateLabel();
-    // }
-
-    // protected abstract void updateLabel();
-
-
-    // public String getValue() { //TODO remove
-    //     if(lines.size() == 1) return lines.get(0).toString();
-    //     final StringBuilder sb = new StringBuilder();
-    //     for(int i = 0; i < lines.size(); i++) {
-    //         if(i > 0) sb.append('\n');
-    //         sb.append(lines.get(i));
-    //     }
-    //     return sb.toString();
-    // }
 
     public void setValue(final String newValue) {
         lines.clear();
@@ -425,88 +411,100 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
 
+        @Override
+    public boolean keyReleased(final KeyEvent event) {
+        heldKeys.remove(event.key());  //! Update key tracking for typing sounds
+        return super.keyReleased(event);
+    }
+
+
     @Override
     public boolean keyPressed(final KeyEvent event) {
         if(!isActive() || !editable || !isFocused()) return false;
-        boolean r;
+        newCharPress = heldKeys.add(event.key()); //! Update key tracking for typing sounds
+
 
         final boolean ctrl = event.hasControlDownWithQuirk();
         final boolean shift = event.hasShiftDown();
         switch(event.key()) {
+            case GLFW.GLFW_KEY_ESCAPE: {
+                setFocused(false);
+                return true;
+            }
             case GLFW.GLFW_KEY_BACKSPACE: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 deleteCharsToPos(pos[0], pos[1]);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_DELETE: {
                 final int[] pos = ctrl ? getWordPosition(1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, 1);
                 deleteCharsToPos(pos[0], pos[1]);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_RIGHT: {
                 final int[] pos = ctrl ? getWordPosition(1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, 1);
                 moveCursorTo(pos[0], pos[1], shift);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_LEFT: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 moveCursorTo(pos[0], pos[1], shift);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_UP: {
-                r = moveCursorVertical(-1, shift);
-                break;
+                return moveCursorVertical(-1, shift);
             }
             case GLFW.GLFW_KEY_DOWN: {
-                r = moveCursorVertical(1, shift);
-                break;
+                return moveCursorVertical(1, shift);
             }
             case GLFW.GLFW_KEY_HOME: {
                 moveCursorToLineStart(shift);
-                r = true; break;
+                return true;
             }
             case GLFW.GLFW_KEY_END: {
                 moveCursorToLineEnd(shift);
-                r = true; break;
+                return true;
             }
             //TODO PAGE UP key
             //TODO PAGE DOWN key
             case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER: {
                 if(multiline) insertText("\n");
-                r = multiline; break;
+                return multiline;
             }
             default: {
                 if(event.isSelectAll()) {
                     moveCursorToEnd(false);
                     setHighlightPos(0, 0);
                     updateLabel();
-                    r = true; break;
+                    return true;
                 }
                 if(event.isCopy()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
-                    r = true; break;
+                    return true;
                 }
                 if(event.isPaste()) {
                     insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
-                    r = true; break;
+                    return true;
                 }
                 if(event.isCut()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
                     insertText("");
-                    r = true; break;
+                    return true;
                 }
-                r = false; break;
+                return false;
             }
         }
-        if(r) playTypeSound();
-        return r;
     }
+
 
     @Override
     public boolean charTyped(final CharacterEvent event) {
         if(!isActive() || !isFocused() || !editable || !isValidCharacter(event.codepoint())) return false;
         insertText(event.codepointAsString());
-        playTypeSound();
+        if(newCharPress) {
+            newCharPress = false;
+            playTypeSound();
+        }
         return true;
     }
 
@@ -551,7 +549,8 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
     }
 
     @Override
-    public void extractWidgetRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
         if(isFocused() || cursorLine != highlightLine || cursorCol != highlightCol) {
 
             final int computedCursorLine = Math.min(lines.size() - 1, visualCursorLine.compute()); //! Ensure the visual line number doesn't exceed the number of current lines
@@ -582,35 +581,36 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
                     final int highlightX1 = startEdgeIsCursor ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selStart));  //TODO this is prob very inefficient
                     final int highlightX2 = endEdgeIsCursor   ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selEnd));  //TODO this is prob very inefficient
                     final int highlightY  = line == computedCursorLine ? cursorY : textY + line * lineHeight;
-                    // graphics.textHighlight(Math.min(highlightX1, getRight()), highlightY, Math.min(highlightX2 - 1, getRight()), highlightY + lineHeight, true);
-                    //FIXME add highlight to UiGraphics
+                    graphics.textSelection((int)Math.min(highlightX1, getRight()), highlightY, (int)Math.min(highlightX2 - 1f, getRight()), highlightY + lineHeight, true);
                 }
             }
             else if(isFocused() && (Util.getMillis() - lastMoveTime < CURSOR_BLINK_START_MS || TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime))) {
-                // TextCursorUtils.extractInsertCursor(graphics, cursorX - 1, cursorY, Layout.fgColor, lineHeight);
-                //FIXME add cursor to UiGraphics
+                graphics.textInsertCursor(cursorX - 1, cursorY, Layout.fgColor, lineHeight);
             }
         }
-
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        // if(isHoveredOrBeingDragged()) graphics.requestCursor(editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED);
-        //FIXME add cursor to UiGraphics
     }
 
+
     @Override
-    protected void extractLabel(final UiGraphics graphics, final int mouseX, final int mouseY, final float a) {
+    protected void extractLabel(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(renderLines.isEmpty()) return;
         final int lineHeight = font.getLineHeight();
         final int x = (int)(getInnerX() - visualScrollPx.compute());
         final int y = getTextOriginY() - visualScrollLinePx.compute();
 
-        graphics.enableScissor((int)getInnerX(), getY(), (int)getInnerRight(), (int)getBottom());
+        graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
         for(int i = 0; i < renderLines.size(); i++) {
             final UiTxt line = renderLines.get(i);
             if(line.length() > 0) {
-                graphics.extractTxt(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, (int)getInnerWidth(), false);
+                graphics.text(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
             }
         }
         graphics.disableScissor();
+    }
+
+
+    @Override
+    protected CursorType selectCursor(UiGraphics graphics) {
+        return editable ? CursorTypes.IBEAM : CursorTypes.NOT_ALLOWED;
     }
 }

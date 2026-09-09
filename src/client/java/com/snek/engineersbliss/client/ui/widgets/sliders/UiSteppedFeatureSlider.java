@@ -93,12 +93,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
 
 
 
-    public static <T> void onChange(
-        final __base_ServerFeature<Integer> feature,
-        final int newIndex,
-        final T newValue,
-        final @Nullable BiConsumer<Integer, T> afterChangeCallback
-    ) {
+    public static <T> void onChange(final __base_ServerFeature<Integer> feature, final int newIndex, final T newValue, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
 
         // Set feature and send packets to the server
         ClientFeatureSync.setFeature(feature, newIndex);

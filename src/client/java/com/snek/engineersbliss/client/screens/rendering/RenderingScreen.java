@@ -5,12 +5,12 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.RenderingScreenBlockListWidget;
-import com.snek.engineersbliss.client.ui.UiGraphics;
 import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiEditBox;
@@ -44,7 +44,6 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return false;
     }
 
-//FIXME prob not needed anymore??
     //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
     @Override
     public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
@@ -52,7 +51,6 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return super.mouseClicked(event, doubleClick);
     }
 
-//FIXME prob not needed anymore??
     // Stop keybinds from activating while typing in the search bar by redirecting any key even to it while its focused.
     @Override
     public boolean keyPressed(final KeyEvent event) {
@@ -149,8 +147,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         final float rightSidebarWidthPx = width * rightSidebarWidth;
 
         // Main list
-        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
-        blockList.setPos(leftSidebarWidthPx, LIST_TOP);
+        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height);
+        blockList.setPos(leftSidebarWidthPx, 0);
     }
 
 
@@ -161,7 +159,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
     @Override
-    public void extractRenderState(final UiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
+    public void extractRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float delta) {
         final @NotNull FontFamily fontFamily = Fonts.ui.regular;
         final @NotNull ScaledFont scaledFont = fontFamily.get(1f);
         final int lineBase = this.height;
@@ -187,8 +185,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         }
         for(int i = 0; i < syntaxInstructions.length; i += 2) {
             final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-            graphics.extractTxt(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textMarginPx,                       lineY, 0xFFAAAAAA);
-            graphics.extractTxt(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
+            graphics.text(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textLargeMarginPx,                       lineY, 0xFFAAAAAA);
+            graphics.text(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textLargeMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
         }
 
 
@@ -198,7 +196,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         final ClientLevel level = Minecraft.getInstance().level;
         if(level != null) {
             final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textMarginPx;
+            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textLargeMarginPx;
             final int lightProgress = RenderingFilterHandler.getLightRecalcProgress();
             final int lightMax = RenderingFilterHandler.getLightRecalcMax();
             final String[] renderStats = {
@@ -214,8 +212,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
             }
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-                graphics.extractTxt(new UiTxt(renderStats[i    ], fontFamily), rightTextX,                        lineY, 0xFFAAAAAA);
-                graphics.extractTxt(new UiTxt(renderStats[i + 1], fontFamily), rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
+                graphics.text(new UiTxt(renderStats[i    ], fontFamily), rightTextX,                        lineY, 0xFFAAAAAA);
+                graphics.text(new UiTxt(renderStats[i + 1], fontFamily), rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
             }
         }
 

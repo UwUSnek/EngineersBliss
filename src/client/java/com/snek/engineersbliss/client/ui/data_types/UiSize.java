@@ -13,13 +13,21 @@ public class UiSize {
     private float px;
     private float widthFrac;
     private float heightFrac;
+    private boolean scaleWithUi;
     private final __base_UiWidget widget; //! Width and height are read from this element
 
 
 
 
+    public UiSize(final __base_UiWidget widget, final UiSize copy) {
+        this.widget     = widget;
+        this.px         = copy.px;
+        this.widthFrac  = copy.widthFrac;
+        this.heightFrac = copy.heightFrac;
+    }
     public UiSize(final __base_UiWidget widget) {
         this.widget = widget;
+        clear();
     }
 
 
@@ -47,6 +55,30 @@ public class UiSize {
     public UiSize setHF(final float v) {
         heightFrac = v; return this;
     }
+    public UiSize set(final UiSize from) {
+        this.px         = from.px;
+        this.widthFrac  = from.widthFrac;
+        this.heightFrac = from.heightFrac;
+        return this;
+    }
+    public UiSize sub(final UiSize from) { return sub(from, 1); }
+    public UiSize sub(final UiSize from, final int n) {
+        this.px         -= n * from.px;
+        this.widthFrac  -= n * from.widthFrac;
+        this.heightFrac -= n * from.heightFrac;
+        return this;
+    }
+    public UiSize add(final UiSize from) { return add(from, 1); }
+    public UiSize add(final UiSize from, final int n) {
+        this.px         += n * from.px;
+        this.widthFrac  += n * from.widthFrac;
+        this.heightFrac += n * from.heightFrac;
+        return this;
+    }
+    public UiSize setScaleWithUi(final boolean newScaleWithUi) {
+        this.scaleWithUi = newScaleWithUi;
+        return this;
+    }
 
 
 
@@ -55,6 +87,7 @@ public class UiSize {
         px = 0;
         widthFrac = 0;
         heightFrac = 0;
+        scaleWithUi = false;
         return this;
     }
 
@@ -62,6 +95,6 @@ public class UiSize {
 
 
     public float getPx() {
-        return px + widthFrac  * widget.getWidthF() + heightFrac * widget.getHeightF();
+        return (px + widthFrac * widget.getWidthF() + heightFrac * widget.getHeightF()) * (scaleWithUi ? widget.getGuiScale() : 1f);
     }
 }
