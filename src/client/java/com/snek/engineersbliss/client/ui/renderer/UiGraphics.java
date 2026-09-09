@@ -117,7 +117,7 @@ public class UiGraphics {
         final int x, final int y,
         final int color,
         final TextAlignment textAlignment,
-        final float elmWidth,
+        final float elmWidth, //! Only used by alignment CENTER and RIGHT
         final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
     ) {
 

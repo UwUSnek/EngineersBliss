@@ -8,7 +8,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
@@ -77,30 +76,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public void setLockedRows(final int newLockedRows) {
         lockedRows = newLockedRows;
-        // repositionEntries(); //TODO remove
     }
-
-    // private void repositionEntries() { //TODO remove
-    //     if(!isRelayoutDisabled()) {
-    //         // float y = getYF() - animatedScrollAmount.compute();
-    //         // float lockedY = getYF();
-    //         // int i = 0;
-    //         for(final @NotNull Entry child : children) {
-    //             // if(i < lockedRows) {
-    //             //     child.setYF(lockedY);
-    //             //     lockedY += child.getHeightF();
-    //             // }
-    //             // else {
-    //             //     child.setYF(y);
-    //             // }
-    //             // y += child.getHeightF();
-    //             // child.setXF(getRowLeft());
-    //             child.setWidth(getRowWidth());
-    //             // i++;
-    //         }
-    //         relayoutContent();
-    //     }
-    // }
 
     @Override
     public void relayoutContent() {
@@ -123,26 +99,10 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     public void relayoutSelf() {
-    //     if(!isRelayoutDisabled()) {
-    //         // repositionEntries(); //TODO remove
-            // this.refreshScrollAmount();
-
-    //         // // //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds. //TODO remove
-    //         // repositionEntries(); //TODO remove
-    //     }
         if(!isRelayoutDisabled()) {
             tickGuiScale();
             this.refreshScrollAmount();
         }
-    }
-
-
-    public float getNextY() { //FIXME remove, new system doesnt need that.
-        float y = getYF() - animatedScrollAmount.compute();
-        for(final @NotNull Entry child : children) {
-            y += child.getHeightF();
-        }
-        return y;
     }
 
     protected float contentHeight() {
@@ -204,7 +164,6 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         scrollAmount = (float)Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
         if(snap) animatedScrollAmount.snapTo            (scrollAmount);
         else     animatedScrollAmount.startNewTransition(scrollAmount);
-        // repositionEntries(); //TODO remove
     }
 
     public void refreshScrollAmount() {
@@ -307,12 +266,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
     protected int __internal_addWidget(final Entry entry, final float height) {
         entry.parentList = this;
-        entry.setXF(getRowLeft());
-        entry.setWidth(getRowWidth());
-        entry.setYF(getNextY());
         entry.setHeight(height);
         final int r = super.addChild(entry);
-        // repositionEntries();  //TODO remove
+        relayoutContent();
         return r;
     }
     public void addWidget(final __base_UiLayoutElm widget) {
@@ -396,49 +352,43 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
 
-    /**
-     * Finds the first visible unlocked entry based on the current scroll amount.
-     * @return A Pair containing the index and Y position of the element, or null if no unlocked element is visible.
-     */
-    public @Nullable Pair<Integer, Float> findFirstVisibleUnlockedEntry() {
-        float y = getYF();
-        float curScrollAmount = animatedScrollAmount.compute();
-        float entryY = y - curScrollAmount;
-        for(int i = lockedRows; i < children.size(); ++i) {
-            final @NotNull Entry child = children.get(i);
-            final float h = child.getHeightF();
-            if(entryY + h > y) return Pair.from(i, entryY);
-            entryY += h;
-        }
-        return null;
-    }
-
-
     @Override
     public void extractContent(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         //! Skip default extractContent. This class handles draw recursion on its own.
 
 
-    // repositionEntries(); //TODO remove & optimize  //TODO remove
         // Draw unlocked entries
-        final @Nullable Pair<Integer, Float> firstVisible = findFirstVisibleUnlockedEntry();
-        if(firstVisible != null) {
-            final float lockedBottom = getYF() + calcLockedHeight();
-            float entryY = firstVisible.getSecond();
-            graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
-            for(int i = firstVisible.getFirst(); i < children.size(); ++i) {
-                final @NotNull Entry child = children.get(i);
-                final float oldEntryY = child.getYF();
-                if(oldEntryY != entryY) { //! Optimize relayout to run only when the y is actually updated
+        final float outOfBoundsY = getScreen().height + 9999f;
+        final float lockedBottom = getYF() + calcLockedHeight();
+        float entryY = lockedBottom - animatedScrollAmount.compute();
+        float selfBottom = getBottom();
+        graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        for(int i = lockedRows; i < children.size(); ++i) {
+            final @NotNull Entry child = children.get(i);
+            final float oldEntryY = child.getYF();
+            final boolean oldPosInBounds = oldEntryY != outOfBoundsY;
+            final boolean newPosInBounds = entryY < selfBottom;
+
+            //! Optimize relayout to run only when the y is actually updated.
+            //! Stash out of bounds element in a single place under the screen so they don't interfere with input detection.
+            if(oldEntryY != entryY) {
+                if(newPosInBounds) {
                     child.setYF(entryY);
                     child.relayout();
                 }
-                if(!elmIsInBounds(child)) break; //! Stop rendering entries if the current entry's new Y position is out of bounds
-                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-                entryY += child.getHeightF();
+                else if(oldPosInBounds) {
+                    child.setYF(outOfBoundsY);
+                    child.relayout();
+                }
             }
-            graphics.disableScissor();
+
+            //! Only draw the element if the new position is not ouf of bounds
+            if(newPosInBounds) {
+                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+            }
+            entryY += child.getHeightF();
         }
+        graphics.disableScissor();
 
 
         // Draw locked entries

@@ -19,7 +19,11 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 
 
 public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
+    public static final float CHECKBOX_SIZE_HF   = 0.75f;
+    public static final float CHECKBOX_MARGIN_HF = 0.25f;
+
     public final UiSize checkboxSize;
+    public final UiSize checkboxMarginX;
     private final RenderingScreenBlockListWidget list;
     private final Block block;
     private final UiCheckbox enableBox;
@@ -33,7 +37,8 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
         super(list.getScreen());
         this.list = list;
         this.block = block;
-        this.checkboxSize = new UiSize(this); checkboxSize.setHF(0.75f);
+        this.checkboxSize    = new UiSize(this);    checkboxSize.setHF(CHECKBOX_SIZE_HF);
+        this.checkboxMarginX = new UiSize(this); checkboxMarginX.setHF(CHECKBOX_MARGIN_HF);
 
         addChild(this.enableBox  = new UiCheckbox(getScreen(), RenderingFilterHandler.getEnabled(block),  this::onToggleEnable));
         addChild(this.isolateBox = new UiCheckbox(getScreen(), RenderingFilterHandler.getIsolated(block), this::onToggleIsolate));
@@ -48,10 +53,10 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
         enableBox .setSize(checkboxSizePx, checkboxSizePx);
         isolateBox.setSize(checkboxSizePx, checkboxSizePx);
 
+        final float checkboxMarginPx = checkboxMarginX.getPx();
         final float checkboxY = getYF() + (getHeightF() - checkboxSizePx) / 2f;
-        final int checkboxAreaWidth = RenderingScreenBlockListWidget.CHECKBOX_AREA_WIDTH;
-        enableBox .setPos(list.getRowRight() - checkboxAreaWidth * 2 + (checkboxAreaWidth -  enableBox.getWidthF()) / 2f, checkboxY);
-        isolateBox.setPos(list.getRowRight() - checkboxAreaWidth * 1 + (checkboxAreaWidth - isolateBox.getWidthF()) / 2f, checkboxY);
+        isolateBox.setPos(list.getRowRight() - checkboxMarginPx - isolateBox.getWidthF(), checkboxY);
+        enableBox .setPos(isolateBox.getXF() - checkboxMarginPx -  enableBox.getWidthF(), checkboxY);
     }
 
 
