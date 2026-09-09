@@ -367,10 +367,10 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             final @NotNull Entry child = children.get(i);
             final float oldEntryY = child.getYF();
             final boolean oldPosInBounds = oldEntryY != outOfBoundsY;
-            final boolean newPosInBounds = entryY < selfBottom;
+            final boolean newPosInBounds = entryY < selfBottom && entryY + child.getHeightF() > lockedBottom;
 
             //! Optimize relayout to run only when the y is actually updated.
-            //! Stash out of bounds element in a single place under the screen so they don't interfere with input detection.
+            //! Stash out of bounds elements in a single place under the screen so they don't interfere with input detection.
             if(oldEntryY != entryY) {
                 if(newPosInBounds) {
                     child.setYF(entryY);
