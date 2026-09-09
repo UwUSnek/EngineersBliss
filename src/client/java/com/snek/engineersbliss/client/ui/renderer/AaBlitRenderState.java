@@ -87,8 +87,16 @@ public record AaBlitRenderState(
 
 
     @Override
-    public @Nullable ScreenRectangle bounds() { //FIXME this might clip a few edge pixels
-		ScreenRectangle bounds = new ScreenRectangle(Math.round(x0), Math.round(y0), Math.round(x1 - x0), Math.round(y1 - y0)).transformMaxBounds(pose);
-		return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
-	}
+    public @Nullable ScreenRectangle bounds() {
+        final @NotNull Vector2f p0 = pose.transformPosition(x0, y0, new Vector2f());
+        final @NotNull Vector2f p1 = pose.transformPosition(x1, y1, new Vector2f());
+
+        final int ix0 = (int)Math.floor(Math.min(p0.x, p1.x));
+        final int iy0 = (int)Math.floor(Math.min(p0.y, p1.y));
+        final int ix1 = (int)Math.ceil (Math.max(p0.x, p1.x));
+        final int iy1 = (int)Math.ceil (Math.max(p0.y, p1.y));
+
+        final ScreenRectangle bounds = new ScreenRectangle(ix0, iy0, ix1 - ix0, iy1 - iy0);
+        return scissorArea != null ? scissorArea.intersection(bounds) : bounds;
+    }
 }
