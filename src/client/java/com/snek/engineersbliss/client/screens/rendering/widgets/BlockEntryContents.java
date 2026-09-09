@@ -3,13 +3,14 @@ package com.snek.engineersbliss.client.screens.rendering.widgets;
 import net.minecraft.world.level.block.Block;
 
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
-import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiCheckbox;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
+import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 
@@ -24,6 +25,7 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
 
     public final UiSize checkboxSize;
     public final UiSize checkboxMarginX;
+    public final UiSize blockSpriteSize;
     private final RenderingScreenBlockListWidget list;
     private final Block block;
     private final UiCheckbox enableBox;
@@ -34,11 +36,15 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
 
 
     public BlockEntryContents(final RenderingScreenBlockListWidget list, final Block block) {
-        super(list.getScreen());
+        super(list.getScreen(), new UiTxt(block.getName()));
         this.list = list;
         this.block = block;
         this.checkboxSize    = new UiSize(this);    checkboxSize.setHF(CHECKBOX_SIZE_HF);
         this.checkboxMarginX = new UiSize(this); checkboxMarginX.setHF(CHECKBOX_MARGIN_HF);
+        this.blockSpriteSize = new UiSize(this); blockSpriteSize.setHF(0.75f);
+        setAlignment(TextAlignment.LEFT);
+        getLeftLabelMargin().clear().addHF(1f);
+        getRightLabelMargin().clear().add(checkboxMarginX, 3).add(checkboxSize, 2);
 
         addChild(this.enableBox  = new UiCheckbox(getScreen(), RenderingFilterHandler.getEnabled(block),  this::onToggleEnable));
         addChild(this.isolateBox = new UiCheckbox(getScreen(), RenderingFilterHandler.getIsolated(block), this::onToggleIsolate));
@@ -65,9 +71,10 @@ public class BlockEntryContents extends __base_UiContainer<__base_UiLayoutElm> {
     @Override
     public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         super.extractSelf(graphics, mouseX, mouseY, a);
-        final float midY = getHeightCenter();
-        BlockRenderer.extractBlockIcon(graphics, block, getXF(), midY - 8); //FIXME replace with proper graphics. call
-        BlockRenderer.extractBlockName(graphics, block, (int)getXF() + 20, (int)midY - 4, 0xFFFFFFFF); //FIXME replace with proper graphics. call
+        final float blockSpriteSizePx = blockSpriteSize.getPx();
+        final float blockSpriteOffset = (getHeightF() - blockSpriteSizePx) / 2f;
+        graphics.blockIcon(block, blockSpriteOffset + getXF(), blockSpriteOffset + getYF(), blockSpriteSizePx);
+        //! Block name is dislayed by the default widget label
     }
 
 

@@ -1,7 +1,5 @@
 package com.snek.engineersbliss.client.screens.rendering.widgets;
 
-import com.snek.engineersbliss.client.screens.rendering.BlockRenderer;
-
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -25,8 +23,9 @@ public class BlockTooltipComponent implements ClientTooltipComponent {
 
     @Override
     public int getWidth(final Font font) { //TODO should be float?
-        final int textWidth = (int)(font.width(block.getName()) * ((float)TEXT_SIZE / BlockRenderer.DEFAULT_ITEM_SPRITE_SIZE));
-        return ICON_SIZE + 8 + textWidth + 4;
+        // final int textWidth = (int)(font.width(block.getName()) * ((float)TEXT_SIZE / BlockRenderer.DEFAULT_ITEM_SPRITE_SIZE));
+        // return ICON_SIZE + 8 + textWidth + 4;
+        return 1;
     }
 
     @Override

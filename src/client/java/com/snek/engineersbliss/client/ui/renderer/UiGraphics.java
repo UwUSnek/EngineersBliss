@@ -5,10 +5,13 @@ import org.joml.Matrix3x2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
+import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
 import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -17,9 +20,13 @@ import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 
 
 
@@ -249,4 +256,103 @@ public class UiGraphics {
             getScissorStack().peek()
         ));
     }
+
+
+
+
+
+
+
+    // Block icons and sprites
+
+    public static final Identifier MISSING_ITEM_SPRITE = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/missing_item_sprite.png");
+    public static final int DEFAULT_ITEM_SPRITE_SIZE = 16;
+
+    private static final int ATLAS_COLS = 8;
+    private static final int ATLAS_ROWS = 8;
+    private static final int SHEETS_PER_ATLAS = ATLAS_COLS * ATLAS_ROWS;
+    //TODO this stuff could be moved to the atlas tracker using a suffix _n system but that's kinda complicated
+    //TODO and also large sprite sheets are supposed to use that? these are not large sprite sheets but atlases of sprite sheets which is different.
+    //TODO different math? probably?
+
+
+    /**
+     * Renders an animated block spritesheet.
+     * The default size is 16px.
+     * @param block     The block whose spritesheet to render
+     * @param x         The X position
+     * @param y         The Y position
+     * @param size      The rendered size in pixels
+     */
+    public void blockSpriteSheet(final Block block, final float x, final float y, final float size) {
+
+        // Get block index, fallback to default icon if absent
+        final Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+        final int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
+        if(blockIdx == -1) {
+            blockIcon(block, x, y, size);
+            return;
+        }
+
+        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
+        if(!TextureAtlasTracker.isTextureReady(textureId)) {
+            blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
+        }
+        else {
+            final float[] uv = TextureAtlasTracker.getUV(textureId, blockIdx, System.currentTimeMillis());
+            blit(textureId, x, y, x + size, y + size, uv[0], uv[1], uv[2], uv[3]);
+        }
+    }
+
+    /**
+     * Renders an animated block spritesheet.
+     * The default size is 16px.
+     * @param block     The block whose spritesheet to render
+     * @param x         The X position
+     * @param y         The Y position
+     */
+    public void blockSpriteSheet(final Block block, final float x, final float y) {
+        blockSpriteSheet(block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
+    }
+
+    /**
+     * Renders the icon of the specified block.
+     * The default size is 16px.
+     * @param block The block to render
+     * @param x The X position
+     * @param y The Y position
+     */
+    public void blockIcon(final Block block, final float x, final float y) {
+        blockIcon(block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
+    }
+
+    /**
+     * Renders the icon of the specified block.
+     * The default size is 16px.
+     * @param block The block to render
+     * @param x The X position
+     * @param y The Y position
+     * @param size The size of the icon
+     */
+    public void blockIcon(final Block block, final float x, final float y, final float size) {
+
+        // Set up pose
+        final float scale = size / DEFAULT_ITEM_SPRITE_SIZE;
+        raw.pose().pushMatrix();
+        raw.pose().translate(x, y);
+        raw.pose().scale(scale, scale);
+
+        // Load sprite
+        //! Blocks with no item form return AIR from .asItem()
+        if(block.asItem() == Items.AIR) {
+            blit(MISSING_ITEM_SPRITE, 0, 0, DEFAULT_ITEM_SPRITE_SIZE, DEFAULT_ITEM_SPRITE_SIZE, 0f, 1f, 0f, 1f);
+        }
+        else {
+            raw.item(new ItemStack(block), 0, 0);
+        }
+
+        // Pop pose
+        raw.pose().popMatrix();
+    }
+
 }

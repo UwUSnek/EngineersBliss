@@ -1,8 +1,5 @@
 package com.snek.engineersbliss.client.ui.data_types;
 
-import org.jetbrains.annotations.NotNull;
-
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 
 
@@ -62,6 +59,20 @@ public class UiSize {
         this.px         = from.px;
         this.widthFrac  = from.widthFrac;
         this.heightFrac = from.heightFrac;
+        return this;
+    }
+    public UiSize sub(final UiSize from) { return sub(from, 1); }
+    public UiSize sub(final UiSize from, final int n) {
+        this.px         -= n * from.px;
+        this.widthFrac  -= n * from.widthFrac;
+        this.heightFrac -= n * from.heightFrac;
+        return this;
+    }
+    public UiSize add(final UiSize from) { return add(from, 1); }
+    public UiSize add(final UiSize from, final int n) {
+        this.px         += n * from.px;
+        this.widthFrac  += n * from.widthFrac;
+        this.heightFrac += n * from.heightFrac;
         return this;
     }
     public UiSize setScaleWithUi(final boolean newScaleWithUi) {
