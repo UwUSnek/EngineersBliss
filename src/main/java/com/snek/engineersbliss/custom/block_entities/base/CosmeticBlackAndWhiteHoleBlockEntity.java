@@ -17,17 +17,26 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 
 public class CosmeticBlackAndWhiteHoleBlockEntity extends BlockEntity {
-    public static final float DEFAULT_SIZE   = 1.0f;
-    public static final float DEFAULT_GROWTH = 1.001f;
+    public static final float DEFAULT_SIZE     = 1.0f;
+    public static final float DEFAULT_GROWTH   = 1.001f;
+    public static final float DEFAULT_MAX_SIZE = 5f;
 
     private float size;
+    private float maxSize;
     private float growth;
     public void setSize(final float newSize) {
         size = newSize;
         setChanged();
     }
+    public void setMaxSize(final float newMaxSize) {
+        maxSize = newMaxSize;
+        setChanged();
+    }
     public float getSize() {
         return size;
+    }
+    public float getMaxSize() {
+        return maxSize;
     }
     public void setGrowth(final float newGrowth) {
         growth = newGrowth;
@@ -44,15 +53,20 @@ public class CosmeticBlackAndWhiteHoleBlockEntity extends BlockEntity {
         this(type, pos, state, DEFAULT_SIZE, DEFAULT_GROWTH);
     }
     public CosmeticBlackAndWhiteHoleBlockEntity(BlockEntityType<? extends CosmeticBlackAndWhiteHoleBlockEntity> type, BlockPos pos, BlockState state, final float size, final float growth) {
+        this(type, pos, state, DEFAULT_SIZE, DEFAULT_GROWTH, DEFAULT_MAX_SIZE);
+    }
+    public CosmeticBlackAndWhiteHoleBlockEntity(BlockEntityType<? extends CosmeticBlackAndWhiteHoleBlockEntity> type, BlockPos pos, BlockState state, final float size, final float growth, final float maxSize) {
         super(type, pos, state);
         this.size = size;
         this.growth = growth;
+        this.maxSize = maxSize;
     }
 
 
     public static void tick(Level level, BlockPos pos, BlockState state, CosmeticBlackAndWhiteHoleBlockEntity entity) {
         if(entity.getGrowth() != 1f) {
-            entity.setSize(entity.getSize() * entity.getGrowth());
+            final float newSize = Math.clamp(entity.getSize() * entity.getGrowth(), 0.001f, entity.getMaxSize());
+            entity.setSize(newSize);
         }
     }
 
@@ -62,14 +76,16 @@ public class CosmeticBlackAndWhiteHoleBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        output.putFloat("Size", size);
-        output.putFloat("Growth", growth);
+        output.putFloat("Size",    size);
+        output.putFloat("Growth",  growth);
+        output.putFloat("MaxSize", maxSize);
     }
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
-        size   = input.getFloatOr("Size",   DEFAULT_SIZE);
-        growth = input.getFloatOr("Growth", DEFAULT_GROWTH);
+        size    = input.getFloatOr("Size",    DEFAULT_SIZE);
+        growth  = input.getFloatOr("Growth",  DEFAULT_GROWTH);
+        maxSize = input.getFloatOr("MaxSize", DEFAULT_MAX_SIZE);
     }
     @Override
     public net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket getUpdatePacket() {
