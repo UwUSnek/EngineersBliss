@@ -2,6 +2,8 @@ package com.snek.engineersbliss.client.ui.renderer;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3x2f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
@@ -19,12 +21,18 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -377,5 +385,64 @@ public class UiGraphics {
 
     public void textSelection(final int x0, final int y0, final int x1, final int y1, final boolean invert){
         raw.textHighlight(x0, y0, x1, y1, invert);
+    }
+
+
+
+
+
+
+
+    // Entities //TODO this is just a copy of vanilla's stuff. idk if it needs changes
+
+    /**
+     * Renders the specified entity's model, making it face the cursor at all times.
+     */
+    public void entity(
+        final float x0,
+        final float y0,
+        final float x1,
+        final float y1,
+        final float size,
+        final float offsetY,
+        final float mouseX,
+        final float mouseY,
+        final LivingEntity entity
+    ) {
+        float centerX = (x0 + x1) / 2f;
+        float centerY = (y0 + y1) / 2f;
+        float xAngle = (float)Math.atan((centerX - mouseX) / 40f);
+        float yAngle = (float)Math.atan((centerY - mouseY) / 40f);
+        Quaternionf rotation = new Quaternionf().rotateZ((float)Math.PI);
+        Quaternionf xRotation = new Quaternionf().rotateX(yAngle * 20f * (float)(Math.PI / 180.0));
+        rotation.mul(xRotation);
+        EntityRenderState renderState = extractEntityRenderState(entity);
+        if(renderState instanceof LivingEntityRenderState livingRenderState) {
+            livingRenderState.bodyRot = 180f + xAngle * 20f;
+            livingRenderState.yRot = xAngle * 20f;
+            if(livingRenderState.pose != Pose.FALL_FLYING) {
+                livingRenderState.xRot = -yAngle * 20f;
+            }
+            else {
+                livingRenderState.xRot = 0f;
+            }
+
+            livingRenderState.boundingBoxWidth = livingRenderState.boundingBoxWidth / livingRenderState.scale;
+            livingRenderState.boundingBoxHeight = livingRenderState.boundingBoxHeight / livingRenderState.scale;
+            livingRenderState.scale = 1f;
+        }
+
+        Vector3f translation = new Vector3f(0f, renderState.boundingBoxHeight / 2f + offsetY, 0f);
+        raw.entity(renderState, (int)size, translation, rotation, xRotation, Math.round(x0), Math.round(y0), Math.round(x1), Math.round(y1));
+    }
+
+
+    private static EntityRenderState extractEntityRenderState(final LivingEntity entity) {
+        EntityRenderDispatcher entityRenderDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+        EntityRenderer<? super LivingEntity, ?> renderer = entityRenderDispatcher.getRenderer(entity);
+        EntityRenderState renderState = renderer.createRenderState(entity, 1f);
+        renderState.shadowPieces.clear();
+        renderState.outlineColor = 0;
+        return renderState;
     }
 }

@@ -57,7 +57,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public UiWidgetList(final Screen screen, final float defaultEntryHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
-        this.scrollbarWidth = new UiSize(this); scrollbarWidth.setPx(2).setScaleWithUi(true);
+        this.scrollbarWidth = new UiSize(this); scrollbarWidth.setPx(2);
         this.isScrollable = true;
         this.scrollAmount = 0f;
         this.animatedScrollAmount = new AnimatedFloat(scrollAmount, 80, Easings.quadInOut);

@@ -23,6 +23,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -237,7 +238,7 @@ public abstract class __base_UiScreen extends Screen {
         if(!isWindowActive()) return true;
         switch(event.key()) {
             case GLFW.GLFW_KEY_ESCAPE: {
-                onClose();
+                if(shouldCloseOnEsc()) onClose();
                 return true;
             }
             case GLFW.GLFW_KEY_TAB: {
@@ -294,6 +295,17 @@ public abstract class __base_UiScreen extends Screen {
                 return r;
             }
         }
+    }
+
+
+    @Override
+    public boolean charTyped(final CharacterEvent event) {
+        if(!isWindowActive()) return true;
+        boolean r = false;
+        for(final @NotNull GuiEventListener e : children()) {
+            if(e.charTyped(event)) r = true;
+        }
+        return r;
     }
 
 
@@ -379,12 +391,13 @@ public abstract class __base_UiScreen extends Screen {
 	public final void extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         // Empty. Suppress Vanilla background.
     }
+	public void extractBlurredBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        graphics.blurBeforeThisStratum();
+    }
 	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        if(!tabPressed) {
-            graphics.blurBeforeThisStratum();
-            final int _bgColor = bgColor.compute();
-            if((_bgColor & 0xFF000000) != 0) graphics.fill(0, 0, width, height, _bgColor);
-        }
+        extractBlurredBackground(graphics, mouseX, mouseY, a);
+        final int _bgColor = bgColor.compute();
+        if((_bgColor & 0xFF000000) != 0) graphics.fill(0, 0, width, height, _bgColor);
     }
 
 
