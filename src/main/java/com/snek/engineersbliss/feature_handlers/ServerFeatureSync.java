@@ -1,6 +1,5 @@
 package com.snek.engineersbliss.feature_handlers;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,21 +7,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_BlockFeatureInterface;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.IntFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.LongFeatureUpdateRequestPayload;
-import com.snek.engineersbliss.utils.ServerMinecraftUtils;
-import com.snek.engineersbliss.utils.Utils;
 import com.snek.engineersbliss.utils.scheduler.ServerScheduler;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,19 +36,10 @@ public class ServerFeatureSync {
     private ServerFeatureSync() {}
     private static final Map<UUID,       PlayerFeatureData> playerData = new ConcurrentHashMap<>();
     private static final Map<BlockState,  StateFeatureData>  stateData = new ConcurrentHashMap<>();
-    private static boolean initialized = false;
 
 
 
 
-    // private static StateFeatureData getStateData(final @NotNull BlockState state) {
-    //     initializedOrThrow();
-    //     final StateFeatureData data = stateData.get(state);
-    //     if(data == null) {
-    //         throw new IllegalStateException(String.format("No feature data for state %s", state));
-    //     }
-    //     return data;
-    // }
     private static StateFeatureData getStateData(final @NotNull BlockState state) {
         return stateData.computeIfAbsent(state, k -> {
             final StateFeatureData data = new StateFeatureData();
@@ -108,42 +93,6 @@ public class ServerFeatureSync {
     //! Private because other stuff shouldn't change the server's feature states. Only the packet receiver can (this class).
     private static <T> void setFeature(final @NotNull Player player, final @NotNull __base_ServerFeature<T> feature, final T value) {
         getPlayerData(player).setValue(feature, value);
-    }
-
-
-
-
-    /**
-     * Checks if a creative mode player has the specified feature set to the specified value.
-     * Returns false if the entity is not a Player or is not in Creative Mode.
-     * ! This doesn't work when called by the client on a dedicated server. Use ClientFeatureSync.creativePlayerHasFeature(__base_ServerFeature) instead.
-     */
-    public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature, final T value) {
-        if(entity instanceof final Player player) {
-            if(player.isCreative()) {
-                return getFeature(player, feature) == value;
-            }
-        }
-        return false;
-    }
-
-
-    /**
-     * Checks if a creative mode player has the specified toggle feature set to TRUE.
-     * Returns false if the entity is not a Player or is not in Creative Mode or the feature is not a toggle feature.
-     * ! This doesn't work when called by the client on a dedicated server. Use ClientFeatureSync.creativePlayerHasFeature(__base_ServerFeature) instead.
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature) {
-        if(feature instanceof ServerToggleFeature) {
-            return creativePlayerHasFeature(entity, (__base_ServerFeature<Boolean>)feature, true);
-        }
-        return false;
-    }
-
-
-    public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
-        return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
     }
 
 

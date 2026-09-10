@@ -3,12 +3,15 @@ package com.snek.engineersbliss.client.mixin.misc;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.utils.textures.atlases.AtlasMetadataSection;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgMetadataSection;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgRasterizer;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgScaleTracker;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -111,7 +114,7 @@ public class AsyncTextureLoaderMixin {
                 }
 
                 SvgTextureTracker.getOrRegister(id, bytes, svgMeta);
-                final NativeImage svgImage = SvgTextureTracker.acquire(id, SvgScaleTracker.currentScale());
+                final NativeImage svgImage = SvgTextureTracker.acquire(id, SettingsFeatureHandler.getCurrentGuiScaleIndex());
                 cir.setReturnValue(new TextureContents(svgImage, null));
                 return;
             }

@@ -21,7 +21,10 @@ public class Layout {
     public static int handleColorActive      = 0x80DDDDDD;
     public static int handleColorTransparent = 0x10999999;
 
+    public static int borderColor            = 0xFF2E2C2C;
+
     public static int textMarginPx = 4;
+    public static int textLargeMarginPx = 16;
 
     public static int SliderGraphFillColor = bgColorAlt;
     public static int SliderGraphLineColor = fgColorHint;
@@ -35,15 +38,14 @@ public class Layout {
 
 
     public static int toggleTransitionDuration = 250;
-    public static int hoverTransitionDuration  = 80;
+    public static int hoverTransitionDuration  = 100;
     public static int slideTransitionDuration  = 120;
+    public static int guiScaleTransitionDuration  = 250;
 
 
 
 
-    public static final int BORDER_WIDTH = 10;
     public static final int BORDER_HEIGHT = 2;
-    public static final int LIST_TOP = 32;
     public static final int BUTTON_HEIGHT = 16;
 
     public static final int   SEPARATOR_HEIGHT = 1;

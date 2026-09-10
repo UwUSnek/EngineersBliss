@@ -21,7 +21,7 @@ public class RenderingFilterLightMixin {
     @Inject(method = "getOpacity", at = @At("HEAD"), cancellable = true, require = 1)
     public void eb$getOpacity(final BlockState state, final CallbackInfoReturnable<Integer> cir) {
 
-        if(!RenderingFilterHandler.shouldBlockRender(state)) {
+        if(!RenderingFilterHandler.shouldStateRender(state)) {
             cir.setReturnValue(1);
             //! Light opacity 0 lets light propagate indefinitely
             //! Light opacity 1 dampens light by 1 ech block travelled, like Air

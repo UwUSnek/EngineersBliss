@@ -25,6 +25,16 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
 
 
+    public static final ClientFeature<?> GUI_SCALE = new ClientFeature<>(
+        SettingsServerFeatureSet.GUI_SCALE,
+        () -> new UiTxt("Gui scale"),
+        () -> (UiTxt)new UiTxt("The visual scale of GUI elements.")
+    );
+    public static final ClientFeature<?> GUI_BACKGROUND_OPACITY = new ClientFeature<>(
+        SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY,
+        () -> new UiTxt("Gui background opacity"),
+        () -> (UiTxt)new UiTxt("The opacity of the background color of screens.")
+    );
     public static final ClientFeature<?> PAUSE_GAME_IN_PAUSE_MENU = new ClientFeature<>(
         SettingsServerFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,
         () -> new UiTxt("Pause Menu pauses the game"),
@@ -38,6 +48,11 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         () -> new UiTxt()
             .cat(new UiTxt("Pauses the game while any of the screens from the " + EngineerSBliss.MOD_NAME + " mod are open\n."))
             .cat(Notices.SINGLE_PLAYER_ONLY.get())
+    );
+    public static final ClientFeature<?> DEBUG_OVERLAYS = new ClientFeature<>(
+        SettingsServerFeatureSet.DEBUG_OVERLAYS,
+        () -> new UiTxt("Debug overlays"),
+        () -> (UiTxt)new UiTxt("Enable GUI debug overlays.")
     );
 
 
@@ -80,6 +95,16 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("The maximum number of shaded block models to display at once. This can help control lag in busy areas.\n"))
             .cat(new UiTxt("Only available when [Block Shaders] is ON.").Orange())
+    );
+
+
+
+
+    // Misc
+    public static final ClientFeature<?> METAL_PIPE_SOUNDS = new ClientFeature<>(
+        SettingsServerFeatureSet.METAL_PIPE_SOUNDS,
+        () -> new UiTxt("Metal pipe UI sounds"),
+        () -> new UiTxt("Replaces all UI sounds with the Metal Pipe Falling sound.")
     );
 
 

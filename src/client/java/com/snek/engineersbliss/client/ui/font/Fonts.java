@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.mixin.accessors.FontAccessor;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
@@ -27,7 +29,7 @@ import net.minecraft.resources.Identifier;
 
 
 public class Fonts {
-    private static final int   FONT_MAX_SIZE   = 10;                                                // Maximum available font size
+    private static final float FONT_MAX_SIZE   = 10;                                                // Maximum available font size
     private static final float FONT_SCALE_STEP = 0.25f;                                             // Increment between adjacent font sizes
     private static final float FONT_UNIT_RATIO = 1f / FONT_SCALE_STEP;                              // The inverse of the step
     private static final int   FONT_SIZES_NUMBER = Math.round(FONT_MAX_SIZE * FONT_UNIT_RATIO);     // The number of available sizes for a font
@@ -40,7 +42,7 @@ public class Fonts {
     //! Scale advanced by FONT_SCALE_STEP each index.
 
     private static       List<@Nullable Pair<Font, FontDescription>>       defaultFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
-    private static final List<@Nullable Pair<Font, FontDescription>>    monoMediumFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>   monoRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
     private static final List<@Nullable Pair<Font, FontDescription>>   smoothLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>> smoothRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
@@ -49,6 +51,10 @@ public class Fonts {
     private static final List<@Nullable Pair<Font, FontDescription>>       uiLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>>     uiRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
     private static final List<@Nullable Pair<Font, FontDescription>>        uiBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+
+    private static final List<@Nullable Pair<Font, FontDescription>>     codeLightFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>   codeRegularFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
+    private static final List<@Nullable Pair<Font, FontDescription>>      codeBoldFonts = new ArrayList<>(Collections.nCopies(FONT_SIZES_NUMBER, null));
 
 
 
@@ -63,7 +69,7 @@ public class Fonts {
     /** A monospace font. All characters have the same width. */
     public static final class mono {
         private mono() {}
-        public static FontFamily medium = (final float scaleMultiplier) -> createScaledFont(monoMediumFonts, "mono_medium", scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(monoRegularFonts, "mono_regular", scaleMultiplier);
     }
 
     /** A smoother, more symmetrical font than the default UI font. */
@@ -82,6 +88,14 @@ public class Fonts {
         public static FontFamily    bold = (final float scaleMultiplier) -> createScaledFont(uiBoldFonts,    "ui_bold",    scaleMultiplier);
     }
 
+    /** A monospace font meant for code snippets. */
+    public static final class code {
+        private code() {}
+        public static FontFamily   light = (final float scaleMultiplier) -> createScaledFont(codeLightFonts,   "code_light",   scaleMultiplier);
+        public static FontFamily regular = (final float scaleMultiplier) -> createScaledFont(codeRegularFonts, "code_regular", scaleMultiplier);
+        public static FontFamily    bold = (final float scaleMultiplier) -> createScaledFont(codeBoldFonts,    "code_bold",    scaleMultiplier);
+    }
+
 
 
 
@@ -90,8 +104,8 @@ public class Fonts {
 
 
     private static ScaledFont createScaledFont(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier) {
-        final float guiScale = Minecraft.getInstance().getWindow().getGuiScale();
-        final @NotNull Pair<Font, FontDescription> font = createFontIfNeeded(fontList, fontName, scaleMultiplier, guiScale);
+        final int currentScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex();
+        final @NotNull Pair<Font, FontDescription> font = createFontIfNeeded(fontList, fontName, scaleMultiplier, currentScaleIndex);
         return new ScaledFont(null, font.getFirst(), scaleMultiplier, font.getSecond());
     }
 
@@ -105,8 +119,8 @@ public class Fonts {
      * @param scaleMultiplier The scale multiplier.
      * @return The existing or newly created Font instance and its FontDescription.
      */
-    private static Pair<Font, FontDescription> createFontIfNeeded(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier, final float guiScale) {
-        final int fontIndex = getFontIndexForScale(scaleMultiplier, guiScale);
+    private static Pair<Font, FontDescription> createFontIfNeeded(final List<@Nullable Pair<Font, FontDescription>> fontList, final @Nullable String fontName, final float scaleMultiplier, final int guiScaleIndex) {
+        final int fontIndex = getFontIndexForScale(scaleMultiplier, guiScaleIndex);
         final @Nullable Pair<Font, FontDescription> requestedFont = fontList.get(fontIndex);
         if(requestedFont != null) {
             return requestedFont;
@@ -117,7 +131,7 @@ public class Fonts {
             final @NotNull Font.Provider defaultProvider = ((FontAccessor)Minecraft.getInstance().font).getProvider();
             final @NotNull FontDescription fontDescription = fontName == null
                 ? Style.EMPTY.getFont()
-                : new FontDescription.Resource(getFontIdForScale(fontName, scaleMultiplier, guiScale))
+                : new FontDescription.Resource(getFontIdForScale(fontName, scaleMultiplier, guiScaleIndex))
             ;
 
             // Create the custom font provider.
@@ -147,9 +161,10 @@ public class Fonts {
      * @param guiScale The current GUI Scale option value.
      * @return The index of the optimal font instance.
      */
-    private static int getFontIndexForScale(final float scaleMultiplier, final float guiScale) {
+    private static int getFontIndexForScale(final float scaleMultiplier, final int guiScaleIndex) {
 
         // Snap to nearest 0.25 increment, clamped between 0.25 and FONT_MAX_SIZE, then convert to index
+        final float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(guiScaleIndex);
         return Math.clamp(Math.round(guiScale * scaleMultiplier * FONT_UNIT_RATIO), 1, FONT_SIZES_NUMBER) - 1;
     }
 
@@ -167,16 +182,17 @@ public class Fonts {
      * @param guiScale The current GUI Scale option value.
      * @return The ID of the font provider.
      */
-    private static Identifier getFontIdForScale(final String baseName, final float scaleMultiplier, final float guiScale) {
+    private static Identifier getFontIdForScale(final String baseName, final float scaleMultiplier, final int guiScaleIndex) {
 
         // Snap to nearest 0.25 increment, clamped between 0.25 and FONT_MAX_SIZE
-        float snapped = Math.round(guiScale * scaleMultiplier * FONT_UNIT_RATIO) / FONT_UNIT_RATIO;
-        snapped = Math.clamp(snapped, FONT_SCALE_STEP, FONT_MAX_SIZE);
+        final float guiScale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(guiScaleIndex);
+        final float snapped = Math.round(guiScale * scaleMultiplier * FONT_UNIT_RATIO) / FONT_UNIT_RATIO;
+        final float clamped = Math.clamp(snapped, FONT_SCALE_STEP, FONT_MAX_SIZE);
 
         // Format as "1" for whole numbers, "1.5" for decimal steps, to matches atlas filenames
-        final String scaleStr = (snapped == Math.floor(snapped))
-            ? String.valueOf((int)snapped)
-            : String.valueOf(snapped)
+        final String scaleStr = (clamped == Math.floor(clamped))
+            ? String.valueOf((int)clamped)
+            : String.valueOf(clamped)
         ;
 
         return Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, String.format("%s_%sx", baseName, scaleStr));

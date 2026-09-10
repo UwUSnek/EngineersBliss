@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 
 import net.minecraft.world.entity.Entity;
 
@@ -20,7 +20,7 @@ public class ClientFreezeEffectSuppressorMixin {
     @Inject(method = "canFreeze", at = @At("RETURN"), cancellable = true, require = 1)
 	private void eb$canFreeze(final CallbackInfoReturnable<Boolean> cir) {
         if(cir.getReturnValueZ()) {
-            if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_FREEZING_EFFECT)) {
+            if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_FREEZING_EFFECT)) {
                 cir.setReturnValue(false);
             }
         }

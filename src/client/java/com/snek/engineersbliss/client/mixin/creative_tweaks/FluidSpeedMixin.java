@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -65,7 +65,7 @@ public abstract class FluidSpeedMixin {
         // If entity is a player and they are not swimming (keep default swimming movement) and they have the feature active, use the custom movement
         if((Object)this instanceof final Player _this) {
             if(!_this.isSwimming()) {
-                if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_WATER_SLOWDOWN)) {
+                if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_WATER_SLOWDOWN)) {
                     eb$customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                     ci.cancel();
                 }
@@ -82,7 +82,7 @@ public abstract class FluidSpeedMixin {
 
         // If entity is a player and they have the feature active, use the custom movement
         if((Object)this instanceof final Player _this) {
-            if(ClientFeatureSync.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_LAVA_SLOWDOWN)) {
+            if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_LAVA_SLOWDOWN)) {
                 eb$customTravelInFluid(_this, input, baseGravity, isFalling, oldY);
                 ci.cancel();
             }

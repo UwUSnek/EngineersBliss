@@ -22,18 +22,13 @@ public abstract class UiAnalogueSlider extends UiSlider {
 
 
     protected UiAnalogueSlider(
-        final Screen screen, final int x, final int y, final int w, final int h,
+        final Screen screen,
         final UiTxt label,
         final double min, final double max, final double initial,
         final @Nullable Function<UiSlider, UiTxt> valueFormatter
     ) {
-        super(
-            screen, x, y, w, h,
-            label,
-            (initial - min) / (max - min),
-            null,
-            valueFormatter == null ? s -> new UiTxt(String.format("%.2f", ((UiAnalogueSlider)s).getRealValue())) : valueFormatter
-        );
+        final Function<UiSlider, UiTxt> _valueFormatter = valueFormatter == null ? s -> new UiTxt(String.format("%.2f", ((UiAnalogueSlider)s).getRealValue())) : valueFormatter;
+        super(screen, label, (initial - min) / (max - min), null, _valueFormatter);
         this.min = min;
         this.max = max;
         updateMessage();

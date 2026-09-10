@@ -17,12 +17,11 @@ import com.snek.engineersbliss.client.mixin.accessors.GameRendererAccessor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.resources.Identifier;
 
 
-
+//TODO remove julia set stuff its very useless and not that cool and its also an issue for the flashing screen. not ideal for a public mod
 
 @Mixin(GameRenderer.class)
 public abstract class JuliaSetShaderMixin {

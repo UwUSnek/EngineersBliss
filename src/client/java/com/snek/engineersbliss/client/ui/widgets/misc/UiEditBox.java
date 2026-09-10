@@ -1,14 +1,14 @@
 package com.snek.engineersbliss.client.ui.widgets.misc;
 
-import com.snek.engineersbliss.client.ui.font.Fonts;
+import java.util.function.Consumer;
+
+import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiTextHandlerWidget;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
-import net.minecraft.util.FormattedCharSequence;
 
 
 
@@ -17,33 +17,27 @@ import net.minecraft.util.FormattedCharSequence;
 
 
 
-public class UiEditBox extends EditBox implements BgCacheWidget {
-
-    // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+public class UiEditBox extends __base_UiTextHandlerWidget {
+    private final Consumer<String> responder; //FIXME pass to superclass
+    private String valueCache;
 
 
-
-
-    public UiEditBox(final Screen screen, final int x, final int y, final int width, final int height, final Component narration) {
-        super(Fonts.ui.regular.get(1f).getFont(), x, y, width, height, narration);
-        this.setTextShadow(false);
-        this.addFormatter((text, offset) ->
-            FormattedCharSequence.forward(text, Style.EMPTY.withFont(Fonts.ui.regular.get(1f).getDescription()))
-        );
-        bgCache = new TextureCache(screen);
+    public UiEditBox(final Screen screen, final FontFamily fontFamily, final UiTxt hint, final Consumer<String> responder) {
+        super(screen, fontFamily, hint, TextAlignment.LEFT, false);
+        this.responder = responder;
+        this.valueCache = "";
+        setBgColor(Layout.bgColor);
+        updateLabel();
     }
 
-
-
+    public String getValue() {
+        return valueCache;
+    }
 
     @Override
-    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    protected void onValueChange() {
+        super.onValueChange();
+        valueCache = lines.get(0).toString();
+        if(responder != null) responder.accept(getValue());
     }
 }

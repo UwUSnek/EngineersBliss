@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -23,7 +23,7 @@ public class BedBounceSuppressorMixin {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isSuppressingBounce()Z")
     )
     private boolean eb$isSuppressingBounce(final Entity entity, final BlockGetter level, final Entity entityRef) {
-        if(ClientFeatureSync.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.DISABLE_BED_BOUNCE)) {
+        if(CreativeTweaksClientHandler.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.DISABLE_BED_BOUNCE)) {
             return true;
         }
         return entity.isSuppressingBounce();

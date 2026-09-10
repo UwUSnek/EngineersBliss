@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.utils;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -22,6 +23,8 @@ public class UiTxt extends Txt {
     // Font family and scale
     private final FontFamily fontFamily;
     private final float scale;
+    private int width;
+    private int lastGuiScaleIndex = -1; //! Keeps track of width cache. This must not be written by anything that isn't the width getter.
 
     // Getters
     public @NotNull FontFamily getFontFamily() { return fontFamily; }
@@ -46,10 +49,15 @@ public class UiTxt extends Txt {
     public UiTxt(final @NotNull MutableComponent s, final float scale) { this(s, Fonts.ui.light, scale); }
     public UiTxt(final @NotNull Component        s, final float scale) { this(s, Fonts.ui.light, scale); }
 
-    public UiTxt(                                   final FontFamily fontFamily, final float scale) { super( ); this.fontFamily = fontFamily; this.scale = scale; }
-    public UiTxt(final @NotNull String           s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }
-    public UiTxt(final @NotNull MutableComponent s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }
-    public UiTxt(final @NotNull Component        s, final FontFamily fontFamily, final float scale) { super(s); this.fontFamily = fontFamily; this.scale = scale; }
+    public UiTxt(                                   final FontFamily fontFamily, final float scale) { this(Component.empty(),    fontFamily, scale); }
+    public UiTxt(final @NotNull String           s, final FontFamily fontFamily, final float scale) { this(Component.literal(s), fontFamily, scale); }
+    public UiTxt(final @NotNull MutableComponent s, final FontFamily fontFamily, final float scale) { this((Component)s,         fontFamily, scale); }
+    public UiTxt(final @NotNull Component        s, final FontFamily fontFamily, final float scale) {
+        super(s);
+        this.fontFamily = fontFamily;
+        this.scale = scale;
+        this.width = -1; //! Width is calculated lazily after initialization or GUI resizes.
+    }
 
 
 
@@ -74,5 +82,17 @@ public class UiTxt extends Txt {
     /** Wrapper for Txt.cat that returns a UiTxt instead of a Txt. */
     public UiTxt cat(final @NotNull UiTxt s) {
         return (UiTxt)super.cat(s);
+    }
+
+
+
+
+    public int getWidth() {
+        final int curGuiScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex();
+        if(lastGuiScaleIndex != curGuiScaleIndex) {
+            lastGuiScaleIndex = curGuiScaleIndex;
+            width = fontFamily.get(scale).calcWidth(this);
+        }
+        return width;
     }
 }

@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.creative_tweaks.CreativeTweaksClientHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +22,7 @@ public class BubbleColumnsPushSuppressorMixin {
     @SuppressWarnings("unused")
     @Inject(method = "handleOnAboveBubbleColumn", at = @At("HEAD"), cancellable = true, require = 1)
     private static void eb$handleOnAboveBubbleColumn(final Entity entity, final boolean dragDown, final BlockPos pos, final CallbackInfo ci) {
-        if(ClientFeatureSync.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG)) {
+        if(CreativeTweaksClientHandler.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG)) {
             ci.cancel();
         }
     }
@@ -30,7 +30,7 @@ public class BubbleColumnsPushSuppressorMixin {
     @SuppressWarnings("unused")
     @Inject(method = "handleOnInsideBubbleColumn", at = @At("HEAD"), cancellable = true, require = 1)
     private static void eb$handleOnInsideBubbleColumn(final Entity entity, final boolean dragDown, final CallbackInfo ci) {
-        if(ClientFeatureSync.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG)) {
+        if(CreativeTweaksClientHandler.creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.DISABLE_BUBBLE_COLUMN_DRAG)) {
             ci.cancel();
         }
     }

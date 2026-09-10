@@ -1,10 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers;
 
 import com.snek.engineersbliss.feature_handlers.PlayerFeatureData;
-import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_BlockFeatureInterface;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
-import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksServerFeatureSet;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.DoubleFeatureUpdateRequestPayload;
 import com.snek.engineersbliss.network.features.payloads.FloatFeatureUpdateRequestPayload;
@@ -18,7 +16,6 @@ import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.world.entity.player.Player;
 
 
 
@@ -93,39 +90,5 @@ public class ClientFeatureSync {
             case Double  n -> ClientPlayNetworking.send(new DoubleFeatureUpdateRequestPayload(feature.getHash(), n));
             default -> EngineerSBliss.LOGGER.error("Invalid feature type {}", value.getClass().getName(), new Throwable());
         }
-    }
-
-
-
-
-    /**
-     * Checks if a creative mode player has the specified feature set to the specified value.
-     * Returns false if the entity is not a Player or is not in Creative Mode.
-     * ! This doesn't work when called from the dedicated server. Use ServerFeatureSync.creativePlayerHasFeature(Player, __base_ServerFeature) instead.
-     */
-    public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature, final T value) {
-        if(entity instanceof final @NotNull Player player) {
-            if(player.isCreative()) {
-                return getFeature(feature) == value;
-            }
-        }
-        return false;
-    }
-    /**
-     * Checks if a creative mode player has the specified toggle feature set to TRUE.
-     * Returns false if the entity is not a Player or is not in Creative Mode or the feature is not a toggle feature.
-     * ! This doesn't work when called from the dedicated server. Use ServerFeatureSync.creativePlayerHasFeature(Player, __base_ServerFeature) instead.
-     */
-    public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature) {
-        if(feature instanceof ServerToggleFeature) {
-            return creativePlayerHasFeature(entity, (__base_ServerFeature<Boolean>)feature, true);
-        }
-        return false;
-    }
-    public static boolean shouldPlayerPhaseThroughBlocks(final Object entity) {
-        return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_BLOCKS_FLY) && ((Player)entity).getAbilities().flying;
-    }
-    public static boolean shouldPlayerPhaseThroughEntities(final Object entity) {
-        return creativePlayerHasFeature(entity, CreativeTweaksServerFeatureSet.PHASE_THROUGH_ENTITIES);
     }
 }

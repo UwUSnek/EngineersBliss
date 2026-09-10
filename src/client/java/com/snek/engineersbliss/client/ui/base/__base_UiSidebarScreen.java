@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.ui.base;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
+import com.snek.engineersbliss.client.utils.Layout;
 
 
 
@@ -15,13 +16,13 @@ import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
  * A __base_UiScreen that comes with sidebars.
  */
 public abstract class __base_UiSidebarScreen extends __base_UiScreen {
-    public static float DEFAULT_SIDEBAR_WIDTH = 0.25f;
+    public static float DEFAULT_SIDEBAR_WIDTH = 0.2f;
 
     // Elements and layout
     protected final boolean hasLeftSidebar;
     protected final boolean hasRightSidebar;
-    protected final float leftSidebarWidth;
-    protected final float rightSidebarWidth;
+    protected final float leftSidebarWidth;  //TODO replace with UiSiz
+    protected final float rightSidebarWidth; //TODO replace with UiSize
     protected UiWidgetList leftSidebar;
     protected UiWidgetList rightSidebar;
 
@@ -59,16 +60,32 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
 
         // Add left sidebar
         if(hasLeftSidebar) {
-            final int leftSidebarWidthPx = (int)(width * leftSidebarWidth);
-            leftSidebar = new UiWidgetList(this, leftSidebarWidthPx, height, 0, 0, BUTTON_HEIGHT);
+            leftSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT);
+            leftSidebar.setBorderRightPx(1);
             addRenderableWidget(leftSidebar);
         }
 
         // Add right sidebar
         if(hasRightSidebar) {
-            final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
-            rightSidebar = new UiWidgetList(this, rightSidebarWidthPx, height, width - rightSidebarWidthPx, 0, BUTTON_HEIGHT);
+            rightSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT);
+            rightSidebar.setBorderLeftPx(1);
             addRenderableWidget(rightSidebar);
+        }
+    }
+
+
+    // Layout logic
+    @Override
+    public void relayoutSelf() {
+        if(hasLeftSidebar) {
+            final float leftSidebarWidthPx = width * leftSidebarWidth;
+            leftSidebar.setSize( leftSidebarWidthPx, height);
+            leftSidebar.setPosition(0, 0);
+        }
+        if(hasRightSidebar) {
+            final float rightSidebarWidthPx = width * rightSidebarWidth;
+            rightSidebar.setSize(rightSidebarWidthPx, height);
+            rightSidebar.setPos(width - rightSidebarWidthPx, 0);
         }
     }
 }

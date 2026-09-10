@@ -1,6 +1,8 @@
 package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.ReloadableTexture;
@@ -9,26 +11,20 @@ import net.minecraft.resources.Identifier;
 
 
 
-
+//TODO merge with svgTextureTracker
 public final class SvgScaleTracker {
     private SvgScaleTracker() {}
 
-    private static int lastScale = -1;
-
-
-    public static int currentScale() {
-        final double raw = Minecraft.getInstance().getWindow().getGuiScale();
-        return Math.clamp((int)Math.round(raw), 1, 4);
-    }
+    private static int lastGuiScaleIndex = -1;
 
 
     public static void tick() {
-        final int scale = currentScale();
-        if(scale == lastScale) return;
-        lastScale = scale;
+        final int guiScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex();
+        if(guiScaleIndex == lastGuiScaleIndex) return;
+        lastGuiScaleIndex = guiScaleIndex;
 
         for(final Identifier id : SvgTextureTracker.all().keySet()) {
-            final NativeImage image = SvgTextureTracker.acquire(id, scale);
+            final NativeImage image = SvgTextureTracker.acquire(id, guiScaleIndex);
             if(image == null) continue;
             final AbstractTexture tex = Minecraft.getInstance().getTextureManager().getTexture(id);
             if(tex instanceof final ReloadableTexture reloadable) {

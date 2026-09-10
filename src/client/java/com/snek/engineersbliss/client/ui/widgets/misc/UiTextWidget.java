@@ -5,17 +5,13 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
-import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
-import com.snek.engineersbliss.utils.Txt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 
@@ -23,72 +19,46 @@ import net.minecraft.client.input.MouseButtonEvent;
 
 
 /**
- * A custom widget capable of rendering text with the specified scale, alignment, background color and text color.
- * It also supports line word wrap.
+ * A widget capable of rendering wrapped text lines.
  */
-public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWidgetBase {
-    private UiTxt label;
+public class UiTextWidget extends __base_UiWidget {
     private List<UiTxt> cachedLines; //! Wrapped lines
-    private final TextAlignment alignment;
-    private TextAlignmentY verticalAlignment;
-    private int color;
     private final boolean wrapLines;
-
-    // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
-
-    // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+    private int color;
 
 
 
 
     public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color) {
-        this(screen, label, alignment, color, 0x0);
+        this(screen, label, alignment, false, color);
     }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color) {
-        this(screen, x, y, w, h, label, alignment, color, 0x0);
-    }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
-        this(screen, label, alignment, color, wrapLines, 0x0);
-    }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines) {
-        this(screen, x, y, w, h, label, alignment, color, wrapLines, 0x0);
-    }
-
-
     public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(screen, 50, 50, 50, 50, label, alignment, color, false, bgColor);
+        this(screen, label, alignment, false, color, bgColor);
     }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
-        this(screen, x, y, w, h, label, alignment, color, false, bgColor);
+    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color) {
+        this(screen, label, alignment, wrapLines, color, 0x0);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
-        this(screen, 50, 50, 50, 50, label, alignment, color, wrapLines, bgColor);
-    }
-    public UiTextWidget(final Screen screen, final int x, final int y, final int w, final int h, final UiTxt label, final TextAlignment alignment, final int color, final boolean wrapLines, final int bgColor) {
-        super(x, y, w, h, new Txt().get());
-        this.screen = screen;
-        this.alignment = alignment;
-        this.color = color;
-        this.bgColor = bgColor;
+    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color, final int bgColor) {
+        super(screen, label, alignment);
         this.wrapLines = wrapLines;
-        verticalAlignment = TextAlignmentY.CENTER;
-        setLabel(label); //! Call setLabel to initialized cachedLines
-        bgCache = new TextureCache(screen);
+        this.color = color;
+        setBgColor(bgColor);
+        recalculateLines();
     }
 
 
-    public UiTextWidget withVerticalAlignment(final TextAlignmentY newVerticalAlignment) {
-        verticalAlignment = newVerticalAlignment;
-        return this;
-    }
 
+
+
+
+
+
+    @Override
+    public void relayoutSelf() {
+        if(wrapLines) {
+            recalculateLines();
+        }
+    }
 
 
 
@@ -97,19 +67,63 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWid
 
     //! Recalculate lines when the width changes
     @Override
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         super.setWidth(width);
+        recalculateLines();
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
         recalculateLines();
     }
 
 
     protected void recalculateLines() {
-        if(wrapLines) {
-            final int wrapWidth = width - Layout.textMarginPx * 2;
-            cachedLines = RenderingUtils.wrapLines(label, wrapWidth);
+        cachedLines = RenderingUtils.wrapLines(getLabel(), getInnerWidth());
+    }
+
+
+    @Override
+    public void setLabel(final UiTxt newLabel) {
+        super.setLabel(newLabel);
+        recalculateLines();
+    }
+
+
+
+
+
+
+
+    @Override
+    protected void extractLabel(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        if(!wrapLines) {
+            super.extractLabel(graphics, mouseX, mouseY, a);
         }
         else {
-            cachedLines = List.of(label);
+
+            // Calculate position
+            int curLineNum = 0;
+            final @NotNull ScaledFont scaledFont = getLabel().getScaledFont();
+            final int lineHeight = scaledFont.getLineHeight();
+            final int textHeight = lineHeight * cachedLines.size();
+            final int y = (int)switch(getVerticalAlignment()) {
+                case TRUE_TOP    -> getYF();
+                case TOP         -> getYF() + Layout.textMarginPx;
+                case CENTER      -> getYF() + (getHeightF() - textHeight) / 2f;
+                case BOTTOM      -> getBottom() - textHeight;
+                case TRUE_BOTTOM -> getBottom() - textHeight - Layout.textMarginPx;
+            };
+
+
+            // Draw text lines
+            graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
+            for(final UiTxt l : cachedLines) {
+                graphics.text(l, Math.round(getInnerX()), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
+                ++curLineNum;
+            }
+            graphics.disableScissor();
         }
     }
 
@@ -119,54 +133,10 @@ public class UiTextWidget extends AbstractWidget implements BgCacheWidget, UiWid
 
 
 
-    @Override
-    protected void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-
-
-        // Draw background
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
-
-
-        // Fetch ScaledFont and calculate position
-        int curLineNum = 0;
-        final @NotNull ScaledFont scaledFont = (label instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
-        final int textHeight = scaledFont.getLineHeight() * cachedLines.size();
-        final int x = alignment == TextAlignment.LEFT ? getX() + Layout.textMarginPx : getX();
-        final int y = switch(verticalAlignment) {
-            case TOP    -> getY() + Layout.textMarginPx;
-            case CENTER -> getY() + (height - textHeight) / 2;
-            case BOTTOM -> getBottom() - textHeight;
-        };
-        final int wrapWidth = width - Layout.textMarginPx * 2;
-
-
-        // Draw text lines
-        for(final UiTxt l : cachedLines) {
-            RenderingUtils.extractTxt(graphics, l, x, y + scaledFont.getLineHeight() * curLineNum, color, alignment, wrapWidth);
-            ++curLineNum;
-        }
-    }
-
-
-
-
-
-
-
-
-    @Override
-    protected void updateWidgetNarration(NarrationElementOutput output) {
-        // Empty
-    }
-
+    // Text widgets reject clicks by default
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
         return false;
-    }
-
-    public void setLabel(final UiTxt newLabel) {
-        label = newLabel;
-        recalculateLines();
     }
 
     public void setColor(final int newColor) {

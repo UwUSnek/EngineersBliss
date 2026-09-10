@@ -1,32 +1,27 @@
 package com.snek.engineersbliss.client.ui.widgets.containers;
 
-import net.minecraft.client.gui.components.AbstractSelectionList;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
+
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.input.CharacterEvent;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.util.Mth;
 
-import com.snek.engineersbliss.client.ui.widgets.misc.BgCacheWidget;
-import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
-import com.snek.engineersbliss.client.ui.widgets.base.UiWidgetBase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mojang.blaze3d.platform.NativeImage;
-import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.mixin.accessors.AbstractScrollAreaAccessor;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
+import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Easings;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 
 
 
@@ -38,149 +33,222 @@ import com.snek.engineersbliss.client.utils.RenderingUtils;
 /**
  * A scrollable vertical list capable of containing other widgets.
  */
-public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> implements BgCacheWidget, UiWidgetBase {
 
-    // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
-
-    // Cached textures
-    private final TextureCache bgCache;
-    private int bgColor = Layout.bgColor;
-    public void setBgColor(final int newColor) { bgColor = newColor; markBgDirty(); }
-	@Override public TextureCache getBgTextureCache() { return bgCache; }
-    @Override public int getBgBaseColor() { return bgColor; }
+public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
-    public UiWidgetList(final Screen screen, int width, int height, int x, int y, int itemHeight) {
-        super(Minecraft.getInstance(), width, height, y, itemHeight);
-        this.screen = screen;
-        bgCache = new TextureCache(screen);
-        setX(x);
+    private final UiSize scrollbarWidth;
+    private final float defaultEntryHeight;
+    private final float rowMargin;
+
+    private boolean isScrollable;
+    private float scrollAmount;
+    private final AnimatedFloat animatedScrollAmount;
+    private float lastGuiScale;
+    private boolean scrolling;
+    private int lockedRows;
+
+
+
+
+    public UiWidgetList(final Screen screen, final float defaultEntryHeight) {
+        this(screen, defaultEntryHeight, 0f);
+    }
+    public UiWidgetList(final Screen screen, final float defaultEntryHeight, final float rowMargin) {
+        super(screen, new UiTxt(CommonComponents.EMPTY));
+        setBgColor(Layout.bgColor);
+        this.scrollbarWidth = new UiSize(this); scrollbarWidth.setPx(2).setScaleWithUi(true);
+        this.isScrollable = true;
+        this.scrollAmount = 0f;
+        this.animatedScrollAmount = new AnimatedFloat(scrollAmount, 80, Easings.quadInOut);
+        this.lastGuiScale = -1f;
+        this.scrolling = false;
+        this.lockedRows = 0;
+        this.defaultEntryHeight = defaultEntryHeight;
+        this.rowMargin = rowMargin;
     }
 
 
 
 
-    @Override
-    protected boolean entriesCanBeSelected() {
-        return false;
-    }
 
-	@Override
-	protected void updateWidgetNarration(NarrationElementOutput output) {
-        // Empty
-	}
 
-    @Override
-    public boolean keyPressed(final KeyEvent event) {
-        boolean r = false;
-        for(final Entry c : children()) {
-            if(c.keyPressed(event)) r = true;
-        }
-        return r;
-    }
 
-    @Override
-    public boolean charTyped(CharacterEvent event) {
-        boolean r = false;
-        for(final Entry c : children()) {
-            if(c.charTyped(event)) r = true;
-        }
-        return r;
+
+
+    public void setLockedRows(final int newLockedRows) {
+        lockedRows = newLockedRows;
     }
 
     @Override
-    protected double scrollRate() {
-        return super.scrollRate() * 2d;
-    }
-
-
-    //! For whatever reason, AbstractSelectionList's getHovered() is PROTECTED but also FINAL???
-    //! So the hovered entry cannot be accessed by external classes.
-    //! This lets external code access it without iterating all the children.
-    public Entry getHoveredEntry() {
-        return super.getHovered();
-    }
-
-
-    //! Override lets clicks through when they don't hit a sub element.
-    @Override
-    public boolean isMouseOver(double mouseX, double mouseY) {
-        if(super.isMouseOver(mouseX, mouseY)) {
-            if(this.isOverScrollbar(mouseX, mouseY)) return true;
-            else for(final var c : children()) {
-                if(c.isMouseOver(mouseX, mouseY)) return true;
+    public void relayoutContent() {
+        if(!isRelayoutDisabled()) {
+            float lockedEntryY = getYF();
+            for(int i = 0; i < children.size(); ++i) {
+                final @NotNull Entry child = children.get(i);
+                child.setWidth(getRowWidth());
+                child.setXF(getRowLeft());
+                if(i < lockedRows) {
+                    child.setYF(lockedEntryY);
+                    lockedEntryY += child.getHeightF();
+                }
+                //! Y positioning of unlocked entries is done in the render loop for performance reasons.
+                //! Only visible entries are moved and drawn.
             }
         }
-        return false;
-    }
-
-
-
-
-
-
-
-
-    public void addWidget(AbstractWidget widget) {
-        this.addEntry(new Entry(widget));
-    }
-    public void addWidget(AbstractWidget widget, final int height) {
-        this.addEntry(new Entry(widget), height);
-    }
-
-
-    public void addWidgetAndSpacer(AbstractWidget widget, final int marginBottom) {
-        this.addEntry(new Entry(widget));
-        this.addWidget(new UiSpacer(), marginBottom);
-    }
-    public void addWidgetAndSpacer(AbstractWidget widget, final int height, final int marginBottom) {
-        this.addEntry(new Entry(widget), height);
-        this.addWidget(new UiSpacer(), marginBottom);
-    }
-
-
-    public void addWidgetAndSpacers(AbstractWidget widget, final int marginTop, final int marginBottom) {
-        this.addWidget(new UiSpacer(), marginTop);
-        this.addWidgetAndSpacer(widget, marginBottom);
-    }
-    public void addWidgetAndSpacers(AbstractWidget widget, final int height, final int marginTop, final int marginBottom) {
-        this.addWidget(new UiSpacer(), marginTop);
-        this.addWidgetAndSpacer(widget, height, marginBottom);
-    }
-
-
-
-
-
-
-    //! Vanilla's getFirstEntryY removes 2px for absolutely no reason and it cannot be changed bc its PRIVATE omfg why.
-    //! In Vanilla, getFirstEntryY is only used for setY, so this override changes setY to remove the 2px padding added by getFirstEntryY.
-    @Override
-    public void setY(final int y) {
-        super.setY(y - 2);
-    }
-
-    //! Fix Vanilla getRowLeft to account for the scrollbar's width.
-    @Override
-    public int getRowLeft() {
-        return getX();
+        super.relayoutContent();
     }
 
     @Override
-    public int getRowWidth() {
-        return this.width - this.scrollbarWidth();
+    public void relayoutSelf() {
+        if(!isRelayoutDisabled()) {
+            tickGuiScale();
+            this.refreshScrollAmount();
+        }
+    }
+
+    protected float contentHeight() {
+        float totalHeight = 0;
+        for(final @NotNull Entry child : children) {
+            totalHeight += child.getHeightF();
+        }
+        return totalHeight + 4;
+    }
+
+    public float getRowLeft() {
+        return getXF() + getWidthF() * rowMargin;
+    }
+
+    public float getRowRight() {
+        return getRowLeft() + getRowWidth();
+    }
+
+    public float getRowWidth() {
+        final float marginPx = getWidthF() * rowMargin;
+        final float scrollbarEncroachment = Math.max(0, scrollbarWidth.getPx() - marginPx);
+        return getWidthF() - marginPx * 2 - scrollbarEncroachment;
+    }
+
+    protected float scrollBarX() {
+        return getRowRight();
+    }
+
+    public void setIsScrollable(final boolean newIsScrollable) {
+        isScrollable = newIsScrollable;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void clearEntries() {
+        super.clearChildren();
+        setScrollAmount(0);
+    }
+
+    public void setScrollAmount(final double newScrollAmount) {
+        setScrollAmount(newScrollAmount, false);
+    }
+    public void setScrollAmount(final double newScrollAmount, final boolean snap) {
+        scrollAmount = (float)Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
+        if(snap) animatedScrollAmount.snapTo            (scrollAmount);
+        else     animatedScrollAmount.startNewTransition(scrollAmount);
+    }
+
+    public void refreshScrollAmount() {
+        setScrollAmount(scrollAmount);
+    }
+
+    public float maxScrollAmount() {
+        return Math.max(0, contentHeight() - height);
+    }
+
+    protected boolean scrollable() {
+        return isScrollable && maxScrollAmount() > 0;
+    }
+
+    public boolean updateScrolling(final MouseButtonEvent event) {
+        scrolling = scrollable() && isLeftClick(event) && isOverScrollbar(event.x(), event.y());
+        return scrolling;
+    }
+
+    protected boolean isOverScrollbar(final double x, final double y) {
+        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth.getPx() && y >= scrollTrackY() && y < getBottom();
+    }
+
+    protected float scrollTrackY() {
+        return getYF() + calcLockedHeight();
+    }
+
+    protected float scrollTrackHeight() {
+        return height - calcLockedHeight();
+    }
+
+    protected float scrollerHeight() {
+        return Mth.clamp(scrollTrackHeight() * scrollTrackHeight() / contentHeight(), 32, scrollTrackHeight() - 8); //FIXME replace 32 and 8 magic numbers
+    }
+
+    public float scrollBarY() {
+        return maxScrollAmount() == 0
+            ? scrollTrackY()
+            : Math.max(scrollTrackY(), animatedScrollAmount.compute() * (scrollTrackHeight() - scrollerHeight()) / maxScrollAmount() + scrollTrackY())
+        ;
+    }
+
+    protected double scrollRate() {
+        return defaultEntryHeight * getGuiScale();
+    }
+
+    private void scroll(final float amount) {
+        setScrollAmount(scrollAmount + amount);
     }
 
     @Override
-    protected int scrollBarX() {
-        return getX() + width - scrollbarWidth();
+    public boolean mouseScrolled(final double mx, final double my, final double scrollX, final double scrollY) {
+        if(!visible) {
+            return false;
+        }
+        setScrollAmount(scrollAmount - scrollY * scrollRate());
+        return true;
     }
 
     @Override
-    public int scrollbarWidth() {
-        return 2;
+    public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
+        final boolean scrollClicked = updateScrolling(event);
+        return super.mouseClicked(event, doubleClick) || scrollClicked;
+    }
+
+    @Override
+    public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
+        if(scrolling) {
+            if(event.y() < getYF()) {
+                setScrollAmount(0.0);
+            }
+            else if(event.y() > getBottom()) {
+                setScrollAmount(maxScrollAmount());
+            }
+            else {
+                final double max = Math.max(1, maxScrollAmount());
+                final float barHeight = scrollerHeight();
+                final double yDragScale = Math.max(1.0, max / (getHeightF() - barHeight));
+                setScrollAmount(scrollAmount + dy * yDragScale);
+            }
+        }
+        return super.mouseDragged(event, dx, dy);
+    }
+
+    @Override
+    public void onRelease(final MouseButtonEvent event) {
+        super.onRelease(event);
+        scrolling = false;
     }
 
 
@@ -190,42 +258,187 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
 
 
 
-    //! Disable default background
-    @Override
-    protected void extractListBackground(final GuiGraphicsExtractor graphics) {
-        // Empty
+    protected int __internal_addWidget(final Entry entry) {
+        return __internal_addWidget(entry, defaultEntryHeight);
+    }
+    protected int __internal_addWidget(final Entry entry, final float height) {
+        entry.parentList = this;
+        entry.setHeight(height);
+        final int r = super.addChild(entry);
+        relayoutContent();
+        return r;
+    }
+    public void addWidget(final __base_UiLayoutElm widget) {
+        __internal_addWidget(new Entry(getScreen(), widget));
+    }
+    public void addWidget(final __base_UiLayoutElm widget, final float height) {
+        __internal_addWidget(new Entry(getScreen(), widget), height);
     }
 
 
-    //! Draw custom background, then draw the rest
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float marginBottom) {
+        __internal_addWidget(new Entry(getScreen(), widget));
+        addWidget(new UiSpacer(getScreen()), marginBottom);
+    }
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float height, final float marginBottom) {
+        __internal_addWidget(new Entry(getScreen(), widget), height);
+        addWidget(new UiSpacer(getScreen()), marginBottom);
+    }
+
+
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float marginTop, final float marginBottom) {
+        addWidget(new UiSpacer(getScreen()), marginTop);
+        addWidgetAndSpacer(widget, marginBottom);
+    }
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float height, final float marginTop, final float marginBottom) {
+        addWidget(new UiSpacer(getScreen()), marginTop);
+        addWidgetAndSpacer(widget, height, marginBottom);
+    }
+
+
+
+
     @Override
-    public void extractWidgetRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
-        BgCacheWidget.super.extractBackground(graphics, mouseX, mouseY, a);
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+    protected void onSelected(final Entry selectedEntry) {
+        final boolean topClipped    = selectedEntry.getYF()      < getYF();
+        final boolean bottomClipped = selectedEntry.getBottom() > getBottom();
+        if(Minecraft.getInstance().getLastInputType().isKeyboard() || topClipped || bottomClipped) {
+            scrollToEntry(selectedEntry);
+        }
+    }
+
+    protected void scrollToEntry(final Entry entry) {
+        final float topDelta = entry.getYF() - getYF() - 2;
+        if(topDelta < 0) {
+            scroll(topDelta);
+        }
+        final float bottomDelta = getBottom() - entry.getYF() - entry.getHeightF() - 2;
+        if(bottomDelta < 0) {
+            scroll(-bottomDelta);
+        }
+    }
+
+    protected void centerScrollOn(final Entry entry) {
+        float y = 0;
+        for(final @NotNull Entry child : children) {
+            if(child == entry) {
+                y += child.getHeightF() / 2f;
+                break;
+            }
+            y += child.getHeightF();
+        }
+        setScrollAmount(y - height / 2f);
+    }
+
+
+
+
+
+
+
+
+    private float calcLockedHeight() {
+        float h = 0;
+        int i = 0;
+        for(final @NotNull Entry c : children) {
+            if(i >= lockedRows) break;
+            h += c.getHeightF();
+            i++;
+        }
+        return h;
     }
 
 
     @Override
-    protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
-        int scrollBarX     = this.scrollBarX();
-        int scrollerHeight = this.scrollerHeight();
-        int scrollerY      = this.scrollBarY();
-        int barWidth       = this.scrollbarWidth();
+    public void extractContent(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        //! Skip default extractContent. This class handles draw recursion on its own.
 
+
+        // Draw unlocked entries
+        final float outOfBoundsY = getScreen().height + 9999f;
+        final float lockedBottom = getYF() + calcLockedHeight();
+        float entryY = lockedBottom - animatedScrollAmount.compute();
+        float selfBottom = getBottom();
+        graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        for(int i = lockedRows; i < children.size(); ++i) {
+            final @NotNull Entry child = children.get(i);
+            final float oldEntryY = child.getYF();
+            final boolean oldPosInBounds = oldEntryY != outOfBoundsY;
+            final boolean newPosInBounds = entryY < selfBottom && entryY + child.getHeightF() > lockedBottom;
+
+            //! Optimize relayout to run only when the y is actually updated.
+            //! Stash out of bounds elements in a single place under the screen so they don't interfere with input detection.
+            if(oldEntryY != entryY) {
+                if(newPosInBounds) {
+                    child.setYF(entryY);
+                    child.relayout();
+                }
+                else if(oldPosInBounds) {
+                    child.setYF(outOfBoundsY);
+                    child.relayout();
+                }
+            }
+
+            //! Only draw the element if the new position is not ouf of bounds
+            if(newPosInBounds) {
+                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+            }
+            entryY += child.getHeightF();
+        }
+        graphics.disableScissor();
+
+
+        // Draw locked entries
+        int i = 0;
+        graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        for(final @NotNull Entry child : children) {
+            if(i < lockedRows && elmIsInBounds(child)) {
+                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+            }
+            i++;
+        }
+        graphics.disableScissor();
+    }
+
+
+
+
+    @Override
+    public void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
+        extractScrollbar(graphics, mouseX, mouseY);
+    }
+
+    protected void extractScrollbar(final UiGraphics graphics, final float mouseX, final float mouseY) {
+        final float scrollBarX     = scrollBarX();
+        final float scrollerHeight = scrollerHeight();
+        final float scrollerY      = scrollBarY();
+        final float barWidth       = scrollbarWidth.getPx();
 
         // If there are hidden elements
         if(scrollable()) {
 
             // Draw handle
-            final boolean hovered = isOverScrollbar(mouseX, mouseY);
-            final int handleColor = hovered ?  Layout.handleColorActive : Layout.handleColor;
+            final boolean hoveredBar = isOverScrollbar(mouseX, mouseY);
+            final int handleColor = hoveredBar ? Layout.handleColorActive : Layout.handleColor;
             graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, handleColor);
-            if(isOverScrollbar(mouseX, mouseY)) {
-                graphics.requestCursor(((AbstractScrollAreaAccessor)this).isScrolling() ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
-
-                // Draw hover overlay
+            if(hoveredBar) {
+                graphics.requestCursor(scrolling ? CursorTypes.RESIZE_NS : CursorTypes.POINTING_HAND);
                 graphics.fill(scrollBarX, scrollerY, scrollBarX + barWidth, scrollerY + scrollerHeight, Layout.highlightOverlay);
             }
+        }
+    }
+
+    private void tickGuiScale() {
+        final float scale = getGuiScale();
+        if(lastGuiScale < 0) {
+            lastGuiScale = scale;
+            return;
+        }
+        if(scale != lastGuiScale) {
+            final float ratio = scale / lastGuiScale;
+            setScrollAmount(scrollAmount * ratio, true);
+            lastGuiScale = scale;
         }
     }
 
@@ -236,72 +449,52 @@ public class UiWidgetList extends AbstractSelectionList<UiWidgetList.Entry> impl
 
 
 
-    public static class Entry extends AbstractSelectionList.Entry<Entry> {
-        private final AbstractWidget widget;
-
-        public Entry(AbstractWidget widget) {
-            this.widget = widget;
+    public static class Entry extends __base_UiContainer implements GuiEventListener {
+        private UiWidgetList parentList;
+        private final __base_UiLayoutElm widget;
+        @Override public boolean scaleHeightWithGui() {
+            return true;
         }
 
-        public AbstractWidget getWidget() {
+
+
+        //! For subclasses that manage their own content
+        protected Entry(final Screen screen) {
+            super(screen);
+            setBgColor(0x0);
+            this.widget = null;
+        }
+        public Entry(final Screen screen, final __base_UiLayoutElm widget) {
+            super(screen);
+            setBgColor(0x0);
+            this.widget = widget;
+            addChild(widget);
+        }
+
+
+
+
+        @Override
+        public void relayoutSelf() {
+            widget.setSize(getWidthF(), getHeightF());
+            widget.setPos(getXF(), getYF());
+        }
+
+
+
+
+        public @Nullable __base_UiLayoutElm getWidget() {
             return widget;
         }
 
         @Override
-        public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
-            widget.setX(getX());
-            widget.setY(getY());
-            widget.setWidth(getWidth());
-            widget.setHeight(getHeight());
-            widget.extractRenderState(graphics, mouseX, mouseY, a);
-        }
-
-
-        // @Override
-        // public void setFocused(boolean focused) {
-        //     super.setFocused(focused);
-        //     widget.setFocused(focused);
-        // }
-
-        // @Override
-        // public boolean isFocused() {
-        //     return widget.isFocused();
-        // }
-
-
-        @Override
-        public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
-            return widget.mouseClicked(event, doubleClick);
+        public void setFocused(final boolean focused) {
+            // Empty. Entry elements cannot be focused. Focus state is forwarded to the containe widget.
         }
 
         @Override
-        public boolean mouseReleased(final MouseButtonEvent event) {
-            return widget.mouseReleased(event);
-        }
-
-        @Override
-        public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
-            return widget.mouseDragged(event, dx, dy);
-        }
-
-        @Override
-        public boolean mouseScrolled(final double x, final double y, final double scrollX, final double scrollY) {
-            return widget.mouseScrolled(x, y, scrollX, scrollY);
-        }
-
-        @Override
-        public boolean keyPressed(final KeyEvent event) {
-            return widget.keyPressed(event);
-        }
-
-        @Override
-        public boolean keyReleased(final KeyEvent event) {
-            return widget.keyReleased(event);
-        }
-
-        @Override
-        public boolean charTyped(final CharacterEvent event) {
-            return widget.charTyped(event);
+        public boolean isFocused() {
+            return parentList.getFocused() == this;
         }
     }
 }

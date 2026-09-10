@@ -2,14 +2,14 @@ package com.snek.engineersbliss.client.ui.widgets.sliders;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.gui.screens.Screen;
@@ -50,23 +50,20 @@ public class UiSteppedSlider<T> extends UiSlider {
     @SuppressWarnings("unchecked")
     public UiSteppedSlider(
         final Screen screen,
-        final int x, final int y, final int w, final int h, final UiTxt label,
+        final UiTxt label,
         final List<T> stepValues, final int defaultValueIndex,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
         final @Nullable ValueFormatter<T> valueFormatter
     ) {
-        super(
-            screen,
-            x, y, w, h,
-            label, indexToUnit(defaultValueIndex, stepValues.size()),
-            null,
-            valueFormatter != null
-                ? s -> new UiTxt(valueFormatter.format(((UiSteppedSlider<T>)s).getSelectedValue(), false))
-                : s -> new UiTxt(       String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue()))
-        );
+        final Function<UiSlider, UiTxt> _valueFormatter = valueFormatter != null
+            ? s -> new UiTxt(valueFormatter.format(((UiSteppedSlider<T>)s).getSelectedValue(), false))
+            : s -> new UiTxt(       String.valueOf(((UiSteppedSlider<T>)s).getSelectedValue()))
+        ;
+        super(screen, label, indexToUnit(defaultValueIndex, stepValues.size()), null, _valueFormatter);
         this.stepValues = stepValues;
         this.afterChangeCallback = afterChangeCallback;
         this.valueFormatter = valueFormatter != null ? valueFormatter::format : (n, u) -> String.valueOf(n);
+        getRightLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
         updateMessage();
     }
 
@@ -112,6 +109,10 @@ public class UiSteppedSlider<T> extends UiSlider {
     @Override
     protected void applyValue() {
         super.applyValue();
+        fireChangeCallback();
+    }
+
+    protected void fireChangeCallback() {
         if(afterChangeCallback != null) {
             final int selectedIndex = unitToIndex(value, stepValues.size());
             afterChangeCallback.accept(selectedIndex, stepValues.get(selectedIndex));
@@ -151,45 +152,47 @@ public class UiSteppedSlider<T> extends UiSlider {
 
 
 
-    protected double magnitudeOf(final @NotNull T value) {
-        if(value instanceof final @NotNull Number number) return number.doubleValue();
-        return Double.parseDouble(String.valueOf(value));
+    protected float magnitudeOf(final @NotNull T value) {
+        if(value instanceof final @NotNull Number number) return number.floatValue();
+        return Float.parseFloat(String.valueOf(value));
     }
 
 
 
     @Override
-    public void drawCachedBackground(final NativeImage image, final int w, final int h) {
-        super.drawCachedBackground(image, w, h);
+    public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        super.extractBackground(graphics, mouseX, mouseY, a);
         final int n = stepValues.size();
 
         // Calculate magnitudes
-        double min = Double.MAX_VALUE;
-        double max = -Double.MAX_VALUE;
-        final double[] magnitudes = new double[n];
+        float min = +Float.MAX_VALUE;
+        float max = -Float.MAX_VALUE;
+        final float[] magnitudes = new float[n];
         for(int i = 0; i < n; i++) {
             magnitudes[i] = magnitudeOf(stepValues.get(i));
             if(magnitudes[i] < min) min = magnitudes[i];
             if(magnitudes[i] > max) max = magnitudes[i];
         }
-        final double range = (max - min == 0) ? 1 : (max - min);
+        final float range = (max - min == 0) ? 1 : (max - min);
 
 
         // Calculate local point coordinates
-        final int size = h;
-        final int graphLeft = w - size;
-        final double[] px = new double[n];
-        final double[] py = new double[n];
+        final float size = getHeightF();
+        final float graphLeft = getRight() - size;
+        final float[] px = new float[n];
+        final float[] py = new float[n];
         for(int i = 0; i < n; i++) {
-            px[i] = graphLeft + (double)(size - 1) * i / (n - 1);
-            py[i] = h - ((magnitudes[i] - min) / range) * h;
+            px[i] = graphLeft + (size - 1) * i / (n - 1);
+            py[i] = getYF() + size - ((magnitudes[i] - min) / range) * size;
         }
 
 
         // Draw graph area
-        RenderingUtils.extractLineArea(image, px, py, h, graphLeft, graphLeft + (int)(value * size), Layout.SliderGraphFillColor);
+        graphics.enableScissor(getX(), getY(), Math.round(graphLeft + (float)value * size) + 1, Math.round(getBottom()) + 1);
+        graphics.multiLineArea(graphLeft, getYF(), getRight(), getBottom(), px, py, Layout.SliderGraphFillColor);
+        graphics.disableScissor();
 
-        // Draw the actual line on top. RenderingUtils.extractLine handles 2-axis antialiasing automatically
-        RenderingUtils.extractLine(image, px, py, 1f, Layout.SliderGraphLineColor);
+        // Draw the actual line on top
+        graphics.multiLine(graphLeft, getYF(), getRight(), getBottom(), px, py, 1f, Layout.SliderGraphLineColor);
     }
 }
