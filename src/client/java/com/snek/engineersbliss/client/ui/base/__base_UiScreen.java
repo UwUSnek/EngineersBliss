@@ -9,6 +9,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
@@ -64,7 +65,6 @@ public abstract class __base_UiScreen extends Screen {
 
     // Relayout/rebuild flags
     private boolean needsRelayout;
-    private boolean needsRebuild;
 
 
     // Element tracking
@@ -81,13 +81,24 @@ public abstract class __base_UiScreen extends Screen {
     }
 
 
+    // Style
+    private final AnimatedColor bgColor;
+
+
 
 
     protected __base_UiScreen() {
         super(new UiTxt().get());
         this.animatedGuiScale = new AnimatedFloat(SettingsFeatureHandler.getCurrentGuiScale(), Layout.guiScaleTransitionDuration);
-        this.needsRebuild = true;
         this.needsRelayout = false;
+        this.bgColor = new AnimatedColor(calcNewBgColor(), 1000);
+    }
+    private int calcNewBgColor() {
+        final int bgOpacity = (int)(255f * SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY)));
+        return Layout.bgColor & 0x00FFFFFF | (bgOpacity << 24);
+    }
+    protected void refreshBgColor() {
+        bgColor.startNewTransition(calcNewBgColor());
     }
 
 
@@ -371,6 +382,8 @@ public abstract class __base_UiScreen extends Screen {
 	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         if(!tabPressed) {
             graphics.blurBeforeThisStratum();
+            final int _bgColor = bgColor.compute();
+            if((_bgColor & 0xFF000000) != 0) graphics.fill(0, 0, width, height, _bgColor);
         }
     }
 
