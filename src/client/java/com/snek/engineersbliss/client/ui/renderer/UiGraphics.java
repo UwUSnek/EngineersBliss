@@ -138,7 +138,8 @@ public class UiGraphics {
     ) {
 
         // Retrieve font and text scale
-        final float textScale = scaledFont.getScale() * screen.getGuiScale();
+        final float guiScaleMultiplier = scaledFont.isScaleInvariant() ? 1f : screen.getGuiScale();
+        final float textScale = scaledFont.getSize() * guiScaleMultiplier;
 
         // Compute x and y positions
         final int _x = (int)(switch(textAlignment) {
@@ -164,7 +165,7 @@ public class UiGraphics {
     public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
         //! All overloads go through this which calls the true extractTxt.
         //! Using toRawVisualOrder() is required in order to render '§' properly.
-        final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont();
+        final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont(false);
         text((dropShadow ? text : text.noShadow()).toRawVisualOrder(), text.getWidth(), scaledFont, x, y, color, textAlignment, elmWidth, shiftX, shiftY);
     }
     public void text(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {

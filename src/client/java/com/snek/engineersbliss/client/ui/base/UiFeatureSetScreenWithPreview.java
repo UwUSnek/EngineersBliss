@@ -97,8 +97,8 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
 
         // Render background text
         {
-            final float scale = 5; //FIXME make this constant, this must not change with GUI size
-            final @NotNull FontFamily fontFamily = Fonts.ui.bold;
+            final float scale = 10;
+            final @NotNull FontFamily fontFamily = Fonts.ui.invariant_bold;
             final @NotNull ScaledFont scaledFont = fontFamily.get(scale);
             final int textXL = (int)(xL + w / 2);
             final int textXR = (int)(xR + w / 2);

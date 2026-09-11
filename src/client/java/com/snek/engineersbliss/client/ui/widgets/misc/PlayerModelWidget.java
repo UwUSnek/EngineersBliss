@@ -37,7 +37,7 @@ public class PlayerModelWidget extends __base_UiContainer {
         super(screen);
         this.modelScale = DEFAULT_MODEL_SCALE;
         final LocalPlayer player = Minecraft.getInstance().player;
-        final UiTxt nameText = new UiTxt(player == null ? "" : player.getGameProfile().name(), Fonts.ui.regular, 2f);
+        final UiTxt nameText = new UiTxt(player == null ? "" : player.getGameProfile().name(), Fonts.ui.invariant_regular, 4f);
         addChild(    nameWidget = new UiTextWidget(screen, nameText,    TextAlignment.CENTER, 0xFFFFC200));
         addChild(playTimeWidget = new UiTextWidget(screen, new UiTxt(), TextAlignment.CENTER, 0xFFDDDDDD));
     }
@@ -73,7 +73,7 @@ public class PlayerModelWidget extends __base_UiContainer {
         final long hours   = TimeUnit.MILLISECONDS.toHours(ms);
         final long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % 60;
         final long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % 60;
-        playTimeWidget.setLabel(new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds), Fonts.ui.light));
+        playTimeWidget.setLabel(new UiTxt(String.format("Playtime: %dh %dm %ds", hours, minutes, seconds), Fonts.ui.invariant_light, 2f));
 
 
         // Draw player model

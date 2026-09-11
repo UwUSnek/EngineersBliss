@@ -30,32 +30,35 @@ import net.minecraft.util.FormattedCharSequence;
  */
 public class ScaledFont {
     private final Font font;
-    private final float scale;
+    private final float size;
+    private final boolean scaleInvariant;
     private final FontDescription description;
 
 
     // Getters
     public Font getFont() { return font; }
-    public float getScale() { return scale; }
+    public float getSize() { return size; }
+    public boolean isScaleInvariant() { return scaleInvariant; }
     public FontDescription getDescription() { return description; }
 
 
 
 
     @SuppressWarnings("java:S1172")
-    public ScaledFont(final @Nullable Object __unused, Font font, final float scale, final FontDescription description) {
+    public ScaledFont(final @Nullable Object __unused, Font font, final float size, final boolean scaleInvariant, final FontDescription description) {
         this.font = font;
-        this.scale = scale;
+        this.size = size;
+        this.scaleInvariant = scaleInvariant;
         this.description = description;
     }
-    public ScaledFont(Font.Provider provider, final float scale, final FontDescription description) {
-        this(null, new Font(provider), scale, description);
+    public ScaledFont(Font.Provider provider, final float scale, final boolean scaleInvariant, final FontDescription description) {
+        this(null, new Font(provider), scale, scaleInvariant, description);
     }
-    public ScaledFont() {
-        this(null, Minecraft.getInstance().font, 1f, Style.EMPTY.getFont());
+    public ScaledFont(final boolean scaleInvariant) {
+        this(null, Minecraft.getInstance().font, 1f, scaleInvariant, Style.EMPTY.getFont());
     }
-    public ScaledFont(ScaledFont scaledFont, final float scale) {
-        this(null, scaledFont.getFont(), scale, scaledFont.getDescription());
+    public ScaledFont(ScaledFont scaledFont, final float scale, final boolean scaleInvariant) {
+        this(null, scaledFont.getFont(), scale, scaleInvariant, scaledFont.getDescription());
     }
 
 
@@ -127,7 +130,8 @@ public class ScaledFont {
 
 
     private int __internal_calcWidth(final FormattedCharSequence s, final float scale) {
-        return (int)(font.width(s) * getScale() * scale);
+        final float scaleInvariantWidth = font.width(s) * getSize();
+        return (int)(isScaleInvariant() ? scaleInvariantWidth : scaleInvariantWidth * scale);
     }
 //TODO add float support to text
 
@@ -145,7 +149,7 @@ public class ScaledFont {
      * @return The width of the text in pixels.
      */
     public int calcLegacyWidth(FormattedCharSequence s) {
-        return (int)(font.width(s) * getScale());
+        return (int)(font.width(s) * getSize());
     }
     /**
      * Calculates the legacy width of the provided FormattedCharSequence.
@@ -165,7 +169,7 @@ public class ScaledFont {
      * @return The width of the text in pixels.
      */
     public int calcLegacyWidth(Component s) {
-        return (int)(font.width(s) * getScale());
+        return (int)(font.width(s) * getSize());
     }
     /**
      * Calculates the legacy width of the provided string.
@@ -175,7 +179,7 @@ public class ScaledFont {
      * @return The width of the string in pixels.
      */
     public int calcLegacyWidth(String s) {
-        return (int)(font.width(s) * getScale());
+        return (int)(font.width(s) * getSize());
     }
 
 
@@ -189,6 +193,7 @@ public class ScaledFont {
         return getLineHeightForGuiScale(SettingsFeatureHandler.getCurrentGuiScale());
     }
     public int getLineHeightForGuiScale(final float scale) {
-        return (int)(font.lineHeight * getScale() * scale);
+        final float scaleInvariantHeight = font.lineHeight  * getSize();
+        return (int)(isScaleInvariant() ? scaleInvariantHeight : scaleInvariantHeight * scale);
     }
 }
