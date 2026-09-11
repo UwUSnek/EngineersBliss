@@ -283,7 +283,7 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     public void extractContent(UiGraphics graphics, float mouseX, float mouseY, float a) {
         for(final var child : children()) {
             if(child instanceof @NotNull __base_UiLayoutElm w && elmIsInBounds(w)) {
-                w.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+                w.extract(graphics, mouseX, mouseY, a);
             }
         }
     }
@@ -294,7 +294,7 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     public abstract void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a);
 
 
-    public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) { //TODO rename to "extract"
+    public void extract(UiGraphics graphics, float mouseX, float mouseY, float a) {
         dragged   = getScreen().getDraggedElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
         isHovered = getScreen().getHoveredElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
         checkHoverTransition();

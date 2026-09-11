@@ -398,7 +398,7 @@ public abstract class UiScreen extends Screen {
         // Extract widgets
         for(final @NotNull GuiEventListener c : children()) {
             if(c instanceof @NotNull __base_UiWidget r) {
-                r.extractWidgetRenderState(graphics, mouseX, mouseY, delta);
+                r.extract(graphics, mouseX, mouseY, delta);
             }
         }
     }

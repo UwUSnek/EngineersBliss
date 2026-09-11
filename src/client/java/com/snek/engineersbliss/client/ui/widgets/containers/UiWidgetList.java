@@ -385,7 +385,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
             //! Only draw the element if the new position is not ouf of bounds
             if(newPosInBounds) {
-                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+                child.extract(graphics, mouseX, mouseY, a);
             }
             entryY += child.getHeightF();
         }
@@ -397,7 +397,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
         for(final @NotNull Entry child : children) {
             if(i < lockedRows && elmIsInBounds(child)) {
-                child.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+                child.extract(graphics, mouseX, mouseY, a);
             }
             i++;
         }
