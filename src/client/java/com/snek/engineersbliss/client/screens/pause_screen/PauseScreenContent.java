@@ -55,12 +55,13 @@ public class PauseScreenContent extends UiSidebarScreen {
         addWidget(playerModel = new PlayerModelWidget(this));
 
         // Mod name and version
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         final UiTxt titleText   = new UiTxt(EngineerSBliss.MOD_NAME, Fonts.ui.light, 2f);
         final UiTxt versionText = new UiTxt(String.format("v%s-%s", EngineerSBlissClient.getModVersion(), EngineerSBlissClient.getMcVersion()), Fonts.ui.regular, 1f);
         //FIXME ^ the mod version will prob contain the minecraft version too, after setting up stonecutter
-        leftSidebar.addWidget(new UiTextWidget(this, titleText,   TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
-        leftSidebar.addWidget(new UiTextWidget(this, versionText, TextAlignment.LEFT, Layout.fgColor), versionText.getScaledFont().getLineHeight());
-        leftSidebar.setLockedRows(1);
+        leftSidebar.addWidget(new UiTextWidget(this, titleText,   TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getUnscaleLineHeight());
+        leftSidebar.addWidget(new UiTextWidget(this, versionText, TextAlignment.LEFT, Layout.fgColor), versionText.getScaledFont().getUnscaleLineHeight());
+        leftSidebar.setLockedRows(2);
 
         // Rendering
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);

@@ -192,6 +192,9 @@ public class ScaledFont {
     public int getLineHeight() {
         return getLineHeightForGuiScale(SettingsFeatureHandler.getCurrentGuiScale());
     }
+    public int getUnscaleLineHeight() {
+        return getLineHeightForGuiScale(1f);
+    }
     public int getLineHeightForGuiScale(final float scale) {
         final float scaleInvariantHeight = font.lineHeight  * getSize();
         return (int)(isScaleInvariant() ? scaleInvariantHeight : scaleInvariantHeight * scale);
