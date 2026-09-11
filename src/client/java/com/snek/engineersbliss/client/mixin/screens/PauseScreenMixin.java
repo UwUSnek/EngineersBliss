@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.platform.Window;
 import com.snek.engineersbliss.client.screens.pause_screen.PauseScreenContent;
 import com.snek.engineersbliss.utils.data_types.Pair;
 

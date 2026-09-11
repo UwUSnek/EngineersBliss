@@ -434,14 +434,12 @@ public class UiGraphics {
         }
 
         Vector3f translation = new Vector3f(0f, renderState.boundingBoxHeight / 2f + offsetY, 0f);
-        // final float s = screen.getGuiScale();
-        // raw.entity(renderState, (int)size, translation, rotation, xRotation, Math.round(x0 / s), Math.round(y0 / s), Math.round(x1 / s), Math.round(y1 / s));
         final int _size = Math.round(size / vanillaGuiScale);
         final int _x0   = Math.round(x0   / vanillaGuiScale);
         final int _y0   = Math.round(y0   / vanillaGuiScale);
         final int _x1   = Math.round(x1   / vanillaGuiScale);
         final int _y1   = Math.round(y1   / vanillaGuiScale);
-        raw.entity(renderState, _size, translation, rotation, xRotation, _x0, _y0, _x1, _y1); //TODO remove
+        raw.entity(renderState, _size, translation, rotation, xRotation, _x0, _y0, _x1, _y1);
     }
 
 
