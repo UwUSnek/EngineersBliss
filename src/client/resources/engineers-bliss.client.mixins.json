@@ -13,9 +13,6 @@
         "accessors.MouseHandlerAccessor",
 
 
-        "shaders.JuliaSetShaderMixin",
-
-
         "misc.AsyncTextureLoaderMixin",
         "misc.SpriteSourcesMixin",
         "misc.SpriteAtlasSvgSupportMixin",
