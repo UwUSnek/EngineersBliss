@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.utils;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
@@ -23,6 +24,7 @@ public class UiTxt extends Txt {
     private final FontFamily fontFamily;
     private final float scale;
     private int width;
+    private int lastGuiScaleIndex = -1; //! Keeps track of width cache. This must not be written by anything that isn't the width getter.
 
     // Getters
     public @NotNull FontFamily getFontFamily() { return fontFamily; }
@@ -54,7 +56,7 @@ public class UiTxt extends Txt {
         super(s);
         this.fontFamily = fontFamily;
         this.scale = scale;
-        this.width = -1; //! Width is calculated lazily to avoid using 'this' before full initialization
+        this.width = -1; //! Width is calculated lazily after initialization or GUI resizes.
     }
 
 
@@ -86,7 +88,9 @@ public class UiTxt extends Txt {
 
 
     public int getWidth() {
-        if(width == -1) {
+        final int curGuiScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex();
+        if(lastGuiScaleIndex != curGuiScaleIndex) {
+            lastGuiScaleIndex = curGuiScaleIndex;
             width = fontFamily.get(scale).calcWidth(this);
         }
         return width;

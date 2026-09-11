@@ -10,9 +10,7 @@
         "accessors.FontAccessor",
         "accessors.MinecraftAccessor",
         "accessors.SpriteSourcesAccessor",
-
-
-        "shaders.JuliaSetShaderMixin",
+        "accessors.MouseHandlerAccessor",
 
 
         "misc.AsyncTextureLoaderMixin",
@@ -20,7 +18,6 @@
         "misc.SpriteAtlasSvgSupportMixin",
 
 
-        "screens.ScreenMixin",
         "screens.PauseScreenMixin",
 
 

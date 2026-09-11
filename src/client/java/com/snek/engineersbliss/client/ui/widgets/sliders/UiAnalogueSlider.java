@@ -1,13 +1,11 @@
 package com.snek.engineersbliss.client.ui.widgets.sliders;
 
-import java.util.function.DoubleFunction;
 import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.utils.UiTxt;
-
-import net.minecraft.client.gui.screens.Screen;
 
 
 
@@ -22,7 +20,7 @@ public abstract class UiAnalogueSlider extends UiSlider {
 
 
     protected UiAnalogueSlider(
-        final Screen screen,
+        final UiScreen screen,
         final UiTxt label,
         final double min, final double max, final double initial,
         final @Nullable Function<UiSlider, UiTxt> valueFormatter

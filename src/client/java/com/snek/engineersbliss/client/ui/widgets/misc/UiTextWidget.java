@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 
 
@@ -29,16 +29,16 @@ public class UiTextWidget extends __base_UiWidget {
 
 
 
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final int color) {
         this(screen, label, alignment, false, color);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
         this(screen, label, alignment, false, color, bgColor);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color) {
         this(screen, label, alignment, wrapLines, color, 0x0);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color, final int bgColor) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color, final int bgColor) {
         super(screen, label, alignment);
         this.wrapLines = wrapLines;
         this.color = color;
@@ -55,9 +55,10 @@ public class UiTextWidget extends __base_UiWidget {
 
     @Override
     public void relayoutSelf() {
-        // Empty
+        if(wrapLines) {
+            recalculateLines();
+        }
     }
-
 
 
 
@@ -66,21 +67,20 @@ public class UiTextWidget extends __base_UiWidget {
 
     //! Recalculate lines when the width changes
     @Override
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         super.setWidth(width);
         recalculateLines();
     }
 
     @Override
-    public void setSize(int width, int height) {
+    public void setSize(float width, float height) {
         super.setSize(width, height);
         recalculateLines();
     }
 
 
     protected void recalculateLines() {
-        final int innerWidth = getInnerWidth();
-        cachedLines = RenderingUtils.wrapLines(getLabel(), innerWidth);
+        cachedLines = RenderingUtils.wrapLines(getLabel(), getInnerWidth());
     }
 
 
@@ -97,7 +97,7 @@ public class UiTextWidget extends __base_UiWidget {
 
 
     @Override
-    protected void extractLabel(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    protected void extractLabel(UiGraphics graphics, float mouseX, float mouseY, float a) {
         if(!wrapLines) {
             super.extractLabel(graphics, mouseX, mouseY, a);
         }
@@ -108,17 +108,19 @@ public class UiTextWidget extends __base_UiWidget {
             final @NotNull ScaledFont scaledFont = getLabel().getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
             final int textHeight = lineHeight * cachedLines.size();
-            final int y = switch(getVerticalAlignment()) {
-                case TOP    -> getY() + Layout.textMarginPx;
-                case CENTER -> getY() + (height - textHeight) / 2;
-                case BOTTOM -> getBottom() - textHeight;
+            final int y = (int)switch(getVerticalAlignment()) {
+                case TRUE_TOP    -> getYF();
+                case TOP         -> getYF() + Layout.textMarginPx;
+                case CENTER      -> getYF() + (getHeightF() - textHeight) / 2f;
+                case BOTTOM      -> getBottom() - textHeight;
+                case TRUE_BOTTOM -> getBottom() - textHeight - Layout.textMarginPx;
             };
 
 
             // Draw text lines
-            graphics.enableScissor(getInnerX(), getY(), getInnerRight(), getBottom());
+            graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
             for(final UiTxt l : cachedLines) {
-                RenderingUtils.extractTxt(graphics, l, getInnerX(), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
+                graphics.text(l, Math.round(getInnerX()), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
                 ++curLineNum;
             }
             graphics.disableScissor();

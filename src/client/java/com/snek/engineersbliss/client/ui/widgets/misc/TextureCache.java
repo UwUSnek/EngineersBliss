@@ -6,12 +6,10 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.ui.base.ScreenMixinAccessor;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 
@@ -41,9 +39,9 @@ public class TextureCache implements AutoCloseable {
      * Creates a TextureCache that frees its memory on its own when the screen is closed.
      * @param screen The screen to track.
      */
-    public TextureCache(final Screen screen) {
+    public TextureCache(final UiScreen screen) {
         this();
-        ((ScreenMixinAccessor)screen).eb$registerTextureCacheForClose(this);
+        screen.registerTextureCacheForClose(this);
     }
 
     /**
@@ -86,15 +84,15 @@ public class TextureCache implements AutoCloseable {
     /**
      * Draws the cached texture at the provided coordinates.
      * The texture is stretched to fit the provided width and height.
-     * @param graphics The GuiGraphicsExtractor to blit to.
+     * @param graphics The UiGraphics to blit to.
      * @param x The X position of the texture.
      * @param y The Y position of the texture.
      * @param w The final width of the drawn texture.
      * @param h The final height of the drawn texture.
      */
-    public void blit(final GuiGraphicsExtractor graphics, final int x, final int y, final int w, final int h) {
+    public void blit(final UiGraphics graphics, final float x, final float y, final float w, final float h) {
         if(texture == null) return;
-        graphics.blit(RenderPipelines.GUI_TEXTURED, location, x, y, 0, 0, w, h, width, height, width, height);
+        graphics.blit(location, x, y, x + w, y + h, 0f, 1f, 0f, 1f);
     }
 
 

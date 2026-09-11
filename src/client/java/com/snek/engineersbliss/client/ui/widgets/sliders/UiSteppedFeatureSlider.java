@@ -10,11 +10,11 @@ import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
 import com.snek.engineersbliss.feature_handlers.base.ServerSteppedFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.utils.Layout;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 
 
@@ -47,7 +47,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
 
     @SuppressWarnings("unchecked")
     public UiSteppedFeatureSlider(
-        final Screen screen,
+        final UiScreen screen,
         final ClientFeature<?> feature,
         final @Nullable BiConsumer<Integer, T> afterChangeCallback,
         final @Nullable ValueFormatter<T> valueFormatter,
@@ -93,12 +93,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
 
 
 
-    public static <T> void onChange(
-        final __base_ServerFeature<Integer> feature,
-        final int newIndex,
-        final T newValue,
-        final @Nullable BiConsumer<Integer, T> afterChangeCallback
-    ) {
+    public static <T> void onChange(final __base_ServerFeature<Integer> feature, final int newIndex, final T newValue, final @Nullable BiConsumer<Integer, T> afterChangeCallback) {
 
         // Set feature and send packets to the server
         ClientFeatureSync.setFeature(feature, newIndex);

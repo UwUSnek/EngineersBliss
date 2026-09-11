@@ -1,19 +1,21 @@
 package com.snek.engineersbliss.client.ui.widgets.containers;
 
 
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
+import com.snek.engineersbliss.client.ui.data_types.UiSize;
+import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.utils.Easings;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,26 +36,34 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
-    private final int defaultEntryHeight;
+    private final UiSize scrollbarWidth;
+    private final float defaultEntryHeight;
     private final float rowMargin;
 
     private boolean isScrollable;
-    private double scrollAmount;
+    private float scrollAmount;
+    private final AnimatedFloat animatedScrollAmount;
+    private float lastGuiScale;
     private boolean scrolling;
-    private final int scrollRateBase;
+    private int lockedRows;
 
 
 
 
-    public UiWidgetList(final Screen screen, final int itemHeight) {
-        this(screen, itemHeight, 0f);
+    public UiWidgetList(final UiScreen screen, final float defaultEntryHeight) {
+        this(screen, defaultEntryHeight, 0f);
     }
-    public UiWidgetList(final Screen screen, final int itemHeight, final float rowMargin) {
+    public UiWidgetList(final UiScreen screen, final float defaultEntryHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
+        this.scrollbarWidth = new UiSize(this); scrollbarWidth.setPx(2);
         this.isScrollable = true;
-        this.defaultEntryHeight = itemHeight;
-        this.scrollRateBase = itemHeight;
+        this.scrollAmount = 0f;
+        this.animatedScrollAmount = new AnimatedFloat(scrollAmount, 80, Easings.quadInOut);
+        this.lastGuiScale = -1f;
+        this.scrolling = false;
+        this.lockedRows = 0;
+        this.defaultEntryHeight = defaultEntryHeight;
         this.rowMargin = rowMargin;
     }
 
@@ -64,74 +74,61 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
-    private void repositionEntries() {
+
+    public void setLockedRows(final int newLockedRows) {
+        lockedRows = newLockedRows;
+    }
+
+    @Override
+    public void relayoutContent() {
         if(!isRelayoutDisabled()) {
-            int y = getY() - (int)scrollAmount();
-            for(final @NotNull Entry child : children) {
-                child.setY(y);
-                y += child.getHeight();
-                child.setX(getRowLeft());
+            float lockedEntryY = getYF();
+            for(int i = 0; i < children.size(); ++i) {
+                final @NotNull Entry child = children.get(i);
                 child.setWidth(getRowWidth());
+                child.setXF(getRowLeft());
+                if(i < lockedRows) {
+                    child.setYF(lockedEntryY);
+                    lockedEntryY += child.getHeightF();
+                }
+                //! Y positioning of unlocked entries is done in the render loop for performance reasons.
+                //! Only visible entries are moved and drawn.
             }
-            relayoutContent();
         }
+        super.relayoutContent();
     }
 
     @Override
     public void relayoutSelf() {
         if(!isRelayoutDisabled()) {
-            repositionEntries();
+            tickGuiScale();
             this.refreshScrollAmount();
-
-            //! This is required to reposition the entries and their children in case recalculating the main layout made them go out of scroll bounds.
-            repositionEntries();
         }
     }
 
-    public int getNextY() {
-        int y = getY() - (int) scrollAmount();
-        for(final Entry child : children) {
-            y += child.getHeight();
-        }
-        return y;
-    }
-
-    protected int contentHeight() {
-        int totalHeight = 0;
-        for(final Entry child : children) {
-            totalHeight += child.getHeight();
+    protected float contentHeight() {
+        float totalHeight = 0;
+        for(final @NotNull Entry child : children) {
+            totalHeight += child.getHeightF();
         }
         return totalHeight + 4;
     }
 
-    public int getRowLeft() {
-        return getX() + (int)(this.width * rowMargin);
+    public float getRowLeft() {
+        return getXF() + getWidthF() * rowMargin;
     }
 
-    public int getRowRight() {
+    public float getRowRight() {
         return getRowLeft() + getRowWidth();
     }
 
-    public int getRowWidth() {
-        final int marginPx = (int)(width * rowMargin);
-        final int scrollbarEncroachment = Math.max(0, scrollbarWidth() - marginPx);
-        return this.width - marginPx * 2 - scrollbarEncroachment;
+    public float getRowWidth() {
+        final float marginPx = getWidthF() * rowMargin;
+        final float scrollbarEncroachment = Math.max(0, scrollbarWidth.getPx() - marginPx);
+        return getWidthF() - marginPx * 2 - scrollbarEncroachment;
     }
 
-    public int getRowTop(final int row) {
-        return children.get(row).getY();
-    }
-
-    public int getRowBottom(final int row) {
-        final Entry child = children.get(row);
-        return child.getY() + child.getHeight();
-    }
-
-    public int scrollbarWidth() {
-        return 2;
-    }
-
-    protected int scrollBarX() {
+    protected float scrollBarX() {
         return getRowRight();
     }
 
@@ -156,20 +153,20 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         setScrollAmount(0);
     }
 
-    public double scrollAmount() {
-        return scrollAmount;
-    }
-
     public void setScrollAmount(final double newScrollAmount) {
-        scrollAmount = Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
-        repositionEntries();
+        setScrollAmount(newScrollAmount, false);
+    }
+    public void setScrollAmount(final double newScrollAmount, final boolean snap) {
+        scrollAmount = (float)Mth.clamp(newScrollAmount, 0.0, maxScrollAmount());
+        if(snap) animatedScrollAmount.snapTo            (scrollAmount);
+        else     animatedScrollAmount.startNewTransition(scrollAmount);
     }
 
     public void refreshScrollAmount() {
         setScrollAmount(scrollAmount);
     }
 
-    public int maxScrollAmount() {
+    public float maxScrollAmount() {
         return Math.max(0, contentHeight() - height);
     }
 
@@ -178,31 +175,39 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     public boolean updateScrolling(final MouseButtonEvent event) {
-        scrolling = scrollable() && isValidClickButton(event.buttonInfo()) && isOverScrollbar(event.x(), event.y());
+        scrolling = scrollable() && isLeftClick(event) && isOverScrollbar(event.x(), event.y());
         return scrolling;
     }
 
     protected boolean isOverScrollbar(final double x, final double y) {
-        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth() && y >= getY() && y < getBottom();
+        return x >= scrollBarX() && x <= scrollBarX() + scrollbarWidth.getPx() && y >= scrollTrackY() && y < getBottom();
     }
 
-    protected int scrollerHeight() {
-        return Mth.clamp((int) ((float) (height * height) / contentHeight()), 32, height - 8);
+    protected float scrollTrackY() {
+        return getYF() + calcLockedHeight();
     }
 
-    public int scrollBarY() {
+    protected float scrollTrackHeight() {
+        return height - calcLockedHeight();
+    }
+
+    protected float scrollerHeight() {
+        return Mth.clamp(scrollTrackHeight() * scrollTrackHeight() / contentHeight(), 32, scrollTrackHeight() - 8); //FIXME replace 32 and 8 magic numbers
+    }
+
+    public float scrollBarY() {
         return maxScrollAmount() == 0
-            ? getY()
-            : Math.max(getY(), (int) scrollAmount * (height - scrollerHeight()) / maxScrollAmount() + getY())
+            ? scrollTrackY()
+            : Math.max(scrollTrackY(), animatedScrollAmount.compute() * (scrollTrackHeight() - scrollerHeight()) / maxScrollAmount() + scrollTrackY())
         ;
     }
 
     protected double scrollRate() {
-        return scrollRateBase;
+        return defaultEntryHeight * getGuiScale();
     }
 
-    private void scroll(final int amount) {
-        setScrollAmount(scrollAmount() + amount);
+    private void scroll(final float amount) {
+        setScrollAmount(scrollAmount + amount);
     }
 
     @Override
@@ -210,7 +215,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         if(!visible) {
             return false;
         }
-        setScrollAmount(scrollAmount() - scrollY * scrollRate());
+        setScrollAmount(scrollAmount - scrollY * scrollRate());
         return true;
     }
 
@@ -223,7 +228,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     @Override
     public boolean mouseDragged(final MouseButtonEvent event, final double dx, final double dy) {
         if(scrolling) {
-            if(event.y() < getY()) {
+            if(event.y() < getYF()) {
                 setScrollAmount(0.0);
             }
             else if(event.y() > getBottom()) {
@@ -231,9 +236,9 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             }
             else {
                 final double max = Math.max(1, maxScrollAmount());
-                final int barHeight = scrollerHeight();
-                final double yDragScale = Math.max(1.0, max / (height - barHeight));
-                setScrollAmount(scrollAmount() + dy * yDragScale);
+                final float barHeight = scrollerHeight();
+                final double yDragScale = Math.max(1.0, max / (getHeightF() - barHeight));
+                setScrollAmount(scrollAmount + dy * yDragScale);
             }
         }
         return super.mouseDragged(event, dx, dy);
@@ -241,6 +246,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     public void onRelease(final MouseButtonEvent event) {
+        super.onRelease(event);
         scrolling = false;
     }
 
@@ -254,41 +260,43 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     protected int __internal_addWidget(final Entry entry) {
         return __internal_addWidget(entry, defaultEntryHeight);
     }
-    protected int __internal_addWidget(final Entry entry, final int height) {
+    protected int __internal_addWidget(final Entry entry, final float height) {
         entry.parentList = this;
-        entry.setX(getRowLeft());
-        entry.setWidth(getRowWidth());
-        entry.setY(getNextY());
         entry.setHeight(height);
         final int r = super.addChild(entry);
-        repositionEntries();
+        relayoutContent();
         return r;
     }
-    public void addWidget(final AbstractWidget widget) {
+    public void addWidget(final __base_UiLayoutElm widget) {
         __internal_addWidget(new Entry(getScreen(), widget));
     }
-    public void addWidget(final AbstractWidget widget, final int height) {
+    public void addWidget(final __base_UiLayoutElm widget, final float height) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
     }
 
 
-    public void addWidgetAndSpacer(final AbstractWidget widget, final int marginBottom) {
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget));
-        addWidget(new UiSpacer(getScreen()), marginBottom);
+        __internal_addWidget(new SpacerEntry(getScreen()), marginBottom);
     }
-    public void addWidgetAndSpacer(final AbstractWidget widget, final int height, final int marginBottom) {
+    public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float height, final float marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
-        addWidget(new UiSpacer(getScreen()), marginBottom);
+        __internal_addWidget(new SpacerEntry(getScreen()), marginBottom);
     }
 
 
-    public void addWidgetAndSpacers(final AbstractWidget widget, final int marginTop, final int marginBottom) {
-        addWidget(new UiSpacer(getScreen()), marginTop);
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float marginTop, final float marginBottom) {
+        __internal_addWidget(new SpacerEntry(getScreen()), marginTop);
         addWidgetAndSpacer(widget, marginBottom);
     }
-    public void addWidgetAndSpacers(final AbstractWidget widget, final int height, final int marginTop, final int marginBottom) {
-        addWidget(new UiSpacer(getScreen()), marginTop);
+    public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float height, final float marginTop, final float marginBottom) {
+        __internal_addWidget(new SpacerEntry(getScreen()), marginTop);
         addWidgetAndSpacer(widget, height, marginBottom);
+    }
+
+
+    public void addSpacer(final float height) {
+        __internal_addWidget(new SpacerEntry(getScreen()), height);
     }
 
 
@@ -296,7 +304,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     @Override
     protected void onSelected(final Entry selectedEntry) {
-        final boolean topClipped    = selectedEntry.getY()      < getY();
+        final boolean topClipped    = selectedEntry.getYF()      < getYF();
         final boolean bottomClipped = selectedEntry.getBottom() > getBottom();
         if(Minecraft.getInstance().getLastInputType().isKeyboard() || topClipped || bottomClipped) {
             scrollToEntry(selectedEntry);
@@ -304,46 +312,112 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     }
 
     protected void scrollToEntry(final Entry entry) {
-        final int topDelta = entry.getY() - getY() - 2;
+        final float topDelta = entry.getYF() - getYF() - 2;
         if(topDelta < 0) {
             scroll(topDelta);
         }
-        final int bottomDelta = getBottom() - entry.getY() - entry.getHeight() - 2;
+        final float bottomDelta = getBottom() - entry.getYF() - entry.getHeightF() - 2;
         if(bottomDelta < 0) {
             scroll(-bottomDelta);
         }
     }
 
     protected void centerScrollOn(final Entry entry) {
-        int y = 0;
-        for(final Entry child : children) {
+        float y = 0;
+        for(final @NotNull Entry child : children) {
             if(child == entry) {
-                y += child.getHeight() / 2;
+                y += child.getHeightF() / 2f;
                 break;
             }
-            y += child.getHeight();
+            y += child.getHeightF();
         }
-        setScrollAmount(y - height / 2.0);
+        setScrollAmount(y - height / 2f);
     }
 
+
+
+
+
+
+
+
+    private float calcLockedHeight() {
+        float h = 0;
+        int i = 0;
+        for(final @NotNull Entry c : children) {
+            if(i >= lockedRows) break;
+            h += c.getHeightF();
+            i++;
+        }
+        return h;
+    }
+
+
+    @Override
+    public void extractContent(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        //! Skip default extractContent. This class handles draw recursion on its own.
+
+
+        // Draw unlocked entries
+        final float outOfBoundsY = getScreen().height + 9999f;
+        final float lockedBottom = getYF() + calcLockedHeight();
+        float entryY = lockedBottom - animatedScrollAmount.compute();
+        float selfBottom = getBottom();
+        graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        for(int i = lockedRows; i < children.size(); ++i) {
+            final @NotNull Entry child = children.get(i);
+            final float oldEntryY = child.getYF();
+            final boolean oldPosInBounds = oldEntryY != outOfBoundsY;
+            final boolean newPosInBounds = entryY < selfBottom && entryY + child.getHeightF() > lockedBottom;
+
+            //! Optimize relayout to run only when the y is actually updated.
+            //! Stash out of bounds elements in a single place under the screen so they don't interfere with input detection.
+            if(oldEntryY != entryY) {
+                if(newPosInBounds) {
+                    child.setYF(entryY);
+                    child.relayout();
+                }
+                else if(oldPosInBounds) {
+                    child.setYF(outOfBoundsY);
+                    child.relayout();
+                }
+            }
+
+            //! Only draw the element if the new position is not ouf of bounds
+            if(newPosInBounds) {
+                child.extract(graphics, mouseX, mouseY, a);
+            }
+            entryY += child.getHeightF();
+        }
+        graphics.disableScissor();
+
+
+        // Draw locked entries
+        int i = 0;
+        graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        for(final @NotNull Entry child : children) {
+            if(i < lockedRows && elmIsInBounds(child)) {
+                child.extract(graphics, mouseX, mouseY, a);
+            }
+            i++;
+        }
+        graphics.disableScissor();
+    }
 
 
 
 
     @Override
-    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
-        graphics.enableScissor(getX(), getY(), getRight(), getBottom());
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
-        graphics.disableScissor();
+    public void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        super.extractSelf(graphics, mouseX, mouseY, a);
         extractScrollbar(graphics, mouseX, mouseY);
     }
 
-
-    protected void extractScrollbar(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY) {
-        final int scrollBarX = scrollBarX();
-        final int scrollerHeight = scrollerHeight();
-        final int scrollerY = scrollBarY();
-        final int barWidth = scrollbarWidth();
+    protected void extractScrollbar(final UiGraphics graphics, final float mouseX, final float mouseY) {
+        final float scrollBarX     = scrollBarX();
+        final float scrollerHeight = scrollerHeight();
+        final float scrollerY      = scrollBarY();
+        final float barWidth       = scrollbarWidth.getPx();
 
         // If there are hidden elements
         if(scrollable()) {
@@ -359,10 +433,18 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         }
     }
 
-
-
-
-
+    private void tickGuiScale() {
+        final float scale = getGuiScale();
+        if(lastGuiScale < 0) {
+            lastGuiScale = scale;
+            return;
+        }
+        if(scale != lastGuiScale) {
+            final float ratio = scale / lastGuiScale;
+            setScrollAmount(scrollAmount * ratio, true);
+            lastGuiScale = scale;
+        }
+    }
 
 
 
@@ -373,18 +455,20 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public static class Entry extends __base_UiContainer implements GuiEventListener {
         private UiWidgetList parentList;
-        private final AbstractWidget widget;
-
+        private final __base_UiLayoutElm widget;
+        @Override public boolean scaleHeightWithGui() {
+            return true;
+        }
 
 
 
         //! For subclasses that manage their own content
-        protected Entry(final Screen screen) {
+        protected Entry(final UiScreen screen) {
             super(screen);
             setBgColor(0x0);
             this.widget = null;
         }
-        public Entry(final Screen screen, final AbstractWidget widget) {
+        public Entry(final UiScreen screen, final __base_UiLayoutElm widget) {
             super(screen);
             setBgColor(0x0);
             this.widget = widget;
@@ -396,14 +480,14 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
         @Override
         public void relayoutSelf() {
-            widget.setSize(getWidth(), getHeight());
-            widget.setPosition(getX(), getY());
+            widget.setSize(getWidthF(), getHeightF());
+            widget.setPos(getXF(), getYF());
         }
 
 
 
 
-        public @Nullable AbstractWidget getWidget() {
+        public @Nullable __base_UiLayoutElm getWidget() {
             return widget;
         }
 
@@ -415,6 +499,25 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         @Override
         public boolean isFocused() {
             return parentList.getFocused() == this;
+        }
+    }
+
+
+
+    public static class SpacerEntry extends Entry {
+        @Override public boolean scaleHeightWithGui() {
+            return false;
+        }
+        protected SpacerEntry(final UiScreen screen) {
+            super(screen);
+        }
+        @Override
+        public void relayoutSelf() {
+            // Empty
+        }
+        @Override
+        public boolean isFocused() {
+            return false;
         }
     }
 }

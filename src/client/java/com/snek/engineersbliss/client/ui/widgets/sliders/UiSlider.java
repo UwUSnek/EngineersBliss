@@ -6,12 +6,14 @@ import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedDouble;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -19,11 +21,8 @@ import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
 
@@ -34,11 +33,11 @@ import net.minecraft.resources.Identifier;
 
 
 public class UiSlider extends __base_UiWidget {
-	public static final int HANDLE_BASE_WIDTH = 8;
     private static final double HANDLE_MAX_WIDTH_SCALE = 2;
     private static final double HANDLE_SPEED_SENSITIVITY = 0.6;
 
 
+	public final UiSize baseHandleWidth;
     private final UiTxt baseLabel;
     private final @Nullable Consumer<Double> onChange;
     private final @Nullable Function<UiSlider, UiTxt> valueFormatter;
@@ -59,7 +58,7 @@ public class UiSlider extends __base_UiWidget {
     // Cached textures
     private int bgColorAlt = Layout.bgColorAlt;
     public void setBgColorAlt(final int newColor) {
-        bgColorAlt = newColor; markBgDirty();
+        bgColorAlt = newColor;
     }
     public int getBgBaseColorAlt() {
         return bgColorAlt;
@@ -69,7 +68,7 @@ public class UiSlider extends __base_UiWidget {
 
 
     public UiSlider(
-        final Screen screen,
+        final UiScreen screen,
         final UiTxt baseLabel, final double initialValue,
         final @Nullable Consumer<Double> onChange,
         final @Nullable Function<UiSlider, UiTxt> valueFormatter
@@ -77,6 +76,7 @@ public class UiSlider extends __base_UiWidget {
         //! Pass empty text to super and store a custom UiTxt instance locally
         super(screen, new UiTxt(new Txt().get()), TextAlignment.CENTER);
         setBgColor(Layout.bgColor);
+        this.baseHandleWidth = new UiSize(this); baseHandleWidth.setPx(8).setScaleWithUi(true);
         this.value = initialValue;
         this.bgSpriteId = null;
         this.bgSpriteWidth = new UiSize(this);
@@ -115,8 +115,11 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
         boolean result = super.mouseClicked(event, doubled);
-        GLFW.glfwSetInputMode(Minecraft.getInstance().getWindow().handle(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+
+        final long handle = Minecraft.getInstance().getWindow().handle();
         virtualX = event.x();
+
+        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
         updateValueFromVirtualX();
         return result;
     }
@@ -127,7 +130,7 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
         boolean result = super.mouseDragged(event, dx, dy);
-        virtualX = Math.clamp(virtualX + dx, getX(), (double)getX() + getWidth());
+        virtualX = Math.clamp(virtualX + dx, getXF(), getRight());
         updateValueFromVirtualX();
         return result;
     }
@@ -138,8 +141,7 @@ public class UiSlider extends __base_UiWidget {
     public boolean mouseReleased(MouseButtonEvent event) {
         long handle = Minecraft.getInstance().getWindow().handle();
         GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-        float guiScale = SettingsFeatureHandler.getCurrentGuiScale();
-        GLFW.glfwSetCursorPos(handle, virtualX * guiScale, (getY() + getHeight() / 2d) * guiScale);
+        GLFW.glfwSetCursorPos(handle, getInnerX() + getInnerWidth() * value, getHeightCenter());
         return super.mouseReleased(event);
     }
 
@@ -156,7 +158,7 @@ public class UiSlider extends __base_UiWidget {
     }
 
     private void updateValueFromVirtualX() {
-        final double newValue = (virtualX - (this.getX() + height)) / (getWidth() - 2d * height);
+        final double newValue = (virtualX - getInnerX()) / getInnerWidth();
         if(value != newValue) {
             this.setValue(newValue);
         }
@@ -175,7 +177,6 @@ public class UiSlider extends __base_UiWidget {
         if(onChange != null) onChange.accept(value);
         visualValue.startNewTransition(value);
         playDragSound(value);
-        markBgDirty();
     }
 
     @Override
@@ -192,23 +193,23 @@ public class UiSlider extends __base_UiWidget {
 
 
     @Override
-    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
+    public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
 
         // Draw background and label
-        super.extractWidgetRenderState(graphics, mouseX, mouseY, a);
+        super.extractSelf(graphics, mouseX, mouseY, a);
 
 
         // Draw slider handle //! Clamp to slider inner width
-        final int handleX = calcHandleX();
-        final int handleWidth = calcHandleWidth();
-        final int handleL = handleX - handleWidth / 2;
-        final int handleR = handleX + handleWidth / 2;
-        final int innerL = calcInnerLeft();
-        final int innerR = calcInnerRight();
+        final float handleX = calcHandleX();
+        final float handleWidth = calcHandleWidth();
+        final float handleL = handleX - handleWidth / 2;
+        final float handleR = handleX + handleWidth / 2;
+        final float innerL = getInnerX();
+        final float innerR = getInnerRight();
         handleColor.startNewTransition(isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor);
-        graphics.fill(Math.max(innerL, handleL), getY(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
-        if(handleL <  innerL) graphics.fill(handleL, getY(), innerL,  getBottom(), Layout.handleColorTransparent);
-        if(handleR >= innerR) graphics.fill(innerR,  getY(), handleR, getBottom(), Layout.handleColorTransparent);
+        graphics.fill(Math.max(innerL, handleL), getYF(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
+        if(handleL <  innerL) graphics.fill(handleL, getYF(), innerL,  getBottom(), Layout.handleColorTransparent);
+        if(handleR >= innerR) graphics.fill(innerR,  getYF(), handleR, getBottom(), Layout.handleColorTransparent);
 
 
         // Recalculate and draw hover highlight
@@ -216,60 +217,38 @@ public class UiSlider extends __base_UiWidget {
         //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
-        graphics.fill(getX(), getY(), getRight(), getBottom(), overlayColor.compute());
-
-
-        // Handle cursor shape and position
-        handleCursor(graphics);
+        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute());
     }
 
     @Override
-    protected void handleCursor(final GuiGraphicsExtractor graphics) {
-        if(isHoveredOrBeingDragged()) {
-            graphics.requestCursor(isActive() ? CursorTypes.RESIZE_EW : CursorTypes.NOT_ALLOWED);
-        }
+    protected CursorType selectCursor(final UiGraphics graphics) {
+        return CursorTypes.RESIZE_EW;
     }
 
 
 
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void extractBackground(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(bgSpriteId != null) {
-            graphics.blitSprite(RenderPipelines.GUI_TEXTURED, bgSpriteId, getX(), getY(), bgSpriteWidth.getPx(), getHeight());
+            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
         }
     }
 
 
 
 
-    public int calcHandleWidth() {
+    public float calcHandleWidth() {
         final double magnitude = Math.abs(value - visualValue.getLast());
         final double speed = Math.abs(visualValue.calcSpeed()) * magnitude;
         final double widthFactor = Math.clamp(1.0 + speed * HANDLE_SPEED_SENSITIVITY, 1.0, HANDLE_MAX_WIDTH_SCALE);
-        return (int)Math.round(HANDLE_BASE_WIDTH * widthFactor);
+        return baseHandleWidth.getPx() * (float)widthFactor;
     }
 
-    public int calcHandleX() {
-        return calcInnerLeft() + (int)(visualValue.compute() * calcInnerWidth());
-    }
-
-    public int calcInnerLeft() {
-        return getX() + height;
-    }
-
-    public int calcInnerRight() {
-        return getRight() - height;
-    }
-
-    public int calcInnerWidth() {
-        return getWidth() - 2 * height;
+    public float calcHandleX() {
+        return getInnerX() + visualValue.compute().floatValue() * getInnerWidth();
     }
 }
-
-
-
-//TODO add a sound when the value changes. The pitch changes based on the %

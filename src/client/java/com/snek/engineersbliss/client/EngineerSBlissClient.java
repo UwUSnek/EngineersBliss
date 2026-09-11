@@ -5,6 +5,8 @@ import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilter
 import com.snek.engineersbliss.client.feature_handlers.rendering.ShadingFixModelPlugin;
 import com.snek.engineersbliss.client.network.overlays.AttachedDataNetworkReceiver;
 import com.snek.engineersbliss.client.screens.status_bar.StatusBarRenderer;
+import com.snek.engineersbliss.client.ui.renderer.UiRenderPipelines;
+import com.snek.engineersbliss.client.ui.renderer.UiVertexFormats;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.custom.block_entities.renderers.CustomBlockEntityRendererHandler;
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.SceneSnapshotHandler;
@@ -29,7 +31,9 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class EngineerSBlissClient implements ClientModInitializer {
     private static String modVersion = "";
+    private static String mcVersion = "";
     public  static String getModVersion() { return modVersion; }
+    public  static String getMcVersion() { return mcVersion; }
 
 
 
@@ -41,6 +45,11 @@ public class EngineerSBlissClient implements ClientModInitializer {
             .getModContainer(EngineerSBliss.MOD_ID)
             .map(container -> container.getMetadata().getVersion().getFriendlyString())
             .orElse("")
+        ;
+        mcVersion = FabricLoader.getInstance()
+            .getModContainer("minecraft")
+            .map(container -> container.getMetadata().getVersion().getFriendlyString())
+            .orElse("unknown")
         ;
 
 
@@ -59,7 +68,9 @@ public class EngineerSBlissClient implements ClientModInitializer {
         ClientModVersionCheck.register();
 
 
-        // Register ui widgets
+        // Register ui renderers and widgets
+        UiVertexFormats.init();
+        UiRenderPipelines.init();
         __base_UiWidget.register();
 
 

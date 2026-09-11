@@ -5,22 +5,21 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.RenderingScreenBlockListWidget;
-import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.base.UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
+import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiEditBox;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -29,7 +28,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
-public class RenderingScreen extends __base_UiFeatureSetScreen {
+public class RenderingScreen extends UiFeatureSetScreen {
     private UiEditBox searchField;
     private RenderingScreenBlockListWidget blockList;
 
@@ -44,14 +43,12 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         return false;
     }
 
-
     //! Manually focus search bar bc for some reason Minecraft doesn't do that on its own
     @Override
     public boolean mouseClicked(final MouseButtonEvent event, final boolean doubleClick) {
         searchField.setFocused(searchField.isHovered());
         return super.mouseClicked(event, doubleClick);
     }
-
 
     // Stop keybinds from activating while typing in the search bar by redirecting any key even to it while its focused.
     @Override
@@ -75,9 +72,9 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
         // Rendering filter
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, new UiTxt("Search..."), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, Fonts.ui.regular, (UiTxt)new UiTxt("Search...").gray(), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_OUTLINES, null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCKS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_FLUIDS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
@@ -87,15 +84,15 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
         // Misc
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.TARGET_HIDDEN_BLOCKS,  null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.SMOOTH_SHADING,        b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
 
 
         // Actions
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Actions", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Actions", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiButton(
             this,
             new UiTxt("Reset filters"),
@@ -126,7 +123,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
         // Main list
         //! This needs to be rendered last to let tooltips show on top of right side buttons
-        blockList = new RenderingScreenBlockListWidget(this, 24);
+        blockList = new RenderingScreenBlockListWidget(this, 20);
         this.addRenderableWidget(blockList);
         blockList.filter("");
     }
@@ -145,12 +142,12 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
     public void relayoutSelf() {
         super.relayoutSelf();
 
-        final int leftSidebarWidthPx  = (int)(width * leftSidebarWidth);
-        final int rightSidebarWidthPx = (int)(width * rightSidebarWidth);
+        final float leftSidebarWidthPx  = width * leftSidebarWidth;
+        final float rightSidebarWidthPx = width * rightSidebarWidth;
 
         // Main list
-        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height - LIST_TOP);
-        blockList.setPosition(leftSidebarWidthPx, LIST_TOP);
+        blockList.setSize(width - leftSidebarWidthPx - rightSidebarWidthPx, this.height);
+        blockList.setPos(leftSidebarWidthPx, 0);
     }
 
 
@@ -161,14 +158,14 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
     @Override
-    public void _extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float delta) {
-        final @NotNull ScaledFont scaledFont = Fonts.ui.regular.get(1f);
-        final @NotNull Font font = scaledFont.getFont();
+    public void extractRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float delta) {
+        final @NotNull FontFamily fontFamily = Fonts.ui.regular;
+        final @NotNull ScaledFont scaledFont = fontFamily.get(1f);
         final int lineBase = this.height;
         final int lineHeight = scaledFont.getLineHeight();
         if(tabPressed) return;
 
-        super._extractRenderState(graphics, mouseX, mouseY, delta);
+        super.extractRenderState(graphics, mouseX, mouseY, delta);
 
 
 
@@ -187,8 +184,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         }
         for(int i = 0; i < syntaxInstructions.length; i += 2) {
             final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-            graphics.text(font, syntaxInstructions[i    ], Layout.textMarginPx,                       lineY, 0xFFAAAAAA);
-            graphics.text(font, syntaxInstructions[i + 1], Layout.textMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
+            graphics.text(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textLargeMarginPx,                       lineY, 0xFFAAAAAA);
+            graphics.text(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textLargeMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
         }
 
 
@@ -198,7 +195,7 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
         final ClientLevel level = Minecraft.getInstance().level;
         if(level != null) {
             final int loadedChunkNum = MinecraftUtils.getLoadedChunkNumber();
-            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textMarginPx;
+            final int rightTextX = this.width - (int)(width * rightSidebarWidth) + Layout.textLargeMarginPx;
             final int lightProgress = RenderingFilterHandler.getLightRecalcProgress();
             final int lightMax = RenderingFilterHandler.getLightRecalcMax();
             final String[] renderStats = {
@@ -214,8 +211,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
             }
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-                graphics.text(font, renderStats[i    ], rightTextX,                        lineY, 0xFFAAAAAA);
-                graphics.text(font, renderStats[i + 1], rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
+                graphics.text(new UiTxt(renderStats[i    ], fontFamily), rightTextX,                        lineY, 0xFFAAAAAA);
+                graphics.text(new UiTxt(renderStats[i + 1], fontFamily), rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
             }
         }
 
