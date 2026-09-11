@@ -31,7 +31,9 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class EngineerSBlissClient implements ClientModInitializer {
     private static String modVersion = "";
+    private static String mcVersion = "";
     public  static String getModVersion() { return modVersion; }
+    public  static String getMcVersion() { return mcVersion; }
 
 
 
@@ -43,6 +45,11 @@ public class EngineerSBlissClient implements ClientModInitializer {
             .getModContainer(EngineerSBliss.MOD_ID)
             .map(container -> container.getMetadata().getVersion().getFriendlyString())
             .orElse("")
+        ;
+        mcVersion = FabricLoader.getInstance()
+            .getModContainer("minecraft")
+            .map(container -> container.getMetadata().getVersion().getFriendlyString())
+            .orElse("unknown")
         ;
 
 

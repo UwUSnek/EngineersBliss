@@ -13,7 +13,6 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.PlayerModelWidget;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -57,21 +56,22 @@ public class PauseScreenContent extends __base_UiSidebarScreen {
 
         // Mod name and version
         final UiTxt titleText   = new UiTxt(EngineerSBliss.MOD_NAME, Fonts.ui.light, 2f);
-        final UiTxt versionText = new UiTxt(String.format("v%s", EngineerSBlissClient.getModVersion()), Fonts.ui.regular, 1f);
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+        final UiTxt versionText = new UiTxt(String.format("v%s-%s", EngineerSBlissClient.getModVersion(), EngineerSBlissClient.getMcVersion()), Fonts.ui.regular, 1f);
+        //FIXME ^ the mod version will prob contain the minecraft version too, after setting up stonecutter
         leftSidebar.addWidget(new UiTextWidget(this, titleText,   TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getLineHeight());
         leftSidebar.addWidget(new UiTextWidget(this, versionText, TextAlignment.LEFT, Layout.fgColor), versionText.getScaledFont().getLineHeight());
+        leftSidebar.setLockedRows(1);
 
         // Rendering
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Rendering filter"), "rendering_filter", RenderingScreen  ::new,    'R'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Overlays"        ), "overlays",         OverlaysScreen   ::new,    'O'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Alt textures"    ), "alt_textures",     AltTexturesScreen::new,    'T'), Layout.BORDER_HEIGHT);
 
         // Tools
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor),      Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Tools", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor),      Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Action history"  ), "action_history",   ()->{return null;},        'U'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Version Control" ), "version_control",  ()->{return null;},        'V'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Calculator"      ), "calculator",       ()->{return null;},        'C'), Layout.BORDER_HEIGHT);
@@ -79,22 +79,22 @@ public class PauseScreenContent extends __base_UiSidebarScreen {
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Block Groups"    ), "block_groups",     ()->{return null;},        'G'), Layout.BORDER_HEIGHT);
 
         // QoL
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("QoL", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Creative tweaks" ), "creative_tweaks",  CreativeTweaksScreen::new, 'Y'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Gameplay tweaks" ), "gameplay_tweaks",  ()->{return null;},        'X'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Macros"          ), "macros",           MacrosScreen::new,         'Q'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Sound muffler"   ), "sound_muffler",    ()->{return null;},        'M'), Layout.BORDER_HEIGHT);
 
         // Preferences
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Preferences", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Preferences", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Settings"        ), "settings",         SettingsScreen::new,       'S'), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Keybinds"        ), "keybinds",         ()->{return null;},        'K'), Layout.BORDER_HEIGHT);
 
         // Info
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Info", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Info", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("Render stats"    ), "render_stats",     ()->{return null;}), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("World stats"     ), "world_stats",      ()->{return null;}), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiPauseScreenButton(this, new UiTxt("About"           ), "about",            ()->{return null;}), Layout.BORDER_HEIGHT);

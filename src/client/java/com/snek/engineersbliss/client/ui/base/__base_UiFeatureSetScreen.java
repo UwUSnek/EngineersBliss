@@ -7,7 +7,6 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -62,8 +61,8 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
         // Add left sidebar title
         final UiTxt titleText = new UiTxt(featureSet.calcName().get(), 2f);
         final int titleHeight = titleText.getScaledFont().getLineHeight();
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, titleText, TextAlignment.LEFT, Layout.fgColor), titleHeight);
+        leftSidebar.setLockedRows(1);
     }
 
 
@@ -122,7 +121,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             // Feature name
             final UiTxt nameText = new UiTxt(newWidget.getClientFeature().calcName().get(), 2f);
             final float nameHeight = nameText.getScaledFont().getLineHeight();
-            rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+            rightSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
             rightSidebar.addWidget(new UiTextWidget(this, nameText, TextAlignment.CENTER, Layout.fgColor), nameHeight);
 
             // Feature description
@@ -131,7 +130,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
             final float descriptionHeight = height - nameHeight - Layout.BIG_SEPARATOR_HEIGHT; //! Might not be pixel perfect but it doesn't matter, can't scroll the element anyway.
             final UiTextWidget descriptionWidget = new UiTextWidget(this, descriptionText, TextAlignment.CENTER, true, Layout.fgColor);
             descriptionWidget.setVerticalAlignment(TextAlignmentY.TOP);
-            rightSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
+            rightSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
             rightSidebar.addWidget(descriptionWidget, descriptionHeight);
         }
     }

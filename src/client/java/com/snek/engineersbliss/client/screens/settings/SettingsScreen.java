@@ -7,7 +7,6 @@ import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedSlider;
@@ -53,8 +52,8 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
 
 
         // Screens
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Screens", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Screens", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new GuiScaleSettingSlider(
             this, SettingsClientFeatureSet.GUI_SCALE,
             null, guiScaleFormatter, 0, 0
@@ -72,8 +71,8 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
 
 
         // Status bar
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Status bar", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Status bar", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, SettingsClientFeatureSet.STATUS_BAR_HEIGHT,
             null, statusBarHeightFormatter, 0, 0
@@ -86,8 +85,8 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
 
 
         // Rendering
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
             this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
             null
@@ -103,8 +102,8 @@ public class SettingsScreen extends __base_UiFeatureSetScreen {
 
 
         // Misc
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
             this, SettingsClientFeatureSet.METAL_PIPE_SOUNDS,
             null

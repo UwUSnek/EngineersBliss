@@ -14,7 +14,6 @@ import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiButton;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiEditBox;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -73,8 +72,8 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
         // Rendering filter
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering Filter", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(searchField = new UiEditBox(this, Fonts.ui.regular, (UiTxt)new UiTxt("Search...").gray(), searchString -> blockList.filter(searchString)), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCK_OUTLINES, null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.RENDER_BLOCKS,         b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
@@ -85,15 +84,15 @@ public class RenderingScreen extends __base_UiFeatureSetScreen {
 
 
         // Misc
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Misc", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.TARGET_HIDDEN_BLOCKS,  null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, RenderingClientFeatureSet.SMOOTH_SHADING,        b -> RenderingFilterHandler.resetStateCacheAndRefresh(), null), Layout.BORDER_HEIGHT);
 
 
         // Actions
-        leftSidebar.addWidget(new UiSpacer(this), Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Actions", Layout.HEADER_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Actions", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiButton(
             this,
             new UiTxt("Reset filters"),

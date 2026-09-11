@@ -48,8 +48,8 @@ public class Layout {
     public static final int BORDER_HEIGHT = 2;
     public static final int BUTTON_HEIGHT = 16;
 
-    public static final int   SEPARATOR_HEIGHT = 1;
-    public static final int   BIG_SEPARATOR_HEIGHT = 8;
+    public static final int   SEPARATOR_HEIGHT = 2;
+    public static final int   BIG_SEPARATOR_HEIGHT = 16;
     public static final int   HEADER_HEIGHT = 24;
-    public static final float HEADER_SCALE  = 1.5f;
+    public static final float HEADER_TEXT_SCALE = 1.5f;
 }

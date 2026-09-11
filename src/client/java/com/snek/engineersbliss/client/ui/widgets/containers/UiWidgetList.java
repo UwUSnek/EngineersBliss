@@ -13,7 +13,6 @@ import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiContainer;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
-import com.snek.engineersbliss.client.ui.widgets.misc.UiSpacer;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
@@ -278,21 +277,26 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
     public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget));
-        addWidget(new UiSpacer(getScreen()), marginBottom);
+        __internal_addWidget(new SpacerEntry(getScreen()), marginBottom);
     }
     public void addWidgetAndSpacer(final __base_UiLayoutElm widget, final float height, final float marginBottom) {
         __internal_addWidget(new Entry(getScreen(), widget), height);
-        addWidget(new UiSpacer(getScreen()), marginBottom);
+        __internal_addWidget(new SpacerEntry(getScreen()), marginBottom);
     }
 
 
     public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float marginTop, final float marginBottom) {
-        addWidget(new UiSpacer(getScreen()), marginTop);
+        __internal_addWidget(new SpacerEntry(getScreen()), marginTop);
         addWidgetAndSpacer(widget, marginBottom);
     }
     public void addWidgetAndSpacers(final __base_UiLayoutElm widget, final float height, final float marginTop, final float marginBottom) {
-        addWidget(new UiSpacer(getScreen()), marginTop);
+        __internal_addWidget(new SpacerEntry(getScreen()), marginTop);
         addWidgetAndSpacer(widget, height, marginBottom);
+    }
+
+
+    public void addSpacer(final float height) {
+        __internal_addWidget(new SpacerEntry(getScreen()), height);
     }
 
 
@@ -495,6 +499,25 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         @Override
         public boolean isFocused() {
             return parentList.getFocused() == this;
+        }
+    }
+
+
+
+    public static class SpacerEntry extends Entry {
+        @Override public boolean scaleHeightWithGui() {
+            return false;
+        }
+        protected SpacerEntry(final Screen screen) {
+            super(screen);
+        }
+        @Override
+        public void relayoutSelf() {
+            // Empty
+        }
+        @Override
+        public boolean isFocused() {
+            return false;
         }
     }
 }
