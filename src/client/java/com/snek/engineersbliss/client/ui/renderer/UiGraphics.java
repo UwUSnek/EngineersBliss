@@ -409,6 +409,7 @@ public class UiGraphics {
         final float mouseY,
         final LivingEntity entity
     ) {
+        final float vanillaGuiScale = screen.getVanillaGuiScale();
         float centerX = (x0 + x1) / 2f;
         float centerY = (y0 + y1) / 2f;
         float xAngle = (float)Math.atan((centerX - mouseX) / 40f);
@@ -427,13 +428,20 @@ public class UiGraphics {
                 livingRenderState.xRot = 0f;
             }
 
-            livingRenderState.boundingBoxWidth = livingRenderState.boundingBoxWidth / livingRenderState.scale;
+            livingRenderState.boundingBoxWidth  = livingRenderState.boundingBoxWidth  / livingRenderState.scale;
             livingRenderState.boundingBoxHeight = livingRenderState.boundingBoxHeight / livingRenderState.scale;
             livingRenderState.scale = 1f;
         }
 
         Vector3f translation = new Vector3f(0f, renderState.boundingBoxHeight / 2f + offsetY, 0f);
-        raw.entity(renderState, (int)size, translation, rotation, xRotation, Math.round(x0), Math.round(y0), Math.round(x1), Math.round(y1));
+        // final float s = screen.getGuiScale();
+        // raw.entity(renderState, (int)size, translation, rotation, xRotation, Math.round(x0 / s), Math.round(y0 / s), Math.round(x1 / s), Math.round(y1 / s));
+        final int _size = Math.round(size / vanillaGuiScale);
+        final int _x0   = Math.round(x0   / vanillaGuiScale);
+        final int _y0   = Math.round(y0   / vanillaGuiScale);
+        final int _x1   = Math.round(x1   / vanillaGuiScale);
+        final int _y1   = Math.round(y1   / vanillaGuiScale);
+        raw.entity(renderState, _size, translation, rotation, xRotation, _x0, _y0, _x1, _y1); //TODO remove
     }
 
 

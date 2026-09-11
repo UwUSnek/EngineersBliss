@@ -10,9 +10,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.platform.Window;
 import com.snek.engineersbliss.client.screens.pause_screen.PauseScreenContent;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
@@ -60,16 +62,17 @@ public class PauseScreenMixin extends Screen {
                 buttons.add(button);
             }
         }
-        final int maxX = buttons.stream().mapToInt(b -> b.getX() + b.getWidth ()).max().orElseThrow();
-        final int minY = buttons.stream().mapToInt(Button::getY)                 .min().orElseThrow();
-        final int maxY = buttons.stream().mapToInt(b -> b.getY() + b.getHeight()).max().orElseThrow();
+        final int maxX = buttons.stream().mapToInt(b -> b.getRight ()).max().orElseThrow();
+        final int minY = buttons.stream().mapToInt(Button::getY)      .min().orElseThrow();
+        final int maxY = buttons.stream().mapToInt(b -> b.getBottom()).max().orElseThrow();
         return Pair.from((float)maxX, (minY + maxY) / 2f);
     }
 
     @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
     public void eb$init(final CallbackInfo ci) {
         final @NotNull Pair<Float, Float> clusterData = eb$getButtonClusterRightAndCenterY();
-        embedded = new PauseScreenContent(clusterData.getFirst(), clusterData.getSecond());
+        final int guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+        embedded = new PauseScreenContent(clusterData.getFirst() * guiScale, clusterData.getSecond() * guiScale);
         embedded.init(width, height);
     }
 

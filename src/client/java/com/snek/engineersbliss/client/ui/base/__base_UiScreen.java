@@ -58,10 +58,11 @@ public abstract class __base_UiScreen extends Screen {
 
 
     // True Screen size & virtual gui scale
-    private int realGuiScale = 1;  // The window's actual current scale, refreshed each vanilla resize. //! Always int.
+    private int vanillaGuiScale = 1;  // The window's actual current scale, refreshed each vanilla resize. //! Always int.
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
     public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
+    public float getVanillaGuiScale() { return vanillaGuiScale; }
 
 
     // Relayout/rebuild flags
@@ -121,7 +122,7 @@ public abstract class __base_UiScreen extends Screen {
      */
     protected void maybeFlagResize() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
-        realGuiScale = mc.getWindow().getGuiScale();
+        vanillaGuiScale = mc.getWindow().getGuiScale();
 
         // Retrieve current true dimensions and virtual scale
         float newScale = animatedGuiScale.compute();
@@ -259,6 +260,16 @@ public abstract class __base_UiScreen extends Screen {
                 resize(0, 0);
                 return true;
             }
+            case GLFW.GLFW_KEY_PAGE_UP: { //TODO remove
+                Minecraft.getInstance().options.guiScale().set(Minecraft.getInstance().options.guiScale().get() + 1);
+                resize(0, 0);
+                return true;
+            }
+            case GLFW.GLFW_KEY_PAGE_DOWN: { //TODO remove
+                Minecraft.getInstance().options.guiScale().set(Minecraft.getInstance().options.guiScale().get() - 1);
+                resize(0, 0);
+                return true;
+            }
             case GLFW.GLFW_KEY_KP_MULTIPLY: {
                 final boolean newDebugOverlays = !ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.DEBUG_OVERLAYS, newDebugOverlays);
@@ -355,7 +366,7 @@ public abstract class __base_UiScreen extends Screen {
 
         // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything. Compensate mouse coords too.
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
-        float factor = 1f / realGuiScale;
+        float factor = 1f / vanillaGuiScale;
         graphics.pose().pushMatrix();
         graphics.pose().scale(factor, factor);
         extractRenderState(new UiGraphics(graphics, this), fixedPos.x, fixedPos.y, delta);
