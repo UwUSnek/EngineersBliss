@@ -4,11 +4,11 @@ package com.snek.engineersbliss.client.ui.widgets.base;
 
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import java.util.ArrayList;
@@ -34,10 +34,10 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
 
 
 
-    protected __base_UiContainer(final Screen screen) {
+    protected __base_UiContainer(final UiScreen screen) {
         super(screen);
     }
-    protected __base_UiContainer(final Screen screen, final UiTxt label) {
+    protected __base_UiContainer(final UiScreen screen, final UiTxt label) {
         super(screen, label);
     }
 

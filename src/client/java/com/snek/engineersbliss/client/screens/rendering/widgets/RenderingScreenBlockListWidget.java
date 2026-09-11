@@ -2,7 +2,6 @@ package com.snek.engineersbliss.client.screens.rendering.widgets;
 
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.level.block.Block;
 
 import java.util.ArrayList;
@@ -13,10 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.ServerMinecraftUtils;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
-import com.snek.engineersbliss.client.ui.data_types.UiSize;
-import com.snek.engineersbliss.client.ui.font.FontFamily;
-import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
@@ -31,14 +27,13 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 
 
 public class RenderingScreenBlockListWidget extends UiWidgetList {
-    // public static final int CHECKBOX_AREA_WIDTH = 40; //TODO replace with UiSize
-    public static final float LIST_MARGIN = 0.2f; //TODO replace with UiSize
+    public static final float LIST_MARGIN = 0.2f;
 
     private final List<Block> allBlocks;    // All blocks in the game, vanilla order
     private final List<Block> loadedBlocks; // Blocks in loaded chunks, vanilla order (manual)
 
 
-    public RenderingScreenBlockListWidget(final Screen screen, final float itemHeight) {
+    public RenderingScreenBlockListWidget(final UiScreen screen, final float itemHeight) {
         super(screen, itemHeight, LIST_MARGIN);
 
         // Create list of all blocks
@@ -119,7 +114,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
         super.extractSelf(graphics, mouseX, mouseY, a);
 
         // Handle hover events
-        final GuiEventListener hovered = ((__base_UiScreen)getScreen()).getHoveredOrDraggedElm(); //FIXME remove blind cast
+        final GuiEventListener hovered = getScreen().getHoveredOrDraggedElm();
         if(hovered != null && hovered instanceof BlockEntryContents contents) {
 
             // If hovering on the left half of the entry, spawn block info tooltip //! Checkboxes are on the right half.

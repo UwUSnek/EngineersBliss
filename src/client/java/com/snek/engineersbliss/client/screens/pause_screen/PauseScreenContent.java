@@ -8,7 +8,7 @@ import com.snek.engineersbliss.client.screens.macros.MacrosScreen;
 import com.snek.engineersbliss.client.screens.overlays.OverlaysScreen;
 import com.snek.engineersbliss.client.screens.rendering.RenderingScreen;
 import com.snek.engineersbliss.client.screens.settings.SettingsScreen;
-import com.snek.engineersbliss.client.ui.base.__base_UiSidebarScreen;
+import com.snek.engineersbliss.client.ui.base.UiSidebarScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
@@ -24,7 +24,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 
-public class PauseScreenContent extends __base_UiSidebarScreen {
+public class PauseScreenContent extends UiSidebarScreen {
     private final float vanillaClusterRight;
     private final float vanillaClusterCenterY;
     private PlayerModelWidget playerModel;

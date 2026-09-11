@@ -3,7 +3,7 @@ package com.snek.engineersbliss.client.screens.settings;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 import com.snek.engineersbliss.client.screens.settings.widgets.GuiScaleSettingSlider;
-import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.base.UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
@@ -21,7 +21,7 @@ import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSe
 
 
 
-public class SettingsScreen extends __base_UiFeatureSetScreen {
+public class SettingsScreen extends UiFeatureSetScreen {
     private static final ValueFormatter<Float> guiScaleFormatter = (n, u) -> {
         return n % 1 < 0.01f ? String.format("%.0fx", n) : String.format("%.1fx", n);
     };

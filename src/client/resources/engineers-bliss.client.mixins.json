@@ -18,7 +18,6 @@
         "misc.SpriteAtlasSvgSupportMixin",
 
 
-        "screens.ScreenMixin",
         "screens.PauseScreenMixin",
 
 

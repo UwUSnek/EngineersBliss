@@ -27,9 +27,9 @@ import net.minecraft.resources.Identifier;
 
 
 /**
- * A __base_UiFeatureSetScreen that can display feature previews from UiToggleFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
+ * A UiFeatureSetScreen that can display feature previews from UiToggleFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
  */
-public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeatureSetScreen {
+public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
 
     // Preview data
     private Identifier[] hoveredPreviewAtlasIds = null;
@@ -39,7 +39,7 @@ public abstract class __base_UiFeatureSetScreenWithPreview extends __base_UiFeat
 
 
 
-    protected __base_UiFeatureSetScreenWithPreview(final __base_ClientFeatureSet<?> featureSet) {
+    protected UiFeatureSetScreenWithPreview(final __base_ClientFeatureSet<?> featureSet) {
         super(featureSet);
     }
 

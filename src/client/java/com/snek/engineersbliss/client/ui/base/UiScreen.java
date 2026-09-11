@@ -1,5 +1,8 @@
 package com.snek.engineersbliss.client.ui.base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -14,6 +17,7 @@ import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
+import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
@@ -54,7 +58,13 @@ import net.minecraft.client.input.MouseButtonInfo;
  * Screens come with +/- GUI Scale keybinds, Tab keybind to hide the screen, and a blurred background.
  * By default, all screens pause the game.
  */
-public abstract class __base_UiScreen extends Screen {
+public abstract class UiScreen extends Screen {
+
+    // Texture cache
+    private final List<TextureCache> textureCaches = new ArrayList<>();
+    public void registerTextureCacheForClose(TextureCache cache) {
+        textureCaches.add(cache);
+    }
 
 
     // True Screen size & virtual gui scale
@@ -89,7 +99,7 @@ public abstract class __base_UiScreen extends Screen {
 
 
 
-    protected __base_UiScreen() {
+    protected UiScreen() {
         super(new UiTxt().get());
         this.animatedGuiScale = new AnimatedFloat(SettingsFeatureHandler.getCurrentGuiScale(), Layout.guiScaleTransitionDuration);
         this.needsRelayout = false;
@@ -421,6 +431,9 @@ public abstract class __base_UiScreen extends Screen {
     @Override
     public void onClose() {
         this.minecraft.setScreen(null);
+        for(final @NotNull TextureCache textureCache : textureCaches) {
+            textureCache.close();
+        }
     }
 
 

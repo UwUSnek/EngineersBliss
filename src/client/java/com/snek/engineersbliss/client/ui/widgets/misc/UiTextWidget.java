@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
@@ -12,7 +13,6 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 
 
@@ -29,16 +29,16 @@ public class UiTextWidget extends __base_UiWidget {
 
 
 
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final int color) {
         this(screen, label, alignment, false, color);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final int color, final int bgColor) {
         this(screen, label, alignment, false, color, bgColor);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color) {
         this(screen, label, alignment, wrapLines, color, 0x0);
     }
-    public UiTextWidget(final Screen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color, final int bgColor) {
+    public UiTextWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment, final boolean wrapLines, final int color, final int bgColor) {
         super(screen, label, alignment);
         this.wrapLines = wrapLines;
         this.color = color;

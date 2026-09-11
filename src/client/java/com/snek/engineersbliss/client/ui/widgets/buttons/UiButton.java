@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
@@ -18,7 +19,6 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
@@ -44,7 +44,7 @@ public class UiButton extends __base_UiWidget {
 
 
 
-    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
+    public UiButton(final UiScreen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key, final TextAlignment alignment) {
         super(screen, label, alignment);
         setBgColor(Layout.bgColor);
         this.pressCallback = pressCallback;
@@ -53,13 +53,13 @@ public class UiButton extends __base_UiWidget {
         this.bgSpriteWidth = new UiSize(this);
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadInOut);
     }
-    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
+    public UiButton(final UiScreen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
         this(screen, label, pressCallback, '\0', alignment);
     }
-    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
+    public UiButton(final UiScreen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final char key) {
         this(screen, label, pressCallback, key, TextAlignment.LEFT);
     }
-    public UiButton(final Screen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
+    public UiButton(final UiScreen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback) {
         this(screen, label, pressCallback, TextAlignment.LEFT);
     }
 

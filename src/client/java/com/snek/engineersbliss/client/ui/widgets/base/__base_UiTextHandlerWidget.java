@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedInt;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
@@ -17,7 +18,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.TextCursorUtils;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -72,7 +72,7 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
 
 
 
-    protected __base_UiTextHandlerWidget(final Screen screen, final FontFamily fontFamily, final UiTxt hint, final TextAlignment alignment, final boolean multiline) {
+    protected __base_UiTextHandlerWidget(final UiScreen screen, final FontFamily fontFamily, final UiTxt hint, final TextAlignment alignment, final boolean multiline) {
         super(screen, new UiTxt(), alignment);
         this.fontFamily         = fontFamily;
         this.font               = fontFamily.get(1f);

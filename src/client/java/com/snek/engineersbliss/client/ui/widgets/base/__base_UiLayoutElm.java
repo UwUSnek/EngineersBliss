@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 
 import net.minecraft.client.gui.ComponentPath;
@@ -21,7 +21,6 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 
 
@@ -86,16 +85,9 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
 
 
     // Screen reference
-    private final Screen screen;
-    public Screen getScreen() { return screen; }
-    public float getGuiScale() {
-        if(getScreen() instanceof __base_UiScreen uiScreen) {
-            return uiScreen.getGuiScale();
-        }
-        else {
-            return 1f;
-        }
-    }
+    private final UiScreen screen;
+    public UiScreen getScreen() { return screen; }
+    public float getGuiScale() { return getScreen().getGuiScale(); }
 
 
     // Relayout handling
@@ -111,7 +103,7 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
 
 
 
-    protected __base_UiLayoutElm(final Screen screen) {
+    protected __base_UiLayoutElm(final UiScreen screen) {
         this.screen = screen;
         this.x = 50;
         this.y = 50;
@@ -281,7 +273,7 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     @Override
     public final void extractRenderState(final GuiGraphicsExtractor graphics, int mouseX, int mouseY, final float a) {
         // Empty.
-        //! Block Vanilla's extractRenderState so the __base_UiScreen can call extractWidgetRenderState directly using its UiGraphics.
+        //! Block Vanilla's extractRenderState so the UiScreen can call extractWidgetRenderState directly using its UiGraphics.
     }
 
     /**
@@ -303,8 +295,8 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
 
 
     public void extractWidgetRenderState(UiGraphics graphics, float mouseX, float mouseY, float a) { //TODO rename to "extract"
-        dragged = ((__base_UiScreen)getScreen()).getDraggedElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
-        isHovered = ((__base_UiScreen)getScreen()).getHoveredElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
+        dragged   = getScreen().getDraggedElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
+        isHovered = getScreen().getHoveredElm() == this; //TODO replace the getter with this check instead of recomputing every frame?
         checkHoverTransition();
 
         // Draw self and content

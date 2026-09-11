@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignmentY;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
@@ -17,7 +18,6 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -164,7 +164,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
 
 
-    protected __base_UiWidget(final Screen screen, final UiTxt label, final TextAlignment alignment) {
+    protected __base_UiWidget(final UiScreen screen, final UiTxt label, final TextAlignment alignment) {
         super(screen);
         bgColor = 0x0; //! Default to no background, this also improves performance
         this.leftLabelMargin  = new UiSize(this);  leftLabelMargin.setPx(Layout.textLargeMarginPx);
@@ -173,13 +173,13 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
         this.alignment = alignment;
         this.verticalAlignment = TextAlignmentY.CENTER;
     }
-    protected __base_UiWidget(final Screen screen, final UiTxt label) {
+    protected __base_UiWidget(final UiScreen screen, final UiTxt label) {
         this(screen, label, TextAlignment.LEFT);
     }
-    protected __base_UiWidget(final Screen screen, final TextAlignment alignment) {
+    protected __base_UiWidget(final UiScreen screen, final TextAlignment alignment) {
         this(screen, new UiTxt(), alignment);
     }
-    protected __base_UiWidget(final Screen screen) {
+    protected __base_UiWidget(final UiScreen screen) {
         this(screen, new UiTxt());
     }
 

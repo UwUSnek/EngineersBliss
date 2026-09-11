@@ -9,7 +9,7 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -49,7 +49,7 @@ import net.minecraft.world.level.block.Block;
  */
 public class UiGraphics {
     GuiGraphicsExtractor raw;
-    __base_UiScreen screen;
+    UiScreen screen;
 
 
 
@@ -57,7 +57,7 @@ public class UiGraphics {
 
 
 
-    public UiGraphics(final GuiGraphicsExtractor raw, __base_UiScreen screen) {
+    public UiGraphics(final GuiGraphicsExtractor raw, UiScreen screen) {
         this.raw = raw;
         this.screen = screen;
     }

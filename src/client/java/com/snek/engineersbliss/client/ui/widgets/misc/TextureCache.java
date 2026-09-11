@@ -6,11 +6,10 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.ui.base.ScreenMixinAccessor;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 
@@ -40,9 +39,9 @@ public class TextureCache implements AutoCloseable {
      * Creates a TextureCache that frees its memory on its own when the screen is closed.
      * @param screen The screen to track.
      */
-    public TextureCache(final Screen screen) {
+    public TextureCache(final UiScreen screen) {
         this();
-        ((ScreenMixinAccessor)screen).eb$registerTextureCacheForClose(this);
+        screen.registerTextureCacheForClose(this);
     }
 
     /**

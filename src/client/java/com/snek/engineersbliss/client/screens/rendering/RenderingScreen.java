@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.client.screens.rendering.widgets.RenderingScreenBlockListWidget;
-import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreen;
+import com.snek.engineersbliss.client.ui.base.UiFeatureSetScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.font.Fonts;
@@ -28,7 +28,7 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 
 
 
-public class RenderingScreen extends __base_UiFeatureSetScreen {
+public class RenderingScreen extends UiFeatureSetScreen {
     private UiEditBox searchField;
     private RenderingScreenBlockListWidget blockList;
 

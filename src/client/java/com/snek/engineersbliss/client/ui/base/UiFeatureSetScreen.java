@@ -21,10 +21,10 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 
 
 /**
- * A __base_UiSidebarScreen for a feature set.
+ * A UiSidebarScreen for a feature set.
  * It provides an interface for creating and loading presets, keeping the central part of the screen empty.
  */
-public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
+public class UiFeatureSetScreen extends UiSidebarScreen {
 
     // Hover data
     public static final long HOVER_OFF_DELAY_MS = 250;
@@ -41,7 +41,7 @@ public class __base_UiFeatureSetScreen extends __base_UiSidebarScreen {
 
     // Parent feature set and constructor
     protected final __base_ClientFeatureSet<?> featureSet;
-    protected __base_UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
+    protected UiFeatureSetScreen(final __base_ClientFeatureSet<?> featureSet) {
         super();
         this.featureSet = featureSet;
     }

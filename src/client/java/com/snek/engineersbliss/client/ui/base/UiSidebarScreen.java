@@ -13,9 +13,9 @@ import com.snek.engineersbliss.client.utils.Layout;
 
 
 /**
- * A __base_UiScreen that comes with sidebars.
+ * A UiScreen that comes with sidebars.
  */
-public abstract class __base_UiSidebarScreen extends __base_UiScreen {
+public abstract class UiSidebarScreen extends UiScreen {
     public static float DEFAULT_SIDEBAR_WIDTH = 0.2f;
 
     // Elements and layout
@@ -32,7 +32,7 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
     /**
      * Creates a screen with left and right sidebars of default width.
      */
-    protected __base_UiSidebarScreen() {
+    protected UiSidebarScreen() {
         this(DEFAULT_SIDEBAR_WIDTH, DEFAULT_SIDEBAR_WIDTH);
     }
 
@@ -42,7 +42,7 @@ public abstract class __base_UiSidebarScreen extends __base_UiScreen {
      * @param leftSidebarWidth The width of the left sidebar. Can be null to disble the left sidebar.
      * @param rightSidebarWidth The width of the right sidebar. Can be null to disble the right sidebar.
      */
-    protected __base_UiSidebarScreen(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth) {
+    protected UiSidebarScreen(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth) {
         super();
         this.hasLeftSidebar  =  leftSidebarWidth != null;
         this.hasRightSidebar = rightSidebarWidth != null;

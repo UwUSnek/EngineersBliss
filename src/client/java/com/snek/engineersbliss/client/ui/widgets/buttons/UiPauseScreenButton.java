@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -30,11 +31,11 @@ public class UiPauseScreenButton extends UiButton {
     }
 
 
-    public UiPauseScreenButton(final Screen screen, final UiTxt label, final @Nullable String spriteName, final Supplier<Screen> screenFactory, final char key) {
+    public UiPauseScreenButton(final UiScreen screen, final UiTxt label, final @Nullable String spriteName, final Supplier<Screen> screenFactory, final char key) {
         super(screen, label, createPressCallback(screenFactory), key, TextAlignment.LEFT);
         finalizeInit(spriteName);
     }
-    public UiPauseScreenButton(final Screen screen, final UiTxt label, final @Nullable String spriteName, final Supplier<Screen> screenFactory) {
+    public UiPauseScreenButton(final UiScreen screen, final UiTxt label, final @Nullable String spriteName, final Supplier<Screen> screenFactory) {
         super(screen, label, createPressCallback(screenFactory), TextAlignment.LEFT);
         finalizeInit(spriteName);
     }

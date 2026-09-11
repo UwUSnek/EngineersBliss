@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.base.ClientFeature;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -16,7 +17,6 @@ import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
 
@@ -45,10 +45,10 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
 
 
 
-    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable ValueFormatter<Boolean> valueFormatter) {
+    public UiToggleFeatureButton(final UiScreen screen, final ClientFeature<?> feature, final @Nullable ValueFormatter<Boolean> valueFormatter) {
         this(screen, feature, null, valueFormatter);
     }
-    public UiToggleFeatureButton(final Screen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
+    public UiToggleFeatureButton(final UiScreen screen, final ClientFeature<?> feature, final @Nullable Consumer<UiButton> afterPressCallback, final @Nullable ValueFormatter<Boolean> valueFormatter) {
 
         // Throw exception if not a ServerToggleFeature
         final @NotNull __base_ServerFeature<?> genericServerFeature = feature.getServerFeature();

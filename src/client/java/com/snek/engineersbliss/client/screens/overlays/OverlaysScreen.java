@@ -1,7 +1,7 @@
 package com.snek.engineersbliss.client.screens.overlays;
 
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
-import com.snek.engineersbliss.client.ui.base.__base_UiFeatureSetScreenWithPreview;
+import com.snek.engineersbliss.client.ui.base.UiFeatureSetScreenWithPreview;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
@@ -11,7 +11,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 
-public class OverlaysScreen extends __base_UiFeatureSetScreenWithPreview {
+public class OverlaysScreen extends UiFeatureSetScreenWithPreview {
 
 
     public OverlaysScreen() {

@@ -2,13 +2,12 @@ package com.snek.engineersbliss.client.ui.widgets.misc;
 
 import java.util.function.Consumer;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.FontFamily;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiTextHandlerWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-
-import net.minecraft.client.gui.screens.Screen;
 
 
 
@@ -22,7 +21,7 @@ public class UiEditBox extends __base_UiTextHandlerWidget {
     private String valueCache;
 
 
-    public UiEditBox(final Screen screen, final FontFamily fontFamily, final UiTxt hint, final Consumer<String> responder) {
+    public UiEditBox(final UiScreen screen, final FontFamily fontFamily, final UiTxt hint, final Consumer<String> responder) {
         super(screen, fontFamily, hint, TextAlignment.LEFT, false);
         this.responder = responder;
         this.valueCache = "";

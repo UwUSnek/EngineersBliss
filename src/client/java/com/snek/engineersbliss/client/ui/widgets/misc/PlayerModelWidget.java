@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.ui.base.__base_UiScreen;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
@@ -33,7 +33,7 @@ public class PlayerModelWidget extends __base_UiContainer {
     public void setModelScale(final float scale) { modelScale = scale; }
 
 
-    public PlayerModelWidget(final __base_UiScreen screen) {
+    public PlayerModelWidget(final UiScreen screen) {
         super(screen);
         this.modelScale = DEFAULT_MODEL_SCALE;
         final LocalPlayer player = Minecraft.getInstance().player;

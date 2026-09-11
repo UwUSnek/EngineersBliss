@@ -3,11 +3,11 @@ package com.snek.engineersbliss.client.ui.widgets.containers;
 
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.util.Mth;
 
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedFloat;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
@@ -50,10 +50,10 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
 
-    public UiWidgetList(final Screen screen, final float defaultEntryHeight) {
+    public UiWidgetList(final UiScreen screen, final float defaultEntryHeight) {
         this(screen, defaultEntryHeight, 0f);
     }
-    public UiWidgetList(final Screen screen, final float defaultEntryHeight, final float rowMargin) {
+    public UiWidgetList(final UiScreen screen, final float defaultEntryHeight, final float rowMargin) {
         super(screen, new UiTxt(CommonComponents.EMPTY));
         setBgColor(Layout.bgColor);
         this.scrollbarWidth = new UiSize(this); scrollbarWidth.setPx(2);
@@ -463,12 +463,12 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
 
 
         //! For subclasses that manage their own content
-        protected Entry(final Screen screen) {
+        protected Entry(final UiScreen screen) {
             super(screen);
             setBgColor(0x0);
             this.widget = null;
         }
-        public Entry(final Screen screen, final __base_UiLayoutElm widget) {
+        public Entry(final UiScreen screen, final __base_UiLayoutElm widget) {
             super(screen);
             setBgColor(0x0);
             this.widget = widget;
@@ -508,7 +508,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         @Override public boolean scaleHeightWithGui() {
             return false;
         }
-        protected SpacerEntry(final Screen screen) {
+        protected SpacerEntry(final UiScreen screen) {
             super(screen);
         }
         @Override

@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
+import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.data_types.UiSize;
 import com.snek.engineersbliss.client.ui.data_types.animated.AnimatedColor;
@@ -20,7 +21,6 @@ import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
@@ -68,7 +68,7 @@ public class UiSlider extends __base_UiWidget {
 
 
     public UiSlider(
-        final Screen screen,
+        final UiScreen screen,
         final UiTxt baseLabel, final double initialValue,
         final @Nullable Consumer<Double> onChange,
         final @Nullable Function<UiSlider, UiTxt> valueFormatter
