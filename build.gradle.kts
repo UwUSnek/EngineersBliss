@@ -1,4 +1,3 @@
-val loom_version: String by project
 plugins {
     id("dev.kikugie.loom-back-compat")  // Applies the correct loom variant based on the Minecraft version
     id("maven-publish")                 // Maven publishing
@@ -44,8 +43,8 @@ repositories {
 dependencies {
 
     // Minecraft
-    minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")      // Base Minecraft
-    loomx.applyMojangMappings()                                                     // Applies Mojang Mappings on obfuscated versions
+    minecraft("com.mojang:minecraft:${sc.current.version}") // Base Minecraft
+    loomx.applyMojangMappings()                             // Applies Mojang Mappings on obfuscated versions
 
     // Bundled dependencies
     implementation("com.github.weisj:jsvg:2.1.0")
@@ -63,6 +62,14 @@ dependencies {
 
 
 loom {
+    splitEnvironmentSourceSets()
+    mods {
+        create("engineers-bliss") {
+            sourceSet(sourceSets["main"])
+            sourceSet(sourceSets["client"])
+        }
+    }
+
     fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json") // Useful for interface injection
     // accessWidenerPath = sc.process( //TODO access wideners are disabled rn. prob not gonna need them though
     //     rootProject.file("src/main/resources/template.ct"),
@@ -119,12 +126,21 @@ tasks {
         filesMatching("*.mixins.json") { expand("java" to mixinJava) }
     }
 
+
+    // Expand java version for the Client. //! processResources processes Main only.
+    named<ProcessResources>("processClientResources") {
+        val mixinJava = "JAVA_${requiredJava.majorVersion}"
+        filesMatching("*.mixins.json") { expand("java" to mixinJava) }
+    }
+
+
     // Includes the license file in the built mod
     withType<Jar> {
         val name = project.property("mod.id")
         inputs.property("mod_id", name)
         from("../../LICENSE") { rename { "$it-$name" } }
     }
+
 
     register<Copy>("buildAndCollect") {
         group = "build"
