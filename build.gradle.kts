@@ -83,8 +83,8 @@ loom {
     runConfigs.all {
         preferGradleTask = true
         generateRunConfig = true
-        runDirectory = rootProject.file("run") // Shares the run directory between versions
-        jvmArguments.add("-Dmixin.debug.export=true") // Exports transformed classes for debugging
+        runDirectory = project.file("run")              // Separate run directories. Keep one per distinct version
+        jvmArguments.add("-Dmixin.debug.export=true")   // Export transformed classes for debugging
     }
 }
 
