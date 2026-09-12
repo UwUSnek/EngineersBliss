@@ -1,0 +1,27 @@
+mod.id      = "engineersbliss"
+mod.name    = "Engineer's Bliss"
+mod.group   = "com.snek"
+mod.version = "0.10.0"
+#FIXME add authors and contributors, copy from the original multiversion branch
+#FIXME also add discord link and the other stuff
+
+deps.fabric_loader = "0.19.3"
+loomx.loom_version = "1.17-SNAPSHOT"
+
+
+
+
+["26.1"]
+mod.mc_compat   = "26.1"                # Mod compatibility range in fabric.mod.json
+mod.mc_releases = ["26.1"]              # List of releases to be marked compatible on Modrinth/Curseforge
+deps.fabric-api = "0.155.3+26.1.2"
+deps.modmenu    = "18.0.0"
+deps.sodium     = "mc26.1.1-0.8.9-fabric"
+
+
+["26.1.1"]
+mod.mc_compat   = "26.1.1"
+mod.mc_releases = ["26.1.1"]
+deps.fabric-api = "0.155.3+26.1.2"
+deps.modmenu    = "18.0.0"
+deps.sodium     = "mc26.1.1-0.8.9-fabric"
