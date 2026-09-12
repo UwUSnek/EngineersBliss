@@ -1,18 +1,21 @@
-mod.id      = "engineersbliss"
-mod.name    = "Engineer's Bliss"
-mod.group   = "com.snek"
-mod.version = "0.10.0"
-#FIXME add authors and contributors, copy from the original multiversion branch
-#FIXME also add discord link and the other stuff
 
+# Basic mod data
+mod.id             = "engineersbliss"
+mod.name           = "Engineer's Bliss"
+mod.group          = "com.snek"
+mod.version        = "0.10.0"
+mod.description    = "A rendering and utility mod for Redstone engineers"
+
+
+
+
+# Project dependencies
 deps.fabric_loader = "0.19.3"
 loomx.loom_version = "1.17-SNAPSHOT"
 
 
-
-
 ["26.1"]
-mod.mc_compat   = "26.1"                # Mod compatibility range in fabric.mod.json
+mod.minecraft   = "26.1"                # Mod compatibility range in fabric.mod.json
 mod.mc_releases = ["26.1"]              # List of releases to be marked compatible on Modrinth/Curseforge
 deps.fabric-api = "0.155.3+26.1.2"
 deps.modmenu    = "18.0.0"
@@ -20,8 +23,22 @@ deps.sodium     = "mc26.1.1-0.8.9-fabric"
 
 
 ["26.1.1"]
-mod.mc_compat   = "26.1.1"
+mod.minecraft   = "26.1.1"
 mod.mc_releases = ["26.1.1"]
 deps.fabric-api = "0.155.3+26.1.2"
 deps.modmenu    = "18.0.0"
 deps.sodium     = "mc26.1.1-0.8.9-fabric"
+
+
+# [fabric."26.1.2"]
+# deps.minecraft  = "26.1.2"
+# deps.fabric-api = "0.155.3+26.1.2"
+# deps.modmenu    = "18.0.0"
+# deps.sodium     = "mc26.1.2-0.9.2-fabric"
+
+
+# [fabric."26.2"]
+# deps.minecraft  = "26.2"
+# deps.fabric-api = "0.160.0+26.2"
+# deps.modmenu    = "20.0.1"
+# deps.sodium     = "mc26.2-0.9.2-fabric"

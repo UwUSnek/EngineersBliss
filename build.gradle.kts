@@ -114,12 +114,18 @@ tasks {
         }
 
         val props = buildMap {
-            register("id",        "mod.id")
-            register("name",      "mod.name")
-            register("version",   "mod.version")
-            register("minecraft", "mod.mc_compat")
-        }
+            register("id",           "mod.id")
+            register("name",         "mod.name")
+            register("version",      "mod.version")
+            register("description",  "mod.description")
 
+            put("java_version",         requiredJava.majorVersion)
+            register("minecraft",       "mod.minecraft")
+            register("fabric_loader",   "deps.fabric_loader")
+            register("fabric_api",      "deps.fabric-api")
+            register("sodium_version",  "deps.sodium")
+            register("modmenu_version", "deps.modmenu")
+        }
         filesMatching("fabric.mod.json") { expand(props) }
 
         val mixinJava = "JAVA_${requiredJava.majorVersion}"
