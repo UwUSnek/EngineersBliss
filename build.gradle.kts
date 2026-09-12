@@ -120,7 +120,7 @@ tasks {
             register("description",  "mod.description")
 
             put("java_version",         requiredJava.majorVersion)
-            register("minecraft",       "mod.minecraft")
+            register("minecraft",       "deps.minecraft")
             register("fabric_loader",   "deps.fabric_loader")
             register("fabric_api",      "deps.fabric-api")
             register("sodium_version",  "deps.sodium")
@@ -160,20 +160,6 @@ tasks {
 }
 
 
-
-
-
-
-//FIXME do something about this? we have split sources
-// loom {
-//     splitEnvironmentSourceSets()
-//     mods {
-//         create("engineers-bliss") {
-//             sourceSet(sourceSets["main"])
-//             sourceSet(sourceSets["client"])
-//         }
-//     }
-// }
 
 
 // Maven publication
