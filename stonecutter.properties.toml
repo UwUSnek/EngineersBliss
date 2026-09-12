@@ -3,7 +3,7 @@
 mod.id             = "engineersbliss"
 mod.name           = "Engineer's Bliss"
 mod.group          = "com.snek"
-mod.version        = "0.10.0"
+mod.version        = "0.11.0"
 mod.description    = "A rendering and utility mod for Redstone engineers"
 
 
