@@ -31,7 +31,10 @@ public class PlayerMannequin extends AbstractClientPlayer {
     @Override
     public boolean shouldShowName() { return false; }
 
-
+    //! Render-only. Id is not important, but it's required to display the entity in 26.2+
+    //! No override works in 26.2.1 but it's not the intended behaviour, i think? idk im not sure.
+    @Override
+    public int getId() { return 0; }
 
 
     public static PlayerMannequin mannequin;
