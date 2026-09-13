@@ -1,7 +1,7 @@
 {
     "required": true,
     "package": "com.snek.engineersbliss.client.mixin",
-    "compatibilityLevel": "JAVA_25",
+    "compatibilityLevel": "${java}",
     "client": [
         "accessors.GameRendererAccessor",
         "accessors.LevelRendererAccessor",

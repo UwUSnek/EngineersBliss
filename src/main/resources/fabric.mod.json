@@ -1,22 +1,18 @@
 {
     "schemaVersion": 1,
-    "id": "engineers-bliss",
-    "version": "${version}",
-    "name": "Engineer's Bliss",
-    "description": "A rendering and utility mod for Redstone engineers",
-    "authors": [
-        "UwU_Snek"
-    ],
-    "contributors": [
-        "Snek's cat Cesare",
-        "Snek's 83 cans of Monster"
-    ],
+    "id":            "${id}",
+    "version":       "${version}",
+    "name":          "${name}",
+    "description":   "${description}",
+    "authors":       [ "UwU_Snek" ],
+    "contributors":  [ "Snek's cat Cesare", "Snek's 83 cans of Monster" ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "homepage": "https://github.com/UwUSnek/multiversion_test.git",
+        "sources":  "https://github.com/UwUSnek/multiversion_test.git",
+        "discord":  "https://discord.gg/cusPDsbHn"
     },
-    "license": "GPL-3.0",
-    "icon": "assets/engineers-bliss/icon.png",
+    "license":     "GPL-3.0",
+    "icon":        "assets/${id}/icon.png",
     "environment": "*",
     "entrypoints": {
         "main": [
@@ -38,12 +34,13 @@
         }
     ],
     "depends": {
-        "fabricloader": ">=0.19.3",
-        "minecraft": "~26.1",
-        "java": ">=25",
-        "fabric-api": "*"
+        "java":         ">=${java_version}",
+        "minecraft":    "~${minecraft}",
+        "fabricloader": ">=${fabric_loader}",
+        "fabric-api":   ">=${fabric_api}"
     },
     "suggests": {
-        "sodium": ">=0.8.9"
+        "sodium":  ">=${sodium_version}",
+        "modmenu": ">=${modmenu_version}"
     }
 }
