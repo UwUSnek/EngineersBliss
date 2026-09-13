@@ -47,15 +47,16 @@ dependencies {
     loomx.applyMojangMappings()                             // Applies Mojang Mappings on obfuscated versions
 
     // Bundled dependencies
-    implementation("com.github.weisj:jsvg:2.1.0")
-    include("com.github.weisj:jsvg:2.1.0")
+    implementation("com.github.weisj:jsvg:${property("deps.jsvg")}")
+    include("com.github.weisj:jsvg:${property("deps.jsvg")}")
 
     // Required dependencies
     implementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
 
     // Optional dependencies
-    compileOnly("maven.modrinth:sodium:mc26.1.1-0.8.9-fabric")
+    compileOnly("maven.modrinth:sodium:${property("deps.sodium")}")
+    //! ModMenu discovers mods on its own. No project dependency needed. It should only be listed in the fabric.mod.json
 }
 
 

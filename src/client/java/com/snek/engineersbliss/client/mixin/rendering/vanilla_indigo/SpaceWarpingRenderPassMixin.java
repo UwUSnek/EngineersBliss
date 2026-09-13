@@ -91,8 +91,9 @@ public abstract class SpaceWarpingRenderPassMixin {
         final @NotNull FramePass pass = frame.addPass("item_sink");
         this.targets.main = pass.readsAndWrites(this.targets.main);
         final @NotNull ResourceHandle<RenderTarget> mainTarget = this.targets.main;
-
         pass.executes(() -> {
+//TODO remove
+try {
             final @NotNull  RenderTarget target = mainTarget.get();
             final int width = target.width;
             final int height = target.height;
@@ -134,14 +135,15 @@ public abstract class SpaceWarpingRenderPassMixin {
             }
 
 
-
+//TODO remove
+System.out.println("BLOCK_SHADERS=" + ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS) + " renderStates=" + renderStates.size());
             // Draw blocks starting from the farthest one, update sampled textures after each draw
             if(!renderStates.isEmpty()) {
                 final @NotNull PoseStack poseStack = new PoseStack();
                 //? if <=26.1.2 {
                     // final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
                 //? } else {
-                    final @NotNull StagedVertexBuffer vertexBuffer = this.renderBuffers.stagedVertexBuffer(); //BUG this might not be the right replacement
+                    //! 26.2 doesn't require need endBatch()
                 //? }
 
                 for(final @NotNull var renderState : renderStates) {
@@ -157,10 +159,12 @@ public abstract class SpaceWarpingRenderPassMixin {
                     //? if <=26.1.2 {
                         // bufferSource.endBatch();
                     //? } else {
-                        vertexBuffer.endDraw(); //BUG this might not be the right replacement
+                        //! 26.2 doesn't require need endBatch()
                     //? }
                 }
             }
+//TODO remove
+} catch (Throwable t) { System.err.println(t.getMessage());t.printStackTrace(); }
         });
     }
 }

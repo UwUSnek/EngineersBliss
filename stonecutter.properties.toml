@@ -10,8 +10,9 @@ mod.description    = "A rendering and utility mod for Redstone engineers"
 
 
 # Project dependencies
-deps.fabric_loader = "0.19.3"
 loomx.loom_version = "1.17-SNAPSHOT"
+deps.fabric_loader = "0.19.3"
+deps.jsvg          = "2.1.0"
 
 
 ["26.1"]
