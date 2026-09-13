@@ -10,7 +10,11 @@ public class OrangeBedPartProvider extends __base_BedPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.ORANGE_BED;
+        //? if <=26.1.2 {
+            // return Blocks.RED_ORANGE;
+        //? } else {
+            return Blocks.BED.orange();
+        //? }
     }
 
     protected String getColorName() {

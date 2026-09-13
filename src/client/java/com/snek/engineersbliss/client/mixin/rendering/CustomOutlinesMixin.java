@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.rendering.RenderingFilterHandler;
 import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeatureSet;
@@ -19,7 +18,14 @@ import com.snek.engineersbliss.feature_handlers.rendering.RenderingServerFeature
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
+
+//? if <=26.1.2 {
+    // import com.mojang.blaze3d.vertex.VertexConsumer;
+    // import net.minecraft.client.renderer.MultiBufferSource;
+//? } else {
+    import net.minecraft.client.renderer.SubmitNodeCollector;
+    import net.minecraft.client.renderer.rendertype.RenderType;
+//? }
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
@@ -45,7 +51,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 @Mixin(LevelRenderer.class)
 public abstract class CustomOutlinesMixin {
     private static final List<BlockPos> customOutlineBlocks = new ArrayList<>();
-    @Shadow public abstract void renderHitOutline(final PoseStack poseStack, final VertexConsumer builder, final double camX, final double camY, final double camZ, final BlockOutlineRenderState state, final int color, final float width);
+    //? if <=26.1.2 {
+        // @Shadow public abstract void renderHitOutline(final PoseStack poseStack, final VertexConsumer builder, final double camX, final double camY, final double camZ, final BlockOutlineRenderState state, final int color, final float width);
+    //? } else {
+        @Shadow public abstract void submitHitOutline(final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final RenderType renderType, final BlockOutlineRenderState state, final int color, final float width, final boolean afterTerrain);
+    //? }
 
 
 
@@ -108,9 +118,15 @@ public abstract class CustomOutlinesMixin {
 
 
 
-    @SuppressWarnings("unused")
-    @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
-    private void eb$renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    //? if <=26.1.2 {
+        // @SuppressWarnings("unused")
+        // @Inject(method = "renderBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
+        // private void eb$renderBlockOutlines(final MultiBufferSource.BufferSource bufferSource, final PoseStack poseStack, final boolean onlyTranslucentBlocks, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    // } else {
+        @SuppressWarnings("unused")
+        @Inject(method = "submitBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
+        private void eb$submitBlockOutline(final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final LevelRenderState levelRenderState, final CallbackInfo ci) {
+    // }
 
         //! Block vanilla and return if outlines are disabled
         if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.RENDER_BLOCK_OUTLINES)) {
@@ -124,14 +140,23 @@ public abstract class CustomOutlinesMixin {
 
 
         ci.cancel();
-        if(onlyTranslucentBlocks) return;
+        //? if <=26.1.2 {
+            // if(onlyTranslucentBlocks) return;
+        //? } else {
+            //BUG idk whats supposed to replace that. the parameter is just gone
+        //? }
         //! Vanilla's checks don't actually draw any outline when ran from this mixin so I use !onlyTranslucentBlocks.
         //! I have no idea why. But this produces a consistent outline
 
         final @NotNull Minecraft minecraft = Minecraft.getInstance();
-        final Vec3 cameraPos = levelRenderState.cameraRenderState.pos;
-        final VertexConsumer buffer = bufferSource.getBuffer(RenderTypes.lines());
-        final float lineWidth = minecraft.gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth;
+        //? if <=26.1.2 {
+            // final Vec3 cameraPos = levelRenderState.cameraRenderState.pos;
+            // final VertexConsumer buffer = bufferSource.getBuffer(RenderTypes.lines());
+            // final float lineWidth = minecraft.gameRenderer.getGameRenderState().windowRenderState.appropriateLineWidth;
+        //? } else {
+            //BUG idk whats supposed to replace the buffer. there is no "getBuffer" in SubmitNodeCollector
+            final float lineWidth = minecraft.gameRenderer.gameRenderState().windowRenderState.appropriateLineWidth;
+        //? }
 
 
         // For each block position in the player's view ray
@@ -143,13 +168,25 @@ public abstract class CustomOutlinesMixin {
 
             // Draw outline: Default black for visible block, thicker gray for hidden ones
             if(i == customOutlineBlocks.size() - 1 && RenderingFilterHandler.shouldStateRender(state)) {
-                this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.black(102), lineWidth);
+                //? if <=26.1.2 {
+                    // this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.black(102), lineWidth);
+                //? } else {
+                    this.submitHitOutline(poseStack, submitNodeCollector, RenderTypes.secondaryBlockOutline(), outlineState, ARGB.black(102), lineWidth, false);
+                //? }
             }
             else {
-                this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.color(0.3f, 0x666666), lineWidth * 1.25f);
+                //? if <=26.1.2 {
+                    // this.renderHitOutline(poseStack, buffer, cameraPos.x, cameraPos.y, cameraPos.z, outlineState, ARGB.color(0.3f, 0x666666), lineWidth * 1.25f);
+                //? } else {
+                    this.submitHitOutline(poseStack, submitNodeCollector, RenderTypes.secondaryBlockOutline(), outlineState, ARGB.color(0.3f, 0x666666), lineWidth * 1.25f, false);
+                //? }
             }
         }
 
-        bufferSource.endLastBatch();
+        //? if <=26.1.2 {
+            // bufferSource.endLastBatch();
+        //? } else {
+            //BUG idk whats supposed to replace endLastBatch. there is no "getBuffer" in SubmitNodeCollector
+        //? }
     }
 }

@@ -10,7 +10,11 @@ public class WhiteBannerPartProvider extends __base_StandingBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.WHITE_BANNER;
+        //? if <=26.1.2 {
+            // return Blocks.WHITE_BANNER;
+        //? } else {
+            return Blocks.BANNER.white();
+        //? }
     }
 
     @Override

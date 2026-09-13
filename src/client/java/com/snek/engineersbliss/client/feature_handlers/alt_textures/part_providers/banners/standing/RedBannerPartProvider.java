@@ -10,7 +10,11 @@ public class RedBannerPartProvider extends __base_StandingBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.RED_BANNER;
+        //? if <=26.1.2 {
+            // return Blocks.RED_BANNER;
+        //? } else {
+            return Blocks.BANNER.red();
+        //? }
     }
 
     @Override

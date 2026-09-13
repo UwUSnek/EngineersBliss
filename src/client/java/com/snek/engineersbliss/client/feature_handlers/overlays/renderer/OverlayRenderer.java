@@ -31,7 +31,11 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <=26.1.2 {
+    // import net.minecraft.client.renderer.MultiBufferSource;
+//? } else {
+    import net.minecraft.client.renderer.SubmitNodeCollector;
+//? }
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -117,17 +121,92 @@ public final class OverlayRenderer {
                                 provider.getMaxRenderDistance() > minecraft.player.position().distanceTo(new Vec3(pos))
                             )
                         ) {
+                            // if(provider instanceof final __base_TextureOverlayProvider p) {
+                            //     final TextureProviderDisplay display = p.getDisplay();
+
+                            //     // Get texture path
+                            //     final Identifier texturePath = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/" + p.calcTexturePath(state, pos, attachedData));
+
+                            //     // Retrieve render info and buffer source
+                            //     //? if <=26.1.2 {
+                            //         // final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
+                            //     //? } else {
+                            //         final SubmitNodeCollector nodeCollector = context.submitNodeCollector();
+                            //     //? }
+                            //     final RenderType renderType = RenderTypes.entityCutout(texturePath);
+                            //     //TODO use entityTranslucent for semitransparent textures
+                            //     final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType); //FIXME where tf am i supposed to get the vertexconsumer from???
+
+                            //     // Create pose stack
+                            //     final PoseStack matrices = new PoseStack();
+                            //     matrices.pushPose();
+
+                            //     // Calculate center position and translate pose to it
+                            //     final Vec3 cameraPos = context.levelState().cameraRenderState.pos;
+                            //     final double _y = pos.getY() - cameraPos.y + p.calcVerticalOffset(state, pos, attachedData);
+                            //     final double _x = pos.getX() - cameraPos.x + 0.5;
+                            //     final double _z = pos.getZ() - cameraPos.z + 0.5;
+                            //     matrices.translate(_x, _y, _z);
+
+
+                            //     // Apply custom rotation
+                            //     final @Nullable Vector3f rot = p.calcPostRotation(state, pos, attachedData);
+                            //     if(rot != null) {
+                            //         matrices.mulPose(new Quaternionf().rotateXYZ(rot.x, rot.y, rot.z));
+                            //     }
+
+
+                            //     // Align to camera if needed
+                            //     if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
+                            //         final float camYaw = context.levelState().cameraRenderState.yRot;
+                            //         matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                            //     }
+                            //     else if(display == TextureProviderDisplay.BILLBOARD) {
+                            //         final float camYaw   = context.levelState().cameraRenderState.yRot;
+                            //         final float camPitch = context.levelState().cameraRenderState.xRot;
+                            //         matrices.mulPose(Axis.YP.rotationDegrees(180f - camYaw));
+                            //         matrices.mulPose(Axis.XP.rotationDegrees(-camPitch));
+                            //     }
+
+
+                            //     // Calculate text light level and color
+                            //     final int light = 0xF000F0;
+                            //     final int color = 0xFFFFFFFF;
+
+
+                            //     // Add vertices and set properties
+                            //     final double width = p.calcWidth(state, pos, attachedData);
+                            //     final int overlay = OverlayTexture.NO_OVERLAY;
+                            //     final Matrix4f pose = matrices.last().pose();
+                            //     if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.BILLBOARD) {
+                            //         final float anchor = p.calcAnchor(state, pos, attachedData);
+                            //         final float bottom = (float)(-width * 2 * anchor);
+                            //         final float top    = bottom + (float)(width * 2);
+                            //         vertexConsumer.addVertex(pose, (float)-width, bottom, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                            //         vertexConsumer.addVertex(pose, (float)-width, top,    0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                            //         vertexConsumer.addVertex(pose, (float)+width, top,    0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                            //         vertexConsumer.addVertex(pose, (float)+width, bottom, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+                            //     }
+                            //     else if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
+                            //         vertexConsumer.addVertex(pose, (float)-width, 0, (float)-width).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                            //         vertexConsumer.addVertex(pose, (float)-width, 0, (float)+width).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                            //         vertexConsumer.addVertex(pose, (float)+width, 0, (float)+width).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                            //         vertexConsumer.addVertex(pose, (float)+width, 0, (float)-width).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+                            //     }
+//TODO remove outdated branch
+                            //     // Reset pose
+                            //     matrices.popPose();
+
+                            //     //! No endBatch call needed
+                            //     //! Let the game handle that normally
+                            // }
                             if(provider instanceof final __base_TextureOverlayProvider p) {
                                 final TextureProviderDisplay display = p.getDisplay();
 
                                 // Get texture path
                                 final Identifier texturePath = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/" + p.calcTexturePath(state, pos, attachedData));
-
-                                // Retrieve render info and buffer source
-                                final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
                                 final RenderType renderType = RenderTypes.entityCutout(texturePath);
                                 //TODO use entityTranslucent for semitransparent textures
-                                final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
 
                                 // Create pose stack
                                 final PoseStack matrices = new PoseStack();
@@ -140,13 +219,11 @@ public final class OverlayRenderer {
                                 final double _z = pos.getZ() - cameraPos.z + 0.5;
                                 matrices.translate(_x, _y, _z);
 
-
                                 // Apply custom rotation
                                 final @Nullable Vector3f rot = p.calcPostRotation(state, pos, attachedData);
                                 if(rot != null) {
                                     matrices.mulPose(new Quaternionf().rotateXYZ(rot.x, rot.y, rot.z));
                                 }
-
 
                                 // Align to camera if needed
                                 if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.Y_LOCKED) {
@@ -160,37 +237,25 @@ public final class OverlayRenderer {
                                     matrices.mulPose(Axis.XP.rotationDegrees(-camPitch));
                                 }
 
-
-                                // Calculate text light level and color
+                                // Calculate values for the quad
                                 final int light = 0xF000F0;
                                 final int color = 0xFFFFFFFF;
-
-
-                                // Add vertices and set properties
                                 final double width = p.calcWidth(state, pos, attachedData);
                                 final int overlay = OverlayTexture.NO_OVERLAY;
-                                final Matrix4f pose = matrices.last().pose();
-                                if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.BILLBOARD) {
-                                    final float anchor = p.calcAnchor(state, pos, attachedData);
-                                    final float bottom = (float)(-width * 2 * anchor);
-                                    final float top    = bottom + (float)(width * 2);
-                                    vertexConsumer.addVertex(pose, (float)-width, bottom, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)-width, top,    0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)+width, top,    0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                    vertexConsumer.addVertex(pose, (float)+width, bottom, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
-                                }
-                                else if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
-                                    vertexConsumer.addVertex(pose, (float)-width, 0, (float)-width).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                    vertexConsumer.addVertex(pose, (float)-width, 0, (float)+width).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                    vertexConsumer.addVertex(pose, (float)+width, 0, (float)+width).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                    vertexConsumer.addVertex(pose, (float)+width, 0, (float)-width).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
-                                }
+
+                                //? if <=26.1.2 {
+                                    // final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
+                                    // final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+                                    // addOverlayVertices(vertexConsumer, matrices.last().pose(), display, p, state, pos, attachedData, width, overlay, color, light);
+                                //? } else {
+                                    final SubmitNodeCollector nodeCollector = context.submitNodeCollector();
+                                    nodeCollector.submitCustomGeometry(matrices, renderType, (pose, vertexConsumer) ->
+                                        addOverlayVertices(vertexConsumer, pose.pose(), display, p, state, pos, attachedData, width, overlay, color, light)
+                                    );
+                                //? }
 
                                 // Reset pose
                                 matrices.popPose();
-
-                                //! No endBatch call needed
-                                //! Let the game handle that normally
                             }
                             else if(provider instanceof final __base_TextOverlayProvider p) {
                                 final String text = p.calcText(state, pos, attachedData);
@@ -247,6 +312,39 @@ public final class OverlayRenderer {
                     }
                 }
             }
+        }
+    }
+
+
+
+
+    private static void addOverlayVertices(
+        final VertexConsumer vertexConsumer,
+        final Matrix4f pose,
+        final TextureProviderDisplay display,
+        final __base_TextureOverlayProvider p,
+        final BlockState state,
+        final BlockPos pos,
+        final __base_OverlayAttachedData attachedData,
+        final double width,
+        final int overlay,
+        final int color,
+        final int light
+    ) {
+        if(display == TextureProviderDisplay.CAMERA_LOCKED || display == TextureProviderDisplay.BILLBOARD) {
+            final float anchor = p.calcAnchor(state, pos, attachedData);
+            final float bottom = (float)(-width * 2 * anchor);
+            final float top    = bottom + (float)(width * 2);
+            vertexConsumer.addVertex(pose, (float)-width, bottom, 0).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+            vertexConsumer.addVertex(pose, (float)-width, top,    0).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+            vertexConsumer.addVertex(pose, (float)+width, top,    0).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+            vertexConsumer.addVertex(pose, (float)+width, bottom, 0).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 0f, 1f);
+        }
+        else if(display == TextureProviderDisplay.FIXED || display == TextureProviderDisplay.Y_LOCKED) {
+            vertexConsumer.addVertex(pose, (float)-width, 0, (float)-width).setUv(0f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+            vertexConsumer.addVertex(pose, (float)-width, 0, (float)+width).setUv(0f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+            vertexConsumer.addVertex(pose, (float)+width, 0, (float)+width).setUv(1f, 1f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
+            vertexConsumer.addVertex(pose, (float)+width, 0, (float)-width).setUv(1f, 0f).setOverlay(overlay).setColor(color).setLight(light).setNormal(0f, 1f, 0f);
         }
     }
 }

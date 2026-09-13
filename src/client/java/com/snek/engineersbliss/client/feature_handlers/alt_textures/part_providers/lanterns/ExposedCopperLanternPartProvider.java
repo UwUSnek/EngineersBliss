@@ -10,7 +10,11 @@ public class ExposedCopperLanternPartProvider extends __base_LanternPartProvider
 
     @Override
     public Block getBlock() {
-        return Blocks.COPPER_LANTERN.exposed();
+        //? if <=26.1.2 {
+            // return Blocks.COPPER_LANTERN.exposed();
+        //? } else {
+            return Blocks.COPPER_LANTERN.weathering().exposed();
+        //? }
     }
 
     @Override

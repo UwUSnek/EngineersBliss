@@ -526,97 +526,161 @@ public class CustomItemHandler {
     );
     public static final Item WHITE_CANDLE_CAKE = register(
         "white_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.WHITE_CANDLE_CAKE, p, List.of(Blocks.WHITE_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.WHITE_CANDLE_CAKE, p, List.of(Blocks.WHITE_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.white(), p, List.of(Blocks.DYED_CANDLE_CAKE.white())),
+        //? }
         new Txt("A Cake with a White Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item ORANGE_CANDLE_CAKE = register(
         "orange_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.ORANGE_CANDLE_CAKE, p, List.of(Blocks.ORANGE_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.ORANGE_CANDLE_CAKE, p, List.of(Blocks.ORANGE_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.orange(), p, List.of(Blocks.DYED_CANDLE_CAKE.orange())),
+        //? }
         new Txt("A Cake with an Orange Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item MAGENTA_CANDLE_CAKE = register(
         "magenta_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.MAGENTA_CANDLE_CAKE, p, List.of(Blocks.MAGENTA_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.MAGENTA_CANDLE_CAKE, p, List.of(Blocks.MAGENTA_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.magenta(), p, List.of(Blocks.DYED_CANDLE_CAKE.magenta())),
+        //? }
         new Txt("A Cake with a Magenta Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_BLUE_CANDLE_CAKE = register(
         "light_blue_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.LIGHT_BLUE_CANDLE_CAKE, p, List.of(Blocks.LIGHT_BLUE_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.LIGHT_BLUE_CANDLE_CAKE, p, List.of(Blocks.LIGHT_BLUE_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.lightBlue(), p, List.of(Blocks.DYED_CANDLE_CAKE.lightBlue())),
+        //? }
         new Txt("A Cake with a Light Blue Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item YELLOW_CANDLE_CAKE = register(
         "yellow_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.YELLOW_CANDLE_CAKE, p, List.of(Blocks.YELLOW_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.YELLOW_CANDLE_CAKE, p, List.of(Blocks.YELLOW_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.yellow(), p, List.of(Blocks.DYED_CANDLE_CAKE.yellow())),
+        //? }
         new Txt("A Cake with a Yellow Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIME_CANDLE_CAKE = register(
         "lime_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.LIME_CANDLE_CAKE, p, List.of(Blocks.LIME_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.LIME_CANDLE_CAKE, p, List.of(Blocks.LIME_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.lime(), p, List.of(Blocks.DYED_CANDLE_CAKE.lime())),
+        //? }
         new Txt("A Cake with a Lime Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PINK_CANDLE_CAKE = register(
         "pink_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.PINK_CANDLE_CAKE, p, List.of(Blocks.PINK_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.PINK_CANDLE_CAKE, p, List.of(Blocks.PINK_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.pink(), p, List.of(Blocks.DYED_CANDLE_CAKE.pink())),
+        //? }
         new Txt("A Cake with a Pink Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GRAY_CANDLE_CAKE = register(
         "gray_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.GRAY_CANDLE_CAKE, p, List.of(Blocks.GRAY_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.GRAY_CANDLE_CAKE, p, List.of(Blocks.GRAY_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.gray(), p, List.of(Blocks.DYED_CANDLE_CAKE.gray())),
+        //? }
         new Txt("A Cake with a Gray Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_GRAY_CANDLE_CAKE = register(
         "light_gray_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.LIGHT_GRAY_CANDLE_CAKE, p, List.of(Blocks.LIGHT_GRAY_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.LIGHT_GRAY_CANDLE_CAKE, p, List.of(Blocks.LIGHT_GRAY_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.lightGray(), p, List.of(Blocks.DYED_CANDLE_CAKE.lightGray())),
+        //? }
         new Txt("A Cake with a Light Gray Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CYAN_CANDLE_CAKE = register(
         "cyan_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.CYAN_CANDLE_CAKE, p, List.of(Blocks.CYAN_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.CYAN_CANDLE_CAKE, p, List.of(Blocks.CYAN_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.cyan(), p, List.of(Blocks.DYED_CANDLE_CAKE.cyan())),
+        //? }
         new Txt("A Cake with a Cyan Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PURPLE_CANDLE_CAKE = register(
         "purple_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.PURPLE_CANDLE_CAKE, p, List.of(Blocks.PURPLE_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.PURPLE_CANDLE_CAKE, p, List.of(Blocks.PURPLE_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.purple(), p, List.of(Blocks.DYED_CANDLE_CAKE.purple())),
+        //? }
         new Txt("A Cake with a Purple Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLUE_CANDLE_CAKE = register(
         "blue_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.BLUE_CANDLE_CAKE, p, List.of(Blocks.BLUE_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.BLUE_CANDLE_CAKE, p, List.of(Blocks.BLUE_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.blue(), p, List.of(Blocks.DYED_CANDLE_CAKE.blue())),
+        //? }
         new Txt("A Cake with a Blue Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BROWN_CANDLE_CAKE = register(
         "brown_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.BROWN_CANDLE_CAKE, p, List.of(Blocks.BROWN_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.BROWN_CANDLE_CAKE, p, List.of(Blocks.BROWN_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.brown(), p, List.of(Blocks.DYED_CANDLE_CAKE.brown())),
+        //? }
         new Txt("A Cake with a Brown Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GREEN_CANDLE_CAKE = register(
         "green_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.GREEN_CANDLE_CAKE, p, List.of(Blocks.GREEN_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.GREEN_CANDLE_CAKE, p, List.of(Blocks.GREEN_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.green(), p, List.of(Blocks.DYED_CANDLE_CAKE.green())),
+        //? }
         new Txt("A Cake with a Green Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item RED_CANDLE_CAKE = register(
         "red_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.RED_CANDLE_CAKE, p, List.of(Blocks.RED_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.RED_CANDLE_CAKE, p, List.of(Blocks.RED_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.red(), p, List.of(Blocks.DYED_CANDLE_CAKE.red())),
+        //? }
         new Txt("A Cake with a Red Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLACK_CANDLE_CAKE = register(
         "black_candle_cake", "candle_cakes",
-        p -> new CustomBlockItem(Blocks.BLACK_CANDLE_CAKE, p, List.of(Blocks.BLACK_CANDLE_CAKE)),
+        //? if <=26.1.2 {
+            // p -> new CustomBlockItem(Blocks.BLACK_CANDLE_CAKE, p, List.of(Blocks.BLACK_CANDLE_CAKE)),
+        //? } else {
+            p -> new CustomBlockItem(Blocks.DYED_CANDLE_CAKE.black(), p, List.of(Blocks.DYED_CANDLE_CAKE.black())),
+        //? }
         new Txt("A Cake with a Black Candle on top."),
         Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
@@ -626,193 +690,321 @@ public class CustomItemHandler {
 
     static final Item WHITE_BED_HEAD = register(
         "white_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.white(), p, false),
+        //? }
         new Txt("The head part of a White Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     static final Item WHITE_BED_FOOT = register(
         "white_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.WHITE_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.white(), p, true),
+        //? }
         new Txt("The foot part of a White Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item ORANGE_BED_HEAD = register(
         "orange_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.orange(), p, false),
+        //? }
         new Txt("The head part of an Orange Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item ORANGE_BED_FOOT = register(
         "orange_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.ORANGE_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.orange(), p, true),
+        //? }
         new Txt("The foot part of an Orange Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item MAGENTA_BED_HEAD = register(
         "magenta_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.magenta(), p, false),
+        //? }
         new Txt("The head part of a Magenta Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item MAGENTA_BED_FOOT = register(
         "magenta_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.MAGENTA_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.magenta(), p, true),
+        //? }
         new Txt("The foot part of a Magenta Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_BLUE_BED_HEAD = register(
         "light_blue_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.lightBlue(), p, false),
+        //? }
         new Txt("The head part of a Light Blue Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_BLUE_BED_FOOT = register(
         "light_blue_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.LIGHT_BLUE_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.lightBlue(), p, true),
+        //? }
         new Txt("The foot part of a Light Blue Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item YELLOW_BED_HEAD = register(
         "yellow_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.yellow(), p, false),
+        //? }
         new Txt("The head part of a Yellow Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item YELLOW_BED_FOOT = register(
         "yellow_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.YELLOW_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.yellow(), p, true),
+        //? }
         new Txt("The foot part of a Yellow Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIME_BED_HEAD = register(
         "lime_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.lime(), p, false),
+        //? }
         new Txt("The head part of a Lime Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIME_BED_FOOT = register(
         "lime_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.LIME_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.lime(), p, true),
+        //? }
         new Txt("The foot part of a Lime Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PINK_BED_HEAD = register(
         "pink_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.pink(), p, false),
+        //? }
         new Txt("The head part of a Pink Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PINK_BED_FOOT = register(
         "pink_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.PINK_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.pink(), p, true),
+        //? }
         new Txt("The foot part of a Pink Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GRAY_BED_HEAD = register(
         "gray_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.gray(), p, false),
+        //? }
         new Txt("The head part of a Gray Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GRAY_BED_FOOT = register(
         "gray_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.GRAY_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.gray(), p, true),
+        //? }
         new Txt("The foot part of a Gray Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_GRAY_BED_HEAD = register(
         "light_gray_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.lightGray(), p, false),
+        //? }
         new Txt("The head part of a Light Gray Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item LIGHT_GRAY_BED_FOOT = register(
         "light_gray_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.LIGHT_GRAY_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.lightGray(), p, true),
+        //? }
         new Txt("The foot part of a Light Gray Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CYAN_BED_HEAD = register(
         "cyan_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.cyan(), p, false),
+        //? }
         new Txt("The head part of a Cyan Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item CYAN_BED_FOOT = register(
         "cyan_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.CYAN_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.cyan(), p, true),
+        //? }
         new Txt("The foot part of a Cyan Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PURPLE_BED_HEAD = register(
         "purple_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.purple(), p, false),
+        //? }
         new Txt("The head part of a Purple Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item PURPLE_BED_FOOT = register(
         "purple_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.PURPLE_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.purple(), p, true),
+        //? }
         new Txt("The foot part of a Purple Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLUE_BED_HEAD = register(
         "blue_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.blue(), p, false),
+        //? }
         new Txt("The head part of a Blue Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLUE_BED_FOOT = register(
         "blue_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.BLUE_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.blue(), p, true),
+        //? }
         new Txt("The foot part of a Blue Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BROWN_BED_HEAD = register(
         "brown_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.brown(), p, false),
+        //? }
         new Txt("The head part of a Brown Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BROWN_BED_FOOT = register(
         "brown_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.BROWN_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.brown(), p, true),
+        //? }
         new Txt("The foot part of a Brown Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GREEN_BED_HEAD = register(
         "green_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.green(), p, false),
+        //? }
         new Txt("The head part of a Green Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item GREEN_BED_FOOT = register(
         "green_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.GREEN_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.green(), p, true),
+        //? }
         new Txt("The foot part of a Green Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item RED_BED_HEAD = register(
         "red_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.red(), p, false),
+        //? }
         new Txt("The head part of a Red Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item RED_BED_FOOT = register(
         "red_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.RED_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.red(), p, true),
+        //? }
         new Txt("The foot part of a Red Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLACK_BED_HEAD = register(
         "black_bed_head", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, false),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.black(), p, false),
+        //? }
         new Txt("The head part of a Black Bed in item form."),
         Notices.BED_HEAD_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item BLACK_BED_FOOT = register(
         "black_bed_foot", "beds",
-        p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomBedHalfBlockItem(Blocks.BLACK_BED, p, true),
+        //? } else {
+            p -> new CustomBedHalfBlockItem(Blocks.BED.black(), p, true),
+        //? }
         new Txt("The foot part of a Black Bed in item form."),
         Notices.BED_FOOT_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
@@ -992,55 +1184,89 @@ public class CustomItemHandler {
 
     public static final Item COPPER_DOOR_BOTTOM = register(
         "copper_door_bottom", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR, p, true),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().unaffected(), p, true),
+        //? }
         new Txt("The bottom half of a Copper Door in item form."),
         Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item COPPER_DOOR_TOP = register(
         "copper_door_top", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR, p, false),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().unaffected(), p, false),
+        //? }
         new Txt("The top half of a Copper Door in item form."),
         Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
     public static final Item EXPOSED_COPPER_DOOR_BOTTOM = register(
         "exposed_copper_door_bottom", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.EXPOSED_COPPER_DOOR, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.EXPOSED_COPPER_DOOR, p, true),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().exposed(), p, true),
+        //? }
         new Txt("The bottom half of an Exposed Copper Door in item form."),
         Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item EXPOSED_COPPER_DOOR_TOP = register(
         "exposed_copper_door_top", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.EXPOSED_COPPER_DOOR, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.EXPOSED_COPPER_DOOR, p, false),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().exposed(), p, false),
+        //? }
         new Txt("The top half of an Exposed Copper Door in item form."),
         Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
     public static final Item WEATHERED_COPPER_DOOR_BOTTOM = register(
         "weathered_copper_door_bottom", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.WEATHERED_COPPER_DOOR, p, true),
-        new Txt("The bottom half of a Weathere Copper Door in item form."),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.WEATHERED_COPPER_DOOR, p, true),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().weathered(), p, true),
+        //? }
+        new Txt("The bottom half of a Weathered Copper Door in item form."),
         Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item WEATHERED_COPPER_DOOR_TOP = register(
         "weathered_copper_door_top", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.WEATHERED_COPPER_DOOR, p, false),
-        new Txt("The top half of a Weathere Copper Door in item form."),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.WEATHERED_COPPER_DOOR, p, false),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().weathered(), p, false),
+        //? }
+        new Txt("The top half of a Weathered Copper Door in item form."),
         Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
 
     public static final Item OXIDIZED_COPPER_DOOR_BOTTOM = register(
         "oxidized_copper_door_bottom", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.OXIDIZED_COPPER_DOOR, p, true),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.OXIDIZED_COPPER_DOOR, p, true),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().oxidized(), p, true),
+        //? }
         new Txt("The bottom half of an Oxidized Copper Door in item form."),
         Notices.DOOR_BOTTOM_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
     public static final Item OXIDIZED_COPPER_DOOR_TOP = register(
         "oxidized_copper_door_top", "doors",
-        p -> new CustomDoorHalfBlockItem(Blocks.OXIDIZED_COPPER_DOOR, p, false),
+        //? if <=26.1.2 {
+            // p -> new CustomDoorHalfBlockItem(Blocks.OXIDIZED_COPPER_DOOR, p, false),
+        //? } else {
+            p -> new CustomDoorHalfBlockItem(Blocks.COPPER_DOOR.weathering().oxidized(), p, false),
+        //? }
         new Txt("The top half of an Oxidized Copper Door in item form."),
         Notices.DOOR_TOP_BREAKS, Notices.CUSTOM_ITEM_ONLY, Notices.VANILLA_BLOCK
     );
+
+    //BUG add waxed versions?? idk why they arent here
 
 
 

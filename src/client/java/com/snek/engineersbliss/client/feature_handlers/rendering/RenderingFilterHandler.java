@@ -143,8 +143,8 @@ public class RenderingFilterHandler {
             final int baseX = chunk.getPos().getMinBlockX();
             final int baseZ = chunk.getPos().getMinBlockZ();
 
-            for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
-                for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+            for(int x = 0; x < MinecraftUtils.SECTION_SIZE; x++) {
+                for(int z = 0; z < MinecraftUtils.SECTION_SIZE; z++) {
                     for(int y = maxY; y >= minY; y--) {
                         lightEngine.checkBlock(new BlockPos(baseX + x, y, baseZ + z));
                     }

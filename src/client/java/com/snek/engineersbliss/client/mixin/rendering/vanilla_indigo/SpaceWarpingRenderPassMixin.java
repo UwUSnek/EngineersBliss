@@ -31,7 +31,11 @@ import com.snek.engineersbliss.utils.data_types.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <=26.1.2 {
+    // import net.minecraft.client.renderer.MultiBufferSource;
+//? } else {
+    import net.minecraft.client.renderer.StagedVertexBuffer; //BUG this might not be the right replacement
+//? }
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -119,7 +123,11 @@ public abstract class SpaceWarpingRenderPassMixin {
             // Draw blocks starting from the farthest one, update sampled textures after each draw
             if(!renderStates.isEmpty()) {
                 final @NotNull PoseStack poseStack = new PoseStack();
-                final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+                //? if <=26.1.2 {
+                    // final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+                //? } else {
+                    final @NotNull StagedVertexBuffer vertexBuffer = this.renderBuffers.stagedVertexBuffer(); //BUG this might not be the right replacement
+                //? }
 
                 for(final @NotNull var renderState : renderStates) {
                     encoder.copyTextureToTexture(target.getColorTexture(), SceneSnapshotHandler.getColor(), 0, 0, 0, 0, 0, width, height);
@@ -131,7 +139,11 @@ public abstract class SpaceWarpingRenderPassMixin {
                         target.getColorTextureView(),
                         target.getDepthTextureView()
                     );
-                    bufferSource.endBatch();
+                    //? if <=26.1.2 {
+                        // bufferSource.endBatch();
+                    //? } else {
+                        vertexBuffer.endDraw(); //BUG this might not be the right replacement
+                    //? }
                 }
             }
         });

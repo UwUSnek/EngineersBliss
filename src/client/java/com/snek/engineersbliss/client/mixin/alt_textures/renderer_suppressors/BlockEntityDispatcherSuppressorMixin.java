@@ -14,14 +14,16 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
-import net.minecraft.world.level.block.entity.BedBlockEntity;
+//? if <=26.1.2 {
+    // import net.minecraft.world.level.block.entity.BedBlockEntity;
+    // import net.minecraft.world.level.block.entity.SignBlockEntity;
+//? }
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
 import net.minecraft.world.level.block.entity.DecoratedPotBlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.entity.LidBlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 
 
 
@@ -44,11 +46,6 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
         switch(blockEntity) {
-            case SignBlockEntity e -> {
-                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
-                    cir.setReturnValue(null);
-                }
-            }
             case LidBlockEntity e -> { //! LidBlockEntity covers all chest types
                 if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_CHESTS)) {
                     cir.setReturnValue(null);
@@ -79,11 +76,18 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                     cir.setReturnValue(null);
                 }
             }
-            case BedBlockEntity e -> {
-                if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BEDS)) {
-                    cir.setReturnValue(null);
-                }
-            }
+            //? if <=26.1.2 {
+                // case SignBlockEntity e -> {
+                //     if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
+                //         cir.setReturnValue(null);
+                //     }
+                // }
+                // case BedBlockEntity e -> {
+                //     if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BEDS)) {
+                //         cir.setReturnValue(null);
+                //     }
+                // }
+            //? }
             // case ItemSinkBlockEntity e -> {
             //     //FIXME use the proper setting
             //     // if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BEDS)) {

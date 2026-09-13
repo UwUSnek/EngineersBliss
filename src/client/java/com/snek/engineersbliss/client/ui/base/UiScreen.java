@@ -19,6 +19,7 @@ import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
@@ -430,7 +431,7 @@ public abstract class UiScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(null);
+        MinecraftUtils.setScreen(null);
         for(final @NotNull TextureCache textureCache : textureCaches) {
             textureCache.close();
         }

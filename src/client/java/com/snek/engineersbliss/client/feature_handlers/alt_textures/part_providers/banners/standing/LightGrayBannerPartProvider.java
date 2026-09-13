@@ -10,7 +10,11 @@ public class LightGrayBannerPartProvider extends __base_StandingBannerPartProvid
 
     @Override
     public Block getBlock() {
-        return Blocks.LIGHT_GRAY_BANNER;
+        //? if <=26.1.2 {
+            // return Blocks.LIGHT_GRAY_BANNER;
+        //? } else {
+            return Blocks.BANNER.lightGray();
+        //? }
     }
 
     @Override

@@ -345,7 +345,8 @@ ADD ALL OF THIS TO THE README
   - Significantly reduce memory usage of loaded feature previews
 
 
-
+- remove static sign models for 26.2  | Vanilla already uses static models in this version
+- remove static bed models for 26.2   | Vanilla already uses static models in this version
 
 
 

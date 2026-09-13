@@ -10,7 +10,11 @@ public class PinkWallBannerPartProvider extends __base_WallBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.PINK_WALL_BANNER;
+        //? if <=26.1.2 {
+            // return Blocks.PINK_WALL_BANNER;
+        //? } else {
+            return Blocks.WALL_BANNER.pink();
+        //? }
     }
 
     @Override

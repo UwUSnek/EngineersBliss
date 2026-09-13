@@ -10,7 +10,11 @@ public class LimeBannerPartProvider extends __base_StandingBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.LIME_BANNER;
+        //? if <=26.1.2 {
+            // return Blocks.LIME_BANNER;
+        //? } else {
+            return Blocks.BANNER.lime();
+        //? }
     }
 
     @Override
