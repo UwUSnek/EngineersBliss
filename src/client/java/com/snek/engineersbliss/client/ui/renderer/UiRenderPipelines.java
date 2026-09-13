@@ -64,7 +64,7 @@ public final class UiRenderPipelines {
                 // .withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
                 // .withSampler("Sampler0")
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_FILL)
+                .withVertexBinding(0, UiVertexFormats.AA_BLIT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
                 .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
             //? }
@@ -79,7 +79,7 @@ public final class UiRenderPipelines {
             //? if <=26.1.2
                 // .withVertexFormat(UiVertexFormats.AA_MULTILINE, VertexFormat.Mode.QUADS)
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_FILL)
+                .withVertexBinding(0, UiVertexFormats.AA_MULTILINE)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
             //? }
             .build()
@@ -93,7 +93,7 @@ public final class UiRenderPipelines {
             //? if <=26.1.2
                 // .withVertexFormat(UiVertexFormats.MULTILINE_AREA, VertexFormat.Mode.QUADS)
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_FILL)
+                .withVertexBinding(0, UiVertexFormats.MULTILINE_AREA)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
             //? }
             .build()
