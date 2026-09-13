@@ -77,6 +77,17 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
 
     public abstract float calcPlaneSize(BlockEntity e);
 
+//BUG this doesn't actually fix anything lol
+//BUG fix invisible blocks
+    //! 26.2+ checks for shouldRenderOffScreen() and skips rendering entirely if it returns false.
+    //? if <=26.1.2 {
+    //? } else {
+        @Override
+        public boolean shouldRenderOffScreen() {
+            return true;
+        }
+    //? }
+
 
     private final RenderSetup renderSetup;
     private final RenderPipeline renderPipeline;
@@ -130,6 +141,8 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
     ) {
         super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
         state.planeSize = calcPlaneSize(blockEntity);
+//TODO remove
+System.out.println("extractRenderState() called for " + blockEntity.getBlockPos());
     }
 
 
@@ -251,4 +264,12 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
     public static class __base_SpaceWarpingRenderState extends BlockEntityRenderState {
         public float planeSize;
     }
+
+
+//TODO remove
+@Override
+public int getViewDistance() {
+System.out.println("getViewDistance() called");
+return Integer.MAX_VALUE;
+}
 }

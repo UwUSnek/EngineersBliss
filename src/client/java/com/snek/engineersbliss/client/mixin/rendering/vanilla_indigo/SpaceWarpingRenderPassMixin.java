@@ -24,6 +24,7 @@ import com.snek.engineersbliss.client.custom.block_entities.renderers.base.Scene
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.__base_SpaceWarpingRenderer;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderDispatcherAccessor;
+import com.snek.engineersbliss.custom.block_entities.CustomBlockEntityHandler;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
@@ -35,7 +36,6 @@ import net.minecraft.client.renderer.LevelTargetBundle;
     // import net.minecraft.client.renderer.MultiBufferSource;
 //? } else {
     import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
-    import net.minecraft.client.renderer.StagedVertexBuffer; //BUG this might not be the right replacement
 //? }
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -115,6 +115,11 @@ try {
             List<Pair<BlockEntityRenderState, __base_SpaceWarpingRenderer>> renderStates = new ArrayList<>();
             for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
                 final BlockEntityRenderDispatcher dispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
+//TODO remove
+var rendererMap = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers();
+System.out.println("rendererMapSize=" + rendererMap.size()
++ " blackHole=" + rendererMap.get(CustomBlockEntityHandler.COSMETIC_BLACK_HOLE)
++ " whiteHole=" + rendererMap.get(CustomBlockEntityHandler.COSMETIC_WHITE_HOLE));
                 final @NotNull var genericRendererInstance = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers().get(state.blockEntityType);
                 if(genericRendererInstance instanceof final @NotNull __base_SpaceWarpingRenderer rendererInstance) {
                     renderStates.add(Pair.from(state, rendererInstance));
@@ -136,7 +141,15 @@ try {
 
 
 //TODO remove
-System.out.println("BLOCK_SHADERS=" + ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS) + " renderStates=" + renderStates.size());
+long relevantCount = this.levelRenderState.blockEntityRenderStates.stream()
+    .filter(s -> s.blockEntityType == CustomBlockEntityHandler.COSMETIC_BLACK_HOLE
+              || s.blockEntityType == CustomBlockEntityHandler.COSMETIC_WHITE_HOLE
+              || s.blockEntityType == CustomBlockEntityHandler.ITEM_SINK
+              || s.blockEntityType == CustomBlockEntityHandler.ITEM_SOURCE)
+    .count();
+System.out.println("totalStates=" + this.levelRenderState.blockEntityRenderStates.size() + " relevantStates=" + relevantCount);
+
+
             // Draw blocks starting from the farthest one, update sampled textures after each draw
             if(!renderStates.isEmpty()) {
                 final @NotNull PoseStack poseStack = new PoseStack();
