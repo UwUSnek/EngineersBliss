@@ -27,7 +27,6 @@ public class SpeedFactorFeaturesMixin {
 
 
 
-
     @SuppressWarnings("unused")
     @Redirect(
         method = "getBlockSpeedFactor",

@@ -42,10 +42,14 @@ public class HandAnimationsSuppressorMixin {
 
 
 
-    //! This blocks the main hand height recalculation cause by item changes
+    //! This blocks the main hand height recalculation caused by item changes
     @SuppressWarnings("unused")
     @ModifyExpressionValue(
-        method = "renderHandsWithItems",
+        //? if <=26.1.2 {
+            // method = "renderHandsWithItems",
+        //? } else {
+            method = "submitHandsWithItems",
+        //? }
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/item/ItemModelResolver;swapAnimationScale(Lnet/minecraft/world/item/ItemStack;)F",
@@ -62,10 +66,14 @@ public class HandAnimationsSuppressorMixin {
 
 
 
-    //! This blocks the off hand height recalculation cause by item changes
+    //! This blocks the off hand height recalculation caused by item changes
     @SuppressWarnings("unused")
     @ModifyExpressionValue(
-        method = "renderHandsWithItems",
+        //? if <=26.1.2 {
+            // method = "renderHandsWithItems",
+        //? } else {
+            method = "submitHandsWithItems",
+        //? }
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/item/ItemModelResolver;swapAnimationScale(Lnet/minecraft/world/item/ItemStack;)F",

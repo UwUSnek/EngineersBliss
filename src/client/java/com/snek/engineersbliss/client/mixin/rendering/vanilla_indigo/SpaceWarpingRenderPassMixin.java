@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4fc;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
@@ -32,8 +31,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
 //? if <=26.1.2 {
+    // import org.joml.Matrix4fc;
     // import net.minecraft.client.renderer.MultiBufferSource;
 //? } else {
+    import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
     import net.minecraft.client.renderer.StagedVertexBuffer; //BUG this might not be the right replacement
 //? }
 import net.minecraft.client.renderer.RenderBuffers;
@@ -58,15 +59,29 @@ public abstract class SpaceWarpingRenderPassMixin {
     @Shadow @Final private LevelRenderState levelRenderState;
 
 
-    @SuppressWarnings({ "unused", "unchecked" })
-    @Inject(method = "addLateDebugPass", at = @At("HEAD"))
-    private void engineersbliss$addItemSinkPass(
-        final FrameGraphBuilder frame,
-        final CameraRenderState camera,
-        final GpuBufferSlice fog,
-        final Matrix4fc modelViewMatrix,
-        final CallbackInfo ci
-    ) {
+    //! 26.2+ straight up has no debug pass in the LevelRenderer.
+    //! addAlwaysOnTopPass is unrelated, but it works just fine for this mixin.
+    //? if <= 26.1.2 {
+        // @SuppressWarnings({ "unused", "unchecked" })
+        // @Inject(method = "addLateDebugPass", at = @At("HEAD"))
+        // private void eb$addItemSinkPass(
+        //     final FrameGraphBuilder frame,
+        //     final CameraRenderState camera,
+        //     final GpuBufferSlice fog,
+        //     final Matrix4fc modelViewMatrix,
+        //     final CallbackInfo ci
+        // ) {
+    //? } else {
+        @SuppressWarnings({ "unused", "unchecked" })
+        @Inject(method = "addAlwaysOnTopPass", at = @At("HEAD"))
+        private void eb$addItemSinkPass(
+            final FrameGraphBuilder frame,
+            final FeatureRenderDispatcher.PreparedFrame featureFrame,
+            final GpuBufferSlice fog,
+            final CallbackInfo ci
+        ) {
+            final @NotNull CameraRenderState camera = this.levelRenderState.cameraRenderState;
+    //? }
 
         // Pass if custom shaded blocks are OFF
         if(!ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS)) {

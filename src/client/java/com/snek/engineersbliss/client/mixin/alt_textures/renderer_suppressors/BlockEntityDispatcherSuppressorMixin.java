@@ -43,6 +43,10 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         final BlockEntity blockEntity,
         final float partialTicks,
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
+        //? if <=26.1.2 {
+        //? } else {
+            final boolean isGloballyRendered,
+        //? }
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
         switch(blockEntity) {
