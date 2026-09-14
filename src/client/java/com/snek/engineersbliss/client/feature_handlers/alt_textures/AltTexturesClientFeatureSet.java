@@ -163,8 +163,12 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
         () -> new UiTxt("Static Bed models"),
         () -> (UiTxt)new UiTxt()
             .cat(new UiTxt("Replaces the costly real-time rendering of Beds with a static model to improve performance.\n"))
-            .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
-            .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
+            //? if <26.2 {
+                .cat(Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE.get()).cat("\n")
+                .cat(Notices.MOD_COMPATIBILITY_NOTICE.get())
+            //? } else {
+                .cat(new UiTxt("This feature is disabled in 26.2+.\nModern versions already use static models for beds.").green())
+            //? }
     );
     public static final ClientFeature<?> OPTIMIZED_SHELVES = new ClientFeature<>(
         AltTexturesServerFeatureSet.OPTIMIZED_SHELVES,

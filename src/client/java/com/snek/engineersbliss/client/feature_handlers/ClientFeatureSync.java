@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.feature_handlers;
 
 import com.snek.engineersbliss.feature_handlers.PlayerFeatureData;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.base.__base_BlockFeatureInterface;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 import com.snek.engineersbliss.network.features.payloads.BoolFeatureUpdateRequestPayload;
@@ -62,6 +63,7 @@ public class ClientFeatureSync {
      * Sets a feature to the specified value.
      * This also updates the local feature data cache and sends a feature update packet to the server.
      */
+    @SuppressWarnings("unchecked")
     public static <T> void setFeature(final __base_ServerFeature<T> feature, final T value) {
         feature.getFeatureSet().initializedOrThrow();
         playerData.setValue(feature, value);

@@ -65,7 +65,9 @@ public class UiGraphics {
     }
 
     private int applyAlpha(final int color, final float alpha) {
-        return (color & 0x00FFFFFF) | Math.round((color & 0xFF000000) * alpha);
+        final int c = color & 0x00FFFFFF;
+        final int a = (color >>> 24) & 0xFF;
+        return c | ((Math.round(a * alpha) & 0xFF) << 24);
     }
 
 

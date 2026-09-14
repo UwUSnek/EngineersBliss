@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 
@@ -40,6 +41,7 @@ public class UiCheckbox extends UiToggleButton {
             graphics.fill(getXF(), getYF(), getRight(), getBottom(), getBgColor());
         }
         final float indicatorSize = indicatorWidth.getPx();
-        graphics.fill(getXF() + indicatorSize, getYF() + indicatorSize, getRight() - indicatorSize, getBottom() - indicatorSize, indicatorColor.compute());
+        final float alpha = isActive() ? 1f : Layout.disabledAlpha;
+        graphics.fill(getXF() + indicatorSize, getYF() + indicatorSize, getRight() - indicatorSize, getBottom() - indicatorSize, indicatorColor.compute(), alpha);
     }
 }

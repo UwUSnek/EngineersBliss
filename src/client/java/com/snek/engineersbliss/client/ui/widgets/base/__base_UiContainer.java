@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,6 +74,18 @@ public abstract class __base_UiContainer<T extends GuiEventListener> extends __b
             if(child.isMouseOver(x, y)) {
                return Optional.of(child);
             }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Returns the first child that matches the condition specified by the provided predicate.
+     * @param predicate The predicate used to check each element.
+     * @return The first child that makes the predicate return true, or an empty optional otherwise.
+     */
+    public Optional<T> getFirstChildMatching(final Predicate<T> predicate) {
+        for(final T c : children()) {
+            if(predicate.test(c)) return Optional.of(c);
         }
         return Optional.empty();
     }

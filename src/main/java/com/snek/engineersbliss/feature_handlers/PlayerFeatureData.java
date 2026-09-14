@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 
@@ -27,9 +28,24 @@ public class PlayerFeatureData {
         if(values == null) {
             values = new ConcurrentHashMap<>();
             for(final @NotNull __base_ServerFeature<?> feature : __base_ServerFeature.getAllFeatures().values()) {
-                values.put(feature.getHash(), feature.getDefault());
+                final Object validatedValue = validateFeatureValueForVersion(feature, feature.getDefault()); //TODO read value from configs, fallback to default if not present
+                values.put(feature.getHash(), validatedValue);
             }
         }
+    }
+    /**
+     * Makes sure the provided feature value is valid in the current Minecraft version.
+     * @param feature The feature.
+     * @param value The feature value to validate.
+     * @return If the provided value is valid, it is returned unaltered. Otherwise, a value that is guaranteed to be valid is returned.
+     */
+    private static Object validateFeatureValueForVersion(final __base_ServerFeature<?> feature, final Object value) {
+        //? if >=26.2 {
+            if(feature == AltTexturesServerFeatureSet.STATIC_BEDS) {
+                return Boolean.FALSE;
+            }
+        //? }
+        return value;
     }
 
 

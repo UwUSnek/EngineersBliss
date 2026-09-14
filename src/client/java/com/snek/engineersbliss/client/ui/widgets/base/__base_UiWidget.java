@@ -259,10 +259,11 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             final float y = getY();
             final float r = getRight();
             final float b = getBottom();
-            if(hasTop   ) extractBorderTop   (graphics, x, y, r, b, borderTop,    borderTopColor);
-            if(hasRight ) extractBorderRight (graphics, x, y, r, b, borderRight,  borderRightColor);
-            if(hasBottom) extractBorderBottom(graphics, x, y, r, b, borderBottom, borderBottomColor);
-            if(hasLeft  ) extractBorderLeft  (graphics, x, y, r, b, borderLeft,   borderLeftColor);
+            final float alpha = isActive() ? 1f : Layout.disabledAlpha;
+            if(hasTop   ) extractBorderTop   (graphics, x, y, r, b, borderTop,    borderTopColor, alpha);
+            if(hasRight ) extractBorderRight (graphics, x, y, r, b, borderRight,  borderRightColor, alpha);
+            if(hasBottom) extractBorderBottom(graphics, x, y, r, b, borderBottom, borderBottomColor, alpha);
+            if(hasLeft  ) extractBorderLeft  (graphics, x, y, r, b, borderLeft,   borderLeftColor, alpha);
         }
     }
 
@@ -274,24 +275,24 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             final float oy = getY();
             final float or = getRight();
             final float ob = getBottom();
-            extractBorderTop   (graphics, ox, oy, or, ob, 1, outlineColor);
-            extractBorderRight (graphics, ox, oy, or, ob, 1, outlineColor);
-            extractBorderBottom(graphics, ox, oy, or, ob, 1, outlineColor);
-            extractBorderLeft  (graphics, ox, oy, or, ob, 1, outlineColor);
+            extractBorderTop   (graphics, ox, oy, or, ob, 1, outlineColor, 1f);
+            extractBorderRight (graphics, ox, oy, or, ob, 1, outlineColor, 1f);
+            extractBorderBottom(graphics, ox, oy, or, ob, 1, outlineColor, 1f);
+            extractBorderLeft  (graphics, ox, oy, or, ob, 1, outlineColor, 1f);
         }
     }
 
 
-    protected void extractBorderTop(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+    protected void extractBorderTop(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
         g.fill(x, y, r, y + thickness, color);
     }
-    protected void extractBorderRight(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+    protected void extractBorderRight(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
         g.fill(r, y, r - thickness, b, color);
     }
-    protected void extractBorderBottom(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+    protected void extractBorderBottom(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
         g.fill(x, b, r, b - thickness, color);
     }
-    protected void extractBorderLeft(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color) {
+    protected void extractBorderLeft(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
         g.fill(x, y, x + thickness, b, color);
     }
 }

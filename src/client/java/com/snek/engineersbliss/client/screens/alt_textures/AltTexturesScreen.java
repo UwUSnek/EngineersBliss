@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.alt_textures;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
 import com.snek.engineersbliss.client.ui.base.UiFeatureSetScreenWithPreview;
@@ -64,6 +66,13 @@ public class AltTexturesScreen extends UiFeatureSetScreenWithPreview {
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.STATIC_BEDS,                   null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.OPTIMIZED_SHELVES,             null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.OPTIMIZED_CAMPFIRES,           null), Layout.BORDER_HEIGHT);
+
+        // Disable Static Bed Models feature in 26.2+. Modern versions come with static bed models.
+        //? if >=26.2 {
+            leftSidebar.getFirstWidgetMatching(b -> {
+                return (b instanceof @NotNull UiToggleFeatureButton fb) && fb.getClientFeature() == AltTexturesClientFeatureSet.STATIC_BEDS;
+            }).ifPresent(b -> b.setActive(false));
+        //? }
 
 
         // 3D models

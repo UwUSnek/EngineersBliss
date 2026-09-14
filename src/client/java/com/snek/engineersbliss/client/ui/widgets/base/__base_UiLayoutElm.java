@@ -33,16 +33,18 @@ import net.minecraft.client.input.MouseButtonEvent;
 public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, GuiEventListener, NarratableEntry {
 
     // Basic data
+    public boolean active;
+    public boolean visible;
     protected float width;
     protected float height;
     private float x;
     private float y;
-    public boolean active = true;
-    public boolean visible = true;
-    protected float alpha = 1.0F;
     private int tabOrderGroup;
 
+
     // Basic data - getters
+    public void setActive(final boolean active) { this.active = active; }
+    public void setVisible(final boolean visible) { this.visible = visible; }
     @Override public final int getHeight() { return (int)getHeightF(); }
     @Override public final int  getWidth() { return (int)getWidthF(); }
     @Override public final int      getX() { return (int)getXF(); }
@@ -58,13 +60,17 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     public boolean scaleWidthWithGui() { return false; }
     public boolean scaleHeightWithGui() { return false; }
 
+
     // Basic data - setters
+    @Override public boolean isActive() { return isVisible() && active; }
+    public boolean isVisible() { return visible; }
     @Override public void setX(final int x) { setXF(x); }
     @Override public void setY(final int y) { setYF(y); }
     public void  setWidth(final float  width) { this.width  = width; }
     public void setHeight(final float height) { this.height = height; }
     public void     setXF(final float      x) { this.x      = x; }
     public void     setYF(final float      y) { this.y      = y; }
+
 
     // Basic data - more setters
     public void setSize(final float width, final float height) {
@@ -105,10 +111,12 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
 
     protected __base_UiLayoutElm(final UiScreen screen) {
         this.screen = screen;
-        this.x = 50;
-        this.y = 50;
-        this.width = 50;
-        this.height = 50;
+        this.active  = true;
+        this.visible = true;
+        this.x       = 50;
+        this.y       = 50;
+        this.width   = 50;
+        this.height  = 50;
         this.dragged = false;
     }
     public abstract @NotNull List<?> children();
@@ -160,20 +168,13 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     //! This class and its users should call .isHovered()
     @Override
     public boolean isMouseOver(final double mouseX, final double mouseY) {
-        return this.isActive() && this.areCoordinatesInRectangle(mouseX, mouseY);
+        return mouseX >= getXF() && mouseY >= getYF() && mouseX < getRight() && mouseY < getBottom();
     }
-
-    public void setAlpha(final float newAlpha) { alpha = newAlpha; }
-    public float getAlpha() { return alpha; }
 
     @Override
     public boolean isFocused() { return focused; }
     public boolean isHoveredOrFocused() { return isHovered() || isFocused(); }
 
-    @Override
-    public boolean isActive() {
-        return visible && active;
-    }
     @Override
     public void setFocused(final boolean newFocused) {
         focused = newFocused;
@@ -305,8 +306,10 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         checkHoverTransition();
 
         // Draw self and content
-        extractSelf(graphics, mouseX, mouseY, a);
-        extractContent(graphics, mouseX, mouseY, a);
+        if(visible) {
+            extractSelf(graphics, mouseX, mouseY, a);
+            extractContent(graphics, mouseX, mouseY, a);
+        }
 
         // Handle cursor
         if(isHoveredOrBeingDragged()) {
@@ -355,10 +358,6 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
     @Override
     public ScreenRectangle getRectangle() {
         return LayoutElement.super.getRectangle();
-    }
-
-    private boolean areCoordinatesInRectangle(final double x, final double y) {
-        return x >= getXF() && y >= getYF() && x < getRight() && y < getBottom();
     }
 
     @Override

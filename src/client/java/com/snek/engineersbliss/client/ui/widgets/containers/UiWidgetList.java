@@ -17,6 +17,9 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.utils.Easings;
 
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -298,6 +301,23 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
     public void addSpacer(final float height) {
         __internal_addWidget(new SpacerEntry(getScreen()), height);
     }
+
+    /**
+     * Returns the first widget that matches the condition specified by the provided predicate.
+     * @param predicate The predicate used to check each widget.
+     * @return The first widget that makes the predicate return true, or an empty optional otherwise.
+     */
+    public Optional<__base_UiLayoutElm> getFirstWidgetMatching(final Predicate<__base_UiLayoutElm> predicate) {
+        for(final Entry entry : children()) {
+            final __base_UiLayoutElm widget = entry.getWidget();
+            if(predicate.test(widget)) return Optional.of(widget);
+        }
+        return Optional.empty();
+    }
+
+
+
+
 
 
 
