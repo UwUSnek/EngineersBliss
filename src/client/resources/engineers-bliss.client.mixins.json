@@ -25,32 +25,42 @@
         "overlays.VanillaParticleSuppressor",
 
 
-        "creative_tweaks.SlimeFeaturesMixin",
-        "creative_tweaks.FrictionFeaturesMixin",
-        "creative_tweaks.SpeedFactorFeaturesMixin",
-        "creative_tweaks.PowderSnowSlowdownSuppressorMixin",
-        "creative_tweaks.SweetBerriesSlowdownSuppressorMixin",
-        "creative_tweaks.CobwebSlowdownSuppressorMixin",
-        "creative_tweaks.ScreenOverlayHiderMixin",
-        "creative_tweaks.BlockPhasingMixin",
-        "creative_tweaks.FluidSpeedMixin",
-        "creative_tweaks.FluidSpeedSprintFixMixin",
-        "creative_tweaks.CurrentDragSuppressorMixin",
-        "creative_tweaks.ClimbableSlowdownSuppressor",
-        "creative_tweaks.BedBounceSuppressorMixin",
-        "creative_tweaks.BouncinessFeaturesMixin",
-        "creative_tweaks.BubbleColumnsPushSuppressorMixin",
-        "creative_tweaks.HoneyBlockFeaturesMixin",
-        "creative_tweaks.JumpFactorFeaturesMixin",
-        "creative_tweaks.HandAnimationsSuppressorMixin",
-        "creative_tweaks.client.ClientBlockPhasingMixin",
-        "creative_tweaks.client.ClientBlockPhasingPoseFixMixin",
-        "creative_tweaks.client.ClientBlockPhasingPacketFixMixin",
-        "creative_tweaks.client.ClientEntityPhasingMixin",
-        "creative_tweaks.client.ClientEntityPhasingMinecartMixin",
-        "creative_tweaks.client.ClientEntityPhasingBoatMixin",
-        "creative_tweaks.client.ClientFireEffectSuppressorMixin",
-        "creative_tweaks.client.ClientFreezeEffectSuppressorMixin",
+
+
+        "creative_tweaks.bounce_suppressors.BouncinessFeaturesMixin",
+        "creative_tweaks.bounce_suppressors.SlimeBlockBounceSuppressorMixin",
+        "creative_tweaks.bounce_suppressors.BedBounceSuppressorMixin",
+
+        "creative_tweaks.block_phasing.BlockPhasingBlockPushFixMixin",
+        "creative_tweaks.block_phasing.ClientBlockPhasingCollisionFixMixin",
+        "creative_tweaks.block_phasing.ClientBlockPhasingPoseFixMixin",
+        "creative_tweaks.block_phasing.ClientBlockPhasingPacketFixMixin",
+
+        "creative_tweaks.entity_phasing.ClientEntityPhasingMixin",
+        "creative_tweaks.entity_phasing.ClientEntityPhasingMinecartMixin",
+        "creative_tweaks.entity_phasing.ClientEntityPhasingBoatMixin",
+
+        "creative_tweaks.effect_suppressors.ClientFireEffectSuppressorMixin",
+        "creative_tweaks.effect_suppressors.ClientFreezeEffectSuppressorMixin",
+        "creative_tweaks.effect_suppressors.HandAnimationsSuppressorMixin",
+        "creative_tweaks.effect_suppressors.ScreenOverlayHiderMixin",
+
+        "creative_tweaks.slowdown_suppressors.HoneyBlockSlowdownSuppressorMixin",
+        "creative_tweaks.slowdown_suppressors.FrictionFeaturesMixin",
+        "creative_tweaks.slowdown_suppressors.SpeedFactorFeaturesMixin",
+        "creative_tweaks.slowdown_suppressors.PowderSnowSlowdownSuppressorMixin",
+        "creative_tweaks.slowdown_suppressors.SweetBerriesSlowdownSuppressorMixin",
+        "creative_tweaks.slowdown_suppressors.CobwebSlowdownSuppressorMixin",
+        "creative_tweaks.slowdown_suppressors.SlimeBlockSlowdownSuppressorMixin",
+        "creative_tweaks.slowdown_suppressors.ClimbableSlowdownSuppressor",
+        "creative_tweaks.slowdown_suppressors.FluidSpeedMixin",
+        "creative_tweaks.slowdown_suppressors.FluidSpeedSprintFixMixin",
+
+        "creative_tweaks.misc.JumpFactorFeaturesMixin",
+        "creative_tweaks.misc.BubbleColumnsPushSuppressorMixin",
+        "creative_tweaks.misc.CurrentDragSuppressorMixin",
+
+
 
 
         "custom_items.FullBrightHandItemMixin",
@@ -67,6 +77,8 @@
         "rendering.EntityRenderingSuppressor",
 
 
+
+
         "alt_textures.renderer_suppressors.BlockEntityDispatcherSuppressorMixin",
         "alt_textures.renderer_suppressors.AbstractSignRenderingSuppressorMixin",
         "alt_textures.renderer_suppressors.StandingSignRenderingSuppressorMixin",
@@ -74,6 +86,7 @@
         "alt_textures.renderer_suppressors.SignTextStateCacheMixin",
         "alt_textures.renderer_suppressors.DecoratedPotRenderingSuppressorMixin",
         "alt_textures.renderer_optimizers.BlockEntityDispatcherOptimizerMixin",
+
         "alt_textures.particle_suppressors.CampfireBlockEntityParticleSuppressorMixin",
         "alt_textures.particle_suppressors.CampfireBlockParticleSuppressorMixin",
         "alt_textures.particle_suppressors.LavaBlockParticleSuppressorMixin",
@@ -85,6 +98,8 @@
         "alt_textures.particle_suppressors.redstone_dust.RepeaterDustParticleSuppressorMixin",
         "alt_textures.particle_suppressors.redstone_dust.WireDustParticleSuppressorMixin",
         "alt_textures.particle_suppressors.redstone_dust.TorchDustParticleSuppressorMixin",
+
+
 
 
         "status_bar.VanillaGuiHeightChangerMixin",
