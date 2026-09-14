@@ -34,7 +34,7 @@ import net.minecraft.sounds.SoundEvent;
 
 public abstract class __base_UiWidget extends __base_UiLayoutElm {
     private static final int SCROLL_PAUSE_MS = 1000;
-    private static final int SCROLL_SPEED    = 20;  // The scroll speed, in pixels/s
+    private static final int BASE_SCROLL_SPEED = 10;  // The base scroll speed, in pixels/s. Multiplied by the text's visual size
 
 
 
@@ -214,9 +214,15 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             final @NotNull ScaledFont scaledFont = label.getScaledFont();
             final int lineHeight = scaledFont.getLineHeight();
             final float overflow = label.getWidth() - getInnerWidth();
+
+            // Calculate optimal scroll speed
+            float scrollSpeed = BASE_SCROLL_SPEED * scaledFont.getSize();
+            if(!scaledFont.isScaleInvariant()) scrollSpeed *= getGuiScale();
+
+            // Calculate current horizontal shift
             float shift = 0;
             if(overflow > 0) {
-                final float scrollMs = overflow * 1000 / SCROLL_SPEED;
+                final float scrollMs = overflow * 1000 / scrollSpeed;
                 final float cycleMs  = SCROLL_PAUSE_MS * 2 + scrollMs;
                 final float t = (float)((double)System.currentTimeMillis() % cycleMs);
 
@@ -224,7 +230,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
                     shift = 0;
                 }
                 else if(t < SCROLL_PAUSE_MS + scrollMs) {
-                    shift = (t - SCROLL_PAUSE_MS) * SCROLL_SPEED / 1000;
+                    shift = (t - SCROLL_PAUSE_MS) * scrollSpeed / 1000;
                 }
                 else {
                     shift = overflow;
