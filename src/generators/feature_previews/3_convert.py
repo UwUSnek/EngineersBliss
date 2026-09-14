@@ -78,7 +78,7 @@ def build_atlas(frames_chunk: np.ndarray, cols: int, frame_w: int, frame_h: int)
 
 def write_mcmeta(png_path: Path, cols: int, rows: int, frame_count: int, fps: int, frame_w: int, frame_h: int) -> dict:
     meta = {
-        "engineersbliss.atlas": {
+        "engineers-bliss.atlas": {
             "atlas_cols": 1,
             "atlas_rows": 1,
             "sheet_width": cols * frame_w,

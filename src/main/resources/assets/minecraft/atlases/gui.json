@@ -1,6 +1,6 @@
 {
   "sources": [
     { "type": "directory", "source": "gui/sprites", "prefix": "" },
-    { "type": "engineersbliss:svg", "source": "gui/sprites" }
+    { "type": "engineers-bliss:svg", "source": "gui/sprites" }
   ]
 }

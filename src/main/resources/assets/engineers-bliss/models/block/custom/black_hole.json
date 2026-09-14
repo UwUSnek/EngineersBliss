@@ -1,0 +1,13 @@
+{
+	"format_version": "1.21.11",
+	"credit": "UwU_Snek",
+	"parent": "block/cube_all",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "engineers-bliss:block/custom/black_hole/glass",
+		"1": "engineers-bliss:block/custom/black_hole/side",
+		"particle": "engineers-bliss:block/custom/black_hole/glass"
+	},
+	"elements": [
+	]
+}

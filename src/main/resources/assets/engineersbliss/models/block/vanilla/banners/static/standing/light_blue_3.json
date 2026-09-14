@@ -1,7 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineersbliss:block/vanilla/banners/static/templates/standing_flag_3",
-  "textures" : {
-    "texture" : "engineersbliss:block/vanilla/banners/static/light_blue"
-  }
-}

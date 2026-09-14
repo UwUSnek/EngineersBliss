@@ -1,7 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineersbliss:block/vanilla/chains/3d/templates/chain",
-  "textures" : {
-    "texture" : "engineersbliss:block/vanilla/chains/3d/oxidized_copper"
-  }
-}

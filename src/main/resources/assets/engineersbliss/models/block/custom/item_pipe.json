@@ -1,8 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "block/cube_all",
-  "ambientocclusion" : false,
-  "textures" : {
-    "all" : "engineersbliss:block/custom/green_screen"
-  }
-}

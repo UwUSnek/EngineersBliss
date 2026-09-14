@@ -15,7 +15,7 @@ public record AtlasMetadataSection(
     int frameCount, int fps
 ) {
     public static final MetadataSectionType<AtlasMetadataSection> TYPE =
-        new MetadataSectionType<>("engineersbliss.atlas", RecordCodecBuilder.create(inst -> inst.group(
+        new MetadataSectionType<>("engineers-bliss.atlas", RecordCodecBuilder.create(inst -> inst.group(
             Codec.INT.fieldOf("atlas_cols"  ).forGetter(AtlasMetadataSection::atlasCols),
             Codec.INT.fieldOf("atlas_rows"  ).forGetter(AtlasMetadataSection::atlasRows),
             Codec.INT.fieldOf("sheet_width" ).forGetter(AtlasMetadataSection::sheetWidth),

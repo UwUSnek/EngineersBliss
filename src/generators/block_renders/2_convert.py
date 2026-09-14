@@ -91,7 +91,7 @@ def canvas_to_image(canvas: np.ndarray) -> Image.Image:
 
 def write_mcmeta(png_path: Path, atlas_cols: int, atlas_rows: int, sheet_w: int, sheet_h: int, frame_w: int, frame_h: int, frame_count: int, fps: int) -> dict:
     meta = {
-        "engineersbliss.atlas": {
+        "engineers-bliss.atlas": {
             "atlas_cols": atlas_cols,
             "atlas_rows": atlas_rows,
             "sheet_width": sheet_w,
@@ -174,7 +174,7 @@ def flush_atlas(buffer_sheets, buffer_names, atlas_idx, outdir, max_cols, max_ro
 
     size_kb = out_path.stat().st_size / 1024
     log = [f"\n{ out_path } ({ len(buffer_sheets) } sheets, { cols }x{ rows }, {size_kb:.1f} KiB)"]
-    log.append(f"  mcmeta: { json.dumps(meta['engineersbliss.atlas']) }")
+    log.append(f"  mcmeta: { json.dumps(meta['engineers-bliss.atlas']) }")
     log.append("  contains: " + ", ".join(buffer_names))
     return "\n".join(log)
 

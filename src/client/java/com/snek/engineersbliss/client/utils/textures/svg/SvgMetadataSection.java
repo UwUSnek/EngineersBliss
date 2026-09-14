@@ -13,7 +13,7 @@ public record SvgMetadataSection(
     int height
 ) {
     public static final MetadataSectionType<SvgMetadataSection> TYPE =
-        new MetadataSectionType<>("engineersbliss.svg", RecordCodecBuilder.create(inst -> inst.group(
+        new MetadataSectionType<>("engineers-bliss.svg", RecordCodecBuilder.create(inst -> inst.group(
             Codec.INT.fieldOf("width").forGetter(SvgMetadataSection::width),
             Codec.INT.fieldOf("height").forGetter(SvgMetadataSection::height)
         ).apply(inst, SvgMetadataSection::new)))

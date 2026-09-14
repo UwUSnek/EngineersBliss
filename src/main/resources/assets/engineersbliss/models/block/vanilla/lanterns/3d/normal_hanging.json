@@ -1,8 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineersbliss:block/vanilla/lanterns/3d/templates/hanging_lantern",
-  "textures" : {
-    "chain"   : "engineersbliss:block/vanilla/chains/3d/iron",
-    "lantern" : "minecraft:block/lantern"
-  }
-}

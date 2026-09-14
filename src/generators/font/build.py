@@ -34,8 +34,8 @@ MAIN_DIR     = os.path.join(SCRIPT_DIR, "main")
 FALLBACK_DIR = os.path.join(SCRIPT_DIR, "fallback")
 
 
-OUTPUT_PNG_DIR  = os.path.join(SCRIPT_DIR, "..", "..", "main", "resources", "assets", "engineersbliss", "textures", "font")
-OUTPUT_JSON_DIR = os.path.join(SCRIPT_DIR, "..", "..", "main", "resources", "assets", "engineersbliss", "font")
+OUTPUT_PNG_DIR  = os.path.join(SCRIPT_DIR, "..", "..", "main", "resources", "assets", "engineers-bliss", "textures", "font")
+OUTPUT_JSON_DIR = os.path.join(SCRIPT_DIR, "..", "..", "main", "resources", "assets", "engineers-bliss", "font")
 os.makedirs(OUTPUT_PNG_DIR, exist_ok=True)
 os.makedirs(OUTPUT_JSON_DIR, exist_ok=True)
 
@@ -289,7 +289,7 @@ def build_atlas(name, font_path, fallback_path, scale):
             # Precomputed glyphs
             {
                 "type": "bitmap",
-                "file": f"engineersbliss:font/{ png_name }",
+                "file": f"engineers-bliss:font/{ png_name }",
                 "height": CELL,
                 "ascent": glyph_ascent,
                 "chars": grid_str

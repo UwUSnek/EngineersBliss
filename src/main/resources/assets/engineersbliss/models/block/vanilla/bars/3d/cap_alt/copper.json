@@ -1,7 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineersbliss:block/vanilla/bars/3d/templates/cap_alt",
-  "textures" : {
-    "texture" : "engineersbliss:block/vanilla/bars/3d/copper"
-  }
-}

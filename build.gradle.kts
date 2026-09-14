@@ -65,7 +65,7 @@ dependencies {
 loom {
     splitEnvironmentSourceSets()
     mods {
-        create("engineersbliss") {
+        create("engineers-bliss") {
             sourceSet(sourceSets["main"])
             sourceSet(sourceSets["client"])
         }

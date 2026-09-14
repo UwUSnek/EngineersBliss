@@ -1,8 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineersbliss:block/vanilla/lanterns/3d/templates/lantern",
-  "textures" : {
-    "chain"   : "engineersbliss:block/vanilla/chains/3d/exposed_copper",
-    "lantern" : "minecraft:block/exposed_copper_lantern"
-  }
-}

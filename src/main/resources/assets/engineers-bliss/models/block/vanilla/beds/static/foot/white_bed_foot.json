@@ -1,0 +1,9 @@
+{
+  "parent": "engineers-bliss:block/vanilla/beds/static/templates/template_foot",
+  "textures": {
+    "east": "engineers-bliss:block/vanilla/beds/static/white_bed_foot_east",
+    "south": "engineers-bliss:block/vanilla/beds/static/white_bed_foot_south",
+    "up": "engineers-bliss:block/vanilla/beds/static/white_bed_foot_up",
+    "west": "engineers-bliss:block/vanilla/beds/static/white_bed_foot_west"
+  }
+}

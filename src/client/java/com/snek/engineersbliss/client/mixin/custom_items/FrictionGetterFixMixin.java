@@ -31,7 +31,7 @@ public abstract class FrictionGetterFixMixin {
 
     @SuppressWarnings("unused")
     @Inject(method = "getOnPos(F)Lnet/minecraft/core/BlockPos;", at = @At("HEAD"), cancellable = true)
-    private void engineersbliss$trustSupportingSurfaceBlock(float offset, CallbackInfoReturnable<BlockPos> cir) {
+    private void eb$trustSupportingSurfaceBlock(float offset, CallbackInfoReturnable<BlockPos> cir) {
         if (this.mainSupportingBlockPos.isPresent()) {
             BlockPos supportingPos = this.mainSupportingBlockPos.get();
             Block supportingBlock = this.level().getBlockState(supportingPos).getBlock();

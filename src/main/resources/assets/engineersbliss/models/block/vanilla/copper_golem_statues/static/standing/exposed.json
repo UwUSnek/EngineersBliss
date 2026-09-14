@@ -1,7 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineersbliss:block/vanilla/copper_golem_statues/static/templates/standing",
-  "textures" : {
-    "texture" : "engineersbliss:block/vanilla/copper_golem_statues/static/exposed"
-  }
-}
