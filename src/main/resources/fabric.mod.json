@@ -5,7 +5,7 @@
     "name":          "${name}",
     "description":   "${description}",
     "authors":       [ "UwU_Snek" ],
-    "contributors":  [ "Snek's cat Cesare", "Snek's 83 cans of Monster" ],
+    "contributors":  [ "Kai", "Snek's cat Cesare", "Snek's 83 cans of Monster" ],
     "contact": {
         "homepage": "https://github.com/UwUSnek/multiversion_test.git",
         "sources":  "https://github.com/UwUSnek/multiversion_test.git",
