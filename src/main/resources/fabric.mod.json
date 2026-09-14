@@ -23,9 +23,9 @@
         ]
     },
     "mixins": [
-        "engineers-bliss.mixins.json",
+        "engineersbliss.mixins.json",
         {
-            "config": "engineers-bliss.client.mixins.json",
+            "config": "engineersbliss.client.mixins.json",
             "environment": "client"
         },
         {

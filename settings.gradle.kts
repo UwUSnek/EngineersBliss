@@ -27,4 +27,4 @@ stonecutter {
     }
 }
 
-rootProject.name = "engineers-bliss"
+rootProject.name = "engineersbliss"

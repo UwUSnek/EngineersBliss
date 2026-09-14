@@ -1673,7 +1673,7 @@ public class CustomItemHandler {
 
 
         // Create item properties with the specified path and set the item ID
-        //! Custom item path is required to use subdirectories in assets/engineers-bliss/items.
+        //! Custom item path is required to use subdirectories in assets/engineersbliss/items.
         final String modelPath = modelCustomDir == null ? id : String.format("%s/%s", modelCustomDir, id);
         @NotNull CustomItemProperties properties = (CustomItemProperties)new CustomItemProperties(modelPath).setId(key);
 

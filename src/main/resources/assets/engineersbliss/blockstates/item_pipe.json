@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "engineersbliss:block/custom/item_pipe" }
+    }
+}

@@ -1,7 +1,0 @@
-{
-  "credit" : "UwU_Snek",
-  "parent" : "engineers-bliss:block/vanilla/chests/static/templates/single",
-  "textures" : {
-    "texture" : "engineers-bliss:block/vanilla/chests/static/single/trapped"
-  }
-}

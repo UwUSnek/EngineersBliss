@@ -1,0 +1,13 @@
+{
+	"format_version": "1.21.11",
+	"credit": "UwU_Snek",
+	"parent": "block/cube_all",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "engineersbliss:block/custom/white_hole/glass",
+		"1": "engineersbliss:block/custom/white_hole/side",
+		"particle": "engineersbliss:block/custom/white_hole/glass"
+	},
+	"elements": [
+	]
+}
