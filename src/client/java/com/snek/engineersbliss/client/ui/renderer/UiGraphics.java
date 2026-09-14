@@ -5,7 +5,6 @@ import org.joml.Matrix3x2f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
@@ -20,7 +19,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
 import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -62,10 +60,12 @@ public class UiGraphics {
         this.screen = screen;
     }
 
-
-
     public void requestCursor(final CursorType cursorType) {
         raw.requestCursor(cursorType);
+    }
+
+    private int applyAlpha(final int color, final float alpha) {
+        return (color & 0x00FFFFFF) | Math.round((color & 0xFF000000) * alpha);
     }
 
 
@@ -104,10 +104,10 @@ public class UiGraphics {
 
     // Floating point fills
 
-    public void fill(final float x0, final float y0, final float x1, final float y1, final int col) {
-        fill(RenderPipelines.GUI, x0, y0, x1, y1, col);
+    public void fill(final float x0, final float y0, final float x1, final float y1, final int col, final float alpha) {
+        fill(x0, y0, x1, y1, applyAlpha(col, alpha));
     }
-    public void fill(final RenderPipeline pipeline, float x0, float y0, float x1, float y1, final int col) {
+    public void fill(float x0, float y0, float x1, float y1, final int col) {
         if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
         if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
         raw.guiRenderState.addGuiElement(new AaFillRenderState(
@@ -187,6 +187,34 @@ public class UiGraphics {
     }
     public void text(final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
         text(text, x, y, color, false, shiftX, shiftY);
+    }
+
+
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow) {
+        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, dropShadow);
+    }
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
+        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, dropShadow, shiftX, shiftY);
+    }
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final boolean dropShadow) {
+        text(text, x, y, applyAlpha(color, alpha), dropShadow);
+    }
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final boolean dropShadow, final float shiftX, final float shiftY) {
+        text(text, x, y, applyAlpha(color, alpha), dropShadow, shiftX, shiftY);
+    }
+
+
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth) {
+        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth);
+    }
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final float shiftX, final float shiftY) {
+        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, shiftX, shiftY);
+    }
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha) {
+        text(text, x, y, applyAlpha(color, alpha));
+    }
+    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final float shiftX, final float shiftY) {
+        text(text, x, y, applyAlpha(color, alpha), shiftX, shiftY);
     }
 
 

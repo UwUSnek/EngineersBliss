@@ -197,6 +197,7 @@ public class UiSlider extends __base_UiWidget {
 
         // Draw background and label
         super.extractSelf(graphics, mouseX, mouseY, a);
+        final float alpha = isActive() ? 1f : Layout.disabledAlpha;
 
 
         // Draw slider handle //! Clamp to slider inner width
@@ -207,9 +208,9 @@ public class UiSlider extends __base_UiWidget {
         final float innerL = getInnerX();
         final float innerR = getInnerRight();
         handleColor.startNewTransition(isHoveredOrBeingDragged() ? Layout.handleColorActive : Layout.handleColor);
-        graphics.fill(Math.max(innerL, handleL), getYF(), Math.min(innerR, handleR), getBottom(), handleColor.compute());
-        if(handleL <  innerL) graphics.fill(handleL, getYF(), innerL,  getBottom(), Layout.handleColorTransparent);
-        if(handleR >= innerR) graphics.fill(innerR,  getYF(), handleR, getBottom(), Layout.handleColorTransparent);
+        graphics.fill(Math.max(innerL, handleL), getYF(), Math.min(innerR, handleR), getBottom(), handleColor.compute(), alpha);
+        if(handleL <  innerL) graphics.fill(handleL, getYF(), innerL,  getBottom(), Layout.handleColorTransparent, alpha);
+        if(handleR >= innerR) graphics.fill(innerR,  getYF(), handleR, getBottom(), Layout.handleColorTransparent, alpha);
 
 
         // Recalculate and draw hover highlight
@@ -217,7 +218,7 @@ public class UiSlider extends __base_UiWidget {
         //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
-        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute());
+        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute(), alpha);
     }
 
     @Override
@@ -231,10 +232,11 @@ public class UiSlider extends __base_UiWidget {
     @Override
     public void extractBackground(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
+        final float alpha = isActive() ? 1f : 0.25f;
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(bgSpriteId != null) {
-            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
+            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF(), alpha);
         }
     }
 

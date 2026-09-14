@@ -174,13 +174,6 @@
 - maybe add chat timestamps?
 
 
-- add static bed models for 26.1
-- remove static bed models in 26.2+
-- remove static sign models in 26.2+
-
-
-
-
 - add "entity outline" in rendering screen
 
 
@@ -343,10 +336,6 @@ ADD ALL OF THIS TO THE README
 
 - Replace png atlases with a more compact format
   - Significantly reduce memory usage of loaded feature previews
-
-
-- remove static sign models for 26.2  | Vanilla already uses static models in this version
-- remove static bed models for 26.2   | Vanilla already uses static models in this version
 
 
 

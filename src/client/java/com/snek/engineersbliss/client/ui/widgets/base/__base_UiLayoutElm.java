@@ -210,8 +210,13 @@ public abstract class __base_UiLayoutElm implements LayoutElement, Renderable, G
         return isBeingDragged() || isHovered();
     }
 
+    /**
+     * @return True if the element is currently being hovered, false otherwise.
+     * Returns false when an element in this widget's child tree is hovered.
+     * This doesn't take into account the widget's active state. Inactive widgets can be hovered but not clicked.
+     */
     public boolean isHovered() {
-        return isActive() && isHovered;
+        return isHovered;
     }
 
 

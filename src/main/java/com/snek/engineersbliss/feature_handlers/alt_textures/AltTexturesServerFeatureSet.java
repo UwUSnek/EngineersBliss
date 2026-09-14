@@ -22,7 +22,7 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
     private AltTexturesServerFeatureSet() { super("alt_textures"); }
 
 
-    //! For whatever reason, Vanilla's Shelves and Campfires are rendered properly: The block model is static, while held items are rendered dynamically.
+    //! For whatever reason, Vanilla's Shelves and Campfires are rendered properly: The block model is static, while held items are rendered dynamically..
     //! However, their rendering logic does a lot of extra preparation steps even when there are no items to render.
     //! Campfires are also extremely laggy because of their particles.
     //! These all get simple logic optimizations, while Campfires also get particle suppression.
@@ -30,6 +30,15 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
 
     //! Vanilla Bells are rendered dynamically but the supports are static.
     //! STATIC_BELLS simply replaces the bell part and keeps the Vanilla support.
+
+
+    //! Vanilla Beds are rendered as plain static block models in 26.2+
+    //! The Static Bed Models feature is disabled in modern versions.
+
+
+    //! Vanilla Signs and Hanging Signs use hard coded geometry created by the Java code all the way to 26.1.2.
+    //! 26.2+ reads JSON block models, but still uses the dynamic rendering system to render them.
+    //! Thus, the Static Sign Models feature is necessary even in 26.2+.
 
 
 
@@ -90,6 +99,7 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
         "static_chests", true,
         BlockGroups.ALL_CHESTS
     ));
+    //! Required in 26.2+ too. See beginning of file ^.
     public static final ServerBlockToggleFeature STATIC_SIGNS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_signs", true,
         Stream.of(BlockGroups.ALL_SIGNS.stream(), BlockGroups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()

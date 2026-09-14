@@ -23,6 +23,8 @@ public class Layout {
 
     public static int borderColor            = 0xFF2E2C2C;
 
+    public static float disabledAlpha = 0.25f;
+
     public static int textMarginPx = 4;
     public static int textLargeMarginPx = 16;
 

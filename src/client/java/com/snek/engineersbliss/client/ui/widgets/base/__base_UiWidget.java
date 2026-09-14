@@ -241,8 +241,9 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
                 case TRUE_BOTTOM -> getBottom() - lineHeight;
             };
 
+            final float alpha = isActive() ? 1f : Layout.disabledAlpha;
             graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
-            graphics.text(label, textX, textY, Layout.fgColor, drawAlignment, getInnerWidth(), false, -shift, 0f);
+            graphics.text(label, textX, textY, Layout.fgColor, alpha, drawAlignment, getInnerWidth(), false, -shift, 0f);
             graphics.disableScissor();
         }
     }

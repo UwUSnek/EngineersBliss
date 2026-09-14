@@ -41,6 +41,11 @@ public class UiButton extends __base_UiWidget {
     private @Nullable Identifier bgSpriteId;
     private UiSize bgSpriteWidth;
 
+    // Enabled state
+    private boolean enabled;
+    private void setEnabled(final boolean newEnabled) { this.enabled = newEnabled; }
+    private boolean isEnabled() { return enabled; }
+
 
 
 
@@ -108,7 +113,10 @@ public class UiButton extends __base_UiWidget {
 
     @Override
     public void extractSelf(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+
+        // Draw background and label
         super.extractSelf(graphics, mouseX, mouseY, a);
+        final float alpha = isActive() ? 1f : 0.25f;
 
 
         // Draw keybind if present
@@ -118,7 +126,7 @@ public class UiButton extends __base_UiWidget {
             final int keybindX = (int)(getRight() - Layout.textMarginPx - KEYBIND_ICON_WIDTH / 2);
             final int keybindY = (int)(getYF() + (getHeightF() - scaledFont.getLineHeight()) / 2);
             final UiTxt keybindText = new UiTxt(String.valueOf(key), fontFamily);
-            graphics.text(keybindText, keybindX, keybindY, Layout.fgColorHint, TextAlignment.CENTER_ANCHORED, getWidth());
+            graphics.text(keybindText, keybindX, keybindY, Layout.fgColorHint, alpha, TextAlignment.CENTER_ANCHORED, getWidth());
         }
 
 
@@ -127,7 +135,7 @@ public class UiButton extends __base_UiWidget {
         //! This isn't bad, identical values don't update the animated target and computing time is negligible. It just feels unorthodox.
         final boolean shouldShowOverlay = isHoveredOrBeingDragged();
         overlayColor.startNewTransition(shouldShowOverlay ? Layout.highlightOverlay : 0x0);
-        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute());
+        graphics.fill(getXF(), getYF(), getRight(), getBottom(), overlayColor.compute(), alpha);
     }
 
     @Override
@@ -141,11 +149,12 @@ public class UiButton extends __base_UiWidget {
     @Override
     public void extractBackground(UiGraphics graphics, float mouseX, float mouseY, float a) {
         super.extractBackground(graphics, mouseX, mouseY, a);
+        final float alpha = isActive() ? 1f : Layout.disabledAlpha;
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF());
+            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF(), alpha);
         }
     }
 
