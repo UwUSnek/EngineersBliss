@@ -141,8 +141,6 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
     ) {
         super.extractRenderState(blockEntity, state, tickProgress, cameraPos, crumblingOverlay);
         state.planeSize = calcPlaneSize(blockEntity);
-//TODO remove
-System.out.println("extractRenderState() called for " + blockEntity.getBlockPos());
     }
 
 
@@ -181,7 +179,7 @@ System.out.println("extractRenderState() called for " + blockEntity.getBlockPos(
 
             GpuBuffer vertices;
             try {
-                vertices = RenderSystem.getDevice().createBuffer(() -> "space_warp_vertices", 8, vertexData);
+                vertices = RenderSystem.getDevice().createBuffer(() -> "space_warp_vertices", GpuBuffer.USAGE_VERTEX, vertexData);
             }
             finally {
                 MemoryUtil.memFree(vertexData);
@@ -264,12 +262,4 @@ System.out.println("extractRenderState() called for " + blockEntity.getBlockPos(
     public static class __base_SpaceWarpingRenderState extends BlockEntityRenderState {
         public float planeSize;
     }
-
-
-//TODO remove
-@Override
-public int getViewDistance() {
-System.out.println("getViewDistance() called");
-return Integer.MAX_VALUE;
-}
 }

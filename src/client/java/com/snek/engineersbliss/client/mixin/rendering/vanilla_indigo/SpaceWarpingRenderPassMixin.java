@@ -36,6 +36,7 @@ import net.minecraft.client.renderer.LevelTargetBundle;
     // import net.minecraft.client.renderer.MultiBufferSource;
 //? } else {
     import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+    import net.minecraft.client.renderer.SubmitNodeCollector;
 //? }
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -57,6 +58,26 @@ public abstract class SpaceWarpingRenderPassMixin {
     @Shadow @Final private LevelTargetBundle targets;
     @Shadow @Final private RenderBuffers renderBuffers;
     @Shadow @Final private LevelRenderState levelRenderState;
+
+
+    //! 26.2+ clears block entity render states when the main render pass ends.
+    //! This injects the submitFeatures method to yoink the states and reuse them later
+    //? if <= 26.1.2 {
+    //? } else {
+        private List<BlockEntityRenderState> eb$capturedBlockEntityStates = List.of();
+
+        @Inject(method = "submitFeatures", at = @At("HEAD"))
+        private void eb$captureBlockEntityStates(
+            final LevelRenderState levelRenderState,
+            final SubmitNodeCollector submitNodeCollector,
+            final boolean renderOutline,
+            final CallbackInfo ci
+        ) {
+            this.eb$capturedBlockEntityStates = List.copyOf(levelRenderState.blockEntityRenderStates);
+        }
+    //? }
+
+
 
 
     //! 26.2+ straight up has no debug pass in the LevelRenderer.
@@ -92,8 +113,6 @@ public abstract class SpaceWarpingRenderPassMixin {
         this.targets.main = pass.readsAndWrites(this.targets.main);
         final @NotNull ResourceHandle<RenderTarget> mainTarget = this.targets.main;
         pass.executes(() -> {
-//TODO remove
-try {
             final @NotNull  RenderTarget target = mainTarget.get();
             final int width = target.width;
             final int height = target.height;
@@ -113,13 +132,12 @@ try {
 
             // Find render states of the blocks and their renderers
             List<Pair<BlockEntityRenderState, __base_SpaceWarpingRenderer>> renderStates = new ArrayList<>();
-            for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
+            //? if <=26.1.2 {
+                // for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
+            //? } else {
+                for(final @NotNull BlockEntityRenderState state : this.eb$capturedBlockEntityStates) {
+            //? }
                 final BlockEntityRenderDispatcher dispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
-//TODO remove
-var rendererMap = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers();
-System.out.println("rendererMapSize=" + rendererMap.size()
-+ " blackHole=" + rendererMap.get(CustomBlockEntityHandler.COSMETIC_BLACK_HOLE)
-+ " whiteHole=" + rendererMap.get(CustomBlockEntityHandler.COSMETIC_WHITE_HOLE));
                 final @NotNull var genericRendererInstance = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers().get(state.blockEntityType);
                 if(genericRendererInstance instanceof final @NotNull __base_SpaceWarpingRenderer rendererInstance) {
                     renderStates.add(Pair.from(state, rendererInstance));
@@ -138,16 +156,6 @@ System.out.println("rendererMapSize=" + rendererMap.size()
             if(renderStates.size() > maxBlocks) {
                 renderStates.subList(0, renderStates.size() - maxBlocks).clear();
             }
-
-
-//TODO remove
-long relevantCount = this.levelRenderState.blockEntityRenderStates.stream()
-    .filter(s -> s.blockEntityType == CustomBlockEntityHandler.COSMETIC_BLACK_HOLE
-              || s.blockEntityType == CustomBlockEntityHandler.COSMETIC_WHITE_HOLE
-              || s.blockEntityType == CustomBlockEntityHandler.ITEM_SINK
-              || s.blockEntityType == CustomBlockEntityHandler.ITEM_SOURCE)
-    .count();
-System.out.println("totalStates=" + this.levelRenderState.blockEntityRenderStates.size() + " relevantStates=" + relevantCount);
 
 
             // Draw blocks starting from the farthest one, update sampled textures after each draw
@@ -176,8 +184,6 @@ System.out.println("totalStates=" + this.levelRenderState.blockEntityRenderState
                     //? }
                 }
             }
-//TODO remove
-} catch (Throwable t) { System.err.println(t.getMessage());t.printStackTrace(); }
         });
     }
 }
