@@ -107,19 +107,17 @@ public abstract class DecoratedPotRenderingSuppressorMixin implements BlockEntit
                     final Optional<Item> item = decorationsIndexed[i];
                     if(!item.isEmpty() && item.get() != Items.BRICK) {
                         final SpriteId spriteId = getSideSprite(item);
-                        submitNodeCollector.submitModelPart(
-                            sideModelsIndexed[i],
-                            poseStack,
-                            spriteId.renderType(RenderTypes::entitySolid),
-                            state.lightCoords,
-                            OverlayTexture.NO_OVERLAY,
-                            this.sprites.get(spriteId),
-                            false,
-                            false,
-                            -1,
-                            null,
-                            0
-                        );
+                        //? if <=26.1.2 {
+                            /*submitNodeCollector.submitModelPart(
+                                sideModelsIndexed[i], poseStack, spriteId.renderType(RenderTypes::entitySolid),
+                                state.lightCoords, OverlayTexture.NO_OVERLAY, this.sprites.get(spriteId), false, false, -1, null, 0
+                            );
+                        *///? } else {
+                            submitNodeCollector.submitModelPart(
+                                sideModelsIndexed[i], poseStack, spriteId.renderType(RenderTypes::entitySolid),
+                                state.lightCoords, OverlayTexture.NO_OVERLAY, this.sprites.get(spriteId), -1, null, 0
+                            );
+                        //? }
                     }
                 }
 

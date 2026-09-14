@@ -14,6 +14,10 @@ public class WaxedExposedCopperGolemStatuePartProvider extends __base_CopperGole
 
     @Override
     public Block getBlock() {
-        return Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE;
+        //? if <=26.1.2 {
+            /*return Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE;
+        *///? } else {
+            return Blocks.COPPER_GOLEM_STATUE.waxed().exposed();
+        //? }
     }
 }

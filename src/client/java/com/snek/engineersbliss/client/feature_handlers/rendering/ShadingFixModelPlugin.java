@@ -93,7 +93,7 @@ public class ShadingFixModelPlugin implements ModelLoadingPlugin {
         if(!ClientFeatureSync.getFeatureB(RenderingServerFeatureSet.SMOOTH_SHADING)) {
                 emitter.pushTransform(quad -> {
                     quad.shadeMode(ShadeMode.ENHANCED);
-                    return true;
+                   return true;
                 });
                 try {
                     delegate.emitQuads(emitter, level, pos, state, random, cullTest);

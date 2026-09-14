@@ -10,7 +10,11 @@ public class WhiteBedPartProvider extends __base_BedPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.WHITE_BED;
+        //? if <=26.1.2 {
+            /*return Blocks.WHITE_BED;
+        *///? } else {
+            return Blocks.BED.white();
+        //? }
     }
 
     protected String getColorName() {

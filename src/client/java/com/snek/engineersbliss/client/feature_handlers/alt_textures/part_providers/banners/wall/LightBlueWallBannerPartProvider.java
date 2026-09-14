@@ -10,7 +10,11 @@ public class LightBlueWallBannerPartProvider extends __base_WallBannerPartProvid
 
     @Override
     public Block getBlock() {
-        return Blocks.LIGHT_BLUE_WALL_BANNER;
+        //? if <=26.1.2 {
+            /*return Blocks.LIGHT_BLUE_WALL_BANNER;
+        *///? } else {
+            return Blocks.WALL_BANNER.lightBlue();
+        //? }
     }
 
     @Override

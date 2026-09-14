@@ -15,10 +15,10 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -34,8 +34,10 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
-
-
+//? if <=26.1.2 {
+    /*import net.minecraft.client.renderer.LevelRenderer;
+*///? } else {
+//? }
 
 
 
@@ -43,7 +45,33 @@ import net.minecraft.world.phys.AABB;
 
 
 public class MinecraftUtils {
+    //? if <=26.1.2 {
+        /*public static final int SECTION_SIZE = LevelChunkSection.SECTION_WIDTH;
+        public static void setSectionDirty(final int sectionX, final int sectionY, final int sectionZ) {
+            Minecraft.getInstance().levelRenderer.setSectionDirty(sectionX, sectionY, sectionZ);
+        }
+        public static void setScreen(final Screen screen) {
+            Minecraft.getInstance().setScreen(screen);
+        }
+        public static Screen getScreen() {
+            return Minecraft.getInstance().screen;
+        }
+    *///? } else {
+        public static final int SECTION_SIZE = SectionPos.SECTION_SIZE;
+        public static void setSectionDirty(final int sectionX, final int sectionY, final int sectionZ) {
+            Minecraft.getInstance().levelExtractor.setSectionDirty(sectionX, sectionY, sectionZ);
+        }
+        public static void setScreen(final Screen screen) {
+            Minecraft.getInstance().gui.setScreen(screen);
+        }
+        public static Screen getScreen() {
+            return Minecraft.getInstance().gui.screen();
+        }
+    //? }
+
+
     private MinecraftUtils() {}
+
 
 
 
@@ -65,7 +93,7 @@ public class MinecraftUtils {
 
 
     public static boolean isChatOpen() {
-        return Minecraft.getInstance().screen instanceof ChatScreen;
+        return getScreen() instanceof ChatScreen;
     }
 
 
@@ -125,10 +153,10 @@ public class MinecraftUtils {
     public static boolean areChunkNeighboursLoaded(final Level level, final ChunkPos chunkPos) {
         return
             areChunkDirectNeighboursLoaded(level, chunkPos) &&
-            level.isLoaded(chunkPos.getBlockAt(+LevelChunkSection.SECTION_WIDTH, 0, +LevelChunkSection.SECTION_WIDTH)) &&
-            level.isLoaded(chunkPos.getBlockAt(-LevelChunkSection.SECTION_WIDTH, 0, -LevelChunkSection.SECTION_WIDTH)) &&
-            level.isLoaded(chunkPos.getBlockAt(-LevelChunkSection.SECTION_WIDTH, 0, +LevelChunkSection.SECTION_WIDTH)) &&
-            level.isLoaded(chunkPos.getBlockAt(+LevelChunkSection.SECTION_WIDTH, 0, -LevelChunkSection.SECTION_WIDTH))
+            level.isLoaded(chunkPos.getBlockAt(+SECTION_SIZE, 0, +SECTION_SIZE)) &&
+            level.isLoaded(chunkPos.getBlockAt(-SECTION_SIZE, 0, -SECTION_SIZE)) &&
+            level.isLoaded(chunkPos.getBlockAt(-SECTION_SIZE, 0, +SECTION_SIZE)) &&
+            level.isLoaded(chunkPos.getBlockAt(+SECTION_SIZE, 0, -SECTION_SIZE))
         ;
     }
 
@@ -141,10 +169,10 @@ public class MinecraftUtils {
      */
     public static boolean areChunkDirectNeighboursLoaded(final Level level, final ChunkPos chunkPos) {
         return
-            level.isLoaded(chunkPos.getBlockAt(+LevelChunkSection.SECTION_WIDTH, 0, 0)) &&
-            level.isLoaded(chunkPos.getBlockAt(-LevelChunkSection.SECTION_WIDTH, 0, 0)) &&
-            level.isLoaded(chunkPos.getBlockAt(0, 0, +LevelChunkSection.SECTION_WIDTH)) &&
-            level.isLoaded(chunkPos.getBlockAt(0, 0, -LevelChunkSection.SECTION_WIDTH))
+            level.isLoaded(chunkPos.getBlockAt(+SECTION_SIZE, 0, 0)) &&
+            level.isLoaded(chunkPos.getBlockAt(-SECTION_SIZE, 0, 0)) &&
+            level.isLoaded(chunkPos.getBlockAt(0, 0, +SECTION_SIZE)) &&
+            level.isLoaded(chunkPos.getBlockAt(0, 0, -SECTION_SIZE))
         ;
     }
 
@@ -172,7 +200,7 @@ public class MinecraftUtils {
         final @NotNull ChunkPos chunkPos = chunk.getPos();
         final double x0 = chunkPos.getMinBlockX();
         final double z0 = chunkPos.getMinBlockZ();
-        return frustum.isVisible(new AABB(x0, chunk.getMinY(), z0, x0 + LevelChunkSection.SECTION_WIDTH, chunk.getMaxY(), z0 + LevelChunkSection.SECTION_WIDTH));
+        return frustum.isVisible(new AABB(x0, chunk.getMinY(), z0, x0 + SECTION_SIZE, chunk.getMaxY(), z0 + SECTION_SIZE));
     }
 
 
@@ -186,7 +214,6 @@ public class MinecraftUtils {
      */
     public static void refreshSectionsContaining(final Predicate<BlockState> predicate) {
         final @NotNull Minecraft minecraft = Minecraft.getInstance();
-        final @NotNull LevelRenderer renderer = minecraft.levelRenderer;
         final int minY = minecraft.level.getMinSectionY();
         for(final @NotNull LevelChunk chunk : getLoadedChunks()) {
             final @NotNull LevelChunkSection[] sections = chunk.getSections();
@@ -195,7 +222,7 @@ public class MinecraftUtils {
                 final @NotNull LevelChunkSection section = sections[i];
                 if(section == null || section.hasOnlyAir()) continue;
                 if(section.maybeHas(predicate)) {
-                    renderer.setSectionDirty(pos.x(), minY + i, pos.z());
+                    setSectionDirty(pos.x(), minY + i, pos.z());
                 }
             }
         }
@@ -232,7 +259,6 @@ public class MinecraftUtils {
      */
     public static void refreshRendering() {
         final @NotNull Minecraft minecraft = Minecraft.getInstance();
-        final @NotNull LevelRenderer renderer = minecraft.levelRenderer;
         final int minY = minecraft.level.getMinSectionY();
         for(final @NotNull LevelChunk chunk : getLoadedChunks()) {
             final @NotNull LevelChunkSection[] sections = chunk.getSections();
@@ -241,7 +267,7 @@ public class MinecraftUtils {
             for(int i = 0; i < sections.length; i++) {
                 final @NotNull LevelChunkSection section = sections[i];
                 if(section == null || section.hasOnlyAir()) continue;
-                renderer.setSectionDirty(pos.x(), minY + i, pos.z());
+                setSectionDirty(pos.x(), minY + i, pos.z());
             }
         }
     }

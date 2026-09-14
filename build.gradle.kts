@@ -47,15 +47,16 @@ dependencies {
     loomx.applyMojangMappings()                             // Applies Mojang Mappings on obfuscated versions
 
     // Bundled dependencies
-    implementation("com.github.weisj:jsvg:2.1.0")
-    include("com.github.weisj:jsvg:2.1.0")
+    implementation("com.github.weisj:jsvg:${property("deps.jsvg")}")
+    include("com.github.weisj:jsvg:${property("deps.jsvg")}")
 
     // Required dependencies
     implementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
     implementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
 
     // Optional dependencies
-    compileOnly("maven.modrinth:sodium:mc26.1.1-0.8.9-fabric")
+    compileOnly("maven.modrinth:sodium:${property("deps.sodium")}")
+    //! ModMenu discovers mods on its own. No project dependency needed. It should only be listed in the fabric.mod.json
 }
 
 
@@ -120,7 +121,7 @@ tasks {
             register("description",  "mod.description")
 
             put("java_version",         requiredJava.majorVersion)
-            register("minecraft",       "mod.minecraft")
+            register("minecraft",       "deps.minecraft")
             register("fabric_loader",   "deps.fabric_loader")
             register("fabric_api",      "deps.fabric-api")
             register("sodium_version",  "deps.sodium")
@@ -151,8 +152,8 @@ tasks {
     register<Copy>("buildAndCollect") {
         group = "build"
         description = "Builds mod jars and copies results to `build/libs/{mod version}/`"
-
         inputs.property("version", project.property("mod.version"))
+
         // loomx.mod(Sources)Jar returns the jar task for the applied loom variant
         from(loomx.modJar.flatMap { it.archiveFile }, loomx.modSourcesJar.flatMap { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
@@ -160,20 +161,6 @@ tasks {
 }
 
 
-
-
-
-
-//FIXME do something about this? we have split sources
-// loom {
-//     splitEnvironmentSourceSets()
-//     mods {
-//         create("engineers-bliss") {
-//             sourceSet(sourceSets["main"])
-//             sourceSet(sourceSets["client"])
-//         }
-//     }
-// }
 
 
 // Maven publication

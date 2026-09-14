@@ -10,7 +10,11 @@ public class WeatheredCopperChestPartProvider extends __base_DoublableChestPartP
 
     @Override
     public Block getBlock() {
-        return Blocks.WEATHERED_COPPER_CHEST;
+        //? if <=26.1.2 {
+            /*return Blocks.WEATHERED_COPPER_CHEST;
+        *///? } else {
+            return Blocks.COPPER_CHEST.weathering().weathered();
+        //? }
     }
 
     @Override

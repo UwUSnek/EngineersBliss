@@ -10,7 +10,11 @@ public class BrownWallBannerPartProvider extends __base_WallBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.BROWN_WALL_BANNER;
+        //? if <=26.1.2 {
+            /*return Blocks.BROWN_WALL_BANNER;
+        *///? } else {
+            return Blocks.WALL_BANNER.brown();
+        //? }
     }
 
     @Override

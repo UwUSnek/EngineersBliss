@@ -10,7 +10,11 @@ public class WaxedCopperChainPartProvider extends __base_ChainPartProvider {
 
     @Override
     public Block getBlock() {
-        return Blocks.COPPER_CHAIN.waxed();
+        //? if <=26.1.2 {
+            /*return Blocks.COPPER_CHAIN.waxed();
+        *///? } else {
+            return Blocks.COPPER_CHAIN.waxed().unaffected();
+        //? }
     }
 
     @Override

@@ -161,15 +161,15 @@ public class OverlaysHandler {
             final @NotNull var sections = chunk.getSections();
             for(int i = 0; i < sections.length; ++i) {
                 final @NotNull LevelChunkSection section = sections[i];
-                final int minY = chunk.getMinY() + (i * LevelChunkSection.SECTION_HEIGHT);
+                final int minY = chunk.getMinY() + (i * MinecraftUtils.SECTION_SIZE);
 
                 // If the section contains blocks with features
                 if(!section.hasOnlyAir() && section.maybeHas(state -> ServerFeatureSync.stateHasFeaturesFromSet(state, OverlaysServerFeatureSet.INSTANCE))) {
 
                     // For each block in the section
-                    for(int x = 0; x < LevelChunkSection.SECTION_WIDTH; x++) {
-                        for(int y = 0; y < LevelChunkSection.SECTION_HEIGHT; y++) {
-                            for(int z = 0; z < LevelChunkSection.SECTION_WIDTH; z++) {
+                    for(int x = 0; x < MinecraftUtils.SECTION_SIZE; x++) {
+                        for(int y = 0; y < MinecraftUtils.SECTION_SIZE; y++) {
+                            for(int z = 0; z < MinecraftUtils.SECTION_SIZE; z++) {
                                 final @NotNull BlockPos pos = new BlockPos(minX + x, minY + y, minZ + z);
                                 final @NotNull BlockState state = level.getBlockState(pos);
 

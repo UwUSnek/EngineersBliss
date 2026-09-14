@@ -66,12 +66,12 @@ public class ComparatorLogicOverlayProvider extends __base_TextOverlayProvider {
         else {
             final int back = data.getBackSignal();
             if(back == 0) {
-                return "No input";
+               return "No input";
             }
             else {
                 final int side = data.getSideSignal();
                 final int out  = data.getOutSignal ();
-                return data.getMode() ?
+               return data.getMode() ?
                     String.format("max(0,%d-%d) ➡ %d", back, side,       out) :
                     String.format("%d≥%d?%d:0 ➡ %d",   back, side, back, out)
                 ;

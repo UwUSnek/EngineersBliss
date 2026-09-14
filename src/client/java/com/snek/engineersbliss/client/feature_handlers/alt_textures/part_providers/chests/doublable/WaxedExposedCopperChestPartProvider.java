@@ -10,7 +10,11 @@ public class WaxedExposedCopperChestPartProvider extends __base_DoublableChestPa
 
     @Override
     public Block getBlock() {
-        return Blocks.WAXED_EXPOSED_COPPER_CHEST;
+        //? if <=26.1.2 {
+            /*return Blocks.WAXED_EXPOSED_COPPER_CHEST;
+        *///? } else {
+            return Blocks.COPPER_CHEST.waxed().exposed();
+        //? }
     }
 
     @Override

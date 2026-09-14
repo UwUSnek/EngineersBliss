@@ -127,7 +127,7 @@ public class CreativeTweaksClientHandler {
                 if(player.isCreative()) {
                     final int count = getInteractionCount();
                     if(count > 1) {
-                        return true;
+                       return true;
                     }
                 }
             }
@@ -195,7 +195,7 @@ public class CreativeTweaksClientHandler {
     public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature, final T value) {
         if(entity instanceof final @NotNull Player player) {
             if(player.isCreative()) {
-                return ClientFeatureSync.getFeature(feature) == value;
+               return ClientFeatureSync.getFeature(feature) == value;
             }
         }
         return false;

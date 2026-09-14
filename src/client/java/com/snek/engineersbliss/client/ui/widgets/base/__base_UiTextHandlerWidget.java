@@ -429,69 +429,69 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         switch(event.key()) {
             case GLFW.GLFW_KEY_ESCAPE: {
                 setFocused(false);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_BACKSPACE: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 deleteCharsToPos(pos[0], pos[1]);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_DELETE: {
                 final int[] pos = ctrl ? getWordPosition(1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, 1);
                 deleteCharsToPos(pos[0], pos[1]);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_RIGHT: {
                 final int[] pos = ctrl ? getWordPosition(1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, 1);
                 moveCursorTo(pos[0], pos[1], shift);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_LEFT: {
                 final int[] pos = ctrl ? getWordPosition(-1, cursorLine, cursorCol) : offsetPosition(cursorLine, cursorCol, -1);
                 moveCursorTo(pos[0], pos[1], shift);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_UP: {
-                return moveCursorVertical(-1, shift);
+               return moveCursorVertical(-1, shift);
             }
             case GLFW.GLFW_KEY_DOWN: {
-                return moveCursorVertical(1, shift);
+               return moveCursorVertical(1, shift);
             }
             case GLFW.GLFW_KEY_HOME: {
                 moveCursorToLineStart(shift);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_END: {
                 moveCursorToLineEnd(shift);
-                return true;
+               return true;
             }
             //TODO PAGE UP key
             //TODO PAGE DOWN key
             case GLFW.GLFW_KEY_ENTER, GLFW.GLFW_KEY_KP_ENTER: {
                 if(multiline) insertText("\n");
-                return multiline;
+               return multiline;
             }
             default: {
                 if(event.isSelectAll()) {
                     moveCursorToEnd(false);
                     setHighlightPos(0, 0);
                     updateLabel();
-                    return true;
+                   return true;
                 }
                 if(event.isCopy()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
-                    return true;
+                   return true;
                 }
                 if(event.isPaste()) {
                     insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
-                    return true;
+                   return true;
                 }
                 if(event.isCut()) {
                     Minecraft.getInstance().keyboardHandler.setClipboard(getHighlighted());
                     insertText("");
-                    return true;
+                   return true;
                 }
-                return false;
+               return false;
             }
         }
     }

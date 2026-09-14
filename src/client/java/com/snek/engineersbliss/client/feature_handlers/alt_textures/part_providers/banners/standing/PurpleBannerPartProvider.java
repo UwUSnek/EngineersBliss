@@ -10,7 +10,11 @@ public class PurpleBannerPartProvider extends __base_StandingBannerPartProvider 
 
     @Override
     public Block getBlock() {
-        return Blocks.PURPLE_BANNER;
+        //? if <=26.1.2 {
+            /*return Blocks.PURPLE_BANNER;
+        *///? } else {
+            return Blocks.BANNER.purple();
+        //? }
     }
 
     @Override

@@ -23,7 +23,7 @@ public class ClientModVersionCheck {
             (client, handler, buf, listenerAdder) -> {
                 FriendlyByteBuf response = new FriendlyByteBuf(Unpooled.buffer());
                 response.writeUtf(getClientVersion());
-                return CompletableFuture.completedFuture(response);
+               return CompletableFuture.completedFuture(response);
             }
         );
     }

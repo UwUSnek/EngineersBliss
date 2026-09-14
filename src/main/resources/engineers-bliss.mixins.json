@@ -17,21 +17,23 @@
 
         "custom_items.PickBlockOverrideMixin",
 
-        "creative_tweaks.ReachDistanceCapMixin",
-        "creative_tweaks.PlayerTargetedBlockOverrideMixin",
-        "creative_tweaks.PlayerMovementLimitFixMixin"
+        "creative_tweaks.misc.ReachDistanceCapMixin",
+        "creative_tweaks.misc.PlayerTargetedBlockOverrideMixin",
+        "creative_tweaks.misc.PlayerMovementLimitFixMixin"
     ],
 
 
     "server": [
-        "creative_tweaks.server.ServerBlockPhasingMixin",
-        "creative_tweaks.server.ServerBlockPhasingPoseFixMixin",
-        "creative_tweaks.server.ServerBlockPhasingPacketFixMixin",
-        "creative_tweaks.server.ServerEntityPhasingMixin",
-        "creative_tweaks.server.ServerEntityPhasingMinecartMixin",
-        "creative_tweaks.server.ServerEntityPhasingBoatMixin",
-        "creative_tweaks.server.ServerFireEffectSuppressorMixin",
-        "creative_tweaks.server.ServerFreezeEffectSuppressorMixin"
+        "creative_tweaks.block_phasing.ServerBlockPhasingCollisionFixMixin",
+        "creative_tweaks.block_phasing.ServerBlockPhasingPoseFixMixin",
+        "creative_tweaks.block_phasing.ServerBlockPhasingPacketFixMixin",
+
+        "creative_tweaks.entity_phasing.ServerEntityPhasingMixin",
+        "creative_tweaks.entity_phasing.ServerEntityPhasingMinecartMixin",
+        "creative_tweaks.entity_phasing.ServerEntityPhasingBoatMixin",
+
+        "creative_tweaks.effect_suppressors.ServerFireEffectSuppressorMixin",
+        "creative_tweaks.effect_suppressors.ServerFreezeEffectSuppressorMixin"
     ],
 
 

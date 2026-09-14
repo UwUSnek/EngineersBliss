@@ -201,7 +201,7 @@ public class RenderingScreen extends UiFeatureSetScreen {
             final String[] renderStats = {
                 "Light calculation: ", lightProgress == lightMax ? "Idle" : String.format("%,d / %,d", lightProgress, lightMax),
                 "Loaded chunks: ", String.format("%,d", loadedChunkNum),
-                "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * LevelChunkSection.SECTION_WIDTH * LevelChunkSection.SECTION_WIDTH))
+                "Loaded blocks: ", String.format("%,d", (loadedChunkNum * level.getHeight() * MinecraftUtils.SECTION_SIZE * MinecraftUtils.SECTION_SIZE))
             };
 
             int rightTextPrefixWidth = 0;
