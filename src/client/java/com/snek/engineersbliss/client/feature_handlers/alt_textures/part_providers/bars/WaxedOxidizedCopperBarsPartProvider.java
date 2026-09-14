@@ -11,10 +11,10 @@ public class WaxedOxidizedCopperBarsPartProvider extends __base_BarsPartProvider
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.COPPER_BARS.waxedOxidized();
-        //? } else {
-            /*return Blocks.COPPER_BARS.waxed().oxidized();
-        *///? }
+            /*return Blocks.COPPER_BARS.waxedOxidized();
+        *///? } else {
+            return Blocks.COPPER_BARS.waxed().oxidized();
+        //? }
     }
 
     protected String getMaterialName() {

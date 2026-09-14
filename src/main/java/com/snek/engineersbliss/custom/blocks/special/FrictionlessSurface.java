@@ -32,10 +32,10 @@ public class FrictionlessSurface extends FrictionSurface {
 
     //BUG this method doesn't exist in 26.2+
     //? if <=26.1.2 {
-         /**
+         /*/^*
           * Called once per Entity.move().
           * This resets the friction calculations Vanilla does so entities can keep sliding forever.
-          */
+          ^/
          @Override
          public void updateEntityMovementAfterFallOn(final BlockGetter level, final Entity entity) {
              double x = entity.getDeltaMovement().x;
@@ -63,5 +63,5 @@ public class FrictionlessSurface extends FrictionSurface {
              // Force the server to keep sending motion update packets to clients
              entity.needsSync = true;
          }
-    //? }
+    *///? }
 }

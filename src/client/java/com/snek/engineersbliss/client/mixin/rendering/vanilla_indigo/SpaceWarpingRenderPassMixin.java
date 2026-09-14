@@ -24,7 +24,6 @@ import com.snek.engineersbliss.client.custom.block_entities.renderers.base.Scene
 import com.snek.engineersbliss.client.custom.block_entities.renderers.base.__base_SpaceWarpingRenderer;
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.mixin.accessors.BlockEntityRenderDispatcherAccessor;
-import com.snek.engineersbliss.custom.block_entities.CustomBlockEntityHandler;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
@@ -32,12 +31,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
 //? if <=26.1.2 {
-    import org.joml.Matrix4fc;
+    /*import org.joml.Matrix4fc;
     import net.minecraft.client.renderer.MultiBufferSource;
-//? } else {
-    /*import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+*///? } else {
+    import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
     import net.minecraft.client.renderer.SubmitNodeCollector;
-*///? }
+//? }
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -64,7 +63,7 @@ public abstract class SpaceWarpingRenderPassMixin {
     //! This injects the submitFeatures method to yoink the states and reuse them later
     //? if <= 26.1.2 {
     //? } else {
-        /*private List<BlockEntityRenderState> eb$capturedBlockEntityStates = List.of();
+        private List<BlockEntityRenderState> eb$capturedBlockEntityStates = List.of();
 
         @Inject(method = "submitFeatures", at = @At("HEAD"))
         private void eb$captureBlockEntityStates(
@@ -75,7 +74,7 @@ public abstract class SpaceWarpingRenderPassMixin {
         ) {
             this.eb$capturedBlockEntityStates = List.copyOf(levelRenderState.blockEntityRenderStates);
         }
-    *///? }
+    //? }
 
 
 
@@ -83,7 +82,7 @@ public abstract class SpaceWarpingRenderPassMixin {
     //! 26.2+ straight up has no debug pass in the LevelRenderer.
     //! addAlwaysOnTopPass is unrelated, but it works just fine for this mixin.
     //? if <= 26.1.2 {
-        @SuppressWarnings({ "unused", "unchecked" })
+        /*@SuppressWarnings({ "unused", "unchecked" })
         @Inject(method = "addLateDebugPass", at = @At("HEAD"))
         private void eb$addItemSinkPass(
             final FrameGraphBuilder frame,
@@ -92,8 +91,8 @@ public abstract class SpaceWarpingRenderPassMixin {
             final Matrix4fc modelViewMatrix,
             final CallbackInfo ci
         ) {
-    //? } else {
-        /*@SuppressWarnings({ "unused", "unchecked" })
+    *///? } else {
+        @SuppressWarnings({ "unused", "unchecked" })
         @Inject(method = "addAlwaysOnTopPass", at = @At("HEAD"))
         private void eb$addItemSinkPass(
             final FrameGraphBuilder frame,
@@ -102,7 +101,7 @@ public abstract class SpaceWarpingRenderPassMixin {
             final CallbackInfo ci
         ) {
             final @NotNull CameraRenderState camera = this.levelRenderState.cameraRenderState;
-    *///? }
+    //? }
 
         // Pass if custom shaded blocks are OFF
         if(!ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS)) {
@@ -133,10 +132,10 @@ public abstract class SpaceWarpingRenderPassMixin {
             // Find render states of the blocks and their renderers
             List<Pair<BlockEntityRenderState, __base_SpaceWarpingRenderer>> renderStates = new ArrayList<>();
             //? if <=26.1.2 {
-                for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
-            //? } else {
-                /*for(final @NotNull BlockEntityRenderState state : this.eb$capturedBlockEntityStates) {
-            *///? }
+                /*for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
+            *///? } else {
+                for(final @NotNull BlockEntityRenderState state : this.eb$capturedBlockEntityStates) {
+            //? }
                 final BlockEntityRenderDispatcher dispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
                 final @NotNull var genericRendererInstance = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers().get(state.blockEntityType);
                 if(genericRendererInstance instanceof final @NotNull __base_SpaceWarpingRenderer rendererInstance) {
@@ -161,10 +160,10 @@ public abstract class SpaceWarpingRenderPassMixin {
             // Draw blocks starting from the farthest one, update sampled textures after each draw
             if(!renderStates.isEmpty()) {
                 final @NotNull PoseStack poseStack = new PoseStack();
+                //! 26.2 doesn't require need endBatch()
                 //? if <=26.1.2 {
-                    final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
-                //? } else {
-                    /*! 26.2 doesn't require need endBatch()*/
+                    /*final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+                *///? } else {
                 //? }
 
                 for(final @NotNull var renderState : renderStates) {
@@ -177,10 +176,10 @@ public abstract class SpaceWarpingRenderPassMixin {
                         target.getColorTextureView(),
                         target.getDepthTextureView()
                     );
+                    //! 26.2 doesn't require need endBatch()
                     //? if <=26.1.2 {
-                        bufferSource.endBatch();
-                    //? } else {
-                        //! 26.2 doesn't require need endBatch()
+                        /*bufferSource.endBatch();
+                    *///? } else {
                     //? }
                 }
             }

@@ -15,9 +15,9 @@ public class OxidizedCopperGolemStatuePartProvider extends __base_CopperGolemSta
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.OXIDIZED_COPPER_GOLEM_STATUE;
-        //? } else {
-            /*return Blocks.COPPER_GOLEM_STATUE.weathering().oxidized();
-        *///? }
+            /*return Blocks.OXIDIZED_COPPER_GOLEM_STATUE;
+        *///? } else {
+            return Blocks.COPPER_GOLEM_STATUE.weathering().oxidized();
+        //? }
     }
 }

@@ -12,13 +12,13 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 
 //? if <=26.1.2 {
-    import net.minecraft.client.DeltaTracker;
+    /*import net.minecraft.client.DeltaTracker;
     import net.minecraft.client.Camera;
     import net.minecraft.client.renderer.culling.Frustum;
-//? } else {
-    /*import com.mojang.blaze3d.vertex.PoseStack;
+*///? } else {
+    import com.mojang.blaze3d.vertex.PoseStack;
     import net.minecraft.client.renderer.SubmitNodeCollector;
-*///? }
+//? }
 
 
 
@@ -33,7 +33,7 @@ public class EntityRenderingSuppressor {
 
 
     //? if <=26.1.2 {
-        @SuppressWarnings("unused")
+        /*@SuppressWarnings("unused")
         @Inject(method = "extractVisibleEntities", at = @At("HEAD"), cancellable = true, require = 1)
         private void eb$extractVisibleEntities(
             final Camera camera,
@@ -46,8 +46,8 @@ public class EntityRenderingSuppressor {
                 ci.cancel();
             }
         }
-    //? } else {
-        /*@SuppressWarnings("unused")
+    *///? } else {
+        @SuppressWarnings("unused")
         @Inject(method = "submitEntities", at = @At("HEAD"), cancellable = true, require = 1)
         private void eb$submitEntities(
             final PoseStack poseStack,
@@ -59,5 +59,5 @@ public class EntityRenderingSuppressor {
                 ci.cancel();
             }
         }
-    *///? }
+    //? }
 }

@@ -15,9 +15,9 @@ public class ExposedCopperGolemStatuePartProvider extends __base_CopperGolemStat
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.EXPOSED_COPPER_GOLEM_STATUE;
-        //? } else {
-            /*return Blocks.COPPER_GOLEM_STATUE.weathering().exposed();
-        *///? }
+            /*return Blocks.EXPOSED_COPPER_GOLEM_STATUE;
+        *///? } else {
+            return Blocks.COPPER_GOLEM_STATUE.weathering().exposed();
+        //? }
     }
 }

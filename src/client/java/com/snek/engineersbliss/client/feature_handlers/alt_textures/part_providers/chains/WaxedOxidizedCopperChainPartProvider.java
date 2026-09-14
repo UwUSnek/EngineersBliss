@@ -11,10 +11,10 @@ public class WaxedOxidizedCopperChainPartProvider extends __base_ChainPartProvid
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.COPPER_CHAIN.waxedOxidized();
-        //? } else {
-            /*return Blocks.COPPER_CHAIN.waxed().oxidized();
-        *///? }
+            /*return Blocks.COPPER_CHAIN.waxedOxidized();
+        *///? } else {
+            return Blocks.COPPER_CHAIN.waxed().oxidized();
+        //? }
     }
 
     @Override

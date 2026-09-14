@@ -13,8 +13,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
 //? if <=26.1.2 {
-    // import net.minecraft.world.entity.EntityType;
-// } else {
+     /*import net.minecraft.world.entity.EntityType;
+*///? } else {
     import net.minecraft.world.entity.EntityTypes;
 //? }
 import net.minecraft.world.entity.animal.bee.Bee;
@@ -59,8 +59,8 @@ public class CustomBeehiveItem extends CustomBlockItem {
             if(serverLevel.getBlockEntity(pos) instanceof BeehiveBlockEntity hive) {
                 for(int i = 0; i < beeCount; i++) {
                     //? if <=26.1.2 {
-                        // Bee bee = EntityType.BEE.create(serverLevel, EntitySpawnReason.STRUCTURE);
-                    // } else {
+                         /*Bee bee = EntityType.BEE.create(serverLevel, EntitySpawnReason.STRUCTURE);
+                    *///? } else {
                         Bee bee = EntityTypes.BEE.create(serverLevel, EntitySpawnReason.STRUCTURE);
                     //? }
                     if(bee != null) {

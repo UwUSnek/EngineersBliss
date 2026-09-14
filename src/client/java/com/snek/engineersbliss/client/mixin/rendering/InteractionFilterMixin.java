@@ -46,10 +46,10 @@ public class InteractionFilterMixin {
 
         // Otherwise run custom ray casting logic
         //? if <=26.1.2 {
-            final Vec3 start = minecraft.gameRenderer.getMainCamera().position();
-        //? } else {
-            /*final Vec3 start = minecraft.gameRenderer.mainCamera().position();
-        *///? }
+            /*final Vec3 start = minecraft.gameRenderer.getMainCamera().position();
+        *///? } else {
+            final Vec3 start = minecraft.gameRenderer.mainCamera().position();
+        //? }
         final Vec3 look = Vec3.directionFromRotation(player.getXRot(), player.getYRot());
         final double reach = player.blockInteractionRange();
         final Vec3 end = start.add(look.scale(reach));

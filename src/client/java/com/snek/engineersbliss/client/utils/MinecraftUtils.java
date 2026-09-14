@@ -35,8 +35,8 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.phys.AABB;
 //? if <=26.1.2 {
-    import net.minecraft.client.renderer.LevelRenderer;
-//? } else {
+    /*import net.minecraft.client.renderer.LevelRenderer;
+*///? } else {
 //? }
 
 
@@ -46,7 +46,7 @@ import net.minecraft.world.phys.AABB;
 
 public class MinecraftUtils {
     //? if <=26.1.2 {
-        public static final int SECTION_SIZE = LevelChunkSection.SECTION_WIDTH;
+        /*public static final int SECTION_SIZE = LevelChunkSection.SECTION_WIDTH;
         public static void setSectionDirty(final int sectionX, final int sectionY, final int sectionZ) {
             Minecraft.getInstance().levelRenderer.setSectionDirty(sectionX, sectionY, sectionZ);
         }
@@ -54,10 +54,10 @@ public class MinecraftUtils {
             Minecraft.getInstance().setScreen(screen);
         }
         public static Screen getScreen() {
-            Minecraft.getInstance().screen;
+            return Minecraft.getInstance().screen;
         }
-    //? } else {
-        /*public static final int SECTION_SIZE = SectionPos.SECTION_SIZE;
+    *///? } else {
+        public static final int SECTION_SIZE = SectionPos.SECTION_SIZE;
         public static void setSectionDirty(final int sectionX, final int sectionY, final int sectionZ) {
             Minecraft.getInstance().levelExtractor.setSectionDirty(sectionX, sectionY, sectionZ);
         }
@@ -67,7 +67,7 @@ public class MinecraftUtils {
         public static Screen getScreen() {
             return Minecraft.getInstance().gui.screen();
         }
-    *///? }
+    //? }
 
 
     private MinecraftUtils() {}

@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.BannerBlockEntity;
 //? if <=26.1.2 {
-     import net.minecraft.world.level.block.entity.BedBlockEntity;
+     /*import net.minecraft.world.level.block.entity.BedBlockEntity;
      import net.minecraft.world.level.block.entity.SignBlockEntity;
-//? }
+*///? }
 import net.minecraft.world.level.block.entity.BellBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.CopperGolemStatueBlockEntity;
@@ -45,8 +45,8 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         //? if <=26.1.2 {
         //? } else {
-            /*final boolean isGloballyRendered,
-        *///? }
+            final boolean isGloballyRendered,
+        //? }
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
         switch(blockEntity) {
@@ -81,7 +81,7 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                 }
             }
             //? if <=26.1.2 {
-                 case SignBlockEntity e -> {
+                 /*case SignBlockEntity e -> {
                      if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS) && !BlockEntityUtils.signHasText(e)) {
                          cir.setReturnValue(null);
                      }
@@ -91,7 +91,7 @@ public abstract class BlockEntityDispatcherSuppressorMixin {
                          cir.setReturnValue(null);
                      }
                  }
-            //? }
+            *///? }
             // case ItemSinkBlockEntity e -> {
             //     //FIXME use the proper setting
             //     // if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_BEDS)) {

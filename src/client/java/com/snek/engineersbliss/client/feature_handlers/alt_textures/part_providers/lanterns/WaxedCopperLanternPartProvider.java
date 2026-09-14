@@ -11,10 +11,10 @@ public class WaxedCopperLanternPartProvider extends __base_LanternPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.COPPER_LANTERN.waxed();
-        //? } else {
-            /*return Blocks.COPPER_LANTERN.waxed().unaffected();
-        *///? }
+            /*return Blocks.COPPER_LANTERN.waxed();
+        *///? } else {
+            return Blocks.COPPER_LANTERN.waxed().unaffected();
+        //? }
     }
 
     @Override

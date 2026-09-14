@@ -11,10 +11,10 @@ public class CyanWallBannerPartProvider extends __base_WallBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.CYAN_WALL_BANNER;
-        //? } else {
-            /*return Blocks.WALL_BANNER.cyan();
-        *///? }
+            /*return Blocks.CYAN_WALL_BANNER;
+        *///? } else {
+            return Blocks.WALL_BANNER.cyan();
+        //? }
     }
 
     @Override

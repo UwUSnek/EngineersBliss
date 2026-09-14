@@ -11,10 +11,10 @@ public class GrayWallBannerPartProvider extends __base_WallBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.GRAY_WALL_BANNER;
-        //? } else {
-            /*return Blocks.WALL_BANNER.gray();
-        *///? }
+            /*return Blocks.GRAY_WALL_BANNER;
+        *///? } else {
+            return Blocks.WALL_BANNER.gray();
+        //? }
     }
 
     @Override

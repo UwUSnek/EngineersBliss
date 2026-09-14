@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 
 //! 26.2+ uses static models by default.
 //? if <=26.1.2 {
-    import org.jetbrains.annotations.Nullable;
+    /*import org.jetbrains.annotations.Nullable;
     import org.spongepowered.asm.mixin.injection.Inject;
     import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
     import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
     import net.minecraft.client.renderer.SubmitNodeCollector;
     import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
     import net.minecraft.world.level.block.state.properties.WoodType;
-//? } else {
+*///? } else {
 //? }
 
 
@@ -33,7 +33,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 
     //! 26.2+ uses static models by default.
     //? if <=26.1.2 {
-        @SuppressWarnings("unused")
+        /*@SuppressWarnings("unused")
         @Inject(method = "submitSign", at = @At("HEAD"), cancellable = true, require = 1)
         private void eb$submitSign(
             final PoseStack poseStack,
@@ -48,7 +48,7 @@ public abstract class AbstractSignRenderingSuppressorMixin {
                 ci.cancel();
             }
         }
-    //? } else {
+    *///? } else {
     //? }
 
 

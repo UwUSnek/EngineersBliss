@@ -9,19 +9,19 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 //? if <=26.1.2 {
-    import net.minecraft.client.gui.Gui;
-//? } else {
-    /*import net.minecraft.client.gui.Hud;
-*///? }
+    /*import net.minecraft.client.gui.Gui;
+*///? } else {
+    import net.minecraft.client.gui.Hud;
+//? }
 
 
 
 
 //? if <=26.1.2 {
-    @Mixin(Gui.class)
-//? } else {
-    /*@Mixin(Hud.class)
-*///? }
+    /*@Mixin(Gui.class)
+*///? } else {
+    @Mixin(Hud.class)
+//? }
 public class CrosshairHeightFixMixin {
 
     @SuppressWarnings("unused")

@@ -24,7 +24,7 @@ public class BlockGroups {
         Blocks.LANTERN,
         Blocks.SOUL_LANTERN,
         //? if <=26.1.2 {
-            Blocks.COPPER_LANTERN.unaffected(),
+            /*Blocks.COPPER_LANTERN.unaffected(),
             Blocks.COPPER_LANTERN.exposed(),
             Blocks.COPPER_LANTERN.weathered(),
             Blocks.COPPER_LANTERN.oxidized(),
@@ -32,8 +32,8 @@ public class BlockGroups {
             Blocks.COPPER_LANTERN.waxedExposed(),
             Blocks.COPPER_LANTERN.waxedWeathered(),
             Blocks.COPPER_LANTERN.waxedOxidized()
-        //? } else {
-            /*Blocks.COPPER_LANTERN.weathering().unaffected(),
+        *///? } else {
+            Blocks.COPPER_LANTERN.weathering().unaffected(),
             Blocks.COPPER_LANTERN.weathering().exposed(),
             Blocks.COPPER_LANTERN.weathering().weathered(),
             Blocks.COPPER_LANTERN.weathering().oxidized(),
@@ -41,7 +41,7 @@ public class BlockGroups {
             Blocks.COPPER_LANTERN.waxed().exposed(),
             Blocks.COPPER_LANTERN.waxed().weathered(),
             Blocks.COPPER_LANTERN.waxed().oxidized()
-        *///? }
+        //? }
     );
     public static final List<Block> ALL_SIGNS = List.of(
         Blocks.OAK_SIGN,
@@ -100,7 +100,7 @@ public class BlockGroups {
         Blocks.TRAPPED_CHEST,
         Blocks.ENDER_CHEST,
         //? if <=26.1.2 {
-            Blocks.COPPER_CHEST,
+            /*Blocks.COPPER_CHEST,
             Blocks.EXPOSED_COPPER_CHEST,
             Blocks.WEATHERED_COPPER_CHEST,
             Blocks.OXIDIZED_COPPER_CHEST,
@@ -108,8 +108,8 @@ public class BlockGroups {
             Blocks.WAXED_EXPOSED_COPPER_CHEST,
             Blocks.WAXED_WEATHERED_COPPER_CHEST,
             Blocks.WAXED_OXIDIZED_COPPER_CHEST
-        //? } else {
-            /*Blocks.COPPER_CHEST.weathering().unaffected(),
+        *///? } else {
+            Blocks.COPPER_CHEST.weathering().unaffected(),
             Blocks.COPPER_CHEST.weathering().exposed(),
             Blocks.COPPER_CHEST.weathering().weathered(),
             Blocks.COPPER_CHEST.weathering().oxidized(),
@@ -117,11 +117,11 @@ public class BlockGroups {
             Blocks.COPPER_CHEST.waxed().exposed(),
             Blocks.COPPER_CHEST.waxed().weathered(),
             Blocks.COPPER_CHEST.waxed().oxidized()
-        *///? }
+        //? }
     );
     public static final List<Block> ALL_BANNERS = List.of(
         //? if <=26.1.2 {
-            Blocks.WHITE_BANNER,
+            /*Blocks.WHITE_BANNER,
             Blocks.ORANGE_BANNER,
             Blocks.MAGENTA_BANNER,
             Blocks.LIGHT_BLUE_BANNER,
@@ -153,8 +153,8 @@ public class BlockGroups {
             Blocks.GREEN_WALL_BANNER,
             Blocks.RED_WALL_BANNER,
             Blocks.BLACK_WALL_BANNER
-        //? } else {
-            /*Blocks.BANNER.white(),
+        *///? } else {
+            Blocks.BANNER.white(),
             Blocks.BANNER.orange(),
             Blocks.BANNER.magenta(),
             Blocks.BANNER.lightBlue(),
@@ -186,11 +186,11 @@ public class BlockGroups {
             Blocks.WALL_BANNER.green(),
             Blocks.WALL_BANNER.red(),
             Blocks.WALL_BANNER.black()
-        *///? }
+        //? }
     );
     public static final List<Block> ALL_BEDS = List.of(
         //? if <=26.1.2 {
-            Blocks.WHITE_BED,
+            /*Blocks.WHITE_BED,
             Blocks.ORANGE_BED,
             Blocks.MAGENTA_BED,
             Blocks.LIGHT_BLUE_BED,
@@ -206,8 +206,8 @@ public class BlockGroups {
             Blocks.GREEN_BED,
             Blocks.RED_BED,
             Blocks.BLACK_BED
-        //? } else {
-            /*Blocks.BED.white(),
+        *///? } else {
+            Blocks.BED.white(),
             Blocks.BED.orange(),
             Blocks.BED.magenta(),
             Blocks.BED.lightBlue(),
@@ -223,11 +223,11 @@ public class BlockGroups {
             Blocks.BED.green(),
             Blocks.BED.red(),
             Blocks.BED.black()
-        *///? }
+        //? }
     );
     public static final List<Block> ALL_COPPER_GOLEM_STATUES = List.of(
         //? if <=26.1.2 {
-            Blocks.COPPER_GOLEM_STATUE,
+            /*Blocks.COPPER_GOLEM_STATUE,
             Blocks.EXPOSED_COPPER_GOLEM_STATUE,
             Blocks.WEATHERED_COPPER_GOLEM_STATUE,
             Blocks.OXIDIZED_COPPER_GOLEM_STATUE,
@@ -235,8 +235,8 @@ public class BlockGroups {
             Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE,
             Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE,
             Blocks.WAXED_OXIDIZED_COPPER_GOLEM_STATUE
-        //? } else {
-            /*Blocks.COPPER_GOLEM_STATUE.weathering().unaffected(),
+        *///? } else {
+            Blocks.COPPER_GOLEM_STATUE.weathering().unaffected(),
             Blocks.COPPER_GOLEM_STATUE.weathering().exposed(),
             Blocks.COPPER_GOLEM_STATUE.weathering().weathered(),
             Blocks.COPPER_GOLEM_STATUE.weathering().oxidized(),
@@ -244,6 +244,6 @@ public class BlockGroups {
             Blocks.COPPER_GOLEM_STATUE.waxed().exposed(),
             Blocks.COPPER_GOLEM_STATUE.waxed().weathered(),
             Blocks.COPPER_GOLEM_STATUE.waxed().oxidized()
-        *///? }
+        //? }
     );
 }

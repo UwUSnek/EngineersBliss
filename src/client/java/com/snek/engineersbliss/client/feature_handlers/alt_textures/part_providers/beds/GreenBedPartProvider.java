@@ -11,10 +11,10 @@ public class GreenBedPartProvider extends __base_BedPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.RED_GREEN;
-        //? } else {
-            /*return Blocks.BED.green();
-        *///? }
+            /*return Blocks.GREEN_BED;
+        *///? } else {
+            return Blocks.BED.green();
+        //? }
     }
 
     protected String getColorName() {

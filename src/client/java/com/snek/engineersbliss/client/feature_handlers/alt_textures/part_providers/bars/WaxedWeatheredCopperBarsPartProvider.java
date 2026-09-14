@@ -11,10 +11,10 @@ public class WaxedWeatheredCopperBarsPartProvider extends __base_BarsPartProvide
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.COPPER_BARS.waxedWeathered();
-        //? } else {
-            /*return Blocks.COPPER_BARS.waxed().weathered();
-        *///? }
+            /*return Blocks.COPPER_BARS.waxedWeathered();
+        *///? } else {
+            return Blocks.COPPER_BARS.waxed().weathered();
+        //? }
     }
 
     protected String getMaterialName() {

@@ -11,10 +11,10 @@ public class BlackBannerPartProvider extends __base_StandingBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.BLACK_BANNER;
-        //? } else {
-            /*return Blocks.BANNER.black();
-        *///? }
+            /*return Blocks.BLACK_BANNER;
+        *///? } else {
+            return Blocks.BANNER.black();
+        //? }
     }
 
     @Override

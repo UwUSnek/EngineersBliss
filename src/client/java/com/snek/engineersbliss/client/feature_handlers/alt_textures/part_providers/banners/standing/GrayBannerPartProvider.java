@@ -11,10 +11,10 @@ public class GrayBannerPartProvider extends __base_StandingBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.GRAY_BANNER;
-        //? } else {
-            /*return Blocks.BANNER.gray();
-        *///? }
+            /*return Blocks.GRAY_BANNER;
+        *///? } else {
+            return Blocks.BANNER.gray();
+        //? }
     }
 
     @Override

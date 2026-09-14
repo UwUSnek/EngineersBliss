@@ -15,9 +15,9 @@ public class WeatheredCopperGolemStatuePartProvider extends __base_CopperGolemSt
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.WEATHERED_COPPER_GOLEM_STATUE;
-        //? } else {
-            /*return Blocks.COPPER_GOLEM_STATUE.weathering().weathered();
-        *///? }
+            /*return Blocks.WEATHERED_COPPER_GOLEM_STATUE;
+        *///? } else {
+            return Blocks.COPPER_GOLEM_STATUE.weathering().weathered();
+        //? }
     }
 }

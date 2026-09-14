@@ -11,10 +11,10 @@ public class CyanBedPartProvider extends __base_BedPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.RED_CYAN;
-        //? } else {
-            /*return Blocks.BED.cyan();
-        *///? }
+            /*return Blocks.CYAN_BED;
+        *///? } else {
+            return Blocks.BED.cyan();
+        //? }
     }
 
     protected String getColorName() {

@@ -11,10 +11,10 @@ public class OxidizedCopperChestPartProvider extends __base_DoublableChestPartPr
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.OXIDIZED_COPPER_CHEST;
-        //? } else {
-            /*return Blocks.COPPER_CHEST.weathering().oxidized();
-        *///? }
+            /*return Blocks.OXIDIZED_COPPER_CHEST;
+        *///? } else {
+            return Blocks.COPPER_CHEST.weathering().oxidized();
+        //? }
     }
 
     @Override

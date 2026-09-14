@@ -19,13 +19,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 
 //? if <=26.1.2 {
-    import net.minecraft.client.Camera;
-    import com.mojang.blaze3d.vertex.VertexConsumer;U
+    /*import net.minecraft.client.Camera;
+    import com.mojang.blaze3d.vertex.VertexConsumer;
     import net.minecraft.client.renderer.MultiBufferSource;
-//? } else {
-    /*import net.minecraft.client.renderer.SubmitNodeCollector;
+*///? } else {
+    import net.minecraft.client.renderer.SubmitNodeCollector;
     import net.minecraft.client.renderer.rendertype.RenderType;
-*///? }
+//? }
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.BlockOutlineRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
@@ -52,10 +52,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public abstract class CustomOutlinesMixin {
     private static final List<BlockPos> customOutlineBlocks = new ArrayList<>();
     //? if <=26.1.2 {
-        @Shadow public abstract void renderHitOutline(final PoseStack poseStack, final VertexConsumer builder, final double camX, final double camY, final double camZ, final BlockOutlineRenderState state, final int color, final float width);
-    //? } else {
-        /*@Shadow public abstract void submitHitOutline(final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final RenderType renderType, final BlockOutlineRenderState state, final int color, final float width, final boolean afterTerrain);
-    *///? }
+        /*@Shadow public abstract void renderHitOutline(final PoseStack poseStack, final VertexConsumer builder, final double camX, final double camY, final double camZ, final BlockOutlineRenderState state, final int color, final float width);
+    *///? } else {
+        @Shadow public abstract void submitHitOutline(final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final RenderType renderType, final BlockOutlineRenderState state, final int color, final float width, final boolean afterTerrain);
+    //? }
 
 
 
@@ -68,7 +68,7 @@ public abstract class CustomOutlinesMixin {
     //? if <=26.1.2 {
 
 
-        @SuppressWarnings("unused")
+        /*@SuppressWarnings("unused")
         @Inject(method = "extractBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
         private void eb$extractBlockOutline(final Camera camera, final LevelRenderState levelRenderState, final CallbackInfo ci) {
 
@@ -171,12 +171,12 @@ public abstract class CustomOutlinesMixin {
 
 
 
-    //? } else {
+    *///? } else {
 
 
 
 
-        /*@SuppressWarnings("unused")
+        @SuppressWarnings("unused")
         @Inject(method = "submitBlockOutline", at = @At("HEAD"), cancellable = true, require = 1)
         private void eb$submitBlockOutline(final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final LevelRenderState levelRenderState, final CallbackInfo ci) {
 
@@ -258,5 +258,5 @@ public abstract class CustomOutlinesMixin {
 
             //! in 26.2+ SubmitNodeCollector queues stuff on its own. No bufferSource.endLastBatch() needed
         }
-    *///? }
+    //? }
 }

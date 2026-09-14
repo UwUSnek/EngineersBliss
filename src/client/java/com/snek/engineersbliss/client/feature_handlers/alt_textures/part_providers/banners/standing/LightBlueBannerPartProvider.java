@@ -11,10 +11,10 @@ public class LightBlueBannerPartProvider extends __base_StandingBannerPartProvid
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.LIGHT_BLUE_BANNER;
-        //? } else {
-            /*return Blocks.BANNER.lightBlue();
-        *///? }
+            /*return Blocks.LIGHT_BLUE_BANNER;
+        *///? } else {
+            return Blocks.BANNER.lightBlue();
+        //? }
     }
 
     @Override

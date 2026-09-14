@@ -11,10 +11,10 @@ public class WeatheredCopperChainPartProvider extends __base_ChainPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            return Blocks.COPPER_CHAIN.weathered();
-        //? } else {
-            /*return Blocks.COPPER_CHAIN.weathering().weathered();
-        *///? }
+            /*return Blocks.COPPER_CHAIN.weathered();
+        *///? } else {
+            return Blocks.COPPER_CHAIN.weathering().weathered();
+        //? }
     }
 
     @Override
