@@ -77,16 +77,7 @@ public abstract class __base_SpaceWarpingRenderer<E extends BlockEntity, S exten
 
     public abstract float calcPlaneSize(BlockEntity e);
 
-//BUG this doesn't actually fix anything lol
-//BUG fix invisible blocks
-    //! 26.2+ checks for shouldRenderOffScreen() and skips rendering entirely if it returns false.
-    //? if <=26.1.2 {
-    //? } else {
-        @Override
-        public boolean shouldRenderOffScreen() {
-            return true;
-        }
-    //? }
+
 
 
     private final RenderSetup renderSetup;
