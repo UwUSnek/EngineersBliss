@@ -11,10 +11,10 @@ public class WhiteWallBannerPartProvider extends __base_WallBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.WHITE_WALL_BANNER;
+            return Blocks.WHITE_WALL_BANNER;
         //? } else {
-            return Blocks.WALL_BANNER.white();
-        //? }
+            /*return Blocks.WALL_BANNER.white();
+        *///? }
     }
 
     @Override

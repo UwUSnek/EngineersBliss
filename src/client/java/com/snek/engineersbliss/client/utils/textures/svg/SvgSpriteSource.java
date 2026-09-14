@@ -72,7 +72,7 @@ public record SvgSpriteSource(String sourcePath) implements SpriteSource {
                 final Identifier scaledSpriteId = SvgTextureTracker.getOptimalSprite(spriteId, _scaleIndex);
                 output.add(scaledSpriteId, resourceLoader -> {
                     final NativeImage scaledImage = SvgTextureTracker.acquire(spriteId, _scaleIndex);
-                    return new SpriteContents(scaledSpriteId, new FrameSize(scaledImage.getWidth(), scaledImage.getHeight()), scaledImage);
+                   return new SpriteContents(scaledSpriteId, new FrameSize(scaledImage.getWidth(), scaledImage.getHeight()), scaledImage);
                 });
             }
         }

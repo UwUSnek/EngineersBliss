@@ -149,10 +149,10 @@ public class Fonts {
             //! This returns custom glyphs but default effect.
             final @NotNull Font.Provider provider = new Font.Provider() {
                 @Override public GlyphSource glyphs(final FontDescription font) {
-                    return defaultProvider.glyphs(fontDescription);
+                   return defaultProvider.glyphs(fontDescription);
                 }
                 @Override public EffectGlyph effect() {
-                    return defaultProvider.effect();
+                   return defaultProvider.effect();
                 }
             };
 

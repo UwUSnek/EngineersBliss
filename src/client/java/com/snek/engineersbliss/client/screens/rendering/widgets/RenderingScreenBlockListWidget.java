@@ -64,7 +64,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
                     // Filter tags
                     if(andGroup.startsWith("#")) {
                         final String tagQuery = andGroup.substring(1).toLowerCase();
-                        return BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().noneMatch(tag -> tag.location().toString().toLowerCase().contains(tagQuery));
+                       return BuiltInRegistries.BLOCK.wrapAsHolder(block).tags().noneMatch(tag -> tag.location().toString().toLowerCase().contains(tagQuery));
                     }
 
                     // Filter loaded blocks and recalculate list if needed
@@ -72,7 +72,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
                         if(loadedBlocks.isEmpty()) {
                             loadedBlocks.addAll(MinecraftUtils.calcLoadedBlockList());
                         }
-                        return !loadedBlocks.contains(block);
+                       return !loadedBlocks.contains(block);
                     }
 
                     // Filter name and ID
@@ -80,7 +80,7 @@ public class RenderingScreenBlockListWidget extends UiWidgetList {
                         final String nameIdQuery = andGroup.toLowerCase();
                         final String name = block.getName().getString().toLowerCase();
                         final String id = BuiltInRegistries.BLOCK.getKey(block).toString().toLowerCase();
-                        return !name.contains(nameIdQuery) && !id.contains(nameIdQuery);
+                       return !name.contains(nameIdQuery) && !id.contains(nameIdQuery);
                     }
                 });
             }

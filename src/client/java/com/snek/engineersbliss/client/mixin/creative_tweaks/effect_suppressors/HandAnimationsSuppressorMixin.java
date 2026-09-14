@@ -46,10 +46,10 @@ public class HandAnimationsSuppressorMixin {
     @SuppressWarnings("unused")
     @ModifyExpressionValue(
         //? if <=26.1.2 {
-            // method = "renderHandsWithItems",
+            method = "renderHandsWithItems",
         //? } else {
-            method = "submitHandsWithItems",
-        //? }
+            /*method = "submitHandsWithItems",
+        *///? }
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/item/ItemModelResolver;swapAnimationScale(Lnet/minecraft/world/item/ItemStack;)F",
@@ -70,10 +70,10 @@ public class HandAnimationsSuppressorMixin {
     @SuppressWarnings("unused")
     @ModifyExpressionValue(
         //? if <=26.1.2 {
-            // method = "renderHandsWithItems",
+            method = "renderHandsWithItems",
         //? } else {
-            method = "submitHandsWithItems",
-        //? }
+            /*method = "submitHandsWithItems",
+        *///? }
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/item/ItemModelResolver;swapAnimationScale(Lnet/minecraft/world/item/ItemStack;)F",

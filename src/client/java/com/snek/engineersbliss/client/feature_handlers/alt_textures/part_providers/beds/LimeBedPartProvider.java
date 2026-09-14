@@ -11,10 +11,10 @@ public class LimeBedPartProvider extends __base_BedPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.RED_LIME;
+            return Blocks.RED_LIME;
         //? } else {
-            return Blocks.BED.lime();
-        //? }
+            /*return Blocks.BED.lime();
+        *///? }
     }
 
     protected String getColorName() {

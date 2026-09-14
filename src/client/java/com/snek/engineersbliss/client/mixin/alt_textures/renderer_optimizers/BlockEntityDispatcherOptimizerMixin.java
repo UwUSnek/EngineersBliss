@@ -37,8 +37,8 @@ public abstract class BlockEntityDispatcherOptimizerMixin {
         final ModelFeatureRenderer.CrumblingOverlay breakProgress,
         //? if <=26.1.2 {
         //? } else {
-            final boolean isGloballyRendered,
-        //? }
+            /*final boolean isGloballyRendered,
+        *///? }
         final CallbackInfoReturnable<BlockEntityRenderState> cir
     ) {
         switch(blockEntity) {

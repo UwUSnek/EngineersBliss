@@ -11,10 +11,10 @@ public class CyanBannerPartProvider extends __base_StandingBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.CYAN_BANNER;
+            return Blocks.CYAN_BANNER;
         //? } else {
-            return Blocks.BANNER.cyan();
-        //? }
+            /*return Blocks.BANNER.cyan();
+        *///? }
     }
 
     @Override

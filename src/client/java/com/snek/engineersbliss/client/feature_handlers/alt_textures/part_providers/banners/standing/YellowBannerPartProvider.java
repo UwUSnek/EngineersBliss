@@ -11,10 +11,10 @@ public class YellowBannerPartProvider extends __base_StandingBannerPartProvider 
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.YELLOW_BANNER;
+            return Blocks.YELLOW_BANNER;
         //? } else {
-            return Blocks.BANNER.yellow();
-        //? }
+            /*return Blocks.BANNER.yellow();
+        *///? }
     }
 
     @Override

@@ -11,10 +11,10 @@ public class ExposedCopperBarsPartProvider extends __base_BarsPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.COPPER_BARS.exposed();
+            return Blocks.COPPER_BARS.exposed();
         //? } else {
-            return Blocks.COPPER_BARS.weathering().exposed();
-        //? }
+            /*return Blocks.COPPER_BARS.weathering().exposed();
+        *///? }
     }
 
     protected String getMaterialName() {

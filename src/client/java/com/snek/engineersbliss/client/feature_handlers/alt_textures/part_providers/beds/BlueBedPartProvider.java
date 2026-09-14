@@ -11,10 +11,10 @@ public class BlueBedPartProvider extends __base_BedPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.RED_BLUE;
+            return Blocks.RED_BLUE;
         //? } else {
-            return Blocks.BED.blue();
-        //? }
+            /*return Blocks.BED.blue();
+        *///? }
     }
 
     protected String getColorName() {

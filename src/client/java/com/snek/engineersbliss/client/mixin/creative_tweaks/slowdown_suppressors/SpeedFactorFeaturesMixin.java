@@ -35,12 +35,12 @@ public class SpeedFactorFeaturesMixin {
     private float eb$getBlockSpeedFactor(final Block block) {
         if(block == Blocks.HONEY_BLOCK) {
             if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_HONEY_SLOWDOWN)) {
-                return DEFAULT_SPEED_FACTOR;
+               return DEFAULT_SPEED_FACTOR;
             }
         }
         if(block == Blocks.SOUL_SAND) {
             if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_SOULSAND_SLOWDOWN)) {
-                return DEFAULT_SPEED_FACTOR;
+               return DEFAULT_SPEED_FACTOR;
             }
         }
         //! Slime Block uses custom Friction instead of SpeedFactor

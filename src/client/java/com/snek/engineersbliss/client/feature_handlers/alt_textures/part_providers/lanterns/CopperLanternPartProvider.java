@@ -11,10 +11,10 @@ public class CopperLanternPartProvider extends __base_LanternPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.COPPER_LANTERN.unaffected();
+            return Blocks.COPPER_LANTERN.unaffected();
         //? } else {
-            return Blocks.COPPER_LANTERN.weathering().unaffected();
-        //? }
+            /*return Blocks.COPPER_LANTERN.weathering().unaffected();
+        *///? }
     }
 
     @Override

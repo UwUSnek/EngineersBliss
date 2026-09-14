@@ -361,7 +361,7 @@ public final class SvgRasterizer {
             final String vb = root.getAttribute("viewBox");
             if(!vb.isEmpty()) {
                 final String[] p = vb.trim().split("\\s+");
-                return new ViewBoxInfo(Double.parseDouble(p[0]), Double.parseDouble(p[1]),
+               return new ViewBoxInfo(Double.parseDouble(p[0]), Double.parseDouble(p[1]),
                     Double.parseDouble(p[2]), Double.parseDouble(p[3]));
             }
             return new ViewBoxInfo(0, 0, parseLength(root.getAttribute("width")), parseLength(root.getAttribute("height")));

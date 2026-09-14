@@ -11,10 +11,10 @@ public class ExposedCopperChestPartProvider extends __base_DoublableChestPartPro
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.EXPOSED_COPPER_CHEST;
+            return Blocks.EXPOSED_COPPER_CHEST;
         //? } else {
-            return Blocks.COPPER_CHEST.weathering().exposed();
-        //? }
+            /*return Blocks.COPPER_CHEST.weathering().exposed();
+        *///? }
     }
 
     @Override

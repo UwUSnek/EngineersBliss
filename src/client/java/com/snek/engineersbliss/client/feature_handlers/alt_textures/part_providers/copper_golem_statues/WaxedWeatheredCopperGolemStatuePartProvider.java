@@ -15,9 +15,9 @@ public class WaxedWeatheredCopperGolemStatuePartProvider extends __base_CopperGo
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE;
+            return Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE;
         //? } else {
-            return Blocks.COPPER_GOLEM_STATUE.waxed().weathered();
-        //? }
+            /*return Blocks.COPPER_GOLEM_STATUE.waxed().weathered();
+        *///? }
     }
 }

@@ -12,10 +12,10 @@ import com.snek.engineersbliss.feature_handlers.creative_tweaks.CreativeTweaksSe
 
 import net.minecraft.client.Minecraft;
 //? if <=26.1.2 {
-    // import net.minecraft.client.renderer.MultiBufferSource;
+    import net.minecraft.client.renderer.MultiBufferSource;
 //? } else {
-    import net.minecraft.client.renderer.SubmitNodeCollector;
-//? }
+    /*import net.minecraft.client.renderer.SubmitNodeCollector;
+*///? }
 import net.minecraft.client.renderer.ScreenEffectRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,20 +45,20 @@ public class ScreenOverlayHiderMixin {
 
 
     //? if <=26.1.2 {
-        // @SuppressWarnings("unused")
-        // @Inject(method = "renderWater", at = @At("HEAD"), cancellable = true, require = 1)
-        // private static void eb$renderWater(final Minecraft minecraft, final PoseStack poseStack, final MultiBufferSource bufferSource, final CallbackInfo ci) {
-        //     if(CreativeTweaksClientHandler.creativePlayerHasFeature(minecraft.player, CreativeTweaksServerFeatureSet.DISABLE_WATER_OVERLAY)) {
-        //         ci.cancel();
-        //     }
-        // }
-    //? } else {
         @SuppressWarnings("unused")
+        @Inject(method = "renderWater", at = @At("HEAD"), cancellable = true, require = 1)
+        private static void eb$renderWater(final Minecraft minecraft, final PoseStack poseStack, final MultiBufferSource bufferSource, final CallbackInfo ci) {
+            if(CreativeTweaksClientHandler.creativePlayerHasFeature(minecraft.player, CreativeTweaksServerFeatureSet.DISABLE_WATER_OVERLAY)) {
+                ci.cancel();
+            }
+        }
+    //? } else {
+        /*@SuppressWarnings("unused")
         @Inject(method = "submitWater", at = @At("HEAD"), cancellable = true, require = 1)
         private static void eb$submitWater(final Minecraft minecraft, final PoseStack poseStack, final SubmitNodeCollector submitNodeCollector, final CallbackInfo ci) {
             if(CreativeTweaksClientHandler.creativePlayerHasFeature(minecraft.player, CreativeTweaksServerFeatureSet.DISABLE_WATER_OVERLAY)) {
                 ci.cancel();
             }
         }
-    //? }
+    *///? }
 }

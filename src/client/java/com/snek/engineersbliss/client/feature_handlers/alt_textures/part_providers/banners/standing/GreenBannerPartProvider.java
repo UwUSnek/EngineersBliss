@@ -11,10 +11,10 @@ public class GreenBannerPartProvider extends __base_StandingBannerPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.GREEN_BANNER;
+            return Blocks.GREEN_BANNER;
         //? } else {
-            return Blocks.BANNER.green();
-        //? }
+            /*return Blocks.BANNER.green();
+        *///? }
     }
 
     @Override

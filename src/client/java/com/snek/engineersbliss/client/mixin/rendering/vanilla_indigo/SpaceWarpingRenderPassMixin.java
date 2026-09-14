@@ -32,12 +32,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
 //? if <=26.1.2 {
-    // import org.joml.Matrix4fc;
-    // import net.minecraft.client.renderer.MultiBufferSource;
+    import org.joml.Matrix4fc;
+    import net.minecraft.client.renderer.MultiBufferSource;
 //? } else {
-    import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+    /*import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
     import net.minecraft.client.renderer.SubmitNodeCollector;
-//? }
+*///? }
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -64,7 +64,7 @@ public abstract class SpaceWarpingRenderPassMixin {
     //! This injects the submitFeatures method to yoink the states and reuse them later
     //? if <= 26.1.2 {
     //? } else {
-        private List<BlockEntityRenderState> eb$capturedBlockEntityStates = List.of();
+        /*private List<BlockEntityRenderState> eb$capturedBlockEntityStates = List.of();
 
         @Inject(method = "submitFeatures", at = @At("HEAD"))
         private void eb$captureBlockEntityStates(
@@ -75,7 +75,7 @@ public abstract class SpaceWarpingRenderPassMixin {
         ) {
             this.eb$capturedBlockEntityStates = List.copyOf(levelRenderState.blockEntityRenderStates);
         }
-    //? }
+    *///? }
 
 
 
@@ -83,17 +83,17 @@ public abstract class SpaceWarpingRenderPassMixin {
     //! 26.2+ straight up has no debug pass in the LevelRenderer.
     //! addAlwaysOnTopPass is unrelated, but it works just fine for this mixin.
     //? if <= 26.1.2 {
-        // @SuppressWarnings({ "unused", "unchecked" })
-        // @Inject(method = "addLateDebugPass", at = @At("HEAD"))
-        // private void eb$addItemSinkPass(
-        //     final FrameGraphBuilder frame,
-        //     final CameraRenderState camera,
-        //     final GpuBufferSlice fog,
-        //     final Matrix4fc modelViewMatrix,
-        //     final CallbackInfo ci
-        // ) {
-    //? } else {
         @SuppressWarnings({ "unused", "unchecked" })
+        @Inject(method = "addLateDebugPass", at = @At("HEAD"))
+        private void eb$addItemSinkPass(
+            final FrameGraphBuilder frame,
+            final CameraRenderState camera,
+            final GpuBufferSlice fog,
+            final Matrix4fc modelViewMatrix,
+            final CallbackInfo ci
+        ) {
+    //? } else {
+        /*@SuppressWarnings({ "unused", "unchecked" })
         @Inject(method = "addAlwaysOnTopPass", at = @At("HEAD"))
         private void eb$addItemSinkPass(
             final FrameGraphBuilder frame,
@@ -102,7 +102,7 @@ public abstract class SpaceWarpingRenderPassMixin {
             final CallbackInfo ci
         ) {
             final @NotNull CameraRenderState camera = this.levelRenderState.cameraRenderState;
-    //? }
+    *///? }
 
         // Pass if custom shaded blocks are OFF
         if(!ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS)) {
@@ -133,10 +133,10 @@ public abstract class SpaceWarpingRenderPassMixin {
             // Find render states of the blocks and their renderers
             List<Pair<BlockEntityRenderState, __base_SpaceWarpingRenderer>> renderStates = new ArrayList<>();
             //? if <=26.1.2 {
-                // for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
+                for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
             //? } else {
-                for(final @NotNull BlockEntityRenderState state : this.eb$capturedBlockEntityStates) {
-            //? }
+                /*for(final @NotNull BlockEntityRenderState state : this.eb$capturedBlockEntityStates) {
+            *///? }
                 final BlockEntityRenderDispatcher dispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
                 final @NotNull var genericRendererInstance = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers().get(state.blockEntityType);
                 if(genericRendererInstance instanceof final @NotNull __base_SpaceWarpingRenderer rendererInstance) {
@@ -162,9 +162,9 @@ public abstract class SpaceWarpingRenderPassMixin {
             if(!renderStates.isEmpty()) {
                 final @NotNull PoseStack poseStack = new PoseStack();
                 //? if <=26.1.2 {
-                    // final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+                    final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
                 //? } else {
-                    //! 26.2 doesn't require need endBatch()
+                    /*! 26.2 doesn't require need endBatch()*/
                 //? }
 
                 for(final @NotNull var renderState : renderStates) {
@@ -178,7 +178,7 @@ public abstract class SpaceWarpingRenderPassMixin {
                         target.getDepthTextureView()
                     );
                     //? if <=26.1.2 {
-                        // bufferSource.endBatch();
+                        bufferSource.endBatch();
                     //? } else {
                         //! 26.2 doesn't require need endBatch()
                     //? }

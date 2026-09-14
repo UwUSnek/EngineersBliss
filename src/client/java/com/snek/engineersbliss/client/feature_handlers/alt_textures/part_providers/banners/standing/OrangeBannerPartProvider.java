@@ -11,10 +11,10 @@ public class OrangeBannerPartProvider extends __base_StandingBannerPartProvider 
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.ORANGE_BANNER;
+            return Blocks.ORANGE_BANNER;
         //? } else {
-            return Blocks.BANNER.orange();
-        //? }
+            /*return Blocks.BANNER.orange();
+        *///? }
     }
 
     @Override

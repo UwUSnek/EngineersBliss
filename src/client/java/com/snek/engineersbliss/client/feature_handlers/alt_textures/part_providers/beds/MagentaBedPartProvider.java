@@ -11,10 +11,10 @@ public class MagentaBedPartProvider extends __base_BedPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.RED_MAGENTA;
+            return Blocks.RED_MAGENTA;
         //? } else {
-            return Blocks.BED.magenta();
-        //? }
+            /*return Blocks.BED.magenta();
+        *///? }
     }
 
     protected String getColorName() {

@@ -46,10 +46,10 @@ public class InteractionFilterMixin {
 
         // Otherwise run custom ray casting logic
         //? if <=26.1.2 {
-            // final Vec3 start = minecraft.gameRenderer.getMainCamera().position();
+            final Vec3 start = minecraft.gameRenderer.getMainCamera().position();
         //? } else {
-            final Vec3 start = minecraft.gameRenderer.mainCamera().position();
-        //? }
+            /*final Vec3 start = minecraft.gameRenderer.mainCamera().position();
+        *///? }
         final Vec3 look = Vec3.directionFromRotation(player.getXRot(), player.getYRot());
         final double reach = player.blockInteractionRange();
         final Vec3 end = start.add(look.scale(reach));
@@ -60,7 +60,7 @@ public class InteractionFilterMixin {
                 if(state.isAir()) return null;
                 if(!RenderingFilterHandler.shouldStateRender(state)) return null;
                 final BlockHitResult hit = state.getShape(minecraft.level, pos, CollisionContext.of(player)).clip(start, end, pos);
-                return hit != null ? hit : BlockHitResult.miss(end, Direction.UP, pos);
+               return hit != null ? hit : BlockHitResult.miss(end, Direction.UP, pos);
             },
             context -> BlockHitResult.miss(end, Direction.UP, BlockPos.containing(end))
         );

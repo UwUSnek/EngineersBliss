@@ -11,10 +11,10 @@ public class PurpleWallBannerPartProvider extends __base_WallBannerPartProvider 
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.PURPLE_WALL_BANNER;
+            return Blocks.PURPLE_WALL_BANNER;
         //? } else {
-            return Blocks.WALL_BANNER.purple();
-        //? }
+            /*return Blocks.WALL_BANNER.purple();
+        *///? }
     }
 
     @Override

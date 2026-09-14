@@ -84,10 +84,10 @@ public class ArmorStandWithArmsItem extends CustomItem {
                 }
 
                 itemStack.shrink(1);
-                return Pair.from(InteractionResult.SUCCESS, entity);
+               return Pair.from(InteractionResult.SUCCESS, entity);
             }
             else {
-                return Pair.from(InteractionResult.FAIL, null);
+               return Pair.from(InteractionResult.FAIL, null);
             }
         }
     }

@@ -11,10 +11,10 @@ public class OxidizedCopperLanternPartProvider extends __base_LanternPartProvide
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.COPPER_LANTERN.oxidized();
+            return Blocks.COPPER_LANTERN.oxidized();
         //? } else {
-            return Blocks.COPPER_LANTERN.weathering().oxidized();
-        //? }
+            /*return Blocks.COPPER_LANTERN.weathering().oxidized();
+        *///? }
     }
 
     @Override

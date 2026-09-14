@@ -11,10 +11,10 @@ public class ExposedCopperChainPartProvider extends __base_ChainPartProvider {
     @Override
     public Block getBlock() {
         //? if <=26.1.2 {
-            // return Blocks.COPPER_CHAIN.exposed();
+            return Blocks.COPPER_CHAIN.exposed();
         //? } else {
-            return Blocks.COPPER_CHAIN.weathering().exposed();
-        //? }
+            /*return Blocks.COPPER_CHAIN.weathering().exposed();
+        *///? }
     }
 
     @Override

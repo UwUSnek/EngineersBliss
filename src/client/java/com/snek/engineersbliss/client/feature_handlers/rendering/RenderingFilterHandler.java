@@ -136,7 +136,7 @@ public class RenderingFilterHandler {
         handle[0] = ClientScheduler.loop(1, 1, () -> {
             if(index[0] >= chunks.size()) {
                 handle[0].cancel();
-                return;
+               return;
             }
 
             final LevelChunk chunk = chunks.get(index[0]++);

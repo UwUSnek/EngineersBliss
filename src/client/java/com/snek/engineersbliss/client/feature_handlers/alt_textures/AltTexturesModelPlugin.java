@@ -374,12 +374,12 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
 
                 @Override
                 public BlockStateModel bake(final BlockState blockState, final ModelBaker baker) {
-                    return model.bake(blockState, baker);
+                   return model.bake(blockState, baker);
                 }
 
                 @Override
                 public Object visualEqualityGroup(final BlockState blockState) {
-                    return model.visualEqualityGroup(blockState);
+                   return model.visualEqualityGroup(blockState);
                 }
             };
         });
@@ -493,7 +493,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
                                 }
                                 r.add(collected);
                             }
-                            return r;
+                           return r;
                         });
 
 
@@ -518,13 +518,13 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
 
                 @Override
                 public Material.Baked particleMaterial() {
-                    return vanilla.particleMaterial();
+                   return vanilla.particleMaterial();
                 }
 
 
                 @Override
                 public int materialFlags() {
-                    return vanilla.materialFlags();
+                   return vanilla.materialFlags();
                 }
             };
         });

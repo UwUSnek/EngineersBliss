@@ -9,11 +9,11 @@ import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.RenderPipelinesUtils;
 
 //? if <=26.1.2 {
-    // import com.mojang.blaze3d.vertex.VertexFormat;
+    import com.mojang.blaze3d.vertex.VertexFormat;
 //? } else {
-    import net.minecraft.client.renderer.BindGroupLayouts;
+    /*import net.minecraft.client.renderer.BindGroupLayouts;
     import com.mojang.blaze3d.PrimitiveTopology;
-//? }
+*///? }
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 
@@ -46,12 +46,12 @@ public final class UiRenderPipelines {
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_fill"))
             .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_fill"))
             .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_fill"))
-            //? if <=26.1.2
-                // .withVertexFormat(UiVertexFormats.AA_FILL, VertexFormat.Mode.QUADS)
+            //? if <=26.1.2 {
+                .withVertexFormat(UiVertexFormats.AA_FILL, VertexFormat.Mode.QUADS)
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_FILL)
+                /*.withVertexBinding(0, UiVertexFormats.AA_FILL)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-            //? }
+            *///? }
             .build()
         )
     ;
@@ -60,14 +60,14 @@ public final class UiRenderPipelines {
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_blit"))
             .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
             .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
-            //? if <=26.1.2
-                // .withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
-                // .withSampler("Sampler0")
+            //? if <=26.1.2 {
+                .withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
+                .withSampler("Sampler0")
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_BLIT)
+                /*.withVertexBinding(0, UiVertexFormats.AA_BLIT)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
                 .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
-            //? }
+            *///? }
             .build()
         )
     ;
@@ -76,12 +76,12 @@ public final class UiRenderPipelines {
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_multiline"))
             .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_multiline"))
             .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_multiline"))
-            //? if <=26.1.2
-                // .withVertexFormat(UiVertexFormats.AA_MULTILINE, VertexFormat.Mode.QUADS)
+            //? if <=26.1.2 {
+                .withVertexFormat(UiVertexFormats.AA_MULTILINE, VertexFormat.Mode.QUADS)
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_MULTILINE)
+                /*.withVertexBinding(0, UiVertexFormats.AA_MULTILINE)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-            //? }
+            *///? }
             .build()
         )
     ;
@@ -90,12 +90,12 @@ public final class UiRenderPipelines {
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/multiline_area"))
             .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/multiline_area"))
             .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/multiline_area"))
-            //? if <=26.1.2
-                // .withVertexFormat(UiVertexFormats.MULTILINE_AREA, VertexFormat.Mode.QUADS)
+            //? if <=26.1.2 {
+                .withVertexFormat(UiVertexFormats.MULTILINE_AREA, VertexFormat.Mode.QUADS)
             //? } else {
-                .withVertexBinding(0, UiVertexFormats.MULTILINE_AREA)
+                /*.withVertexBinding(0, UiVertexFormats.MULTILINE_AREA)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
-            //? }
+            *///? }
             .build()
         )
     ;

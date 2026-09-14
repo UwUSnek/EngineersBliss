@@ -9,10 +9,10 @@ import com.snek.engineersbliss.custom.items.base.CustomBlockItem;
 import com.snek.engineersbliss.mixin.accessors.BlockItemAccessor;
 
 //? if <=26.1.2 {
-    // import net.minecraft.advancements.CriteriaTriggers;
+    import net.minecraft.advancements.CriteriaTriggers;
 //? } else {
-    import net.minecraft.advancements.triggers.CriteriaTriggers;
-//? }
+    /*import net.minecraft.advancements.triggers.CriteriaTriggers;
+*///? }
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

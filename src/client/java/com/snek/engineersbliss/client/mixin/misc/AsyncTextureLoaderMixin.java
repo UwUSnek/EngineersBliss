@@ -105,7 +105,7 @@ public class AsyncTextureLoaderMixin {
                 final SvgMetadataSection svgMeta = eb$readSvgMeta(resourceManager, id.withPath(basePath + ".svg.mcmeta"));
                 if(svgMeta == null) {
                     EngineerSBliss.LOGGER.error("SVG texture {} is missing its .svg.mcmeta metadata.", svgId, new Throwable());
-                    return;
+                   return;
                 }
 
                 final byte[] bytes;
@@ -116,7 +116,7 @@ public class AsyncTextureLoaderMixin {
                 SvgTextureTracker.getOrRegister(id, bytes, svgMeta);
                 final NativeImage svgImage = SvgTextureTracker.acquire(id, SettingsFeatureHandler.getCurrentGuiScaleIndex());
                 cir.setReturnValue(new TextureContents(svgImage, null));
-                return;
+               return;
             }
         }
 

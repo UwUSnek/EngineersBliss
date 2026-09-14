@@ -6,17 +6,17 @@ import net.minecraft.client.renderer.blockentity.AbstractSignRenderer;
 
 //! 26.2+ uses static models by default.
 //? if <=26.1.2 {
-    // import org.jetbrains.annotations.Nullable;
-    // import org.spongepowered.asm.mixin.injection.Inject;
-    // import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-    // import com.mojang.blaze3d.vertex.PoseStack;
-    // import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-    // import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
-    // import org.spongepowered.asm.mixin.injection.At;
-    // import net.minecraft.client.model.Model;
-    // import net.minecraft.client.renderer.SubmitNodeCollector;
-    // import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-    // import net.minecraft.world.level.block.state.properties.WoodType;
+    import org.jetbrains.annotations.Nullable;
+    import org.spongepowered.asm.mixin.injection.Inject;
+    import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+    import com.mojang.blaze3d.vertex.PoseStack;
+    import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+    import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
+    import org.spongepowered.asm.mixin.injection.At;
+    import net.minecraft.client.model.Model;
+    import net.minecraft.client.renderer.SubmitNodeCollector;
+    import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+    import net.minecraft.world.level.block.state.properties.WoodType;
 //? } else {
 //? }
 
@@ -33,21 +33,21 @@ public abstract class AbstractSignRenderingSuppressorMixin {
 
     //! 26.2+ uses static models by default.
     //? if <=26.1.2 {
-        // @SuppressWarnings("unused")
-        // @Inject(method = "submitSign", at = @At("HEAD"), cancellable = true, require = 1)
-        // private void eb$submitSign(
-        //     final PoseStack poseStack,
-        //     final int lightCoords,
-        //     final WoodType type,
-        //     final Model.Simple signModel,
-        //     @Nullable final ModelFeatureRenderer.CrumblingOverlay breakProgress,
-        //     final SubmitNodeCollector submitNodeCollector,
-        //     final CallbackInfo ci
-        // ) {
-        //     if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS)) {
-        //         ci.cancel();
-        //     }
-        // }
+        @SuppressWarnings("unused")
+        @Inject(method = "submitSign", at = @At("HEAD"), cancellable = true, require = 1)
+        private void eb$submitSign(
+            final PoseStack poseStack,
+            final int lightCoords,
+            final WoodType type,
+            final Model.Simple signModel,
+            @Nullable final ModelFeatureRenderer.CrumblingOverlay breakProgress,
+            final SubmitNodeCollector submitNodeCollector,
+            final CallbackInfo ci
+        ) {
+            if(ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_SIGNS)) {
+                ci.cancel();
+            }
+        }
     //? } else {
     //? }
 

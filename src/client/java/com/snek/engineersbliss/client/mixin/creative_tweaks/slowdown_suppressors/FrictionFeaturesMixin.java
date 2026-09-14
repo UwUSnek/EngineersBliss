@@ -36,7 +36,7 @@ public class FrictionFeaturesMixin {
     private float eb$travelInAir(final Block block) {
         if(block == Blocks.SLIME_BLOCK) {
             if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_SLIME_SLOWDOWN)) {
-                return DEFAULT_FRICTION;
+               return DEFAULT_FRICTION;
             }
         }
         if(
@@ -46,7 +46,7 @@ public class FrictionFeaturesMixin {
             block == Blocks.FROSTED_ICE
         ) {
             if(CreativeTweaksClientHandler.creativePlayerHasFeature(this, CreativeTweaksServerFeatureSet.DISABLE_ICE_SLIDING)) {
-                return DEFAULT_FRICTION;
+               return DEFAULT_FRICTION;
             }
         }
         //! Honey Block uses custom SpeedFactor instead of Friction

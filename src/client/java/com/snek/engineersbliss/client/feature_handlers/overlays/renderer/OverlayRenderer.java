@@ -32,10 +32,10 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 //? if <=26.1.2 {
-    // import net.minecraft.client.renderer.MultiBufferSource;
+    import net.minecraft.client.renderer.MultiBufferSource;
 //? } else {
-    import net.minecraft.client.renderer.SubmitNodeCollector;
-//? }
+    /*import net.minecraft.client.renderer.SubmitNodeCollector;
+*///? }
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -165,15 +165,15 @@ public final class OverlayRenderer {
                                 final int overlay = OverlayTexture.NO_OVERLAY;
 
                                 //? if <=26.1.2 {
-                                    // final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
-                                    // final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-                                    // addOverlayVertices(vertexConsumer, matrices.last().pose(), display, p, state, pos, attachedData, width, overlay, color, light);
+                                    final MultiBufferSource.BufferSource bufferSource = context.bufferSource();
+                                    final VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
+                                    addOverlayVertices(vertexConsumer, matrices.last().pose(), display, p, state, pos, attachedData, width, overlay, color, light);
                                 //? } else {
-                                    final SubmitNodeCollector nodeCollector = context.submitNodeCollector();
+                                    /*final SubmitNodeCollector nodeCollector = context.submitNodeCollector();
                                     nodeCollector.submitCustomGeometry(matrices, renderType, (pose, vertexConsumer) ->
                                         addOverlayVertices(vertexConsumer, pose.pose(), display, p, state, pos, attachedData, width, overlay, color, light)
                                     );
-                                //? }
+                                *///? }
 
                                 // Reset pose
                                 matrices.popPose();
