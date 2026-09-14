@@ -6,12 +6,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 
-import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+//! Simple name change in 26.2
+//? if <=26.1.2 {
+    /*import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
+*///? } else {
+    import net.minecraft.client.gui.contextualbar.ContextualBar;
+//? }
 
 
 
 
-@Mixin(ContextualBarRenderer.class)
+//! Simple name change in 26.2
+//? if <=26.1.2 {
+    /*@Mixin(ContextualBarRenderer.class)
+*///? } else {
+    @Mixin(ContextualBar.class)
+//? }
 public interface VanillaContextualBarHeightChangerMixin {
 
     @ModifyReturnValue(method = "top", at = @At("RETURN"), require = 1)

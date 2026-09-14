@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4fc;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
@@ -31,7 +30,13 @@ import com.snek.engineersbliss.utils.data_types.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelTargetBundle;
-import net.minecraft.client.renderer.MultiBufferSource;
+//? if <=26.1.2 {
+    /*import org.joml.Matrix4fc;
+    import net.minecraft.client.renderer.MultiBufferSource;
+*///? } else {
+    import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
+    import net.minecraft.client.renderer.SubmitNodeCollector;
+//? }
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
@@ -54,15 +59,49 @@ public abstract class SpaceWarpingRenderPassMixin {
     @Shadow @Final private LevelRenderState levelRenderState;
 
 
-    @SuppressWarnings({ "unused", "unchecked" })
-    @Inject(method = "addLateDebugPass", at = @At("HEAD"))
-    private void engineersbliss$addItemSinkPass(
-        final FrameGraphBuilder frame,
-        final CameraRenderState camera,
-        final GpuBufferSlice fog,
-        final Matrix4fc modelViewMatrix,
-        final CallbackInfo ci
-    ) {
+    //! 26.2+ clears block entity render states when the main render pass ends.
+    //! This injects the submitFeatures method to yoink the states and reuse them later
+    //? if <= 26.1.2 {
+    //? } else {
+        private List<BlockEntityRenderState> eb$capturedBlockEntityStates = List.of();
+
+        @Inject(method = "submitFeatures", at = @At("HEAD"))
+        private void eb$captureBlockEntityStates(
+            final LevelRenderState levelRenderState,
+            final SubmitNodeCollector submitNodeCollector,
+            final boolean renderOutline,
+            final CallbackInfo ci
+        ) {
+            this.eb$capturedBlockEntityStates = List.copyOf(levelRenderState.blockEntityRenderStates);
+        }
+    //? }
+
+
+
+
+    //! 26.2+ straight up has no debug pass in the LevelRenderer.
+    //! addAlwaysOnTopPass is unrelated, but it works just fine for this mixin.
+    //? if <= 26.1.2 {
+        /*@SuppressWarnings({ "unused", "unchecked" })
+        @Inject(method = "addLateDebugPass", at = @At("HEAD"))
+        private void eb$addItemSinkPass(
+            final FrameGraphBuilder frame,
+            final CameraRenderState camera,
+            final GpuBufferSlice fog,
+            final Matrix4fc modelViewMatrix,
+            final CallbackInfo ci
+        ) {
+    *///? } else {
+        @SuppressWarnings({ "unused", "unchecked" })
+        @Inject(method = "addAlwaysOnTopPass", at = @At("HEAD"))
+        private void eb$addItemSinkPass(
+            final FrameGraphBuilder frame,
+            final FeatureRenderDispatcher.PreparedFrame featureFrame,
+            final GpuBufferSlice fog,
+            final CallbackInfo ci
+        ) {
+            final @NotNull CameraRenderState camera = this.levelRenderState.cameraRenderState;
+    //? }
 
         // Pass if custom shaded blocks are OFF
         if(!ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS)) {
@@ -72,7 +111,6 @@ public abstract class SpaceWarpingRenderPassMixin {
         final @NotNull FramePass pass = frame.addPass("item_sink");
         this.targets.main = pass.readsAndWrites(this.targets.main);
         final @NotNull ResourceHandle<RenderTarget> mainTarget = this.targets.main;
-
         pass.executes(() -> {
             final @NotNull  RenderTarget target = mainTarget.get();
             final int width = target.width;
@@ -93,7 +131,11 @@ public abstract class SpaceWarpingRenderPassMixin {
 
             // Find render states of the blocks and their renderers
             List<Pair<BlockEntityRenderState, __base_SpaceWarpingRenderer>> renderStates = new ArrayList<>();
-            for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
+            //? if <=26.1.2 {
+                /*for(final @NotNull BlockEntityRenderState state : this.levelRenderState.blockEntityRenderStates) {
+            *///? } else {
+                for(final @NotNull BlockEntityRenderState state : this.eb$capturedBlockEntityStates) {
+            //? }
                 final BlockEntityRenderDispatcher dispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
                 final @NotNull var genericRendererInstance = ((BlockEntityRenderDispatcherAccessor)dispatcher).getRenderers().get(state.blockEntityType);
                 if(genericRendererInstance instanceof final @NotNull __base_SpaceWarpingRenderer rendererInstance) {
@@ -115,11 +157,14 @@ public abstract class SpaceWarpingRenderPassMixin {
             }
 
 
-
             // Draw blocks starting from the farthest one, update sampled textures after each draw
             if(!renderStates.isEmpty()) {
                 final @NotNull PoseStack poseStack = new PoseStack();
-                final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+                //! 26.2 doesn't require need endBatch()
+                //? if <=26.1.2 {
+                    /*final @NotNull MultiBufferSource.BufferSource bufferSource = this.renderBuffers.bufferSource();
+                *///? } else {
+                //? }
 
                 for(final @NotNull var renderState : renderStates) {
                     encoder.copyTextureToTexture(target.getColorTexture(), SceneSnapshotHandler.getColor(), 0, 0, 0, 0, 0, width, height);
@@ -131,7 +176,11 @@ public abstract class SpaceWarpingRenderPassMixin {
                         target.getColorTextureView(),
                         target.getDepthTextureView()
                     );
-                    bufferSource.endBatch();
+                    //! 26.2 doesn't require need endBatch()
+                    //? if <=26.1.2 {
+                        /*bufferSource.endBatch();
+                    *///? } else {
+                    //? }
                 }
             }
         });

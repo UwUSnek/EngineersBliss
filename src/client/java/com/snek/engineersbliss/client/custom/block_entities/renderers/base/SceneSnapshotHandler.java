@@ -5,7 +5,11 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.GpuTexture;
-import com.mojang.blaze3d.textures.TextureFormat;
+//? if <=26.1.2 {
+    /*import com.mojang.blaze3d.textures.TextureFormat;
+*///? } else {
+    import com.mojang.blaze3d.GpuFormat;
+//? }
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.minecraft.client.Minecraft;
@@ -44,12 +48,22 @@ public class SceneSnapshotHandler {
         colorSnapshot = device.createTexture(
             "scene_color_snapshot",
             GpuTexture.USAGE_COPY_DST | GpuTexture.USAGE_TEXTURE_BINDING,
-            TextureFormat.RGBA8, width, height, 1, 1
+            //? if <=26.1.2 {
+                /*TextureFormat.RGBA8,
+            *///? } else {
+                GpuFormat.RGBA8_UNORM,
+            //? }
+            width, height, 1, 1
         );
         depthSnapshot = device.createTexture(
             "scene_depth_snapshot",
             GpuTexture.USAGE_COPY_DST | GpuTexture.USAGE_TEXTURE_BINDING,
-            TextureFormat.DEPTH32, width, height, 1, 1
+            //? if <=26.1.2 {
+                /*TextureFormat.DEPTH32,
+            *///? } else {
+                GpuFormat.D32_FLOAT,
+            //? }
+            width, height, 1, 1
         );
 
 

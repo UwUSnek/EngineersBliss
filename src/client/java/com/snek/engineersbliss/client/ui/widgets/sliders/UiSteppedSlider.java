@@ -134,12 +134,12 @@ public class UiSteppedSlider<T> extends UiSlider {
             if(event.isLeft()) {
                 final double newValue = indexToUnit(unitToIndex(value) - 1);
                 setValue(Math.clamp(newValue, 0.0, 1.0));
-                return true;
+               return true;
             }
             if(event.isRight()) {
                 final double newValue = indexToUnit(unitToIndex(value) + 1);
                 setValue(Math.clamp(newValue, 0.0, 1.0));
-                return true;
+               return true;
             }
         }
         return false;

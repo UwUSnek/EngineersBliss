@@ -19,6 +19,7 @@ import com.snek.engineersbliss.client.ui.widgets.base.__base_UiLayoutElm;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.TextureCache;
 import com.snek.engineersbliss.client.utils.Layout;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
@@ -250,40 +251,40 @@ public abstract class UiScreen extends Screen {
         switch(event.key()) {
             case GLFW.GLFW_KEY_ESCAPE: {
                 if(shouldCloseOnEsc()) onClose();
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_TAB: {
                 tabPressed = true;
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_KP_ADD: {
                 final int newScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex() + 1;
                 final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
                 resize(0, 0);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_KP_SUBTRACT: {
                 final int newScaleIndex = SettingsFeatureHandler.getCurrentGuiScaleIndex() - 1;
                 final int clampedNewScaleIndex = Math.clamp(newScaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.GUI_SCALE, clampedNewScaleIndex);
                 resize(0, 0);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_PAGE_UP: { //TODO remove
                 Minecraft.getInstance().options.guiScale().set(Minecraft.getInstance().options.guiScale().get() + 1);
                 resize(0, 0);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_PAGE_DOWN: { //TODO remove
                 Minecraft.getInstance().options.guiScale().set(Minecraft.getInstance().options.guiScale().get() - 1);
                 resize(0, 0);
-                return true;
+               return true;
             }
             case GLFW.GLFW_KEY_KP_MULTIPLY: {
                 final boolean newDebugOverlays = !ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.DEBUG_OVERLAYS);
                 ClientFeatureSync.setFeature(SettingsServerFeatureSet.DEBUG_OVERLAYS, newDebugOverlays);
-                return true;
+               return true;
             }
             default: {
                 //! Don't call super.keyPressed.
@@ -292,7 +293,7 @@ public abstract class UiScreen extends Screen {
                 for(final @NotNull GuiEventListener e : children()) {
                     if(e.keyPressed(event)) r = true;
                 }
-                return r;
+               return r;
             }
         }
     }
@@ -304,7 +305,7 @@ public abstract class UiScreen extends Screen {
         switch(event.key()) {
             case InputConstants.KEY_TAB: {
                 tabPressed = false;
-                return true;
+               return true;
             }
             default: {
                 //! No super.keyReleased call.
@@ -313,7 +314,7 @@ public abstract class UiScreen extends Screen {
                 for(final @NotNull GuiEventListener e : children()) {
                     if(e.keyReleased(event)) r = true;
                 }
-                return r;
+               return r;
             }
         }
     }
@@ -430,7 +431,7 @@ public abstract class UiScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(null);
+        MinecraftUtils.setScreen(null);
         for(final @NotNull TextureCache textureCache : textureCaches) {
             textureCache.close();
         }

@@ -69,18 +69,18 @@ public class RailInputDataResolver {
 
                 // If the block below is not a connected rail of the same type, return power 0 (No source found, no other possible paths left)
                 if(!isSameRailAndConnected(level, curPos, prevShape, rail)) {
-                    return 0;
+                   return 0;
                 }
             }
 
             // If this isn't the first block in the chain, check that it's a connected rail of the same type. Return power 0 if not
             if(prevShape != null && !isSameRailAndConnected(level, curPos, prevShape, rail)) {
-                return 0;
+               return 0;
             }
 
             // If this block is the source, return the power level
             if(level.hasNeighborSignal(curPos)) {
-                return power;
+               return power;
             }
 
             // If this block is not the source, fetch its shape and update the coordinates for the next iteration

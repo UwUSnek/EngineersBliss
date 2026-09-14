@@ -230,7 +230,7 @@ public class CreativeTweaksServerHandler {
     public static <T> boolean creativePlayerHasFeature(final Object entity, final __base_ServerFeature<T> feature, final T value) {
         if(entity instanceof final Player player) {
             if(player.isCreative()) {
-                return ServerFeatureSync.getFeature(player, feature) == value;
+               return ServerFeatureSync.getFeature(player, feature) == value;
             }
         }
         return false;

@@ -10,7 +10,11 @@ public class MagentaWallBannerPartProvider extends __base_WallBannerPartProvider
 
     @Override
     public Block getBlock() {
-        return Blocks.MAGENTA_WALL_BANNER;
+        //? if <=26.1.2 {
+            /*return Blocks.MAGENTA_WALL_BANNER;
+        *///? } else {
+            return Blocks.WALL_BANNER.magenta();
+        //? }
     }
 
     @Override

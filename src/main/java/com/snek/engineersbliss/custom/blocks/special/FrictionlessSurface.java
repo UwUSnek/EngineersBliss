@@ -30,37 +30,38 @@ public class FrictionlessSurface extends FrictionSurface {
         super(properties);
     }
 
+    //BUG this method doesn't exist in 26.2+
+    //? if <=26.1.2 {
+         /*/^*
+          * Called once per Entity.move().
+          * This resets the friction calculations Vanilla does so entities can keep sliding forever.
+          ^/
+         @Override
+         public void updateEntityMovementAfterFallOn(final BlockGetter level, final Entity entity) {
+             double x = entity.getDeltaMovement().x;
+             double z = entity.getDeltaMovement().z;
+
+             if(entity.onGround()) {
+                 float blockFriction = this.getFriction();
+
+                 if(entity instanceof LivingEntity livingEntity && !livingEntity.shouldDiscardFriction()) {
+                     float compensation = 1.0F / (blockFriction * 0.91F);
+                     x *= compensation;
+                     z *= compensation;
+                 }
+                 else if(entity instanceof ItemEntity) {
+                     float compensation = 1.0F / (blockFriction * 0.98F);
+                     x *= compensation;
+                     z *= compensation;
+                 }
+             }
 
 
-    /**
-     * Called once per Entity.move().
-     * This resets the friction calculations Vanilla does so entities can keep sliding forever.
-     */
-    @Override
-    public void updateEntityMovementAfterFallOn(final BlockGetter level, final Entity entity) {
-        double x = entity.getDeltaMovement().x;
-        double z = entity.getDeltaMovement().z;
+             // Vanilla zeroes vertical velocity on landing. This does the same
+             entity.setDeltaMovement(x, 0.0, z);
 
-        if(entity.onGround()) {
-            float blockFriction = this.getFriction();
-
-            if(entity instanceof LivingEntity livingEntity && !livingEntity.shouldDiscardFriction()) {
-                float compensation = 1.0F / (blockFriction * 0.91F);
-                x *= compensation;
-                z *= compensation;
-            }
-            else if(entity instanceof ItemEntity) {
-                float compensation = 1.0F / (blockFriction * 0.98F);
-                x *= compensation;
-                z *= compensation;
-            }
-        }
-
-
-        // Vanilla zeroes vertical velocity on landing. This does the same
-        entity.setDeltaMovement(x, 0.0, z);
-
-        // Force the server to keep sending motion update packets to clients
-        entity.needsSync = true;
-    }
+             // Force the server to keep sending motion update packets to clients
+             entity.needsSync = true;
+         }
+    *///? }
 }

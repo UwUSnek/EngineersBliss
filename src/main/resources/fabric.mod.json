@@ -5,10 +5,10 @@
     "name":          "${name}",
     "description":   "${description}",
     "authors":       [ "UwU_Snek" ],
-    "contributors":  [ "Snek's cat Cesare", "Snek's 83 cans of Monster" ],
+    "contributors":  [ "Kai", "Snek's cat Cesare", "Snek's 83 cans of Monster" ],
     "contact": {
-        "homepage": "https://github.com/UwUSnek/multiversion_test.git",
-        "sources":  "https://github.com/UwUSnek/multiversion_test.git",
+        "homepage": "https://github.com/UwUSnek/EngineersBliss",
+        "sources":  "https://github.com/UwUSnek/EngineersBliss",
         "discord":  "https://discord.gg/cusPDsbHn"
     },
     "license":     "GPL-3.0",

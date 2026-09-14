@@ -7,13 +7,21 @@ import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandl
 
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+//? if <=26.1.2 {
+    /*import net.minecraft.client.gui.Gui;
+*///? } else {
+    import net.minecraft.client.gui.Hud;
+//? }
 
 
 
 
-@Mixin(Gui.class)
+//? if <=26.1.2 {
+    /*@Mixin(Gui.class)
+*///? } else {
+    @Mixin(Hud.class)
+//? }
 public class CrosshairHeightFixMixin {
 
     @SuppressWarnings("unused")
@@ -22,6 +30,8 @@ public class CrosshairHeightFixMixin {
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;guiHeight()I"
+            //! <= 26.1.2 and 26.2+ use the same method and GuiGraphicsExtractor.guiHeight stays unchanged.
+            //! The only difference is that the old Gui got renamed to Hud. new Gui is a different class.
         ),
         require = 2
     )

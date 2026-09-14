@@ -8,7 +8,12 @@ import com.snek.engineersbliss.custom.items.CustomItemProperties;
 import com.snek.engineersbliss.custom.items.base.CustomBlockItem;
 import com.snek.engineersbliss.mixin.accessors.BlockItemAccessor;
 
-import net.minecraft.advancements.CriteriaTriggers;
+//? if <=26.1.2 {
+    /*import net.minecraft.advancements.CriteriaTriggers;
+*///? } else {
+    import net.minecraft.advancements.triggers.CriteriaTriggers;
+//? }
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;

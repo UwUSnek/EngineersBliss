@@ -12,7 +12,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+//? if <=26.1.2 {
+     /*import net.minecraft.world.entity.EntityType;
+*///? } else {
+    import net.minecraft.world.entity.EntityTypes;
+//? }
 import net.minecraft.world.entity.animal.bee.Bee;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.BeehiveBlock;
@@ -54,7 +58,11 @@ public class CustomBeehiveItem extends CustomBlockItem {
             BlockPos pos = context.getClickedPos();
             if(serverLevel.getBlockEntity(pos) instanceof BeehiveBlockEntity hive) {
                 for(int i = 0; i < beeCount; i++) {
-                    Bee bee = EntityType.BEE.create(serverLevel, EntitySpawnReason.STRUCTURE);
+                    //? if <=26.1.2 {
+                         /*Bee bee = EntityType.BEE.create(serverLevel, EntitySpawnReason.STRUCTURE);
+                    *///? } else {
+                        Bee bee = EntityTypes.BEE.create(serverLevel, EntitySpawnReason.STRUCTURE);
+                    //? }
                     if(bee != null) {
                         ((BeeAccessor)bee).invokeSetHasNectar(true);
                         hive.addOccupant(bee);
