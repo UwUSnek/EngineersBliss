@@ -1,12 +1,12 @@
 package com.snek.engineersbliss.utils.block_groups.implementations;
 
-import com.snek.engineersbliss.utils.block_groups.base.ColouredBlockSet;
+import com.snek.engineersbliss.utils.block_groups.base.ColoredBlockSet;
 
 import net.minecraft.world.level.block.Blocks;
 
 
 
-public class BedBlockSet extends ColouredBlockSet {
+public class BedBlockSet extends ColoredBlockSet {
     public BedBlockSet() {
         super(
             //? if <=26.1.2 {

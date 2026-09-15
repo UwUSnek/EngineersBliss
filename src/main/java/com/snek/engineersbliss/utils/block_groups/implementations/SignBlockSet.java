@@ -1,39 +1,50 @@
 package com.snek.engineersbliss.utils.block_groups.implementations;
 
-import com.snek.engineersbliss.utils.block_groups.base.CompositeBlockSet;
-import com.snek.engineersbliss.utils.block_groups.base.WoodenBlockSet;
+import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.snek.engineersbliss.utils.block_groups.base.WoodenBlockSet;
+import com.snek.engineersbliss.utils.block_groups.base.__base_BlockSet;
+
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 
 
 
 
-public class SignBlockSet extends CompositeBlockSet {
-    public static class HangingSignTypeBlockSet extends CompositeBlockSet {
+public class SignBlockSet extends __base_BlockSet {
+    public static class HangingSignTypeBlockSet extends __base_BlockSet {
+        public Map<String, Block> byAttachmentAndWoodType() { return byProperty; }
         private final WoodenBlockSet ceiling;
         private final WoodenBlockSet wall;
         public WoodenBlockSet ceiling() { return ceiling; }
         public WoodenBlockSet    wall() { return wall;    }
         public HangingSignTypeBlockSet(final WoodenBlockSet ceilingSet, final WoodenBlockSet wallSet) {
-            super(ceilingSet, wallSet);
+            for(final @NotNull var e : ceilingSet.byWoodType().entrySet()) registerWithCustomData("ceiling_" + e.getKey(), e.getValue());
+            for(final @NotNull var e :    wallSet.byWoodType().entrySet()) registerWithCustomData("wall_"    + e.getKey(), e.getValue());
             this.ceiling = ceilingSet;
             this.wall    = wallSet;
         }
     }
-    public static class StandingSignTypeBlockSet extends CompositeBlockSet {
+    public static class StandingSignTypeBlockSet extends __base_BlockSet {
+        public Map<String, Block> byAttachmentAndWoodType() { return byProperty; }
         private final WoodenBlockSet floor;
         private final WoodenBlockSet wall;
         public WoodenBlockSet floor() { return floor; }
         public WoodenBlockSet  wall() { return wall;  }
         public StandingSignTypeBlockSet(final WoodenBlockSet floorSet, final WoodenBlockSet wallSet) {
-            super(floorSet, wallSet);
+            for(final @NotNull var e : floorSet.byWoodType().entrySet()) registerWithCustomData("floor_" + e.getKey(), e.getValue());
+            for(final @NotNull var e :  wallSet.byWoodType().entrySet()) registerWithCustomData("wall_"  + e.getKey(), e.getValue());
             this.floor = floorSet;
             this.wall  = wallSet;
         }
     }
 
 
+
+    public Map<String, Block> byTypeAndAttachmentAndWoodType() { return byProperty; }
 
     private final HangingSignTypeBlockSet  hanging;
     private final StandingSignTypeBlockSet standing;
@@ -105,7 +116,8 @@ public class SignBlockSet extends CompositeBlockSet {
                 Blocks.WARPED_WALL_SIGN
             )
         );
-        super(hangingSet, standingSet);
+        for(final @NotNull var e :  hangingSet.byAttachmentAndWoodType().entrySet()) registerWithCustomData("hanging_"  + e.getKey(), e.getValue());
+        for(final @NotNull var e : standingSet.byAttachmentAndWoodType().entrySet()) registerWithCustomData("standing_" + e.getKey(), e.getValue());
         this.hanging  = hangingSet;
         this.standing = standingSet;
     }

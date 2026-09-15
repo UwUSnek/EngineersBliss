@@ -1,11 +1,16 @@
 package com.snek.engineersbliss.utils.block_groups.base;
 
+import java.util.Map;
+
 import net.minecraft.world.level.block.Block;
 
 
 
 
 public class WoodenBlockSet extends __base_BlockSet {
+    public Map<String, Block> byWoodType() { return byProperty; }
+
+
     private Block oak;
     private Block spruce;
     private Block birch;
@@ -48,18 +53,18 @@ public class WoodenBlockSet extends __base_BlockSet {
         final Block crimson,
         final Block warped
     ) {
-        this.oak      = register(oak);
-        this.spruce   = register(spruce);
-        this.birch    = register(birch);
-        this.jungle   = register(jungle);
-        this.acacia   = register(acacia);
-        this.darkOak  = register(darkOak);
-        this.mangrove = register(mangrove);
-        this.cherry   = register(cherry);
-        this.paleOak  = register(paleOak);
-        this.bamboo   = register(bamboo);
-        this.crimson  = register(crimson);
-        this.warped   = register(warped);
+        this.oak      = registerWithCustomData("oak",       oak     );
+        this.spruce   = registerWithCustomData("spruce",    spruce  );
+        this.birch    = registerWithCustomData("birch",     birch   );
+        this.jungle   = registerWithCustomData("jungle",    jungle  );
+        this.acacia   = registerWithCustomData("acacia",    acacia  );
+        this.darkOak  = registerWithCustomData("dark_oak",  darkOak );
+        this.mangrove = registerWithCustomData("mangrove",  mangrove);
+        this.cherry   = registerWithCustomData("cherry",    cherry  );
+        this.paleOak  = registerWithCustomData("pale_oak",  paleOak );
+        this.bamboo   = registerWithCustomData("bamboo",    bamboo  );
+        this.crimson  = registerWithCustomData("crimson",   crimson );
+        this.warped   = registerWithCustomData("warped",    warped  );
     }
 }
 

@@ -1,11 +1,16 @@
 package com.snek.engineersbliss.utils.block_groups.base;
 
+import java.util.Map;
+
 import net.minecraft.world.level.block.Block;
 
 
 
 
-public class ColouredBlockSet extends __base_BlockSet {
+public class ColoredBlockSet extends __base_BlockSet {
+    public Map<String, Block> byColor() { return byProperty; }
+
+
     private final Block white;
     private final Block orange;
     private final Block magenta;
@@ -42,7 +47,7 @@ public class ColouredBlockSet extends __base_BlockSet {
     public Block     black(){ return black;     }
 
 
-    public ColouredBlockSet(
+    public ColoredBlockSet(
         final Block white,
         final Block orange,
         final Block magenta,
@@ -60,21 +65,21 @@ public class ColouredBlockSet extends __base_BlockSet {
         final Block red,
         final Block black
     ) {
-        this.white     = register(white);
-        this.orange    = register(orange);
-        this.magenta   = register(magenta);
-        this.lightBlue = register(lightBlue);
-        this.yellow    = register(yellow);
-        this.lime      = register(lime);
-        this.pink      = register(pink);
-        this.gray      = register(gray);
-        this.lightGray = register(lightGray);
-        this.cyan      = register(cyan);
-        this.purple    = register(purple);
-        this.blue      = register(blue);
-        this.brown     = register(brown);
-        this.green     = register(green);
-        this.red       = register(red);
-        this.black     = register(black);
+        this.white     = registerWithCustomData("white",      white    );
+        this.orange    = registerWithCustomData("orange",     orange   );
+        this.magenta   = registerWithCustomData("magenta",    magenta  );
+        this.lightBlue = registerWithCustomData("light_blue", lightBlue);
+        this.yellow    = registerWithCustomData("yellow",     yellow   );
+        this.lime      = registerWithCustomData("lime",       lime     );
+        this.pink      = registerWithCustomData("pink",       pink     );
+        this.gray      = registerWithCustomData("gray",       gray     );
+        this.lightGray = registerWithCustomData("light_gray", lightGray);
+        this.cyan      = registerWithCustomData("cyan",       cyan     );
+        this.purple    = registerWithCustomData("purple",     purple   );
+        this.blue      = registerWithCustomData("blue",       blue     );
+        this.brown     = registerWithCustomData("brown",      brown    );
+        this.green     = registerWithCustomData("green",      green    );
+        this.red       = registerWithCustomData("red",        red      );
+        this.black     = registerWithCustomData("black",      black    );
     }
 }
