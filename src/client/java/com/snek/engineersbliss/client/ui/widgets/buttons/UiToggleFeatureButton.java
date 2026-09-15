@@ -90,7 +90,7 @@ public class UiToggleFeatureButton extends UiToggleButton implements DualPreview
 
 
     public static UiTxt getToggleText(final ClientFeature<?> feature, final boolean value, final ValueFormatter<Boolean> valueFormatter) {
-        return (UiTxt)feature.calcName().cat(": " + valueFormatter.format(value, false));
+        return (UiTxt)feature.getName().cat(": " + valueFormatter.format(value, false));
     }
 
     public UiTxt getToggleText(final ClientFeature<?> feature) {

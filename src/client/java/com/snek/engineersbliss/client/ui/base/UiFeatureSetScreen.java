@@ -59,7 +59,7 @@ public class UiFeatureSetScreen extends UiSidebarScreen {
         super.init();
 
         // Add left sidebar title
-        final UiTxt titleText = new UiTxt(featureSet.calcName().get(), 2f);
+        final UiTxt titleText = new UiTxt(featureSet.getName().get(), 2f);
         final int titleHeight = titleText.getScaledFont().getUnscaleLineHeight();
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, titleText, TextAlignment.LEFT, Layout.fgColor), titleHeight);
@@ -120,14 +120,14 @@ public class UiFeatureSetScreen extends UiSidebarScreen {
         else {
 
             // Feature name
-            final UiTxt nameText = new UiTxt(newWidget.getClientFeature().calcName().get(), 2f);
+            final UiTxt nameText = new UiTxt(newWidget.getClientFeature().getName().get(), 2f);
             final float nameHeight = nameText.getScaledFont().getUnscaleLineHeight();
             rightSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
             rightSidebar.addWidget(new UiTextWidget(this, nameText, TextAlignment.CENTER, Layout.fgColor), nameHeight);
 
             // Feature description
             rightSidebar.setIsScrollable(false); //! Disable scrolling so the element doesn't show a scroll bar. There is always enough space for the description.
-            final UiTxt descriptionText = newWidget.getClientFeature().calcDesc();
+            final UiTxt descriptionText = newWidget.getClientFeature().getDesc();
             final float descriptionHeight = height; //! Overflows, but it doesn't matter, can't scroll the element anyway.
             final UiTextWidget descriptionWidget = new UiTextWidget(this, descriptionText, TextAlignment.CENTER, true, Layout.fgColor);
             descriptionWidget.setVerticalAlignment(TextAlignmentY.TOP);

@@ -27,32 +27,30 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
     public static final ClientFeature<?> GUI_SCALE = new ClientFeature<>(
         SettingsServerFeatureSet.GUI_SCALE,
-        () -> new UiTxt("Gui scale"),
-        () -> (UiTxt)new UiTxt("The visual scale of GUI elements.")
+        s(() -> new UiTxt("Gui scale")),
+        s(() -> (UiTxt)new UiTxt("The visual scale of GUI elements."))
     );
     public static final ClientFeature<?> GUI_BACKGROUND_OPACITY = new ClientFeature<>(
         SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY,
-        () -> new UiTxt("Gui background opacity"),
-        () -> (UiTxt)new UiTxt("The opacity of the background color of screens.")
+        s(() -> new UiTxt("Gui background opacity")),
+        s(() -> (UiTxt)new UiTxt("The opacity of the background color of screens."))
     );
     public static final ClientFeature<?> PAUSE_GAME_IN_PAUSE_MENU = new ClientFeature<>(
         SettingsServerFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,
-        () -> new UiTxt("Pause Menu pauses the game"),
-        () -> (UiTxt)new UiTxt()
-            .cat(new UiTxt("Pauses the game while the Pause Menu is open. This is the default behaviour in Vanilla\n."))
-            .cat(Notices.SINGLE_PLAYER_ONLY.get())
+        s(() -> new UiTxt("Pause Menu pauses the game")),
+        s(() -> new UiTxt("Pauses the game while the Pause Menu is open. This is the default behaviour in Vanilla.")),
+        Notices.SINGLE_PLAYER_ONLY
     );
     public static final ClientFeature<?> PAUSE_GAME_IN_MOD_SCREENS = new ClientFeature<>(
         SettingsServerFeatureSet.PAUSE_GAME_IN_MOD_SCREENS,
-        () -> new UiTxt("" + EngineerSBliss.MOD_NAME + " screens pause the game"),
-        () -> new UiTxt()
-            .cat(new UiTxt("Pauses the game while any of the screens from the " + EngineerSBliss.MOD_NAME + " mod are open\n."))
-            .cat(Notices.SINGLE_PLAYER_ONLY.get())
+        s(() -> new UiTxt("" + EngineerSBliss.MOD_NAME + " screens pause the game")),
+        s(() -> new UiTxt("Pauses the game while any of the screens from the " + EngineerSBliss.MOD_NAME + " mod are open.")),
+        Notices.SINGLE_PLAYER_ONLY
     );
     public static final ClientFeature<?> DEBUG_OVERLAYS = new ClientFeature<>(
         SettingsServerFeatureSet.DEBUG_OVERLAYS,
-        () -> new UiTxt("Debug overlays"),
-        () -> (UiTxt)new UiTxt("Enable GUI debug overlays.")
+        s(() -> new UiTxt("Debug overlays")),
+        s(() -> new UiTxt("Enable GUI debug overlays."))
     );
 
 
@@ -60,18 +58,18 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
     public static final ClientFeature<?> STATUS_BAR_HEIGHT = new ClientFeature<>(
         SettingsServerFeatureSet.STATUS_BAR_HEIGHT,
-        () -> new UiTxt("Status Bar height"),
-        () -> new UiTxt("The height of the in-game status bar, in pixels.")
+        s(() -> new UiTxt("Status Bar height")),
+        s(() -> new UiTxt("The height of the in-game status bar, in pixels."))
     );
     public static final ClientFeature<?> STATUS_BAR_POSITION = new ClientFeature<>(
         SettingsServerFeatureSet.STATUS_BAR_POSITION,
-        () -> new UiTxt("Status Bar position"),
-        () -> new UiTxt("The position of the in-game status bar.")
+        s(() -> new UiTxt("Status Bar position")),
+        s(() -> new UiTxt("The position of the in-game status bar."))
     );
     public static final ClientFeature<?> CHAT_HIDES_STATUS_BAR = new ClientFeature<>(
         SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR,
-        () -> new UiTxt("Chat hides Status Bar"),
-        () -> new UiTxt("Hides the Status Bar when the chat is open.")
+        s(() -> new UiTxt("Chat hides Status Bar")),
+        s(() -> new UiTxt("Hides the Status Bar when the chat is open."))
     );
 
 
@@ -79,22 +77,20 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
     public static final ClientFeature<?> PLAYER_MODEL_IN_PAUSE_SCREEN = new ClientFeature<>(
         SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
-        () -> new UiTxt("Display player model in pause screen"),
-        () -> new UiTxt("Renders your player's skin, name, and playtime in the pause menu.")
+        s(() -> new UiTxt("Display player model in pause screen")),
+        s(() -> new UiTxt("Renders your player's skin, name, and playtime in the pause menu."))
     );
     public static final ClientFeature<?> BLOCK_SHADERS = new ClientFeature<>(
         SettingsServerFeatureSet.BLOCK_SHADERS,
-        () -> new UiTxt("Enable Block Shaders."),
-        () -> new UiTxt()
-            .cat(new UiTxt("Whether to use shaders for custom block models.\n"))
-            .cat(new UiTxt("This can be very laggy and resource intensive."))
+        s(() -> new UiTxt("Enable Block Shaders.")),
+        s(() -> new UiTxt("Whether to use shaders for custom block modelsn")),
+        s(() -> new UiTxt("This can be very laggy and resource intensive."))
     );
     public static final ClientFeature<?> BLOCK_SHADER_LIMIT = new ClientFeature<>(
         SettingsServerFeatureSet.BLOCK_SHADER_LIMIT,
-        () -> new UiTxt("Block Shader limit"),
-        () -> (UiTxt)new UiTxt()
-            .cat(new UiTxt("The maximum number of shaded block models to display at once. This can help control lag in busy areas.\n"))
-            .cat(new UiTxt("Only available when [Block Shaders] is ON.").Orange())
+        s(() -> new UiTxt("Block Shader limit")),
+        s(() -> new UiTxt("The maximum number of shaded block models to display at once. This can help control lag in busy areasn")),
+        s(() -> (UiTxt)new UiTxt("Only available when [Block Shaders] is ON.").Orange())
     );
 
 
@@ -103,8 +99,8 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
     // Misc
     public static final ClientFeature<?> METAL_PIPE_SOUNDS = new ClientFeature<>(
         SettingsServerFeatureSet.METAL_PIPE_SOUNDS,
-        () -> new UiTxt("Metal pipe UI sounds"),
-        () -> new UiTxt("Replaces all UI sounds with the Metal Pipe Falling sound.")
+        s(() -> new UiTxt("Metal pipe UI sounds")),
+        s(() -> new UiTxt("Replaces all UI sounds with the Metal Pipe Falling sound."))
     );
 
 

@@ -68,7 +68,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
         final @NotNull ServerSteppedFeature<T> _serverFeature = (ServerSteppedFeature<T>)genericServerFeature;
         super(
             screen,
-            feature.calcName(),
+            feature.getName(),
             _serverFeature.getValues(),
             ClientFeatureSync.getFeatureI(_serverFeature),
             (i, n) -> onChange(_serverFeature, i, n, afterChangeCallback),

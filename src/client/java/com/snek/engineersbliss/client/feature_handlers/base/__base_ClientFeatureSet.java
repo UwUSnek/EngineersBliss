@@ -9,12 +9,21 @@ import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
 
 
 public class __base_ClientFeatureSet<S extends __base_ServerFeatureSet> {
-    private final Supplier<UiTxt> nameSupplier;
     private final S serverSet;
+    private final Supplier<UiTxt> nameSupplier;
+    private UiTxt nameCache = null;
+
+    //! Helper method to avoid writing Supplier<UiTxt> everywhere
+    protected static Supplier<UiTxt> s(Supplier<UiTxt> supplier) { return supplier; }
 
 
-    public UiTxt calcName() { return nameSupplier.get(); }
     public S getServerSet() { return serverSet; }
+    public UiTxt getName() { if(nameCache == null) nameCache = calcName(); return (UiTxt)nameCache.copy(); }
+
+
+    private UiTxt calcName() {
+        return nameSupplier.get();
+    }
 
 
     protected __base_ClientFeatureSet(final S serverSet, final Supplier<UiTxt> nameSupplier) {
