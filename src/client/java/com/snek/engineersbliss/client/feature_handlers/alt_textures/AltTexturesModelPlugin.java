@@ -13,35 +13,37 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.math.Quadrant;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.__base_PartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.BellBlockPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.DecoratedPotPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.GlowLichenPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.HoneyBlockPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LadderPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.LecternPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.MangroveRootsPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.RedstoneWirePartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.ScaffoldingPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.SlimeBlockPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.VinesPartProvider;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.bars.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.lanterns.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.beds.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.rails.powerable.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.ceiling_hanging.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.standing.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall.*;
-import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging.*;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.base.__base_BlockSetPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.base.__base_PartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.BedPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.CeilingHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.ChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.CopperGolemStatuePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.FloorBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.FloorStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.MetalBarsPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.WallBannerPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.WallHangingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.WallStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.BellBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.DecoratedPotPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.GlowLichenPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.HoneyBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.LadderPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.LecternPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.MangroveRootsPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.RedstoneWirePartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.ScaffoldingPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.SlimeBlockPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.VinesPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.rails.NormalRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.rails.powerable.ActivatorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.rails.powerable.DetectorRailPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks.rails.powerable.PoweredRailPartProvider;
 import com.snek.engineersbliss.feature_handlers.ServerFeatureSync;
 import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+import com.snek.engineersbliss.utils.block_groups.base.__base_BlockSet;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin.Context;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
@@ -58,6 +60,7 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 
@@ -104,184 +107,70 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
 
 
 
+
+
+
+
     // A map containing the model part providers for each block
     private static final Map<Block, __base_PartProvider> partProviders = new HashMap<>();
-    static {
-        for(final var provider : List.of(
-            new    SlimeBlockPartProvider(),
-            new    HoneyBlockPartProvider(),
-            new MangroveRootsPartProvider(),
-            new   ScaffoldingPartProvider(),
-            new  RedstoneWirePartProvider(),
-            new        LadderPartProvider(),
-            new         VinesPartProvider(),
-            new    GlowLichenPartProvider(),
-            new  DecoratedPotPartProvider(),
-            new     BellBlockPartProvider(),
-            new       LecternPartProvider(),
 
-            new    NormalRailPartProvider(),
-            new   PoweredRailPartProvider(),
-            new ActivatorRailPartProvider(),
-            new  DetectorRailPartProvider(),
 
-            new                 IronChainPartProvider(),
-            new               CopperChainPartProvider(),
-            new        ExposedCopperChainPartProvider(),
-            new      WeatheredCopperChainPartProvider(),
-            new       OxidizedCopperChainPartProvider(),
-            new          WaxedCopperChainPartProvider(),
-            new   WaxedExposedCopperChainPartProvider(),
-            new WaxedWeatheredCopperChainPartProvider(),
-            new  WaxedOxidizedCopperChainPartProvider(),
-
-            new               NormalLanternPartProvider(),
-            new                 SoulLanternPartProvider(),
-            new               CopperLanternPartProvider(),
-            new        ExposedCopperLanternPartProvider(),
-            new      WeatheredCopperLanternPartProvider(),
-            new       OxidizedCopperLanternPartProvider(),
-            new          WaxedCopperLanternPartProvider(),
-            new   WaxedExposedCopperLanternPartProvider(),
-            new WaxedWeatheredCopperLanternPartProvider(),
-            new  WaxedOxidizedCopperLanternPartProvider(),
-
-            new   AcaciaStandingSignPartProvider(),
-            new   BambooStandingSignPartProvider(),
-            new    BirchStandingSignPartProvider(),
-            new   CherryStandingSignPartProvider(),
-            new  CrimsonStandingSignPartProvider(),
-            new  DarkOakStandingSignPartProvider(),
-            new   JungleStandingSignPartProvider(),
-            new MangroveStandingSignPartProvider(),
-            new      OakStandingSignPartProvider(),
-            new  PaleOakStandingSignPartProvider(),
-            new   SpruceStandingSignPartProvider(),
-            new   WarpedStandingSignPartProvider(),
-
-            new   AcaciaWallSignPartProvider(),
-            new   BambooWallSignPartProvider(),
-            new    BirchWallSignPartProvider(),
-            new   CherryWallSignPartProvider(),
-            new  CrimsonWallSignPartProvider(),
-            new  DarkOakWallSignPartProvider(),
-            new   JungleWallSignPartProvider(),
-            new MangroveWallSignPartProvider(),
-            new      OakWallSignPartProvider(),
-            new  PaleOakWallSignPartProvider(),
-            new   SpruceWallSignPartProvider(),
-            new   WarpedWallSignPartProvider(),
-
-            new   AcaciaCeilingHangingSignPartProvider(),
-            new   BambooCeilingHangingSignPartProvider(),
-            new    BirchCeilingHangingSignPartProvider(),
-            new   CherryCeilingHangingSignPartProvider(),
-            new  CrimsonCeilingHangingSignPartProvider(),
-            new  DarkOakCeilingHangingSignPartProvider(),
-            new   JungleCeilingHangingSignPartProvider(),
-            new MangroveCeilingHangingSignPartProvider(),
-            new      OakCeilingHangingSignPartProvider(),
-            new  PaleOakCeilingHangingSignPartProvider(),
-            new   SpruceCeilingHangingSignPartProvider(),
-            new   WarpedCeilingHangingSignPartProvider(),
-
-            new   AcaciaWallHangingSignPartProvider(),
-            new   BambooWallHangingSignPartProvider(),
-            new    BirchWallHangingSignPartProvider(),
-            new   CherryWallHangingSignPartProvider(),
-            new  CrimsonWallHangingSignPartProvider(),
-            new  DarkOakWallHangingSignPartProvider(),
-            new   JungleWallHangingSignPartProvider(),
-            new MangroveWallHangingSignPartProvider(),
-            new      OakWallHangingSignPartProvider(),
-            new  PaleOakWallHangingSignPartProvider(),
-            new   SpruceWallHangingSignPartProvider(),
-            new   WarpedWallHangingSignPartProvider(),
-
-            new               NormalChestPartProvider(),
-            new                EnderChestPartProvider(),
-            new              TrappedChestPartProvider(),
-            new               CopperChestPartProvider(),
-            new        ExposedCopperChestPartProvider(),
-            new      WeatheredCopperChestPartProvider(),
-            new       OxidizedCopperChestPartProvider(),
-            new          WaxedCopperChestPartProvider(),
-            new   WaxedExposedCopperChestPartProvider(),
-            new WaxedWeatheredCopperChestPartProvider(),
-            new  WaxedOxidizedCopperChestPartProvider(),
-
-            new     WhiteBannerPartProvider(),
-            new    OrangeBannerPartProvider(),
-            new   MagentaBannerPartProvider(),
-            new LightBlueBannerPartProvider(),
-            new    YellowBannerPartProvider(),
-            new      LimeBannerPartProvider(),
-            new      PinkBannerPartProvider(),
-            new      GrayBannerPartProvider(),
-            new LightGrayBannerPartProvider(),
-            new      CyanBannerPartProvider(),
-            new    PurpleBannerPartProvider(),
-            new      BlueBannerPartProvider(),
-            new     BrownBannerPartProvider(),
-            new     GreenBannerPartProvider(),
-            new       RedBannerPartProvider(),
-            new     BlackBannerPartProvider(),
-
-            new     WhiteWallBannerPartProvider(),
-            new    OrangeWallBannerPartProvider(),
-            new   MagentaWallBannerPartProvider(),
-            new LightBlueWallBannerPartProvider(),
-            new    YellowWallBannerPartProvider(),
-            new      LimeWallBannerPartProvider(),
-            new      PinkWallBannerPartProvider(),
-            new      GrayWallBannerPartProvider(),
-            new LightGrayWallBannerPartProvider(),
-            new      CyanWallBannerPartProvider(),
-            new    PurpleWallBannerPartProvider(),
-            new      BlueWallBannerPartProvider(),
-            new     BrownWallBannerPartProvider(),
-            new     GreenWallBannerPartProvider(),
-            new       RedWallBannerPartProvider(),
-            new     BlackWallBannerPartProvider(),
-
-            new     WhiteBedPartProvider(),
-            new    OrangeBedPartProvider(),
-            new   MagentaBedPartProvider(),
-            new LightBlueBedPartProvider(),
-            new    YellowBedPartProvider(),
-            new      LimeBedPartProvider(),
-            new      PinkBedPartProvider(),
-            new      GrayBedPartProvider(),
-            new LightGrayBedPartProvider(),
-            new      CyanBedPartProvider(),
-            new    PurpleBedPartProvider(),
-            new      BlueBedPartProvider(),
-            new     BrownBedPartProvider(),
-            new     GreenBedPartProvider(),
-            new       RedBedPartProvider(),
-            new     BlackBedPartProvider(),
-
-            new               CopperGolemStatuePartProvider(),
-            new        ExposedCopperGolemStatuePartProvider(),
-            new      WeatheredCopperGolemStatuePartProvider(),
-            new       OxidizedCopperGolemStatuePartProvider(),
-            new          WaxedCopperGolemStatuePartProvider(),
-            new   WaxedExposedCopperGolemStatuePartProvider(),
-            new WaxedWeatheredCopperGolemStatuePartProvider(),
-            new  WaxedOxidizedCopperGolemStatuePartProvider(),
-
-            new                 IronBarsPartProvider(),
-            new               CopperBarsPartProvider(),
-            new        ExposedCopperBarsPartProvider(),
-            new      WeatheredCopperBarsPartProvider(),
-            new       OxidizedCopperBarsPartProvider(),
-            new          WaxedCopperBarsPartProvider(),
-            new   WaxedExposedCopperBarsPartProvider(),
-            new WaxedWeatheredCopperBarsPartProvider(),
-            new  WaxedOxidizedCopperBarsPartProvider()
-        )) {
-            partProviders.put(provider.getBlock(), provider);
+    // Registers a __base_PartProvider for the specified block.
+    private static void register(final Block block, final Class<? extends __base_PartProvider> _class) {
+        try {
+            partProviders.put(block, _class.getDeclaredConstructor(Block.class).newInstance(block));
         }
+        catch(ReflectiveOperationException e) {
+            throw new RuntimeException("Failed to register part provider for " + block, e);
+        }
+    }
+
+
+    // Registers a __base_PartProvider for each block in the specified block set.
+    private static void register(final __base_BlockSet blockSet, final Class<? extends __base_BlockSetPartProvider> _class) {
+        for(final Block block : blockSet.asList()) {
+            try {
+                partProviders.put(block, _class.getDeclaredConstructor(Block.class, __base_BlockSet.class).newInstance(block, blockSet));
+            }
+            catch(ReflectiveOperationException e) {
+                throw new RuntimeException("Failed to register part provider for " + block, e);
+            }
+        }
+    }
+
+
+    static {
+
+        // Unique blocks
+        register(BlockSets.CHAIN,                                 ChainPartProvider.class);
+        register(BlockSets.METAL_BARS,                        MetalBarsPartProvider.class);
+        register(BlockSets.SIGN.standing().floor(),   FloorStandingSignPartProvider.class);
+        register(BlockSets.SIGN.standing().wall(),     WallStandingSignPartProvider.class);
+        register(BlockSets.SIGN.hanging().ceiling(), CeilingHangingSignPartProvider.class);
+        register(BlockSets.SIGN.hanging().wall(),       WallHangingSignPartProvider.class);
+        register(BlockSets.BANNER.floor(),                  FloorBannerPartProvider.class);
+        register(BlockSets.BANNER.wall(),                    WallBannerPartProvider.class);
+        register(BlockSets.BED,                                     BedPartProvider.class);
+        register(BlockSets.COPPER_GOLEM_STATUE,       CopperGolemStatuePartProvider.class);
+
+        // Rails
+        register(Blocks.RAIL,              NormalRailPartProvider.class);
+        register(Blocks.POWERED_RAIL,     PoweredRailPartProvider.class);
+        register(Blocks.ACTIVATOR_RAIL, ActivatorRailPartProvider.class);
+        register(Blocks.DETECTOR_RAIL,   DetectorRailPartProvider.class);
+
+        // Block sets
+        register(Blocks.SLIME_BLOCK,       SlimeBlockPartProvider.class);
+        register(Blocks.HONEY_BLOCK,       HoneyBlockPartProvider.class);
+        register(Blocks.MANGROVE_ROOTS, MangroveRootsPartProvider.class);
+        register(Blocks.SCAFFOLDING,      ScaffoldingPartProvider.class);
+        register(Blocks.REDSTONE_WIRE,   RedstoneWirePartProvider.class);
+        register(Blocks.LADDER,                LadderPartProvider.class);
+        register(Blocks.VINE,                   VinesPartProvider.class);
+        register(Blocks.GLOW_LICHEN,       GlowLichenPartProvider.class);
+        register(Blocks.DECORATED_POT,   DecoratedPotPartProvider.class);
+        register(Blocks.BELL,               BellBlockPartProvider.class);
+        register(Blocks.LECTERN,              LecternPartProvider.class);
     }
 
 

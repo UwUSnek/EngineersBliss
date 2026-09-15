@@ -17,9 +17,13 @@ public class __base_BlockSet {
         list.add(block);
         return block;
     }
+
     protected final Map<String, Block> byProperty;
+    protected final Map<Block, String> byBlock;
+    public Map<Block, String> byBlock() { return byBlock; }
     protected Block registerWithCustomData(final String property, final Block block) {
         byProperty.put(property, block);
+        byBlock   .put(block, property);
         return register(block);
     }
 
@@ -28,6 +32,7 @@ public class __base_BlockSet {
     public __base_BlockSet() {
         this.list       = new ArrayList<>();
         this.byProperty = new HashMap<>();
+        this.byBlock    = new HashMap<>();
     }
 
 

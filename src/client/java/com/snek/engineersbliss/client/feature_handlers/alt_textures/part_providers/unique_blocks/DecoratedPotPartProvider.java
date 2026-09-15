@@ -1,0 +1,43 @@
+package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.unique_blocks;
+
+import java.util.List;
+
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.base.__base_PartProvider;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DecoratedPotBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
+
+
+
+public class DecoratedPotPartProvider extends __base_PartProvider {
+    public DecoratedPotPartProvider(Block targetBlock) {
+        super(targetBlock);
+    }
+
+
+    @Override
+    public List<String> calcPartNames(final BlockState state, final int modelSetIndex) {
+        final String dirName = getVariantSuffixFromDirection(state.getValue(DecoratedPotBlock.HORIZONTAL_FACING));
+        return List.of(String.format("decorated_pot/static/block%s", dirName));
+    }
+    @Override
+    public List<String> calcDependencyNames() {
+        return List.of("decorated_pot/static/block");
+    }
+
+
+
+
+    @Override
+    public boolean shouldUseCustom(final BlockState state) {
+        return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.STATIC_DECORATED_POTS);
+    }
+    @Override
+    public boolean shouldKeepVanilla(final BlockState state) {
+        return !shouldUseCustom(state);
+    }
+}
