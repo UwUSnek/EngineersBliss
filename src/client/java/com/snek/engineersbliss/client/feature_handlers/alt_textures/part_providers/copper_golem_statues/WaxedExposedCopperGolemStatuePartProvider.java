@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.copper_golem_statues;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 public class WaxedExposedCopperGolemStatuePartProvider extends __base_CopperGolemStatuePartProvider {
@@ -14,10 +15,6 @@ public class WaxedExposedCopperGolemStatuePartProvider extends __base_CopperGole
 
     @Override
     public Block getBlock() {
-        //? if <=26.1.2 {
-            /*return Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE;
-        *///? } else {
-            return Blocks.COPPER_GOLEM_STATUE.waxed().exposed();
-        //? }
+        return BlockSets.COPPER_GOLEM_STATUE.waxed().exposed();
     }
 }

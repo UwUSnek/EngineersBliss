@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.sings.wall_hanging;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -15,6 +16,6 @@ public class WarpedWallHangingSignPartProvider extends __base_WallHangingSignPar
 
     @Override
     public Block getBlock() {
-        return Blocks.WARPED_WALL_HANGING_SIGN;
+        return BlockSets.SIGN.hanging().wall().warped();
     }
 }

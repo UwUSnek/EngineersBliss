@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.standing;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -10,11 +11,7 @@ public class BlueBannerPartProvider extends __base_StandingBannerPartProvider {
 
     @Override
     public Block getBlock() {
-        //? if <=26.1.2 {
-            /*return Blocks.BLUE_BANNER;
-        *///? } else {
-            return Blocks.BANNER.blue();
-        //? }
+        return BlockSets.BANNER.floor().blue();
     }
 
     @Override

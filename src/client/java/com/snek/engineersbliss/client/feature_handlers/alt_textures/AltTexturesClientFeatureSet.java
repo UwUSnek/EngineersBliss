@@ -157,9 +157,9 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
         s(() -> new UiTxt("Static Bed models")),
         s(() -> new UiTxt("Replaces the costly real-time rendering of Beds with a static model to improve performance.")),
         //? if <26.2 {
-            // Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE,
-            // Notices.MOD_COMPATIBILITY_NOTICE
-        //? } else {
+             /*Notices.RESOURCEPACK_INCOMPATIBILITY_NOTICE,
+             Notices.MOD_COMPATIBILITY_NOTICE
+        *///? } else {
             s(() -> (UiTxt)new UiTxt("This feature is disabled in 26.2+. Modern versions already use static models for beds.").green())
         //? }
     );

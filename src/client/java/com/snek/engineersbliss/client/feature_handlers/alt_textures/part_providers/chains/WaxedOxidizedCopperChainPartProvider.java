@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chains;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -10,11 +11,7 @@ public class WaxedOxidizedCopperChainPartProvider extends __base_ChainPartProvid
 
     @Override
     public Block getBlock() {
-        //? if <=26.1.2 {
-            /*return Blocks.COPPER_CHAIN.waxedOxidized();
-        *///? } else {
-            return Blocks.COPPER_CHAIN.waxed().oxidized();
-        //? }
+        return BlockSets.CHAIN.waxed().oxidized();
     }
 
     @Override

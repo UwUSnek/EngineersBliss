@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.banners.wall;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -10,11 +11,7 @@ public class LightBlueWallBannerPartProvider extends __base_WallBannerPartProvid
 
     @Override
     public Block getBlock() {
-        //? if <=26.1.2 {
-            /*return Blocks.LIGHT_BLUE_WALL_BANNER;
-        *///? } else {
-            return Blocks.WALL_BANNER.lightBlue();
-        //? }
+        return BlockSets.BANNER.wall().lightBlue();
     }
 
     @Override

@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.bars;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -10,11 +11,7 @@ public class OxidizedCopperBarsPartProvider extends __base_BarsPartProvider {
 
     @Override
     public Block getBlock() {
-        //? if <=26.1.2 {
-            /*return Blocks.COPPER_BARS.oxidized();
-        *///? } else {
-            return Blocks.COPPER_BARS.weathering().oxidized();
-        //? }
+        return BlockSets.METAL_BARS.weathering().oxidized();
     }
 
     protected String getMaterialName() {

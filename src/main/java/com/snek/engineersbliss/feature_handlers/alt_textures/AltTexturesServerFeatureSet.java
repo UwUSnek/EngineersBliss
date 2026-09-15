@@ -3,7 +3,7 @@ package com.snek.engineersbliss.feature_handlers.alt_textures;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.snek.engineersbliss.feature_handlers.BlockGroups;
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
 import com.snek.engineersbliss.feature_handlers.base.ServerBlockToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.ServerToggleFeature;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeatureSet;
@@ -97,16 +97,16 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static final ServerBlockToggleFeature STATIC_CHESTS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_chests", true,
-        BlockGroups.ALL_CHESTS
+        BlockSets.CHEST.asList()
     ));
     //! Required in 26.2+ too. See beginning of file ^.
     public static final ServerBlockToggleFeature STATIC_SIGNS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_signs", true,
-        Stream.of(BlockGroups.ALL_SIGNS.stream(), BlockGroups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
+        BlockSets.SIGN.asList()
     ));
     public static final ServerBlockToggleFeature STATIC_BANNERS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_banners", true,
-        Stream.of(BlockGroups.ALL_BANNERS.stream()).flatMap(s -> s).toList()
+        BlockSets.BANNER.asList()
     ));
     public static final ServerBlockToggleFeature STATIC_DECORATED_POTS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_decorated_pots", true,
@@ -118,7 +118,7 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static final ServerBlockToggleFeature STATIC_COPPER_GOLEM_STATUES = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_copper_golem_statues", true,
-        Stream.of(BlockGroups.ALL_COPPER_GOLEM_STATUES.stream()).flatMap(s -> s).toList()
+        BlockSets.COPPER_GOLEM_STATUE.asList()
     ));
     public static final ServerBlockToggleFeature STATIC_LECTERNS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_lecterns", true,
@@ -126,7 +126,7 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static final ServerBlockToggleFeature STATIC_BEDS = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "static_beds", true,
-        BlockGroups.ALL_BEDS
+        BlockSets.BED.asList()
     ));
     public static final ServerBlockToggleFeature OPTIMIZED_SHELVES = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "optimized_shelves", true,
@@ -154,7 +154,7 @@ public class AltTexturesServerFeatureSet extends __base_ServerFeatureSet {
     ));
     public static final ServerBlockToggleFeature CHAINS_3D = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "chains_3d", true,
-        Stream.of(Stream.of(Blocks.IRON_CHAIN), Blocks.COPPER_CHAIN.asList().stream(), BlockGroups.ALL_LANTERNS.stream(), BlockGroups.ALL_HANGING_SIGNS.stream()).flatMap(s -> s).toList()
+        Stream.of(BlockSets.CHAIN.asStream(), BlockSets.LANTERN.asStream(), BlockSets.SIGN.hanging().asStream()).flatMap(s -> s).toList()
     ));
     public static final ServerBlockToggleFeature BARS_3D = INSTANCE.registerFeature(new ServerBlockToggleFeature(
         "bars_3d", true,

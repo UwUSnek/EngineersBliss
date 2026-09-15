@@ -1,7 +1,8 @@
 package com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.chests.doublable;
 
+import com.snek.engineersbliss.utils.block_groups.BlockSets;
+
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 
 
@@ -10,11 +11,7 @@ public class ExposedCopperChestPartProvider extends __base_DoublableChestPartPro
 
     @Override
     public Block getBlock() {
-        //? if <=26.1.2 {
-            /*return Blocks.EXPOSED_COPPER_CHEST;
-        *///? } else {
-            return Blocks.COPPER_CHEST.weathering().exposed();
-        //? }
+        return BlockSets.CHEST.weathering().exposed();
     }
 
     @Override
