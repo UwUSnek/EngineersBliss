@@ -42,6 +42,27 @@ public class ScaledFont {
     public FontDescription getDescription() { return description; }
 
 
+    /**
+     * Calculates the correct text size for the current GUI Scale.
+     * This takes into account the ScaledFont's size and scaleInvariant parameters.
+     * @return The calculated absolute size.
+     */
+    public float getSizeForCurrentGuiScale() {
+        return getSizeForGuiScale(SettingsFeatureHandler.getCurrentGuiScale());
+    }
+
+    /**
+     * Calculates the correct text size for the provided GUI Scale.
+     * This takes into account the ScaledFont's size and scaleInvariant parameters.
+     * @param guiScale The GUI Scale to calculate the text size for.
+     * @return The calculated absolute size.
+     */
+    public float getSizeForGuiScale(final float guiScale) {
+        final float scaleMultiplier = isScaleInvariant() ? 1f : guiScale;
+        return getSize() * scaleMultiplier;
+    }
+
+
 
 
     @SuppressWarnings("java:S1172")
@@ -130,8 +151,7 @@ public class ScaledFont {
 
 
     private int __internal_calcWidth(final FormattedCharSequence s, final float scale) {
-        final float scaleInvariantWidth = font.width(s) * getSize();
-        return (int)(isScaleInvariant() ? scaleInvariantWidth : scaleInvariantWidth * scale);
+        return (int)(font.width(s) * getSizeForGuiScale(scale));
     }
 //TODO add float support to text
 
@@ -196,7 +216,6 @@ public class ScaledFont {
         return getLineHeightForGuiScale(1f);
     }
     public int getLineHeightForGuiScale(final float scale) {
-        final float scaleInvariantHeight = font.lineHeight  * getSize();
-        return (int)(isScaleInvariant() ? scaleInvariantHeight : scaleInvariantHeight * scale);
+        return (int)(font.lineHeight * getSizeForGuiScale(scale));
     }
 }

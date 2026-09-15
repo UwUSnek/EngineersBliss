@@ -216,8 +216,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             final float overflow = label.getWidth() - getInnerWidth();
 
             // Calculate optimal scroll speed
-            float scrollSpeed = BASE_SCROLL_SPEED * scaledFont.getSize();
-            if(!scaledFont.isScaleInvariant()) scrollSpeed *= getGuiScale();
+            float scrollSpeed = BASE_SCROLL_SPEED * scaledFont.getSizeForCurrentGuiScale();
 
             // Calculate current horizontal shift
             float shift = 0;

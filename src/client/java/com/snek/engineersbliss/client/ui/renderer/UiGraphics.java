@@ -140,8 +140,7 @@ public class UiGraphics {
     ) {
 
         // Retrieve font and text scale
-        final float guiScaleMultiplier = scaledFont.isScaleInvariant() ? 1f : screen.getGuiScale();
-        final float textScale = scaledFont.getSize() * guiScaleMultiplier;
+        final float textScale = scaledFont.getSizeForCurrentGuiScale();
 
         // Compute x and y positions
         final int _x = (int)(switch(textAlignment) {
