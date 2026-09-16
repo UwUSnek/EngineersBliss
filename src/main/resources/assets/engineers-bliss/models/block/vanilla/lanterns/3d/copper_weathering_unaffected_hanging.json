@@ -2,7 +2,7 @@
   "credit" : "UwU_Snek",
   "parent" : "engineers-bliss:block/vanilla/lanterns/3d/templates/hanging_lantern",
   "textures" : {
-    "chain"   : "engineers-bliss:block/vanilla/chains/3d/copper",
+    "chain"   : "engineers-bliss:block/vanilla/chains/3d/copper_unaffected",
     "lantern" : "minecraft:block/copper_lantern"
   }
 }

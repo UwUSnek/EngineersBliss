@@ -18,9 +18,11 @@ import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_provide
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.BedPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.CeilingHangingSignPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.ChainPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.ChestPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.CopperGolemStatuePartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.FloorBannerPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.FloorStandingSignPartProvider;
+import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.LanternPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.MetalBarsPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.WallBannerPartProvider;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.part_providers.block_sets.WallHangingSignPartProvider;
@@ -141,7 +143,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
 
     static {
 
-        // Unique blocks
+        // Block sets
         register(BlockSets.CHAIN,                                 ChainPartProvider.class);
         register(BlockSets.METAL_BARS,                        MetalBarsPartProvider.class);
         register(BlockSets.SIGN.standing().floor(),   FloorStandingSignPartProvider.class);
@@ -152,6 +154,8 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         register(BlockSets.BANNER.wall(),                    WallBannerPartProvider.class);
         register(BlockSets.BED,                                     BedPartProvider.class);
         register(BlockSets.COPPER_GOLEM_STATUE,       CopperGolemStatuePartProvider.class);
+        register(BlockSets.CHEST,                                 ChestPartProvider.class);
+        register(BlockSets.LANTERN,                             LanternPartProvider.class);
 
         // Rails
         register(Blocks.RAIL,              NormalRailPartProvider.class);
@@ -159,7 +163,7 @@ public class AltTexturesModelPlugin implements PreparableModelLoadingPlugin<Map<
         register(Blocks.ACTIVATOR_RAIL, ActivatorRailPartProvider.class);
         register(Blocks.DETECTOR_RAIL,   DetectorRailPartProvider.class);
 
-        // Block sets
+        // Unique blocks
         register(Blocks.SLIME_BLOCK,       SlimeBlockPartProvider.class);
         register(Blocks.HONEY_BLOCK,       HoneyBlockPartProvider.class);
         register(Blocks.MANGROVE_ROOTS, MangroveRootsPartProvider.class);

@@ -2,6 +2,6 @@
   "credit" : "UwU_Snek",
   "parent" : "engineers-bliss:block/vanilla/chests/static/templates/single",
   "textures" : {
-    "texture" : "engineers-bliss:block/vanilla/chests/static/single/copper"
+    "texture" : "engineers-bliss:block/vanilla/chests/static/single/copper_unaffected"
   }
 }

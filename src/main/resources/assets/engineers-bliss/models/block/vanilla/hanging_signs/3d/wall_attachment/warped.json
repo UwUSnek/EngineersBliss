@@ -2,6 +2,6 @@
   "credit" : "UwU_Snek",
   "parent" : "engineers-bliss:block/vanilla/hanging_signs/3d/templates/wall_attachment",
   "textures" : {
-    "texture" : "engineers-bliss:block/vanilla/signs/static/warped"
+    "texture" : "engineers-bliss:block/vanilla/standing_signs/static/warped"
   }
 }

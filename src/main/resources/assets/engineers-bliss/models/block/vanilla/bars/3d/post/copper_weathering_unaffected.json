@@ -2,6 +2,6 @@
   "credit" : "UwU_Snek",
   "parent" : "engineers-bliss:block/vanilla/bars/3d/templates/post",
   "textures" : {
-    "texture" : "engineers-bliss:block/vanilla/bars/3d/copper"
+    "texture" : "engineers-bliss:block/vanilla/bars/3d/copper_unaffected"
   }
 }

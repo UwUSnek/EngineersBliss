@@ -1,9 +1,10 @@
 {
-  "parent": "engineers-bliss:block/vanilla/beds/static/templates/template_foot",
-  "textures": {
-    "east": "engineers-bliss:block/vanilla/beds/static/green_bed_foot_east",
-    "south": "engineers-bliss:block/vanilla/beds/static/green_bed_foot_south",
-    "up": "engineers-bliss:block/vanilla/beds/static/green_bed_foot_up",
-    "west": "engineers-bliss:block/vanilla/beds/static/green_bed_foot_west"
+  "credit" : "UwU_Snek",
+  "parent" : "engineers-bliss:block/vanilla/beds/static/templates/template_foot",
+  "textures" : {
+    "east"  : "engineers-bliss:block/vanilla/beds/static/green_bed_foot_east",
+    "south" : "engineers-bliss:block/vanilla/beds/static/green_bed_foot_south",
+    "up"    : "engineers-bliss:block/vanilla/beds/static/green_bed_foot_up",
+    "west"  : "engineers-bliss:block/vanilla/beds/static/green_bed_foot_west"
   }
 }
