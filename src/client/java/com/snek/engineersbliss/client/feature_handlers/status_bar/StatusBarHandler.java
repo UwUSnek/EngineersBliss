@@ -43,9 +43,10 @@ public class StatusBarHandler {
     }
 
 
+    //! Return value depends on the current Vanilla GUI Scale
     public static int getHeight() {
         final float heightMultiplier = SettingsServerFeatureSet.STATUS_BAR_HEIGHT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT));
-        final int guiScale = Math.max(1, Minecraft.getInstance().getWindow().getGuiScale());
+        final int guiScale = Minecraft.getInstance().getWindow().getGuiScale();
         final float realPixelHeight = DEFAULT_BAR_HEIGHT_PX * heightMultiplier;
         return Math.max(1, Math.round(realPixelHeight / guiScale));
     }
@@ -53,16 +54,19 @@ public class StatusBarHandler {
 
 
 
+    //! Return value depends on the current Vanilla GUI Scale
     public static int calcTop() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         final int height = mc.getWindow().getGuiScaledHeight();
         return isBottom() ? height - getHeight() : 0;
     }
+    //! Return value depends on the current Vanilla GUI Scale
     public static int calcBottom() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         final int height = mc.getWindow().getGuiScaledHeight();
         return isBottom() ? height : getHeight();
     }
+    //! Return value depends on the current Vanilla GUI Scale
     public static int getWidth() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
         return mc.getWindow().getGuiScaledWidth();

@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
 import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -58,7 +59,38 @@ public class UiGraphics {
     public UiGraphics(final GuiGraphicsExtractor raw, UiScreen screen) {
         this.raw = raw;
         this.screen = screen;
+
+
+        //! In 26.2+, Vanilla's GuiGraphicsExtractor pushes a full screen scissor layer in its constructor.
+        //! The height is calculated using GuiGraphicsExtractor.guiHeight(), which is modified by the VanillaGuiHeightChangerMixin mixin
+        //! in order to make space for the status bar.
+        //! This is OKAY. The status bar should always show in GUIs.
+
+        //! In <=26.1.2, there is no default scissor layer, so custom GUIs don't get clipped.
+        //! This manual scissor is pushed to clip custom widgets and make the versions visually consistent.
+        //! It's redundant in 26.2+, but I keep it here because i don't trust Minecraft's code enough.
+        //! It might not add the scissor in future versions. Can't control that code.
+        //! Having an extra layer of redundancy makes the system more reliable.
+
+
+        // Enable full screen scissor.
+        // //! Status bar works in Vanilla-GUI-Scaled coords. Calculations must take this into account.
+        if(StatusBarHandler.shouldRender()) {
+            final int vanillaGuiScale = Minecraft.getInstance().getWindow().getGuiScale();
+            final int barHeight = StatusBarHandler.getHeight() * vanillaGuiScale;
+            final int top = StatusBarHandler.isBottom() ? 0 : barHeight;
+            final int h   = screen.height - barHeight;
+            raw.enableScissor(0, top, screen.width, top + h);
+        }
+        else {
+            raw.enableScissor(0, 0, screen.width, screen.height);
+        }
+
+        //! Also for whatever reason, custom widgets that don't use any scissor don't get clipped at all, without this manual scissor?
+        //! Idk. But it works.
+        //! Scissor is automatically removed when the UiGraphics object is no longer needed. No need to pop it manually.
     }
+
 
     public void requestCursor(final CursorType cursorType) {
         raw.requestCursor(cursorType);

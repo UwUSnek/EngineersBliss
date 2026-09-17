@@ -32,9 +32,9 @@ public class CopperGolemStatuePartProvider extends __base_BlockSetPartProvider {
         final String golemName = getBlockResourceName();
         return List.of(
             String.format("copper_golem_statues/static/standing/%s", golemName),
-            String.format("copper_golem_statues/static/sitting/%s", golemName),
-            String.format("copper_golem_statues/static/running/%s", golemName),
-            String.format("copper_golem_statues/static/star/%s", golemName)
+            String.format("copper_golem_statues/static/sitting/%s",  golemName),
+            String.format("copper_golem_statues/static/running/%s",  golemName),
+            String.format("copper_golem_statues/static/star/%s",     golemName)
         );
     }
 
