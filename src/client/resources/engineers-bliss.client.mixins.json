@@ -102,9 +102,8 @@
 
 
 
-        "status_bar.VanillaGuiHeightChangerMixin",
         "status_bar.VanillaContextualBarHeightChangerMixin",
-        "status_bar.CrosshairHeightFixMixin"
+        "status_bar.VanillaHotbarHeightChangerMixin"
     ],
     "injectors": {
         "defaultRequire": 1

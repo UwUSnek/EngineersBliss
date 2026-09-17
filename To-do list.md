@@ -338,7 +338,11 @@ ADD ALL OF THIS TO THE README
   - Significantly reduce memory usage of loaded feature previews
 
 
-
+- add big full screen confirmation screens for dangerous operations. can be disabled individually from the settings screen
+  - breaking a container with items in it
+  - breaking a lot of blocks at once with high interaction range/radius
+  - placing a lot of blocks at once with high interaction range/radius
+  - other stuff?
 
 
 

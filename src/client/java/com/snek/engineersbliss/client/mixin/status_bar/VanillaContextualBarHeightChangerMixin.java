@@ -5,8 +5,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
-
-//! Simple name change in 26.2
 //? if <=26.1.2 {
     /*import net.minecraft.client.gui.contextualbar.ContextualBarRenderer;
 *///? } else {
@@ -16,13 +14,14 @@ import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandl
 
 
 
-//! Simple name change in 26.2
 //? if <=26.1.2 {
     /*@Mixin(ContextualBarRenderer.class)
 *///? } else {
     @Mixin(ContextualBar.class)
 //? }
 public interface VanillaContextualBarHeightChangerMixin {
+    //! <= 26.1.2 and 26.2+ use the same method and class.
+    //! The only difference is that the old ContextualBarRenderer got renamed to ContextualBar.
 
     @ModifyReturnValue(method = "top", at = @At("RETURN"), require = 1)
     default int eb$top(int original) {
