@@ -69,11 +69,9 @@ public abstract class UiScreen extends Screen {
 
 
     // True Screen size & virtual gui scale
-    private int vanillaGuiScale = 1;  // The window's actual current scale, refreshed each vanilla resize. //! Always int.
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
     public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
-    public float getVanillaGuiScale() { return vanillaGuiScale; }
 
 
     // Relayout/rebuild flags
@@ -132,13 +130,12 @@ public abstract class UiScreen extends Screen {
      * NOTICE: The actual resize operation is done by the rendering loop when needed.
      */
     protected void maybeFlagResize() {
-        final @NotNull Minecraft mc = Minecraft.getInstance();
-        vanillaGuiScale = mc.getWindow().getGuiScale();
 
         // Retrieve current true dimensions and virtual scale
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
         float newScale = animatedGuiScale.compute();
-        int newWidth  = mc.getWindow().getScreenWidth();    //! Vanilla updates these when the Vanilla GUI Scale is changed.
-        int newHeight = mc.getWindow().getScreenHeight();   //! Vanilla updates these when the Vanilla GUI Scale is changed.
+        int newWidth  = window.getScreenWidth();    //! Vanilla updates these when the Vanilla GUI Scale is changed.
+        int newHeight = window.getScreenHeight();   //! Vanilla updates these when the Vanilla GUI Scale is changed.
 
         // Update dimensions and relayout if the scale changed or the window was resized
         if(lastGuiScale != newScale || width != newWidth || height != newHeight) {
@@ -219,7 +216,7 @@ public abstract class UiScreen extends Screen {
         if(!isWindowActive()) return true;
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         final MouseButtonEvent fixedEvent = new MouseButtonEvent(fixedPos.x, fixedPos.y, new MouseButtonInfo(e.button(), e.modifiers()));
-        final int vanillaScale = Minecraft.getInstance().options.guiScale().get();
+        final int vanillaScale = MinecraftUtils.getVanillaGuiScale();
         return super.mouseDragged(fixedEvent, dx * vanillaScale, dy * vanillaScale);
     }
 
@@ -377,9 +374,8 @@ public abstract class UiScreen extends Screen {
 
         // Compensate the visual scale so pixel size stays constant regardless of GUI Scale, then draw everything. Compensate mouse coords too.
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
-        float factor = 1f / vanillaGuiScale;
         graphics.pose().pushMatrix();
-        graphics.pose().scale(factor, factor);
+        graphics.pose().scale(1f / MinecraftUtils.getVanillaGuiScale());
         extractRenderState(new UiGraphics(graphics, this), fixedPos.x, fixedPos.y, delta);
         graphics.pose().popMatrix();
     }

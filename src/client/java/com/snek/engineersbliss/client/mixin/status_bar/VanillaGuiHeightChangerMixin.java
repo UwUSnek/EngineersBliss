@@ -26,7 +26,7 @@ public class VanillaGuiHeightChangerMixin {
         //! Minecraft doesn't provide any getter for the Y base coord, so the status bar is simply drawn on top of the existing elements.
         //! Position=TOP doesn't require any resizing.
         if(StatusBarHandler.shouldRender() && StatusBarHandler.isBottom()) {
-            return original - StatusBarHandler.getHeight();
+            return original - StatusBarHandler.getVanillaHeight();
         }
         else {
             return original;

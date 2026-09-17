@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.ui.renderer;
 
+import java.util.function.Supplier;
+
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3x2f;
 import org.joml.Quaternionf;
@@ -7,11 +9,11 @@ import org.joml.Vector3f;
 
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
 import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 
@@ -47,8 +49,11 @@ import net.minecraft.world.level.block.Block;
  * A wrapper for Minecraft's GuiGraphicsExtractor which adds support for UiTxt rendering and antialiased operations.
  */
 public class UiGraphics {
-    GuiGraphicsExtractor raw;
-    UiScreen screen;
+    private final GuiGraphicsExtractor raw;
+    private final Supplier<Integer> widthGetter;
+    private final Supplier<Integer> heightGetter;
+    public int getWidth () { return  widthGetter.get(); }
+    public int getHeight() { return heightGetter.get(); }
 
 
 
@@ -57,38 +62,26 @@ public class UiGraphics {
 
 
     public UiGraphics(final GuiGraphicsExtractor raw, UiScreen screen) {
+        this(raw, () -> screen.width, () -> screen.height);
+    }
+    public UiGraphics(final GuiGraphicsExtractor raw, final Supplier<Integer> widthGetter, final Supplier<Integer> heightGetter) {
         this.raw = raw;
-        this.screen = screen;
+        this.widthGetter = widthGetter;
+        this.heightGetter = heightGetter;
 
 
         //! In 26.2+, Vanilla's GuiGraphicsExtractor pushes a full screen scissor layer in its constructor.
         //! The height is calculated using GuiGraphicsExtractor.guiHeight(), which is modified by the VanillaGuiHeightChangerMixin mixin
         //! in order to make space for the status bar.
-        //! This is OKAY. The status bar should always show in GUIs.
+        //! This is BAD. The status bar should always show in GUIs, but this automatic scissor clips it out.
 
-        //! In <=26.1.2, there is no default scissor layer, so custom GUIs don't get clipped.
-        //! This manual scissor is pushed to clip custom widgets and make the versions visually consistent.
-        //! It's redundant in 26.2+, but I keep it here because i don't trust Minecraft's code enough.
-        //! It might not add the scissor in future versions. Can't control that code.
-        //! Having an extra layer of redundancy makes the system more reliable.
-
-
-        // Enable full screen scissor.
-        // //! Status bar works in Vanilla-GUI-Scaled coords. Calculations must take this into account.
-        if(StatusBarHandler.shouldRender()) {
-            final int vanillaGuiScale = Minecraft.getInstance().getWindow().getGuiScale();
-            final int barHeight = StatusBarHandler.getHeight() * vanillaGuiScale;
-            final int top = StatusBarHandler.isBottom() ? 0 : barHeight;
-            final int h   = screen.height - barHeight;
-            raw.enableScissor(0, top, screen.width, top + h);
-        }
-        else {
-            raw.enableScissor(0, 0, screen.width, screen.height);
-        }
-
-        //! Also for whatever reason, custom widgets that don't use any scissor don't get clipped at all, without this manual scissor?
-        //! Idk. But it works.
+        //! This code deletes all existing scissors in the stack and pushes a full screen scissor that includes the status bar.
+        //! It's redundant in <26.2, but I keep it here because i don't trust Minecraft's code enough.
+        //! Having an extra layer of redundancy makes the system feel more reliable.
         //! Scissor is automatically removed when the UiGraphics object is no longer needed. No need to pop it manually.
+        final @NotNull ScissorStack stack = raw.scissorStack;
+        while(stack.peek() != null) stack.pop();
+        raw.enableScissor(0, 0, getWidth(), getHeight());
     }
 
 
@@ -471,7 +464,6 @@ public class UiGraphics {
         final float mouseY,
         final LivingEntity entity
     ) {
-        final float vanillaGuiScale = screen.getVanillaGuiScale();
         float centerX = (x0 + x1) / 2f;
         float centerY = (y0 + y1) / 2f;
         float xAngle = (float)Math.atan((centerX - mouseX) / 40f);
@@ -495,6 +487,7 @@ public class UiGraphics {
             livingRenderState.scale = 1f;
         }
 
+        final float vanillaGuiScale = MinecraftUtils.getVanillaGuiScale();
         Vector3f translation = new Vector3f(0f, renderState.boundingBoxHeight / 2f + offsetY, 0f);
         final int _size = Math.round(size / vanillaGuiScale);
         final int _x0   = Math.round(x0   / vanillaGuiScale);

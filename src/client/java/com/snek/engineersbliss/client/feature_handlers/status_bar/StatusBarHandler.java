@@ -43,32 +43,34 @@ public class StatusBarHandler {
     }
 
 
+
+
     //! Return value depends on the current Vanilla GUI Scale
-    public static int getHeight() {
+    public static int getVanillaHeight () { return Math.round(getHeight () / MinecraftUtils.getVanillaGuiScale());}
+    public static int calcVanillaTop   () { return Math.round(calcTop   () / MinecraftUtils.getVanillaGuiScale());}
+    public static int calcVanillaBottom() { return Math.round(calcBottom() / MinecraftUtils.getVanillaGuiScale());}
+    public static int getVanillaWidth  () { return Math.round(getWidth  () / MinecraftUtils.getVanillaGuiScale());}
+
+
+
+
+    public static float getHeight() {
         final float heightMultiplier = SettingsServerFeatureSet.STATUS_BAR_HEIGHT.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.STATUS_BAR_HEIGHT));
-        final int guiScale = Minecraft.getInstance().getWindow().getGuiScale();
         final float realPixelHeight = DEFAULT_BAR_HEIGHT_PX * heightMultiplier;
-        return Math.max(1, Math.round(realPixelHeight / guiScale));
+        return Math.max(1, Math.round(realPixelHeight));
     }
-
-
-
-
-    //! Return value depends on the current Vanilla GUI Scale
-    public static int calcTop() {
+    public static float calcTop() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
-        final int height = mc.getWindow().getGuiScaledHeight();
+        final int height = mc.getWindow().getHeight();
         return isBottom() ? height - getHeight() : 0;
     }
-    //! Return value depends on the current Vanilla GUI Scale
-    public static int calcBottom() {
+    public static float calcBottom() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
-        final int height = mc.getWindow().getGuiScaledHeight();
+        final int height = mc.getWindow().getHeight();
         return isBottom() ? height : getHeight();
     }
-    //! Return value depends on the current Vanilla GUI Scale
-    public static int getWidth() {
+    public static float getWidth() {
         final @NotNull Minecraft mc = Minecraft.getInstance();
-        return mc.getWindow().getGuiScaledWidth();
+        return mc.getWindow().getWidth();
     }
 }

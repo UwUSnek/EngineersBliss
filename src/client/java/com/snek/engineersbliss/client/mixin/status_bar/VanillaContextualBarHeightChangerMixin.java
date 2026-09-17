@@ -27,7 +27,7 @@ public interface VanillaContextualBarHeightChangerMixin {
     @ModifyReturnValue(method = "top", at = @At("RETURN"), require = 1)
     default int eb$top(int original) {
         if(StatusBarHandler.shouldRender() && StatusBarHandler.isBottom()) {
-            return original - StatusBarHandler.getHeight();
+            return original - StatusBarHandler.getVanillaHeight();
         }
         else {
             return original;

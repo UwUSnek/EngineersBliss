@@ -1,11 +1,16 @@
 package com.snek.engineersbliss.client.screens.status_bar;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.mojang.blaze3d.platform.Window;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
 
@@ -25,11 +30,22 @@ public class StatusBarRenderer {
     }
 
 
-    private static void render(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) { //FIXME this might need the custom UiGraphics
+    private static void render(GuiGraphicsExtractor graphics, DeltaTracker tickCounter) {
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
+        final int width  =  window.getWidth();
+        final int height = window.getHeight();
+        graphics.pose().pushMatrix();
+        graphics.pose().scale(1f / window.getGuiScale());
+        __internal_render(new UiGraphics(graphics, () -> width, () -> height), tickCounter);
+        graphics.pose().popMatrix();
+    }
+
+
+    private static void __internal_render(UiGraphics graphics, DeltaTracker tickCounter) {
         if(StatusBarHandler.shouldRender()) {
-            final int top    = StatusBarHandler.calcTop();    //FIXME this is prob fine as int bc the in game bar is always int and doesnt change with GUI scale
-            final int bottom = StatusBarHandler.calcBottom(); //FIXME this is prob fine as int bc the in game bar is always int and doesnt change with GUI scale
-            final int width  = StatusBarHandler.getWidth();   //FIXME this is prob fine as int bc the in game bar is always int and doesnt change with GUI scale
+            final float top    = StatusBarHandler.calcTop();
+            final float bottom = StatusBarHandler.calcBottom();
+            final float width  = StatusBarHandler.getWidth();
             graphics.fill(0, top, width, bottom, Layout.statusBarBgColor);
         }
     }

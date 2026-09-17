@@ -83,6 +83,12 @@ public class MinecraftUtils {
     }
 
 
+
+    public static int getVanillaGuiScale() {
+        return Minecraft.getInstance().getWindow().getGuiScale();
+    }
+
+
     public static boolean isCreativeMode(final @Nullable Player player) {
         return player != null && player.isCreative();
     }

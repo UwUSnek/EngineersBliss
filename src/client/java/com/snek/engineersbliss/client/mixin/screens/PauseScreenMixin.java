@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.client.screens.pause_screen.PauseScreenContent;
+import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.PauseScreen;
@@ -70,8 +70,8 @@ public class PauseScreenMixin extends Screen {
     @Inject(method = "init", at = @At("TAIL"), cancellable = false, require = 1)
     public void eb$init(final CallbackInfo ci) {
         final @NotNull Pair<Float, Float> clusterData = eb$getButtonClusterRightAndCenterY();
-        final int guiScale = Minecraft.getInstance().getWindow().getGuiScale();
-        embedded = new PauseScreenContent(clusterData.getFirst() * guiScale, clusterData.getSecond() * guiScale);
+        final int vanillaGuiScale = MinecraftUtils.getVanillaGuiScale();
+        embedded = new PauseScreenContent(clusterData.getFirst() * vanillaGuiScale, clusterData.getSecond() * vanillaGuiScale);
         embedded.init(width, height);
     }
 
