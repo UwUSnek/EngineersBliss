@@ -69,18 +69,9 @@ public class UiGraphics {
         this.widthGetter = widthGetter;
         this.heightGetter = heightGetter;
 
-
-        //! In 26.2+, Vanilla's GuiGraphicsExtractor pushes a full screen scissor layer in its constructor.
-        //! The height is calculated using GuiGraphicsExtractor.guiHeight(), which is modified by the VanillaGuiHeightChangerMixin mixin
-        //! in order to make space for the status bar.
-        //! This is BAD. The status bar should always show in GUIs, but this automatic scissor clips it out.
-
-        //! This code deletes all existing scissors in the stack and pushes a full screen scissor that includes the status bar.
-        //! It's redundant in <26.2, but I keep it here because i don't trust Minecraft's code enough.
-        //! Having an extra layer of redundancy makes the system feel more reliable.
-        //! Scissor is automatically removed when the UiGraphics object is no longer needed. No need to pop it manually.
-        final @NotNull ScissorStack stack = raw.scissorStack;
-        while(stack.peek() != null) stack.pop();
+        // Add full screen scissor to clip out of bounds widgets. Not strictly needed but makes the rendering more reliable.
+        //! GuiGraphicsExtractor already does this by default in 26.2+, but im keeping this in all versions because I don't trust Miencraft's
+        //! code enough. It might change in the future or something, having this always on is easier and doesn't rly affect performance anyway.
         raw.enableScissor(0, 0, getWidth(), getHeight());
     }
 
