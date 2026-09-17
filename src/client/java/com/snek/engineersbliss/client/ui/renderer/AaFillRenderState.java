@@ -18,11 +18,13 @@ import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 /**
  * A GuiElementRenderState for antialiased rects.
  * This is used by UiGraphics to produce antialiased regions without multiple draw calls, improving performance.
+ * Supports 4-vertex gradients.
  */
 public record AaFillRenderState(
     RenderPipeline pipeline, TextureSetup textureSetup, Matrix3x2f pose,
     float x0, float y0, float x1, float y1,
-    int color, @Nullable ScreenRectangle scissorArea //TODO add support for 4-vertex gradient and axis gradients using different vertex colors
+    int color0, int color1, int color2, int color3,
+    @Nullable ScreenRectangle scissorArea
 ) implements GuiElementRenderState {
 
     @Override
@@ -33,14 +35,14 @@ public record AaFillRenderState(
         final float ey1 = y1 + 1;
         final float w = x1 - x0;
         final float h = y1 - y0;
-        emit(vc, ex1, ey0, ex1 - x0, ey0 - y0, w, h);
-        emit(vc, ex1, ey1, ex1 - x0, ey1 - y0, w, h);
-        emit(vc, ex0, ey1, ex0 - x0, ey1 - y0, w, h);
-        emit(vc, ex0, ey0, ex0 - x0, ey0 - y0, w, h);
+        emit(vc, ex1, ey0, color0, ex1 - x0, ey0 - y0, w, h);
+        emit(vc, ex1, ey1, color1, ex1 - x0, ey1 - y0, w, h);
+        emit(vc, ex0, ey1, color2, ex0 - x0, ey1 - y0, w, h);
+        emit(vc, ex0, ey0, color3, ex0 - x0, ey0 - y0, w, h);
     }
 
 
-    private void emit(VertexConsumer vc, float x, float y, float localX, float localY, float w, float h) {
+    private void emit(VertexConsumer vc, float x, float y, int color, float localX, float localY, float w, float h) {
 
         //! Name      Type  Norm  Count
         // POSITION   FLOAT false   3   |  xy needed. z holds X position     |  1x float

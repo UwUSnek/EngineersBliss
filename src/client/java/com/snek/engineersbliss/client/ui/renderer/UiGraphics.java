@@ -120,7 +120,7 @@ public class UiGraphics {
 
 
 
-    // Floating point fills
+    // Plain fill
 
     public void fill(final float x0, final float y0, final float x1, final float y1, final int col, final float alpha) {
         fill(x0, y0, x1, y1, applyAlpha(col, alpha));
@@ -134,6 +134,70 @@ public class UiGraphics {
         ));
     }
 
+
+
+
+
+
+
+
+    // Gradient fills
+
+    public void horizontalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB, float alpha) {
+        horizontalGradient(x0, y0, x1, y1, applyAlpha(colA, alpha), applyAlpha(colB, alpha));
+    }
+    public void horizontalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB) {
+        __internal_horizontalGradient(Math.min(x0, x1), y0, Math.max(x0, x1), y1, colA, colB);
+    }
+    private void __internal_horizontalGradient(float x0, float y0, float x1, float y1, final int colA, final int colB) {
+        if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
+        raw.guiRenderState.addGuiElement(new AaFillRenderState(
+            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1,
+            colB, colB, colA, colA, // tr, br, bl, tl
+            getScissorStack().peek()
+        ));
+    }
+
+
+    public void verticalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB, float alpha) {
+        verticalGradient(x0, y0, x1, y1, applyAlpha(colA, alpha), applyAlpha(colB, alpha));
+    }
+    public void verticalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB) {
+        __internal_verticalGradient(x0, Math.min(y0, y1), x1, Math.max(y0, y1), colA, colB);
+    }
+    private void __internal_verticalGradient(float x0, float y0, float x1, float y1, final int colA, final int colB) {
+        if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
+        raw.guiRenderState.addGuiElement(new AaFillRenderState(
+            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1,
+            colA, colB, colB, colA, // tr, br, bl, tl
+            getScissorStack().peek()
+        ));
+    }
+
+
+    public void quadGradient(final float x0, final float y0, final float x1, final float y1, final int colTL, final int colTR, final int colBR, final int colBL, final float alpha) {
+        quadGradient(x0, y0, x1, y1, applyAlpha(colTL, alpha), applyAlpha(colTR, alpha), applyAlpha(colBR, alpha), applyAlpha(colBL, alpha));
+    }
+    public void quadGradient(float x0, float y0, float x1, float y1, int colTL, int colTR, int colBR, int colBL) {
+        if(x0 > x1) {
+            final float tmpF = x0; x0 = x1; x1 = tmpF;
+            int tmpC = colTL; colTL = colTR; colTR = tmpC;
+            /**/tmpC = colBL; colBL = colBR; colBR = tmpC;
+        }
+        if(y0 > y1) {
+            final float tmpF = y0; y0 = y1; y1 = tmpF;
+            int tmpC = colTL; colTL = colBL; colBL = tmpC;
+            /**/tmpC = colTR; colTR = colBR; colBR = tmpC;
+        }
+        raw.guiRenderState.addGuiElement(new AaFillRenderState(
+            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1,
+            colTR, colBR, colBL, colTL, // tr, br, bl, tl
+            getScissorStack().peek()
+        ));
+    }
 
 
 
