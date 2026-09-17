@@ -344,6 +344,16 @@ ADD ALL OF THIS TO THE README
   - placing a lot of blocks at once with high interaction range/radius
   - other stuff?
 
+- add 26.3 compatibility
+  - check if keybinds still work well. they changed some stuff in the back end handling of keybinds
+    - "Minecraft now uses SDL3 instead of GLFW for window management, input, and platform integration" - official changelog
+    - "Keyboard input now uses SDL scancodes for physical key positions and SDL keycodes for layout-dependent text editing shortcuts" - official changelog
+  - add Poplar variants to block sets
+  - check if decorated pot part provider needs an update. might just be an in-game change though.
+    - "Instead of taking a list of 4 item IDs, this component now takes an object with 4 optional item stack fields named:" - official changelog
+    - back, left, right, front
+
+
 
 
 
