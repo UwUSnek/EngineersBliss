@@ -21,7 +21,6 @@ import com.snek.engineersbliss.utils.Easings;
 import com.snek.engineersbliss.utils.Txt;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.resources.Identifier;
 
@@ -114,14 +113,14 @@ public class UiSlider extends __base_UiWidget {
     // Also recalculate the slider's handle position based on the click position. //! onClick disabled that.
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
-        boolean result = super.mouseClicked(event, doubled);
-
-        final long handle = Minecraft.getInstance().getWindow().handle();
-        virtualX = event.x();
-
-        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
-        updateValueFromVirtualX();
-        return result;
+        boolean r = super.mouseClicked(event, doubled);
+        if(r) {
+            final long handle = Minecraft.getInstance().getWindow().handle();
+            virtualX = event.x();
+            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
+            updateValueFromVirtualX();
+        }
+        return r;
     }
 
 
@@ -129,28 +128,25 @@ public class UiSlider extends __base_UiWidget {
     //! This allows for instant bound clamping. Simply moving the cursor back to the right position looks very jittery and delayed.
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
-        boolean result = super.mouseDragged(event, dx, dy);
-        virtualX = Math.clamp(virtualX + dx, getXF(), getRight());
-        updateValueFromVirtualX();
-        return result;
+        boolean r = super.mouseDragged(event, dx, dy);
+        if(r) {
+            virtualX = Math.clamp(virtualX + dx, getXF(), getRight());
+            updateValueFromVirtualX();
+        }
+        return r;
     }
 
 
     //! Reactivate the cursor (mouseClicked disabled it).
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
-        long handle = Minecraft.getInstance().getWindow().handle();
-        GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
-        GLFW.glfwSetCursorPos(handle, getInnerX() + getInnerWidth() * value, getHeightCenter());
-        return super.mouseReleased(event);
-    }
-
-
-    //! Default keyPressed moves the handle when the left or right arrow key is pressed.
-    //! This stops that behaviour.
-    @Override
-    public boolean keyPressed(KeyEvent event) {
-        return true;
+        final boolean r = super.mouseReleased(event);
+        if(r) {
+            long handle = Minecraft.getInstance().getWindow().handle();
+            GLFW.glfwSetInputMode(handle, GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
+            GLFW.glfwSetCursorPos(handle, getInnerX() + getInnerWidth() * value, getHeightCenter());
+        }
+        return r;
     }
 
     protected void updateMessage() {

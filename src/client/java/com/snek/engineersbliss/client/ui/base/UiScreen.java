@@ -109,6 +109,8 @@ public abstract class UiScreen extends Screen {
         this.needsRelayout = false;
         this.bgColor = Layout.bgColor;
         this.animatedBgColor = new AnimatedColor(calcNewBgColor(), 1000);
+        // this.animatedBgColor = new AnimatedColor(0x0, 1000);
+        // this.animatedBgColor.startNewTransition(calcNewBgColor());
     }
     private int calcNewBgColor() {
         final int bgOpacity = (int)(255f * SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY)));
