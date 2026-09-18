@@ -39,7 +39,7 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         SettingsServerFeatureSet.DITHERING_STRENGTH,
         s(() -> new UiTxt("UI dithering strength")),
         s(() -> new UiTxt("The strength of the dithering effect applied to UI fills and gradients.")),
-        s(() -> new UiTxt("Higher values reduce color banding, but increase noise."))
+        s(() -> new UiTxt("Higher values reduce color banding, but increase visual noise."))
     );
     public static final ClientFeature<?> PAUSE_GAME_IN_PAUSE_MENU = new ClientFeature<>(
         SettingsServerFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,

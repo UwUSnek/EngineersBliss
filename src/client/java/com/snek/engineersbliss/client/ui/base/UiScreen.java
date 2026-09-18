@@ -93,7 +93,12 @@ public abstract class UiScreen extends Screen {
 
 
     // Style
-    private final AnimatedColor bgColor;
+    private final AnimatedColor animatedBgColor;
+    private int bgColor;
+    public void setBgColor(final int newBgColor) {
+        this.bgColor = newBgColor;
+        refreshBgColor();
+    }
 
 
 
@@ -102,14 +107,15 @@ public abstract class UiScreen extends Screen {
         super(new UiTxt().get());
         this.animatedGuiScale = new AnimatedFloat(SettingsFeatureHandler.getCurrentGuiScale(), Layout.guiScaleTransitionDuration);
         this.needsRelayout = false;
-        this.bgColor = new AnimatedColor(calcNewBgColor(), 1000);
+        this.bgColor = Layout.bgColor;
+        this.animatedBgColor = new AnimatedColor(calcNewBgColor(), 1000);
     }
     private int calcNewBgColor() {
         final int bgOpacity = (int)(255f * SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY)));
-        return Layout.bgColor & 0x00FFFFFF | (bgOpacity << 24);
+        return bgColor & 0x00FFFFFF | (bgOpacity << 24);
     }
     protected void refreshBgColor() {
-        bgColor.startNewTransition(calcNewBgColor());
+        animatedBgColor.startNewTransition(calcNewBgColor());
     }
 
 
@@ -376,7 +382,8 @@ public abstract class UiScreen extends Screen {
         final @NotNull Vector2f fixedPos = calcTrueCursorPos();
         graphics.pose().pushMatrix();
         graphics.pose().scale(1f / MinecraftUtils.getVanillaGuiScale());
-        extractRenderState(new UiGraphics(graphics, this), fixedPos.x, fixedPos.y, delta);
+        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(fixedPos.x, fixedPos.y);     // Update hovered element
+        extractRenderState(new UiGraphics(graphics, this), fixedPos.x, fixedPos.y, delta);              // Draw everything with custom UiGraphics
         graphics.pose().popMatrix();
     }
 
@@ -385,9 +392,6 @@ public abstract class UiScreen extends Screen {
      * Custom render function that uses a UiGraphics instead of Vanill'as graphics extractor.
      */
     public void extractRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float delta) {
-
-        // Update hovered element
-        hoveredElm = (draggedElm != null) ? draggedElm : computeHoveredElm(mouseX, mouseY);
 
         // Extract background
         extractBackground(graphics, mouseX, mouseY, delta);
@@ -414,7 +418,7 @@ public abstract class UiScreen extends Screen {
     }
 	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         extractBlurredBackground(graphics, mouseX, mouseY, a);
-        final int _bgColor = bgColor.compute();
+        final int _bgColor = animatedBgColor.compute();
         if((_bgColor & 0xFF000000) != 0) graphics.fill(0, 0, width, height, _bgColor);
     }
 

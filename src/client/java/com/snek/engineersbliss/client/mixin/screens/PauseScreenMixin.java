@@ -78,14 +78,19 @@ public class PauseScreenMixin extends Screen {
 
     @Inject(method = "extractRenderState", at = @At("TAIL"), cancellable = false, require = 1)
     public void eb$extractRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a, CallbackInfo ci) {
+        //! Draw the custom PauseScreenContents instance's contents. Without background.
+        embedded.setForegroundOnly();
         embedded.extractRenderState(graphics, mouseX, mouseY, a);
     }
 
 
     @Inject(method = "extractBackground", at = @At("HEAD"), cancellable = true, require = 1)
 	public void eb$extractBackground(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a, CallbackInfo ci) {
-        // Suppress Vanilla pause screen background
+        //! Suppress Vanilla pause screen background.
         ci.cancel();
+        //! Draw the custom PauseScreenContents instance's inherited background.
+        embedded.setBackgroundOnly();
+        embedded.extractRenderState(graphics, mouseX, mouseY, a);
     }
 
 

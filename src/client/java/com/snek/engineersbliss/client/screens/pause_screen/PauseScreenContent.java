@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.pause_screen;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.EngineerSBlissClient;
 import com.snek.engineersbliss.client.screens.alt_textures.AltTexturesScreen;
@@ -11,12 +13,15 @@ import com.snek.engineersbliss.client.screens.settings.SettingsScreen;
 import com.snek.engineersbliss.client.ui.base.UiSidebarScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.Fonts;
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
+import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiPauseScreenButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.PlayerModelWidget;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
+import net.minecraft.client.gui.components.events.GuiEventListener;
 
 
 
@@ -24,10 +29,25 @@ import com.snek.engineersbliss.client.utils.UiTxt;
 
 
 
+/**
+ * A special UiSIdebarScreen that isn't meant for direct rendering.
+ * Vanilla's pause screen mixin creates an instance of this screen and forwards events to it manually.
+ * This allows the screen to render custom UiWidgets within the Vanilla pause screen.
+ *
+ * This class splits the rendering into setBackgroundOnly and setForegroundOnly, allowing the mixin to render them separately
+ * by calling the Vanilla extractRenderState, handling UiGraphics creation automatically.
+ * This lets it draw Vanilla UI elements on top of the custom background but below custom widgets.
+ */
 public class PauseScreenContent extends UiSidebarScreen {
     private final float vanillaClusterRight;
     private final float vanillaClusterCenterY;
     private PlayerModelWidget playerModel;
+
+    // Split rendering data. //! isFgOnly is just !isBgOnly
+    private boolean isBgOnly = false;
+    public void setBackgroundOnly() { isBgOnly = true; }
+    public void setForegroundOnly() { isBgOnly = false; }
+
 
 
 
@@ -58,7 +78,6 @@ public class PauseScreenContent extends UiSidebarScreen {
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         final UiTxt titleText   = new UiTxt(EngineerSBliss.MOD_NAME, Fonts.ui.light, 2f);
         final UiTxt versionText = new UiTxt(String.format("v%s mc%s", EngineerSBlissClient.getModVersion(), EngineerSBlissClient.getMcVersion()), Fonts.ui.regular, 1f);
-        //FIXME ^ the mod version will prob contain the minecraft version too, after setting up stonecutter
         leftSidebar.addWidget(new UiTextWidget(this, titleText,   TextAlignment.LEFT, Layout.fgColor), titleText.getScaledFont().getUnscaleLineHeight());
         leftSidebar.addWidget(new UiTextWidget(this, versionText, TextAlignment.LEFT, Layout.fgColor), versionText.getScaledFont().getUnscaleLineHeight());
         leftSidebar.setLockedRows(4); //! Top spacer + mod name + mode version + spacer
@@ -112,5 +131,26 @@ public class PauseScreenContent extends UiSidebarScreen {
         final float xc = (vanillaClusterRight + width) / 2f;
         playerModel.setSize(boxSize, boxSize);
         playerModel.setPos(xc - boxSize / 2f, vanillaClusterCenterY - boxSize / 2f);
+    }
+
+
+
+    //! Verbatim copy of UiScreen's extractRenderState, but with split rendering guards.
+    @Override
+    public void extractRenderState(UiGraphics graphics, float mouseX, float mouseY, float delta) {
+
+        // Extract background
+        if(isBgOnly) {
+            extractBackground(graphics, mouseX, mouseY, delta);
+        }
+
+        // Extract widgets
+        else {
+            for(final @NotNull GuiEventListener c : children()) {
+                if(c instanceof @NotNull __base_UiWidget r) {
+                    r.extract(graphics, mouseX, mouseY, delta);
+                }
+            }
+        }
     }
 }
