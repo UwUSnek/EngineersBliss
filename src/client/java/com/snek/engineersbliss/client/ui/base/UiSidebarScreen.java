@@ -17,7 +17,7 @@ import com.snek.engineersbliss.client.utils.Layout;
  */
 public abstract class UiSidebarScreen extends UiScreen {
     public static float DEFAULT_SIDEBAR_WIDTH = 0.2f;
-    public static int DEFAULT_SIDEBAR_COLOR = 0xCC1F1F1F;
+    public static int DEFAULT_SIDEBAR_COLOR = 0xAA1F1F1F;
 
     // Elements and layout
     protected final boolean hasLeftSidebar;

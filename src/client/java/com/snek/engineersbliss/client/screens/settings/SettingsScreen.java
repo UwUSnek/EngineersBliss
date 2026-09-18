@@ -62,6 +62,10 @@ public class SettingsScreen extends UiFeatureSetScreen {
             this, SettingsClientFeatureSet.GUI_BACKGROUND_OPACITY,
             (i, n) -> refreshBgColor(), backgroundOpacityFormatter, 0, 0
         ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiAnalogueFeatureSlider(
+            this, SettingsClientFeatureSet.DITHERING_STRENGTH,
+            null, (n, u) -> String.format("%.3f", n), 0.0, 0.5
+        ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PAUSE_GAME_IN_PAUSE_MENU,  null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.PAUSE_GAME_IN_MOD_SCREENS, null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
@@ -75,10 +79,6 @@ public class SettingsScreen extends UiFeatureSetScreen {
         // Rendering
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiAnalogueFeatureSlider(
-            this, SettingsClientFeatureSet.DITHERING_STRENGTH,
-            null, (n, u) -> String.format("%.3f", n), 0.0, 0.5
-        ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
             this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
             null

@@ -31,6 +31,10 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
         "gui_background_opacity",
         List.of(0f, 0.05f, 0.1f, 0.15f, 0.2f, 0.25f, 0.3f, 0.35f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f, 1f), 17
     ));
+    public static final ServerAnalogueFeature DITHERING_STRENGTH = INSTANCE.registerFeature(new ServerAnalogueFeature(
+        "dithering_strength",
+        0.0, 0.25, 0.05
+    ));
     public static final ServerToggleFeature PAUSE_GAME_IN_PAUSE_MENU = INSTANCE.registerFeature(new ServerToggleFeature(
         "pause_game_in_pause_menu",
         true
@@ -47,10 +51,6 @@ public class SettingsServerFeatureSet extends __base_ServerFeatureSet {
 
 
 
-    public static final ServerAnalogueFeature DITHERING_STRENGTH = INSTANCE.registerFeature(new ServerAnalogueFeature(
-        "dithering_strength",
-        0.0, 0.25, 0.1
-    ));
     public static final ServerToggleFeature PLAYER_MODEL_IN_PAUSE_SCREEN = INSTANCE.registerFeature(new ServerToggleFeature(
         "player_model_in_pause_screen",
         true
