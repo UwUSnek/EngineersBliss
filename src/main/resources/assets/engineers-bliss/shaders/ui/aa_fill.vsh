@@ -7,11 +7,13 @@
 in vec3 Position;
 in float LineWidth;
 in vec2 UV0;
+in ivec2 UV1;
 in vec4 Color;
 
-out vec4 vertexColor;
 out vec2 localPos;
 out vec2 rectSize;
+out vec4 vertexColor;
+flat out int ditheringStrength;
 
 
 
@@ -23,4 +25,5 @@ void main() {
     localPos = vec2(Position.z, LineWidth);
     rectSize = vec2(UV0);
     vertexColor = Color;
+    ditheringStrength = UV1.x;
 }

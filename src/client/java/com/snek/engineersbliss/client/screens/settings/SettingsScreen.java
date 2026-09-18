@@ -8,6 +8,7 @@ import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.widgets.base.ValueFormatter;
 import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
+import com.snek.engineersbliss.client.ui.widgets.sliders.UiAnalogueFeatureSlider;
 import com.snek.engineersbliss.client.ui.widgets.sliders.UiSteppedFeatureSlider;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
@@ -69,6 +70,31 @@ public class SettingsScreen extends UiFeatureSetScreen {
         ), Layout.BORDER_HEIGHT);
 
 
+
+
+        // Rendering
+        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
+        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiAnalogueFeatureSlider(
+            this, SettingsClientFeatureSet.DITHERING_STRENGTH,
+            null, (n, u) -> String.format("%.3f", n), 0.0, 0.5
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
+            this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
+            null
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
+            this, SettingsClientFeatureSet.BLOCK_SHADERS,
+            null
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
+            this, SettingsClientFeatureSet.BLOCK_SHADER_LIMIT,
+            null, blockShaderLimitFormatter, 0, 0
+        ), Layout.BORDER_HEIGHT);
+
+
+
+
         // Status bar
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Status bar", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
@@ -83,21 +109,6 @@ public class SettingsScreen extends UiFeatureSetScreen {
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, SettingsClientFeatureSet.CHAT_HIDES_STATUS_BAR, null), Layout.BORDER_HEIGHT);
 
 
-        // Rendering
-        leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
-        leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("Rendering", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
-            this, SettingsClientFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
-            null
-        ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(
-            this, SettingsClientFeatureSet.BLOCK_SHADERS,
-            null
-        ), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
-            this, SettingsClientFeatureSet.BLOCK_SHADER_LIMIT,
-            null, blockShaderLimitFormatter, 0, 0
-        ), Layout.BORDER_HEIGHT);
 
 
         // Misc

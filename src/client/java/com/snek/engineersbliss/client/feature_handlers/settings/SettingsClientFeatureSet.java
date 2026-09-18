@@ -56,25 +56,12 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
 
 
 
-    public static final ClientFeature<?> STATUS_BAR_HEIGHT = new ClientFeature<>(
-        SettingsServerFeatureSet.STATUS_BAR_HEIGHT,
-        s(() -> new UiTxt("Status Bar height")),
-        s(() -> new UiTxt("The height of the in-game status bar, in pixels."))
+    public static final ClientFeature<?> DITHERING_STRENGTH = new ClientFeature<>(
+        SettingsServerFeatureSet.DITHERING_STRENGTH,
+        s(() -> new UiTxt("UI dithering strength")),
+        s(() -> new UiTxt("The strength of the dithering effect applied to UI fills and gradients.")),
+        s(() -> new UiTxt("Higher values reduce color banding, but increase noise."))
     );
-    public static final ClientFeature<?> STATUS_BAR_POSITION = new ClientFeature<>(
-        SettingsServerFeatureSet.STATUS_BAR_POSITION,
-        s(() -> new UiTxt("Status Bar position")),
-        s(() -> new UiTxt("The position of the in-game status bar."))
-    );
-    public static final ClientFeature<?> CHAT_HIDES_STATUS_BAR = new ClientFeature<>(
-        SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR,
-        s(() -> new UiTxt("Chat hides Status Bar")),
-        s(() -> new UiTxt("Hides the Status Bar when the chat is open."))
-    );
-
-
-
-
     public static final ClientFeature<?> PLAYER_MODEL_IN_PAUSE_SCREEN = new ClientFeature<>(
         SettingsServerFeatureSet.PLAYER_MODEL_IN_PAUSE_SCREEN,
         s(() -> new UiTxt("Display player model in pause screen")),
@@ -91,6 +78,25 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         s(() -> new UiTxt("Block Shader limit")),
         s(() -> new UiTxt("The maximum number of shaded block models to display at once. This can help control lag in busy areasn")),
         s(() -> (UiTxt)new UiTxt("Only available when [Block Shaders] is ON.").Orange())
+    );
+
+
+
+
+    public static final ClientFeature<?> STATUS_BAR_HEIGHT = new ClientFeature<>(
+        SettingsServerFeatureSet.STATUS_BAR_HEIGHT,
+        s(() -> new UiTxt("Status Bar height")),
+        s(() -> new UiTxt("The height of the in-game status bar, in pixels."))
+    );
+    public static final ClientFeature<?> STATUS_BAR_POSITION = new ClientFeature<>(
+        SettingsServerFeatureSet.STATUS_BAR_POSITION,
+        s(() -> new UiTxt("Status Bar position")),
+        s(() -> new UiTxt("The position of the in-game status bar."))
+    );
+    public static final ClientFeature<?> CHAT_HIDES_STATUS_BAR = new ClientFeature<>(
+        SettingsServerFeatureSet.CHAT_HIDES_STATUS_BAR,
+        s(() -> new UiTxt("Chat hides Status Bar")),
+        s(() -> new UiTxt("Hides the Status Bar when the chat is open."))
     );
 
 

@@ -7,6 +7,8 @@ import org.joml.Vector2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
+import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -48,7 +50,7 @@ public record AaFillRenderState(
         // POSITION   FLOAT false   3   |  xy needed. z holds X position     |  1x float
         // LINE_WIDTH FLOAT false   1   |  Holds Y position                  |  1x float
         // UV0        FLOAT false   2   |  Holds width and height            |  2x float
-        // UV1        SHORT false   2   |  unused                            |  -
+        // UV1        SHORT false   2   |  X holds dithering strength        |  1x int
         // UV2        SHORT false   2   |  unused                            |  -
         // COLOR      UBYTE true    4   |  Holds color                       |  1x int -> 4x byte //! auto
         // NORMAL     BYTE  true    3   |  Unusable. Bad alignment           |  -
@@ -63,6 +65,9 @@ public record AaFillRenderState(
 
         // Color
         vc.setColor(color);
+
+        // Dithering strength
+        vc.setUv1((int)(255 * ClientFeatureSync.getFeatureD(SettingsServerFeatureSet.DITHERING_STRENGTH)), 0);
     }
 
 

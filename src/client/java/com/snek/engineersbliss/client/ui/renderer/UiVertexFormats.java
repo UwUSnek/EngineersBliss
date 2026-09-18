@@ -19,6 +19,7 @@ public final class UiVertexFormats {
             .add("Position",  VertexFormatElement.POSITION)
             .add("LineWidth", VertexFormatElement.LINE_WIDTH)
             .add("UV0",       VertexFormatElement.UV0)
+            .add("UV1",       VertexFormatElement.UV1)
             .add("Color",     VertexFormatElement.COLOR)
         .build();
         public static final VertexFormat AA_BLIT = VertexFormat.builder()
@@ -46,6 +47,7 @@ public final class UiVertexFormats {
             .addAttribute("Position",  GpuFormat.RGB32_FLOAT)
             .addAttribute("LineWidth", GpuFormat.R32_FLOAT)
             .addAttribute("UV0",       GpuFormat.RG32_FLOAT)
+            .addAttribute("UV1",       GpuFormat.RG16_SINT)
             .addAttribute("Color",     GpuFormat.RGBA8_UNORM)
         .build();
 
