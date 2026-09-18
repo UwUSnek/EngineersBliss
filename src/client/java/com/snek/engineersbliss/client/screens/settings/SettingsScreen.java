@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.screens.settings;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
@@ -61,7 +63,11 @@ public class SettingsScreen extends UiFeatureSetScreen {
         ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
             this, SettingsClientFeatureSet.GUI_BACKGROUND_OPACITY,
-            (i, n) -> refreshBgColor(), backgroundOpacityFormatter, 0, 0
+            (i, n) -> setBgColor(getBgColor()), backgroundOpacityFormatter, 0, 0
+        ), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Float>(
+            this, SettingsClientFeatureSet.GUI_BACKGROUND_BLUR_STRENGTH,
+            (i, n) -> refreshBgBlurRadius(), null, 0, 0
         ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiAnalogueFeatureSlider(
             this, SettingsClientFeatureSet.DITHERING_STRENGTH,

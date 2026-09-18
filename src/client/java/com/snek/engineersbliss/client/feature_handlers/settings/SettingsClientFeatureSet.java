@@ -35,6 +35,11 @@ public class SettingsClientFeatureSet extends __base_ClientFeatureSet<SettingsSe
         s(() -> new UiTxt("Gui background opacity")),
         s(() -> (UiTxt)new UiTxt("The opacity of the background color of screens."))
     );
+    public static final ClientFeature<?> GUI_BACKGROUND_BLUR_STRENGTH = new ClientFeature<>(
+        SettingsServerFeatureSet.GUI_BACKGROUND_BLUR_STRENGTH,
+        s(() -> new UiTxt("Gui background blur strength")),
+        s(() -> new UiTxt("The strength of the blur effect applied to screen backgrounds."))
+    );
     public static final ClientFeature<?> DITHERING_STRENGTH = new ClientFeature<>(
         SettingsServerFeatureSet.DITHERING_STRENGTH,
         s(() -> new UiTxt("UI dithering strength")),

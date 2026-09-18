@@ -70,6 +70,7 @@
 
         "rendering.vanilla_indigo.RenderingFilterBlockVanillaIndigoMixin",
         "rendering.vanilla_indigo.SpaceWarpingRenderPassMixin",
+        "rendering.vanilla_indigo.UiBlurPrepareMixin",
         "rendering.RenderingFilterLightMixin",
         "rendering.CustomOutlinesMixin",
         "rendering.InteractionFilterMixin",

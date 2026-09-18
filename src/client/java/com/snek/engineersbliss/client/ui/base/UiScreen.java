@@ -93,31 +93,45 @@ public abstract class UiScreen extends Screen {
 
 
     // Style
-    private final AnimatedColor animatedBgColor;
-    private int bgColor;
+    protected final AnimatedColor animatedBgColor;
+    protected final AnimatedFloat animatedBgBlurRadius;
+    private int bgColor; //! Contains alpha but this is always bg 100% opacity. The bg opacity setting doesn't affect this member's value.
+    public int getBgColor() { return bgColor; }
+
+    public int calcNewBgColor() {
+        final @NotNull var f = SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY;
+        final float bgOpacity = f.getValues().get(ClientFeatureSync.getFeatureI(f));
+        return UiGraphics.applyAlpha(bgColor, bgOpacity);
+    }
     public void setBgColor(final int newBgColor) {
         this.bgColor = newBgColor;
-        refreshBgColor();
+        animatedBgColor.startNewTransition(calcNewBgColor());
     }
-
+    public void refreshBgBlurRadius() {
+        final @NotNull var f = SettingsServerFeatureSet.GUI_BACKGROUND_BLUR_STRENGTH;
+        final float radius = f.getValues().get(ClientFeatureSync.getFeatureI(f));
+        animatedBgBlurRadius.startNewTransition(radius);
+    }
 
 
 
     protected UiScreen() {
+        this(Layout.screenBgColor);
+    }
+    protected UiScreen(final int initialBgColor) {
+        final @NotNull var f = SettingsServerFeatureSet.GUI_BACKGROUND_BLUR_STRENGTH;
+        this(initialBgColor, f.getValues().get(f.getDefault()));
+    }
+    protected UiScreen(final float initialBgBlurRadius) {
+        this(Layout.screenBgColor, initialBgBlurRadius);
+    }
+    protected UiScreen(final int initialBgColor, final float initialBgBlurRadius) {
         super(new UiTxt().get());
         this.animatedGuiScale = new AnimatedFloat(SettingsFeatureHandler.getCurrentGuiScale(), Layout.guiScaleTransitionDuration);
         this.needsRelayout = false;
-        this.bgColor = Layout.bgColor;
-        this.animatedBgColor = new AnimatedColor(calcNewBgColor(), 1000);
-        // this.animatedBgColor = new AnimatedColor(0x0, 1000);
-        // this.animatedBgColor.startNewTransition(calcNewBgColor());
-    }
-    private int calcNewBgColor() {
-        final int bgOpacity = (int)(255f * SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY.getValues().get(ClientFeatureSync.getFeatureI(SettingsServerFeatureSet.GUI_BACKGROUND_OPACITY)));
-        return bgColor & 0x00FFFFFF | (bgOpacity << 24);
-    }
-    protected void refreshBgColor() {
-        animatedBgColor.startNewTransition(calcNewBgColor());
+        this.bgColor = initialBgColor;
+        this.animatedBgColor = new AnimatedColor(calcNewBgColor(), 500);
+        this.animatedBgBlurRadius = new AnimatedFloat(initialBgBlurRadius, 500);
     }
 
 
@@ -396,6 +410,7 @@ public abstract class UiScreen extends Screen {
     public void extractRenderState(final UiGraphics graphics, final float mouseX, final float mouseY, final float delta) {
 
         // Extract background
+        graphics.markBlurStart();  //FIXME this should NOT be needed. it think? idk
         extractBackground(graphics, mouseX, mouseY, delta);
 
         // Extract widgets
@@ -416,7 +431,10 @@ public abstract class UiScreen extends Screen {
         // Empty. Suppress Vanilla background.
     }
 	public void extractBlurredBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
-        graphics.blurBeforeThisStratum();
+        final float radius = animatedBgBlurRadius.compute();
+        if(radius > 0) {
+            graphics.gaussianBlur(0, 0, width, height, radius);
+        }
     }
 	public void extractBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
         extractBlurredBackground(graphics, mouseX, mouseY, a);

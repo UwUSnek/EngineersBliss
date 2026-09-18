@@ -5,8 +5,10 @@ import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3x2f;
 import org.joml.Quaternionf;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
@@ -21,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
+import net.minecraft.client.gui.render.GuiRenderer;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -80,7 +83,7 @@ public class UiGraphics {
         raw.requestCursor(cursorType);
     }
 
-    public int applyAlpha(final int color, final float alpha) {
+    public static int applyAlpha(final int color, final float alpha) {
         final int c = color & 0x00FFFFFF;
         final int a = (color >>> 24) & 0xFF;
         return c | ((Math.round(a * alpha) & 0xFF) << 24);
@@ -547,5 +550,41 @@ public class UiGraphics {
         renderState.shadowPieces.clear();
         renderState.outlineColor = 0;
         return renderState;
+    }
+
+
+
+
+
+
+
+    // Blur
+
+    public void markBlurStart() { //FIXME
+        //BUG this shouldn't be needed byt the new mixin thing system requires it in order to work.
+        //BUG old mixin system thing hides HUD
+        raw.nextStratum();
+        raw.blurBeforeThisStratum();
+    }
+
+
+    public void gaussianBlur(float x0, float y0, float x1, float y1, final float radius) {
+        if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
+        if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
+        UiBlur.request(radius);
+
+        final @NotNull Vector2f p0 = raw.pose().transformPosition(x0, y0, new Vector2f());
+        final @NotNull Vector2f p1 = raw.pose().transformPosition(x1, y1, new Vector2f());
+        final @NotNull Window window = Minecraft.getInstance().getWindow();
+        final float scale = MinecraftUtils.getVanillaGuiScale();
+        final float w = window.getWidth()  / scale;
+        final float h = window.getHeight() / scale;
+
+        raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+            UiRenderPipelines.AA_BLUR, UiBlur.textureSetup(), new Matrix3x2f(raw.pose()),
+            x0, y0, x1, y1,
+            p0.x / w, 1f - p0.y / h, p1.x / w, 1f - p1.y / h,
+            1f, getScissorStack().peek()
+        ));
     }
 }

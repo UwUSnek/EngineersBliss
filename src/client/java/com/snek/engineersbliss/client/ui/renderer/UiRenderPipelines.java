@@ -7,12 +7,14 @@ import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.CompareOp;
 import com.snek.engineersbliss.EngineerSBliss;
 import com.snek.engineersbliss.client.utils.RenderPipelinesUtils;
+import com.mojang.blaze3d.shaders.UniformType;
 
 //? if <=26.1.2 {
     /*import com.mojang.blaze3d.vertex.VertexFormat;
 *///? } else {
     import net.minecraft.client.renderer.BindGroupLayouts;
     import com.mojang.blaze3d.PrimitiveTopology;
+    import com.mojang.blaze3d.pipeline.BindGroupLayout;
 //? }
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -95,6 +97,44 @@ public final class UiRenderPipelines {
             *///? } else {
                 .withVertexBinding(0, UiVertexFormats.MULTILINE_AREA)
                 .withPrimitiveTopology(PrimitiveTopology.QUADS)
+            //? }
+            .build()
+        )
+    ;
+
+
+
+
+    public static final RenderPipeline AA_BLUR = RenderPipelines.register(
+        RenderPipeline.builder(GUI_BASE)
+            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_blur"))
+            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blur"))
+            //? if <=26.1.2 {
+                /*.withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
+                .withSampler("Sampler0")
+            *///? } else {
+                .withVertexBinding(0, UiVertexFormats.AA_BLIT)
+                .withPrimitiveTopology(PrimitiveTopology.QUADS)
+                .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
+            //? }
+            .build()
+        )
+    ;
+    public static final RenderPipeline GAUSSIAN_BLUR = RenderPipelines.register(
+        RenderPipeline.builder(RenderPipelines.POST_PROCESSING_SNIPPET)
+            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/gaussian_blur"))
+            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/blur"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/blur"))
+            //? if <=26.1.2 {
+                /*.withSampler("InSampler")
+                .withUniform("BlurConfig", UniformType.UNIFORM_BUFFER)
+            *///? } else {
+                .withBindGroupLayout(BindGroupLayout.builder()
+                    .withSampler("InSampler")
+                    .withUniform("BlurConfig", UniformType.UNIFORM_BUFFER)
+                    .build()
+                )
             //? }
             .build()
         )

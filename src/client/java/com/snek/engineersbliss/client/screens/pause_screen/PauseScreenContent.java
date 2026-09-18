@@ -53,8 +53,8 @@ public class PauseScreenContent extends UiSidebarScreen {
 
 
 
-    public PauseScreenContent(final float vanillaClusterRight, final float vanillaClusterCenterY) {
-        super(DEFAULT_SIDEBAR_WIDTH, null);
+    public PauseScreenContent(final float vanillaClusterRight, final float vanillaClusterCenterY, final int initialBgColor, final float initialBgBlurRadius) {
+        super(DEFAULT_SIDEBAR_WIDTH, null, initialBgColor, initialBgBlurRadius);
         this.vanillaClusterRight = vanillaClusterRight;
         this.vanillaClusterCenterY = vanillaClusterCenterY;
     }
@@ -141,6 +141,7 @@ public class PauseScreenContent extends UiSidebarScreen {
 
         // Extract background
         if(isBgOnly) {
+            graphics.markBlurStart();  //FIXME this should NOT be needed. it think? idk
             extractBackground(graphics, mouseX, mouseY, delta);
         }
 

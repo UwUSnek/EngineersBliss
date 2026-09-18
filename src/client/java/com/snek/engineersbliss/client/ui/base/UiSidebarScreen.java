@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.ui.base;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.containers.UiWidgetList;
 import com.snek.engineersbliss.client.utils.Layout;
 
@@ -20,10 +21,10 @@ public abstract class UiSidebarScreen extends UiScreen {
     public static int DEFAULT_SIDEBAR_COLOR = 0xAA1F1F1F;
 
     // Elements and layout
-    protected final boolean hasLeftSidebar;
-    protected final boolean hasRightSidebar;
-    protected final float leftSidebarWidth;  //TODO replace with UiSiz
-    protected final float rightSidebarWidth; //TODO replace with UiSize
+    protected boolean hasLeftSidebar;
+    protected boolean hasRightSidebar;
+    protected float leftSidebarWidth;  //TODO replace with UiSiz
+    protected float rightSidebarWidth; //TODO replace with UiSize
     protected UiWidgetList leftSidebar;
     protected UiWidgetList rightSidebar;
 
@@ -38,13 +39,26 @@ public abstract class UiSidebarScreen extends UiScreen {
     }
 
 
-    /**
-     * Creates a screen with left and right sidebar of the specified width.
-     * @param leftSidebarWidth The width of the left sidebar. Can be null to disble the left sidebar.
-     * @param rightSidebarWidth The width of the right sidebar. Can be null to disble the right sidebar.
-     */
+
+    protected UiSidebarScreen(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth, final int initialBgColor, final float initialBgBlurRadius) {
+        super(initialBgColor, initialBgBlurRadius);
+        finalizeInit(leftSidebarWidth, rightSidebarWidth);
+    }
+    protected UiSidebarScreen(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth, final float initialBgBlurRadius) {
+        super(initialBgBlurRadius);
+        finalizeInit(leftSidebarWidth, rightSidebarWidth);
+    }
+    protected UiSidebarScreen(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth, final int initialBgColor) {
+        super(initialBgColor);
+        finalizeInit(leftSidebarWidth, rightSidebarWidth);
+    }
     protected UiSidebarScreen(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth) {
         super();
+        finalizeInit(leftSidebarWidth, rightSidebarWidth);
+    }
+
+
+    private void finalizeInit(final @Nullable Float leftSidebarWidth, final @Nullable Float rightSidebarWidth) {
         this.hasLeftSidebar  =  leftSidebarWidth != null;
         this.hasRightSidebar = rightSidebarWidth != null;
         this.leftSidebarWidth  =  hasLeftSidebar ? leftSidebarWidth  : 0;
@@ -91,6 +105,23 @@ public abstract class UiSidebarScreen extends UiScreen {
             final float rightSidebarWidthPx = width * rightSidebarWidth;
             rightSidebar.setSize(rightSidebarWidthPx, height);
             rightSidebar.setPos(width - rightSidebarWidthPx, 0);
+        }
+    }
+
+
+    // Only blur behind sidebars
+    @Override
+    public void extractBlurredBackground(final UiGraphics graphics, final float mouseX, final float mouseY, final float a) {
+        final float radius = animatedBgBlurRadius.compute();
+        if(radius > 0) {
+            if(hasLeftSidebar) {
+                final float leftSidebarWidthPx = width * leftSidebarWidth;
+                graphics.gaussianBlur(0, 0, leftSidebarWidthPx, height, radius);
+            }
+            if(hasRightSidebar) {
+                final float rightSidebarWidthPx = width * rightSidebarWidth;
+                graphics.gaussianBlur(width, 0, width - rightSidebarWidthPx, height, radius);
+            }
         }
     }
 }

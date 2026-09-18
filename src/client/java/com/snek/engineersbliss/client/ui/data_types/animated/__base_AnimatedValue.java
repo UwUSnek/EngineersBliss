@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.snek.engineersbliss.utils.Easing;
 import com.snek.engineersbliss.utils.Easings;
-import com.snek.engineersbliss.utils.Utils;
 
 import net.minecraft.client.Minecraft;
 

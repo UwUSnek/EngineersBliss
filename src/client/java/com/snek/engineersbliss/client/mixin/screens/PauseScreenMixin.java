@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.snek.engineersbliss.client.screens.pause_screen.PauseScreenContent;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.data_types.Pair;
 
@@ -71,8 +72,14 @@ public class PauseScreenMixin extends Screen {
     public void eb$init(final CallbackInfo ci) {
         final @NotNull Pair<Float, Float> clusterData = eb$getButtonClusterRightAndCenterY();
         final int vanillaGuiScale = MinecraftUtils.getVanillaGuiScale();
-        embedded = new PauseScreenContent(clusterData.getFirst() * vanillaGuiScale, clusterData.getSecond() * vanillaGuiScale);
+
+        // Create and initialize PauseScreenContent instance
+        final int initialBgColor = Layout.screenBgColor & 0x00FFFFFF;
+        final float initialBgBlurRadius = 0;
+        embedded = new PauseScreenContent(clusterData.getFirst() * vanillaGuiScale, clusterData.getSecond() * vanillaGuiScale, initialBgColor, initialBgBlurRadius);
         embedded.init(width, height);
+        embedded.setBgColor(Layout.screenBgColor); //! Start transition to actual bgColor. embedded is initialized with transparent bg
+        embedded.refreshBgBlurRadius(); //! Start transition to actual bgBlurRadius. embedded is initialized with 0 blur
     }
 
 
