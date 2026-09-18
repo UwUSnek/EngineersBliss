@@ -17,6 +17,7 @@ import com.snek.engineersbliss.client.utils.Layout;
  */
 public abstract class UiSidebarScreen extends UiScreen {
     public static float DEFAULT_SIDEBAR_WIDTH = 0.2f;
+    public static int DEFAULT_SIDEBAR_COLOR = 0xCC1F1F1F;
 
     // Elements and layout
     protected final boolean hasLeftSidebar;
@@ -61,14 +62,18 @@ public abstract class UiSidebarScreen extends UiScreen {
         // Add left sidebar
         if(hasLeftSidebar) {
             leftSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT);
+            leftSidebar.setBgColor(DEFAULT_SIDEBAR_COLOR);
             leftSidebar.setBorderRightPx(1);
+            leftSidebar.setShadowRightPx(Layout.shadowSizePx);
             addRenderableWidget(leftSidebar);
         }
 
         // Add right sidebar
         if(hasRightSidebar) {
             rightSidebar = new UiWidgetList(this, Layout.BUTTON_HEIGHT);
+            rightSidebar.setBgColor(DEFAULT_SIDEBAR_COLOR);
             rightSidebar.setBorderLeftPx(1);
+            rightSidebar.setShadowLeftPx(Layout.shadowSizePx);
             addRenderableWidget(rightSidebar);
         }
     }

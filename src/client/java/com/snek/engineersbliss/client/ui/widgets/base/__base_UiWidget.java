@@ -159,6 +159,29 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
     public void setBorderLeft  (final float px, final int color) { setBorderLeftPx  (px); setBorderLeftColor  (color); }
 
 
+    // Shadows
+    private float shadowTop    = 0;
+    private float shadowRight  = 0;
+    private float shadowBottom = 0;
+    private float shadowLeft   = 0;
+    private int shadowTopColor    = Layout.shadowColor;
+    private int shadowRightColor  = Layout.shadowColor;
+    private int shadowBottomColor = Layout.shadowColor;
+    private int shadowLeftColor   = Layout.shadowColor;
+    public void setShadowTopPx      (final float  px) { shadowTop         =    px; }
+    public void setShadowRightPx    (final float  px) { shadowRight       =    px; }
+    public void setShadowBottomPx   (final float  px) { shadowBottom      =    px; }
+    public void setShadowLeftPx     (final float  px) { shadowLeft        =    px; }
+    public void setShadowTopColor   (final int color) { shadowTopColor    = color; }
+    public void setShadowRightColor (final int color) { shadowRightColor  = color; }
+    public void setShadowBottomColor(final int color) { shadowBottomColor = color; }
+    public void setShadowLeftColor  (final int color) { shadowLeftColor   = color; }
+    public void setShadowTop   (final float px, final int color) { setShadowTopPx   (px); setShadowTopColor   (color); }
+    public void setShadowRight (final float px, final int color) { setShadowRightPx (px); setShadowRightColor (color); }
+    public void setShadowBottom(final float px, final int color) { setShadowBottomPx(px); setShadowBottomColor(color); }
+    public void setShadowLeft  (final float px, final int color) { setShadowLeftPx  (px); setShadowLeftColor  (color); }
+
+
 
 
 
@@ -195,6 +218,7 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
 
     @Override
     public void extractSelf(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        extractShadows     (graphics, mouseX, mouseY, a);
         extractBackground  (graphics, mouseX, mouseY, a);
         extractLabel       (graphics, mouseX, mouseY, a);
         extractBorders     (graphics, mouseX, mouseY, a);
@@ -254,6 +278,25 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
     }
 
 
+    protected void extractShadows(UiGraphics graphics, float mouseX, float mouseY, float a) {
+        final boolean hasTop    = shadowTop    > 0;
+        final boolean hasRight  = shadowRight  > 0;
+        final boolean hasBottom = shadowBottom > 0;
+        final boolean hasLeft   = shadowLeft   > 0;
+        if(hasTop || hasRight || hasBottom || hasLeft) {
+            final float x = getX();
+            final float y = getY();
+            final float r = getRight();
+            final float b = getBottom();
+            final float alpha = isActive() ? 1f : Layout.disabledAlpha;
+            if(hasTop   ) extractShadowTop   (graphics, x, y, r,    shadowTop,    shadowTopColor,    alpha);
+            if(hasRight ) extractShadowRight (graphics,    y, r, b, shadowRight,  shadowRightColor,  alpha);
+            if(hasBottom) extractShadowBottom(graphics, x,    r, b, shadowBottom, shadowBottomColor, alpha);
+            if(hasLeft  ) extractShadowLeft  (graphics, x, y,    b, shadowLeft,   shadowLeftColor,   alpha);
+        }
+    }
+
+
     protected void extractBorders(UiGraphics graphics, float mouseX, float mouseY, float a) {
         final boolean hasTop    = borderTop    > 0;
         final boolean hasRight  = borderRight  > 0;
@@ -265,10 +308,10 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             final float r = getRight();
             final float b = getBottom();
             final float alpha = isActive() ? 1f : Layout.disabledAlpha;
-            if(hasTop   ) extractBorderTop   (graphics, x, y, r, b, borderTop,    borderTopColor, alpha);
-            if(hasRight ) extractBorderRight (graphics, x, y, r, b, borderRight,  borderRightColor, alpha);
-            if(hasBottom) extractBorderBottom(graphics, x, y, r, b, borderBottom, borderBottomColor, alpha);
-            if(hasLeft  ) extractBorderLeft  (graphics, x, y, r, b, borderLeft,   borderLeftColor, alpha);
+            if(hasTop   ) extractBorderTop   (graphics, x, y, r,    borderTop,    borderTopColor,    alpha);
+            if(hasRight ) extractBorderRight (graphics,    y, r, b, borderRight,  borderRightColor,  alpha);
+            if(hasBottom) extractBorderBottom(graphics, x,    r, b, borderBottom, borderBottomColor, alpha);
+            if(hasLeft  ) extractBorderLeft  (graphics, x, y,    b, borderLeft,   borderLeftColor,   alpha);
         }
     }
 
@@ -280,24 +323,46 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             final float oy = getY();
             final float or = getRight();
             final float ob = getBottom();
-            extractBorderTop   (graphics, ox, oy, or, ob, 1, outlineColor, 1f);
-            extractBorderRight (graphics, ox, oy, or, ob, 1, outlineColor, 1f);
-            extractBorderBottom(graphics, ox, oy, or, ob, 1, outlineColor, 1f);
-            extractBorderLeft  (graphics, ox, oy, or, ob, 1, outlineColor, 1f);
+            extractBorderTop   (graphics, ox, oy, or,     1, outlineColor, 1f);
+            extractBorderRight (graphics,     oy, or, ob, 1, outlineColor, 1f);
+            extractBorderBottom(graphics, ox,     or, ob, 1, outlineColor, 1f);
+            extractBorderLeft  (graphics, ox, oy,     ob, 1, outlineColor, 1f);
         }
     }
 
 
-    protected void extractBorderTop(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
+    protected void extractShadowTop(final UiGraphics g, final float x, final float y, final float r, final float thickness, final int color, final float alpha) {
+        final int edge = g.applyAlpha(color, alpha);
+        final int transparent = color & 0x00FFFFFF;
+        g.verticalGradient(x, y - thickness, r, y, transparent, edge);
+    }
+    protected void extractShadowRight(final UiGraphics g, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
+        final int edge = g.applyAlpha(color, alpha);
+        final int transparent = color & 0x00FFFFFF;
+        g.horizontalGradient(r, y, r + thickness, b, edge, transparent);
+    }
+    protected void extractShadowBottom(final UiGraphics g, final float x, final float r, final float b, final float thickness, final int color, final float alpha) {
+        final int edge = g.applyAlpha(color, alpha);
+        final int transparent = color & 0x00FFFFFF;
+        g.verticalGradient(x, b, r, b + thickness, edge, transparent);
+    }
+    protected void extractShadowLeft(final UiGraphics g, final float x, final float y, final float b, final float thickness, final int color, final float alpha) {
+        final int edge = g.applyAlpha(color, alpha);
+        final int transparent = color & 0x00FFFFFF;
+        g.horizontalGradient(x - thickness, y, x, b, transparent, edge);
+    }
+
+
+    protected void extractBorderTop(final UiGraphics g, final float x, final float y, final float r, final float thickness, final int color, final float alpha) {
         g.fill(x, y, r, y + thickness, color);
     }
-    protected void extractBorderRight(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
+    protected void extractBorderRight(final UiGraphics g, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
         g.fill(r, y, r - thickness, b, color);
     }
-    protected void extractBorderBottom(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
+    protected void extractBorderBottom(final UiGraphics g, final float x, final float r, final float b, final float thickness, final int color, final float alpha) {
         g.fill(x, b, r, b - thickness, color);
     }
-    protected void extractBorderLeft(final UiGraphics g, final float x, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
+    protected void extractBorderLeft(final UiGraphics g, final float x, final float y, final float b, final float thickness, final int color, final float alpha) {
         g.fill(x, y, x + thickness, b, color);
     }
 }

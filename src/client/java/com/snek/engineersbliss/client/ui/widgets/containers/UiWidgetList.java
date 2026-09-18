@@ -422,6 +422,12 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             i++;
         }
         graphics.disableScissor();
+
+
+        // Draw locked entries shadow
+        if(lockedRows > 0) {
+            extractShadowBottom(graphics, getRowLeft(), getRowRight(), lockedBottom, Layout.shadowSizePx, Layout.shadowColor, 1f);
+        }
     }
 
 

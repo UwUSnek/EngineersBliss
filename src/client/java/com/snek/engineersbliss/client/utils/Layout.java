@@ -22,6 +22,8 @@ public class Layout {
     public static int handleColorTransparent = 0x10999999;
 
     public static int borderColor            = 0xFF2E2C2C;
+    public static int shadowColor            = 0x22000000;
+    public static int shadowSizePx           = 16;
 
     public static float disabledAlpha = 0.25f;
 

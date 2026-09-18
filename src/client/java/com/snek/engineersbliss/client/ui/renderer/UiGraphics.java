@@ -80,7 +80,7 @@ public class UiGraphics {
         raw.requestCursor(cursorType);
     }
 
-    private int applyAlpha(final int color, final float alpha) {
+    public int applyAlpha(final int color, final float alpha) {
         final int c = color & 0x00FFFFFF;
         final int a = (color >>> 24) & 0xFF;
         return c | ((Math.round(a * alpha) & 0xFF) << 24);
@@ -126,12 +126,7 @@ public class UiGraphics {
         fill(x0, y0, x1, y1, applyAlpha(col, alpha));
     }
     public void fill(float x0, float y0, float x1, float y1, final int col) {
-        if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
-        if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
-        raw.guiRenderState.addGuiElement(new AaFillRenderState(
-            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
-            x0, y0, x1, y1, col, getScissorStack().peek()
-        ));
+        quadGradient(x0, y0, x1, y1, col, col, col, col);
     }
 
 
@@ -180,17 +175,9 @@ public class UiGraphics {
     public void quadGradient(final float x0, final float y0, final float x1, final float y1, final int colTL, final int colTR, final int colBR, final int colBL, final float alpha) {
         quadGradient(x0, y0, x1, y1, applyAlpha(colTL, alpha), applyAlpha(colTR, alpha), applyAlpha(colBR, alpha), applyAlpha(colBL, alpha));
     }
-    public void quadGradient(float x0, float y0, float x1, float y1, int colTL, int colTR, int colBR, int colBL) {
-        if(x0 > x1) {
-            final float tmpF = x0; x0 = x1; x1 = tmpF;
-            int tmpC = colTL; colTL = colTR; colTR = tmpC;
-            /**/tmpC = colBL; colBL = colBR; colBR = tmpC;
-        }
-        if(y0 > y1) {
-            final float tmpF = y0; y0 = y1; y1 = tmpF;
-            int tmpC = colTL; colTL = colBL; colBL = tmpC;
-            /**/tmpC = colTR; colTR = colBR; colBR = tmpC;
-        }
+    public void quadGradient(float x0, float y0, float x1, float y1, final int colTL, final int colTR, final int colBR, final int colBL) {
+        if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
+        if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
         raw.guiRenderState.addGuiElement(new AaFillRenderState(
             UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
             x0, y0, x1, y1,

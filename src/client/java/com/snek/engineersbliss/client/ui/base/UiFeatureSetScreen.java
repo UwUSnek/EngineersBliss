@@ -63,7 +63,7 @@ public class UiFeatureSetScreen extends UiSidebarScreen {
         final int titleHeight = titleText.getScaledFont().getUnscaleLineHeight();
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, titleText, TextAlignment.LEFT, Layout.fgColor), titleHeight);
-        leftSidebar.setLockedRows(2);
+        leftSidebar.setLockedRows(3); //! Top spacer + set name + spacer
     }
 
 
