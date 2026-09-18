@@ -1,5 +1,6 @@
 package com.snek.engineersbliss.client.screens.settings;
 
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.settings.SettingsClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.status_bar.StatusBarHandler;
 import com.snek.engineersbliss.client.screens.settings.widgets.GuiScaleSettingSlider;
@@ -89,8 +90,9 @@ public class SettingsScreen extends UiFeatureSetScreen {
         ), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiSteppedFeatureSlider<Integer>(
             this, SettingsClientFeatureSet.BLOCK_SHADER_LIMIT,
-            null, blockShaderLimitFormatter, 0, 0
-        ), Layout.BORDER_HEIGHT);
+            null, blockShaderLimitFormatter, 0, 0){
+            @Override public boolean isActive() { return ClientFeatureSync.getFeatureB(SettingsServerFeatureSet.BLOCK_SHADERS); }
+        }, Layout.BORDER_HEIGHT);
 
 
 

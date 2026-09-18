@@ -2,6 +2,7 @@ package com.snek.engineersbliss.client.screens.alt_textures;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
 import com.snek.engineersbliss.client.feature_handlers.alt_textures.AltTexturesClientFeatureSet;
 import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysClientFeatureSet;
 import com.snek.engineersbliss.client.ui.base.UiFeatureSetScreenWithPreview;
@@ -10,6 +11,7 @@ import com.snek.engineersbliss.client.ui.widgets.buttons.UiToggleFeatureButton;
 import com.snek.engineersbliss.client.ui.widgets.misc.UiTextWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
+import com.snek.engineersbliss.feature_handlers.alt_textures.AltTexturesServerFeatureSet;
 
 
 
@@ -78,8 +80,12 @@ public class AltTexturesScreen extends UiFeatureSetScreenWithPreview {
         // 3D models
         leftSidebar.addSpacer(Layout.BIG_SEPARATOR_HEIGHT);
         leftSidebar.addWidget(new UiTextWidget(this, new UiTxt("3D models", Layout.HEADER_TEXT_SCALE), TextAlignment.LEFT, Layout.fgColor), Layout.HEADER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.REDSTONE_WIRE_3D,              null), Layout.BORDER_HEIGHT);
-        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.RAILS_3D,                      null), Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.REDSTONE_WIRE_3D, null){
+            @Override public boolean isActive() { return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.MINIMAL_REDSTONE_WIRE); }
+        }, Layout.BORDER_HEIGHT);
+        leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.RAILS_3D, null){
+            @Override public boolean isActive() { return ClientFeatureSync.getFeatureB(AltTexturesServerFeatureSet.CONSISTENT_SLOPED_RAILS); }
+        }, Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.LADDERS_3D,                    null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.CHAINS_3D,                     null), Layout.BORDER_HEIGHT);
         leftSidebar.addWidgetAndSpacer(new UiToggleFeatureButton(this, AltTexturesClientFeatureSet.BARS_3D,                       null), Layout.BORDER_HEIGHT);

@@ -190,13 +190,13 @@ public class AltTexturesClientFeatureSet extends __base_ClientFeatureSet<AltText
         AltTexturesServerFeatureSet.REDSTONE_WIRE_3D,
         s(() -> new UiTxt("3D Redstone Wire")),
         s(() -> new UiTxt("Replaces the default flat texture of Redstone Wire with a three-dimensional model.")),
-        s(() -> (UiTxt)new UiTxt("Implies [Minimal Redstone Wire]").yellow())
+        s(() -> (UiTxt)new UiTxt("Requires [Minimal Redstone Wire]").Orange())
     );
     public static final ClientFeature<?> RAILS_3D = new ClientFeature<>(
         AltTexturesServerFeatureSet.RAILS_3D,
         s(() -> new UiTxt("3D Rails")),
         s(() -> new UiTxt("Replaces the default flat texture of Rails, Powered Rails, Activator Rails, and Detector Rails with a three-dimensional model.")),
-        s(() -> (UiTxt)new UiTxt("Implies [Consistent sloped Rails]").yellow())
+        s(() -> (UiTxt)new UiTxt("Requires [Consistent sloped Rails]").Orange())
     );
     public static final ClientFeature<?> LADDERS_3D = new ClientFeature<>(
         AltTexturesServerFeatureSet.LADDERS_3D,

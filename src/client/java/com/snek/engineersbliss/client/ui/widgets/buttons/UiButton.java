@@ -41,11 +41,6 @@ public class UiButton extends __base_UiWidget {
     private @Nullable Identifier bgSpriteId;
     private UiSize bgSpriteWidth;
 
-    // Enabled state
-    private boolean enabled;
-    private void setEnabled(final boolean newEnabled) { this.enabled = newEnabled; }
-    private boolean isEnabled() { return enabled; }
-
 
 
 
