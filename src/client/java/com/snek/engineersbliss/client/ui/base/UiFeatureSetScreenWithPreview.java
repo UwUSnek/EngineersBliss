@@ -115,18 +115,18 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
             final @NotNull Identifier atlasIdL = hoveredPreviewAtlasIds[0];
             final @NotNull Identifier atlasIdR = hoveredPreviewAtlasIds[1];
             if(!TextureAtlasTracker.isTextureReady(atlasIdL)) {
-                graphics.blit(atlasIdL, xL, yPlaceholder, xL + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+                graphics.blit.wh(atlasIdL, xL, yPlaceholder, w, hPlaceholder);
             }
             else {
                 final float[] uv = TextureAtlasTracker.getUV(atlasIdL, 0, System.currentTimeMillis());
-                graphics.blit(atlasIdL, xL, y, xL + w, y + h, uv[0], uv[1], uv[2], uv[3]);
+                graphics.blit.wh(atlasIdL, xL, y, w, h, uv[0], uv[1], uv[2], uv[3]);
             }
             if(!TextureAtlasTracker.isTextureReady(atlasIdR)) {
-                graphics.blit(atlasIdR, xR, yPlaceholder, xR + w, yPlaceholder + hPlaceholder, 0f, 1f, 0f, 1f);
+                graphics.blit.wh(atlasIdR, xR, yPlaceholder, w, hPlaceholder);
             }
             else {
                 final float[] uv  = TextureAtlasTracker.getUV(atlasIdR,  0, System.currentTimeMillis());
-                graphics.blit(atlasIdR, xR, y, xR + w, y + h, uv[0], uv[1], uv[2], uv[3]);
+                graphics.blit.wh(atlasIdR, xR, y, w, h, uv[0], uv[1], uv[2], uv[3]);
             }
         }
     }

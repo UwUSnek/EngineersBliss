@@ -72,6 +72,7 @@ public abstract class UiScreen extends Screen {
     protected final AnimatedFloat animatedGuiScale;
     private float lastGuiScale = -1;
     public float getGuiScale() { return animatedGuiScale.compute(); } //FIXME compute once per frame. keep frame number in a global. controlled by the screen
+    public boolean isGuiScaleTransitioning() { return !animatedGuiScale.isIdle(); }
 
 
     // Relayout/rebuild flags

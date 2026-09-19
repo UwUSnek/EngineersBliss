@@ -18,6 +18,7 @@ import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -296,49 +297,64 @@ public class UiGraphics {
 
 
     // Internal blit methods
-    private static TextureSetup textureSetupFor(final Identifier location) {
-        final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
-
-        return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
-    }
-    private void __internal_blit(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
-        raw.guiRenderState.addGuiElement(new AaBlitRenderState(
-            UiRenderPipelines.AA_BLIT, setup, new Matrix3x2f(raw.pose()),
-            x0, y0, x1, y1,
-            u0, v0, u1, v1,
-            alpha, getScissorStack().peek()
-        ));
-    }
 
 
     // Floating point blit
-    public void blit(final Identifier texture, final float x, final float y, final float u, final float v, final float width, final float height, final int textureWidth, final int textureHeight) {
-        blit(texture, x, y, u, v, width, height, textureWidth, textureHeight, 1.0f);
-    }
-    public void blit(final Identifier texture, final float x, final float y, final float u, final float v, final float width, final float height, final int textureWidth, final int textureHeight, final float alpha) {
-        __internal_blit(textureSetupFor(texture), x, y, x + width, y + height, u / textureWidth, v / textureHeight, (u + width) / textureWidth, (v + height) / textureHeight, alpha);
-    }
-    public void blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1) {
-        blit(location, x0, y0, x1, y1, u0, u1, v0, v1, 1.0f);
-    }
-    public void blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1, final float alpha) {
-        __internal_blit(textureSetupFor(location), x0, y0, x1, y1, u0, v0, u1, v1, alpha);
-    }
+    public final Blit blit = new Blit();
+    public class Blit {
+        private static Identifier resolveTexture(final Identifier location, final int width, final int height) {
+            // SVG texture, rasterize and return
+            if(SvgTextureTracker.isRegistered(location)) {
+                return SvgTextureTracker.bindForSize(location, width, height);
+            }
+            // Plain PNG, append "textures"
+            else {
+                return location.withPath("textures/" + location.getPath() + ".png");
+            }
+        }
+        private static TextureSetup textureSetupFor(final Identifier location) {
+            final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
+            return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
+        }
+        private void __internal_blit(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
+            raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+                UiRenderPipelines.AA_BLIT, setup, new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                u0, v0, u1, v1,
+                alpha, getScissorStack().peek()
+            ));
+        }
 
 
-    // Floating point blitSprite
-    public void blitSprite(final Identifier location, final float x, final float y, final float width, final float height) {
-        blitSprite(location, x, y, width, height, 1.0f);
-    }
-    public void blitSprite(final Identifier location, final float x, final float y, final float width, final float height, final float alpha) {
-        final TextureAtlasSprite sprite = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.GUI).getSprite(location);
-        blitSprite(sprite, x, y, width, height, alpha);
-    }
-    public void blitSprite(final TextureAtlasSprite sprite, final float x, final float y, final float width, final float height) {
-        blitSprite(sprite, x, y, width, height, 1.0f);
-    }
-    public void blitSprite(final TextureAtlasSprite sprite, final float x, final float y, final float width, final float height, final float alpha) {
-        __internal_blit(textureSetupFor(sprite.atlasLocation()), x, y, x + width, y + height, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), alpha);
+        public void wh(final Identifier location, final float x, final float y, final float w, final float h) {
+            wh(location, x, y, w, h, 0f, 1f, 0f, 1f);
+        }
+        public void wh(final Identifier location, final float x, final float y, final float w, final float h, final float alpha) {
+            wh(location, x, y, w, h, 0f, 1f, 0f, 1f, alpha);
+        }
+        public void wh(final Identifier location, final float x, final float y, final float w, final float h, final float u0, final float u1, final float v0, final float v1) {
+            xy(location, x, y, x + w, y + h, u0, u1, v0, v1);
+        }
+        public void wh(final Identifier location, final float x, final float y, final float w, final float h, final float u0, final float u1, final float v0, final float v1, final float alpha) {
+            xy(location, x, y, x + w, y + h, u0, u1, v0, v1, alpha);
+        }
+
+
+        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1) {
+            xy(location, x0, y0, x1, y1, 0f, 1f, 0f, 1f);
+        }
+        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
+            xy(location, x0, y0, x1, y1, 0f, 1f, 0f, 1f);
+        }
+        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1) {
+            xy(location, x0, y0, x1, y1, u0, u1, v0, v1, 1.0f);
+        }
+        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1, final float alpha) {
+            final int w = Math.round(Math.abs(x1 - x0));
+            final int h = Math.round(Math.abs(y1 - y0));
+            final Identifier resolved = resolveTexture(location, w, h);
+            __internal_blit(textureSetupFor(resolved), x0, y0, x1, y1, u0, v0, u1, v1, alpha);
+        }
     }
 
 
@@ -374,7 +390,7 @@ public class UiGraphics {
 
     // Block icons and sprites
 
-    public static final Identifier MISSING_ITEM_SPRITE = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/missing_item_sprite.png");
+    public static final Identifier MISSING_ITEM_SPRITE = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "gui/missing_item_sprite");
     public static final int DEFAULT_ITEM_SPRITE_SIZE = 16;
 
     private static final int ATLAS_COLS = 8;
@@ -405,11 +421,11 @@ public class UiGraphics {
 
         final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
         if(!TextureAtlasTracker.isTextureReady(textureId)) {
-            blit(textureId, x, y, x + size, y + size, 0f, 1f, 0f, 1f);
+            blit.wh(textureId, x, y, size, size);
         }
         else {
             final float[] uv = TextureAtlasTracker.getUV(textureId, blockIdx, System.currentTimeMillis());
-            blit(textureId, x, y, x + size, y + size, uv[0], uv[1], uv[2], uv[3]);
+            blit.wh(textureId, x, y, size, size, uv[0], uv[1], uv[2], uv[3]);
         }
     }
 
@@ -454,7 +470,7 @@ public class UiGraphics {
         // Load sprite
         //! Blocks with no item form return AIR from .asItem()
         if(block.asItem() == Items.AIR) {
-            blit(MISSING_ITEM_SPRITE, 0, 0, DEFAULT_ITEM_SPRITE_SIZE, DEFAULT_ITEM_SPRITE_SIZE, 0f, 1f, 0f, 1f);
+            blit.wh(MISSING_ITEM_SPRITE, 0, 0, DEFAULT_ITEM_SPRITE_SIZE, DEFAULT_ITEM_SPRITE_SIZE);
         }
         else {
             raw.item(new ItemStack(block), 0, 0);

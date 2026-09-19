@@ -81,7 +81,7 @@ public class UiSteppedFeatureSlider<T> extends UiSteppedSlider<T> implements Dua
 
 
         // Calculate sprite id
-        final String bgSpritePath = String.format("%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
+        final String bgSpritePath = String.format("gui/sprites/%s/%s", serverFeature.getFeatureSet().getId(), serverFeature.getId());
         withSpriteBg(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, bgSpritePath), 1f);
         getLeftLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
     }

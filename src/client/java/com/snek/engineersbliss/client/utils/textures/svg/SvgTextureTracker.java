@@ -1,16 +1,14 @@
 package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
-import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.system.MemoryUtil;
 
 
@@ -22,35 +20,39 @@ public final class SvgTextureTracker {
 
     public static final class Entry {
         public final byte[] svgBytes;
-        public final SvgMetadataSection meta;
-        public final NativeImage[] cached = new NativeImage[SettingsFeatureHandler.getGuiScalesNumber()];
+        // public final SvgMetadataSection meta;  //TODO REMOVE
+        public final Map<Long, NativeImage> cached = new ConcurrentHashMap<>();
 
-        public Entry(final byte[] svgBytes, final SvgMetadataSection meta) {
+        // public Entry(final byte[] svgBytes, final SvgMetadataSection meta) {  //TODO REMOVE
+        public Entry(final byte[] svgBytes) {
             this.svgBytes = svgBytes;
-            this.meta = meta;
+            // this.meta = meta;  //TODO REMOVE
         }
     }
 
 
-    private static final Map<Identifier, Entry> REGISTRY = new ConcurrentHashMap<>();
 
-    public static Entry getOrRegister(final Identifier id, final byte[] bytes, final SvgMetadataSection meta) {
-        return REGISTRY.computeIfAbsent(id, k -> new Entry(bytes, meta));
+    private static final Map<Identifier, Entry> REGISTRY   = new ConcurrentHashMap<>();
+    private static final Set<Identifier>        REGISTERED = ConcurrentHashMap.newKeySet(); // sized ids bound to GPU textures
+
+    // public static Entry getOrRegister(final Identifier id, final byte[] bytes, final SvgMetadataSection meta) {  //TODO REMOVE
+    public static Entry getOrRegister(final Identifier id, final byte[] bytes) {
+        // return REGISTRY.computeIfAbsent(id, k -> new Entry(bytes, meta));  //TODO REMOVE
+        return REGISTRY.computeIfAbsent(id, k -> new Entry(bytes));
     }
 
-    public static boolean isRegistered(final Identifier baseId) {
-        return REGISTRY.containsKey(baseId);
-    }
-
-
+    public static boolean isRegistered(final Identifier baseId) { return REGISTRY.containsKey(baseId); }
     public static Entry get(final Identifier id) { return REGISTRY.get(id); }
     public static Map<Identifier, Entry> all() { return REGISTRY; }
 
+    private static long packSize(final int w, final int h) {
+        return (((long)w) << 32) | (h & 0xFFFFFFFFL);
+    }
 
-
-
-
-
+    public static void retainOnly(final Set<Identifier> validIds) {
+        REGISTRY.keySet().removeIf(id -> !validIds.contains(id));
+        REGISTERED.removeIf(sizedId -> validIds.stream().noneMatch(base -> sizedId.getPath().startsWith(base.getPath() + "."))); //TODO optimize this. make it more realiable too
+    }
 
     private static NativeImage copy(final NativeImage src) {
         final NativeImage out = new NativeImage(src.getWidth(), src.getHeight(), false);
@@ -58,47 +60,28 @@ public final class SvgTextureTracker {
         return out;
     }
 
-
-    /**
-     * Creates a copy of the requested texture.
-     * This also rasterizes and caches the texture on first request.
-     */
-    public static NativeImage acquire(final Identifier id, final int scaleIndex) {
-        final @NotNull Entry e = REGISTRY.get(id);
+    /** Returns the texture at the requested pixel size. Rasterizes a new size if needed. Caller owns the returned copy. */
+    public static NativeImage acquire(final Identifier id, final int width, final int height) {
+        final Entry e = REGISTRY.get(id);
         if(e == null) return null;
-        NativeImage cached = e.cached[scaleIndex];
+        final long key = packSize(width, height);
+        NativeImage cached = e.cached.get(key);
         if(cached == null) {
-            final float scale = SettingsServerFeatureSet.GUI_SCALE.getValues().get(scaleIndex);
-            cached = SvgRasterizer.rasterize(e.svgBytes, (int)(e.meta.width() * scale), (int)(e.meta.height() * scale));
-            e.cached[scaleIndex] = cached;
+            cached = SvgRasterizer.rasterize(e.svgBytes, width, height);
+            e.cached.put(key, cached);
         }
         return copy(cached);
     }
 
-
-
-
-
-
-
     /**
-     * Finds the version of the specified sprite rasterized for the current GUI scale.
-     * @param baseId The ID of the sprite, without scale suffix.
-     * @return The complete sprite ID.
+     * Returns an Identifier bound to a GPU texture rasterized at (width, height).
      */
-    public static Identifier getOptimalSprite(final Identifier baseId) {
-        return getOptimalSprite(baseId, SettingsFeatureHandler.getCurrentGuiScaleIndex());
-    }
-
-
-    /**
-     * Finds the version of the specified sprite rasterized for the provided GUI scale.
-     * @param baseId The ID of the sprite, without scale suffix.
-     * @param scale The target GUI Scale.
-     * @return The complete sprite ID.
-     */
-    public static Identifier getOptimalSprite(final Identifier baseId, final int scaleIndex) {
-        final int clamped = Math.clamp(scaleIndex, 0, SettingsFeatureHandler.getGuiScalesNumber() - 1);
-        return baseId.withSuffix(".x" + clamped);
+    public static Identifier bindForSize(final Identifier baseId, final int width, final int height) {
+        final Identifier sizedId = baseId.withSuffix("." + width + "x" + height);
+        if(REGISTERED.add(sizedId)) {
+            final NativeImage img = acquire(baseId, width, height);
+            Minecraft.getInstance().getTextureManager().register(sizedId, new DynamicTexture(sizedId::toString, img));
+        }
+        return sizedId;
     }
 }

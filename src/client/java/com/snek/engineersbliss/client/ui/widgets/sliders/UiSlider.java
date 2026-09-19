@@ -50,6 +50,9 @@ public class UiSlider extends __base_UiWidget {
     // Sprite
     private @Nullable Identifier bgSpriteId;
     private UiSize bgSpriteWidth;
+    private UiSize bgSpriteMargin;
+    public UiSize getBgSpriteMargin() { return bgSpriteMargin; }
+
 
     // Mouse handling
     private double virtualX = 0;
@@ -79,6 +82,7 @@ public class UiSlider extends __base_UiWidget {
         this.value = initialValue;
         this.bgSpriteId = null;
         this.bgSpriteWidth = new UiSize(this);
+        this.bgSpriteMargin = new UiSize(this); this.bgSpriteMargin.clear().setHF(0.25f);
         this.baseLabel = baseLabel;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;
@@ -232,7 +236,14 @@ public class UiSlider extends __base_UiWidget {
 
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         if(bgSpriteId != null) {
-            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF(), alpha);
+            final float marginPx = getBgSpriteMargin().getPx();
+            // graphics.blitSprite(bgSpriteId, getXF() + marginPx, getYF() + marginPx, bgSpriteWidth.getPx() - 2f * marginPx, getHeightF() - 2f * marginPx, alpha);
+            graphics.blit.wh(
+                bgSpriteId,
+                getXF() + marginPx, getYF() + marginPx,
+                bgSpriteWidth.getPx() - 2f * marginPx, getHeightF() - 2f * marginPx,
+                alpha
+            );
         }
     }
 

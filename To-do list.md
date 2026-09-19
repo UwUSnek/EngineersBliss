@@ -370,6 +370,8 @@ ADD ALL OF THIS TO THE README
 
 # After v1.0.0 release
 
+- promote mod on reddit
+
 - Make text translatable
 - Add GB versions of text
 - Add more languages

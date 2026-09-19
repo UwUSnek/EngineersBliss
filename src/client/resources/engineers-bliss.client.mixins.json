@@ -9,13 +9,10 @@
         "accessors.BlockEntityRenderDispatcherAccessor",
         "accessors.FontAccessor",
         "accessors.MinecraftAccessor",
-        "accessors.SpriteSourcesAccessor",
         "accessors.MouseHandlerAccessor",
 
 
         "misc.AsyncTextureLoaderMixin",
-        "misc.SpriteSourcesMixin",
-        "misc.SpriteAtlasSvgSupportMixin",
 
 
         "screens.PauseScreenMixin",

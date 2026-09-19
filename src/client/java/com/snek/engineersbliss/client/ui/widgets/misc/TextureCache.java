@@ -92,7 +92,7 @@ public class TextureCache implements AutoCloseable {
      */
     public void blit(final UiGraphics graphics, final float x, final float y, final float w, final float h) {
         if(texture == null) return;
-        graphics.blit(location, x, y, x + w, y + h, 0f, 1f, 0f, 1f);
+        graphics.blit.wh(location, x, y, w, h);
     }
 
 

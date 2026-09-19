@@ -40,6 +40,8 @@ public class UiButton extends __base_UiWidget {
     // Sprite
     private @Nullable Identifier bgSpriteId;
     private UiSize bgSpriteWidth;
+    private UiSize bgSpriteMargin;
+    public UiSize getBgSpriteMargin() { return bgSpriteMargin; }
 
 
 
@@ -51,6 +53,7 @@ public class UiButton extends __base_UiWidget {
         this.key = Character.toLowerCase(key);
         this.bgSpriteId = null;
         this.bgSpriteWidth = new UiSize(this);
+        this.bgSpriteMargin = new UiSize(this); this.bgSpriteMargin.clear().setHF(0.25f);
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadInOut);
     }
     public UiButton(final UiScreen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {
@@ -149,7 +152,13 @@ public class UiButton extends __base_UiWidget {
         // Draw background sprite if present, on top of the default background so the shape of the button is preserved
         final boolean usingSprite = bgSpriteId != null;
         if(usingSprite) {
-            graphics.blitSprite(bgSpriteId, getXF(), getYF(), bgSpriteWidth.getPx(), getHeightF(), alpha);
+            final float marginPx = getBgSpriteMargin().getPx();
+            graphics.blit.wh(
+                bgSpriteId,
+                getXF() + marginPx, getYF() + marginPx,
+                bgSpriteWidth.getPx() - 2f * marginPx, getHeightF() - 2f * marginPx,
+                alpha
+            );
         }
     }
 

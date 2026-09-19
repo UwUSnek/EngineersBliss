@@ -12,7 +12,6 @@ import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.Identifier;
 
@@ -43,7 +42,7 @@ public class UiPauseScreenButton extends UiButton {
 
 
     private void finalizeInit(final @Nullable String spriteName) {
-        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pause_screen/" + spriteName);
+        final Identifier bgSpriteId = spriteName == null ? null : Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "gui/sprites/pause_screen/" + spriteName);
         withSpriteBg(bgSpriteId, 4f);
         getLeftLabelMargin().clear().addHF(1f).addPx(Layout.textMarginPx);
     }

@@ -17,6 +17,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureReloadListener;
 import com.snek.engineersbliss.client.network.login.ClientModVersionCheck;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 
@@ -24,7 +25,13 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 import net.fabricmc.fabric.api.client.model.loading.v1.PreparableModelLoadingPlugin;
+import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.packs.PackType;
+
+
+
+
 
 
 
@@ -64,6 +71,10 @@ public class EngineerSBlissClient implements ClientModInitializer {
         MinecraftUtils.register();
 
 
+        // Register SVG discovery system
+        ResourceManagerHelperImpl.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SvgTextureReloadListener());
+
+
         // Register client version check
         ClientModVersionCheck.register();
 
@@ -86,10 +97,7 @@ public class EngineerSBlissClient implements ClientModInitializer {
 
 
         // Initialize resource plugin for alt textures handler
-        PreparableModelLoadingPlugin.register(
-            AltTexturesModelPlugin::discoverModels,
-            new AltTexturesModelPlugin()
-        );
+        PreparableModelLoadingPlugin.register(AltTexturesModelPlugin::discoverModels, new AltTexturesModelPlugin());
 
 
         // Initialize handlers
