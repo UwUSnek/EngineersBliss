@@ -10,7 +10,6 @@ import org.joml.Matrix3x2f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.jspecify.annotations.NullMarked;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.cursor.CursorType;
@@ -27,8 +26,8 @@ import com.snek.engineersbliss.client.ui.renderer.render_states.MultilineAreaRen
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
+import com.snek.engineersbliss.client.utils.textures.mp4.Mp4TextureTracker;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
-import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -381,8 +380,8 @@ public class UiGraphics {
                 final @Nullable Screen screen = MinecraftUtils.getScreen();
                 final boolean isTransitioning = screen != null && (screen instanceof UiScreen s) && s.isGuiScaleTransitioning();
                 final Identifier dataId = SvgTextureTracker.requestForSize(location, w, h, !isTransitioning);
-                raw.guiRenderState.addGuiElement(new AaBlitRenderState(
-                    UiRenderPipelines.AA_BLIT,
+                raw.guiRenderState.addGuiElement(new RawBlitRenderState(
+                    UiRenderPipelines.RAW_BLIT,
                     textureSetupFor(dataId),
                     new Matrix3x2f(raw.pose()),
                     x, y, x + w, y + h,
@@ -422,13 +421,58 @@ public class UiGraphics {
             xy(location, x0, y0, x1, y1, 0f, 1f, 0f, 1f);
         }
         public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
-            xy(location, x0, y0, x1, y1, 0f, 1f, 0f, 1f);
+            xy(location, x0, y0, x1, y1, 0f, 1f, 0f, 1f, alpha);
         }
         public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1) {
             xy(location, x0, y0, x1, y1, u0, u1, v0, v1, 1.0f);
         }
         public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1, final float alpha) {
             __internal_blit(location, x0, y0, x1, y1, u0, v0, u1, v1, alpha);
+        }
+    }
+
+
+
+
+
+
+
+
+    // Video blit
+    public final Video video = new Video();
+    public class Video {
+        private static TextureSetup textureSetupFor(final Identifier location) {
+            final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
+            return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
+        }
+        private void __internal_video(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
+            final Identifier dataId = Mp4TextureTracker.getCurrentTexture(location);
+            if(dataId == null) return;
+
+            raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+                UiRenderPipelines.AA_BLIT,
+                textureSetupFor(dataId),
+                new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                0f, 0f, 1f, 1f,
+                alpha, scissor.getStack().peek()
+            ));
+        }
+
+
+        public void wh(final Identifier location, final float x, final float y, final float w, final float h) {
+            wh(location, x, y, w, h, 1f);
+        }
+        public void wh(final Identifier location, final float x, final float y, final float w, final float h, final float alpha) {
+            xy(location, x, y, x + w, y + h, alpha);
+        }
+
+
+        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1) {
+            xy(location, x0, y0, x1, y1, 1f);
+        }
+        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
+            __internal_video(location, x0, y0, x1, y1, alpha);
         }
     }
 

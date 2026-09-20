@@ -17,6 +17,7 @@ import com.snek.engineersbliss.client.feature_handlers.overlays.OverlaysHandler;
 import com.snek.engineersbliss.client.feature_handlers.overlays.renderer.OverlayRenderer;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.NetworkUtils;
+import com.snek.engineersbliss.client.utils.textures.mp4.Mp4TextureReloadListener;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureReloadListener;
 import com.snek.engineersbliss.client.network.login.ClientModVersionCheck;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
@@ -71,8 +72,9 @@ public class EngineerSBlissClient implements ClientModInitializer {
         MinecraftUtils.register();
 
 
-        // Register SVG discovery system
+        // Register resource discovery systems
         ResourceManagerHelperImpl.get(PackType.CLIENT_RESOURCES).registerReloadListener(new SvgTextureReloadListener());
+        ResourceManagerHelperImpl.get(PackType.CLIENT_RESOURCES).registerReloadListener(new Mp4TextureReloadListener());
 
 
         // Register client version check

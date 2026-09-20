@@ -353,6 +353,8 @@ ADD ALL OF THIS TO THE README
     - "Instead of taking a list of 4 item IDs, this component now takes an object with 4 optional item stack fields named:" - official changelog
     - back, left, right, front
 
+- add some easter eggs / controls in loading screens
+
 
 
 

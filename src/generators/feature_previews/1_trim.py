@@ -1,4 +1,3 @@
-import subprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 import numpy as np

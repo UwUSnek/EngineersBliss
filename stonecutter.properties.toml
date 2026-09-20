@@ -13,6 +13,7 @@ mod.description    = "A rendering and utility mod for Redstone engineers"
 loomx.loom_version = "1.17-SNAPSHOT"
 deps.fabric_loader = "0.19.3"
 deps.jsvg          = "2.1.0"
+deps.jcodec        = "0.2.5"
 
 
 ["26.1"]

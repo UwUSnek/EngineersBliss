@@ -47,8 +47,12 @@ dependencies {
     loomx.applyMojangMappings()                             // Applies Mojang Mappings on obfuscated versions
 
     // Bundled dependencies
-    implementation("com.github.weisj:jsvg:${property("deps.jsvg")}")
-    include("com.github.weisj:jsvg:${property("deps.jsvg")}")
+    implementation("com.github.weisj:jsvg:${property("deps.jsvg")}")        // JSVG - SVG rasterizer
+    include("com.github.weisj:jsvg:${property("deps.jsvg")}")               // |
+    implementation("org.jcodec:jcodec:${property("deps.jcodec")}")          // JCodec - MP4 decoder
+    include("org.jcodec:jcodec:${property("deps.jcodec")}")                 // |
+    implementation("org.jcodec:jcodec-javase:${property("deps.jcodec")}")   // |
+    include("org.jcodec:jcodec-javase:${property("deps.jcodec")}")          // |
 
     // Required dependencies
     implementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")

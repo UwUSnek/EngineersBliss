@@ -13,7 +13,7 @@ python3 ./1_trim.py
 echo -e "\n\n-------------------- EVENING DURATIONS ---------------------\n"
 python3 ./2_even.py
 
-echo -e "\n\n------------------- CONVERTING TO ATLAS --------------------\n"
+echo -e "\n\n-------------------- CONVERTING TO MP4 ---------------------\n"
 python3 ./3_convert.py
 
 echo -e "\n\n------------------------------------------------------------\n"

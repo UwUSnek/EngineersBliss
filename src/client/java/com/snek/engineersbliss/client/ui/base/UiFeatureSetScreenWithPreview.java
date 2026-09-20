@@ -14,7 +14,6 @@ import com.snek.engineersbliss.client.ui.widgets.base.FeatureInputWidget;
 import com.snek.engineersbliss.client.ui.widgets.base.DualPreviewFeatureInputWidget;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.feature_handlers.base.__base_ServerFeature;
 
 import net.minecraft.resources.Identifier;
@@ -25,6 +24,8 @@ import net.minecraft.resources.Identifier;
 
 
 
+//TODO remove "loading" image
+//TODO might still be needed for other things, idk if it should be fully removed or not. it does look pretty.
 
 /**
  * A UiFeatureSetScreen that can display feature previews from UiToggleFeatureButton, UiSteppedFeatureSlider and UiAnalogueFeatureSlider elements.
@@ -88,11 +89,9 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
         final float ratio = 9f / 4f;
         final float w = width * PREVIEW_WIDTH;
         final float h = w * ratio;
-        final float hPlaceholder = w;
         final float xL = (width  - w) / 2 - w / 2;
         final float xR = (width  - w) / 2 + w / 2;
         final float y  = (height - h) / 2;
-        final float yPlaceholder = (height - hPlaceholder) / 2;
 
 
         // Render background text
@@ -114,20 +113,8 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
         {
             final @NotNull Identifier atlasIdL = hoveredPreviewAtlasIds[0];
             final @NotNull Identifier atlasIdR = hoveredPreviewAtlasIds[1];
-            if(!TextureAtlasTracker.isTextureReady(atlasIdL)) {
-                graphics.blit.wh(atlasIdL, xL, yPlaceholder, w, hPlaceholder);
-            }
-            else {
-                final float[] uv = TextureAtlasTracker.getUV(atlasIdL, 0, System.currentTimeMillis());
-                graphics.blit.wh(atlasIdL, xL, y, w, h, uv[0], uv[1], uv[2], uv[3]);
-            }
-            if(!TextureAtlasTracker.isTextureReady(atlasIdR)) {
-                graphics.blit.wh(atlasIdR, xR, yPlaceholder, w, hPlaceholder);
-            }
-            else {
-                final float[] uv  = TextureAtlasTracker.getUV(atlasIdR,  0, System.currentTimeMillis());
-                graphics.blit.wh(atlasIdR, xR, y, w, h, uv[0], uv[1], uv[2], uv[3]);
-            }
+            graphics.video.wh(atlasIdL, xL, y, w, h);
+            graphics.video.wh(atlasIdR, xR, y, w, h);
         }
     }
 
@@ -141,8 +128,8 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
         final @NotNull __base_ServerFeature<?> serverFeature = featureInputWidget.getServerFeature();
         final String featureSetId = serverFeature.getFeatureSet().getId();
         final String fatureId = serverFeature.getId();
-        final String atlasPathL = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix()); //FIXME indices?
-        final String atlasPathR = String.format("textures/gui/feature_previews/%s/%s_%s_0.png", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix()); //FIXME indices?
+        final String atlasPathL = String.format("gui/feature_previews/%s/%s_%s", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix());
+        final String atlasPathR = String.format("gui/feature_previews/%s/%s_%s", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix());
         hoveredPreviewAtlasIds = new Identifier[] {
             Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathL),
             Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathR)

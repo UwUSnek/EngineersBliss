@@ -23,7 +23,7 @@ MAX_WORKERS = max(1, (os.cpu_count() or 4) - 1)
 
 def run(cmd):
     try:
-        return subprocess.run(cmd, check=True, capture_output=True)
+        return subprocess.run(cmd, check=True, capture_output=True, stdin=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
         stderr = e.stderr.decode(errors="ignore") if e.stderr else ""
         raise RuntimeError(f"Command failed ({ ' '.join(map(str, cmd)) }):\n{ stderr }") from e
