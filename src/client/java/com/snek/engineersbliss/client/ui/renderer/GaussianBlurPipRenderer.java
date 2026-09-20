@@ -58,7 +58,12 @@ public class GaussianBlurPipRenderer extends PictureInPictureRenderer<GaussianBl
         if (scratchTex != null && scratchTex.getWidth(0) == width && scratchTex.getHeight(0) == height) return;
         if (scratchTex != null) { scratchTex.close(); scratchView.close(); }
         GpuDevice device = RenderSystem.getDevice();
-        scratchTex  = device.createTexture(() -> "UI blur scratch", 13, GpuFormat.RGBA8_UNORM, width, height, 1, 1);
+        scratchTex  = device.createTexture(
+            () -> "UI blur scratch",
+            GpuTexture.USAGE_COPY_DST | GpuTexture.USAGE_TEXTURE_BINDING | GpuTexture.USAGE_RENDER_ATTACHMENT,
+            GpuFormat.RGBA8_UNORM,
+            width, height, 1, 1
+        );
         scratchView = device.createTextureView(scratchTex);
     }
 

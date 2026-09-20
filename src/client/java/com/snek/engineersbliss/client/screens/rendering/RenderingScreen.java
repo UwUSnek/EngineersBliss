@@ -184,8 +184,8 @@ public class RenderingScreen extends UiFeatureSetScreen {
         }
         for(int i = 0; i < syntaxInstructions.length; i += 2) {
             final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-            graphics.text(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textLargeMarginPx,                       lineY, 0xFFAAAAAA);
-            graphics.text(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textLargeMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
+            graphics.text.draw(new UiTxt(syntaxInstructions[i    ], fontFamily), Layout.textLargeMarginPx,                       lineY, 0xFFAAAAAA);
+            graphics.text.draw(new UiTxt(syntaxInstructions[i + 1], fontFamily), Layout.textLargeMarginPx + leftTextPrefixWidth, lineY, 0xFFAAAAAA);
         }
 
 
@@ -211,8 +211,8 @@ public class RenderingScreen extends UiFeatureSetScreen {
             }
             for(int i = 0; i < renderStats.length; i += 2) {
                 final int lineY = lineBase - lineHeight * (i / 2 + 2); //! .text draws from the top of the line so 1x positioning & 1x spacing
-                graphics.text(new UiTxt(renderStats[i    ], fontFamily), rightTextX,                        lineY, 0xFFAAAAAA);
-                graphics.text(new UiTxt(renderStats[i + 1], fontFamily), rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
+                graphics.text.draw(new UiTxt(renderStats[i    ], fontFamily), rightTextX,                        lineY, 0xFFAAAAAA);
+                graphics.text.draw(new UiTxt(renderStats[i + 1], fontFamily), rightTextX + rightTextPrefixWidth, lineY, 0xFFAAAAAA);
             }
         }
 

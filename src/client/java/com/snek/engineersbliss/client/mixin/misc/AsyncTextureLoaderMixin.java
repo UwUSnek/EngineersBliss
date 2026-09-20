@@ -3,15 +3,8 @@ package com.snek.engineersbliss.client.mixin.misc;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.EngineerSBliss;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.utils.textures.atlases.AtlasMetadataSection;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
-// import com.snek.engineersbliss.client.utils.textures.svg.SvgMetadataSection;
-import com.snek.engineersbliss.client.utils.textures.svg.SvgRasterizer;
-// import com.snek.engineersbliss.client.utils.textures.svg.SvgScaleTracker; //TODO remove
-import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
-import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -93,37 +86,6 @@ public class AsyncTextureLoaderMixin {
     private static void eb$load(final ResourceManager resourceManager, final Identifier id, final CallbackInfoReturnable<TextureContents> cir) throws IOException {
 
         final String path = id.getPath();
-
-        // // // Atlas //TODO REMOVE
-
-        // // if(path.endsWith(".png")) {
-        // //     final String basePath = path.substring(0, path.length() - 4);
-        // //     final Identifier svgId = id.withPath(basePath + ".svg");
-
-        // //     final Resource svgResource = resourceManager.getResource(svgId).orElse(null);
-        // //     if(svgResource != null) {
-        // //         final SvgMetadataSection svgMeta = eb$readSvgMeta(resourceManager, id.withPath(basePath + ".svg.mcmeta"));
-        // //         if(svgMeta == null) {
-        // //             EngineerSBliss.LOGGER.error("SVG texture {} is missing its .svg.mcmeta metadata.", svgId, new Throwable());
-        // //            return;
-        // //         }//TODO REMOVE
-
-        // //         final byte[] bytes;
-        // //         try(InputStream is = svgResource.open()) {
-        // //             bytes = is.readAllBytes();
-        // //         }//TODO REMOVE
-
-        // //         SvgTextureTracker.getOrRegister(id, bytes, svgMeta);
-        // //         final NativeImage svgImage = SvgTextureTracker.acquire(id, SettingsFeatureHandler.getCurrentGuiScaleIndex());
-        // //         cir.setReturnValue(new TextureContents(svgImage, null));
-        // //        return;
-        // //     }//TODO REMOVE
-        // // }
-
-
-
-        // // // SVG//TODO REMOVE
-
         final Resource resource = resourceManager.getResourceOrThrow(id);
 
         final AtlasMetadataSection atlasMeta = resource.metadata().getSection(AtlasMetadataSection.TYPE).orElse(null);
@@ -160,26 +122,4 @@ public class AsyncTextureLoaderMixin {
             }
         }, DECODE_TREAD_POOL);
     }
-
-
-
-
-    // /**
-    //  * Reads the SvgMetadataSection from an .svg.mcmeta file.
-    //  */
-    // @Nullable //TODO REMOVE
-    // private static SvgMetadataSection eb$readSvgMeta(final ResourceManager resourceManager, final Identifier mcmetaId) {
-    //     final Resource mcmetaResource = resourceManager.getResource(mcmetaId).orElse(null);
-    //     if(mcmetaResource == null) return null;
-
-    //     try(InputStream is = mcmetaResource.open()) {
-    //         return net.minecraft.server.packs.resources.ResourceMetadata.fromJsonStream(is)
-    //             .getSection(SvgMetadataSection.TYPE)
-    //             .orElse(null);
-    //     }
-    //     catch(final @NotNull IOException e) {
-    //         EngineerSBliss.LOGGER.error("Could not read SVG metadata {}. {}", mcmetaId, e.getMessage(), new Throwable());
-    //         return null;
-    //     }
-    // }
 }

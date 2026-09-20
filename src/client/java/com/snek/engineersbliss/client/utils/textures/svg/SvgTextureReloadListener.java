@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
+
 
 
 
@@ -33,26 +35,17 @@ public final class SvgTextureReloadListener implements SimpleSynchronousResource
     public void onResourceManagerReload(final ResourceManager resourceManager) {
         final Set<Identifier> found = new HashSet<>();
 
-        for(final Map.Entry<Identifier, Resource> entry : CONVERTER.listMatchingResources(resourceManager).entrySet()) {
+        for(final @NotNull Map.Entry<Identifier, Resource> entry : CONVERTER.listMatchingResources(resourceManager).entrySet()) {
             final Identifier svgId = CONVERTER.fileToId(entry.getKey());
-            // final Identifier mcmetaId = svgId.withPath(svgId.getPath() + ".mcmeta");  //TODO REMOVE
-
-            // final SvgMetadataSection meta = eb$readSvgMeta(resourceManager, mcmetaId); //TODO REMOVE
-            // if(meta == null) {
-            //     EngineerSBliss.LOGGER.warn("SVG texture {} is missing its .svg.mcmeta metadata, skipping.", svgId);
-            //     continue;
-            // }
-
             final byte[] bytes;
-            try(InputStream is = entry.getValue().open()) {
-                bytes = is.readAllBytes();
+            try(final @NotNull InputStream input = entry.getValue().open()) {
+                bytes = input.readAllBytes();
             }
-            catch(final IOException e) {
+            catch(final @NotNull IOException e) {
                 EngineerSBliss.LOGGER.error("Failed reading SVG texture {}. {}", svgId, e.getMessage(), new Throwable());
                 continue;
             }
 
-            // SvgTextureTracker.getOrRegister(svgId, bytes, meta);  //TODO REMOVE
             SvgTextureTracker.getOrRegister(svgId, bytes);
             found.add(svgId);
         }
@@ -60,17 +53,4 @@ public final class SvgTextureReloadListener implements SimpleSynchronousResource
         SvgTextureTracker.retainOnly(found);
         EngineerSBliss.LOGGER.info("Found {} SVG textures", found.size());
     }
-
- //TODO REMOVE
-    // private static SvgMetadataSection eb$readSvgMeta(final ResourceManager resourceManager, final Identifier mcmetaId) {
-    //     final Resource mcmetaResource = resourceManager.getResource(mcmetaId).orElse(null);
-    //     if(mcmetaResource == null) return null;
-    //     try(InputStream is = mcmetaResource.open()) {
-    //         return net.minecraft.server.packs.resources.ResourceMetadata.fromJsonStream(is).getSection(SvgMetadataSection.TYPE).orElse(null);
-    //     }
-    //     catch(final IOException e) {
-    //         EngineerSBliss.LOGGER.error("Could not read SVG metadata {}. {}", mcmetaId, e.getMessage(), new Throwable());
-    //         return null;
-    //     }
-    // }
 }

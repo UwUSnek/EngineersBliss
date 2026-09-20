@@ -109,7 +109,7 @@ public final class UiRenderPipelines {
         RenderPipeline.builder(GUI_BASE)
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_blur"))
             .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
-            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blur"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
             //? if <=26.1.2 {
                 /*.withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
                 .withSampler("Sampler0")

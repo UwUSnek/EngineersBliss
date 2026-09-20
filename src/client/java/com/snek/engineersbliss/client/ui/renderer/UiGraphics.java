@@ -1,5 +1,7 @@
 package com.snek.engineersbliss.client.ui.renderer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,16 +26,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
-import net.minecraft.client.gui.render.GuiRenderer;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.LivingEntity;
@@ -96,25 +95,20 @@ public class UiGraphics {
 
 
     // Scissors
-
-    public void enableScissor(final int x0, final int y0, final int x1, final int y1) {
-        raw.enableScissor(x0, y0, x1, y1);
-    }
-    public void disableScissor() {
-        raw.disableScissor();
-    }
-    public boolean containsPointInScissor(final int x, final int y) {
-        return raw.containsPointInScissor(x, y);
-    }
-    public ScissorStack getScissorStack() {
-        return raw.scissorStack;
-    }
-
-
-
-
-    public void blurBeforeThisStratum() {
-        raw.blurBeforeThisStratum();
+    public Scissor scissor = new Scissor();
+    public class Scissor {
+        public void enable(final int x0, final int y0, final int x1, final int y1) {
+            raw.enableScissor(x0, y0, x1, y1);
+        }
+        public void disable() {
+            raw.disableScissor();
+        }
+        public boolean containsPoint(final int x, final int y) {
+            return raw.containsPointInScissor(x, y);
+        }
+        public ScissorStack getStack() {
+            return raw.scissorStack;
+        }
     }
 
 
@@ -130,7 +124,7 @@ public class UiGraphics {
         fill(x0, y0, x1, y1, applyAlpha(col, alpha));
     }
     public void fill(float x0, float y0, float x1, float y1, final int col) {
-        quadGradient(x0, y0, x1, y1, col, col, col, col);
+        gradient.quad(x0, y0, x1, y1, col, col, col, col);
     }
 
 
@@ -141,53 +135,55 @@ public class UiGraphics {
 
 
     // Gradient fills
-
-    public void horizontalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB, float alpha) {
-        horizontalGradient(x0, y0, x1, y1, applyAlpha(colA, alpha), applyAlpha(colB, alpha));
-    }
-    public void horizontalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB) {
-        __internal_horizontalGradient(Math.min(x0, x1), y0, Math.max(x0, x1), y1, colA, colB);
-    }
-    private void __internal_horizontalGradient(float x0, float y0, float x1, float y1, final int colA, final int colB) {
-        if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
-        raw.guiRenderState.addGuiElement(new AaFillRenderState(
-            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
-            x0, y0, x1, y1,
-            colB, colB, colA, colA, // tr, br, bl, tl
-            getScissorStack().peek()
-        ));
-    }
-
-
-    public void verticalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB, float alpha) {
-        verticalGradient(x0, y0, x1, y1, applyAlpha(colA, alpha), applyAlpha(colB, alpha));
-    }
-    public void verticalGradient(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB) {
-        __internal_verticalGradient(x0, Math.min(y0, y1), x1, Math.max(y0, y1), colA, colB);
-    }
-    private void __internal_verticalGradient(float x0, float y0, float x1, float y1, final int colA, final int colB) {
-        if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
-        raw.guiRenderState.addGuiElement(new AaFillRenderState(
-            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
-            x0, y0, x1, y1,
-            colA, colB, colB, colA, // tr, br, bl, tl
-            getScissorStack().peek()
-        ));
-    }
+    public Gradient gradient = new Gradient();
+    public class Gradient {
+        public void horizontal(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB, float alpha) {
+            horizontal(x0, y0, x1, y1, applyAlpha(colA, alpha), applyAlpha(colB, alpha));
+        }
+        public void horizontal(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB) {
+            __internal_horizontal(Math.min(x0, x1), y0, Math.max(x0, x1), y1, colA, colB);
+        }
+        private void __internal_horizontal(float x0, float y0, float x1, float y1, final int colA, final int colB) {
+            if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
+            raw.guiRenderState.addGuiElement(new AaFillRenderState(
+                UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                colB, colB, colA, colA, // tr, br, bl, tl
+                scissor.getStack().peek()
+            ));
+        }
 
 
-    public void quadGradient(final float x0, final float y0, final float x1, final float y1, final int colTL, final int colTR, final int colBR, final int colBL, final float alpha) {
-        quadGradient(x0, y0, x1, y1, applyAlpha(colTL, alpha), applyAlpha(colTR, alpha), applyAlpha(colBR, alpha), applyAlpha(colBL, alpha));
-    }
-    public void quadGradient(float x0, float y0, float x1, float y1, final int colTL, final int colTR, final int colBR, final int colBL) {
-        if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
-        if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
-        raw.guiRenderState.addGuiElement(new AaFillRenderState(
-            UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
-            x0, y0, x1, y1,
-            colTR, colBR, colBL, colTL, // tr, br, bl, tl
-            getScissorStack().peek()
-        ));
+        public void vertical(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB, float alpha) {
+            vertical(x0, y0, x1, y1, applyAlpha(colA, alpha), applyAlpha(colB, alpha));
+        }
+        public void vertical(final float x0, final float y0, final float x1, final float y1, final int colA, final int colB) {
+            __internal_vertical(x0, Math.min(y0, y1), x1, Math.max(y0, y1), colA, colB);
+        }
+        private void __internal_vertical(float x0, float y0, float x1, float y1, final int colA, final int colB) {
+            if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
+            raw.guiRenderState.addGuiElement(new AaFillRenderState(
+                UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                colA, colB, colB, colA, // tr, br, bl, tl
+                scissor.getStack().peek()
+            ));
+        }
+
+
+        public void quad(final float x0, final float y0, final float x1, final float y1, final int colTL, final int colTR, final int colBR, final int colBL, final float alpha) {
+            quad(x0, y0, x1, y1, applyAlpha(colTL, alpha), applyAlpha(colTR, alpha), applyAlpha(colBR, alpha), applyAlpha(colBL, alpha));
+        }
+        public void quad(float x0, float y0, float x1, float y1, final int colTL, final int colTR, final int colBR, final int colBL) {
+            if(x0 > x1) { final float tmp = x0; x0 = x1; x1 = tmp; }
+            if(y0 > y1) { final float tmp = y0; y0 = y1; y1 = tmp; }
+            raw.guiRenderState.addGuiElement(new AaFillRenderState(
+                UiRenderPipelines.AA_FILL, TextureSetup.noTexture(), new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                colTR, colBR, colBL, colTL, // tr, br, bl, tl
+                scissor.getStack().peek()
+            ));
+        }
     }
 
 
@@ -198,105 +194,165 @@ public class UiGraphics {
 
 //TODO add float coords support for text
     // Text rendering
+    public Text text = new Text();
+    public class Text {
+        public void __internal_draw(
+            final FormattedCharSequence text,
+            final int textWidth,
+            final ScaledFont scaledFont,
+            final int x, final int y,
+            final int color,
+            final TextAlignment textAlignment,
+            final float elmWidth, //! Only used by alignment CENTER and RIGHT
+            final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
+        ) {
 
-    public void text(
-        final FormattedCharSequence text,
-        final int textWidth,
-        final ScaledFont scaledFont,
-        final int x, final int y,
-        final int color,
-        final TextAlignment textAlignment,
-        final float elmWidth, //! Only used by alignment CENTER and RIGHT
-        final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
-    ) {
+            // Retrieve font and text scale
+            final float textScale = scaledFont.getSizeForCurrentGuiScale();
 
-        // Retrieve font and text scale
-        final float textScale = scaledFont.getSizeForCurrentGuiScale();
+            // Compute x and y positions
+            final int _x = (int)(switch(textAlignment) {
+                case LEFT            -> x;
+                case CENTER          -> x + (elmWidth - textWidth) / 2f;
+                case RIGHT           -> x +  elmWidth - textWidth;
+                case CENTER_ANCHORED -> x -             textWidth  / 2f;
+            } / textScale);
+            final int _y = (int)(y / textScale);
 
-        // Compute x and y positions
-        final int _x = (int)(switch(textAlignment) {
-            case LEFT            -> x;
-            case CENTER          -> x + (elmWidth - textWidth) / 2f;
-            case RIGHT           -> x +  elmWidth - textWidth;
-            case CENTER_ANCHORED -> x -             textWidth  / 2f;
-        } / textScale);
-        final int _y = (int)(y / textScale);
+            // Draw scaled text
+            raw.pose().pushMatrix();
+            raw.pose().translate(shiftX, shiftY);
+            raw.pose().scale(textScale);
+            raw.text(scaledFont.getFont(), text, _x, _y, color);
+            raw.pose().popMatrix();
+        }
 
-        // Draw scaled text
-        raw.pose().pushMatrix();
-        raw.pose().translate(shiftX, shiftY);
-        raw.pose().scale(textScale);
-        raw.text(scaledFont.getFont(), text, _x, _y, color);
-        raw.pose().popMatrix();
+
+        public void draw(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow) {
+            drawShifted(text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
+            //! All overloads go through this which calls the true extractTxt.
+            //! Using toRawVisualOrder() is required in order to render '§' properly.
+            final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont(false);
+            __internal_draw((dropShadow ? text : text.noShadow()).toRawVisualOrder(), text.getWidth(), scaledFont, x, y, color, textAlignment, elmWidth, shiftX, shiftY);
+        }
+        public void draw(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
+            drawShifted(text, x, y, color, dropShadow, 0f, 0f);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, color, TextAlignment.LEFT, 0, dropShadow, shiftX, shiftY);
+        }
+
+
+        public void draw(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth) {
+            drawShifted(text, x, y, color, textAlignment, elmWidth, 0f, 0f);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
+        }
+        public void draw(final UiTxt text, final int x, final int y, final int color) {
+            drawShifted(text, x, y, color, 0f, 0f);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, color, false, shiftX, shiftY);
+        }
+
+
+        public void draw(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow) {
+            draw(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, dropShadow);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, dropShadow, shiftX, shiftY);
+        }
+        public void draw(final UiTxt text, final int x, final int y, final int color, final float alpha, final boolean dropShadow) {
+            draw(text, x, y, applyAlpha(color, alpha), dropShadow);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final float alpha, final boolean dropShadow, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, applyAlpha(color, alpha), dropShadow, shiftX, shiftY);
+        }
+
+
+        public void draw(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth) {
+            draw(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth);
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, shiftX, shiftY);
+        }
+        public void draw(final UiTxt text, final int x, final int y, final int color, final float alpha) {
+            draw(text, x, y, applyAlpha(color, alpha));
+        }
+        public void drawShifted(final UiTxt text, final int x, final int y, final int color, final float alpha, final float shiftX, final float shiftY) {
+            drawShifted(text, x, y, applyAlpha(color, alpha), shiftX, shiftY);
+        }
+
+
+        public static final float CURSOR_INSERT_WIDTH = 1f;
+        private static final String CURSOR_APPEND_CHARACTER = "_";
+        public void drawInsertCursor(final int x, final float y, final int color, final float lineHeight) {
+            fill(x, y - 1f, x + 1f, y + lineHeight, color);
+        }
+        public void drawAppendCursor(final Font font, final int x, final int y, final int color, final boolean shadow) {
+            raw.text(font, CURSOR_APPEND_CHARACTER, x, y, color, shadow);
+        }
+        public void drawSelection(final int x0, final int y0, final int x1, final int y1, final boolean invert){
+            raw.textHighlight(x0, y0, x1, y1, invert);
+        }
+
+
+
+        /**
+         * Wraps the provided UiTxt so each line never goes past the width limit.
+         * @param text The text to wrap.
+         * @param maxWidth The maximum width of a line.
+         * @return A list of UiTxt, each containing the formatted characters in a line.
+         */
+        public static List<UiTxt> wrapLines(final UiTxt text, final float maxWidth) {
+
+            // Create line list and calculate data
+            final @NotNull ScaledFont scaledFont = text.getScaledFont();
+            final @NotNull List<UiTxt> lines = new ArrayList<>();
+            final @NotNull String raw = text.getString();
+            final int len = raw.length();
+            int lineStart = 0;
+            int lastSpace = -1;
+
+            // Split lines
+            for(int i = 0; i < len; i++) {
+                final char c = raw.charAt(i);
+                if(c == '\n') {
+                    lines.add((UiTxt)text.substring(lineStart, i));
+                    lineStart = i + 1;
+                    lastSpace = -1;
+                    continue;
+                }
+                if(c == ' ') {
+                    lastSpace = i;
+                }
+                if(scaledFont.calcWidth(raw.substring(lineStart, i + 1)) > maxWidth) { //TODO this is prob inefficient
+                    if(lastSpace >= lineStart) {
+                        lines.add((UiTxt)text.substring(lineStart, lastSpace));
+                        lineStart = lastSpace + 1;
+                    }
+                    else {
+                        lines.add((UiTxt)text.substring(lineStart, i));
+                        lineStart = i;
+                    }
+                    lastSpace = -1;
+                }
+            }
+            if(lineStart < len) {
+                lines.add((UiTxt)text.substring(lineStart, len));
+            }
+            return lines;
+        }
     }
 
 
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow) {
-        text(text, x, y, color, textAlignment, elmWidth, dropShadow, 0f, 0f);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
-        //! All overloads go through this which calls the true extractTxt.
-        //! Using toRawVisualOrder() is required in order to render '§' properly.
-        final ScaledFont scaledFont = (text instanceof final @NotNull UiTxt uiTxt) ? uiTxt.getScaledFont() : new ScaledFont(false);
-        text((dropShadow ? text : text.noShadow()).toRawVisualOrder(), text.getWidth(), scaledFont, x, y, color, textAlignment, elmWidth, shiftX, shiftY);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow) {
-        text(text, x, y, color, dropShadow, 0f, 0f);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final boolean dropShadow, final float shiftX, final float shiftY) {
-        text(text, x, y, color, TextAlignment.LEFT, 0, dropShadow, shiftX, shiftY);
-    }
-
-
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth) {
-        text(text, x, y, color, textAlignment, elmWidth, 0f, 0f);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final TextAlignment textAlignment, final float elmWidth, final float shiftX, final float shiftY) {
-        text(text, x, y, color, textAlignment, elmWidth, false, shiftX, shiftY);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color) {
-        text(text, x, y, color, 0f, 0f);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float shiftX, final float shiftY) {
-        text(text, x, y, color, false, shiftX, shiftY);
-    }
-
-
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow) {
-        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, dropShadow);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final boolean dropShadow, final float shiftX, final float shiftY) {
-        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, dropShadow, shiftX, shiftY);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final boolean dropShadow) {
-        text(text, x, y, applyAlpha(color, alpha), dropShadow);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final boolean dropShadow, final float shiftX, final float shiftY) {
-        text(text, x, y, applyAlpha(color, alpha), dropShadow, shiftX, shiftY);
-    }
-
-
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth) {
-        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final TextAlignment textAlignment, final float elmWidth, final float shiftX, final float shiftY) {
-        text(text, x, y, applyAlpha(color, alpha), textAlignment, elmWidth, shiftX, shiftY);
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha) {
-        text(text, x, y, applyAlpha(color, alpha));
-    }
-    public void text(final UiTxt text, final int x, final int y, final int color, final float alpha, final float shiftX, final float shiftY) {
-        text(text, x, y, applyAlpha(color, alpha), shiftX, shiftY);
-    }
 
 
 
 
-
-
-
-
-    // Internal blit methods
 
 
     // Floating point blit
@@ -321,7 +377,7 @@ public class UiGraphics {
                 UiRenderPipelines.AA_BLIT, setup, new Matrix3x2f(raw.pose()),
                 x0, y0, x1, y1,
                 u0, v0, u1, v1,
-                alpha, getScissorStack().peek()
+                alpha, scissor.getStack().peek()
             ));
         }
 
@@ -370,7 +426,7 @@ public class UiGraphics {
             UiRenderPipelines.AA_MULTILINE, new Matrix3x2f(raw.pose()),
             x0, y0, x1, y1,
             xs, ys, thickness, color,
-            getScissorStack().peek()
+            scissor.getStack().peek()
         ));
     }
     public void multiLineArea(final float x0, final float y0, final float x1, final float y1, float[] xs, float[] ys, int color) {
@@ -378,7 +434,7 @@ public class UiGraphics {
             UiRenderPipelines.MULTILINE_AREA, new Matrix3x2f(raw.pose()),
             x0, y0, x1, y1,
             xs, ys, color,
-            getScissorStack().peek()
+            scissor.getStack().peek()
         ));
     }
 
@@ -486,29 +542,6 @@ public class UiGraphics {
 
 
 
-
-    // Text cursors
-    public static final float CURSOR_INSERT_WIDTH = 1f;
-    private static final String CURSOR_APPEND_CHARACTER = "_";
-
-    public void textInsertCursor(final int x, final float y, final int color, final float lineHeight) {
-        fill(x, y - 1f, x + 1f, y + lineHeight, color);
-    }
-
-    public void textAppendCursor(final Font font, final int x, final int y, final int color, final boolean shadow) {
-        raw.text(font, CURSOR_APPEND_CHARACTER, x, y, color, shadow);
-    }
-
-    public void textSelection(final int x0, final int y0, final int x1, final int y1, final boolean invert){
-        raw.textHighlight(x0, y0, x1, y1, invert);
-    }
-
-
-
-
-
-
-
     // Entities //TODO this is just a copy of vanilla's stuff. idk if it needs changes
 
     /**
@@ -600,7 +633,7 @@ public class UiGraphics {
             UiRenderPipelines.AA_BLUR, UiBlur.textureSetup(), new Matrix3x2f(raw.pose()),
             x0, y0, x1, y1,
             p0.x / w, 1f - p0.y / h, p1.x / w, 1f - p1.y / h,
-            1f, getScissorStack().peek()
+            1f, scissor.getStack().peek()
         ));
     }
 }

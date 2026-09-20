@@ -383,7 +383,7 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
         final float lockedBottom = getYF() + calcLockedHeight();
         float entryY = lockedBottom - animatedScrollAmount.compute();
         float selfBottom = getBottom();
-        graphics.enableScissor(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        graphics.scissor.enable(getX(), Math.round(lockedBottom), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
         for(int i = lockedRows; i < children.size(); ++i) {
             final @NotNull Entry child = children.get(i);
             final float oldEntryY = child.getYF();
@@ -409,19 +409,19 @@ public class UiWidgetList extends __base_UiContainer<UiWidgetList.Entry> {
             }
             entryY += child.getHeightF();
         }
-        graphics.disableScissor();
+        graphics.scissor.disable();
 
 
         // Draw locked entries
         int i = 0;
-        graphics.enableScissor(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
+        graphics.scissor.enable(getX(), getY(), Math.round(getRight()) + 1, Math.round(getBottom()) + 1);
         for(final @NotNull Entry child : children) {
             if(i < lockedRows && elmIsInBounds(child)) {
                 child.extract(graphics, mouseX, mouseY, a);
             }
             i++;
         }
-        graphics.disableScissor();
+        graphics.scissor.disable();
 
 
         // Draw locked entries shadow

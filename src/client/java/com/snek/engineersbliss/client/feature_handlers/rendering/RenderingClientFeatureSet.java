@@ -67,17 +67,4 @@ public class RenderingClientFeatureSet extends __base_ClientFeatureSet<Rendering
         s(() -> new UiTxt("Smooth shading")),
         s(() -> new UiTxt("Fixes the weird shading Vanilla applies to certain blocks. This is most visible on Dirt Path and Farmland blocks."))
     );
-
-
-
-
-
-
-
-
-    private static class Notices {
-        // private static Supplier<UiTxt> SINGLE_PLAYER_ONLY = () -> (UiTxt)new UiTxt( //TODO remove if not used
-        //     "This only works in Single Player."
-        // ).red();
-    }
 }

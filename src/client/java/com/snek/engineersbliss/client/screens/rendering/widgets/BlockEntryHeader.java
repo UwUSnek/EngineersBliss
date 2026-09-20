@@ -49,8 +49,8 @@ public class BlockEntryHeader extends __base_UiContainer<__base_UiLayoutElm> {
 
         // Draw text
         final float selfWidth = getWidthF();
-        graphics.text(new UiTxt("Block",   fontFamily), (int)rowLeft,      textY, 0xFFAAAAAA, TextAlignment.LEFT,  selfWidth);
-        graphics.text(new UiTxt("Enable",  fontFamily), (int)getXF(),      textY, 0xFFAAAAAA, TextAlignment.RIGHT, enableTextR - getXF());
-        graphics.text(new UiTxt("Isolate", fontFamily), (int)isolateTextL, textY, 0xFFAAAAAA, TextAlignment.LEFT,  0);
+        graphics.text.draw(new UiTxt("Block",   fontFamily), (int)rowLeft,      textY, 0xFFAAAAAA, TextAlignment.LEFT,  selfWidth);
+        graphics.text.draw(new UiTxt("Enable",  fontFamily), (int)getXF(),      textY, 0xFFAAAAAA, TextAlignment.RIGHT, enableTextR - getXF());
+        graphics.text.draw(new UiTxt("Isolate", fontFamily), (int)isolateTextL, textY, 0xFFAAAAAA, TextAlignment.LEFT,  0);
     }
 }

@@ -581,11 +581,11 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
                     final int highlightX1 = startEdgeIsCursor ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selStart));  //TODO this is prob very inefficient
                     final int highlightX2 = endEdgeIsCursor   ? cursorX : textX + font.calcWidth(lines.get(line).substring(0, selEnd));  //TODO this is prob very inefficient
                     final int highlightY  = line == computedCursorLine ? cursorY : textY + line * lineHeight;
-                    graphics.textSelection((int)Math.min(highlightX1, getRight()), highlightY, (int)Math.min(highlightX2 - 1f, getRight()), highlightY + lineHeight, true);
+                    graphics.text.drawSelection((int)Math.min(highlightX1, getRight()), highlightY, (int)Math.min(highlightX2 - 1f, getRight()), highlightY + lineHeight, true);
                 }
             }
             else if(isFocused() && (Util.getMillis() - lastMoveTime < CURSOR_BLINK_START_MS || TextCursorUtils.isCursorVisible(Util.getMillis() - focusedTime))) {
-                graphics.textInsertCursor(cursorX - 1, cursorY, Layout.fgColor, lineHeight);
+                graphics.text.drawInsertCursor(cursorX - 1, cursorY, Layout.fgColor, lineHeight);
             }
         }
     }
@@ -598,14 +598,14 @@ public abstract class __base_UiTextHandlerWidget extends __base_UiWidget {
         final int x = (int)(getInnerX() - visualScrollPx.compute());
         final int y = getTextOriginY() - visualScrollLinePx.compute();
 
-        graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
+        graphics.scissor.enable(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
         for(int i = 0; i < renderLines.size(); i++) {
             final UiTxt line = renderLines.get(i);
             if(line.length() > 0) {
-                graphics.text(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
+                graphics.text.draw(line, x, y + i * lineHeight, Layout.fgColor, TextAlignment.LEFT, getInnerWidth(), false);
             }
         }
-        graphics.disableScissor();
+        graphics.scissor.disable();
     }
 
 

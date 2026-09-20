@@ -20,13 +20,9 @@ public final class SvgTextureTracker {
 
     public static final class Entry {
         public final byte[] svgBytes;
-        // public final SvgMetadataSection meta;  //TODO REMOVE
         public final Map<Long, NativeImage> cached = new ConcurrentHashMap<>();
-
-        // public Entry(final byte[] svgBytes, final SvgMetadataSection meta) {  //TODO REMOVE
         public Entry(final byte[] svgBytes) {
             this.svgBytes = svgBytes;
-            // this.meta = meta;  //TODO REMOVE
         }
     }
 
@@ -35,9 +31,7 @@ public final class SvgTextureTracker {
     private static final Map<Identifier, Entry> REGISTRY   = new ConcurrentHashMap<>();
     private static final Set<Identifier>        REGISTERED = ConcurrentHashMap.newKeySet(); // sized ids bound to GPU textures
 
-    // public static Entry getOrRegister(final Identifier id, final byte[] bytes, final SvgMetadataSection meta) {  //TODO REMOVE
     public static Entry getOrRegister(final Identifier id, final byte[] bytes) {
-        // return REGISTRY.computeIfAbsent(id, k -> new Entry(bytes, meta));  //TODO REMOVE
         return REGISTRY.computeIfAbsent(id, k -> new Entry(bytes));
     }
 

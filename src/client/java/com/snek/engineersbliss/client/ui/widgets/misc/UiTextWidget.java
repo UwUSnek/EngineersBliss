@@ -10,7 +10,6 @@ import com.snek.engineersbliss.client.ui.font.ScaledFont;
 import com.snek.engineersbliss.client.ui.renderer.UiGraphics;
 import com.snek.engineersbliss.client.ui.widgets.base.__base_UiWidget;
 import com.snek.engineersbliss.client.utils.Layout;
-import com.snek.engineersbliss.client.utils.RenderingUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 
 import net.minecraft.client.input.MouseButtonEvent;
@@ -80,7 +79,7 @@ public class UiTextWidget extends __base_UiWidget {
 
 
     protected void recalculateLines() {
-        cachedLines = RenderingUtils.wrapLines(getLabel(), getInnerWidth());
+        cachedLines = UiGraphics.Text.wrapLines(getLabel(), getInnerWidth());
     }
 
 
@@ -118,12 +117,12 @@ public class UiTextWidget extends __base_UiWidget {
 
 
             // Draw text lines
-            graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
+            graphics.scissor.enable(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
             for(final UiTxt l : cachedLines) {
-                graphics.text(l, Math.round(getInnerX()), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
+                graphics.text.draw(l, Math.round(getInnerX()), y + lineHeight * curLineNum, color, getAlignment(), getInnerWidth());
                 ++curLineNum;
             }
-            graphics.disableScissor();
+            graphics.scissor.disable();
         }
     }
 

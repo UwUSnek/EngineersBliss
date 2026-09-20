@@ -271,9 +271,9 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
             };
 
             final float alpha = isActive() ? 1f : Layout.disabledAlpha;
-            graphics.enableScissor(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
-            graphics.text(label, textX, textY, Layout.fgColor, alpha, drawAlignment, getInnerWidth(), false, -shift, 0f);
-            graphics.disableScissor();
+            graphics.scissor.enable(Math.round(getInnerX()), getY(), Math.round(getInnerRight()) + 1, Math.round(getBottom()) + 1);
+            graphics.text.drawShifted(label, textX, textY, Layout.fgColor, alpha, drawAlignment, getInnerWidth(), false, -shift, 0f);
+            graphics.scissor.disable();
         }
     }
 
@@ -334,22 +334,22 @@ public abstract class __base_UiWidget extends __base_UiLayoutElm {
     protected void extractShadowTop(final UiGraphics g, final float x, final float y, final float r, final float thickness, final int color, final float alpha) {
         final int edge = g.applyAlpha(color, alpha);
         final int transparent = color & 0x00FFFFFF;
-        g.verticalGradient(x, y - thickness, r, y, transparent, edge);
+        g.gradient.vertical(x, y - thickness, r, y, transparent, edge);
     }
     protected void extractShadowRight(final UiGraphics g, final float y, final float r, final float b, final float thickness, final int color, final float alpha) {
         final int edge = g.applyAlpha(color, alpha);
         final int transparent = color & 0x00FFFFFF;
-        g.horizontalGradient(r, y, r + thickness, b, edge, transparent);
+        g.gradient.horizontal(r, y, r + thickness, b, edge, transparent);
     }
     protected void extractShadowBottom(final UiGraphics g, final float x, final float r, final float b, final float thickness, final int color, final float alpha) {
         final int edge = g.applyAlpha(color, alpha);
         final int transparent = color & 0x00FFFFFF;
-        g.verticalGradient(x, b, r, b + thickness, edge, transparent);
+        g.gradient.vertical(x, b, r, b + thickness, edge, transparent);
     }
     protected void extractShadowLeft(final UiGraphics g, final float x, final float y, final float b, final float thickness, final int color, final float alpha) {
         final int edge = g.applyAlpha(color, alpha);
         final int transparent = color & 0x00FFFFFF;
-        g.horizontalGradient(x - thickness, y, x, b, transparent, edge);
+        g.gradient.horizontal(x - thickness, y, x, b, transparent, edge);
     }
 
 
