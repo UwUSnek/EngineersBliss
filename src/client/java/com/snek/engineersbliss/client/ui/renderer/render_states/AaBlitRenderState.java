@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.ui.renderer;
+package com.snek.engineersbliss.client.ui.renderer.render_states;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -7,8 +7,6 @@ import org.joml.Vector2f;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.snek.engineersbliss.client.feature_handlers.ClientFeatureSync;
-import com.snek.engineersbliss.feature_handlers.settings.SettingsServerFeatureSet;
 
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
@@ -17,17 +15,22 @@ import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 
 
 
+
+
+
+
 /**
- * A GuiElementRenderState for antialiased rects.
- * This is used by UiGraphics to produce antialiased regions without multiple draw calls, improving performance.
- * Supports 4-vertex gradients.
+ * A GuiElementRenderState for antialiased texture blits.
  */
-public record AaFillRenderState(
+public record AaBlitRenderState(
     RenderPipeline pipeline, TextureSetup textureSetup, Matrix3x2f pose,
     float x0, float y0, float x1, float y1,
-    int color0, int color1, int color2, int color3,
-    @Nullable ScreenRectangle scissorArea
+    float u0, float v0, float u1, float v1,
+    float alpha, @Nullable ScreenRectangle scissorArea
 ) implements GuiElementRenderState {
+
+
+
 
     @Override
     public void buildVertices(VertexConsumer vc) {
@@ -37,38 +40,49 @@ public record AaFillRenderState(
         final float ey1 = y1 + 1;
         final float w = x1 - x0;
         final float h = y1 - y0;
-        emit(vc, ex1, ey0, color0, ex1 - x0, ey0 - y0, w, h);
-        emit(vc, ex1, ey1, color1, ex1 - x0, ey1 - y0, w, h);
-        emit(vc, ex0, ey1, color2, ex0 - x0, ey1 - y0, w, h);
-        emit(vc, ex0, ey0, color3, ex0 - x0, ey0 - y0, w, h);
+
+        emit(vc, ex1, ey0, w, h);
+        emit(vc, ex1, ey1, w, h);
+        emit(vc, ex0, ey1, w, h);
+        emit(vc, ex0, ey0, w, h);
     }
 
 
-    private void emit(VertexConsumer vc, float x, float y, int color, float localX, float localY, float w, float h) {
+
+
+    private void emit(VertexConsumer vc, float x, float y, float w, float h) {
 
         //! Name      Type  Norm  Count
         // POSITION   FLOAT false   3   |  xy needed. z holds X position     |  1x float
         // LINE_WIDTH FLOAT false   1   |  Holds Y position                  |  1x float
-        // UV0        FLOAT false   2   |  Holds width and height            |  2x float
-        // UV1        SHORT false   2   |  X holds dithering strength        |  1x int
-        // UV2        SHORT false   2   |  unused                            |  -
-        // COLOR      UBYTE true    4   |  Holds color                       |  1x int -> 4x byte //! auto
+        // UV0        FLOAT false   2   |  Holds texture UVs                 |  2x float
+        // UV1        SHORT false   2   |  Holds width                       |  1x float -> 2x short
+        // UV2        SHORT false   2   |  Holds height                      |  1x float -> 2x short
+        // COLOR      UBYTE true    4   |  x Holds alpha                     |  1x float -> 1x byte //! auto
         // NORMAL     BYTE  true    3   |  Unusable. Bad alignment           |  -
+
 
         // Position & local position
         final @NotNull Vector2f pos = pose.transformPosition(x, y, new Vector2f());
-        vc.addVertex(pos.x, pos.y, localX);
-        vc.setLineWidth(localY);
+        vc.addVertex(pos.x, pos.y, x - x0);
+        vc.setLineWidth(y - y0);
+
+        // UVs
+        final float u = u0 + (u1 - u0) * (x - x0) / (x1 - x0);
+        final float v = v0 + (v1 - v0) * (y - y0) / (y1 - y0);
+        vc.setUv(u, v);
 
         // Width and Height
-        vc.setUv(w, h);
+        int wBits = Float.floatToRawIntBits(w);
+        int hBits = Float.floatToRawIntBits(h);
+        vc.setUv1(wBits >>> 16, wBits & 0xFFFF);
+        vc.setUv2(hBits >>> 16, hBits & 0xFFFF);
 
-        // Color
-        vc.setColor(color);
-
-        // Dithering strength
-        vc.setUv1((int)(255 * ClientFeatureSync.getFeatureD(SettingsServerFeatureSet.DITHERING_STRENGTH)), 0);
+        // Alpha
+        vc.setColor(0f, 0f, 0f, alpha); //! Minecraft converts to 0-255 byte on its own.
     }
+
+
 
 
     @Override

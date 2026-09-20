@@ -82,7 +82,7 @@ public class UiSlider extends __base_UiWidget {
         this.value = initialValue;
         this.bgSpriteId = null;
         this.bgSpriteWidth = new UiSize(this);
-        this.bgSpriteMargin = new UiSize(this); this.bgSpriteMargin.clear().setHF(0.25f);
+        this.bgSpriteMargin = new UiSize(this); this.bgSpriteMargin.clear().setHF(0.15f);
         this.baseLabel = baseLabel;
         this.onChange = onChange;
         this.valueFormatter = valueFormatter == null ? s -> new UiTxt(String.valueOf((int)(s.value * 100)) + "%") : valueFormatter;

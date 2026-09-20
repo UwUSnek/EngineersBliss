@@ -3,6 +3,7 @@ package com.snek.engineersbliss.client.ui.renderer;
 import java.nio.ByteBuffer;
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.system.MemoryStack;
 
 import com.mojang.blaze3d.GpuFormat;
@@ -33,7 +34,6 @@ import net.minecraft.client.gui.render.TextureSetup;
  * The blur is computed once per frame, before the GUI is drawn, and sampled by every blurred element.
  */
 public final class UiBlur {
-    private UiBlur() {}
 
     // Downscale factor for performance.
     private static final int DOWNSCALE = 1; //TODO increase this with higher radii.
@@ -41,13 +41,22 @@ public final class UiBlur {
     private static final int TEXTURE_USAGE = GpuTexture.USAGE_TEXTURE_BINDING | GpuTexture.USAGE_RENDER_ATTACHMENT;
     private static final int CONFIG_SIZE   = new Std140SizeCalculator().putVec2().putFloat().get();
 
-    private static GpuTexture     texA, texB;
-    private static GpuTextureView viewA, viewB;
-    private static GpuBuffer      configH, configV;
+    private static GpuTexture     texA    = null;
+    private static GpuTexture     texB    = null;
+    private static GpuTextureView viewA   = null;
+    private static GpuTextureView viewB   = null;
+    private static GpuBuffer      configH = null;
+    private static GpuBuffer      configV = null;
 
-    private static int   texWidth, texHeight;
-    private static float uploadedRadius = -1f;
-    private static float requestedRadius;
+    private static int   texWidth        = 0;
+    private static int   texHeight       = 0;
+    private static float uploadedRadius  = 1f;
+    private static float requestedRadius = 0;
+
+
+
+
+    private UiBlur() {}
 
 
 
@@ -90,7 +99,7 @@ public final class UiBlur {
 
 
     private static void runPass(final GpuTextureView src, final GpuTextureView dst, final GpuBuffer config) {
-        try(final RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "UI blur", dst, Optional.empty())) {
+        try(final @NotNull RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "UI blur", dst, Optional.empty())) {
             pass.setPipeline(UiRenderPipelines.GAUSSIAN_BLUR);
             RenderSystem.bindDefaultUniforms(pass);
             pass.bindTexture("InSampler", src, sampler());
@@ -107,7 +116,7 @@ public final class UiBlur {
 
 
     private static void ensureTargets() {
-        final RenderTarget main = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+        final @NotNull RenderTarget main = Minecraft.getInstance().gameRenderer.mainRenderTarget();
         final int width  = Math.max(1, main.width  / DOWNSCALE);
         final int height = Math.max(1, main.height / DOWNSCALE);
         if(texA != null && texWidth == width && texHeight == height) return;
@@ -116,7 +125,7 @@ public final class UiBlur {
         texWidth  = width;
         texHeight = height;
 
-        final GpuDevice device = RenderSystem.getDevice();
+        final @NotNull GpuDevice device = RenderSystem.getDevice();
         texA  = device.createTexture(() -> "UI blur A", TEXTURE_USAGE, GpuFormat.RGBA8_UNORM, texWidth, texHeight, 1, 1);
         texB  = device.createTexture(() -> "UI blur B", TEXTURE_USAGE, GpuFormat.RGBA8_UNORM, texWidth, texHeight, 1, 1);
         viewA = device.createTextureView(texA);

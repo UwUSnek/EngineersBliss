@@ -30,6 +30,11 @@ public final class UiVertexFormats {
             .add("UV2",       VertexFormatElement.UV2)
             .add("Color",     VertexFormatElement.COLOR)
         .build();
+        public static final VertexFormat RAW_BLIT = VertexFormat.builder()
+            .add("Position",  VertexFormatElement.POSITION)
+            .add("UV0",       VertexFormatElement.UV0)
+            .add("Color",     VertexFormatElement.COLOR)
+        .build();
         public static final VertexFormat AA_MULTILINE = VertexFormat.builder()
             .add("Position",  VertexFormatElement.POSITION)
             .add("LineWidth", VertexFormatElement.LINE_WIDTH)
@@ -50,7 +55,6 @@ public final class UiVertexFormats {
             .addAttribute("UV1",       GpuFormat.RG16_SINT)
             .addAttribute("Color",     GpuFormat.RGBA8_UNORM)
         .build();
-
         public static final VertexFormat AA_BLIT = VertexFormat.builder(0)
             .addAttribute("Position",  GpuFormat.RGB32_FLOAT)
             .addAttribute("LineWidth", GpuFormat.R32_FLOAT)
@@ -59,14 +63,17 @@ public final class UiVertexFormats {
             .addAttribute("UV2",       GpuFormat.RG16_SINT)
             .addAttribute("Color",     GpuFormat.RGBA8_UNORM)
         .build();
-
+        public static final VertexFormat RAW_BLIT = VertexFormat.builder(0)
+            .addAttribute("Position",  GpuFormat.RGB32_FLOAT)
+            .addAttribute("UV0",       GpuFormat.RG32_FLOAT)
+            .addAttribute("Color",     GpuFormat.RGBA8_UNORM)
+        .build();
         public static final VertexFormat AA_MULTILINE = VertexFormat.builder(0)
             .addAttribute("Position",  GpuFormat.RGB32_FLOAT)
             .addAttribute("LineWidth", GpuFormat.R32_FLOAT)
             .addAttribute("UV0",       GpuFormat.RG32_FLOAT)
             .addAttribute("Color",     GpuFormat.RGBA8_UNORM)
         .build();
-
         public static final VertexFormat MULTILINE_AREA = VertexFormat.builder(0)
             .addAttribute("Position",  GpuFormat.RGB32_FLOAT)
             .addAttribute("Color",     GpuFormat.RGBA8_UNORM)

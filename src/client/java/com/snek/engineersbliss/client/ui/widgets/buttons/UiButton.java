@@ -53,7 +53,7 @@ public class UiButton extends __base_UiWidget {
         this.key = Character.toLowerCase(key);
         this.bgSpriteId = null;
         this.bgSpriteWidth = new UiSize(this);
-        this.bgSpriteMargin = new UiSize(this); this.bgSpriteMargin.clear().setHF(0.25f);
+        this.bgSpriteMargin = new UiSize(this); this.bgSpriteMargin.clear().setHF(0.15f);
         this.overlayColor = new AnimatedColor(0x0, Layout.hoverTransitionDuration, Easings.quadInOut);
     }
     public UiButton(final UiScreen screen, final UiTxt label, final @Nullable Consumer<UiButton> pressCallback, final TextAlignment alignment) {

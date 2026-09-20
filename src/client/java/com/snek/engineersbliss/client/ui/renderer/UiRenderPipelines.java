@@ -73,6 +73,26 @@ public final class UiRenderPipelines {
             .build()
         )
     ;
+    public static final RenderPipeline RAW_BLIT = RenderPipelines.register(
+        RenderPipeline.builder(GUI_BASE)
+            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/raw_blit"))
+            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/raw_blit"))
+            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/raw_blit"))
+            //? if <=26.1.2 {
+                /*.withVertexFormat(UiVertexFormats.RAW_BLIT, VertexFormat.Mode.QUADS)
+                .withSampler("Sampler0")
+            *///? } else {
+                .withVertexBinding(0, UiVertexFormats.RAW_BLIT)
+                .withPrimitiveTopology(PrimitiveTopology.QUADS)
+                .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
+            //? }
+            .build()
+        )
+    ;
+
+
+
+
     public static final RenderPipeline AA_MULTILINE = RenderPipelines.register(
         RenderPipeline.builder(GUI_BASE)
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_multiline"))
@@ -105,22 +125,6 @@ public final class UiRenderPipelines {
 
 
 
-    public static final RenderPipeline AA_BLUR = RenderPipelines.register(
-        RenderPipeline.builder(GUI_BASE)
-            .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/aa_blur"))
-            .withVertexShader  (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
-            .withFragmentShader(Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "ui/aa_blit"))
-            //? if <=26.1.2 {
-                /*.withVertexFormat(UiVertexFormats.AA_BLIT, VertexFormat.Mode.QUADS)
-                .withSampler("Sampler0")
-            *///? } else {
-                .withVertexBinding(0, UiVertexFormats.AA_BLIT)
-                .withPrimitiveTopology(PrimitiveTopology.QUADS)
-                .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
-            //? }
-            .build()
-        )
-    ;
     public static final RenderPipeline GAUSSIAN_BLUR = RenderPipelines.register(
         RenderPipeline.builder(RenderPipelines.POST_PROCESSING_SNIPPET)
             .withLocation      (Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "pipeline/gaussian_blur"))

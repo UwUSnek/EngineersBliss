@@ -17,10 +17,16 @@ import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
 import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
 import com.snek.engineersbliss.client.ui.font.ScaledFont;
+import com.snek.engineersbliss.client.ui.renderer.render_states.AaFillRenderState;
+import com.snek.engineersbliss.client.ui.renderer.render_states.AaBlitRenderState;
+import com.snek.engineersbliss.client.ui.renderer.render_states.RawBlitRenderState;
+import com.snek.engineersbliss.client.ui.renderer.render_states.AaMultilineRenderState;
+import com.snek.engineersbliss.client.ui.renderer.render_states.MultilineAreaRenderState;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
+import com.snek.engineersbliss.utils.data_types.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -358,23 +364,37 @@ public class UiGraphics {
     // Floating point blit
     public final Blit blit = new Blit();
     public class Blit {
-        private static Identifier resolveTexture(final Identifier location, final int width, final int height) {
+        /**
+         * Resolves the provided texture location to and Identifier pointing to the actual renderable texture contents.
+         * This automatically handles SVG rasterization and caching.
+         * @return A Pair containing the resolved Identifier and a Boolean which identifies the type of resolved texture.
+         *     The boolean can be interpreted as "Is this a rasterized SVG? true/false"
+         */
+        private static Pair<Identifier, Boolean> resolveTexture(final Identifier location, final int width, final int height) {
             // SVG texture, rasterize and return
             if(SvgTextureTracker.isRegistered(location)) {
-                return SvgTextureTracker.bindForSize(location, width, height);
+                return Pair.from(SvgTextureTracker.bindForSize(location, width, height), true);
             }
             // Plain PNG, append "textures"
             else {
-                return location.withPath("textures/" + location.getPath() + ".png");
+                return Pair.from(location.withPath("textures/" + location.getPath() + ".png"), false);
             }
         }
         private static TextureSetup textureSetupFor(final Identifier location) {
             final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
             return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
         }
-        private void __internal_blit(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
+        private void __internal_blit_aa(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
             raw.guiRenderState.addGuiElement(new AaBlitRenderState(
                 UiRenderPipelines.AA_BLIT, setup, new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                u0, v0, u1, v1,
+                alpha, scissor.getStack().peek()
+            ));
+        }
+        private void __internal_blit_raw(final TextureSetup setup, final int x0, final int y0, final int x1, final int y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
+            raw.guiRenderState.addGuiElement(new RawBlitRenderState(
+                UiRenderPipelines.RAW_BLIT, setup, new Matrix3x2f(raw.pose()),
                 x0, y0, x1, y1,
                 u0, v0, u1, v1,
                 alpha, scissor.getStack().peek()
@@ -408,8 +428,17 @@ public class UiGraphics {
         public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1, final float alpha) {
             final int w = Math.round(Math.abs(x1 - x0));
             final int h = Math.round(Math.abs(y1 - y0));
-            final Identifier resolved = resolveTexture(location, w, h);
-            __internal_blit(textureSetupFor(resolved), x0, y0, x1, y1, u0, v0, u1, v1, alpha);
+            final Pair<Identifier, Boolean> resolved = resolveTexture(location, w, h);
+
+            // Draw based on type. SVG textures are already rasterized properly so they don't need antialiasing.
+            if(resolved.getSecond().booleanValue()) {
+                final int x = Math.round(x0);
+                final int y = Math.round(y0);
+                __internal_blit_raw(textureSetupFor(resolved.getFirst()), x, y, x + w, y + h, u0, v0, u1, v1, alpha);
+            }
+            else {
+                __internal_blit_aa(textureSetupFor(resolved.getFirst()), x0, y0, x1, y1, u0, v0, u1, v1, alpha);
+            }
         }
     }
 
@@ -630,7 +659,7 @@ public class UiGraphics {
         final float h = window.getHeight() / scale;
 
         raw.guiRenderState.addGuiElement(new AaBlitRenderState(
-            UiRenderPipelines.AA_BLUR, UiBlur.textureSetup(), new Matrix3x2f(raw.pose()),
+            UiRenderPipelines.AA_BLIT, UiBlur.textureSetup(), new Matrix3x2f(raw.pose()),
             x0, y0, x1, y1,
             p0.x / w, 1f - p0.y / h, p1.x / w, 1f - p1.y / h,
             1f, scissor.getStack().peek()
