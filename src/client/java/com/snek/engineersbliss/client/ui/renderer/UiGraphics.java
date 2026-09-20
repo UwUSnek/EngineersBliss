@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3x2f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.jspecify.annotations.NullMarked;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.cursor.CursorType;
@@ -33,6 +35,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.GuiGraphicsExtractor.ScissorStack;
 import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -364,41 +367,40 @@ public class UiGraphics {
     // Floating point blit
     public final Blit blit = new Blit();
     public class Blit {
-        /**
-         * Resolves the provided texture location to and Identifier pointing to the actual renderable texture contents.
-         * This automatically handles SVG rasterization and caching.
-         * @return A Pair containing the resolved Identifier and a Boolean which identifies the type of resolved texture.
-         *     The boolean can be interpreted as "Is this a rasterized SVG? true/false"
-         */
-        private static Pair<Identifier, Boolean> resolveTexture(final Identifier location, final int width, final int height) {
-            // SVG texture, rasterize and return
-            if(SvgTextureTracker.isRegistered(location)) {
-                return Pair.from(SvgTextureTracker.bindForSize(location, width, height), true);
-            }
-            // Plain PNG, append "textures"
-            else {
-                return Pair.from(location.withPath("textures/" + location.getPath() + ".png"), false);
-            }
-        }
         private static TextureSetup textureSetupFor(final Identifier location) {
             final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
             return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
         }
-        private void __internal_blit_aa(final TextureSetup setup, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
-            raw.guiRenderState.addGuiElement(new AaBlitRenderState(
-                UiRenderPipelines.AA_BLIT, setup, new Matrix3x2f(raw.pose()),
-                x0, y0, x1, y1,
-                u0, v0, u1, v1,
-                alpha, scissor.getStack().peek()
-            ));
-        }
-        private void __internal_blit_raw(final TextureSetup setup, final int x0, final int y0, final int x1, final int y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
-            raw.guiRenderState.addGuiElement(new RawBlitRenderState(
-                UiRenderPipelines.RAW_BLIT, setup, new Matrix3x2f(raw.pose()),
-                x0, y0, x1, y1,
-                u0, v0, u1, v1,
-                alpha, scissor.getStack().peek()
-            ));
+        private void __internal_blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
+            final boolean isSvg = SvgTextureTracker.isRegistered(location);
+            if(isSvg) {
+                final int x = Math.round(x0);
+                final int y = Math.round(y0);
+                final int w = Math.round(Math.abs(x1 - x0));
+                final int h = Math.round(Math.abs(y1 - y0));
+                final @Nullable Screen screen = MinecraftUtils.getScreen();
+                final boolean isTransitioning = screen != null && (screen instanceof UiScreen s) && s.isGuiScaleTransitioning();
+                final Identifier dataId = SvgTextureTracker.requestForSize(location, w, h, !isTransitioning);
+                raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+                    UiRenderPipelines.AA_BLIT,
+                    textureSetupFor(dataId),
+                    new Matrix3x2f(raw.pose()),
+                    x, y, x + w, y + h,
+                    u0, v0, u1, v1,
+                    alpha, scissor.getStack().peek()
+                ));
+            }
+            else {
+                final Identifier dataId = location.withPath("textures/" + location.getPath() + ".png");
+                raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+                    UiRenderPipelines.AA_BLIT,
+                    textureSetupFor(dataId),
+                    new Matrix3x2f(raw.pose()),
+                    x0, y0, x1, y1,
+                    u0, v0, u1, v1,
+                    alpha, scissor.getStack().peek()
+                ));
+            }
         }
 
 
@@ -426,19 +428,7 @@ public class UiGraphics {
             xy(location, x0, y0, x1, y1, u0, u1, v0, v1, 1.0f);
         }
         public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float u1, final float v0, final float v1, final float alpha) {
-            final int w = Math.round(Math.abs(x1 - x0));
-            final int h = Math.round(Math.abs(y1 - y0));
-            final Pair<Identifier, Boolean> resolved = resolveTexture(location, w, h);
-
-            // Draw based on type. SVG textures are already rasterized properly so they don't need antialiasing.
-            if(resolved.getSecond().booleanValue()) {
-                final int x = Math.round(x0);
-                final int y = Math.round(y0);
-                __internal_blit_raw(textureSetupFor(resolved.getFirst()), x, y, x + w, y + h, u0, v0, u1, v1, alpha);
-            }
-            else {
-                __internal_blit_aa(textureSetupFor(resolved.getFirst()), x0, y0, x1, y1, u0, v0, u1, v1, alpha);
-            }
+            __internal_blit(location, x0, y0, x1, y1, u0, v0, u1, v1, alpha);
         }
     }
 

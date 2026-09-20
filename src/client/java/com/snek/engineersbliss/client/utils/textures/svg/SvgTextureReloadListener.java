@@ -50,7 +50,7 @@ public final class SvgTextureReloadListener implements SimpleSynchronousResource
             found.add(svgId);
         }
 
-        SvgTextureTracker.retainOnly(found);
+        SvgTextureTracker.clearAllBut(found);
         EngineerSBliss.LOGGER.info("Found {} SVG textures", found.size());
     }
 }
