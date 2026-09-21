@@ -16,7 +16,7 @@ public class Layout {
     public static int fgColorHint            = 0xAABBBBBB;
     public static int highlightOverlay       = 0x40FFFFFF;
 
-    public static int bgColor                = 0x80151515;
+    public static int bgColor                = 0x60151515;
     public static int bgColorAlt             = 0xAA886A99;
     public static int screenBgColor          = bgColor | 0xFF000000; //! Multiplied by the background opacity setting
 

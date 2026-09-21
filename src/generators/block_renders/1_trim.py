@@ -17,7 +17,7 @@ OUTDIR = "1_trimmed"
 # Size of the longer edge of the output frame
 TARGET_RESOLUTION = 64
 # Output FPS
-TARGET_FPS = 12
+TARGET_FPS = 30
 
 # ffmpeg scale filter flags
 SCALE_FLAGS = "flags=lanczos+accurate_rnd+full_chroma_int"

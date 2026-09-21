@@ -14,6 +14,7 @@ import org.joml.Vector3f;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.platform.cursor.CursorType;
 import com.snek.engineersbliss.EngineerSBliss;
+import com.snek.engineersbliss.client.feature_handlers.settings.SettingsFeatureHandler;
 import com.snek.engineersbliss.client.screens.rendering.BlockSpriteFileNames;
 import com.snek.engineersbliss.client.ui.base.UiScreen;
 import com.snek.engineersbliss.client.ui.data_types.TextAlignment;
@@ -215,8 +216,10 @@ public class UiGraphics {
             final float shiftX, final float shiftY //! Text shift in real screen pixels. This doesn't depend on the text size.
         ) {
 
-            // Retrieve font and text scale
-            final float textScale = scaledFont.getSizeForCurrentGuiScale();
+            // Retrieve text scale
+            final @Nullable Screen screen = MinecraftUtils.getScreen();
+            final float guiScale = screen != null && (screen instanceof UiScreen s) ? s.getGuiScale() : SettingsFeatureHandler.getCurrentGuiScale();
+            final float textScale = scaledFont.getSizeForGuiScale(guiScale);
 
             // Compute x and y positions
             final int _x = (int)(switch(textAlignment) {

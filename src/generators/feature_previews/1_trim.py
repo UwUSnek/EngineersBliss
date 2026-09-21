@@ -13,8 +13,7 @@ OUTDIR = "1_trimmed"
 # Size of the longer edge of the output frame
 TARGET_RESOLUTION = 1080
 # Output FPS
-#! 12fps uses about ~20% less space but it looks very choppy. Not worth it. 24fps is smooth enough and it loads just as fast.
-TARGET_FPS = 24
+TARGET_FPS = 30
 
 # ffmpeg scale filter flags
 SCALE_FLAGS = "flags=lanczos+accurate_rnd+full_chroma_int"

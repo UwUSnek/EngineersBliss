@@ -62,8 +62,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="22.627417"
-     inkscape:cx="8.0875338"
-     inkscape:cy="15.180699"
+     inkscape:cx="8.3526988"
+     inkscape:cy="13.589708"
      inkscape:window-width="1904"
      inkscape:window-height="1014"
      inkscape:window-x="1928"
@@ -72,7 +72,7 @@
      inkscape:current-layer="svg2" /><g
      id="g1"
      inkscape:label="borders"
-     style="opacity:0.25;mix-blend-mode:normal;stroke:#ffffff;stroke-opacity:1"><path
+     style="opacity:0.5;mix-blend-mode:normal;stroke:#ffffff;stroke-opacity:1"><path
        id="path1"
        style="display:inline;opacity:1;fill:none;stroke:#ffffff;stroke-width:0.9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="m 22.16226,17.346889 0.0069,-10.4519106 A 1.2415886,1.2415886 58.903174 0 0 21.506036,5.7955537 L 12.868192,1.2474069 a 1.4244007,1.4244007 2.2517523e-6 0 0 -1.327256,-1e-7 L 2.9030902,5.7955537 A 1.2415944,1.2415944 121.09695 0 0 2.2399547,6.8949784 l 0.00686,10.4519106 a 1.2213532,1.2213532 58.409406 0 0 0.6695985,1.088817 l 8.619036,4.364452 a 1.481117,1.481117 179.99995 0 0 1.338211,-2e-6 l 8.618994,-4.364448 a 1.2213613,1.2213613 121.59066 0 0 0.669601,-1.088819 z"
@@ -86,7 +86,7 @@
        sodipodi:nodetypes="ccccc" /></g><g
      id="g10"
      inkscape:label="fill"
-     style="display:inline;opacity:0.124"><path
+     style="display:inline;opacity:0.247"><path
        id="path4"
        style="display:inline;opacity:1;fill:#ffffff;stroke:#ffffff;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none"
        d="m 16.271484,2.0449219 c -0.20787,0 -0.41574,0.050492 -0.605468,0.1503906 L 4.2929688,8.1816406 16.273438,14.273438 28.253906,8.1835938 16.876953,2.1953125 C 16.687225,2.0954136 16.479355,2.0449219 16.271484,2.0449219 Z M 3.5859375,9.1679688 c -2.07e-4,0.00869 -5.7e-6,0.016666 0,0.025391 l 0.00977,13.9335932 c 2.555e-4,0.388664 0.2157566,0.744341 0.5625,0.919922 l 11.4921875,5.818359 c 0.0071,0.0036 0.01431,0.0063 0.02148,0.0098 l 0.002,-14.560547 -12.0645,-6.1347995 a 0.59999999,0.59999999 0 0 1 -0.023437,-0.011719 z m 25.3730465,0 L 16.875,15.3125 16.873,29.875 c 0.0068,-0.0033 0.01281,-0.0064 0.01953,-0.0098 l 11.492188,-5.818359 c 0.346748,-0.175584 0.566149,-0.531259 0.566406,-0.919922 l 0.0078,-13.9335936 c 6e-6,-0.00829 1.85e-4,-0.017135 0,-0.025391 z"
