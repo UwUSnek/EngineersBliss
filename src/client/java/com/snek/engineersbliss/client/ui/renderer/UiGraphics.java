@@ -23,6 +23,7 @@ import com.snek.engineersbliss.client.ui.renderer.render_states.AaBlitRenderStat
 import com.snek.engineersbliss.client.ui.renderer.render_states.RawBlitRenderState;
 import com.snek.engineersbliss.client.ui.renderer.render_states.AaMultilineRenderState;
 import com.snek.engineersbliss.client.ui.renderer.render_states.MultilineAreaRenderState;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
 import com.snek.engineersbliss.client.utils.textures.mp4.Mp4TextureTracker;
@@ -447,8 +448,17 @@ public class UiGraphics {
         private void __internal_video(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
             final Identifier dataId = Mp4TextureTracker.getCurrentTexture(location);
             if(dataId == null) return;
-
-            raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+            if(dataId == Layout.PLACEHOLDER_TEXTURE_ID) {
+                float side = Math.min(y1 - y0, x1 - x0);
+                float cx = (x0 + x1) / 2f;
+                float cy = (y0 + y1) / 2f;
+                final float sx0 = cx - side / 2f;
+                final float sy0 = cy - side / 2f;
+                final float sx1 = sx0 + side;
+                final float sy1 = sy0 + side;
+                blit.xy(dataId, sx0, sy0, sx1, sy1, 0.25f);
+            }
+            else raw.guiRenderState.addGuiElement(new AaBlitRenderState(
                 UiRenderPipelines.AA_BLIT,
                 textureSetupFor(dataId),
                 new Matrix3x2f(raw.pose()),

@@ -1,8 +1,10 @@
 package com.snek.engineersbliss.client.utils.textures.svg;
 
 import com.github.weisj.jsvg.SVGDocument;
+import com.github.weisj.jsvg.parser.DocumentLimits;
 import com.github.weisj.jsvg.parser.LoaderContext;
 import com.github.weisj.jsvg.parser.SVGLoader;
+import com.github.weisj.jsvg.parser.resources.ResourcePolicy;
 import com.github.weisj.jsvg.view.ViewBox;
 import com.mojang.blaze3d.platform.NativeImage;
 
@@ -225,9 +227,14 @@ public final class SvgRasterizer {
     }
 
 
+
+    public static final int MAX_USE_NESTING_DEPTH = 8192;
+    public static final int MAX_NESTING_DEPTH     = 8192;
+    public static final int MAX_PATH_COUNT        = 16384;
+    public static final DocumentLimits DOCUMENT_LIMITS = new DocumentLimits(MAX_NESTING_DEPTH, MAX_USE_NESTING_DEPTH, MAX_PATH_COUNT);
     private static SVGDocument loadSvg(final byte[] svgBytes) throws Exception {
-        try (InputStream is = new ByteArrayInputStream(svgBytes)) {
-            return LOADER.load(is, null, LoaderContext.createDefault());
+        try(InputStream is = new ByteArrayInputStream(svgBytes)) {
+            return LOADER.load(is, null, LoaderContext.builder().documentLimits(DOCUMENT_LIMITS).build());
         }
     }
 

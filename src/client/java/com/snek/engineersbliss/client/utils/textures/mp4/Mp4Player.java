@@ -1,6 +1,7 @@
 package com.snek.engineersbliss.client.utils.textures.mp4;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
 import com.snek.engineersbliss.utils.scheduler.TaskHandler;
 
@@ -24,17 +25,18 @@ final class Mp4Player {
     private final Mp4FrameSource source;
     private       DynamicTexture texture; //! Effectively final. Assigned from the main thread.
     private       NativeImage    image;   //! Effectively final. Assigned from the main thread.
-    private long lastFrameMs = 0;
+    private boolean initialized;
+    private long lastFrameMs;
 
 
     //! Mp4Player is always created asynchronously. GPU-related operations need to be executed on the main thread.
     Mp4Player(final Identifier id, final Path path) {
         source    = new Mp4FrameSource(path);
         textureId = id.withSuffix(".video");
+        this.initialized = false;
+        this.lastFrameMs = 0;
         final @NotNull TaskHandler gpuTasksHandler = ClientScheduler.run(() -> {
-            image     = new NativeImage(source.getWidth(), source.getHeight(), false);
-            image.fillRect(0, 0, source.getWidth(), source.getHeight(), 0x00000000); //! Clear junk texture data
-            //TODO use placeholder texture here too ^ so there isn't a visible "nothing" gap between loading and video
+            image     = new NativeImage(source.getWidth(), source.getHeight(), false); //! Contains junk data. "Loading" texture ID is returned until initialized.
             texture   = new DynamicTexture(textureId::toString, image);
             Minecraft.getInstance().getTextureManager().register(textureId, texture);
         });
@@ -49,7 +51,7 @@ final class Mp4Player {
 
 
     Identifier getTextureId() {
-        return textureId;
+        return initialized ? textureId : Layout.PLACEHOLDER_TEXTURE_ID;
     }
 
 
@@ -63,6 +65,7 @@ final class Mp4Player {
         writeFrame(agbr);
         texture.upload();
         lastFrameMs = now;
+        initialized = true;
     }
 
 

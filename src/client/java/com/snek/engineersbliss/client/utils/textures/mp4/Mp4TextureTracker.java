@@ -11,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.snek.engineersbliss.client.utils.Layout;
+
 
 
 
@@ -19,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public final class Mp4TextureTracker {
-    private static final long STALE_MS = 500L;
+    private static final long STALE_MS = 10000L;
     private Mp4TextureTracker() {}
 
 
@@ -92,7 +94,7 @@ public final class Mp4TextureTracker {
                         }
                     });
                 }
-                return null; //TODO return placeholder texture
+                return Layout.PLACEHOLDER_TEXTURE_ID;
             }
 
             // If player is available, advance its frame and close stale players
