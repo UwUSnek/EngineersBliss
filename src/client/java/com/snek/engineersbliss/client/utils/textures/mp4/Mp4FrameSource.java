@@ -6,13 +6,20 @@ import org.jcodec.api.FrameGrab;
 import org.jcodec.common.io.NIOUtils;
 import org.jcodec.common.model.Picture;
 import org.jcodec.scale.AWTUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.MemoryUtil;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.nio.IntBuffer;
 import java.nio.file.Path;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+
+
+
 
 
 
@@ -24,58 +31,94 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 final class Mp4FrameSource {
-    private static final int QUEUE_CAPACITY = 2;
 
-    private final Path                 path;
-    private final Thread               decodeThread;
-    private final AtomicBoolean        running = new AtomicBoolean(true);
-    private final BlockingQueue<int[]> queue   = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
 
+    // Basic data
+    private final Path          path;
+    private final Thread        decodeThread;
+    private final AtomicBoolean running;
+    private FrameGrab           grab;
+
+
+
+
+    // Frame pool
     private final int width;
     private final int height;
-    private FrameGrab  grab;
+    int getWidth()  { return width; }
+    int getHeight() { return height; }
+
+    private static final int POOL_SIZE = 2;
+    private IntBuffer[] pool;
+    private final ArrayBlockingQueue<Integer> ready = new ArrayBlockingQueue<>(POOL_SIZE - 1);
+    private int writeIdx = 0;
+    private void initFramePool() {
+        this.pool = new IntBuffer[POOL_SIZE];
+        for(int i = 0; i < POOL_SIZE; i++) {
+            pool[i] = MemoryUtil.memAllocInt(width * height); //! Direct buffer. Required for bulk memcpy
+        }
+    }
+    public @Nullable IntBuffer takeFrame() {
+        final Integer idx = ready.poll();
+        return idx == null ? null : pool[idx];
+    }
+    private void storeFrame(final Picture picture) {
+        final BufferedImage buf   = AWTUtil.toBufferedImage(picture);
+        final int           w     = buf.getWidth();
+        final int           fullH = buf.getHeight();
+        final int           h     = fullH / 2;
+        final byte[]        bytes = ((DataBufferByte)buf.getRaster().getDataBuffer()).getData();
+
+        final @NotNull IntBuffer out = pool[writeIdx];
+        for(int y = 0; y < h; y++) {
+            for(int x = 0; x < w; x++) {
+                final int rgbOff = (y * w + x) * 3;
+                final int aOff   = ((y + h) * w + x) * 3;
+                final int b = bytes[rgbOff + 0] & 0xFF;
+                final int g = bytes[rgbOff + 1] & 0xFF;
+                final int r = bytes[rgbOff + 2] & 0xFF;
+                final int a = bytes[aOff      ] & 0xFF;
+                out.put(y * w + x, (a << 24) | (b << 16) | (g << 8) | r);
+            }
+        }
+        // Stops if consumer hasn't caught up
+        try { ready.put(writeIdx); } catch(final InterruptedException _) { Thread.currentThread().interrupt(); }
+        writeIdx = (writeIdx + 1) % POOL_SIZE;
+    }
+
+
 
 
     Mp4FrameSource(final Path path) {
         this.path = path;
+        this.running = new AtomicBoolean(true);
         try {
             grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(path.toFile()));
             final Picture first = grab.getNativeFrame();
             if(first == null) throw new IllegalStateException("Video has no frames: " + path);
-
             final BufferedImage dims = AWTUtil.toBufferedImage(first);
             width  = dims.getWidth();
             height = dims.getHeight() / 2;
-            queue.add(toArgb(first));
         }
         catch(final Exception e) {
             throw new RuntimeException("Failed to open video " + path, e);
         }
-
+        initFramePool();
         decodeThread = new Thread(this::decodeLoop, "video-decode-" + path.getFileName());
         decodeThread.setDaemon(true);
     }
 
-
     void start() {
         decodeThread.start();
     }
-
-
-    int getWidth()  { return width; }
-    int getHeight() { return height; }
-
-
-    /** Returns the next decoded frame, or null if none is ready yet. */
-    int[] takeFrame() {
-        return queue.poll();
-    }
-
-
     void close() {
         running.set(false);
         decodeThread.interrupt();
+        try { decodeThread.join(); } catch(final InterruptedException _) { Thread.currentThread().interrupt(); }
+        for(final IntBuffer b : pool) MemoryUtil.memFree(b);
     }
+
+
 
 
     private void decodeLoop() {
@@ -83,42 +126,14 @@ final class Mp4FrameSource {
             while(running.get()) {
                 final Picture picture = grab.getNativeFrame();
                 if(picture == null) {
-                    grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(path.toFile()));
+                    grab.seekToFramePrecise(0);
                     continue;
                 }
-                queue.put(toArgb(picture));
+                storeFrame(picture);
             }
         }
-        catch(final InterruptedException _) {
-            Thread.currentThread().interrupt();
-        }
-        catch(final Exception e) {
+        catch(final @NotNull Exception e) {
             EngineerSBliss.LOGGER.error("Failed decoding video {}. {}", path, e.getMessage(), new Throwable());
         }
-    }
-
-
-    private static int[] toArgb(final Picture picture) {
-        final BufferedImage buf    = AWTUtil.toBufferedImage(picture);
-        final int           w      = buf.getWidth();
-        final int           fullH  = buf.getHeight();
-        final int           h      = fullH / 2;
-        final byte[]        bytes  = ((DataBufferByte)buf.getRaster().getDataBuffer()).getData();
-
-        final int[] out = new int[w * h];
-        for(int y = 0; y < h; y++) {
-            for(int x = 0; x < w; x++) {
-                final int rgbOff = (y * w + x) * 3;
-                final int aOff   = ((y + h) * w + x) * 3;
-
-                final int b = bytes[rgbOff + 2] & 0xFF;
-                final int g = bytes[rgbOff + 1] & 0xFF;
-                final int r = bytes[rgbOff + 0] & 0xFF;
-                final int a = bytes[aOff      ] & 0xFF;
-
-                out[y * w + x] = (a << 24) | (r << 16) | (g << 8) | b;
-            }
-        }
-        return out;
     }
 }

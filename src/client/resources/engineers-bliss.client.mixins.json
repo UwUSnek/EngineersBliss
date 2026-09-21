@@ -12,9 +12,6 @@
         "accessors.MouseHandlerAccessor",
 
 
-        "misc.AsyncTextureLoaderMixin",
-
-
         "screens.PauseScreenMixin",
 
 

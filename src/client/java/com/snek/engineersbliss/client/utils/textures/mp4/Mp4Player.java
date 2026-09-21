@@ -1,34 +1,49 @@
 package com.snek.engineersbliss.client.utils.textures.mp4;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.snek.engineersbliss.utils.scheduler.ClientScheduler;
+import com.snek.engineersbliss.utils.scheduler.TaskHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 
+import java.nio.IntBuffer;
 import java.nio.file.Path;
+
+import org.jetbrains.annotations.NotNull;
+import org.lwjgl.system.MemoryUtil;
 
 
 
 
 final class Mp4Player {
-    private static final long TARGET_FRAME_NANOS = 1_000_000_000L / 30;
+    private static final long TARGET_FRAME_MS = 1_000L / 30;
 
-    private final Identifier       textureId;
+    private final Identifier     textureId;
     private final Mp4FrameSource source;
-    private final DynamicTexture   texture;
-    private final NativeImage      image;
+    private       DynamicTexture texture; //! Effectively final. Assigned from the main thread.
+    private       NativeImage    image;   //! Effectively final. Assigned from the main thread.
+    private long lastFrameMs = 0;
 
-    private long lastFrameNanos = 0;
 
-
+    //! Mp4Player is always created asynchronously. GPU-related operations need to be executed on the main thread.
     Mp4Player(final Identifier id, final Path path) {
         source    = new Mp4FrameSource(path);
         textureId = id.withSuffix(".video");
-        image     = new NativeImage(source.getWidth(), source.getHeight(), false);
-        texture   = new DynamicTexture(textureId::toString, image);
-
-        Minecraft.getInstance().getTextureManager().register(textureId, texture);
+        final @NotNull TaskHandler gpuTasksHandler = ClientScheduler.run(() -> {
+            image     = new NativeImage(source.getWidth(), source.getHeight(), false);
+            image.fillRect(0, 0, source.getWidth(), source.getHeight(), 0x00000000); //! Clear junk texture data
+            //TODO use placeholder texture here too ^ so there isn't a visible "nothing" gap between loading and video
+            texture   = new DynamicTexture(textureId::toString, image);
+            Minecraft.getInstance().getTextureManager().register(textureId, texture);
+        });
+        while(!gpuTasksHandler.isComplete()) {
+            try { Thread.sleep(10); } catch(final InterruptedException _) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
         source.start();
     }
 
@@ -39,30 +54,22 @@ final class Mp4Player {
 
 
     void tick() {
-        final long now = System.nanoTime();
-        if(now - lastFrameNanos < TARGET_FRAME_NANOS) return;
+        final long now = System.currentTimeMillis();
+        if(now - lastFrameMs < TARGET_FRAME_MS) return;
 
-        final int[] argb = source.takeFrame();
-        if(argb == null) return;
+        final IntBuffer agbr = source.takeFrame();
+        if(agbr == null) return;
 
-        writeFrame(argb);
+        writeFrame(agbr);
         texture.upload();
-        lastFrameNanos = now;
+        lastFrameMs = now;
     }
 
 
-    private void writeFrame(final int[] argb) {
-        final int w = image.getWidth(), h = image.getHeight();
-        for(int y = 0; y < h; y++) {
-            for(int x = 0; x < w; x++) {
-                final int c = argb[y * w + x];
-                final int a = (c >>> 24) & 0xFF;
-                final int r = (c >>> 16) & 0xFF;
-                final int g = (c >>>  8) & 0xFF;
-                final int b =  c         & 0xFF;
-                image.setPixel(x, y, (a << 24) | (b << 16) | (g << 8) | r);
-            }
-        }
+    // Direct bulk memory copy from the int buffer [ABGR] to the output NativeImage [ABGR]
+    private void writeFrame(final IntBuffer abgr) {
+        MemoryUtil.memCopy(MemoryUtil.memAddress(abgr), image.getPointer(), (long)abgr.capacity() * 4);
+        //! Buffers are reused and must NOT be freed manually.
     }
 
 

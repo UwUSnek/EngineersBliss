@@ -33,7 +33,7 @@ import net.minecraft.resources.Identifier;
 public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
 
     // Preview data
-    private Identifier[] hoveredPreviewAtlasIds = null;
+    private Identifier[] hoveredPreviewVideoIds = null;
 
     // Elements and layout
     public static final float PREVIEW_WIDTH = 0.25f;
@@ -55,7 +55,7 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
     protected void onFeatureHoverChange(final @Nullable FeatureInputWidget newWidget) {
         super.onFeatureHoverChange(newWidget);
         if(newWidget == null) {
-            hoveredPreviewAtlasIds = null;
+            hoveredPreviewVideoIds = null;
         }
         else switch(newWidget) {
             case DualPreviewFeatureInputWidget dpw -> updateToggleFeaturePreviewElements(dpw);
@@ -71,7 +71,7 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
         super.extractRenderState(graphics, mouseX, mouseY, a);
 
         // Draw immediate feature preview elements if needed
-        if(lastHoveredFeatureWidget != null && hoveredPreviewAtlasIds != null) {
+        if(lastHoveredFeatureWidget != null && hoveredPreviewVideoIds != null) {
             switch(lastHoveredFeatureWidget) {
                 case DualPreviewFeatureInputWidget dpw -> renderImmediateToggleFeaturePreview(graphics, dpw);
                 default -> EngineerSBliss.LOGGER.error("Invalid feature preview widget type", new Throwable());
@@ -111,10 +111,10 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
 
         // Render the feature preview
         {
-            final @NotNull Identifier atlasIdL = hoveredPreviewAtlasIds[0];
-            final @NotNull Identifier atlasIdR = hoveredPreviewAtlasIds[1];
-            graphics.video.wh(atlasIdL, xL, y, w, h);
-            graphics.video.wh(atlasIdR, xR, y, w, h);
+            final @NotNull Identifier videoIdL = hoveredPreviewVideoIds[0];
+            final @NotNull Identifier videoIdR = hoveredPreviewVideoIds[1];
+            graphics.video.wh(videoIdL, xL, y, w, h);
+            graphics.video.wh(videoIdR, xR, y, w, h);
         }
     }
 
@@ -128,11 +128,11 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
         final @NotNull __base_ServerFeature<?> serverFeature = featureInputWidget.getServerFeature();
         final String featureSetId = serverFeature.getFeatureSet().getId();
         final String fatureId = serverFeature.getId();
-        final String atlasPathL = String.format("gui/feature_previews/%s/%s_%s", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix());
-        final String atlasPathR = String.format("gui/feature_previews/%s/%s_%s", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix());
-        hoveredPreviewAtlasIds = new Identifier[] {
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathL),
-            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, atlasPathR)
+        final String videoPathL = String.format("gui/feature_previews/%s/%s_%s", featureSetId, fatureId, featureInputWidget.getLeftPreviewSuffix());
+        final String videoPathR = String.format("gui/feature_previews/%s/%s_%s", featureSetId, fatureId, featureInputWidget.getRightPreviewSuffix());
+        hoveredPreviewVideoIds = new Identifier[] {
+            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, videoPathL),
+            Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, videoPathR)
         };
     }
 }

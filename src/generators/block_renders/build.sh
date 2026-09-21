@@ -9,7 +9,7 @@ rm -rf ./2_converted
 echo -e "\n\n------------------------ TRIMMING --------------------------\n"
 python3 ./1_trim.py
 
-echo -e "\n\n------------------- CONVERTING TO ATLAS --------------------\n"
+echo -e "\n\n-------------------- CONVERTING TO MP4 ---------------------\n"
 python3 ./2_convert.py
 
 echo -e "\n\n------------------------------------------------------------\n"

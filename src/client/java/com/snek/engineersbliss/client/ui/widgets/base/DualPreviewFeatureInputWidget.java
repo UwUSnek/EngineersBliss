@@ -6,7 +6,6 @@ public interface DualPreviewFeatureInputWidget extends FeatureInputWidget {
 
     /**
      * Returns the suffix of the name of the preview to be shown on the left side of the screen.
-     * This doesn't include the numerical suffix of atlases.
      */
     public String getLeftPreviewSuffix();
 
@@ -17,7 +16,6 @@ public interface DualPreviewFeatureInputWidget extends FeatureInputWidget {
 
     /**
      * Returns the suffix of the name of the preview to be shown on the right side of the screen.
-     * This doesn't include the numerical suffix of atlases.
      */
     public String getRightPreviewSuffix();
 

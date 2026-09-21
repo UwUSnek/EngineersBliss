@@ -25,7 +25,6 @@ import com.snek.engineersbliss.client.ui.renderer.render_states.AaMultilineRende
 import com.snek.engineersbliss.client.ui.renderer.render_states.MultilineAreaRenderState;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.textures.atlases.TextureAtlasTracker;
 import com.snek.engineersbliss.client.utils.textures.mp4.Mp4TextureTracker;
 import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
 
@@ -512,52 +511,53 @@ public class UiGraphics {
     public static final Identifier MISSING_ITEM_SPRITE = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "gui/missing_item_sprite");
     public static final int DEFAULT_ITEM_SPRITE_SIZE = 16;
 
-    private static final int ATLAS_COLS = 8;
-    private static final int ATLAS_ROWS = 8;
-    private static final int SHEETS_PER_ATLAS = ATLAS_COLS * ATLAS_ROWS;
-    //TODO this stuff could be moved to the atlas tracker using a suffix _n system but that's kinda complicated
-    //TODO and also large sprite sheets are supposed to use that? these are not large sprite sheets but atlases of sprite sheets which is different.
-    //TODO different math? probably?
+    //TODO REMOVE
+    // private static final int ATLAS_COLS = 8;
+    // private static final int ATLAS_ROWS = 8;
+    // private static final int SHEETS_PER_ATLAS = ATLAS_COLS * ATLAS_ROWS;
+    // //TODO this stuff could be moved to the atlas tracker using a suffix _n system but that's kinda complicated
+    // //TODO and also large sprite sheets are supposed to use that? these are not large sprite sheets but atlases of sprite sheets which is different.
+    // //TODO different math? probably?
 
 
-    /**
-     * Renders an animated block spritesheet.
-     * The default size is 16px.
-     * @param block     The block whose spritesheet to render
-     * @param x         The X position
-     * @param y         The Y position
-     * @param size      The rendered size in pixels
-     */
-    public void blockSpriteSheet(final Block block, final float x, final float y, final float size) {
+    // /**
+    //  * Renders an animated block spritesheet.
+    //  * The default size is 16px.
+    //  * @param block     The block whose spritesheet to render
+    //  * @param x         The X position
+    //  * @param y         The Y position
+    //  * @param size      The rendered size in pixels
+    //  */
+    // public void blockSpriteSheet(final Block block, final float x, final float y, final float size) {
 
-        // Get block index, fallback to default icon if absent
-        final Identifier id = BuiltInRegistries.BLOCK.getKey(block);
-        final int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
-        if(blockIdx == -1) {
-            blockIcon(block, x, y, size);
-            return;
-        }
+    //     // Get block index, fallback to default icon if absent
+    //     final Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+    //     final int blockIdx = BlockSpriteFileNames.getIdList().indexOf(id.getPath());
+    //     if(blockIdx == -1) {
+    //         blockIcon(block, x, y, size);
+    //         return;
+    //     }
 
-        final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
-        if(!TextureAtlasTracker.isTextureReady(textureId)) {
-            blit.wh(textureId, x, y, size, size);
-        }
-        else {
-            final float[] uv = TextureAtlasTracker.getUV(textureId, blockIdx, System.currentTimeMillis());
-            blit.wh(textureId, x, y, size, size, uv[0], uv[1], uv[2], uv[3]);
-        }
-    }
+    //     final Identifier textureId = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "textures/gui/block_renders/atlas_0.png");
+    //     if(!TextureAtlasTracker.isTextureReady(textureId)) {
+    //         blit.wh(textureId, x, y, size, size);
+    //     }
+    //     else {
+    //         final float[] uv = TextureAtlasTracker.getUV(textureId, blockIdx, System.currentTimeMillis());
+    //         blit.wh(textureId, x, y, size, size, uv[0], uv[1], uv[2], uv[3]);
+    //     }
+    // }
 
-    /**
-     * Renders an animated block spritesheet.
-     * The default size is 16px.
-     * @param block     The block whose spritesheet to render
-     * @param x         The X position
-     * @param y         The Y position
-     */
-    public void blockSpriteSheet(final Block block, final float x, final float y) {
-        blockSpriteSheet(block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
-    }
+    // /**
+    //  * Renders an animated block spritesheet.
+    //  * The default size is 16px.
+    //  * @param block     The block whose spritesheet to render
+    //  * @param x         The X position
+    //  * @param y         The Y position
+    //  */
+    // public void blockSpriteSheet(final Block block, final float x, final float y) {
+    //     blockSpriteSheet(block, x, y, DEFAULT_ITEM_SPRITE_SIZE);
+    // }
 
     /**
      * Renders the icon of the specified block.
