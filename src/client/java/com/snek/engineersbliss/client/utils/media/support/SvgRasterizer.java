@@ -1,10 +1,9 @@
-package com.snek.engineersbliss.client.utils.textures.svg;
+package com.snek.engineersbliss.client.utils.media.support;
 
 import com.github.weisj.jsvg.SVGDocument;
 import com.github.weisj.jsvg.parser.DocumentLimits;
 import com.github.weisj.jsvg.parser.LoaderContext;
 import com.github.weisj.jsvg.parser.SVGLoader;
-import com.github.weisj.jsvg.parser.resources.ResourcePolicy;
 import com.github.weisj.jsvg.view.ViewBox;
 import com.mojang.blaze3d.platform.NativeImage;
 

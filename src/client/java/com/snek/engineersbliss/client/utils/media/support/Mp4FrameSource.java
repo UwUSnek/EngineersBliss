@@ -1,4 +1,4 @@
-package com.snek.engineersbliss.client.utils.textures.mp4;
+package com.snek.engineersbliss.client.utils.media.support;
 
 import com.snek.engineersbliss.EngineerSBliss;
 
@@ -30,13 +30,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //! It's also the most widely supported format so storing alpha this way is the best solution rn.
 
 
-final class Mp4FrameSource {
+public class Mp4FrameSource {
 
 
     // Basic data
     private final Path          path;
     private final Thread        decodeThread;
     private final AtomicBoolean running;
+    private final AtomicBoolean resetRequested;
     private FrameGrab           grab;
 
 
@@ -45,8 +46,8 @@ final class Mp4FrameSource {
     // Frame pool
     private final int width;
     private final int height;
-    int getWidth()  { return width; }
-    int getHeight() { return height; }
+    public int getWidth()  { return width; }
+    public int getHeight() { return height; }
 
     private static final int POOL_SIZE = 2;
     private IntBuffer[] pool;
@@ -89,13 +90,14 @@ final class Mp4FrameSource {
 
 
 
-    Mp4FrameSource(final Path path) {
+    public Mp4FrameSource(final Path path) {
         this.path = path;
         this.running = new AtomicBoolean(true);
+        this.resetRequested = new AtomicBoolean(false);
         try {
             grab = FrameGrab.createFrameGrab(NIOUtils.readableChannel(path.toFile()));
             final Picture first = grab.getNativeFrame();
-            if(first == null) throw new IllegalStateException("Video has no frames: " + path);
+            if(first == null) throw new IllegalStateException("Video has no frames: " + path); //TODO replace with missing media texture or something
             final BufferedImage dims = AWTUtil.toBufferedImage(first);
             width  = dims.getWidth();
             height = dims.getHeight() / 2;
@@ -108,14 +110,17 @@ final class Mp4FrameSource {
         decodeThread.setDaemon(true);
     }
 
-    void start() {
+    public void start() {
         decodeThread.start();
     }
-    void close() {
+    public void close() {
         running.set(false);
         decodeThread.interrupt();
         try { decodeThread.join(); } catch(final InterruptedException _) { Thread.currentThread().interrupt(); }
         for(final IntBuffer b : pool) MemoryUtil.memFree(b);
+    }
+    public void requestReset() {
+        resetRequested.set(true);
     }
 
 
@@ -124,12 +129,20 @@ final class Mp4FrameSource {
     private void decodeLoop() {
         try {
             while(running.get()) {
+
+                // Grab next frame and store it in the queue
                 final Picture picture = grab.getNativeFrame();
                 if(picture == null) {
                     grab.seekToFramePrecise(0);
                     continue;
                 }
                 storeFrame(picture);
+
+                // Reset to first frame if needed
+                if(resetRequested.get()) {
+                    grab.seekToFramePrecise(0);
+                    resetRequested.set(false);
+                }
             }
         }
         catch(final @NotNull Exception e) {

@@ -119,6 +119,7 @@
 
 
 - add a "about" screen that talks about the mod, basically just copy the readme.
+  - add a "thanks for using the mod" or something like that
   - display my skin/drawing in there too and name
   - credit kai for the sounds
   - maybe use light smooth font?
@@ -341,6 +342,7 @@ ADD ALL OF THIS TO THE README
   - other stuff?
 
 - add 26.3 compatibility
+  - Add Vulkan compatibility?
   - check if keybinds still work well. they changed some stuff in the back end handling of keybinds
     - "Minecraft now uses SDL3 instead of GLFW for window management, input, and platform integration" - official changelog
     - "Keyboard input now uses SDL scancodes for physical key positions and SDL keycodes for layout-dependent text editing shortcuts" - official changelog
@@ -348,6 +350,11 @@ ADD ALL OF THIS TO THE README
   - check if decorated pot part provider needs an update. might just be an in-game change though.
     - "Instead of taking a list of 4 item IDs, this component now takes an object with 4 optional item stack fields named:" - official changelog
     - back, left, right, front
+
+- add 26.4 compatibility
+  - DEFAULT GRAPHIC BACKEND is VULKAN
+  - maintain both vulkan and opengl compatibility
+  
 
 - add some easter eggs / controls in loading screens
 

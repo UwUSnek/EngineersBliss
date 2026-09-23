@@ -27,8 +27,7 @@ import com.snek.engineersbliss.client.ui.renderer.render_states.MultilineAreaRen
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.client.utils.UiTxt;
-import com.snek.engineersbliss.client.utils.textures.mp4.Mp4TextureTracker;
-import com.snek.engineersbliss.client.utils.textures.svg.SvgTextureTracker;
+import com.snek.engineersbliss.client.utils.media.MediaTracker;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -373,36 +372,53 @@ public class UiGraphics {
             final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
             return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
         }
-        private void __internal_blit(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float u0, final float v0, final float u1, final float v1, final float alpha) {
-            final boolean isSvg = SvgTextureTracker.isRegistered(location);
-            if(isSvg) {
-                final int x = Math.round(x0);
-                final int y = Math.round(y0);
-                final int w = Math.round(Math.abs(x1 - x0));
-                final int h = Math.round(Math.abs(y1 - y0));
-                final @Nullable Screen screen = MinecraftUtils.getScreen();
-                final boolean isTransitioning = screen != null && (screen instanceof UiScreen s) && s.isGuiScaleTransitioning();
-                final Identifier dataId = SvgTextureTracker.requestForSize(location, w, h, !isTransitioning);
-                raw.guiRenderState.addGuiElement(new RawBlitRenderState(
-                    UiRenderPipelines.RAW_BLIT,
-                    textureSetupFor(dataId),
-                    new Matrix3x2f(raw.pose()),
-                    x, y, x + w, y + h,
-                    u0, v0, u1, v1,
-                    alpha, scissor.getStack().peek()
-                ));
-            }
-            else {
-                final Identifier dataId = location.withPath("textures/" + location.getPath() + ".png");
-                raw.guiRenderState.addGuiElement(new AaBlitRenderState(
-                    UiRenderPipelines.AA_BLIT,
-                    textureSetupFor(dataId),
-                    new Matrix3x2f(raw.pose()),
-                    x0, y0, x1, y1,
-                    u0, v0, u1, v1,
-                    alpha, scissor.getStack().peek()
-                ));
-            }
+        private void __internal_blit(
+            final Identifier location,
+            final float x0, final float y0, final float x1, final float y1,
+            final float u0, final float v0, final float u1, final float v1,
+            final float alpha
+        ) {
+            final int w = Math.round(Math.abs(x1 - x0));
+            final int h = Math.round(Math.abs(y1 - y0));
+            final Identifier textureId = MediaTracker.getMedia(location).requestTextureFor(w, h);
+            raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+                UiRenderPipelines.AA_BLIT,
+                textureSetupFor(textureId),
+                new Matrix3x2f(raw.pose()),
+                x0, y0, x1, y1,
+                u0, v0, u1, v1,
+                alpha, scissor.getStack().peek()
+            ));
+            //TODO REMOVE
+            // final boolean isSvg = SvgTextureTracker.isRegistered(location);
+            // if(isSvg) {
+            //     final int x = Math.round(x0);
+            //     final int y = Math.round(y0);
+            //     final int w = Math.round(Math.abs(x1 - x0));
+            //     final int h = Math.round(Math.abs(y1 - y0));
+            //     final @Nullable Screen screen = MinecraftUtils.getScreen();
+            //     final boolean isTransitioning = screen != null && (screen instanceof UiScreen s) && s.isGuiScaleTransitioning();
+            //     final Identifier dataId = SvgTextureTracker.requestForSize(location, w, h, !isTransitioning);
+            //     raw.guiRenderState.addGuiElement(new RawBlitRenderState(
+            //         UiRenderPipelines.RAW_BLIT,
+            //         textureSetupFor(dataId),
+            //         new Matrix3x2f(raw.pose()),
+            //         x, y, x + w, y + h,
+            //         u0, v0, u1, v1,
+            //         alpha, scissor.getStack().peek()
+            //     ));
+            // }
+            // else {
+            //     final Identifier dataId = location.withPath("textures/" + location.getPath() + ".png");
+            //     raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+            //         UiRenderPipelines.AA_BLIT,
+            //         textureSetupFor(dataId),
+            //         new Matrix3x2f(raw.pose()),
+            //         x0, y0, x1, y1,
+            //         u0, v0, u1, v1,
+            //         alpha, scissor.getStack().peek()
+            //     ));
+            // }
         }
 
 
@@ -441,52 +457,52 @@ public class UiGraphics {
 
 
 
-    // Video blit
-    public final Video video = new Video();
-    public class Video {
-        private static TextureSetup textureSetupFor(final Identifier location) {
-            final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
-            return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
-        }
-        private void __internal_video(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
-            final Identifier dataId = Mp4TextureTracker.getCurrentTexture(location);
-            if(dataId == null) return;
-            if(dataId == Layout.PLACEHOLDER_TEXTURE_ID) {
-                float side = Math.min(y1 - y0, x1 - x0);
-                float cx = (x0 + x1) / 2f;
-                float cy = (y0 + y1) / 2f;
-                final float sx0 = cx - side / 2f;
-                final float sy0 = cy - side / 2f;
-                final float sx1 = sx0 + side;
-                final float sy1 = sy0 + side;
-                blit.xy(dataId, sx0, sy0, sx1, sy1, 0.25f);
-            }
-            else raw.guiRenderState.addGuiElement(new AaBlitRenderState(
-                UiRenderPipelines.AA_BLIT,
-                textureSetupFor(dataId),
-                new Matrix3x2f(raw.pose()),
-                x0, y0, x1, y1,
-                0f, 0f, 1f, 1f,
-                alpha, scissor.getStack().peek()
-            ));
-        }
+    // // Video blit
+    // public final Video video = new Video();
+    // public class Video {
+    //     private static TextureSetup textureSetupFor(final Identifier location) {
+    //         final @NotNull AbstractTexture texture = Minecraft.getInstance().getTextureManager().getTexture(location);
+    //         return TextureSetup.singleTexture(texture.getTextureView(), texture.getSampler());
+    //     }
+    //     private void __internal_video(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
+    //         final Identifier dataId = Mp4TextureTracker.getCurrentTexture(location);
+    //         if(dataId == null) return;
+    //         if(dataId == Layout.PLACEHOLDER_TEXTURE_ID) {
+    //             float side = Math.min(y1 - y0, x1 - x0);
+    //             float cx = (x0 + x1) / 2f;
+    //             float cy = (y0 + y1) / 2f;
+    //             final float sx0 = cx - side / 2f;
+    //             final float sy0 = cy - side / 2f;
+    //             final float sx1 = sx0 + side;
+    //             final float sy1 = sy0 + side;
+    //             blit.xy(dataId, sx0, sy0, sx1, sy1, 0.25f);
+    //         }
+    //         else raw.guiRenderState.addGuiElement(new AaBlitRenderState(
+    //             UiRenderPipelines.AA_BLIT,
+    //             textureSetupFor(dataId),
+    //             new Matrix3x2f(raw.pose()),
+    //             x0, y0, x1, y1,
+    //             0f, 0f, 1f, 1f,
+    //             alpha, scissor.getStack().peek()
+    //         ));
+    //     }
 
 
-        public void wh(final Identifier location, final float x, final float y, final float w, final float h) {
-            wh(location, x, y, w, h, 1f);
-        }
-        public void wh(final Identifier location, final float x, final float y, final float w, final float h, final float alpha) {
-            xy(location, x, y, x + w, y + h, alpha);
-        }
+    //     public void wh(final Identifier location, final float x, final float y, final float w, final float h) {
+    //         wh(location, x, y, w, h, 1f);
+    //     }
+    //     public void wh(final Identifier location, final float x, final float y, final float w, final float h, final float alpha) {
+    //         xy(location, x, y, x + w, y + h, alpha);
+    //     }
 
 
-        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1) {
-            xy(location, x0, y0, x1, y1, 1f);
-        }
-        public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
-            __internal_video(location, x0, y0, x1, y1, alpha);
-        }
-    }
+    //     public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1) {
+    //         xy(location, x0, y0, x1, y1, 1f);
+    //     }
+    //     public void xy(final Identifier location, final float x0, final float y0, final float x1, final float y1, final float alpha) {
+    //         __internal_video(location, x0, y0, x1, y1, alpha);
+    //     }
+    // }//TODO remove
 
 
 

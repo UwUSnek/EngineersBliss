@@ -22,4 +22,6 @@ public class RenderPipelinesUtils {
             .buildSnippet()
         ;
     //? }
+
+    //TODO add builders for vertex format, samplers, and vertex format element stuff
 }

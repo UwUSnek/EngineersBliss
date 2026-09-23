@@ -9,7 +9,6 @@ import net.minecraft.resources.Identifier;
 
 public class Layout {
     private Layout() {}
-    public static final Identifier PLACEHOLDER_TEXTURE_ID = Identifier.fromNamespaceAndPath(EngineerSBliss.MOD_ID, "gui/placeholder_texture");
 
 
     public static int fgColor                = 0xFFEEEEEE;

@@ -113,8 +113,8 @@ public abstract class UiFeatureSetScreenWithPreview extends UiFeatureSetScreen {
         {
             final @NotNull Identifier videoIdL = hoveredPreviewVideoIds[0];
             final @NotNull Identifier videoIdR = hoveredPreviewVideoIds[1];
-            graphics.video.wh(videoIdL, xL, y, w, h);
-            graphics.video.wh(videoIdR, xR, y, w, h);
+            graphics.blit.wh(videoIdL, xL, y, w, h);
+            graphics.blit.wh(videoIdR, xR, y, w, h);
         }
     }
 

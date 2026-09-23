@@ -14,6 +14,7 @@ import com.snek.engineersbliss.client.screens.pause_screen.PauseScreenContent;
 import com.snek.engineersbliss.client.utils.Layout;
 import com.snek.engineersbliss.client.utils.MinecraftUtils;
 import com.snek.engineersbliss.utils.data_types.Pair;
+import com.snek.engineersbliss.client.screens.pause_screen.PauseScreenContentAccessorInterface;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -32,8 +33,11 @@ import net.minecraft.network.chat.Component;
 
 
 @Mixin(PauseScreen.class)
-public class PauseScreenMixin extends Screen {
+public class PauseScreenMixin extends Screen implements PauseScreenContentAccessorInterface {
     @Unique private PauseScreenContent embedded;
+    @Override public PauseScreenContent eb$getEmbedded() {
+        return embedded;
+    }
 
 
     //! Not actually called. Java cries about constructors because the mixin extends Screen.
